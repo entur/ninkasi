@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Ninkasi
 
 This is the private admin GUI for importing and exporting data.
