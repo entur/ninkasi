@@ -2,8 +2,8 @@ FROM node:6.2-wheezy
 # https://hub.docker.com/_/node/
 
 # https://github.com/Yelp/dumb-init
-RUN wget --quiet https://github.com/Yelp/dumb-init/releases/download/v1.0.1/dumb-init_1.0.1_amd64 \
- && chmod a+x $JBOSS_HOME/dumb_init \
+RUN curl -L https://github.com/Yelp/dumb-init/releases/download/v1.0.1/dumb-init_1.0.1_amd64  > /dumb_init \
+ && chmod a+x /dumb_init \
  && npm set progress=false
 
 RUN mkdir -p /usr/src/app
@@ -14,4 +14,4 @@ RUN npm install
 EXPOSE 8000
 ENV port 8000
 
-CMD [ "dumb-init", "npm", "start" ]
+CMD [ "/dumb-init", "npm", "start" ]
