@@ -1,5 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
+// TODO : point to correct endpoint
+//const baseURL = process.env.BASE_URL || 'static/'
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
