@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import SuppliersItem from './SuppliersItem'
 import SuppliersActions from '../actions/SuppliersActions'
+import { bindActionCreators } from 'redux'
 
 class SuppliersContainer extends React.Component {
 
@@ -9,8 +10,8 @@ class SuppliersContainer extends React.Component {
     this.props.store.dispatch(SuppliersActions.fetchSuppliers())
   }
 
-  shouldComponentUpdate() {
-    return true
+  buildGraph() {
+    this.props.store.dispatch(SuppliersActions.buildGraph())
   }
 
   render() {
@@ -19,20 +20,21 @@ class SuppliersContainer extends React.Component {
     const suppliers = this.props.data || []
 
     return (
+
       <div>
       <h2>Providers</h2>
       {suppliers.map(supplier => {
-
         return (
-          <SuppliersItem
-            store={store}
-            key={supplier.id}
-            id={supplier.id}
-            name={supplier.name}>
-            {supplier.name}
-          </SuppliersItem>
+            <SuppliersItem
+              store={store}
+              key={supplier.id}
+              id={supplier.id}
+              name={supplier.name}>
+              {supplier.name}
+            </SuppliersItem>
         )
       })}
+      <button onClick={this.buildGraph.bind(this)}>Build graph</button>
       </div>
     )
   }
@@ -40,7 +42,7 @@ class SuppliersContainer extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    data: state.suppliersReducer.data || [{name: "", capital: ""}]
+    data: state.suppliersReducer.data
   }
 }
 

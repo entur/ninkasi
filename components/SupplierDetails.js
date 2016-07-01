@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import SuppliersActions from '../actions/SuppliersActions'
-
+import Multiselect from './Multiselect'
 
 require('../sass/components/supplierdetails.scss')
 

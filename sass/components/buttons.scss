@@ -1,3 +1,26 @@
-button {
-  margin: 20px;
+
+button{
+  margin: 10px 10px;
+  padding: 0;
+  overflow: hidden;
+  border-width: 0;
+  outline: none;
+  border-radius: 2px;
+  background-color: #2ecc71;
+  color: #ecf0f1;
+  height: 30px;
+  width: auto;
+  padding: 5px;
+  transition: background-color .3s;
+}
+
+button:hover, .btn:focus {
+  background-color: #27ae60;
+}
+
+button:active:before {
+  width: 120%;
+  padding-top: 120%;
+
+  transition: width .2s ease-out, padding-top .2s ease-out;
 }

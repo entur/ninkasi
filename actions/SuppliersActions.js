@@ -1,8 +1,9 @@
 import axios from 'axios'
 import * as types from './actionTypes'
 
-var SuppliersActions = {}
+// Todo : refactor -  make a wrapper for axios
 
+var SuppliersActions = {}
 
 /* nabu actions */
 
@@ -10,13 +11,12 @@ function requestData() {
 	return {type: types.REQ_DATA}
 }
 
-
 SuppliersActions.fetchSuppliers = () => {
 
   const url = 'http://localhost:18081/jersey/providers/all'
 
 	return function(dispatch) {
-		dispatch(requestData());
+		dispatch(requestData())
 		return axios({
 			url: url,
 			timeout: 20000,
@@ -24,10 +24,10 @@ SuppliersActions.fetchSuppliers = () => {
 			responseType: 'json'
 		})
 			.then(function(response) {
-				dispatch(receiveData(response.data, types.RECV_DATA));
+				dispatch(receiveData(response.data, types.RECV_DATA))
 			})
 			.catch(function(response){
-				dispatch(receiveError(response.data, types.RECV_ERROR));
+				dispatch(receiveError(response.data, types.RECV_ERROR))
 			})
 	}
 }
@@ -43,9 +43,9 @@ SuppliersActions.selectActiveSupplier = (id) => {
 
 var mardukConfig = {
   headers: {
-		'Acces-Control-Allow-Origin:': '*',
+		'Acces-Control-Allow-Origin:': 'http://localhost:80',
 		'Accept' : 'application/xml',
-		'Content-Type' : 'application/xml'
+		'Content-Type' : 'application/xml',
 	}
 }
 
@@ -59,20 +59,21 @@ SuppliersActions.exportData = (id) => {
 			url: url,
 			timeout: 20000,
 			method: 'get',
-			responseType: 'json'
-		}, mardukConfig)
+			responseType: 'xml'
+		})
 			.then(function(response) {
 				dispatch(receiveData(response.data, types.REQUEST_EXPORT_DATA))
-				dispatch(SuppliersActions.addNotification('Export started', 'success'));
+				dispatch(SuppliersActions.addNotification('Export started', 'success'))
 			})
 			.catch(function(response){
 				dispatch(receiveError(response.data, types.ERROR_EXPORT_DATA))
-				dispatch(SuppliersActions.addNotification('Export failed', 'error'));
+				dispatch(SuppliersActions.addNotification('Export failed', 'error'))
 			})
 	}
 }
 
 SuppliersActions.importData = (id) => {
+
 	const url = `http://localhost:18080/admin/services/chouette/${id}/import`
 
 		return function(dispatch) {
@@ -81,21 +82,21 @@ SuppliersActions.importData = (id) => {
 				url: url,
 				timeout: 20000,
 				method: 'get',
-			},mardukConfig)
+			})
 				.then(function(response) {
 					dispatch(receiveData(response.data, types.SUCCESS_IMPORT_DATA))
-					dispatch(SuppliersActions.addNotification('Import started', 'success'));
+					dispatch(SuppliersActions.addNotification('Import started', 'success'))
 				})
 				.catch(function(response){
 					dispatch(receiveError(response.data, types.ERROR_IMPORT_DATA))
-					dispatch(SuppliersActions.addNotification('Import failed', 'error'));
+					dispatch(SuppliersActions.addNotification('Import failed', 'error'))
 				})
 		}
 }
 
 
-
 SuppliersActions.deleteData = (id) => {
+
 		const url = `http://localhost:18080/admin/services/chouette/${id}/clean`
 
 		return function(dispatch) {
@@ -109,16 +110,46 @@ SuppliersActions.deleteData = (id) => {
 					'Accept' : 'application/xml',
 					'Content-Type' : 'application/xml'
 				}
-			}, mardukConfig)
+			})
 				.then(function(response) {
 					dispatch(receiveData(response.data, types.SUCCESS_DELETE_DATA))
-					dispatch(SuppliersActions.addNotification('Delete started', 'success'));
+					dispatch(SuppliersActions.addNotification('Delete started', 'success'))
 				})
 				.catch(function(response){
 					dispatch(receiveError(response.data, types.ERROR_DELETE_DATA))
-					dispatch(SuppliersActions.addNotification('Delete failed', 'error'));
+					dispatch(SuppliersActions.addNotification('Delete failed', 'error'))
 				})
 		}
+}
+
+SuppliersActions.buildGraph = () => {
+		const url = 'http://localhost:18080/admin/services/graph/build'
+
+		return function(dispatch) {
+			dispatch(reuquestBuildGraph())
+			return axios({
+				url: url,
+				timeout: 20000,
+				method: 'get',
+				headers: {
+					'Acces-Control-Allow-Origin:': 'http://localhost:80',
+					'Accept' : 'application/xml',
+					'Content-Type' : 'application/xml'
+				}
+			})
+				.then(function(response) {
+					dispatch(receiveData(response.data, types.SUCCESS_BUILD_GRAPH))
+					dispatch(SuppliersActions.addNotification('Graph build started', 'success'))
+				})
+				.catch(function(response){
+					dispatch(receiveError(response.data, types.ERROR_BUILD_GRAPH))
+					dispatch(SuppliersActions.addNotification('Graph build failed', 'error'))
+				})
+		}
+}
+
+function reuquestBuildGraph() {
+	return {type: types.REQUEST_BUILD_GRAPH}
 }
 
 function requestDeleteData() {

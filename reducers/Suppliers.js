@@ -43,11 +43,18 @@ const mardukReducer = (state = {}, action) => {
       return Object.assign({}, state, {isLoading: true, error: false })
 
     case types.ERROR_DELETE_DATA:
-      return Object.assign({}, state, {isLoading: false, delete_date: action.payLoad, error: true})
+      return Object.assign({}, state, {isLoading: false, delete_data: action.payLoad, error: true})
     case types.SUCCESS_DELETE_DATA:
-      return Object.assign({}, state, {isLoading: false, delete_date: action.payLoad, error: false})
+      return Object.assign({}, state, {isLoading: false, delete_data: action.payLoad, error: false})
     case types.REQUEST_DELETE_DATA:
-      return Object.assign({}, state, {isLoading: true, error: true})
+      return Object.assign({}, state, {isLoading: true, error: false})
+
+    case types.ERROR_BUILD_GRAPH:
+      return Object.assign({}, state, {isLoading: false, build_graph: action.payLoad, error: true})
+    case types.SUCCESS_BUILD_GRAPH:
+      return Object.assign({}, state, {isLoading: false, build_graph: action.payLoad, error: false})
+    case types.REQUEST_BUILD_GRAPH:
+      return Object.assign({}, state, {isLoading: true, error: false})
 
     default:
       return state

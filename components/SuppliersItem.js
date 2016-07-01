@@ -12,7 +12,7 @@ class ProviderItem extends React.Component {
     store: PropTypes.object.isRequired
   }
 
-  showAlert(data) {
+  selectSupplier(data) {
     this.props.store.dispatch(SuppliersActions.selectActiveSupplier(data.id))
   }
 
@@ -25,7 +25,7 @@ class ProviderItem extends React.Component {
     })
 
     return (
-      <li className={liClass} onClick={() => this.showAlert({id})}>
+      <li className={liClass} onClick={() => this.selectSupplier({id})}>
         {id} {name}
       </li>
     )
