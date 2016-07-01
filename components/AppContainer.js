@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import SuppliersContainer from '../components/SuppliersContainer'
 import SupplierDetails from '../components/SupplierDetails'
+import NotificationContainer from '../components/NotificationContainer'
 
 class AppContainer extends React.Component {
 
@@ -13,6 +14,7 @@ class AppContainer extends React.Component {
       <div className="app">
         <SuppliersContainer store={store}/>
         <SupplierDetails store={store}/>
+        <NotificationContainer store={store}/>
       </div>
     )
   }

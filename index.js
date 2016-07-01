@@ -9,6 +9,7 @@ import configureStore from './store/store';
 
 require('./sass/main.scss')
 
+
 renderIndex()
 /* use authWithKeyCloak(renderIndex) for keycloak authentification */
 function authWithKeyCloak(renderCallback) {

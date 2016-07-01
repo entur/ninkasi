@@ -1,9 +1,24 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
+import SuppliersActions from '../actions/SuppliersActions'
+
 
 require('../sass/components/supplierdetails.scss')
 
+
 class SupplierDetails extends React.Component {
+
+  importData = () => {
+    this.props.store.dispatch(SuppliersActions.importData(this.props.activeId))
+  }
+
+  exportData = () => {
+    this.props.store.dispatch(SuppliersActions.exportData(this.props.activeId))
+  }
+
+  deleteData = () => {
+    this.props.store.dispatch(SuppliersActions.deleteData(this.props.activeId))
+  }
 
   render() {
 
@@ -18,8 +33,9 @@ class SupplierDetails extends React.Component {
       return (
         <div className="supplier-details">
           <h3 className="supplier-header">{provider.name}</h3>
-          <button>Import</button>
-          <button>Export</button>
+            <button onClick={this.deleteData}>Delete</button>
+            <button onClick={this.importData}>Import</button>
+            <button onClick={this.exportData}>Export</button>
         </div>
       )
 
@@ -31,7 +47,6 @@ class SupplierDetails extends React.Component {
          </div>
        )
     }
-
 
   }
 }
