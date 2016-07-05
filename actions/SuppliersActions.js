@@ -43,7 +43,7 @@ SuppliersActions.selectActiveSupplier = (id) => {
 
 var mardukConfig = {
   headers: {
-		'Acces-Control-Allow-Origin:': 'http://localhost:80',
+		'Access-Control-Allow-Origin:': 'http://localhost:80',
 		'Accept' : 'application/xml',
 		'Content-Type' : 'application/xml',
 	}
@@ -106,7 +106,7 @@ SuppliersActions.deleteData = (id) => {
 				timeout: 20000,
 				method: 'get',
 				headers: {
-					'Acces-Control-Allow-Origin:': '*',
+					'Access-Control-Allow-Origin:': '*',
 					'Accept' : 'application/xml',
 					'Content-Type' : 'application/xml'
 				}
@@ -132,7 +132,7 @@ SuppliersActions.buildGraph = () => {
 				timeout: 20000,
 				method: 'get',
 				headers: {
-					'Acces-Control-Allow-Origin:': 'http://localhost:80',
+					'Access-Control-Allow-Origin:': 'http://localhost:80',
 					'Accept' : 'application/xml',
 					'Content-Type' : 'application/xml'
 				}
