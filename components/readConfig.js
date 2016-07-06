@@ -10,7 +10,6 @@ var config;
 configreader.readConfig = (callback) => {
   if ( config && typeof config !== 'undefined' ) {
     callback ( config );
-    alert("Not reading again");
     return;
   }
   axios({
