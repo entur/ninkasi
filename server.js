@@ -2,6 +2,8 @@ var webpack = require('webpack')
 var webpackDevMiddleware = require('webpack-dev-middleware')
 var webpackHotMiddleware = require('webpack-hot-middleware')
 var config = require('./webpack.config')
+var convict = require('./config/convict.js')
+
 const ENDPOINTBASE = "/ninkasi/"
 
 var app = new (require('express'))()
@@ -27,6 +29,7 @@ app.listen(port, function(error) {
   if (error) {
     console.error(error)
   } else {
-    console.info("==> Listening on port %s. Open up http://localhost/ninkasi/:%s/ in your browser.", port, port)
+    console.info("==> Listening on port %s. Open up http://localhost:%s/ninkasi/ in your browser.", port, port)
+    console.info("==> "+convict.get('configUrl') )
   }
 })

@@ -14,6 +14,7 @@
     "babel-polyfill": "^6.7.4",
     "babel-runtime": "^6.6.1",
     "classnames": "^2.2.5",
+    "convict": "^1.4.0",
     "express": "^4.13.4",
     "history": "^3.0.0",
     "isomorphic-fetch": "^2.2.1",
