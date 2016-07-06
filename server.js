@@ -27,7 +27,8 @@ app.get(ENDPOINTBASE + "config/keycloak.json", function(req, res) {
 
 app.get(ENDPOINTBASE + "config.json", function(req, res) {
   var cfg = {
-    erlend: "test"
+    nabuBaseUrl: convict.get('nabuBaseUrl'),
+    mardukBaseUrl: convict.get('mardukBaseUrl')
   }
   res.send(cfg)
 })
@@ -38,6 +39,5 @@ app.listen(port, function(error) {
     console.error(error)
   } else {
     console.info("==> Listening on port %s. Open up http://localhost:%s/ninkasi/ in your browser.", port, port)
-    console.info("==> "+convict.get('configUrl') )
   }
 })

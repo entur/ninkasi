@@ -14,7 +14,20 @@ var conf = convict({
     format: "url",
     default: "http://rutebanken.org/do_not_read",
     env: "CONFIG_URL"
-  }
+  },
+  nabuBaseUrl: {
+    doc: "Base URL for for nabu including slash",
+    format: "url",
+    default: "http://localhost:18081/",
+    env: "NABU_BASE_URL"
+  },
+  mardukBaseUrl: {
+    doc: "Base URL for for marduk including slash",
+    format: "url",
+    default: "http://localhost:18080/",
+    env: "MARDUK_BASE_URL"
+  },
+
 });
 
 // If configuration URL exists, read it and update the configuration object

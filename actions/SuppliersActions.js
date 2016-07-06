@@ -14,7 +14,7 @@ function requestData() {
 SuppliersActions.fetchSuppliers = () => {
   //alert( JSON.stringify( window.config ))
 
-  const url = 'http://localhost:18081/jersey/providers/all'
+  const url = window.config.nabuBaseUrl+'jersey/providers/all'
 
 	return function(dispatch) {
 		dispatch(requestData())
@@ -44,7 +44,7 @@ SuppliersActions.selectActiveSupplier = (id) => {
 
 var mardukConfig = {
   headers: {
-		'Access-Control-Allow-Origin:': 'http://localhost:80',
+		'Access-Control-Allow-Origin:': '*',
 		'Accept' : 'application/xml',
 		'Content-Type' : 'application/xml',
 	}
@@ -52,7 +52,7 @@ var mardukConfig = {
 
 SuppliersActions.exportData = (id) => {
 
-	const url = `http://localhost:18080/admin/services/chouette/${id}/export`
+	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/export`
 
 	return function(dispatch) {
 		dispatch(requestExport())
@@ -74,8 +74,7 @@ SuppliersActions.exportData = (id) => {
 }
 
 SuppliersActions.importData = (id) => {
-
-	const url = `http://localhost:18080/admin/services/chouette/${id}/import`
+  const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/import`
 
 		return function(dispatch) {
 			dispatch(requestImport())
@@ -98,7 +97,7 @@ SuppliersActions.importData = (id) => {
 
 SuppliersActions.deleteData = (id) => {
 
-		const url = `http://localhost:18080/admin/services/chouette/${id}/clean`
+		const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/clean`
 
 		return function(dispatch) {
 			dispatch(requestDeleteData())
@@ -124,7 +123,7 @@ SuppliersActions.deleteData = (id) => {
 }
 
 SuppliersActions.buildGraph = () => {
-		const url = 'http://localhost:18080/admin/services/graph/build'
+		const url = window.config.mardukBaseUrl+'admin/services/graph/build'
 
 		return function(dispatch) {
 			dispatch(reuquestBuildGraph())
@@ -133,7 +132,7 @@ SuppliersActions.buildGraph = () => {
 				timeout: 20000,
 				method: 'get',
 				headers: {
-					'Access-Control-Allow-Origin:': 'http://localhost:80',
+					'Access-Control-Allow-Origin:': '*',
 					'Accept' : 'application/xml',
 					'Content-Type' : 'application/xml'
 				}

@@ -1,12 +1,16 @@
 import axios from 'axios'
 
+/*
+Reading config json as served out of the node application.
+*/
+
 var configreader = {};
 var config;
 
 configreader.readConfig = (callback) => {
   if ( config && typeof config !== 'undefined' ) {
     callback ( config );
-    //alert("Not reading again");
+    alert("Not reading again");
     return;
   }
   axios({
