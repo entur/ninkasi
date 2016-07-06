@@ -3,12 +3,15 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { addNotification } from '../actions/SuppliersActions'
 import NotificationSystem from 'react-notification-system'
+import cfgreader from './readConfig'
 
 class NotificationContainer extends Component {
 
-
   componentDidMount() {
-    this.notificationSystem = this.refs.notificationSystem
+    cfgreader.readConfig( (function(config) {
+      window.config = config
+      this.notificationSystem = this.refs.notificationSystem
+    }).bind(this));
   }
 
   componentWillReceiveProps(newProps) {

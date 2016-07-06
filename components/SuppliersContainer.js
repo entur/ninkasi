@@ -3,11 +3,15 @@ import React, { Component, PropTypes } from 'react'
 import SuppliersItem from './SuppliersItem'
 import SuppliersActions from '../actions/SuppliersActions'
 import { bindActionCreators } from 'redux'
+import cfgreader from './readConfig'
 
 class SuppliersContainer extends React.Component {
 
   componentDidMount() {
-    this.props.store.dispatch(SuppliersActions.fetchSuppliers())
+    cfgreader.readConfig( (function(config) {
+      window.config = config;
+      this.props.store.dispatch(SuppliersActions.fetchSuppliers( window.config ))
+    }).bind(this));
   }
 
   buildGraph() {

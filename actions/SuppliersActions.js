@@ -12,6 +12,7 @@ function requestData() {
 }
 
 SuppliersActions.fetchSuppliers = () => {
+  //alert( JSON.stringify( window.config ))
 
   const url = 'http://localhost:18081/jersey/providers/all'
 

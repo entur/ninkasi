@@ -2,11 +2,17 @@ import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import SuppliersActions from '../actions/SuppliersActions'
 import Multiselect from './Multiselect'
+import cfgreader from './readConfig'
 
 require('../sass/components/supplierdetails.scss')
 
 
 class SupplierDetails extends React.Component {
+  componentDidMount() {
+    cfgreader.readConfig( (function(config) {
+      window.config = config
+    }).bind(this));
+  }
 
   importData = () => {
     this.props.store.dispatch(SuppliersActions.importData(this.props.activeId))

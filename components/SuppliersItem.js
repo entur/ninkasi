@@ -2,10 +2,16 @@ import React, { PropTypes } from 'react'
 import SuppliersActions from '../actions/SuppliersActions'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
+import cfgreader from './readConfig'
 
 require('../sass/components/lists.scss')
 
 class ProviderItem extends React.Component {
+  componentDidMount() {
+    cfgreader.readConfig( (function(config) {
+      window.config = config
+    }).bind(this));
+  }
 
   static propTypes = {
     name: PropTypes.string.isRequired,

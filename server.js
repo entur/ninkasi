@@ -25,6 +25,14 @@ app.get(ENDPOINTBASE + "config/keycloak.json", function(req, res) {
   res.sendFile(__dirname + '/config/keycloak.json')
 })
 
+app.get(ENDPOINTBASE + "config.json", function(req, res) {
+  var cfg = {
+    erlend: "test"
+  }
+  res.send(cfg)
+})
+
+
 app.listen(port, function(error) {
   if (error) {
     console.error(error)

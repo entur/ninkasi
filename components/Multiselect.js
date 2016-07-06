@@ -2,10 +2,14 @@ import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
-
+import cfgreader from './readConfig'
 
 class Multiselect extends React.Component {
-
+  componentDidMount() {
+    cfgreader.readConfig( (function(config) {
+      window.config = config
+    }).bind(this));
+  }
 
   render() {
 
