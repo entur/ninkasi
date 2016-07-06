@@ -39,6 +39,7 @@ if ( configUrl.indexOf("do_not_read") == -1 ) {
       // Reconfigure if config was read:
       fs.writeFileSync('/tmp/ninkasi_config.json',body);
       conf.loadFile('/tmp/ninkasi_config.json');
+      conf.validate({strict: true});
     } else {
       var err = "Could not load data from "+configUrl
       throw new Error(err);
@@ -46,12 +47,7 @@ if ( configUrl.indexOf("do_not_read") == -1 ) {
   });
 } else {
   console.log("The CONFIG_URL element has not been set, so you use the default dev-mode configuration")
+  conf.validate({strict: true});
 }
-
-
-// Load environment dependent configuration
-//  var env = conf.get('env');
-//  conf.loadFile('./config/' + env + '.json');
-conf.validate({strict: true});
 
 module.exports = conf;
