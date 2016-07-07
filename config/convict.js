@@ -11,7 +11,7 @@ var conf = convict({
   },
   configUrl: {
     doc: "URL for where to read the configuration",
-    format: "url",
+    format: "*",
     default: "http://rutebanken.org/do_not_read",
     env: "CONFIG_URL"
   },
