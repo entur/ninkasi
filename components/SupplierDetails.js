@@ -22,8 +22,8 @@ class SupplierDetails extends React.Component {
     this.props.store.dispatch(SuppliersActions.exportData(this.props.activeId))
   }
 
-  deleteData = () => {
-    this.props.store.dispatch(SuppliersActions.deleteData(this.props.activeId))
+  cleanDataspace = () => {
+    this.props.store.dispatch(SuppliersActions.cleanDataspace(this.props.activeId))
   }
 
   render() {
@@ -39,7 +39,7 @@ class SupplierDetails extends React.Component {
       return (
         <div className="supplier-details">
           <h3 className="supplier-header">{provider.name}</h3>
-            <button onClick={this.deleteData}>Delete</button>
+            <button onClick={this.cleanDataspace}>Clean dataspace</button>
             <button onClick={this.importData}>Import</button>
             <button onClick={this.exportData}>Export</button>
         </div>

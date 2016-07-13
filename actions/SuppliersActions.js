@@ -42,13 +42,7 @@ SuppliersActions.selectActiveSupplier = (id) => {
 
 /* marduk actions */
 
-var mardukConfig = {
-  headers: {
-		'Access-Control-Allow-Origin:': '*',
-		'Accept' : 'application/xml',
-		'Content-Type' : 'application/xml',
-	}
-}
+
 
 SuppliersActions.exportData = (id) => {
 
@@ -59,8 +53,7 @@ SuppliersActions.exportData = (id) => {
 		return axios({
 			url: url,
 			timeout: 20000,
-			method: 'get',
-			responseType: 'xml'
+			method: 'post'
 		})
 			.then(function(response) {
 				dispatch(receiveData(response.data, types.REQUEST_EXPORT_DATA))
@@ -81,7 +74,7 @@ SuppliersActions.importData = (id) => {
 			return axios({
 				url: url,
 				timeout: 20000,
-				method: 'get',
+				method: 'post',
 			})
 				.then(function(response) {
 					dispatch(receiveData(response.data, types.SUCCESS_IMPORT_DATA))
@@ -95,29 +88,24 @@ SuppliersActions.importData = (id) => {
 }
 
 
-SuppliersActions.deleteData = (id) => {
+SuppliersActions.cleanDataspace = (id) => {
 
 		const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/clean`
 
 		return function(dispatch) {
-			dispatch(requestDeleteData())
+			dispatch(requestCleanDataspace())
 			return axios({
 				url: url,
 				timeout: 20000,
-				method: 'get',
-				headers: {
-					'Access-Control-Allow-Origin:': '*',
-					'Accept' : 'application/xml',
-					'Content-Type' : 'application/xml'
-				}
+				method: 'post'
 			})
 				.then(function(response) {
 					dispatch(receiveData(response.data, types.SUCCESS_DELETE_DATA))
-					dispatch(SuppliersActions.addNotification('Delete started', 'success'))
+					dispatch(SuppliersActions.addNotification('Cleaning of dataspace started', 'success'))
 				})
 				.catch(function(response){
 					dispatch(receiveError(response.data, types.ERROR_DELETE_DATA))
-					dispatch(SuppliersActions.addNotification('Delete failed', 'error'))
+					dispatch(SuppliersActions.addNotification('Cleaning of dataspace failed', 'error'))
 				})
 		}
 }
@@ -126,16 +114,11 @@ SuppliersActions.buildGraph = () => {
 		const url = window.config.mardukBaseUrl+'admin/services/graph/build'
 
 		return function(dispatch) {
-			dispatch(reuquestBuildGraph())
+			dispatch(requestBuildGraph())
 			return axios({
 				url: url,
 				timeout: 20000,
-				method: 'get',
-				headers: {
-					'Access-Control-Allow-Origin:': '*',
-					'Accept' : 'application/xml',
-					'Content-Type' : 'application/xml'
-				}
+				method: 'post'
 			})
 				.then(function(response) {
 					dispatch(receiveData(response.data, types.SUCCESS_BUILD_GRAPH))
@@ -148,11 +131,36 @@ SuppliersActions.buildGraph = () => {
 		}
 }
 
-function reuquestBuildGraph() {
+SuppliersActions.fetchOSM = () => {
+		const url = window.config.mardukBaseUrl+'admin/services/fetch/osm'
+
+		return function(dispatch) {
+			dispatch(requestFetchOSM())
+			return axios({
+				url: url,
+				timeout: 20000,
+				method: 'post'
+			})
+				.then(function(response) {
+					dispatch(receiveData(response.data, types.SUCCESS_FETCH_OSM))
+					dispatch(SuppliersActions.addNotification('OSM update started', 'success'))
+				})
+				.catch(function(response){
+					dispatch(receiveError(response.data, types.ERROR_FETCH_OSM))
+					dispatch(SuppliersActions.addNotification('OSM update failed', 'error'))
+				})
+		}
+}
+
+function requestBuildGraph() {
 	return {type: types.REQUEST_BUILD_GRAPH}
 }
 
-function requestDeleteData() {
+function requestFetchOSM() {
+	return {type: types.REQUEST_FETCH_OSM}
+}
+
+function requestCleanDataspace() {
 	return {type: types.REQUEST_DELETE_DATA}
 }
 

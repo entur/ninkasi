@@ -56,6 +56,13 @@ const mardukReducer = (state = {}, action) => {
     case types.REQUEST_BUILD_GRAPH:
       return Object.assign({}, state, {isLoading: true, error: false})
 
+    case types.ERROR_FETCH_OSM:
+      return Object.assign({}, state, {isLoading: false, fetch_osm: action.payLoad, error: true})
+    case types.SUCCESS_FETCH_OSM:
+      return Object.assign({}, state, {isLoading: false, fetch_osm: action.payLoad, error: false})
+    case types.REQUEST_FETCH_OSM:
+      return Object.assign({}, state, {isLoading: true, error: false})
+
     default:
       return state
   }

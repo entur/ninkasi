@@ -18,6 +18,10 @@ class SuppliersContainer extends React.Component {
     this.props.store.dispatch(SuppliersActions.buildGraph())
   }
 
+  fetchOSM() {
+    this.props.store.dispatch(SuppliersActions.fetchOSM())
+  }
+
   render() {
 
     const { store }  = this.props
@@ -38,7 +42,8 @@ class SuppliersContainer extends React.Component {
             </SuppliersItem>
         )
       })}
-      <button onClick={this.buildGraph.bind(this)}>Build graph</button>
+      <button onClick={this.buildGraph.bind(this)}>Build OTP graph</button>
+      <button onClick={this.fetchOSM.bind(this)}>Fetch OSM data</button>
       </div>
     )
   }
