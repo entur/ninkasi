@@ -1,44 +1,40 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
+import cfgreader from '../config/readConfig'
 import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
-import cfgreader from './readConfig'
 
 class Multiselect extends React.Component {
-  componentDidMount() {
-    cfgreader.readConfig( (function(config) {
-      window.config = config
-    }).bind(this));
-  }
 
   render() {
 
-    const { store }  = this.props
-    const files = this.props.data || []
+    const {files} = this.props
+    
+    if (files) {
+      return (
 
-    return (
+        <select multiple size={files.length} className="multiselect">
+        {files.map(file => {
+          return (
+              <option>{file}</option>
+          )
+        })}
+        </select>
+      )
+    } else {
 
-      <select multiple size={files.length}>
-      {files.map(file => {
-        return (
-            <option>{file.name}</option>
-        )
-      })}
-      </select>
-    )
+      return (
+        <p>Loading files ...</p>
+      )
+
+    }
+
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-
-  var files = [
-    {name: "/files/some/path/20-20-01"},
-    {name: "/files/some/path/20-20-02"},
-    {name: "/files/some/path/20-20-03"}
-  ]
-
   return {
-    data: files
+    files: state.mardukReducer.fetch_filesnames || []
   }
 }
 

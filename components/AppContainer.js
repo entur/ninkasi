@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import SuppliersContainer from '../components/SuppliersContainer'
 import SupplierDetails from '../components/SupplierDetails'
 import NotificationContainer from '../components/NotificationContainer'
-import cfgreader from './readConfig'
+import cfgreader from '../config/readConfig'
 
 class AppContainer extends React.Component {
   componentDidMount() {

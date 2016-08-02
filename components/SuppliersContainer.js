@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import SuppliersItem from './SuppliersItem'
 import SuppliersActions from '../actions/SuppliersActions'
 import { bindActionCreators } from 'redux'
-import cfgreader from './readConfig'
+import cfgreader from '../config/readConfig'
 
 class SuppliersContainer extends React.Component {
 
@@ -11,7 +11,7 @@ class SuppliersContainer extends React.Component {
     cfgreader.readConfig( (function(config) {
       window.config = config;
       this.props.store.dispatch(SuppliersActions.fetchSuppliers( window.config ))
-    }).bind(this));
+    }).bind(this))
   }
 
   buildGraph() {
@@ -22,6 +22,10 @@ class SuppliersContainer extends React.Component {
     this.props.store.dispatch(SuppliersActions.fetchOSM())
   }
 
+  newProvider() {
+    console.log("Create new provider")
+  }
+
   render() {
 
     const { store }  = this.props
@@ -30,18 +34,21 @@ class SuppliersContainer extends React.Component {
     return (
 
       <div>
-      <h2>Providers</h2>
-      {suppliers.map(supplier => {
-        return (
-            <SuppliersItem
-              store={store}
-              key={supplier.id}
-              id={supplier.id}
-              name={supplier.name}>
-              {supplier.name}
-            </SuppliersItem>
-        )
-      })}
+      <h1>Providers</h1>
+      <ol>
+        {suppliers.map(supplier => {
+          return (
+              <SuppliersItem
+                store={store}
+                key={supplier.id}
+                id={supplier.id}
+                name={supplier.name}>
+                {supplier.name}
+              </SuppliersItem>
+          )
+        })}
+      </ol>
+      <button onClick={this.newProvider}>New Provider</button>
       <button onClick={this.buildGraph.bind(this)}>Build OTP graph</button>
       <button onClick={this.fetchOSM.bind(this)}>Fetch OSM data</button>
       </div>

@@ -63,6 +63,13 @@ const mardukReducer = (state = {}, action) => {
     case types.REQUEST_FETCH_OSM:
       return Object.assign({}, state, {isLoading: true, error: false})
 
+    case types.REQUEST_FILENAMES:
+      return Object.assign({}, state, {isLoading: true, error: false})
+    case types.SUCCESS_FILENAMES:
+      return Object.assign({}, state, {isLoading: false, fetch_filesnames: action.payLoad, error: false})
+    case types.ERROR_FILENAMES:
+      return Object.assign({}, state, {isLoading: false, error: action.payLoad})
+      
     default:
       return state
   }

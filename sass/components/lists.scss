@@ -1,6 +1,22 @@
+ol {
+  margin-bottom: 20px;
+  padding: 0;
+}
+
 li {
   list-style-type: none;
+  cursor: pointer;
 }
+
 .active {
   background-color: #eeeeee;
+}
+
+.multiselect {
+    min-width: 200px;
+    width: 80%;
+    max-width: auto;
+    text-indent: 5px;
+    margin-left: 20px;
+    margin-bottom: 20px;
 }

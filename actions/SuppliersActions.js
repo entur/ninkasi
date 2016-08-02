@@ -43,7 +43,6 @@ SuppliersActions.selectActiveSupplier = (id) => {
 /* marduk actions */
 
 
-
 SuppliersActions.exportData = (id) => {
 
 	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/export`
@@ -62,6 +61,26 @@ SuppliersActions.exportData = (id) => {
 			.catch(function(response){
 				dispatch(receiveError(response.data, types.ERROR_EXPORT_DATA))
 				dispatch(SuppliersActions.addNotification('Export failed', 'error'))
+			})
+	}
+}
+
+SuppliersActions.fetchFilenames = (id) => {
+
+	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/files`
+
+	return function(dispatch) {
+		dispatch(requestFilenames())
+		return axios({
+			url: url,
+			timeout: 20000,
+			method: 'get'
+		})
+			.then(function(response) {
+				dispatch(receiveData(response.data, types.SUCCESS_FILENAMES))
+			})
+			.catch(function(response) {
+				dispatch(receiveError(response.data, types.ERROR_FILENAMES))
 			})
 	}
 }
@@ -172,6 +191,9 @@ function requestExport() {
 	return {type: types.REQUEST_EXPORT_DATA}
 }
 
+function requestFilenames() {
+	return {type: types.REQUEST_FILENAMES}
+}
 
 /* utils */
 

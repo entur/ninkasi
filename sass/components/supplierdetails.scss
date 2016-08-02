@@ -2,12 +2,18 @@
   margin-top: 20px;
   background-color: #eee;
   border: 1px solid black;
-
   .supplier-header {
       margin-bottom: 20px;
+
+      button.edit {
+        display: inline-block;
+        color: blue;
+      }
+
+      h3 {
+        display: block;
+        margin-left: 20px;
+      }
   }
 
-  h1,h2,h3,h4,p, div {
-    padding: 20px;
-  }
 }
