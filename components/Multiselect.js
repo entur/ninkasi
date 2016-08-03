@@ -9,14 +9,14 @@ class Multiselect extends React.Component {
   render() {
 
     const {files} = this.props
-    
+
     if (files) {
       return (
 
-        <select multiple size={files.length} className="multiselect">
+        <select multiple size={files.length} id="provider-files" className="multiselect">
         {files.map(file => {
           return (
-              <option>{file}</option>
+              <option>{file.name}</option>
           )
         })}
         </select>
@@ -33,8 +33,13 @@ class Multiselect extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  if (state.mardukReducer.fetch_filesnames && state.mardukReducer.fetch_filesnames['files'] ) {
+    return {
+      files: state.mardukReducer.fetch_filesnames['files']
+    }
+  }
   return {
-    files: state.mardukReducer.fetch_filesnames || []
+    files: []
   }
 }
 

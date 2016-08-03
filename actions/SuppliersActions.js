@@ -1,6 +1,8 @@
 import axios from 'axios'
 import * as types from './actionTypes'
 
+const querystring = require('querystring')
+
 // Todo : refactor -  make a wrapper for axios
 
 var SuppliersActions = {}
@@ -12,9 +14,9 @@ function requestData() {
 }
 
 SuppliersActions.fetchSuppliers = () => {
-  //alert( JSON.stringify( window.config ))
+	//alert( JSON.stringify( window.config ))
 
-  const url = window.config.nabuBaseUrl+'jersey/providers/all'
+	const url = window.config.nabuBaseUrl+'jersey/providers/all'
 
 	return function(dispatch) {
 		dispatch(requestData())
@@ -24,12 +26,12 @@ SuppliersActions.fetchSuppliers = () => {
 			method: 'get',
 			responseType: 'json'
 		})
-			.then(function(response) {
-				dispatch(receiveData(response.data, types.RECV_DATA))
-			})
-			.catch(function(response){
-				dispatch(receiveError(response.data, types.RECV_ERROR))
-			})
+		.then(function(response) {
+			dispatch(receiveData(response.data, types.RECV_DATA))
+		})
+		.catch(function(response){
+			dispatch(receiveError(response.data, types.RECV_ERROR))
+		})
 	}
 }
 
@@ -54,14 +56,14 @@ SuppliersActions.exportData = (id) => {
 			timeout: 20000,
 			method: 'post'
 		})
-			.then(function(response) {
-				dispatch(receiveData(response.data, types.REQUEST_EXPORT_DATA))
-				dispatch(SuppliersActions.addNotification('Export started', 'success'))
-			})
-			.catch(function(response){
-				dispatch(receiveError(response.data, types.ERROR_EXPORT_DATA))
-				dispatch(SuppliersActions.addNotification('Export failed', 'error'))
-			})
+		.then(function(response) {
+			dispatch(receiveData(response.data, types.REQUEST_EXPORT_DATA))
+			dispatch(SuppliersActions.addNotification('Export started', 'success'))
+		})
+		.catch(function(response){
+			dispatch(receiveError(response.data, types.ERROR_EXPORT_DATA))
+			dispatch(SuppliersActions.addNotification('Export failed', 'error'))
+		})
 	}
 }
 
@@ -76,99 +78,96 @@ SuppliersActions.fetchFilenames = (id) => {
 			timeout: 20000,
 			method: 'get'
 		})
-			.then(function(response) {
-				dispatch(receiveData(response.data, types.SUCCESS_FILENAMES))
-			})
-			.catch(function(response) {
-				dispatch(receiveError(response.data, types.ERROR_FILENAMES))
-			})
+		.then(function(response) {
+			dispatch(receiveData(response.data, types.SUCCESS_FILENAMES))
+		})
+		.catch(function(response) {
+			dispatch(receiveError(response.data, types.ERROR_FILENAMES))
+		})
 	}
 }
 
-SuppliersActions.importData = (id) => {
-  const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/import`
+SuppliersActions.importData = (id, selectedFiles) => {
+	
+	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/import?fileHandle=${selectedFiles}`
 
-		return function(dispatch) {
-			dispatch(requestImport())
-			return axios({
-				url: url,
-				timeout: 20000,
-				method: 'post',
-			})
-				.then(function(response) {
-					dispatch(receiveData(response.data, types.SUCCESS_IMPORT_DATA))
-					dispatch(SuppliersActions.addNotification('Import started', 'success'))
-				})
-				.catch(function(response){
-					dispatch(receiveError(response.data, types.ERROR_IMPORT_DATA))
-					dispatch(SuppliersActions.addNotification('Import failed', 'error'))
-				})
-		}
+	return function(dispatch) {
+		dispatch(requestImport())
+		return axios.post(url)
+		.then(function(response) {
+			dispatch(receiveData(response.data, types.SUCCESS_IMPORT_DATA))
+			dispatch(SuppliersActions.addNotification('Import started', 'success'))
+		})
+		.catch(function(response){
+			dispatch(receiveError(response.data, types.ERROR_IMPORT_DATA))
+			dispatch(SuppliersActions.addNotification('Import failed', 'error'))
+		})
+	}
 }
 
 
 SuppliersActions.cleanDataspace = (id) => {
 
-		const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/clean`
+	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/clean`
 
-		return function(dispatch) {
-			dispatch(requestCleanDataspace())
-			return axios({
-				url: url,
-				timeout: 20000,
-				method: 'post'
-			})
-				.then(function(response) {
-					dispatch(receiveData(response.data, types.SUCCESS_DELETE_DATA))
-					dispatch(SuppliersActions.addNotification('Cleaning of dataspace started', 'success'))
-				})
-				.catch(function(response){
-					dispatch(receiveError(response.data, types.ERROR_DELETE_DATA))
-					dispatch(SuppliersActions.addNotification('Cleaning of dataspace failed', 'error'))
-				})
-		}
+	return function(dispatch) {
+		dispatch(requestCleanDataspace())
+		return axios({
+			url: url,
+			timeout: 20000,
+			method: 'post'
+		})
+		.then(function(response) {
+			dispatch(receiveData(response.data, types.SUCCESS_DELETE_DATA))
+			dispatch(SuppliersActions.addNotification('Cleaning of dataspace started', 'success'))
+		})
+		.catch(function(response){
+			dispatch(receiveError(response.data, types.ERROR_DELETE_DATA))
+			dispatch(SuppliersActions.addNotification('Cleaning of dataspace failed', 'error'))
+		})
+	}
 }
 
 SuppliersActions.buildGraph = () => {
-		const url = window.config.mardukBaseUrl+'admin/services/graph/build'
+	const url = window.config.mardukBaseUrl+'admin/services/graph/build'
 
-		return function(dispatch) {
-			dispatch(requestBuildGraph())
-			return axios({
-				url: url,
-				timeout: 20000,
-				method: 'post'
-			})
-				.then(function(response) {
-					dispatch(receiveData(response.data, types.SUCCESS_BUILD_GRAPH))
-					dispatch(SuppliersActions.addNotification('Graph build started', 'success'))
-				})
-				.catch(function(response){
-					dispatch(receiveError(response.data, types.ERROR_BUILD_GRAPH))
-					dispatch(SuppliersActions.addNotification('Graph build failed', 'error'))
-				})
-		}
+	return function(dispatch) {
+		dispatch(requestBuildGraph())
+		return axios({
+			url: url,
+			timeout: 20000,
+			method: 'post'
+		})
+		.then(function(response) {
+			dispatch(receiveData(response.data, types.SUCCESS_BUILD_GRAPH))
+			dispatch(SuppliersActions.addNotification('Graph build started', 'success'))
+		})
+		.catch(function(response){
+			dispatch(receiveError(response.data, types.ERROR_BUILD_GRAPH))
+			dispatch(SuppliersActions.addNotification('Graph build failed', 'error'))
+		})
+	}
 }
 
 SuppliersActions.fetchOSM = () => {
-		const url = window.config.mardukBaseUrl+'admin/services/fetch/osm'
+	const url = window.config.mardukBaseUrl+'admin/services/fetch/osm'
 
-		return function(dispatch) {
-			dispatch(requestFetchOSM())
-			return axios({
-				url: url,
-				timeout: 20000,
-				method: 'post'
-			})
-				.then(function(response) {
-					dispatch(receiveData(response.data, types.SUCCESS_FETCH_OSM))
-					dispatch(SuppliersActions.addNotification('OSM update started', 'success'))
-				})
-				.catch(function(response){
-					dispatch(receiveError(response.data, types.ERROR_FETCH_OSM))
-					dispatch(SuppliersActions.addNotification('OSM update failed', 'error'))
-				})
-		}
+	return function(dispatch) {
+		dispatch(requestFetchOSM())
+		return axios({
+			url: url,
+			timeout: 20000,
+			method: 'post'
+		})
+		.then(function(response) {
+			dispatch(receiveData(response.data, types.SUCCESS_FETCH_OSM))
+			dispatch(SuppliersActions.addNotification('OSM update started', 'success'))
+		})
+		.catch(function(response){
+			dispatch(receiveError(response.data, types.ERROR_FETCH_OSM))
+			dispatch(SuppliersActions.addNotification('OSM update failed', 'error'))
+		})
+	}
 }
 
 function requestBuildGraph() {
@@ -213,10 +212,10 @@ function receiveError(json, type) {
 
 SuppliersActions.addNotification = (message, level) => {
 	return {
-    type: types.ADD_NOTIFICATION,
-    message,
-    level
-  }
+		type: types.ADD_NOTIFICATION,
+		message,
+		level
+	}
 }
 
 

@@ -16,7 +16,14 @@ class SupplierDetails extends React.Component {
   }
 
   importData = () => {
-    this.props.store.dispatch(SuppliersActions.importData(this.props.activeId))
+
+  // TODO : This could should be updated with a more reacteque way of doing it
+   var multiselect = document.querySelector('#provider-files')
+   var selectedFiles = []
+   for (var i = 0; i < multiselect.length; i++) {
+       if (multiselect.options[i].selected) selectedFiles.push(multiselect.options[i].value);
+   }
+    this.props.store.dispatch(SuppliersActions.importData(this.props.activeId, selectedFiles))
   }
 
   exportData = () => {
@@ -48,7 +55,6 @@ class SupplierDetails extends React.Component {
       return (
         <div className="supplier-details">
           <div className="supplier-header"><h3>{provider.name}</h3></div>
-            <Multiselect></Multiselect>
             <div className="action-panel">
               <button onClick={this.cleanDataspace}>Clean dataspace</button>
               <button onClick={this.importData}>Import</button>
@@ -56,6 +62,7 @@ class SupplierDetails extends React.Component {
               <button onClick={this.editProvider}>Edit provider</button>
               <button onClick={this.deleteProvider}>Delete provider</button>
             </div>
+            <Multiselect></Multiselect>
         </div>
       )
 
