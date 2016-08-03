@@ -7,19 +7,28 @@ import cfgreader from '../config/readConfig'
 
 class SuppliersContainer extends React.Component {
 
+  constructor(props) {
+    super(props)
+  }
+
   componentDidMount() {
+
+    const {dispatch} = this.props
+
     cfgreader.readConfig( (function(config) {
-      window.config = config;
-      this.props.store.dispatch(SuppliersActions.fetchSuppliers( window.config ))
+      window.config = config
+      dispatch(SuppliersActions.fetchSuppliers( window.config ))
     }).bind(this))
   }
 
   buildGraph() {
-    this.props.store.dispatch(SuppliersActions.buildGraph())
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.buildGraph())
   }
 
   fetchOSM() {
-    this.props.store.dispatch(SuppliersActions.fetchOSM())
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.fetchOSM())
   }
 
   newProvider() {
@@ -39,7 +48,6 @@ class SuppliersContainer extends React.Component {
         {suppliers.map(supplier => {
           return (
               <SuppliersItem
-                store={store}
                 key={supplier.id}
                 id={supplier.id}
                 name={supplier.name}>
@@ -64,6 +72,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    dispatch: dispatch
   }
 }
 

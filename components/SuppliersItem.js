@@ -5,16 +5,16 @@ import classNames from 'classnames'
 
 require('../sass/components/lists.scss')
 
-class ProviderItem extends React.Component {
+class SupplierItem extends React.Component {
 
-  static propTypes = {
-    name: PropTypes.string.isRequired,
-    store: PropTypes.object.isRequired
+  constructor(props) {
+    super(props)
   }
 
   selectSupplier(data) {
-    this.props.store.dispatch(SuppliersActions.selectActiveSupplier(data.id))
-    this.props.store.dispatch(SuppliersActions.fetchFilenames(data.id))
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.selectActiveSupplier(data.id))
+    dispatch(SuppliersActions.fetchFilenames(data.id))
   }
 
   render() {
@@ -42,10 +42,11 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    dispatch: dispatch
   }
 }
 
 export default  connect(
   mapStateToProps,
   mapDispatchToProps
-)(ProviderItem)
+)(SupplierItem)

@@ -4,26 +4,20 @@ import SuppliersContainer from '../components/SuppliersContainer'
 import SupplierDetails from '../components/SupplierDetails'
 import NotificationContainer from '../components/NotificationContainer'
 import cfgreader from '../config/readConfig'
-import { Link, browserHistory } from 'react-router'
 
-import SupplierForm from  '../components/SupplierForm'
+class SupplierForm extends React.Component {
 
-
-class AppContainer extends React.Component {
-  componentDidMount() {
-    cfgreader.readConfig( (function(config) {
-      window.config = config
-    }).bind(this));
+  constructor(props) {
+    super(props)
   }
 
   render() {
-
     return (
-      <div className="app">
-        <SuppliersContainer/>
-        <SupplierDetails/>
-        <NotificationContainer/>
+      <div className="supplier-form">
+        <h2>Edit Provider</h2>
+        <input></input>
       </div>
+
     )
   }
 }
@@ -43,4 +37,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AppContainer)
+)(SupplierForm)

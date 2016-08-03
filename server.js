@@ -4,7 +4,7 @@ var webpackHotMiddleware = require('webpack-hot-middleware')
 var config = require('./webpack.config')
 var convict = require('./config/convict.js')
 
-const ENDPOINTBASE = "/ninkasi/"
+const ENDPOINTBASE = ["/ninkasi/"]
 
 var app = new (require('express'))()
 var port = process.env.port || 3000
@@ -14,12 +14,14 @@ app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output
 app.use(webpackHotMiddleware(compiler))
 
 app.get(ENDPOINTBASE, function(req, res) {
+  console.log("changing route")
   res.sendFile(__dirname + '/index.html')
 })
 
 app.get(ENDPOINTBASE + '_health', function(req, res) {
   res.sendStatus(200)
 })
+
 
 app.get(ENDPOINTBASE + "config/keycloak.json", function(req, res) {
   res.sendFile(__dirname + '/config/keycloak.json')
@@ -33,6 +35,9 @@ app.get(ENDPOINTBASE + "config.json", function(req, res) {
   res.send(cfg)
 })
 
+app.get('*', function(req, res, next) {
+    res.sendFile(__dirname + '/index.html')
+})
 
 app.listen(port, function(error) {
   if (error) {

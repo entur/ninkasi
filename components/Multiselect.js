@@ -9,14 +9,14 @@ class Multiselect extends React.Component {
   render() {
 
     const {files} = this.props
-    
+
     if (files) {
       return (
 
         <select multiple size={files.length} className="multiselect">
-        {files.map(file => {
+        {files.map((file, index) => {
           return (
-              <option>{file}</option>
+              <option key={index}>file</option>
           )
         })}
         </select>

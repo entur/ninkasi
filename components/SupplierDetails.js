@@ -9,6 +9,11 @@ require('../sass/components/lists.scss')
 
 
 class SupplierDetails extends React.Component {
+
+  constructor(props) {
+    super(props)
+  }
+
   componentDidMount() {
     cfgreader.readConfig( (function(config) {
       window.config = config
@@ -16,18 +21,22 @@ class SupplierDetails extends React.Component {
   }
 
   importData = () => {
-    this.props.store.dispatch(SuppliersActions.importData(this.props.activeId))
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.importData(this.props.activeId))
   }
 
   exportData = () => {
-    this.props.store.dispatch(SuppliersActions.exportData(this.props.activeId))
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.exportData(this.props.activeId))
   }
 
   cleanDataspace = () => {
-    this.props.store.dispatch(SuppliersActions.cleanDataspace(this.props.activeId))
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.cleanDataspace(this.props.activeId))
   }
 
   deleteProvider = () => {
+    const {dispatch} = this.props
     console.log("Delete provider")
   }
 
@@ -62,8 +71,10 @@ class SupplierDetails extends React.Component {
     } else {
 
        return (
-         <div className="supplier-details">
-           <div className="supplier-header"><h3>Select provider from the list. </h3></div>
+         <div className="supplier-details disabled">
+           <div className="supplier-header">
+             <p>Select provider from the list</p>
+          </div>
          </div>
        )
     }
@@ -80,6 +91,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    dispatch: dispatch
   }
 }
 

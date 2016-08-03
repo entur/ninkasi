@@ -1,7 +1,6 @@
-import { combineReducers } from 'redux'
 import * as types from './../actions/actionTypes'
 
-const suppliersReducer = (state = {}, action) => {
+export const suppliersReducer = (state = {}, action) => {
 
   switch (action.type) {
 
@@ -24,7 +23,7 @@ const suppliersReducer = (state = {}, action) => {
   }
 }
 
-const mardukReducer = (state = {}, action) => {
+export const mardukReducer = (state = {}, action) => {
 
   switch(action.type) {
 
@@ -69,15 +68,8 @@ const mardukReducer = (state = {}, action) => {
       return Object.assign({}, state, {isLoading: false, fetch_filesnames: action.payLoad, error: false})
     case types.ERROR_FILENAMES:
       return Object.assign({}, state, {isLoading: false, error: action.payLoad})
-      
+
     default:
       return state
   }
 }
-
-const reducer = combineReducers({
-  suppliersReducer,
-  mardukReducer
-})
-
-export default reducer
