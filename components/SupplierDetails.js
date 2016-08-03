@@ -19,10 +19,18 @@ class SupplierDetails extends React.Component {
       window.config = config
     }).bind(this))
   }
-
+  
   importData = () => {
+
     const {dispatch} = this.props
-    dispatch(SuppliersActions.importData(this.props.activeId))
+
+    // TODO : This could should be updated with a more reacteque way of doing it
+    var multiselect = document.querySelector('#provider-files')
+    var selectedFiles = []
+    for (var i = 0; i < multiselect.length; i++) {
+      if (multiselect.options[i].selected) selectedFiles.push(multiselect.options[i].value);
+    }
+    dispatch(SuppliersActions.importData(this.props.activeId, selectedFiles))
   }
 
   exportData = () => {
@@ -49,7 +57,7 @@ class SupplierDetails extends React.Component {
     const { store, activeId, providers }  = this.props
 
     if (providers && providers.length > 0) {
-        var provider = providers.filter(function(p) { return p.id == activeId })[0]
+      var provider = providers.filter(function(p) { return p.id == activeId })[0]
     }
 
     if (provider) {
@@ -57,26 +65,26 @@ class SupplierDetails extends React.Component {
       return (
         <div className="supplier-details">
           <div className="supplier-header"><h3>{provider.name}</h3></div>
-            <Multiselect></Multiselect>
-            <div className="action-panel">
-              <button onClick={this.cleanDataspace}>Clean dataspace</button>
-              <button onClick={this.importData}>Import</button>
-              <button onClick={this.exportData}>Export</button>
-              <button onClick={this.editProvider}>Edit provider</button>
-              <button onClick={this.deleteProvider}>Delete provider</button>
-            </div>
+          <div className="action-panel">
+            <button onClick={this.cleanDataspace}>Clean dataspace</button>
+            <button onClick={this.importData}>Import</button>
+            <button onClick={this.exportData}>Export</button>
+            <button onClick={this.editProvider}>Edit provider</button>
+            <button onClick={this.deleteProvider}>Delete provider</button>
+          </div>
+          <Multiselect></Multiselect>
         </div>
       )
 
     } else {
 
-       return (
-         <div className="supplier-details disabled">
-           <div className="supplier-header">
-             <p>Select provider from the list</p>
+      return (
+        <div className="supplier-details disabled">
+          <div className="supplier-header">
+            <p>Select provider from the list</p>
           </div>
-         </div>
-       )
+        </div>
+      )
     }
 
   }
