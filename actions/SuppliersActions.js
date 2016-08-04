@@ -88,7 +88,7 @@ SuppliersActions.fetchFilenames = (id) => {
 }
 
 SuppliersActions.importData = (id, selectedFiles) => {
-	
+
 	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/import?fileHandle=${selectedFiles}`
 
 	return function(dispatch) {
@@ -217,6 +217,5 @@ SuppliersActions.addNotification = (message, level) => {
 		level
 	}
 }
-
 
 export default SuppliersActions

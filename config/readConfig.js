@@ -4,13 +4,13 @@ import axios from 'axios'
 Reading config json as served out of the node application.
 */
 
-var configreader = {};
-var config;
+var configreader = {}
+var config
 
 configreader.readConfig = (callback) => {
   if ( config && typeof config !== 'undefined' ) {
-    callback ( config );
-    return;
+    callback ( config )
+    return
   }
   axios({
     url: "config.json",
@@ -19,7 +19,7 @@ configreader.readConfig = (callback) => {
     responseType: 'json'
   })
     .then(function(response) {
-       config = response.data;
+      config = response.data;
       callback ( config )
     })
     .catch(function(response){
@@ -28,4 +28,4 @@ configreader.readConfig = (callback) => {
   }
 
 
-module.exports = configreader;
+module.exports = configreader

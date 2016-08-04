@@ -13,10 +13,17 @@ li {
 }
 
 .multiselect {
-    min-width: 200px;
-    width: 80%;
-    max-width: auto;
     text-indent: 5px;
-    margin-left: 20px;
     margin-bottom: 20px;
+    min-height: 300px;
+    min-width: 200px;
+}
+
+.multiselect:first-child{
+  margin-left: 20px;
+}
+
+.multiselect:last-child {
+  margin-right: 20px;
+  margin-left: -40px;
 }

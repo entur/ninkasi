@@ -4,37 +4,42 @@ import SuppliersContainer from '../components/SuppliersContainer'
 import SupplierDetails from '../components/SupplierDetails'
 import NotificationContainer from '../components/NotificationContainer'
 import cfgreader from '../config/readConfig'
+import {reduxForm} from 'redux-form'
+
 
 class SupplierForm extends React.Component {
+
+  componentDidMount() {
+    cfgreader.readConfig( (function(config) {
+      window.config = config
+    }).bind(this))
+  }
 
   constructor(props) {
     super(props)
   }
 
-  render() {
-    return (
-      <div className="supplier-form">
-        <h2>Edit Provider</h2>
-        <input></input>
-      </div>
+  handleSubmit(values, dispatch) {
+    console.log("values in form", values)
+  }
 
+  render() {
+    const {fields: {name}} = this.props
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <div>
+          <label>Provider name</label>
+          <input type="text" placeholder="Provider name" {...name}/>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
     )
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-      data: state.suppliersReducer.data
-  }
-}
+SupplierForm = reduxForm({
+  form: 'provider',
+  fields: ['name']
+})(SupplierForm)
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SupplierForm)
+export default SupplierForm

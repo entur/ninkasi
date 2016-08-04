@@ -24,7 +24,6 @@ function authWithKeyCloak(renderCallback) {
   })
 }
 
-
 function renderIndex() {
 
   const store = configureStore()
@@ -33,8 +32,10 @@ function renderIndex() {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <Route path="/ninkasi/" component={MainApp}>
+        <Route path="/ninkasi/">
+          <IndexRoute component={MainApp}/>
           <Route path="/ninkasi/provider/:id/edit/" component={SupplierForm}/>
+          <Route path="/ninkasi/provider/new/" component={SupplierForm}/>
         </Route>
     </Router>
     </Provider>,

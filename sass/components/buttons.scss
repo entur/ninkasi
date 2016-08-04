@@ -23,3 +23,19 @@ button:active:before {
 
   transition: width .2s ease-out, padding-top .2s ease-out;
 }
+
+button.move-button {
+  transform: translateY(-17em);
+
+  height: 30px;
+  width: 30px;
+
+  pre {
+    padding-top: 0;
+    margin-top: 0.5em;
+  }
+}
+
+button.move-button:nth-of-type(2n) {
+  transform: translateX(-4.5em) translateY(-14em);
+}

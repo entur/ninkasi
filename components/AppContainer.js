@@ -13,7 +13,7 @@ class AppContainer extends React.Component {
   componentDidMount() {
     cfgreader.readConfig( (function(config) {
       window.config = config
-    }).bind(this));
+    }).bind(this))
   }
 
   render() {

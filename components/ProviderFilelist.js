@@ -4,16 +4,16 @@ import cfgreader from '../config/readConfig'
 import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
 
-class Multiselect extends React.Component {
+class ProviderFilelist extends React.Component {
 
   render() {
 
     const {files} = this.props
 
-    if (files) {
+    if (files && files.length > 0) {
       return (
 
-        <select multiple size={files.length} id="provider-files" className="multiselect">
+        <select multiple id="providerFilelist" className="multiselect">
         {files.map((file, index) => {
           return (
               <option key={index}>{file.name}</option>
@@ -51,4 +51,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Multiselect)
+)(ProviderFilelist)

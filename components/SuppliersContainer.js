@@ -32,7 +32,27 @@ class SuppliersContainer extends React.Component {
   }
 
   newProvider() {
+    // TODO : implement this
     console.log("Create new provider")
+  }
+
+  selectSupplier(event) {
+    const {dispatch} = this.props
+
+    dispatch(SuppliersActions.selectActiveSupplier(event.target.value))
+    dispatch(SuppliersActions.fetchFilenames(event.target.value))
+
+    // TODO : refactor this - this is a redux anti-pattern
+    let outboundFilelist = document.querySelector("#outboundFilelist")
+    let selected = []
+
+    for (let i = 0; i < outboundFilelist.children.length; i++) { selected.push(i) }
+
+    let i = selected.length
+
+    while (i--)
+      if (outboundFilelist[i]) outboundFilelist.remove(i)
+
   }
 
   render() {
@@ -44,7 +64,8 @@ class SuppliersContainer extends React.Component {
 
       <div>
       <h1>Providers</h1>
-      <ol>
+      <select onChange={this.selectSupplier.bind(this)}>
+        <option selected="selected">Select a provider</option>
         {suppliers.map(supplier => {
           return (
               <SuppliersItem
@@ -55,10 +76,12 @@ class SuppliersContainer extends React.Component {
               </SuppliersItem>
           )
         })}
-      </ol>
-      <button onClick={this.newProvider}>New Provider</button>
-      <button onClick={this.buildGraph.bind(this)}>Build OTP graph</button>
-      <button onClick={this.fetchOSM.bind(this)}>Fetch OSM data</button>
+      </select>
+      <button onClick={this.newProvider.bind(this)}>+ New Provider</button>
+      <div className="action-panel">
+        <button onClick={this.buildGraph.bind(this)}>Build OTP graph</button>
+        <button onClick={this.fetchOSM.bind(this)}>Fetch OSM data</button>
+      </div>
       </div>
     )
   }

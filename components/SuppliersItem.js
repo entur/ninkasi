@@ -11,42 +11,25 @@ class SupplierItem extends React.Component {
     super(props)
   }
 
-  selectSupplier(data) {
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.selectActiveSupplier(data.id))
-    dispatch(SuppliersActions.fetchFilenames(data.id))
-  }
-
   render() {
 
-    const { name, id, activeId } = this.props
-
-    const liClass = classNames({
-      'active' : (id === activeId)
-    })
+    const { name, id } = this.props
 
     return (
-      <li className={liClass} onClick={() => this.selectSupplier({id})}>
+      <option value={id}>
         {id} {name}
-      </li>
+      </option>
     )
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-
   return {
     activeId: state.suppliersReducer.activeId
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
-export default  connect(
+export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(SupplierItem)
