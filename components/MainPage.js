@@ -6,10 +6,8 @@ import NotificationContainer from '../components/NotificationContainer'
 import cfgreader from '../config/readConfig'
 import { Link, browserHistory } from 'react-router'
 
-import SupplierForm from  '../components/SupplierForm'
 
-
-class AppContainer extends React.Component {
+class MainPage extends React.Component {
   componentDidMount() {
     cfgreader.readConfig( (function(config) {
       window.config = config
@@ -43,4 +41,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AppContainer)
+)(MainPage)

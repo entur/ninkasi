@@ -1,4 +1,5 @@
 import * as types from './../actions/actionTypes'
+import {reducer as formReducer} from 'redux-form'
 
 export const suppliersReducer = (state = {}, action) => {
 
@@ -18,10 +19,21 @@ export const suppliersReducer = (state = {}, action) => {
         level: action.level
       }})
 
+    case types.SUCCESS_FETCH_PROVIDER:
+      return Object.assign({}, state, {provider: action.payLoad})
+
     default:
       return state
   }
 }
+
+
+// Todo : clearform if submission succeeds, doc. http://redux-form.com/6.0.0-alpha.4/docs/faq/HowToClear.md/
+export const form = formReducer.plugin({
+  provider: (state, action) => {
+    return state
+  }
+})
 
 export const mardukReducer = (state = {}, action) => {
 

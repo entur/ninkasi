@@ -3,8 +3,6 @@ import * as types from './actionTypes'
 
 const querystring = require('querystring')
 
-// Todo : refactor -  make a wrapper for axios
-
 var SuppliersActions = {}
 
 /* nabu actions */
@@ -14,7 +12,6 @@ function requestData() {
 }
 
 SuppliersActions.fetchSuppliers = () => {
-	//alert( JSON.stringify( window.config ))
 
 	const url = window.config.nabuBaseUrl+'jersey/providers/all'
 
@@ -34,6 +31,97 @@ SuppliersActions.fetchSuppliers = () => {
 		})
 	}
 }
+
+SuppliersActions.deleteProvider = (id) => {
+
+	const url = `${window.config.nabuBaseUrl}jersey/providers/${id}`
+
+	return function(dispatch) {
+		return axios({
+			url: url,
+			timeout: 20000,
+			method: 'delete'
+		})
+		.then(function(response) {
+			dispatch(receiveData(response.data, types.SUCCESS_DELETE_PROVIDER))
+			dispatch(SuppliersActions.addNotification('Provider deleted', 'success'))
+		})
+		.catch(function(response) {
+			dispatch(receiveError(response.data, types.ERROR_DELETE_PROVIDER))
+			dispatch(SuppliersActions.addNotification('Unable to delete provider', 'error'))
+		})
+	}
+}
+
+SuppliersActions.createProvider = (provider) => {
+
+	const url = `${window.config.nabuBaseUrl}jersey/providers/create`
+
+	return function(dispatch) {
+		return axios.post(url, provider)
+		.then(function(response) {
+			dispatch(receiveData(response.data, types.SUCCESS_CREATE_PROVIDER))
+			dispatch(SuppliersActions.addNotification('Provider created', 'success'))
+		})
+		.catch(function(response) {
+			dispatch(receiveError(response.data, types.ERROR_CREATE_PROVIDER))
+			dispatch(SuppliersActions.addNotification('Unable to create provider', 'error'))
+		})
+	}
+}
+
+SuppliersActions.updateProvider = (provider) => {
+
+	const url = `${window.config.nabuBaseUrl}jersey/providers/update`
+
+	return function(dispatch) {
+		return axios.put(url, provider)
+		.then(function(response) {
+			dispatch(receiveData(response.data, types.SUCCESS_UPDATE_PROVIDER))
+			dispatch(SuppliersActions.addNotification('Provider update', 'success'))
+		})
+		.catch(function(response) {
+			dispatch(receiveError(response.data, types.ERROR_UPDATE_PROVIDER))
+			dispatch(SuppliersActions.addNotification('Unable to update provider', 'error'))
+		})
+	}
+}
+
+SuppliersActions.resetProvider = (dispatch) => {
+	const providerDummy = {
+			name:"",
+			sftpAccount:"",
+			chouetteInfo: {
+				prefix: "",
+				referential: "",
+				organisation: "",
+				user: "",
+				regtoppVersion: "",
+				regtoppCoordinateProjection: "",
+				data_format: "",
+				regtoppCalendarStrategy: "",
+				enable_validation: false
+			}
+	}
+	dispatch(receiveData(providerDummy, types.SUCCESS_FETCH_PROVIDER))
+}
+
+SuppliersActions.fetchProvider = (id) => {
+
+	const url = `${window.config.nabuBaseUrl}jersey/providers/${id}`
+
+	return function(dispatch) {
+		return axios.get(url)
+		.then(function(response) {
+			dispatch(receiveData(response.data, types.SUCCESS_FETCH_PROVIDER))
+		})
+		.catch(function(response) {
+			dispatch(receiveError(response.data, types.ERROR_FETCH_PROVIDER))
+			dispatch(SuppliersActions.addNotification('Unable to fetch provider', 'error'))
+		})
+	}
+}
+
 
 SuppliersActions.selectActiveSupplier = (id) => {
 	return {
@@ -86,6 +174,7 @@ SuppliersActions.fetchFilenames = (id) => {
 		})
 	}
 }
+
 
 SuppliersActions.importData = (id, selectedFiles) => {
 

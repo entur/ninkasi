@@ -10,7 +10,6 @@ class ProviderFilelist extends React.Component {
 
     const {files} = this.props
 
-    if (files && files.length > 0) {
       return (
 
         <select multiple id="providerFilelist" className="multiselect">
@@ -21,34 +20,8 @@ class ProviderFilelist extends React.Component {
         })}
         </select>
       )
-    } else {
-
-      return (
-        <p>Loading files ...</p>
-      )
-
-    }
-
-  }
-}
-
-const mapStateToProps = (state, ownProps) => {
-  if (state.mardukReducer.fetch_filesnames && state.mardukReducer.fetch_filesnames['files'] ) {
-    return {
-      files: state.mardukReducer.fetch_filesnames['files']
-    }
-  }
-  return {
-    files: []
-  }
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
   }
 }
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
 )(ProviderFilelist)

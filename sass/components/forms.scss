@@ -1,0 +1,28 @@
+form.supplier-form {
+
+    margin-left: 20px;
+
+    label {
+      min-width: 500px;
+      max-width: 500px;
+      font-size: 0.8em;
+      display: block;
+    }
+
+
+    input {
+      min-width: 300px;
+      max-width: 300px;
+      width: auto;
+    }
+
+    button {
+      margin-top: 20px;;
+      margin-left: 0px;
+    }
+
+    .form-row {
+      margin-bottom: 5px;
+    }
+
+}

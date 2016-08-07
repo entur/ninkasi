@@ -5,8 +5,8 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import Keycloak from 'keycloak-js'
 
-import MainApp from './components/AppContainer'
-import SupplierForm from './components/SupplierForm'
+import MainPage from './components/MainPage'
+import SupplierPage from './components/SupplierPage'
 
 import configureStore from './store/store'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
@@ -17,7 +17,7 @@ require('./sass/main.scss')
 renderIndex()
 /* use authWithKeyCloak(renderIndex) for keycloak authentification */
 function authWithKeyCloak(renderCallback) {
-  let keycloakAuth = new Keycloak('config/keycloak.json');
+  let keycloakAuth = new Keycloak('config/keycloak.json')
 
   keycloakAuth.init({ onLoad: 'login-required' }).success(function () {
       renderCallback()
@@ -33,9 +33,9 @@ function renderIndex() {
     <Provider store={store}>
       <Router history={history}>
         <Route path="/ninkasi/">
-          <IndexRoute component={MainApp}/>
-          <Route path="/ninkasi/provider/:id/edit/" component={SupplierForm}/>
-          <Route path="/ninkasi/provider/new/" component={SupplierForm}/>
+          <IndexRoute component={MainPage}/>
+          <Route path="/ninkasi/provider/:id/edit/" component={SupplierPage}/>
+          <Route path="/ninkasi/provider/new/" component={SupplierPage}/>
         </Route>
     </Router>
     </Provider>,

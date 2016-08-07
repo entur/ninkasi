@@ -22,15 +22,15 @@ class SupplierDetails extends React.Component {
     }).bind(this))
   }
 
+  // TODO : This should be refactored to use store.dispatch instead
   importData = () => {
 
     const {dispatch} = this.props
 
-    // TODO : This could should be updated with a more reacteque way of doing it
     var multiselect = document.querySelector('#outboundFilelist')
     var selectedFiles = []
     for (var i = 0; i < multiselect.length; i++) {
-      if (multiselect.options[i].selected) selectedFiles.push(multiselect.options[i].value);
+      if (multiselect.options[i].selected) selectedFiles.push(multiselect.options[i].value)
     }
 
     dispatch(SuppliersActions.importData(this.props.activeId, selectedFiles))
@@ -48,16 +48,15 @@ class SupplierDetails extends React.Component {
 
   deleteProvider = () => {
     const {dispatch} = this.props
-    console.log("Delete provider")
+    dispatch(SuppliersActions.deleteProvider(this.props.activeId))
   }
 
+  // TODO : This should be refactored to use store.dispatch instead
   moveUp = () => {
 
     let outboundFilelist = document.querySelector('#outboundFilelist')
     let options = outboundFilelist && outboundFilelist.options
     let selected = []
-
-    console.log("options", options)
 
     for (var i = 0, iLen = options.length; i < iLen; i++) {
         if (options[i].selected) {
@@ -118,6 +117,7 @@ class SupplierDetails extends React.Component {
   }
 
   moveSelectedFiles = () => {
+
     let providerFilelist = document.querySelector('#providerFilelist')
     let outboundFilelist = document.querySelector('#outboundFilelist')
 
@@ -134,6 +134,7 @@ class SupplierDetails extends React.Component {
   }
 
   removeSelectedFiles = () => {
+
     let outboundFilelist = document.querySelector('#outboundFilelist')
 
     let selectedFiles = []
@@ -151,13 +152,23 @@ class SupplierDetails extends React.Component {
 
   render() {
 
-    const { store, activeId, providers }  = this.props
+    const { store, activeId, providers, files, isLoading }  = this.props
 
     if (providers && providers.length > 0) {
       var provider = providers.filter(function(p) { return p.id == activeId })[0]
     }
 
-    if (provider) {
+    if (isLoading) {
+      return (
+        <div className="supplier-details disabled">
+          <div className="supplier-header">
+            <h3>Fetching files ...</h3>
+          </div>
+        </div>
+      )
+    }
+
+    if (provider && files) {
 
       return (
         <div className="supplier-details">
@@ -170,7 +181,7 @@ class SupplierDetails extends React.Component {
             <button onClick={this.deleteProvider}>Delete provider</button>
           </div>
           <div>
-            <ProviderFilelist></ProviderFilelist>
+            <ProviderFilelist files={files}></ProviderFilelist>
             <button onClick={this.moveSelectedFiles} className="move-button">=></button>
             <button onClick={this.removeSelectedFiles} className="move-button"><pre>&lt;=</pre></button>
             <OutboundFilelist></OutboundFilelist>
@@ -195,9 +206,15 @@ class SupplierDetails extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+
+  const files = (state.mardukReducer.fetch_filesnames && state.mardukReducer.fetch_filesnames['files'] ) ?
+        state.mardukReducer.fetch_filesnames['files'] : null
+
   return {
     providers: state.suppliersReducer.data,
-    activeId: state.suppliersReducer.activeId
+    activeId: state.suppliersReducer.activeId,
+    files: files,
+    isLoading: state.mardukReducer.isLoading
   }
 }
 

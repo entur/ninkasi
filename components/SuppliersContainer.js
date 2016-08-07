@@ -4,6 +4,8 @@ import SuppliersItem from './SuppliersItem'
 import SuppliersActions from '../actions/SuppliersActions'
 import { bindActionCreators } from 'redux'
 import cfgreader from '../config/readConfig'
+import { Router, Route, browserHistory, IndexRoute } from 'react-router'
+
 
 class SuppliersContainer extends React.Component {
 
@@ -18,22 +20,24 @@ class SuppliersContainer extends React.Component {
     cfgreader.readConfig( (function(config) {
       window.config = config
       dispatch(SuppliersActions.fetchSuppliers( window.config ))
+      dispatch(SuppliersActions.selectActiveSupplier( 0 ))
+
     }).bind(this))
   }
 
-  buildGraph() {
+  handleBuildGraph() {
     const {dispatch} = this.props
     dispatch(SuppliersActions.buildGraph())
   }
 
-  fetchOSM() {
+  handleFetchOSM() {
     const {dispatch} = this.props
     dispatch(SuppliersActions.fetchOSM())
   }
 
-  newProvider() {
-    // TODO : implement this
-    console.log("Create new provider")
+  handleSomething() {
+    // Todo : implement this
+    const {dispatch} = this.props
   }
 
   selectSupplier(event) {
@@ -42,16 +46,22 @@ class SuppliersContainer extends React.Component {
     dispatch(SuppliersActions.selectActiveSupplier(event.target.value))
     dispatch(SuppliersActions.fetchFilenames(event.target.value))
 
-    // TODO : refactor this - this is a redux anti-pattern
+    // TODO : This should be refactored to use store.dispatch instead
+
     let outboundFilelist = document.querySelector("#outboundFilelist")
-    let selected = []
 
-    for (let i = 0; i < outboundFilelist.children.length; i++) { selected.push(i) }
+    if (outboundFilelist && outboundFilelist.length) {
 
-    let i = selected.length
+      let selected = []
 
-    while (i--)
-      if (outboundFilelist[i]) outboundFilelist.remove(i)
+      for (let i = 0; i < outboundFilelist.children.length; i++) { selected.push(i) }
+
+      let i = selected.length
+
+      while (i--)
+        if (outboundFilelist[i]) outboundFilelist.remove(i)
+
+    }
 
   }
 
@@ -65,7 +75,7 @@ class SuppliersContainer extends React.Component {
       <div>
       <h1>Providers</h1>
       <select onChange={this.selectSupplier.bind(this)}>
-        <option selected="selected">Select a provider</option>
+        <option selected="selected"></option>
         {suppliers.map(supplier => {
           return (
               <SuppliersItem
@@ -77,10 +87,11 @@ class SuppliersContainer extends React.Component {
           )
         })}
       </select>
-      <button onClick={this.newProvider.bind(this)}>+ New Provider</button>
+      <button onClick={() => browserHistory.push('/ninkasi/provider/new/')}>+ New provider</button>
       <div className="action-panel">
-        <button onClick={this.buildGraph.bind(this)}>Build OTP graph</button>
-        <button onClick={this.fetchOSM.bind(this)}>Fetch OSM data</button>
+        <button onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</button>
+        <button onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</button>
+        <button onClick={this.handleSomething.bind(this)}>Do something</button>
       </div>
       </div>
     )
