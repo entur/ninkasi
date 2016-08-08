@@ -35,11 +35,6 @@ class SuppliersContainer extends React.Component {
     dispatch(SuppliersActions.fetchOSM())
   }
 
-  handleSomething() {
-    // Todo : implement this
-    const {dispatch} = this.props
-  }
-
   selectSupplier(event) {
     const {dispatch} = this.props
 
@@ -75,7 +70,7 @@ class SuppliersContainer extends React.Component {
       <div>
       <h1>Providers</h1>
       <select onChange={this.selectSupplier.bind(this)}>
-        <option selected="selected"></option>
+        <option selected="selected">Select a supplier</option>
         {suppliers.map(supplier => {
           return (
               <SuppliersItem
@@ -91,7 +86,6 @@ class SuppliersContainer extends React.Component {
       <div className="action-panel">
         <button onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</button>
         <button onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</button>
-        <button onClick={this.handleSomething.bind(this)}>Do something</button>
       </div>
       </div>
     )

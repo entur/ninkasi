@@ -217,6 +217,28 @@ SuppliersActions.cleanDataspace = (id) => {
 	}
 }
 
+SuppliersActions.validateProvider = (id) => {
+
+	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/validate`
+
+	return function(dispatch) {
+		dispatch(requestCleanDataspace())
+		return axios({
+			url: url,
+			timeout: 20000,
+			method: 'post'
+		})
+		.then(function(response) {
+			dispatch(receiveData(response.data, types.SUCCESS_VALIDATE_PROVIDER))
+			dispatch(SuppliersActions.addNotification('Validation started', 'success'))
+		})
+		.catch(function(response){
+			dispatch(receiveError(response.data, types.ERROR_VALIDATE_PROVIDER))
+			dispatch(SuppliersActions.addNotification('Validation failed', 'error'))
+		})
+	}
+}
+
 SuppliersActions.buildGraph = () => {
 	const url = window.config.mardukBaseUrl+'admin/services/graph/build'
 

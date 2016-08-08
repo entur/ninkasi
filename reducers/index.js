@@ -74,12 +74,18 @@ export const mardukReducer = (state = {}, action) => {
     case types.REQUEST_FETCH_OSM:
       return Object.assign({}, state, {isLoading: true, error: false})
 
+
+    case types.ERROR_VALIDATE_PROVIDER:
+      return Object.assign({}, state, {isLoading: false, validate_provider: action.payLoad, error: true})
+    case types.SUCCESS_VALIDATE_PROVIDER:
+      return Object.assign({}, state, {isLoading: false, validate_provider: action.payLoad, error: false})
+
     case types.REQUEST_FILENAMES:
-      return Object.assign({}, state, {isLoading: true, error: false})
+      return Object.assign({}, state, {filenames: { isLoading: true, error: false}} )
     case types.SUCCESS_FILENAMES:
-      return Object.assign({}, state, {isLoading: false, fetch_filesnames: action.payLoad, error: false})
+      return Object.assign({}, state, {filenames: {isLoading: false, fetch_filesnames: action.payLoad, error: false}})
     case types.ERROR_FILENAMES:
-      return Object.assign({}, state, {isLoading: false, error: action.payLoad})
+      return Object.assign({}, state, {filesnames: {isLoading: false, error: action.payLoad}})
 
     default:
       return state

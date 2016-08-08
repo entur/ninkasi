@@ -23,7 +23,7 @@ class SupplierDetails extends React.Component {
   }
 
   // TODO : This should be refactored to use store.dispatch instead
-  importData = () => {
+  handleImportData = () => {
 
     const {dispatch} = this.props
 
@@ -36,19 +36,24 @@ class SupplierDetails extends React.Component {
     dispatch(SuppliersActions.importData(this.props.activeId, selectedFiles))
   }
 
-  exportData = () => {
+  handleExportData = () => {
     const {dispatch} = this.props
     dispatch(SuppliersActions.exportData(this.props.activeId))
   }
 
-  cleanDataspace = () => {
+  handleCleanDataspace = () => {
     const {dispatch} = this.props
     dispatch(SuppliersActions.cleanDataspace(this.props.activeId))
   }
 
-  deleteProvider = () => {
+  handleDeleteProvider = () => {
     const {dispatch} = this.props
     dispatch(SuppliersActions.deleteProvider(this.props.activeId))
+  }
+
+  handleValidateProvider = () => {
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.validateProvider(this.props.activeId))
   }
 
   // TODO : This should be refactored to use store.dispatch instead
@@ -152,13 +157,14 @@ class SupplierDetails extends React.Component {
 
   render() {
 
-    const { store, activeId, providers, files, isLoading }  = this.props
+    const { store, activeId, providers, files, filelistIsLoading }  = this.props
 
     if (providers && providers.length > 0) {
       var provider = providers.filter(function(p) { return p.id == activeId })[0]
     }
 
-    if (isLoading) {
+    if (filelistIsLoading) {
+
       return (
         <div className="supplier-details disabled">
           <div className="supplier-header">
@@ -174,11 +180,12 @@ class SupplierDetails extends React.Component {
         <div className="supplier-details">
           <div className="supplier-header"><h3>{provider.name}</h3></div>
           <div className="action-panel">
-            <button onClick={this.cleanDataspace}>Clean dataspace</button>
-            <button onClick={this.importData}>Import</button>
-            <button onClick={this.exportData}>Export</button>
+            <button onClick={this.handleCleanDataspace}>Clean dataspace</button>
+            <button onClick={this.handleImportData}>Import+validate+export</button>
+            <button onClick={this.handleValidateProvider}>validate+export</button>
+            <button onClick={this.handleExportData}>Export</button>
             <button onClick={() => browserHistory.push(`/ninkasi/provider/${activeId}/edit/`)}>Edit provider</button>
-            <button onClick={this.deleteProvider}>Delete provider</button>
+            <button onClick={this.handleDeleteProvider}>Delete provider</button>
           </div>
           <div>
             <ProviderFilelist files={files}></ProviderFilelist>
@@ -207,14 +214,15 @@ class SupplierDetails extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
 
-  const files = (state.mardukReducer.fetch_filesnames && state.mardukReducer.fetch_filesnames['files'] ) ?
-        state.mardukReducer.fetch_filesnames['files'] : null
+  // TODO : refactor to avoid pyramid of doom -- or make better initialState
+  const files = (state.mardukReducer.filenames && state.mardukReducer.filenames.fetch_filesnames && state.mardukReducer.filenames.fetch_filesnames['files'] ) ?
+      state.mardukReducer.filenames.fetch_filesnames['files'] : null
 
   return {
     providers: state.suppliersReducer.data,
     activeId: state.suppliersReducer.activeId,
     files: files,
-    isLoading: state.mardukReducer.isLoading
+    filelistIsLoading: state.mardukReducer.filenames ? state.mardukReducer.filenames.isLoading : false
   }
 }
 
