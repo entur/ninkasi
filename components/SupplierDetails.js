@@ -184,7 +184,7 @@ class SupplierDetails extends React.Component {
             <button onClick={this.handleImportData}>Import+validate+export</button>
             <button onClick={this.handleValidateProvider}>validate+export</button>
             <button onClick={this.handleExportData}>Export</button>
-            <button onClick={() => browserHistory.push(`/ninkasi/provider/${activeId}/edit/`)}>Edit provider</button>
+            <button onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}>Edit provider</button>
             <button onClick={this.handleDeleteProvider}>Delete provider</button>
           </div>
           <div>

@@ -32,10 +32,10 @@ function renderIndex() {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <Route path="/ninkasi/">
+        <Route path="/admin/ninkasi/">
           <IndexRoute component={MainPage}/>
-          <Route path="/ninkasi/provider/:id/edit/" component={SupplierPage}/>
-          <Route path="/ninkasi/provider/new/" component={SupplierPage}/>
+          <Route path="/admin/ninkasi/provider/:id/edit/" component={SupplierPage}/>
+          <Route path="/admin/ninkasi/provider/new/" component={SupplierPage}/>
         </Route>
     </Router>
     </Provider>,

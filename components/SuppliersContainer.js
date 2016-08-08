@@ -82,7 +82,7 @@ class SuppliersContainer extends React.Component {
           )
         })}
       </select>
-      <button onClick={() => browserHistory.push('/ninkasi/provider/new/')}>+ New provider</button>
+      <button onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}>+ New provider</button>
       <div className="action-panel">
         <button onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</button>
         <button onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</button>

@@ -74,7 +74,7 @@ class EditSupplierForm extends React.Component {
           <label for="enable_validation">Enable validation</label>
           <input id="enable_validation" type="checkbox" {...enable_validation}/>
         </div>
-        <button onClick={(e) => { e.preventDefault(); browserHistory.push('/ninkasi/') }}>Back</button>
+        <button onClick={(e) => { e.preventDefault(); browserHistory.push('/admin/ninkasi/') }}>Back</button>
         <button type="submit">Submit</button>
       </form>
     )

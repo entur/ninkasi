@@ -10,8 +10,17 @@ npm install
 npm start
 ```
 
-Take a look at package.json for dependencies and scripts
+## Developer note
 
+```
+
+In addition to the steps above, NABU_BASE_URL and MARDUK_BASE_URL should be provided
+(otherwise defaulted to http://localhost:18081/ and http://localhost:18080/ respectively)
+
+e.g.
+NABU_BASE_URL=http://localhost:10001/ MARDUK_BASE_URL=http://localhost:11002/ npm start dev
+
+```
 
 ## Configuration
 

@@ -12,7 +12,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/static/'
+    publicPath: '/admin/ninkasi/static/'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),

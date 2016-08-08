@@ -4,7 +4,7 @@ var webpackHotMiddleware = require('webpack-hot-middleware')
 var config = require('./webpack.config')
 var convict = require('./config/convict.js')
 
-const ENDPOINTBASE = ["/ninkasi/"]
+var ENDPOINTBASE = "/admin/ninkasi/"
 
 var app = new (require('express'))()
 var port = process.env.port || 3000
@@ -13,8 +13,13 @@ var compiler = webpack(config)
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
 app.use(webpackHotMiddleware(compiler))
 
+
+if (process.env.NODE_ENV == 'development') {
+  app.get('/', function(req, res) {
+    res.redirect('/admin/ninkasi/')
+  })
+}
 app.get(ENDPOINTBASE, function(req, res) {
-  console.log("changing route")
   res.sendFile(__dirname + '/index.html')
 })
 
@@ -35,14 +40,11 @@ app.get(ENDPOINTBASE + "config.json", function(req, res) {
   res.send(cfg)
 })
 
-app.get('*', function(req, res, next) {
-    res.sendFile(__dirname + '/index.html')
-})
-
 app.listen(port, function(error) {
   if (error) {
     console.error(error)
   } else {
-    console.info("==> Listening on port %s. Open up http://localhost:%s/ninkasi/ in your browser.", port, port)
+    const url = process.env.NODE_ENV == 'development' ? ' ' : '/admin/ninkasi/'
+    console.info("==> Listening on port %s. Open up http://localhost:%s/%s in your browser.", port, port, url)
   }
 })
