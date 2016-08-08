@@ -94,7 +94,7 @@ class SuppliersContainer extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    data: state.suppliersReducer.data
+    data: state.SuppliersReducer.data
   }
 }
 

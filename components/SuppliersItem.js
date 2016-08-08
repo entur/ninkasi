@@ -25,7 +25,7 @@ class SupplierItem extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    activeId: state.suppliersReducer.activeId
+    activeId: state.SuppliersReducer.activeId
   }
 }
 

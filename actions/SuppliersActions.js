@@ -132,7 +132,6 @@ SuppliersActions.selectActiveSupplier = (id) => {
 
 /* marduk actions */
 
-
 SuppliersActions.exportData = (id) => {
 
 	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/export`

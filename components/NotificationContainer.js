@@ -27,7 +27,7 @@ class NotificationContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    notification: state.suppliersReducer.notification
+    notification: state.SuppliersReducer.notification
   }
 }
 

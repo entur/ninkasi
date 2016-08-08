@@ -98,7 +98,7 @@ class SupplierPage extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
 
-  const provider = state.suppliersReducer.provider
+  const provider = state.SuppliersReducer.provider
 
   return {
     id: ownProps.params.id,

@@ -3,15 +3,18 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import * as reducers from '../reducers'
-//mport {reducer as formReducer} from 'redux-form'
+import {reducer as formReducer} from 'redux-form'
 import {routerReducer} from 'react-router-redux'
 
 const loggerMiddleware = createLogger()
 
 const initialState = {}
 
+console.log("reducers", reducers)
+
 const combinedReducer = combineReducers({
-  ...reducers,
+  ...reducers.default,
+  form: formReducer,
   routing: routerReducer,
 })
 

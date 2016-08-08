@@ -214,15 +214,11 @@ class SupplierDetails extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
 
-  // TODO : refactor to avoid pyramid of doom -- or make better initialState
-  const files = (state.mardukReducer.filenames && state.mardukReducer.filenames.fetch_filesnames && state.mardukReducer.filenames.fetch_filesnames['files'] ) ?
-      state.mardukReducer.filenames.fetch_filesnames['files'] : null
-
   return {
-    providers: state.suppliersReducer.data,
-    activeId: state.suppliersReducer.activeId,
-    files: files,
-    filelistIsLoading: state.mardukReducer.filenames ? state.mardukReducer.filenames.isLoading : false
+    providers: state.SuppliersReducer.data,
+    activeId: state.SuppliersReducer.activeId,
+    files: state.MardukReducer.filenames.fetch_filesnames ? state.MardukReducer.filenames.fetch_filesnames['files'] : [],
+    filelistIsLoading: state.MardukReducer.filenames.isLoading
   }
 }
 
