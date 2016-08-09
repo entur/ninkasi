@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="2">
+
+  <testsuite name="test"
+    errors="0" failures="0" hostname="" id="" package="test" skipped="0"
+    tests="2" time="7.291" timestamp="Mon, 08 Aug 2016 14:11:33 GMT">
+  
+    <testcase name="Ninkasi loads" time="2.515" assertions="2">
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="Create new provider" time="4.776" assertions="5">
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+  
+  </testsuite>
+</testsuites>

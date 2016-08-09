@@ -68,9 +68,9 @@ class SuppliersContainer extends React.Component {
     return (
 
       <div>
-      <h1>Providers</h1>
-      <select onChange={this.selectSupplier.bind(this)}>
-        <option selected="selected">Select a supplier</option>
+      <h1 id="title">Providers</h1>
+      <select id="select-supplier" onChange={this.selectSupplier.bind(this)}>
+        <option id="-1" selected="selected">Select a supplier</option>
         {suppliers.map(supplier => {
           return (
               <SuppliersItem
@@ -82,7 +82,7 @@ class SuppliersContainer extends React.Component {
           )
         })}
       </select>
-      <button onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}>+ New provider</button>
+      <button id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}>+ New provider</button>
       <div className="action-panel">
         <button onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</button>
         <button onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</button>
