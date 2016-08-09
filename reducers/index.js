@@ -3,9 +3,10 @@ import {reducer as formReducer} from 'redux-form'
 
 import SuppliersReducer from './SuppliersReducer'
 import MardukReducer from './MardukReducer'
-
+import UtilsReducer from './UtilsReducer'
 
 export default {
   SuppliersReducer: SuppliersReducer,
-  MardukReducer: MardukReducer
+  MardukReducer: MardukReducer,
+  UtilsReducer: UtilsReducer
 }

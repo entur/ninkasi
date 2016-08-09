@@ -108,6 +108,8 @@ SuppliersActions.resetProvider = (dispatch) => {
 
 SuppliersActions.fetchProvider = (id) => {
 
+	if (!id.isNan()) return
+
 	const url = `${window.config.nabuBaseUrl}jersey/providers/${id}`
 
 	return function(dispatch) {
@@ -317,6 +319,33 @@ function receiveError(json, type) {
 	return {
 		type: type,
 		payLoad: json
+	}
+}
+
+SuppliersActions.restoreFilesToOutbound = () => {
+	return {
+		type: types.RESET_OUTBOUND_FILES
+	}
+}
+
+SuppliersActions.updateOutboundFilelist = (files) => {
+	return {
+		type: types.UPDATE_FILES_TO_OUTBOUND,
+		payLoad: files
+	}
+}
+
+SuppliersActions.appendFilesToOutbound = (files) => {
+	return {
+		type: types.APPEND_FILES_TO_OUTBOUND,
+		payLoad: files
+	}
+}
+
+SuppliersActions.removeFilesToOutbound = (files) => {
+	return {
+		type: types.REMOVE_FILES_FROM_OUTBOUND,
+		payLoad: files
 	}
 }
 

@@ -39,6 +39,7 @@ module.exports = {
         .click("select option[value='18']")
         .pause(1000)
         .waitForElementVisible('.supplier-header h3', 2000)
+        .pause(2000)
         .assert.containsText(".supplier-header h3", "Telemark")
         .pause(1000)
         .end()

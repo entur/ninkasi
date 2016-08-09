@@ -36,27 +36,16 @@ class SuppliersContainer extends React.Component {
   }
 
   selectSupplier(event) {
+
     const {dispatch} = this.props
 
+    if (event.target.value === 'Select a supplier') return
+
     dispatch(SuppliersActions.selectActiveSupplier(event.target.value))
+
+    dispatch(SuppliersActions.restoreFilesToOutbound())
+
     dispatch(SuppliersActions.fetchFilenames(event.target.value))
-
-    // TODO : This should be refactored to use store.dispatch instead
-
-    let outboundFilelist = document.querySelector("#outboundFilelist")
-
-    if (outboundFilelist && outboundFilelist.length) {
-
-      let selected = []
-
-      for (let i = 0; i < outboundFilelist.children.length; i++) { selected.push(i) }
-
-      let i = selected.length
-
-      while (i--)
-        if (outboundFilelist[i]) outboundFilelist.remove(i)
-
-    }
 
   }
 
