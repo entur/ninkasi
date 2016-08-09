@@ -5,16 +5,16 @@
 
   <testsuite name="smoke-test"
     errors="0" failures="0" hostname="" id="" package="smoke-test" skipped="0"
-    tests="3" time="15.44" timestamp="Tue, 09 Aug 2016 10:15:32 GMT">
+    tests="3" time="17.68" timestamp="Tue, 09 Aug 2016 13:47:58 GMT">
   
-    <testcase name="Ninkasi loads" time="3.709" assertions="2">
+    <testcase name="Ninkasi loads" time="3.804" assertions="2">
 
     
 
     
     </testcase>
   
-    <testcase name="Create new provider" time="6.153" assertions="5">
+    <testcase name="Create new provider" time="6.143" assertions="5">
 
     
 
@@ -27,7 +27,7 @@
     
     </testcase>
   
-    <testcase name="Edit new provider" time="5.573" assertions="4">
+    <testcase name="Edit new provider" time="7.738" assertions="4">
 
     
 

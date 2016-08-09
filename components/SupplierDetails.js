@@ -22,18 +22,10 @@ class SupplierDetails extends React.Component {
     }).bind(this))
   }
 
-  // TODO : This should be refactored to use store.dispatch instead
   handleImportData = () => {
 
-    const {dispatch} = this.props
-
-    var multiselect = document.querySelector('#outboundFilelist')
-    var selectedFiles = []
-    for (var i = 0; i < multiselect.length; i++) {
-      if (multiselect.options[i].selected) selectedFiles.push(multiselect.options[i].value)
-    }
-
-    dispatch(SuppliersActions.importData(this.props.activeId, selectedFiles))
+    const {dispatch, outboundFiles} = this.props
+    dispatch(SuppliersActions.importData(this.props.activeId, outboundFiles))
   }
 
   handleExportData = () => {
@@ -56,39 +48,6 @@ class SupplierDetails extends React.Component {
     dispatch(SuppliersActions.validateProvider(this.props.activeId))
   }
 
-  // TODO : This should be refactored to use store.dispatch instead
-  moveUp = () => {
-
-    let outboundFilelist = document.querySelector('#outboundFilelist')
-    let options = outboundFilelist && outboundFilelist.options
-    let selected = []
-
-    for (var i = 0, iLen = options.length; i < iLen; i++) {
-        if (options[i].selected) {
-            selected.push(options[i])
-        }
-    }
-
-    for (i = 0, iLen = selected.length; i < iLen; i++) {
-        var index = selected[i].index
-
-        if(index == 0){
-            break
-        }
-
-        var temp = selected[i].text
-        selected[i].text = options[index - 1].text
-        options[index - 1].text = temp
-
-        temp = selected[i].value
-        selected[i].value = options[index - 1].value
-        options[index - 1].value = temp
-
-        selected[i].selected = false
-        options[index - 1].selected = true
-      }
-  }
-
   moveDown = () => {
 
     let outboundFilelist = document.querySelector('#outboundFilelist')
@@ -96,68 +55,110 @@ class SupplierDetails extends React.Component {
     var selected = []
 
     for (var i = 0, iLen = options.length; i < iLen; i++) {
-        if (options[i].selected) {
-            selected.push(options[i])
-        }
+      if (options[i].selected) {
+        selected.push(options[i])
+      }
     }
 
     for (i = selected.length - 1, iLen = 0; i >= iLen; i--) {
-        var index = selected[i].index
+      var index = selected[i].index
 
-        if(index == (options.length - 1)){
-            break
-        }
+      if(index == (options.length - 1)){
+        break
+      }
 
-        var temp = selected[i].text
-        selected[i].text = options[index + 1].text
-        options[index + 1].text = temp
+      var temp = selected[i].text
+      selected[i].text = options[index + 1].text
+      options[index + 1].text = temp
 
-        temp = selected[i].value;
-        selected[i].value = options[index + 1].value
-        options[index + 1].value = temp
+      temp = selected[i].value;
+      selected[i].value = options[index + 1].value
+      options[index + 1].value = temp
 
-        selected[i].selected = false
-        options[index + 1].selected = true
+      selected[i].selected = false
+      options[index + 1].selected = true
     }
+
+    const {dispatch} = this.props
+
+    const files = Array.map(document.querySelector('#outboundFilelist').options, x => x.text)
+
+    dispatch(SuppliersActions.updateOutboundFilelist(files))
   }
 
-  moveSelectedFiles = () => {
+  moveUp = () => {
+
+    let outboundFilelist = document.querySelector('#outboundFilelist')
+    let options = outboundFilelist && outboundFilelist.options
+    let selected = []
+
+    for (var i = 0, iLen = options.length; i < iLen; i++) {
+      if (options[i].selected) {
+        selected.push(options[i])
+      }
+    }
+
+    for (i = 0, iLen = selected.length; i < iLen; i++) {
+      var index = selected[i].index
+
+      if(index == 0){
+        break
+      }
+
+      var temp = selected[i].text
+      selected[i].text = options[index - 1].text
+      options[index - 1].text = temp
+
+      temp = selected[i].value
+      selected[i].value = options[index - 1].value
+      options[index - 1].value = temp
+
+      selected[i].selected = false
+      options[index - 1].selected = true
+    }
+
+    const {dispatch} = this.props
+
+    const files = Array.map(document.querySelector('#outboundFilelist').options, x => x.text)
+
+    dispatch(SuppliersActions.updateOutboundFilelist(files))
+
+  }
+
+  appendSelectedFiles = () => {
 
     let providerFilelist = document.querySelector('#providerFilelist')
-    let outboundFilelist = document.querySelector('#outboundFilelist')
 
     var selectedFiles = []
     for (let i = 0; i < providerFilelist.length; i++) {
       if (providerFilelist.options[i].selected)
-        selectedFiles.push(providerFilelist[i])
+      selectedFiles.push(providerFilelist[i].text)
     }
 
-    let i = selectedFiles.length
+    const {dispatch} = this.props
 
-    while (i--)
-      outboundFilelist.appendChild(selectedFiles[i])
+    dispatch(SuppliersActions.appendFilesToOutbound(selectedFiles))
+
   }
 
   removeSelectedFiles = () => {
+
+    const {dispatch} = this.props
 
     let outboundFilelist = document.querySelector('#outboundFilelist')
 
     let selectedFiles = []
     for (let i = 0; i < outboundFilelist.length; i++) {
-      if (outboundFilelist.options[i].selected) selectedFiles.push(outboundFilelist[i])
+      if (outboundFilelist.options[i].selected) selectedFiles.push(outboundFilelist[i].text)
     }
 
-    let i = selectedFiles.length
-
-    while(i--) {
-      if (outboundFilelist[i]) outboundFilelist.remove(i)
-    }
+    dispatch(SuppliersActions.removeFilesToOutbound(selectedFiles))
 
   }
 
   render() {
 
-    const { store, activeId, providers, files, filelistIsLoading }  = this.props
+    const { store, activeId, providers, files, filelistIsLoading, outboundFiles}  = this.props
 
     if (providers && providers.length > 0) {
       var provider = providers.filter(function(p) { return p.id == activeId })[0]
@@ -189,9 +190,9 @@ class SupplierDetails extends React.Component {
           </div>
           <div>
             <ProviderFilelist files={files}></ProviderFilelist>
-            <button onClick={this.moveSelectedFiles} className="move-button">=></button>
+            <button onClick={this.appendSelectedFiles} className="move-button">=></button>
             <button onClick={this.removeSelectedFiles} className="move-button"><pre>&lt;=</pre></button>
-            <OutboundFilelist></OutboundFilelist>
+            <OutboundFilelist files={outboundFiles}></OutboundFilelist>
             <button onClick={this.moveDown} className="move-button"><pre>&#x25BC;</pre></button>
             <button onClick={this.moveUp} className="move-button"><pre>&#x25B2;</pre></button>
           </div>
@@ -218,7 +219,8 @@ const mapStateToProps = (state, ownProps) => {
     providers: state.SuppliersReducer.data,
     activeId: state.SuppliersReducer.activeId,
     files: state.MardukReducer.filenames.fetch_filesnames ? state.MardukReducer.filenames.fetch_filesnames['files'] : [],
-    filelistIsLoading: state.MardukReducer.filenames.isLoading
+    filelistIsLoading: state.MardukReducer.filenames.isLoading,
+    outboundFiles: state.UtilsReducer.outboundFilelist
   }
 }
 

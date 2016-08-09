@@ -6,7 +6,7 @@ import classNames from 'classnames'
 
 class OutboundFilelist extends React.Component {
 
-  
+
   render() {
 
     const {files} = this.props
@@ -14,6 +14,11 @@ class OutboundFilelist extends React.Component {
     return (
 
       <select id='outboundFilelist' multiple className="multiselect">
+        {files.map((file,index) => {
+          return (
+              <option key={index}>{file}</option>
+          )
+        })}
       </select>
     )
 
