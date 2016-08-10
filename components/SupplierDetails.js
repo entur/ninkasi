@@ -5,10 +5,14 @@ import ProviderFilelist from './ProviderFilelist'
 import OutboundFilelist from './OutboundFilelist'
 import cfgreader from '../config/readConfig'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
-
-require('../sass/components/supplierdetails.scss')
-require('../sass/components/lists.scss')
-
+import Button from 'muicss/lib/react/Button'
+import Panel from 'muicss/lib/react/panel'
+import Container from 'muicss/lib/react/container'
+import Loader from 'halogen/PulseLoader'
+import Row from 'muicss/lib/react/row'
+import Col from 'muicss/lib/react/col'
+import Dropdown from 'muicss/lib/react/dropdown'
+import DropdownItem from 'muicss/lib/react/dropdown-item'
 
 class SupplierDetails extends React.Component {
 
@@ -23,7 +27,6 @@ class SupplierDetails extends React.Component {
   }
 
   handleImportData = () => {
-
     const {dispatch, outboundFiles} = this.props
     dispatch(SuppliersActions.importData(this.props.activeId, outboundFiles))
   }
@@ -41,6 +44,8 @@ class SupplierDetails extends React.Component {
   handleDeleteProvider = () => {
     const {dispatch} = this.props
     dispatch(SuppliersActions.deleteProvider(this.props.activeId))
+    dispatch(SuppliersActions.selectActiveSupplier(0))
+    dispatch(SuppliersActions.fetchSuppliers())
   }
 
   handleValidateProvider = () => {
@@ -156,6 +161,11 @@ class SupplierDetails extends React.Component {
 
   }
 
+  handleHei() {
+    console.log("HEI")
+    alert("HEI")
+  }
+
   render() {
 
     const { store, activeId, providers, files, filelistIsLoading, outboundFiles}  = this.props
@@ -169,7 +179,7 @@ class SupplierDetails extends React.Component {
       return (
         <div className="supplier-details disabled">
           <div className="supplier-header">
-            <h3>Fetching files ...</h3>
+            <Loader color="#39a1f4" size="16px" margin="40px"/>
           </div>
         </div>
       )
@@ -179,23 +189,51 @@ class SupplierDetails extends React.Component {
 
       return (
         <div className="supplier-details">
-          <div className="supplier-header"><h3>{provider.name}</h3></div>
-          <div className="action-panel">
-            <button onClick={this.handleCleanDataspace}>Clean dataspace</button>
-            <button onClick={this.handleImportData}>Import+validate+export</button>
-            <button onClick={this.handleValidateProvider}>validate+export</button>
-            <button onClick={this.handleExportData}>Export</button>
-            <button onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}>Edit provider</button>
-            <button onClick={this.handleDeleteProvider}>Delete provider</button>
-          </div>
-          <div>
-            <ProviderFilelist files={files}></ProviderFilelist>
-            <button onClick={this.appendSelectedFiles} className="move-button">=></button>
-            <button onClick={this.removeSelectedFiles} className="move-button"><pre>&lt;=</pre></button>
-            <OutboundFilelist files={outboundFiles}></OutboundFilelist>
-            <button onClick={this.moveDown} className="move-button"><pre>&#x25BC;</pre></button>
-            <button onClick={this.moveUp} className="move-button"><pre>&#x25B2;</pre></button>
-          </div>
+          <Container fluid={true}>
+            <Row>
+              <Col md="8">
+                <Dropdown color="primary" label="Data actions">
+                  <DropdownItem onClick={this.handleImportData}>Import+validate+export</DropdownItem>
+                  <DropdownItem onClick={this.handleValidateProvider}>Validate</DropdownItem>
+                  <DropdownItem onClick={this.handleExportData}>Export</DropdownItem>
+                  <DropdownItem onClick={this.handleCleanDataspace}>Clean dataspace</DropdownItem>
+                </Dropdown>
+              </Col>
+            </Row>
+          </Container>
+          <Container fluid={true}>
+            <Row>
+              <Col md="8">
+                <ProviderFilelist files={files}></ProviderFilelist>
+              </Col>
+            </Row>
+            <Row>
+              <Col md="8">
+                <Button onClick={this.appendSelectedFiles}>Append</Button>
+                <Button onClick={this.removeSelectedFiles}>Remove</Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col md="8">
+                <OutboundFilelist files={outboundFiles}></OutboundFilelist>
+              </Col>
+            </Row>
+            <Row>
+              <Col md="8">
+                <Button onClick={this.moveDown}>Down</Button>
+                <Button onClick={this.moveUp}>UP</Button>
+              </Col>
+            </Row>
+          </Container>
+          <Container fluid={true}>
+            <div className="mui--divider-bottom"></div>
+            <Row>
+              <Col className="edit-dashboard" md="8">
+                <Button onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}>Edit</Button>
+                <Button color="danger" onClick={this.handleDeleteProvider}>Delete</Button>
+              </Col>
+            </Row>
+          </Container>
         </div>
       )
 
@@ -204,7 +242,6 @@ class SupplierDetails extends React.Component {
       return (
         <div className="supplier-details disabled">
           <div className="supplier-header">
-            <p>Select provider from the list</p>
           </div>
         </div>
       )

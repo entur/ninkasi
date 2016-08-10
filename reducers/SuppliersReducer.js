@@ -1,7 +1,11 @@
 import * as types from './../actions/actionTypes'
 import {reducer as formReducer} from 'redux-form'
 
-const SuppliersReducer = (state = {}, action) => {
+const initialState = {
+  data: []
+}
+
+const SuppliersReducer = (state = initialState, action) => {
 
   switch (action.type) {
 
@@ -13,11 +17,6 @@ const SuppliersReducer = (state = {}, action) => {
       return Object.assign({}, state, {isLoading: true, error: false })
     case types.SELECT_SUPPLIER:
       return Object.assign({}, state, {activeId: action.payLoad})
-    case types.ADD_NOTIFICATION:
-      return Object.assign({}, state, {notification: {
-        message: action.message,
-        level: action.level
-      }})
 
     case types.SUCCESS_FETCH_PROVIDER:
       return Object.assign({}, state, {provider: action.payLoad})

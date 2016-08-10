@@ -26,6 +26,8 @@ class EditSupplierForm extends React.Component {
           regtopp_version, regtopp_coordinate_projection, data_format, regtopp_calendar_strategy, enable_validation}, handleSubmit, provider}
            = this.props
 
+    console.log("provider", provider)
+
     return (
       <form className="supplier-form" onSubmit={handleSubmit}>
         <h2>Edit provider</h2>
@@ -74,8 +76,10 @@ class EditSupplierForm extends React.Component {
           <label for="enable_validation">Enable validation</label>
           <input id="enable_validation" type="checkbox" {...enable_validation}/>
         </div>
-        <button id="back" onClick={(e) => { e.preventDefault(); browserHistory.push('/admin/ninkasi/') }}>Back</button>
-        <button type="submit">Submit</button>
+        <div classname="button-panel">
+          <button id="back" onClick={(e) => { e.preventDefault(); browserHistory.push('/admin/ninkasi/') }}>Back</button>
+          <button className="primary" type="submit">Submit</button>
+        </div>
       </form>
     )
   }

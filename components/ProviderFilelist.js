@@ -18,7 +18,7 @@ class ProviderFilelist extends React.Component {
               <option key={index}>{file.name}</option>
           )
         })}
-        </select>
+      </select>
       )
   }
 }

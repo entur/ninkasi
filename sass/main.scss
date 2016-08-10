@@ -1,7 +1,7 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400italic,700italic,400,700);
 
-@import "components/buttons";
-@import "components/lists";
+@import "node_modules/muicss/lib/sass/mui.scss";
+@import "components/forms";
 
 $roboto-slab: 'Roboto Slab', serif;
 $open-sans: 'Open Sans', sans-serif;
@@ -14,4 +14,21 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: $open-sans;
   font-weight: normal;
+}
+
+.supplier-details {
+  margin-top: 30px;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  background: #e2e2e2;
+}
+
+.edit-dashboard {
+  margin-top: 50px;
+  margin-left: 442px;
+}
+
+#providerFilelist, #outboundFilelist {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

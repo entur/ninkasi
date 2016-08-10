@@ -108,8 +108,6 @@ SuppliersActions.resetProvider = (dispatch) => {
 
 SuppliersActions.fetchProvider = (id) => {
 
-	if (!id.isNan()) return
-
 	const url = `${window.config.nabuBaseUrl}jersey/providers/${id}`
 
 	return function(dispatch) {

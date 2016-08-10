@@ -1,7 +1,7 @@
 import * as types from './../actions/actionTypes'
 import {reducer as formReducer} from 'redux-form'
 
-const mardukReducerInitialState = {
+const initialState = {
   filenames: {
     isLoading: false
   },
@@ -9,7 +9,7 @@ const mardukReducerInitialState = {
   data: []
 }
 
-const MardukReducer = (state = mardukReducerInitialState, action) => {
+const MardukReducer = (state = initialState, action) => {
 
   switch(action.type) {
 

@@ -1,11 +1,15 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import SuppliersItem from './SuppliersItem'
 import SuppliersActions from '../actions/SuppliersActions'
 import { bindActionCreators } from 'redux'
 import cfgreader from '../config/readConfig'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
-
+import Button from 'muicss/lib/react/button'
+import Option from 'muicss/lib/react/option'
+import Select from 'muicss/lib/react/select'
+import Container from 'muicss/lib/react/container'
+import Row from 'muicss/lib/react/row'
+import Col from 'muicss/lib/react/col'
 
 class SuppliersContainer extends React.Component {
 
@@ -35,55 +39,56 @@ class SuppliersContainer extends React.Component {
     dispatch(SuppliersActions.fetchOSM())
   }
 
-  selectSupplier(event) {
+  selectSupplier(value) {
 
     const {dispatch} = this.props
 
-    if (event.target.value === 'Select a supplier') return
-
-    dispatch(SuppliersActions.selectActiveSupplier(event.target.value))
+    dispatch(SuppliersActions.selectActiveSupplier(value))
 
     dispatch(SuppliersActions.restoreFilesToOutbound())
 
-    dispatch(SuppliersActions.fetchFilenames(event.target.value))
+    dispatch(SuppliersActions.fetchFilenames(value))
 
   }
 
   render() {
 
     const { store }  = this.props
-    const suppliers = this.props.data || []
+    const {suppliers} = this.props
+
+    console.log("Suppliers", suppliers)
 
     return (
 
-      <div>
-      <h1 id="title">Providers</h1>
-      <select id="select-supplier" onChange={this.selectSupplier.bind(this)}>
-        <option id="-1" selected="selected">Select a supplier</option>
-        {suppliers.map(supplier => {
-          return (
-              <SuppliersItem
-                key={supplier.id}
-                id={supplier.id}
-                name={supplier.name}>
-                {supplier.name}
-              </SuppliersItem>
-          )
-        })}
-      </select>
-      <button id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}>+ New provider</button>
-      <div className="action-panel">
-        <button onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</button>
-        <button onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</button>
-      </div>
-      </div>
+      <Container fluid={true}>
+      <Row md="8">
+        <Col md="7">
+          <Select id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
+            <Option value="-1" label="Select provider"></Option>
+            {suppliers.map(supplier => {
+              return (
+                  <Option value={supplier.id} label={supplier.id + " " + supplier.name}>
+                  </Option>
+              )
+            })}
+          </Select>
+        </Col>
+      </Row>
+      <Row>
+        <Col md="8">
+          <Button id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}>+ New provider</Button>
+          <Button color="primary" onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</Button>
+          <Button color="primary" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</Button>
+        </Col>
+      </Row>
+    </Container>
     )
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    data: state.SuppliersReducer.data
+    suppliers: state.SuppliersReducer.data || []
   }
 }
 

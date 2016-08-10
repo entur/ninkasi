@@ -14,11 +14,71 @@ form.supplier-form {
       min-width: 300px;
       max-width: 300px;
       width: auto;
+      animation-duration: .1ms;
+      animation-name: mui-node-inserted;
+      display: block;
+      background-color: transparent;
+      color: rgba(0,0,0,.87);
+      border: none;
+      border-bottom: 1px solid rgba(0,0,0,.26);
+      outline: 0;
+      width: 100%;
+      font-size: 16px;
+      padding: 0;
+      box-shadow: none;
+      border-radius: 0;
+      background-image: none;
+    }
+
+    input[type='checkbox'] {
+      position: absolute;
+      margin-left: -20px;
+      margin-top: 4px;
     }
 
     button {
-      margin-top: 20px;;
+      margin-top: 20px;
       margin-left: 0px;
+      border:none;
+      color: #000;
+      background-color: #FFF;
+      animation-duration: .1ms;
+    animation-name: mui-node-inserted;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    text-transform: uppercase;
+    color: rgba(0,0,0,.87);
+    background-color: #FFF;
+    transition: all .2s ease-in-out;
+    display: inline-block;
+    height: 36px;
+    padding: 0 26px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    background-image: none;
+    text-align: center;
+    line-height: 36px;
+    vertical-align: middle;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: 14px;
+    letter-spacing: .03em;
+    position: relative;
+    overflow: hidden;
+    }
+
+    button.primary {
+      color: #FFF;
+      background-color: #39a1f4;
     }
 
     .form-row {

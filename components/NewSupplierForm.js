@@ -7,6 +7,8 @@ import cfgreader from '../config/readConfig'
 import {reduxForm} from 'redux-form'
 import { browserHistory } from 'react-router'
 
+
+
 require('../sass/components/forms.scss')
 
 
@@ -25,6 +27,7 @@ class NewSupplierForm extends React.Component {
            = this.props
 
     return (
+
       <form className="supplier-form" onSubmit={handleSubmit}>
         <h2>Create provider</h2>
         <div className="form-row">
@@ -72,8 +75,10 @@ class NewSupplierForm extends React.Component {
           <label for="enable_validation">Enable validation</label>
           <input id="enable_validation" type="checkbox" {...enable_validation}/>
         </div>
-        <button id="back" onClick={(e) => { e.preventDefault(); browserHistory.push('/admin/ninkasi/') }}>Back</button>
-        <button type="submit">Submit</button>
+        <div classname="button-panel">
+          <button id="back" onClick={(e) => { e.preventDefault(); browserHistory.push('/admin/ninkasi/') }}>Back</button>
+          <button className="primary" type="submit">Submit</button>
+        </div>
       </form>
     )
   }
