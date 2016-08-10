@@ -10,8 +10,6 @@ const loggerMiddleware = createLogger()
 
 const initialState = {}
 
-console.log("reducers", reducers)
-
 const combinedReducer = combineReducers({
   ...reducers.default,
   form: formReducer,

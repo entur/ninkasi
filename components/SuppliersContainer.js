@@ -56,8 +56,6 @@ class SuppliersContainer extends React.Component {
     const { store }  = this.props
     const {suppliers} = this.props
 
-    console.log("Suppliers", suppliers)
-
     return (
 
       <Container fluid={true}>

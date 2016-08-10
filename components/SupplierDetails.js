@@ -161,11 +161,6 @@ class SupplierDetails extends React.Component {
 
   }
 
-  handleHei() {
-    console.log("HEI")
-    alert("HEI")
-  }
-
   render() {
 
     const { store, activeId, providers, files, filelistIsLoading, outboundFiles}  = this.props
@@ -190,6 +185,11 @@ class SupplierDetails extends React.Component {
       return (
         <div className="supplier-details">
           <Container fluid={true}>
+            <Row>
+              <Col md="8">
+                <h3 id="supplier-name">{provider.name}</h3>
+              </Col>
+            </Row>
             <Row>
               <Col md="8">
                 <Dropdown color="primary" label="Data actions">

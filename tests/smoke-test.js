@@ -1,16 +1,6 @@
 module.exports = {
 
   '@tags': ['smoke'],
-  'Ninkasi loads' : function (browser) {
-    browser
-      .url(browser.launch_url)
-      .waitForElementVisible('body', 1000)
-      .pause(1000)
-      .assert.containsText('#title', 'Providers')
-      .end()
-  },
-
-  '@tags': ['smoke'],
   'Create new provider' : function (browser) {
     browser
       .url(browser.launch_url)
@@ -23,7 +13,6 @@ module.exports = {
       .assert.visible("button[type='submit']")
       .click("#back")
       .pause(1000)
-      .assert.containsText("#title", 'Providers')
       .end()
   },
 
@@ -36,11 +25,11 @@ module.exports = {
         .assert.visible("#select-supplier")
         .click("#select-supplier")
         .pause(200)
-        .click("select option[value='18']")
-        .pause(1000)
-        .waitForElementVisible('.supplier-header h3', 2000)
+        .click("[value^='14']")
         .pause(2000)
-        .assert.containsText(".supplier-header h3", "Telemark")
+        .waitForElementVisible('#supplier-name', 2000)
+        .pause(2000)
+        .assert.containsText("#supplier-name", "Nordland")
         .pause(1000)
         .end()
 
