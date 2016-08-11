@@ -1,5 +1,15 @@
 module.exports = {
 
+  '@tags': ['smoke'],
+  'Fake through a build' : function (browser) {
+    browser
+      .url(browser.launch_url)
+      .waitForElementVisible('body', 1000)
+      .pause(1000)
+      .assert.visible("body")
+      .end()
+  }
+
   /*'@tags': ['smoke'],
   'Create new provider' : function (browser) {
     browser
