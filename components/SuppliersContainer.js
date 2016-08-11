@@ -49,6 +49,8 @@ class SuppliersContainer extends React.Component {
 
     dispatch(SuppliersActions.fetchFilenames(value))
 
+    dispatch(SuppliersActions.getProviderStatus(value))
+
   }
 
   render() {
@@ -59,13 +61,13 @@ class SuppliersContainer extends React.Component {
     return (
 
       <Container fluid={true}>
-      <Row md="8">
+      <Row>
         <Col md="7">
           <Select id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
             <Option value="-1" label="Select provider"></Option>
             {suppliers.map(supplier => {
               return (
-                  <Option value={supplier.id} label={supplier.id + " " + supplier.name}>
+                  <Option key={supplier.id} value={supplier.id} label={supplier.id + " " + supplier.name}>
                   </Option>
               )
             })}

@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react'
 import SuppliersActions from '../actions/SuppliersActions'
 import ProviderFilelist from './ProviderFilelist'
 import OutboundFilelist from './OutboundFilelist'
+import StatusList from './StatusList'
+
 import cfgreader from '../config/readConfig'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import Button from 'muicss/lib/react/Button'
@@ -13,6 +15,7 @@ import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
 import Dropdown from 'muicss/lib/react/dropdown'
 import DropdownItem from 'muicss/lib/react/dropdown-item'
+
 
 class SupplierDetails extends React.Component {
 
@@ -163,7 +166,7 @@ class SupplierDetails extends React.Component {
 
   render() {
 
-    const { store, activeId, providers, files, filelistIsLoading, outboundFiles}  = this.props
+    const { store, activeId, providers, files, filelistIsLoading, outboundFiles, statusList}  = this.props
 
     if (providers && providers.length > 0) {
       var provider = providers.filter(function(p) { return p.id == activeId })[0]
@@ -225,8 +228,11 @@ class SupplierDetails extends React.Component {
               </Col>
             </Row>
           </Container>
-          <Container fluid={true}>
+          <div className="mui--divider-bottom"></div>
+          <StatusList list={statusList}></StatusList>
             <div className="mui--divider-bottom"></div>
+
+          <Container fluid={true}>
             <Row>
               <Col className="edit-dashboard" md="8">
                 <Button onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}>Edit</Button>
@@ -251,13 +257,13 @@ class SupplierDetails extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-
   return {
     providers: state.SuppliersReducer.data,
     activeId: state.SuppliersReducer.activeId,
     files: state.MardukReducer.filenames.fetch_filesnames ? state.MardukReducer.filenames.fetch_filesnames['files'] : [],
     filelistIsLoading: state.MardukReducer.filenames.isLoading,
-    outboundFiles: state.UtilsReducer.outboundFilelist
+    outboundFiles: state.UtilsReducer.outboundFilelist,
+    statusList: state.SuppliersReducer.statusList
   }
 }
 

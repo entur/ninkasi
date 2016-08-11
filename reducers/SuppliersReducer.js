@@ -2,7 +2,8 @@ import * as types from './../actions/actionTypes'
 import {reducer as formReducer} from 'redux-form'
 
 const initialState = {
-  data: []
+  data: [],
+  statusList: []
 }
 
 const SuppliersReducer = (state = initialState, action) => {
@@ -19,6 +20,8 @@ const SuppliersReducer = (state = initialState, action) => {
       return Object.assign({}, state, {activeId: action.payLoad})
     case types.SUCCESS_FETCH_PROVIDER:
       return Object.assign({}, state, {provider: action.payLoad})
+    case types.RECEIVED_PROVIDER_STATUS:
+      return Object.assign({}, state, {statusList: action.payLoad})
 
     default:
       return state

@@ -1,14 +1,33 @@
 import axios from 'axios'
 import * as types from './actionTypes'
 
-const querystring = require('querystring')
-
 var SuppliersActions = {}
 
 /* nabu actions */
 
 function requestData() {
 	return {type: types.REQ_DATA}
+}
+
+SuppliersActions.getProviderStatus = (id) => {
+
+  const url = `${window.config.nabuBaseUrl}jersey/jobs/${id}`
+
+  return function(dispatch) {
+    dispatch(requestData(types.GET_PROVIDER_STATUS))
+    return axios({
+      url: url,
+      timeout: 20000,
+      method: 'get',
+      responseType: 'json'
+    })
+    .then(function(response) {
+      dispatch(receiveData(response.data, types.RECEIVED_PROVIDER_STATUS))
+    })
+    .catch(function(response){
+      dispatch(receiveError(response.data, types.ERROR_PROVIDER_STATUS))
+    })
+  }
 }
 
 SuppliersActions.fetchSuppliers = () => {
@@ -177,11 +196,11 @@ SuppliersActions.fetchFilenames = (id) => {
 
 SuppliersActions.importData = (id, selectedFiles) => {
 
-	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/import?fileHandle=${selectedFiles}`
+	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/import`
 
 	return function(dispatch) {
 		dispatch(requestImport())
-		return axios.post(url)
+		return axios.post(url, {fileHandle: selectedFiles})
 		.then(function(response) {
 			dispatch(receiveData(response.data, types.SUCCESS_IMPORT_DATA))
 			dispatch(SuppliersActions.addNotification('Import started', 'success'))
