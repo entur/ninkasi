@@ -48,7 +48,6 @@ const MardukReducer = (state = initialState, action) => {
     case types.REQUEST_FETCH_OSM:
       return Object.assign({}, state, {isLoading: true, error: false})
 
-
     case types.ERROR_VALIDATE_PROVIDER:
       return Object.assign({}, state, {isLoading: false, validate_provider: action.payLoad, error: true})
     case types.SUCCESS_VALIDATE_PROVIDER:

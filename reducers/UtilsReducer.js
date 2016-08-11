@@ -16,7 +16,7 @@ const UtilsReducer = (state = intialState, action) => {
       }})
 
     case types.APPEND_FILES_TO_OUTBOUND:
-      return Object.assign({}, state, {outboundFilelist: [...state.outboundFilelist, ...action.payLoad]})
+      return Object.assign({}, state, {outboundFilelist: [...state.outboundFilelist, ...action.payLoad.filter(x => state.outboundFilelist.indexOf(x) == -1)]})
 
     case types.REMOVE_FILES_FROM_OUTBOUND:
       return Object.assign({}, state, {outboundFilelist: state.outboundFilelist.filter(x => action.payLoad.indexOf(x) == -1)})

@@ -17,7 +17,6 @@ const SuppliersReducer = (state = initialState, action) => {
       return Object.assign({}, state, {isLoading: true, error: false })
     case types.SELECT_SUPPLIER:
       return Object.assign({}, state, {activeId: action.payLoad})
-
     case types.SUCCESS_FETCH_PROVIDER:
       return Object.assign({}, state, {provider: action.payLoad})
 
