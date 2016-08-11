@@ -9,8 +9,8 @@ import Col from 'muicss/lib/react/col'
 
 import moment from 'moment'
 
-class StatusList extends React.Component {
 
+class StatusList extends React.Component {
 
   render() {
 
@@ -45,7 +45,7 @@ class StatusList extends React.Component {
                     <p>{listItem.fileName}</p>
                   </Col>
                   <Col md="4">
-                    <p>{listItem.lastEvent}</p>
+                    <p>{moment(listItem.lastEvent).locale("nb").format("Do MMMM YYYY, HH:mm:ss")}</p>
                   </Col>
                 </Row>
               )

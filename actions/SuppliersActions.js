@@ -198,9 +198,11 @@ SuppliersActions.importData = (id, selectedFiles) => {
 
 	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/import`
 
+	const bodySelectedFiles = selectedFiles.map(file => { return {"name": file }})
+
 	return function(dispatch) {
 		dispatch(requestImport())
-		return axios.post(url, {fileHandle: selectedFiles})
+		return axios.post(url, {files: bodySelectedFiles})
 		.then(function(response) {
 			dispatch(receiveData(response.data, types.SUCCESS_IMPORT_DATA))
 			dispatch(SuppliersActions.addNotification('Import started', 'success'))
