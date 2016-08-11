@@ -1,6 +1,6 @@
 module.exports = {
 
-  '@tags': ['smoke'],
+  /*'@tags': ['smoke'],
   'Create new provider' : function (browser) {
     browser
       .url(browser.launch_url)
@@ -33,6 +33,6 @@ module.exports = {
         .pause(1000)
         .end()
 
-  }
+  } */
 
 }
