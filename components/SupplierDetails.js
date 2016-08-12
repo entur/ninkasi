@@ -24,8 +24,10 @@ class SupplierDetails extends React.Component {
   }
 
   componentDidMount() {
+    var self = this
     cfgreader.readConfig( (function(config) {
       window.config = config
+      self.startPolling()
     }).bind(this))
   }
 
@@ -164,6 +166,21 @@ class SupplierDetails extends React.Component {
 
   }
 
+  startPolling = () => {
+    var self = this
+    setTimeout(() => {
+      console.log("Start of polling", this)
+      console.log("POLLING")
+      this._timer = setInterval(self.poll, 30000)
+    }, 1000)
+  }
+
+
+  poll = () => {
+    const {dispatch, activeId} = this.props
+    dispatch(SuppliersActions.getChouetteJobStatus(activeId))
+  }
+
   render() {
 
     const { store, activeId, providers, files, filelistIsLoading, outboundFiles, statusList, chouetteJobStatus}  = this.props
@@ -172,6 +189,7 @@ class SupplierDetails extends React.Component {
     if (providers && providers.length > 0) {
       var provider = providers.filter(function(p) { return p.id == activeId })[0]
     }
+
 
     if (filelistIsLoading) {
 
@@ -194,7 +212,7 @@ class SupplierDetails extends React.Component {
                 <h3 id="supplier-name">{provider.name}</h3>
               </Col>
               <Col md="4">
-                <h3 id="supplier-name">Chouette jobs: {chouetteJobStatus.length}</h3>
+                <h4 id="supplier-name">Chouette jobs: {chouetteJobStatus.length}</h4>
               </Col>
             </Row>
             <Row>
@@ -238,7 +256,7 @@ class SupplierDetails extends React.Component {
 
           <Container fluid={true}>
             <Row>
-              <Col className="edit-dashboard" md="8">
+              <Col className="edit-dashboard" md="20">
                 <Button onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}>Edit</Button>
                 <Button color="danger" onClick={this.handleDeleteProvider}>Delete</Button>
               </Col>

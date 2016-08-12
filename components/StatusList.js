@@ -68,10 +68,10 @@ class StatusList extends React.Component {
                       <p>{listItem.endState}</p>
                     </Col>
                     <Col md="2">
-                      <p>{moment(listItem.firstEvent).utc().locale("nb").format("Do MMMM YYYY, HH:mm:ss")}</p>
+                      <p>{moment(listItem.firstEvent).locale("nb").format("Do MMMM YYYY, HH:mm:ss")}</p>
                     </Col>
                     <Col md="2">
-                      <p>{moment(listItem.lastEvent).utc().locale("nb").format("Do MMMM YYYY, HH:mm:ss")}</p>
+                      <p>{moment(listItem.lastEvent).locale("nb").format("Do MMMM YYYY, HH:mm:ss")}</p>
                     </Col>
                     <Col md="2">
                       <p>{moment(listItem.lastEvent-listItem.firstEvent).utc().locale("nb").format("HH:mm:ss")}</p>

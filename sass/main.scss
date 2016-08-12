@@ -26,12 +26,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .edit-dashboard {
   margin-top: 50px;
-  margin-left: 442px;
+  margin-left: 40%;
 }
 
 #providerFilelist, #outboundFilelist {
   margin-top: 20px;
   margin-bottom: 20px;
+  resize: vertical;
+  min-height: 400px;
 }
 
 .hidden {

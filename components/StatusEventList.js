@@ -33,7 +33,7 @@ class StatusEventList extends React.Component {
             return (
               <Row key={"action-" + index}>
                 <Col md="4" key={"event-action-" + index}>{event.action}</Col>
-                <Col md="4" key={"event-date-" + index}>{moment(event.date).utc().locale("nb").format("Do MMMM YYYY, HH:mm:ss")}</Col>
+                <Col md="4" key={"event-date-" + index}>{moment(event.date).locale("nb").format("Do MMMM YYYY, HH:mm:ss")}</Col>
                 <Col md="4" key={"event-state-" + index}><span className={stateClass}>{event.state}</span></Col>
               </Row>
             )
