@@ -29,6 +29,12 @@ app.get(ENDPOINTBASE + '_health', function(req, res) {
 })
 
 
+if (process.env.NODE_ENV == 'production') {
+  app.get(ENDPOINTBASE + "static/bundle.js", function(req, res) {
+    res.sendFile(__dirname + '/admin/ninkasi/static/bundle.js')
+  })
+}
+
 app.get(ENDPOINTBASE + "config/keycloak.json", function(req, res) {
   res.sendFile(__dirname + '/config/keycloak.json')
 })
