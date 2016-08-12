@@ -166,7 +166,8 @@ class SupplierDetails extends React.Component {
 
   render() {
 
-    const { store, activeId, providers, files, filelistIsLoading, outboundFiles, statusList}  = this.props
+    const { store, activeId, providers, files, filelistIsLoading, outboundFiles, statusList, chouetteJobStatus}  = this.props
+
 
     if (providers && providers.length > 0) {
       var provider = providers.filter(function(p) { return p.id == activeId })[0]
@@ -189,8 +190,11 @@ class SupplierDetails extends React.Component {
         <div className="supplier-details">
           <Container fluid={true}>
             <Row>
-              <Col md="8">
+              <Col md="4">
                 <h3 id="supplier-name">{provider.name}</h3>
+              </Col>
+              <Col md="4">
+                <h3 id="supplier-name">Chouette jobs: {chouetteJobStatus.length}</h3>
               </Col>
             </Row>
             <Row>
@@ -263,7 +267,8 @@ const mapStateToProps = (state, ownProps) => {
     files: state.MardukReducer.filenames.fetch_filesnames ? state.MardukReducer.filenames.fetch_filesnames['files'] : [],
     filelistIsLoading: state.MardukReducer.filenames.isLoading,
     outboundFiles: state.UtilsReducer.outboundFilelist,
-    statusList: state.SuppliersReducer.statusList
+    statusList: state.SuppliersReducer.statusList,
+    chouetteJobStatus: state.MardukReducer.chouetteJobStatus
   }
 }
 

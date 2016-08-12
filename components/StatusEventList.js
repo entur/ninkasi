@@ -18,8 +18,6 @@ class StatusEventList extends React.Component {
 
     const wrapperClassName = (visible_event_wrapper_id == refId) ? "visible-wrapper" : "hidden"
 
-    console.log("wrapperClassName", wrapperClassName)
-
     return  (
 
         <div key={"action-wrapper-" + refId} className={wrapperClassName}>

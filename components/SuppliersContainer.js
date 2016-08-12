@@ -51,6 +51,8 @@ class SuppliersContainer extends React.Component {
 
     dispatch(SuppliersActions.getProviderStatus(value))
 
+    dispatch(SuppliersActions.getChouetteJobStatus(value))
+
   }
 
   render() {
@@ -58,6 +60,7 @@ class SuppliersContainer extends React.Component {
     const { store }  = this.props
     const {suppliers} = this.props
 
+    
     return (
 
       <Container fluid={true}>

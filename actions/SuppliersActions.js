@@ -151,6 +151,28 @@ SuppliersActions.selectActiveSupplier = (id) => {
 
 /* marduk actions */
 
+
+SuppliersActions.getChouetteJobStatus = (id) => {
+
+	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/jobs?status=SCHEDULED&started=STARTED`
+
+	return function(dispatch) {
+		dispatch(requestExport())
+		return axios({
+			url: url,
+			timeout: 20000,
+			method: 'get'
+		})
+		.then(function(response) {
+			dispatch(receiveData(response.data, types.SUCCESS_CHOUETTE_JOB_STATUS))
+		})
+		.catch(function(response){
+			dispatch(receiveError(response.data, types.ERROR_CHOUETTE_JOB_STATUS))
+		})
+	}
+}
+
+
 SuppliersActions.exportData = (id) => {
 
 	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/export`

@@ -60,6 +60,10 @@ const MardukReducer = (state = initialState, action) => {
     case types.ERROR_FILENAMES:
       return Object.assign({}, state, {filesnames: {isLoading: false, error: action.payLoad}})
 
+    case types.SUCCESS_CHOUETTE_JOB_STATUS:
+      console.log("chouetteJobStatus", action.payLoad)
+      return Object.assign({}, state, {chouetteJobStatus: action.payLoad})
+
     default:
       return state
   }

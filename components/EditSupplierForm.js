@@ -26,8 +26,6 @@ class EditSupplierForm extends React.Component {
           regtopp_version, regtopp_coordinate_projection, data_format, regtopp_calendar_strategy, enable_validation}, handleSubmit, provider}
            = this.props
 
-    console.log("provider", provider)
-
     return (
       <form className="supplier-form" onSubmit={handleSubmit}>
         <h2>Edit provider</h2>
