@@ -7,5 +7,17 @@
     <div id="root">
     </div>
     <script src="/admin/ninkasi/static/bundle.js"></script>
+    <script>
+
+        window.onbeforeunload = function (e) {
+            e = e || window.event;
+            if (e) {
+                e.returnValue = 'Sure?';
+            }
+
+            return 'Sure?';
+        };
+    </script>
+
   </body>
 </html>
