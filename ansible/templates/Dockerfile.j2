@@ -9,7 +9,7 @@ RUN curl -L https://github.com/Yelp/dumb-init/releases/download/v1.0.1/dumb-init
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY source/ .
-RUN npm install
+RUN npm install --force
 
 EXPOSE 8000
 ENV port 8000
