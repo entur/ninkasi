@@ -1,7 +1,7 @@
 import * as types from './../actions/actionTypes'
 import {reducer as formReducer} from 'redux-form'
 
-const initialState = {
+const cleanSlate = {
   filenames: {
     isLoading: false
   },
@@ -9,7 +9,8 @@ const initialState = {
   data: []
 }
 
-const MardukReducer = (state = initialState, action) => {
+
+const MardukReducer = (state = cleanSlate, action) => {
 
   switch(action.type) {
 
@@ -61,7 +62,6 @@ const MardukReducer = (state = initialState, action) => {
       return Object.assign({}, state, {filesnames: {isLoading: false, error: action.payLoad}})
 
     case types.SUCCESS_CHOUETTE_JOB_STATUS:
-      console.log("chouetteJobStatus", action.payLoad)
       return Object.assign({}, state, {chouetteJobStatus: action.payLoad})
 
     default:

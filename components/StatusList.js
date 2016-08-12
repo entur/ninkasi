@@ -45,7 +45,7 @@ class StatusList extends React.Component {
               <p><b>endState</b></p>
             </Col>
             <Col md="2">
-              <p><b>lastEvent</b></p>
+              <p><b>firstEvent</b></p>
             </Col>
             <Col md="2">
               <p><b>lastEvent</b></p>
@@ -55,6 +55,9 @@ class StatusList extends React.Component {
             </Col>
           </Row>
             {list.map( (listItem,index) => {
+
+              const endStateClass = (listItem.endState === 'TIMEOUT' || listItem.endState === 'ERROR' || listItem.endState === 'FAILED') ? 'error' : 'success'
+
               return (
                 <div className="jobstatus-wrapper" key={"jobstatus-wrapper-" + index} onClick={() => this.handleToggleVisibility(index)} >
                   <Row key={"listItem-" + index}>
@@ -65,7 +68,7 @@ class StatusList extends React.Component {
                       <p>{listItem.fileName}</p>
                     </Col>
                     <Col md="2">
-                      <p>{listItem.endState}</p>
+                      <p><span className={endStateClass}>{listItem.endState}</span></p>
                     </Col>
                     <Col md="2">
                       <p>{moment(listItem.firstEvent).locale("nb").format("Do MMMM YYYY, HH:mm:ss")}</p>

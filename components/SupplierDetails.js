@@ -169,16 +169,14 @@ class SupplierDetails extends React.Component {
   startPolling = () => {
     var self = this
     setTimeout(() => {
-      console.log("Start of polling", this)
-      console.log("POLLING")
-      this._timer = setInterval(self.poll, 30000)
+      this._timer = setInterval(self.poll, 15000)
     }, 1000)
   }
 
 
   poll = () => {
     const {dispatch, activeId} = this.props
-    dispatch(SuppliersActions.getChouetteJobStatus(activeId))
+    if (activeId) dispatch(SuppliersActions.getChouetteJobStatus(activeId))
   }
 
   render() {

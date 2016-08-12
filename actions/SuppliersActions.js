@@ -154,7 +154,7 @@ SuppliersActions.selectActiveSupplier = (id) => {
 
 SuppliersActions.getChouetteJobStatus = (id) => {
 
-	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/jobs?status=SCHEDULED&started=STARTED`
+	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/jobs?status=SCHEDULED&status=STARTED`
 
 	return function(dispatch) {
 		dispatch(requestExport())
