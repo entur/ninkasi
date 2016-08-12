@@ -7,7 +7,7 @@ import StatusList from './StatusList'
 
 import cfgreader from '../config/readConfig'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
-import Button from 'muicss/lib/react/Button'
+import Button from 'muicss/lib/react/button'
 import Panel from 'muicss/lib/react/panel'
 import Container from 'muicss/lib/react/container'
 import Loader from 'halogen/PulseLoader'
