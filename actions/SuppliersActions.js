@@ -376,4 +376,14 @@ SuppliersActions.addNotification = (message, level) => {
 	}
 }
 
+SuppliersActions.toggleVisibilityForEvents = (id, visible) => {
+	return {
+		type: types.TOGGLE_VISIBILITY_FOR_EVENT_WRAPPER,
+		payLoad: {
+			id: id,
+			visible: visible
+		}
+	}
+}
+
 export default SuppliersActions

@@ -6,7 +6,6 @@ import classNames from 'classnames'
 
 class OutboundFilelist extends React.Component {
 
-
   render() {
 
     const {files} = this.props

@@ -229,7 +229,7 @@ class SupplierDetails extends React.Component {
             </Row>
           </Container>
           <div className="mui--divider-bottom"></div>
-          <StatusList list={statusList}></StatusList>
+          <StatusList  key="statusList" list={statusList}></StatusList>
             <div className="mui--divider-bottom"></div>
 
           <Container fluid={true}>

@@ -2,7 +2,8 @@ import * as types from './../actions/actionTypes'
 import {reducer as formReducer} from 'redux-form'
 
 const intialState = {
-  outboundFilelist: []
+  outboundFilelist: [],
+  visible_event_wrapper_id: -1
 }
 
 const UtilsReducer = (state = intialState, action) => {
@@ -26,6 +27,9 @@ const UtilsReducer = (state = intialState, action) => {
 
     case types.UPDATE_FILES_TO_OUTBOUND:
       return Object.assign({}, state, {outboundFilelist: action.payLoad})
+
+    case types.TOGGLE_VISIBILITY_FOR_EVENT_WRAPPER:
+      return Object.assign({}, state, {visible_event_wrapper_id: action.payLoad.id, visible: action.payLoad.visible})
 
     default:
       return state
