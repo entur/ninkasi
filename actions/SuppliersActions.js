@@ -376,13 +376,10 @@ SuppliersActions.addNotification = (message, level) => {
 	}
 }
 
-SuppliersActions.toggleVisibilityForEvents = (id, visible) => {
+SuppliersActions.toggleExpandableEventsContent = (id) => {
 	return {
-		type: types.TOGGLE_VISIBILITY_FOR_EVENT_WRAPPER,
-		payLoad: {
-			id: id,
-			visible: visible
-		}
+		type: types.TOGGLE_EXPANDABLE_FOR_EVENT_WRAPPER,
+		payLoad: id
 	}
 }
 

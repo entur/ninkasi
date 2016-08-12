@@ -17,11 +17,9 @@ import moment from 'moment'
 
 class StatusList extends React.Component {
 
-  handleToggleVisibility (id, event) {
+  handleToggleVisibility (id) {
     const {dispatch} = this.props
-
-    console.log("event for toggleVisibilityForEvents", event)
-    dispatch(SuppliersActions.toggleVisibilityForEvents(id))
+    dispatch(SuppliersActions.toggleExpandableEventsContent(id))
   }
 
   render() {
@@ -58,7 +56,7 @@ class StatusList extends React.Component {
           </Row>
             {list.map( (listItem,index) => {
               return (
-                <div key={"jobstatus-wrapper-" + index} onClick={(event) => this.handleToggleVisibility(index, event)} >
+                <div className="jobstatus-wrapper" key={"jobstatus-wrapper-" + index} onClick={() => this.handleToggleVisibility(index)} >
                   <Row key={"listItem-" + index}>
                     <Col md="2">
                       <p>{listItem.correlationId}</p>

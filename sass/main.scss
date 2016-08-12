@@ -2,6 +2,7 @@
 
 @import "node_modules/muicss/lib/sass/mui.scss";
 @import "components/forms";
+@import "components/colors";
 
 $roboto-slab: 'Roboto Slab', serif;
 $open-sans: 'Open Sans', sans-serif;
@@ -35,4 +36,17 @@ h1, h2, h3, h4, h5, h6 {
 
 .hidden {
   display: none;
+}
+
+.visible-wrapper {
+   background: whitesmoke;
+   padding: 10px;
+   border: 1px solid silver;
+   margin: 10px;
+}
+
+.jobstatus-wrapper {
+  margin-bottom: 20px;
+  border: 1px solid #eee;
+  padding: 10px;
 }

@@ -28,8 +28,8 @@ const UtilsReducer = (state = intialState, action) => {
     case types.UPDATE_FILES_TO_OUTBOUND:
       return Object.assign({}, state, {outboundFilelist: action.payLoad})
 
-    case types.TOGGLE_VISIBILITY_FOR_EVENT_WRAPPER:
-      return Object.assign({}, state, {visible_event_wrapper_id: action.payLoad.id, visible: action.payLoad.visible})
+    case types.TOGGLE_EXPANDABLE_FOR_EVENT_WRAPPER:
+      return Object.assign({}, state, {visible_event_wrapper_id: (state.visible_event_wrapper_id == action.payLoad) ? -1 : action.payLoad})
 
     default:
       return state
