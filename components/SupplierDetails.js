@@ -16,6 +16,12 @@ import Col from 'muicss/lib/react/col'
 import Dropdown from 'muicss/lib/react/dropdown'
 import DropdownItem from 'muicss/lib/react/dropdown-item'
 
+const FaArrowDown = require('react-icons/lib/fa/arrow-down')
+const FaArrowUp = require('react-icons/lib/fa/arrow-up')
+const FaEdit = require('react-icons/lib/fa/pencil')
+const FaRemove = require('react-icons/lib/fa/times-circle')
+const FaAdd = require('react-icons/lib/fa/plus-circle')
+const FaFresh = require('react-icons/lib/fa/refresh')
 
 class SupplierDetails extends React.Component {
 
@@ -56,6 +62,19 @@ class SupplierDetails extends React.Component {
   handleValidateProvider = () => {
     const {dispatch} = this.props
     dispatch(SuppliersActions.validateProvider(this.props.activeId))
+  }
+
+  handleRefresh = () => {
+    const {dispatch, activeId} = this.props
+
+    dispatch(SuppliersActions.selectActiveSupplier(activeId))
+
+    dispatch(SuppliersActions.fetchFilenames(activeId))
+
+    dispatch(SuppliersActions.getProviderStatus(activeId))
+
+    dispatch(SuppliersActions.getChouetteJobStatus(activeId))
+
   }
 
   moveDown = () => {
@@ -214,13 +233,16 @@ class SupplierDetails extends React.Component {
               </Col>
             </Row>
             <Row>
-              <Col md="8">
+              <Col md="4">
                 <Dropdown color="primary" label="Data actions">
                   <DropdownItem onClick={this.handleImportData}>Import+validate+export</DropdownItem>
                   <DropdownItem onClick={this.handleValidateProvider}>Validate</DropdownItem>
                   <DropdownItem onClick={this.handleExportData}>Export</DropdownItem>
                   <DropdownItem onClick={this.handleCleanDataspace}>Clean dataspace</DropdownItem>
                 </Dropdown>
+              </Col>
+              <Col md="4">
+                <Button color="primary" onClick={this.handleRefresh}><FaFresh/> Refresh</Button>
               </Col>
             </Row>
           </Container>
@@ -232,8 +254,8 @@ class SupplierDetails extends React.Component {
             </Row>
             <Row>
               <Col md="8">
-                <Button onClick={this.appendSelectedFiles}>Append</Button>
-                <Button onClick={this.removeSelectedFiles}>Remove</Button>
+                <Button onClick={this.appendSelectedFiles}><FaAdd/> Add</Button>
+                <Button onClick={this.removeSelectedFiles}><FaRemove/> Remove</Button>
               </Col>
             </Row>
             <Row>
@@ -243,8 +265,8 @@ class SupplierDetails extends React.Component {
             </Row>
             <Row>
               <Col md="8">
-                <Button onClick={this.moveDown}>Down</Button>
-                <Button onClick={this.moveUp}>UP</Button>
+                <Button onClick={this.moveDown}><FaArrowDown/> Down</Button>
+                <Button onClick={this.moveUp}><FaArrowUp/> Up</Button>
               </Col>
             </Row>
           </Container>
@@ -255,8 +277,8 @@ class SupplierDetails extends React.Component {
           <Container fluid={true}>
             <Row>
               <Col className="edit-dashboard" md="20">
-                <Button onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}>Edit</Button>
-                <Button color="danger" onClick={this.handleDeleteProvider}>Delete</Button>
+                <Button onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}><FaEdit/> Edit</Button>
+                <Button color="danger" onClick={this.handleDeleteProvider}><FaRemove/> Delete</Button>
               </Col>
             </Row>
           </Container>

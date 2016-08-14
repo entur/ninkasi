@@ -11,6 +11,8 @@ import Container from 'muicss/lib/react/container'
 import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
 
+const FaAdd = require('react-icons/lib/fa/plus-circle')
+
 class SuppliersContainer extends React.Component {
 
   constructor(props) {
@@ -60,7 +62,7 @@ class SuppliersContainer extends React.Component {
     const { store }  = this.props
     const {suppliers} = this.props
 
-    
+
     return (
 
       <Container fluid={true}>
@@ -79,7 +81,7 @@ class SuppliersContainer extends React.Component {
       </Row>
       <Row>
         <Col md="8">
-          <Button id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}>+ New provider</Button>
+          <Button id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}><FaAdd/>  New provider</Button>
           <Button color="primary" onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</Button>
           <Button color="primary" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</Button>
         </Col>
