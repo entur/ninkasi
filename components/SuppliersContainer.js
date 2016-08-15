@@ -12,6 +12,7 @@ import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
 
 const FaAdd = require('react-icons/lib/fa/plus-circle')
+const FaHistory = require('react-icons/lib/fa/history')
 
 class SuppliersContainer extends React.Component {
 
@@ -39,6 +40,11 @@ class SuppliersContainer extends React.Component {
   handleFetchOSM() {
     const {dispatch} = this.props
     dispatch(SuppliersActions.fetchOSM())
+  }
+
+  openModal() {
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.openModalDialog())
   }
 
   selectSupplier(value) {
@@ -84,6 +90,7 @@ class SuppliersContainer extends React.Component {
           <Button id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}><FaAdd/>  New provider</Button>
           <Button color="primary" onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</Button>
           <Button color="primary" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</Button>
+          <Button color="primary" onClick={() => this.openModal()}><FaHistory/> History</Button>
         </Col>
       </Row>
     </Container>

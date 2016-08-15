@@ -6,6 +6,8 @@ import NotificationContainer from '../components/NotificationContainer'
 import cfgreader from '../config/readConfig'
 import { Link, browserHistory } from 'react-router'
 
+import ModalViewContainer from '../components/ModalActionContainer'
+
 
 class MainPage extends React.Component {
   componentDidMount() {
@@ -21,6 +23,7 @@ class MainPage extends React.Component {
         <SuppliersContainer/>
         <SupplierDetails/>
         <NotificationContainer/>
+        <ModalViewContainer/>
       </div>
     )
   }

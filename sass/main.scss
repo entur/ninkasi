@@ -36,6 +36,10 @@ h1, h2, h3, h4, h5, h6 {
   min-height: 400px;
 }
 
+#choutte-jobs {
+  float: right;
+}
+
 .hidden {
   display: none;
 }
@@ -48,6 +52,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .jobstatus-wrapper {
+  margin-top: 20px;
   margin-bottom: 20px;
   border: 1px solid #eee;
   padding: 10px;

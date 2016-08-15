@@ -64,10 +64,12 @@ SuppliersActions.deleteProvider = (id) => {
 		.then(function(response) {
 			dispatch(receiveData(response.data, types.SUCCESS_DELETE_PROVIDER))
 			dispatch(SuppliersActions.addNotification('Provider deleted', 'success'))
+			dispatch(SuppliersActions.logEvent({title: `Deleted provider ${id} successfully`}))
 		})
 		.catch(function(response) {
 			dispatch(receiveError(response.data, types.ERROR_DELETE_PROVIDER))
 			dispatch(SuppliersActions.addNotification('Unable to delete provider', 'error'))
+			dispatch(SuppliersActions.logEvent({title: `Deleting provider ${id} failed`}))
 		})
 	}
 }
@@ -81,10 +83,12 @@ SuppliersActions.createProvider = (provider) => {
 		.then(function(response) {
 			dispatch(receiveData(response.data, types.SUCCESS_CREATE_PROVIDER))
 			dispatch(SuppliersActions.addNotification('Provider created', 'success'))
+			dispatch(SuppliersActions.logEvent({title: 'New provider created'}))
 		})
 		.catch(function(response) {
 			dispatch(receiveError(response.data, types.ERROR_CREATE_PROVIDER))
 			dispatch(SuppliersActions.addNotification('Unable to create provider', 'error'))
+			dispatch(SuppliersActions.logEvent({title: 'Creating new provider failed'}))
 		})
 	}
 }
@@ -97,11 +101,13 @@ SuppliersActions.updateProvider = (provider) => {
 		return axios.put(url, provider)
 		.then(function(response) {
 			dispatch(receiveData(response.data, types.SUCCESS_UPDATE_PROVIDER))
-			dispatch(SuppliersActions.addNotification('Provider update', 'success'))
+			dispatch(SuppliersActions.addNotification('Updated provider successfully', 'success'))
+			dispatch(SuppliersActions.logEvent({title: `Updated provider ${provider.id} successfully`}))
 		})
 		.catch(function(response) {
 			dispatch(receiveError(response.data, types.ERROR_UPDATE_PROVIDER))
 			dispatch(SuppliersActions.addNotification('Unable to update provider', 'error'))
+			dispatch(SuppliersActions.logEvent({title: `Updating provider ${provider.id} failed`}))
 		})
 	}
 }
@@ -187,10 +193,12 @@ SuppliersActions.exportData = (id) => {
 		.then(function(response) {
 			dispatch(receiveData(response.data, types.REQUEST_EXPORT_DATA))
 			dispatch(SuppliersActions.addNotification('Export started', 'success'))
+			dispatch(SuppliersActions.logEvent({title: `Exported data for provider ${id}`}))
 		})
 		.catch(function(response){
 			dispatch(receiveError(response.data, types.ERROR_EXPORT_DATA))
 			dispatch(SuppliersActions.addNotification('Export failed', 'error'))
+			dispatch(SuppliersActions.logEvent({title: `Export failed for provider ${id}`}))
 		})
 	}
 }
@@ -228,14 +236,15 @@ SuppliersActions.importData = (id, selectedFiles) => {
 		.then(function(response) {
 			dispatch(receiveData(response.data, types.SUCCESS_IMPORT_DATA))
 			dispatch(SuppliersActions.addNotification('Import started', 'success'))
+			dispatch(SuppliersActions.logEvent({title: `Imported data for provider ${id}`}))
 		})
 		.catch(function(response){
 			dispatch(receiveError(response.data, types.ERROR_IMPORT_DATA))
 			dispatch(SuppliersActions.addNotification('Import failed', 'error'))
+			dispatch(SuppliersActions.logEvent({title: `Import failed for provider ${id}`}))
 		})
 	}
 }
-
 
 SuppliersActions.cleanDataspace = (id) => {
 
@@ -251,13 +260,16 @@ SuppliersActions.cleanDataspace = (id) => {
 		.then(function(response) {
 			dispatch(receiveData(response.data, types.SUCCESS_DELETE_DATA))
 			dispatch(SuppliersActions.addNotification('Cleaning of dataspace started', 'success'))
+			dispatch(SuppliersActions.logEvent({title: `Cleaned data space for provider ${id}`}))
 		})
 		.catch(function(response){
 			dispatch(receiveError(response.data, types.ERROR_DELETE_DATA))
 			dispatch(SuppliersActions.addNotification('Cleaning of dataspace failed', 'error'))
+			dispatch(SuppliersActions.logEvent({title: `Cleaning data space failed for provider ${id}`}))
 		})
 	}
 }
+
 
 SuppliersActions.validateProvider = (id) => {
 
@@ -273,13 +285,16 @@ SuppliersActions.validateProvider = (id) => {
 		.then(function(response) {
 			dispatch(receiveData(response.data, types.SUCCESS_VALIDATE_PROVIDER))
 			dispatch(SuppliersActions.addNotification('Validation started', 'success'))
+			dispatch(SuppliersActions.logEvent({title: `Validated, imported and exported data for provider ${id} successfully`}))
 		})
 		.catch(function(response){
 			dispatch(receiveError(response.data, types.ERROR_VALIDATE_PROVIDER))
 			dispatch(SuppliersActions.addNotification('Validation failed', 'error'))
+			dispatch(SuppliersActions.logEvent({title: `Validating, importing and exporting data for provider ${id} failed`}))
 		})
 	}
 }
+
 
 SuppliersActions.buildGraph = () => {
 	const url = window.config.mardukBaseUrl+'admin/services/graph/build'
@@ -294,10 +309,12 @@ SuppliersActions.buildGraph = () => {
 		.then(function(response) {
 			dispatch(receiveData(response.data, types.SUCCESS_BUILD_GRAPH))
 			dispatch(SuppliersActions.addNotification('Graph build started', 'success'))
+			dispatch(SuppliersActions.logEvent({title: 'Graph build started'}))
 		})
 		.catch(function(response){
 			dispatch(receiveError(response.data, types.ERROR_BUILD_GRAPH))
 			dispatch(SuppliersActions.addNotification('Graph build failed', 'error'))
+			dispatch(SuppliersActions.logEvent({title: 'Graph build failed'}))
 		})
 	}
 }
@@ -315,10 +332,12 @@ SuppliersActions.fetchOSM = () => {
 		.then(function(response) {
 			dispatch(receiveData(response.data, types.SUCCESS_FETCH_OSM))
 			dispatch(SuppliersActions.addNotification('OSM update started', 'success'))
+			dispatch(SuppliersActions.logEvent({title: 'OSM update started'}))
 		})
 		.catch(function(response){
 			dispatch(receiveError(response.data, types.ERROR_FETCH_OSM))
 			dispatch(SuppliersActions.addNotification('OSM update failed', 'error'))
+			dispatch(SuppliersActions.logEvent({title: 'OSM update failed'}))
 		})
 	}
 }
@@ -347,6 +366,7 @@ function requestFilenames() {
 	return {type: types.REQUEST_FILENAMES}
 }
 
+
 /* utils */
 
 function receiveData(json, type) {
@@ -366,6 +386,13 @@ function receiveError(json, type) {
 SuppliersActions.restoreFilesToOutbound = () => {
 	return {
 		type: types.RESET_OUTBOUND_FILES
+	}
+}
+
+SuppliersActions.logEventFilter = (filter) => {
+	return {
+		type: types.LOG_EVENT_FILTER,
+		payLoad: filter
 	}
 }
 
@@ -402,6 +429,25 @@ SuppliersActions.toggleExpandableEventsContent = (id) => {
 	return {
 		type: types.TOGGLE_EXPANDABLE_FOR_EVENT_WRAPPER,
 		payLoad: id
+	}
+}
+
+SuppliersActions.openModalDialog = () => {
+	return {
+		type: types.OPEN_MODAL_DIALOG
+	}
+}
+
+SuppliersActions.dismissModalDialog = () => {
+	return {
+		type: types.DISMISS_MODAL_DIALOG
+	}
+}
+
+SuppliersActions.logEvent = (event) => {
+	return {
+		type: types.LOG_EVENT,
+		payLoad: event
 	}
 }
 

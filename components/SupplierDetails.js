@@ -48,8 +48,14 @@ class SupplierDetails extends React.Component {
   }
 
   handleCleanDataspace = () => {
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.cleanDataspace(this.props.activeId))
+
+    const response = confirm("Are you sure you want to clean up the dataspace current provider?")
+
+    if (respnse == true) {
+      const {dispatch} = this.props
+      dispatch(SuppliersActions.cleanDataspace(this.props.activeId))
+    }
+
   }
 
   handleDeleteProvider = () => {
@@ -109,9 +115,7 @@ class SupplierDetails extends React.Component {
     }
 
     const {dispatch} = this.props
-
     const files = Array.map(document.querySelector('#outboundFilelist').options, x => x.text)
-
     dispatch(SuppliersActions.updateOutboundFilelist(files))
   }
 
@@ -130,9 +134,7 @@ class SupplierDetails extends React.Component {
     for (i = 0, iLen = selected.length; i < iLen; i++) {
       var index = selected[i].index
 
-      if(index == 0){
-        break
-      }
+      if(index == 0) break
 
       var temp = selected[i].text
       selected[i].text = options[index - 1].text
@@ -207,7 +209,6 @@ class SupplierDetails extends React.Component {
       var provider = providers.filter(function(p) { return p.id == activeId })[0]
     }
 
-
     if (filelistIsLoading) {
 
       return (
@@ -229,19 +230,25 @@ class SupplierDetails extends React.Component {
                 <h3 id="supplier-name">{provider.name}</h3>
               </Col>
               <Col md="4">
-                <h4 id="supplier-name">Chouette jobs: {chouetteJobStatus.length}</h4>
+                <h4 id="choutte-jobs">Chouette jobs: {chouetteJobStatus.length}</h4>
               </Col>
             </Row>
             <Row>
-              <Col md="4">
-                <Dropdown color="primary" label="Data actions">
-                  <DropdownItem onClick={this.handleImportData}>Import+validate+export</DropdownItem>
-                  <DropdownItem onClick={this.handleValidateProvider}>Validate</DropdownItem>
-                  <DropdownItem onClick={this.handleExportData}>Export</DropdownItem>
-                  <DropdownItem onClick={this.handleCleanDataspace}>Clean dataspace</DropdownItem>
-                </Dropdown>
+              <Col md="2">
+                <Button onClick={this.handleImportData}>Import</Button>
               </Col>
-              <Col md="4">
+              <Col md="2">
+                <Button onClick={this.handleValidateProvider}>Validate</Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col md="2">
+                <Button onClick={this.handleExportData}>Export</Button>
+              </Col>
+              <Col md="2">
+                <Button color="danger" onClick={this.handleCleanDataspace}>Clean up</Button>
+              </Col>
+              <Col md="2">
                 <Button color="primary" onClick={this.handleRefresh}><FaFresh/> Refresh</Button>
               </Col>
             </Row>
@@ -271,9 +278,8 @@ class SupplierDetails extends React.Component {
             </Row>
           </Container>
           <div className="mui--divider-bottom"></div>
-          <StatusList  key="statusList" list={statusList}></StatusList>
-            <div className="mui--divider-bottom"></div>
-
+          <StatusList key="statusList" list={statusList}></StatusList>
+          <div className="mui--divider-bottom"></div>
           <Container fluid={true}>
             <Row>
               <Col className="edit-dashboard" md="20">

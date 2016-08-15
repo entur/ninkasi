@@ -10,10 +10,7 @@ import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
 
 import SuppliersActions from '../actions/SuppliersActions'
-
-
 import moment from 'moment'
-
 
 class StatusList extends React.Component {
 
@@ -91,7 +88,7 @@ class StatusList extends React.Component {
 
     } else {
       return (
-        <Container fluid={true}>
+        <Container className="jobstatus-wrapper" fluid={true}>
           <Row>
             <Col md="8">
               <p>No status found</p>

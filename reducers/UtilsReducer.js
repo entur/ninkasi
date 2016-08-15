@@ -1,9 +1,35 @@
 import * as types from './../actions/actionTypes'
 import {reducer as formReducer} from 'redux-form'
 
+import moment from 'moment'
+
+
+const eventHelper = (event, loggedEvents) => {
+
+  event.id = loggedEvents.length+1
+
+  const nowDate = moment().locale("nb").format("Do MMMM HH:mm:ss")
+
+  event.date = nowDate
+  event.title = `${nowDate}: ${event.title}`
+
+  return event
+
+}
+
 const intialState = {
   outboundFilelist: [],
-  visible_event_wrapper_id: -1
+  visible_event_wrapper_id: -1,
+  isModalOpen: false,
+  loggedEvents: [],
+  loggedEventsFilter: '',
+  filteredLoggedEvents: []
+}
+
+const filterHelper = (loggedEvents, loggedEventsFilter) => {
+  return loggedEvents.filter( item => {
+    return item.title.toLowerCase().indexOf(loggedEventsFilter.toLowerCase()) > -1
+  })
 }
 
 const UtilsReducer = (state = intialState, action) => {
@@ -30,6 +56,19 @@ const UtilsReducer = (state = intialState, action) => {
 
     case types.TOGGLE_EXPANDABLE_FOR_EVENT_WRAPPER:
       return Object.assign({}, state, {visible_event_wrapper_id: (state.visible_event_wrapper_id == action.payLoad) ? -1 : action.payLoad})
+
+    case types.OPEN_MODAL_DIALOG:
+      return Object.assign({}, state, {isModalOpen: true, filteredLoggedEvents: state.loggedEvents})
+
+    case types.DISMISS_MODAL_DIALOG:
+      return Object.assign({}, state, {isModalOpen: false})
+
+    case types.LOG_EVENT:
+      const event = eventHelper(action.payLoad, state.loggedEvents)
+      return Object.assign({}, state, {loggedEvents: state.loggedEvents.concat(event)})
+
+    case types.LOG_EVENT_FILTER:
+      return Object.assign({}, state, {logEventFilter: action.payLoad, filteredLoggedEvents: filterHelper(state.loggedEvents, action.payLoad)})
 
     default:
       return state
