@@ -1,0 +1,17 @@
+.page-link-parent {
+  display: block;
+  margin: 20px;
+}
+.page-link {
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.active-link {
+  color: red;
+}
+
+.inactive-link {
+  color: blue;
+}

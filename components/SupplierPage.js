@@ -1,7 +1,6 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import SuppliersContainer from '../components/SuppliersContainer'
-import SupplierDetails from '../components/SupplierDetails'
 import NotificationContainer from '../components/NotificationContainer'
 import cfgreader from '../config/readConfig'
 import { Link, browserHistory } from 'react-router'
@@ -12,7 +11,7 @@ import SuppliersActions from '../actions/SuppliersActions'
 
 class SupplierPage extends React.Component {
 
-  componentDidMount() {
+  componentWillMount() {
 
     const {id, dispatch} = this.props
 

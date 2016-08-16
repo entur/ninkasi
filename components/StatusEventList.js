@@ -7,9 +7,6 @@ import Container from 'muicss/lib/react/container'
 import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
 
-import moment from 'moment'
-
-
 class StatusEventList extends React.Component {
 
   render() {
@@ -18,35 +15,39 @@ class StatusEventList extends React.Component {
 
     const wrapperClassName = (visible_event_wrapper_id == refId) ? "visible-wrapper" : "hidden"
 
-    return  (
+      return  (
 
-        <div key={"action-wrapper-" + refId} className={wrapperClassName}>
-          <p><b>Events</b></p>
-          <Row>
-            <Col md="4"><b>Action</b></Col>
-            <Col md="4"><b>Date</b></Col>
-            <Col md="4"><b>State</b></Col>
-          </Row>
-          <div className="mui--divider-bottom"></div>
-          {events.map( (event, index) => {
-            const stateClass = (event.state === 'TIMEOUT' || event.state === 'ERROR' || event.state === 'FAILED') ? 'error' : 'success'
-            return (
-              <Row key={"action-" + index}>
-                <Col md="4" key={"event-action-" + index}>{event.action}</Col>
-                <Col md="4" key={"event-date-" + index}>{moment(event.date).locale("nb").format("Do MMMM YYYY, HH:mm:ss")}</Col>
-                <Col md="4" key={"event-state-" + index}><span className={stateClass}>{event.state}</span></Col>
-              </Row>
-            )
-          })}
-        </div>
-    )
+          <div key={"action-wrapper-" + refId} className={wrapperClassName}>
+            <p><b>Events</b></p>
+            <Row>
+              <Col md="3"><b>Action</b></Col>
+              <Col md="3"><b>Date</b></Col>
+              <Col md="3"><b>State</b></Col>
+            </Row>
+            <div className="mui--divider-bottom"></div>
+
+           { (events && events.length) ?
+
+             <div>{events.map( (event, index) => {
+               const stateClass = (event.state === 'TIMEOUT' || event.state === 'ERROR' || event.state === 'FAILED') ? 'error' : 'success'
+               return (
+                 <Row key={"action-" + index}>
+                   <Col md="3" key={"event-action-" + index}>{event.action}</Col>
+                   <Col md="3" key={"event-date-" + index}>{event.date}</Col>
+                   <Col md="3" key={"event-state-" + index}><span className={stateClass}>{event.state}</span></Col>
+                 </Row>
+               )
+             })}</div> : <div>No events found</div> }
+
+          </div>
+      )
 
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    visible_event_wrapper_id: state.UtilsReducer.visible_event_wrapper_id
+    visible_event_wrapper_id: state.UtilsReducer.visible_event_wrapper_id,
   }
 }
 

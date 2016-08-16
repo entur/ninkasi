@@ -20,9 +20,9 @@ class SuppliersContainer extends React.Component {
     super(props)
   }
 
-  componentDidMount() {
+  componentWillMount() {
 
-    const {dispatch} = this.props
+   const {dispatch} = this.props
 
     cfgreader.readConfig( (function(config) {
       window.config = config
@@ -57,9 +57,7 @@ class SuppliersContainer extends React.Component {
 
     dispatch(SuppliersActions.fetchFilenames(value))
 
-    dispatch(SuppliersActions.getProviderStatus(value))
-
-    dispatch(SuppliersActions.getChouetteJobStatus(value))
+    dispatch(SuppliersActions.setActivePageIndex(0))
 
   }
 

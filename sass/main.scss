@@ -2,6 +2,7 @@
 
 @import "node_modules/muicss/lib/sass/mui.scss";
 @import "components/forms";
+@import "components/links";
 @import "components/colors";
 
 $roboto-slab: 'Roboto Slab', serif;
@@ -26,7 +27,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .edit-dashboard {
   margin-top: 50px;
-  margin-left: 40%;
 }
 
 #providerFilelist, #outboundFilelist {
@@ -34,6 +34,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 20px;
   resize: vertical;
   min-height: 400px;
+  min-width: 600px;
 }
 
 #choutte-jobs {
@@ -56,4 +57,20 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 20px;
   border: 1px solid #eee;
   padding: 10px;
+}
+
+.supplier-header {
+  margin-left: 20px;
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.mui--is-active {
+  margin-top: 20px;
+}
+
+.long-text {
+  word-break: break-all;
 }

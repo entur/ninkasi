@@ -1,12 +1,31 @@
 import axios from 'axios'
 import * as types from './actionTypes'
 
+import moment from 'moment'
+
 var SuppliersActions = {}
 
 /* nabu actions */
 
 function requestData() {
 	return {type: types.REQ_DATA}
+}
+
+SuppliersActions.formatProviderStatusDate = (list) => {
+
+	return list.map( (listItem) => {
+
+		listItem.duration = listItem.duration || "Not implemented"
+		listItem.firstEvent = moment(listItem.firstEvent).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+		listItem.lastEvent = moment(listItem.lastEvent).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+
+		listItem.events.forEach(function (event) {
+			event.date = moment(event.date).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+		})
+
+			return listItem
+	})
+
 }
 
 SuppliersActions.getProviderStatus = (id) => {
@@ -22,6 +41,7 @@ SuppliersActions.getProviderStatus = (id) => {
       responseType: 'json'
     })
     .then(function(response) {
+			SuppliersActions.formatProviderStatusDate(response.data)
       dispatch(receiveData(response.data, types.RECEIVED_PROVIDER_STATUS))
     })
     .catch(function(response){
@@ -157,13 +177,11 @@ SuppliersActions.selectActiveSupplier = (id) => {
 
 /* marduk actions */
 
-
 SuppliersActions.getChouetteJobStatus = (id) => {
 
 	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/jobs?status=SCHEDULED&status=STARTED`
 
 	return function(dispatch) {
-		dispatch(requestExport())
 		return axios({
 			url: url,
 			timeout: 20000,
@@ -191,7 +209,7 @@ SuppliersActions.exportData = (id) => {
 			method: 'post'
 		})
 		.then(function(response) {
-			dispatch(receiveData(response.data, types.REQUEST_EXPORT_DATA))
+			dispatch(receiveData(response.data, types.SUCESS_EXPORT_DATA))
 			dispatch(SuppliersActions.addNotification('Export started', 'success'))
 			dispatch(SuppliersActions.logEvent({title: `Exported data for provider ${id}`}))
 		})
@@ -395,6 +413,14 @@ SuppliersActions.logEventFilter = (filter) => {
 		payLoad: filter
 	}
 }
+
+SuppliersActions.setActivePageIndex = (index) => {
+	return {
+		type: types.SET_ACTIVE_PAGE_INDEX,
+		payLoad: index
+	}
+}
+
 
 SuppliersActions.updateOutboundFilelist = (files) => {
 	return {

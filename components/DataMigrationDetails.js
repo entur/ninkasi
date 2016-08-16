@@ -1,20 +1,20 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import SuppliersActions from '../actions/SuppliersActions'
-import ProviderFilelist from './ProviderFilelist'
-import OutboundFilelist from './OutboundFilelist'
-import StatusList from './StatusList'
-
 import cfgreader from '../config/readConfig'
-import { Router, Route, browserHistory, IndexRoute } from 'react-router'
+import { bindActionCreators } from 'redux'
+import classNames from 'classnames'
+import { browserHistory } from 'react-router'
+
+
 import Button from 'muicss/lib/react/button'
 import Panel from 'muicss/lib/react/panel'
 import Container from 'muicss/lib/react/container'
-import Loader from 'halogen/PulseLoader'
 import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
-import Dropdown from 'muicss/lib/react/dropdown'
-import DropdownItem from 'muicss/lib/react/dropdown-item'
+
+import ProviderFilelist from './ProviderFilelist'
+import OutboundFilelist from './OutboundFilelist'
+import SuppliersActions from '../actions/SuppliersActions'
 
 const FaArrowDown = require('react-icons/lib/fa/arrow-down')
 const FaArrowUp = require('react-icons/lib/fa/arrow-up')
@@ -23,19 +23,58 @@ const FaRemove = require('react-icons/lib/fa/times-circle')
 const FaAdd = require('react-icons/lib/fa/plus-circle')
 const FaFresh = require('react-icons/lib/fa/refresh')
 
-class SupplierDetails extends React.Component {
+class DataMigrationDetails extends React.Component {
 
-  constructor(props) {
-    super(props)
+  render() {
+
+    const {files, outboundFiles, activeId} = this.props
+
+    return (
+
+          <div>
+
+            <Container fluid={true}>
+              <Row>
+                <Col md="2"> <Button color="primary" onClick={this.handleImportData}>Import</Button></Col>
+                <Col md="2"><Button color="primary" onClick={this.handleValidateProvider}>Validate</Button></Col>
+                <Col md="2"><Button color="primary" onClick={this.handleExportData}>Export</Button></Col>
+              </Row>
+              <Row>
+                <Col md="4"><Button color="primary" onClick={this.handleRefresh}><FaFresh/> Refresh</Button></Col>
+                <Col md="2"><Button color="danger" onClick={this.handleCleanDataspace}>Clean</Button></Col>
+              </Row>
+            </Container>
+
+            <Container fluid={true}>
+              <Row>
+                <Col md="8">
+                  <ProviderFilelist files={files}></ProviderFilelist>
+                </Col>
+              </Row>
+              <Row>
+                <Col md="8">
+                  <Button onClick={this.appendSelectedFiles}><FaAdd/> Add</Button>
+                  <Button onClick={this.removeSelectedFiles}><FaRemove/> Remove</Button>
+                </Col>
+              </Row>
+              <Row>
+                <Col md="8">
+                  <OutboundFilelist files={outboundFiles}></OutboundFilelist>
+                </Col>
+              </Row>
+              {outboundFiles.length ? <Row>
+                <Col md="8">
+                  <Button onClick={this.moveDown}><FaArrowDown/> Down</Button>
+                  <Button onClick={this.moveUp}><FaArrowUp/> Up</Button>
+                </Col>
+              </Row> : <Row></Row>}
+            </Container>
+
+            <div className="mui--divider-bottom"></div>
+            <div className="mui--divider-bottom"></div>
+          </div> )
   }
 
-  componentDidMount() {
-    var self = this
-    cfgreader.readConfig( (function(config) {
-      window.config = config
-      self.startPolling()
-    }).bind(this))
-  }
 
   handleImportData = () => {
     const {dispatch, outboundFiles} = this.props
@@ -56,13 +95,6 @@ class SupplierDetails extends React.Component {
       dispatch(SuppliersActions.cleanDataspace(this.props.activeId))
     }
 
-  }
-
-  handleDeleteProvider = () => {
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.deleteProvider(this.props.activeId))
-    dispatch(SuppliersActions.selectActiveSupplier(0))
-    dispatch(SuppliersActions.fetchSuppliers())
   }
 
   handleValidateProvider = () => {
@@ -187,121 +219,6 @@ class SupplierDetails extends React.Component {
 
   }
 
-  startPolling = () => {
-    var self = this
-    setTimeout(() => {
-      this._timer = setInterval(self.poll, 15000)
-    }, 1000)
-  }
-
-
-  poll = () => {
-    const {dispatch, activeId} = this.props
-    if (activeId) dispatch(SuppliersActions.getChouetteJobStatus(activeId))
-  }
-
-  render() {
-
-    const { store, activeId, providers, files, filelistIsLoading, outboundFiles, statusList, chouetteJobStatus}  = this.props
-
-
-    if (providers && providers.length > 0) {
-      var provider = providers.filter(function(p) { return p.id == activeId })[0]
-    }
-
-    if (filelistIsLoading) {
-
-      return (
-        <div className="supplier-details disabled">
-          <div className="supplier-header">
-            <Loader color="#39a1f4" size="16px" margin="40px"/>
-          </div>
-        </div>
-      )
-    }
-
-    if (provider && files) {
-
-      return (
-        <div className="supplier-details">
-          <Container fluid={true}>
-            <Row>
-              <Col md="4">
-                <h3 id="supplier-name">{provider.name}</h3>
-              </Col>
-              <Col md="4">
-                <h4 id="choutte-jobs">Chouette jobs: {chouetteJobStatus.length}</h4>
-              </Col>
-            </Row>
-            <Row>
-              <Col md="2">
-                <Button onClick={this.handleImportData}>Import</Button>
-              </Col>
-              <Col md="2">
-                <Button onClick={this.handleValidateProvider}>Validate</Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col md="2">
-                <Button onClick={this.handleExportData}>Export</Button>
-              </Col>
-              <Col md="2">
-                <Button color="danger" onClick={this.handleCleanDataspace}>Clean up</Button>
-              </Col>
-              <Col md="2">
-                <Button color="primary" onClick={this.handleRefresh}><FaFresh/> Refresh</Button>
-              </Col>
-            </Row>
-          </Container>
-          <Container fluid={true}>
-            <Row>
-              <Col md="8">
-                <ProviderFilelist files={files}></ProviderFilelist>
-              </Col>
-            </Row>
-            <Row>
-              <Col md="8">
-                <Button onClick={this.appendSelectedFiles}><FaAdd/> Add</Button>
-                <Button onClick={this.removeSelectedFiles}><FaRemove/> Remove</Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col md="8">
-                <OutboundFilelist files={outboundFiles}></OutboundFilelist>
-              </Col>
-            </Row>
-            <Row>
-              <Col md="8">
-                <Button onClick={this.moveDown}><FaArrowDown/> Down</Button>
-                <Button onClick={this.moveUp}><FaArrowUp/> Up</Button>
-              </Col>
-            </Row>
-          </Container>
-          <div className="mui--divider-bottom"></div>
-          <StatusList key="statusList" list={statusList}></StatusList>
-          <div className="mui--divider-bottom"></div>
-          <Container fluid={true}>
-            <Row>
-              <Col className="edit-dashboard" md="20">
-                <Button onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}><FaEdit/> Edit</Button>
-                <Button color="danger" onClick={this.handleDeleteProvider}><FaRemove/> Delete</Button>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-      )
-
-    } else {
-
-      return (
-        <div className="supplier-details disabled">
-          <div className="supplier-header">
-          </div>
-        </div>
-      )
-    }
-
-  }
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -311,8 +228,7 @@ const mapStateToProps = (state, ownProps) => {
     files: state.MardukReducer.filenames.fetch_filesnames ? state.MardukReducer.filenames.fetch_filesnames['files'] : [],
     filelistIsLoading: state.MardukReducer.filenames.isLoading,
     outboundFiles: state.UtilsReducer.outboundFilelist,
-    statusList: state.SuppliersReducer.statusList,
-    chouetteJobStatus: state.MardukReducer.chouetteJobStatus
+    statusList: state.SuppliersReducer.statusList
   }
 }
 
@@ -326,4 +242,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SupplierDetails)
+)(DataMigrationDetails)

@@ -5,16 +5,12 @@ import moment from 'moment'
 
 
 const eventHelper = (event, loggedEvents) => {
-
   event.id = loggedEvents.length+1
-
   const nowDate = moment().locale("nb").format("Do MMMM HH:mm:ss")
-
   event.date = nowDate
   event.title = `${nowDate}: ${event.title}`
 
   return event
-
 }
 
 const intialState = {
@@ -23,7 +19,8 @@ const intialState = {
   isModalOpen: false,
   loggedEvents: [],
   loggedEventsFilter: '',
-  filteredLoggedEvents: []
+  filteredLoggedEvents: [],
+  activePageIndex: 0
 }
 
 const filterHelper = (loggedEvents, loggedEventsFilter) => {
@@ -69,6 +66,9 @@ const UtilsReducer = (state = intialState, action) => {
 
     case types.LOG_EVENT_FILTER:
       return Object.assign({}, state, {logEventFilter: action.payLoad, filteredLoggedEvents: filterHelper(state.loggedEvents, action.payLoad)})
+
+    case types.SET_ACTIVE_PAGE_INDEX:
+      return Object.assign({}, state, {activePageIndex: action.payLoad})
 
     default:
       return state

@@ -30,14 +30,8 @@ class OutboundFilelist extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    state: state,
-    props: ownProps
-  }
-}
 
 export default connect(
-  mapStateToProps,
+  null,
   null
 )(OutboundFilelist)

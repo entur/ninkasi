@@ -6,7 +6,8 @@ const cleanSlate = {
     isLoading: false
   },
   isLoading: false,
-  data: []
+  data: [],
+  chouetteJobStatus: []
 }
 
 
