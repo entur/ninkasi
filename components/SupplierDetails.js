@@ -51,7 +51,7 @@ class SupplierDetails extends React.Component {
 
     const response = confirm("Are you sure you want to clean up the dataspace current provider?")
 
-    if (respnse == true) {
+    if (response == true) {
       const {dispatch} = this.props
       dispatch(SuppliersActions.cleanDataspace(this.props.activeId))
     }
