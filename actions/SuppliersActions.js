@@ -41,7 +41,7 @@ SuppliersActions.getProviderStatus = (id) => {
       responseType: 'json'
     })
     .then(function(response) {
-			SuppliersActions.formatProviderStatusDate(response.data)
+			SuppliersActions.formatProviderStatusDate(response.data.reverse())
       dispatch(receiveData(response.data, types.RECEIVED_PROVIDER_STATUS))
     })
     .catch(function(response){
