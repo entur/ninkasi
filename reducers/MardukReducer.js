@@ -7,7 +7,15 @@ const cleanSlate = {
   },
   isLoading: false,
   data: [],
-  chouetteJobStatus: []
+  chouetteJobStatus: [],
+  chouetteJobFilter: {
+    SCHEDULED: true,
+    STARTED: true,
+    TERMINATED: false,
+    ABORTED: false,
+    CANCELED: false
+  },
+  actionFilter: ""
 }
 
 
@@ -64,6 +72,15 @@ const MardukReducer = (state = cleanSlate, action) => {
 
     case types.SUCCESS_CHOUETTE_JOB_STATUS:
       return Object.assign({}, state, {chouetteJobStatus: action.payLoad})
+
+    case types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER:
+      let chouetteJobFilter = {...state.chouetteJobFilter}
+      chouetteJobFilter[action.payLoad.option] = action.payLoad.value
+      return Object.assign({}, state, {chouetteJobFilter: chouetteJobFilter})
+
+    case types.SET_ACTIVE_ACTION_FILTER:
+      return Object.assign({}, state, {actionFilter: action.payLoad
+      })
 
     default:
       return state

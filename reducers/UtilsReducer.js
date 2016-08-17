@@ -20,7 +20,9 @@ const intialState = {
   loggedEvents: [],
   loggedEventsFilter: '',
   filteredLoggedEvents: [],
-  activePageIndex: 0
+  activePageIndex: 0,
+  activeChouettePageIndex: 0,
+  activeTab: 'migrateData'
 }
 
 const filterHelper = (loggedEvents, loggedEventsFilter) => {
@@ -69,6 +71,13 @@ const UtilsReducer = (state = intialState, action) => {
 
     case types.SET_ACTIVE_PAGE_INDEX:
       return Object.assign({}, state, {activePageIndex: action.payLoad})
+
+    case types.SET_ACTIVE_CHOUTTE_PAGE_INDEX:
+      return Object.assign({}, state, {activeChouettePageIndex: action.payLoad})
+
+    case types.SET_ACTIVE_TAB:
+      return Object.assign({}, state, {activeTab: action.payLoad})
+
 
     default:
       return state

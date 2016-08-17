@@ -177,7 +177,7 @@ SuppliersActions.selectActiveSupplier = (id) => {
 
 /* marduk actions */
 
-SuppliersActions.deleteChouetteJobForProvider = (providerId, chouetteId) => {
+SuppliersActions.cancelChouetteJobForProvider = (providerId, chouetteId) => {
 	const url = window.config.mardukBaseUrl+`admin/services/chouette/${providerId}/jobs/${chouetteId}`
 
 	return function (dispatch) {
@@ -188,16 +188,19 @@ SuppliersActions.deleteChouetteJobForProvider = (providerId, chouetteId) => {
 		})
 		.then(function (response) {
 			dispatch(receiveData(response.data, types.SUCCESS_DELETE_PROVIDERS_CHOUETTE_JOB))
-			dispatch(SuppliersActions.addNotification(`Deleted chouettejob with id ${chouetteId}`, 'success'))
+			dispatch(SuppliersActions.addNotification(`Cancelled chouettejob with id ${chouetteId}`, 'success'))
+			dispatch(SuppliersActions.logEvent({title: `Chouette job with ${chouetteId} successfully cancelled for provider ${provider.id}`}))
+
 		})
 		.catch(function (response) {
 			dispatch(receiveData(response.data, types.ERROR_DELETE_PROVIDERS_CHOUETTE_JOB))
-			dispatch(SuppliersActions.addNotification(`Unable to delete chouettejob with id ${chouetteId}`, 'error'))
+			dispatch(SuppliersActions.addNotification(`Unable to cancel chouettejob with id ${chouetteId}`, 'error'))
+			dispatch(SuppliersActions.logEvent({title: `Unable to cancel chouette job with id ${chouetteId} for provider ${provider.id}`}))
 		})
 	}
 }
 
-SuppliersActions.deleteAllChouetteJobsforProvider = (providerId) => {
+SuppliersActions.cancelAllChouetteJobsforProvider = (providerId) => {
 	const url = window.config.mardukBaseUrl+`admin/services/chouette/${providerId}/jobs`
 
 	return function (dispatch) {
@@ -209,11 +212,20 @@ SuppliersActions.deleteAllChouetteJobsforProvider = (providerId) => {
 		.then(function (response) {
 			dispatch(receiveData(response.data, types.SUCCESS_DELETE_ALL_PROVIDERS_CHOUETTE_JOB))
 			dispatch(SuppliersActions.addNotification(`Deleted all chouttejobs for provider ${providerId}`, 'success'))
+			dispatch(SuppliersActions.logEvent({title: `All chouette jobs for provider ${provider.id} successfully  cancelled `}))
 		})
 		.catch(function (response) {
 			dispatch(receiveData(response.data, types.ERROR_DELETE_ALL_PROVIDERS_CHOUETTE_JOB))
 			dispatch(SuppliersActions.addNotification(`Failed deleting all chouttejobs for provider ${providerId}`, 'error'))
+			dispatch(SuppliersActions.logEvent({title: `Unable to cancel chouette jobs for provider ${provider.id}`}))
 		})
+	}
+}
+
+SuppliersActions.setActiveActionFilter = (value) => {
+	return {
+		type: types.SET_ACTIVE_ACTION_FILTER,
+		payLoad: value
 	}
 }
 
@@ -233,9 +245,29 @@ SuppliersActions.formatChouetteJobsWithDate = (jobs) => {
 
 }
 
-SuppliersActions.getChouetteJobStatus = (id) => {
+SuppliersActions.setActiveChouettePageIndex = (index) => {
+	return {
+		type: types.SET_ACTIVE_CHOUTTE_PAGE_INDEX,
+		payLoad: index
+	}
+}
 
-	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/jobs?status=SCHEDULED&status=STARTED`
+SuppliersActions.getChouetteJobStatus = (id, chouetteJobFilter, actionFilter) => {
+
+	let queryString = ''
+	for(let [key, value] of Object.entries(chouetteJobFilter)) {
+    if (value)
+			queryString += `&status=${key}`
+  }
+
+	if (actionFilter && actionFilter.length) {
+		queryString += `&action=${actionFilter}`
+	}
+
+	if (queryString.length)
+		queryString = queryString.substring(1)
+
+	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/jobs?${queryString}`
 
 	return function(dispatch) {
 		return axios({
@@ -244,12 +276,22 @@ SuppliersActions.getChouetteJobStatus = (id) => {
 			method: 'get'
 		})
 		.then(function(response) {
-			const jobs = SuppliersActions.formatChouetteJobsWithDate(response.data)
+			const jobs = SuppliersActions.formatChouetteJobsWithDate(response.data.reverse())
 			dispatch(receiveData(jobs, types.SUCCESS_CHOUETTE_JOB_STATUS))
 		})
 		.catch(function(response){
 			dispatch(receiveError(response.data, types.ERROR_CHOUETTE_JOB_STATUS))
 		})
+	}
+}
+
+SuppliersActions.toggleChouetteInfoCheckboxFilter = (option, value) => {
+	return {
+		type: types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER,
+		payLoad: {
+			option: option,
+			value: value
+		}
 	}
 }
 
@@ -415,6 +457,10 @@ SuppliersActions.fetchOSM = () => {
 			dispatch(SuppliersActions.logEvent({title: 'OSM update failed'}))
 		})
 	}
+}
+
+SuppliersActions.setActiveTab = (value) => {
+	return {type: types.SET_ACTIVE_TAB, payLoad: value}
 }
 
 function requestBuildGraph() {

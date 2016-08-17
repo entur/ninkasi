@@ -13,7 +13,7 @@ body {
   font-weight: normal;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6,p {
   font-family: $open-sans;
   font-weight: normal;
 }
@@ -22,11 +22,11 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 30px;
   padding-bottom: 20px;
   padding-top: 20px;
-  background: #e2e2e2;
 }
 
 .edit-dashboard {
   margin-top: 50px;
+  display: inline-block;
 }
 
 #providerFilelist, #outboundFilelist {

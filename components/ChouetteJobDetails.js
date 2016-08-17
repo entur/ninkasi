@@ -7,6 +7,10 @@ import Container from 'muicss/lib/react/container'
 import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
 import Button from 'muicss/lib/react/button'
+import Checkbox from 'muicss/lib/react/checkbox'
+import Radio from 'muicss/lib/react/radio'
+import Form from 'muicss/lib/react/form'
+
 
 import SuppliersActions from '../actions/SuppliersActions'
 
@@ -19,19 +23,40 @@ class ChouetteJobDetails extends React.Component {
     }).bind(this))
   }
 
-  handleDeleteChouetteJob = (index) => {
+  handleCancelChouetteJob = (index) => {
     const {dispatch, activeId} = this.props
-    dispatch(SuppliersActions.deleteChouetteJobForProvider(activeId, index))
+    dispatch(SuppliersActions.cancelChouetteJobForProvider(activeId, index))
   }
 
-  handleDeleteAllChouetteJobs = () => {
+  handleCancelAllChouetteJobs = () => {
     const {dispatch, activeId} = this.props
-    dispatch(SuppliersActions.deleteAllChouetteJobsforProvider(activeId))
+    dispatch(SuppliersActions.cancelAllChouetteJobsforProvider(activeId))
+  }
+
+  handleScheduledChange = (event) => {
+    const {dispatch, activeId, chouetteJobFilter, actionFilter} = this.props
+    dispatch(SuppliersActions.toggleChouetteInfoCheckboxFilter(event.target.name, event.target.checked))
+    dispatch(SuppliersActions.getChouetteJobStatus(activeId, chouetteJobFilter, actionFilter))
+  }
+
+  handlePageClick (e, pageIndex) {
+    e.preventDefault()
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.setActiveChouettePageIndex(pageIndex))
+  }
+
+  setActiveActionFilter (event) {
+      const {dispatch, activeId, chouetteJobFilter, actionFilter} = this.props
+
+      if (event.target.name === 'action-filter') {
+        dispatch(SuppliersActions.setActiveActionFilter(event.target.value))
+        dispatch(SuppliersActions.getChouetteJobStatus(activeId, chouetteJobFilter, actionFilter))
+      }
   }
 
   render() {
 
-    const {chouetteJobs} = this.props
+    const {page, chouetteJobFilter, paginationMap, activeChouettePageIndex} = this.props
 
     return(
 
@@ -39,63 +64,104 @@ class ChouetteJobDetails extends React.Component {
         <Container fluid={true}>
           <Row>
             <Col md="1">
-              <p><b>id</b></p>
+              <p><b>Status</b></p>
             </Col>
             <Col md="1">
-              <p><b>referantial</b></p>
+              <Checkbox onChange={(event) => this.handleScheduledChange(event)} defaultChecked={chouetteJobFilter.SCHEDULED} name="SCHEDULED" label="Scheduled" />
+            </Col>
+            <Col md="1  ">
+              <Checkbox onChange={(event) => this.handleScheduledChange(event)} defaultChecked={chouetteJobFilter.STARTED} name="STARTED" label="Started" />
             </Col>
             <Col md="1">
-              <p><b>action</b></p>
+              <Checkbox onChange={(event) => this.handleScheduledChange(event)} defaultChecked={chouetteJobFilter.TERMINATED}  name="TERMINATED" label="Terminated" />
             </Col>
             <Col md="1">
-              <p><b>type</b></p>
+              <Checkbox onChange={(event) => this.handleScheduledChange(event)} defaultChecked={chouetteJobFilter.CANCELED} name="CANCELED" label="Canceled" />
             </Col>
             <Col md="1">
-              <p><b>created</b></p>
+              <Checkbox onChange={(event) => this.handleScheduledChange(event)} defaultChecked={chouetteJobFilter.ABORTED} name="ABORTED" label="Aborted" />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="1">
+              <p><b>Action</b></p>
+            </Col>
+            <Form>
+            <Col md="2">
+              <Radio onClick={ (event) => this.setActiveActionFilter(event)} value="" name="action-filter" label="No filter" defaultChecked={true} />
+            </Col>
+            <Col md="2">
+              <Radio onClick={ (event) => this.setActiveActionFilter(event)} value="importer" name="action-filter" label="Importer" />
+            </Col>
+            <Col md="2">
+              <Radio onClick={ (event) => this.setActiveActionFilter(event)}  value="exporter" name="action-filter" label="Exporter" />
+            </Col>
+            <Col md="2">
+              <Radio onClick={ (event) => this.setActiveActionFilter(event)}  value="validator" name="action-filter" label="Validator"/>
+            </Col>
+            </Form>
+          </Row>
+          <Row>
+          <Col md="8">
+            <div className="page-link-parent">
+              <span>Pages: </span>
+              {paginationMap.map ( (page, index) => {
+                const isActive = (index == activeChouettePageIndex) ? 'page-link active-link' : 'page-link inactive-link'
+                return <span className={isActive} onClick={(e) => this.handlePageClick(e, index)} key={"link-" + index}>{index}</span>
+              })}
+            </div>
+          </Col>
+          <Col md="2">
+            <Button key={"btn-delete-all"} onClick={this.handleCancelAllChouetteJobs} size="small" color="danger">Cancel all</Button>
+          </Col>
+          </Row>
+          <Row>
+            <Col md="1">
+              <p><b>Id</b></p>
             </Col>
             <Col md="1">
-              <p><b>started</b></p>
+              <p><b>Action</b></p>
+            </Col>
+            <Col md="2">
+              <p><b>Created</b></p>
+            </Col>
+            <Col md="2">
+              <p><b>Started</b></p>
+            </Col>
+            <Col md="2">
+              <p><b>Updated</b></p>
             </Col>
             <Col md="1">
-              <p><b>updated</b></p>
-            </Col>
-            <Col md="1">
-              <p><b>status</b></p>
-            </Col>
-            <Col md="1">
-              <Button key={"btn-delete-all"} onClick={this.handleDeleteAllChouetteJobs} size="small" color="danger">Delete all</Button>
+              <p><b>Status</b></p>
             </Col>
           </Row>
         </Container>
-        { (chouetteJobs && chouetteJobs.length) ?
-          <Container fluid={true}> { chouetteJobs.map( (job, index) => {
+        { (page && page.length) ?
+          <Container fluid={true}> { page.map( (job, index) => {
+
+            const statusClass = (job.status === 'ABORTED' || job.status === 'CANCELED') ? 'error' : 'success'
+
             return <Row key={'ch-job-' + index}>
               <Col md="1">
                 <p>{job.id}</p>
               </Col>
               <Col md="1">
-                <p>{job.referential}</p>
-              </Col>
-              <Col md="1">
                 <p>{job.action}</p>
               </Col>
-              <Col md="1">
-                <p>{job.type}</p>
-              </Col>
-              <Col md="1">
+              <Col md="2">
                 <p>{job.created}</p>
               </Col>
-              <Col md="1">
+              <Col md="2">
                 <p>{job.started}</p>
               </Col>
-              <Col md="1">
+              <Col md="2">
                 <p>{job.updated}</p>
               </Col>
               <Col md="1">
-                <p>{job.status}</p>
+                <p><span className={statusClass}>{job.status}</span></p>
               </Col>
               <Col md="1">
-                <Button key={"btn-delete-" + index} onClick={ () => this.handleDeleteChouetteJob(job.id)} size="small" color="danger">X</Button>
+                <Button key={"btn-delete-" + index} onClick={ () => this.handleCancelChouetteJob(job.id)} size="small" color="danger">Cancel</Button>
               </Col>
             </Row>
           }) }
@@ -106,9 +172,21 @@ class ChouetteJobDetails extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+
+  var paginationMap = []
+  var list = state.MardukReducer.chouetteJobStatus
+
+  for (let i = 0, j = list.length; i < j; i+=10) {
+    paginationMap.push(list.slice(i,i+10))
+  }
+
   return {
-    chouetteJobs: state.MardukReducer.chouetteJobStatus,
+    page: paginationMap[state.UtilsReducer.activeChouettePageIndex],
     activeId: state.SuppliersReducer.activeId,
+    chouetteJobFilter: state.MardukReducer.chouetteJobFilter,
+    paginationMap: paginationMap,
+    activeChouettePageIndex: state.UtilsReducer.activeChouettePageIndex,
+    actionFilter: state.MardukReducer.actionFilter
   }
 }
 

@@ -103,7 +103,7 @@ class DataMigrationDetails extends React.Component {
   }
 
   handleRefresh = () => {
-    const {dispatch, activeId} = this.props
+    const {dispatch, activeId, filter, actionFilter} = this.props
 
     dispatch(SuppliersActions.selectActiveSupplier(activeId))
 
@@ -111,7 +111,7 @@ class DataMigrationDetails extends React.Component {
 
     dispatch(SuppliersActions.getProviderStatus(activeId))
 
-    dispatch(SuppliersActions.getChouetteJobStatus(activeId))
+    dispatch(SuppliersActions.getChouetteJobStatus(activeId, filter, actionFilter))
 
   }
 
@@ -228,7 +228,9 @@ const mapStateToProps = (state, ownProps) => {
     files: state.MardukReducer.filenames.fetch_filesnames ? state.MardukReducer.filenames.fetch_filesnames['files'] : [],
     filelistIsLoading: state.MardukReducer.filenames.isLoading,
     outboundFiles: state.UtilsReducer.outboundFilelist,
-    statusList: state.SuppliersReducer.statusList
+    statusList: state.SuppliersReducer.statusList,
+    filter: state.MardukReducer.chouetteJobFilter,
+    actionFilter: state.MardukReducer.actionFilter
   }
 }
 

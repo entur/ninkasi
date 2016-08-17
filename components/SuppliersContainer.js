@@ -59,6 +59,8 @@ class SuppliersContainer extends React.Component {
 
     dispatch(SuppliersActions.setActivePageIndex(0))
 
+    dispatch(SuppliersActions.setActiveActionFilter(""))
+
   }
 
   render() {

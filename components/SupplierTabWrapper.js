@@ -44,7 +44,7 @@ class SupplierTabWrapper extends React.Component {
   startPolling = () => {
     var self = this
     setTimeout(() => {
-      this._timer = setInterval(self.poll, 15000)
+      this._timer = setInterval(self.poll, 10000)
     }, 1000)
   }
 
@@ -64,24 +64,25 @@ class SupplierTabWrapper extends React.Component {
 
   poll = () => {
 
-    const {dispatch, activeId} = this.props
+    const {dispatch, activeId, choutteJobFilter, activeTab, actionFilter} = this.props
 
-    if (this.activeTab && this.activeTab === 'chouetteJobs' && activeId) {
-      dispatch(SuppliersActions.getChouetteJobStatus(activeId))
+    if (activeTab === 'chouetteJobs' && activeId) {
+      dispatch(SuppliersActions.getChouetteJobStatus(activeId,choutteJobFilter, actionFilter))
     }
   }
 
-  onChange(i, value, tab, ev) {
+  onTabChange(i, value, tab, ev) {
 
-   const {dispatch, activeId} = this.props
-   this.activeTab = value
+   const {dispatch, activeId, choutteJobFilter, actionFilter} = this.props
 
      switch (value) {
        case 'chouetteJobs':
-        dispatch(SuppliersActions.getChouetteJobStatus(activeId))
+        dispatch(SuppliersActions.getChouetteJobStatus(activeId, choutteJobFilter, actionFilter))
+        dispatch(SuppliersActions.setActiveTab(value))
          break
        case 'events':
         dispatch(SuppliersActions.getProviderStatus(activeId))
+        dispatch(SuppliersActions.setActiveTab(value))
         break
 
        default: break
@@ -118,28 +119,30 @@ class SupplierTabWrapper extends React.Component {
       return (
 
         <div>
-        <div className="supplier-header">
-          <h2>{supplier.name}</h2>
-        </div>
-          <Tabs onChange={this.onChange.bind(this)} initialSelectedIndex={0}>
-            <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
-              <DataMigrationDetails></DataMigrationDetails>
-            </Tab>
-            <Tab value="events" label="Events">
-              <StatusList key="statusList"></StatusList>
-            </Tab>
-            <Tab value="chouetteJobs" label="Chouette jobs">
-              <ChouetteJobDetails></ChouetteJobDetails>
-            </Tab>
-          </Tabs>
+          <div className="supplier-header">
           <Container fluid={true}>
             <Row>
-              <Col className="edit-dashboard" md="20">
+              <Col md="4"><p>{supplier.name}</p></Col>
+              <Col md="2" className="edit-dashboard" md="20">
                 <Button onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}><FaEdit/> Edit</Button>
                 <Button color="danger" onClick={this.handleDeleteProvider}><FaRemove/> Delete</Button>
               </Col>
             </Row>
           </Container>
+        </div>
+        <Container fluid={true}>
+        <Tabs onChange={this.onTabChange.bind(this)} initialSelectedIndex={0}>
+          <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
+            <DataMigrationDetails></DataMigrationDetails>
+          </Tab>
+          <Tab value="events" label="Events">
+            <StatusList key="statusList"></StatusList>
+          </Tab>
+          <Tab value="chouetteJobs" label="Chouette jobs">
+            <ChouetteJobDetails></ChouetteJobDetails>
+          </Tab>
+        </Tabs>
+        </Container>
         </div>
       )
     }
@@ -161,6 +164,9 @@ const mapStateToProps = (state, ownProps) => {
     files: state.MardukReducer.filenames.fetch_filesnames ? state.MardukReducer.filenames.fetch_filesnames['files'] : [],
     filelistIsLoading: state.MardukReducer.filenames.isLoading,
     outboundFiles: state.UtilsReducer.outboundFilelist,
+    choutteJobFilter: state.MardukReducer.chouetteJobFilter,
+    activeTab: state.UtilsReducer.activeTab,
+    actionFilter: state.MardukReducer.actionFilter
   }
 }
 
