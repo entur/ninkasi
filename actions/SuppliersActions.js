@@ -177,6 +177,62 @@ SuppliersActions.selectActiveSupplier = (id) => {
 
 /* marduk actions */
 
+SuppliersActions.deleteChouetteJobForProvider = (providerId, chouetteId) => {
+	const url = window.config.mardukBaseUrl+`admin/services/chouette/${providerId}/jobs/${chouetteId}`
+
+	return function (dispatch) {
+		return axios({
+			url: url,
+			timeout: 20000,
+			method: 'delete'
+		})
+		.then(function (response) {
+			dispatch(receiveData(response.data, types.SUCCESS_DELETE_PROVIDERS_CHOUETTE_JOB))
+			dispatch(SuppliersActions.addNotification(`Deleted chouettejob with id ${chouetteId}`, 'success'))
+		})
+		.catch(function (response) {
+			dispatch(receiveData(response.data, types.ERROR_DELETE_PROVIDERS_CHOUETTE_JOB))
+			dispatch(SuppliersActions.addNotification(`Unable to delete chouettejob with id ${chouetteId}`, 'error'))
+		})
+	}
+}
+
+SuppliersActions.deleteAllChouetteJobsforProvider = (providerId) => {
+	const url = window.config.mardukBaseUrl+`admin/services/chouette/${providerId}/jobs`
+
+	return function (dispatch) {
+		return axios({
+			url: url,
+			timeout: 20000,
+			method: 'delete'
+		})
+		.then(function (response) {
+			dispatch(receiveData(response.data, types.SUCCESS_DELETE_ALL_PROVIDERS_CHOUETTE_JOB))
+			dispatch(SuppliersActions.addNotification(`Deleted all chouttejobs for provider ${providerId}`, 'success'))
+		})
+		.catch(function (response) {
+			dispatch(receiveData(response.data, types.ERROR_DELETE_ALL_PROVIDERS_CHOUETTE_JOB))
+			dispatch(SuppliersActions.addNotification(`Failed deleting all chouttejobs for provider ${providerId}`, 'error'))
+		})
+	}
+}
+
+SuppliersActions.formatChouetteJobsWithDate = (jobs) => {
+
+	return jobs.map( (job) => {
+
+		job.created = moment(job.created).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+		job.started = moment(job.started).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+		job.updated = moment(job.updated).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+
+		return job
+
+	})
+
+	return jobs
+
+}
+
 SuppliersActions.getChouetteJobStatus = (id) => {
 
 	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/jobs?status=SCHEDULED&status=STARTED`
@@ -188,7 +244,8 @@ SuppliersActions.getChouetteJobStatus = (id) => {
 			method: 'get'
 		})
 		.then(function(response) {
-			dispatch(receiveData(response.data, types.SUCCESS_CHOUETTE_JOB_STATUS))
+			const jobs = SuppliersActions.formatChouetteJobsWithDate(response.data)
+			dispatch(receiveData(jobs, types.SUCCESS_CHOUETTE_JOB_STATUS))
 		})
 		.catch(function(response){
 			dispatch(receiveError(response.data, types.ERROR_CHOUETTE_JOB_STATUS))

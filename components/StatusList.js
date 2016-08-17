@@ -17,7 +17,6 @@ class StatusList extends React.Component {
   componentWillMount(){
     cfgreader.readConfig( (function(config) {
       window.config = config
-      const {providerId, dispatch} = this.props
     }).bind(this))
   }
 
