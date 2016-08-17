@@ -1,6 +1,5 @@
 module.exports = {
 
-
   '@tags': ['smoke'],
   'Create new provider' : function (browser) {
     browser
@@ -13,12 +12,11 @@ module.exports = {
       .assert.visible("body")
       .assert.visible("button[type='submit']")
       .click("#back")
-      .pause(1000)
       .end()
   },
 
   '@tags': ['smoke'],
-  'Edit new provider' : function(browser) {
+  'Should list correct supplier' : function(browser) {
       browser
         .url(browser.launch_url)
         .waitForElementVisible('body', 1000)
@@ -28,12 +26,8 @@ module.exports = {
         .pause(200)
         .click("[value^='14']")
         .pause(2000)
-        .waitForElementVisible('#supplier-name', 2000)
-        .pause(2000)
-        .assert.containsText("#supplier-name", "Nordland")
-        .pause(1000)
+        .assert.containsText(".supplier-header", "Nordland")
         .end()
-
-  } 
+  }
 
 }
