@@ -40,7 +40,6 @@ class DataMigrationDetails extends React.Component {
                 <Col md="2"><Button color="primary" onClick={this.handleExportData}>Export</Button></Col>
               </Row>
               <Row>
-                <Col md="4"><Button color="primary" onClick={this.handleRefresh}><FaFresh/> Refresh</Button></Col>
                 <Col md="2"><Button color="danger" onClick={this.handleCleanDataspace}>Clean</Button></Col>
               </Row>
             </Container>
@@ -100,19 +99,6 @@ class DataMigrationDetails extends React.Component {
   handleValidateProvider = () => {
     const {dispatch} = this.props
     dispatch(SuppliersActions.validateProvider(this.props.activeId))
-  }
-
-  handleRefresh = () => {
-    const {dispatch, activeId, filter, actionFilter} = this.props
-
-    dispatch(SuppliersActions.selectActiveSupplier(activeId))
-
-    dispatch(SuppliersActions.fetchFilenames(activeId))
-
-    dispatch(SuppliersActions.getProviderStatus(activeId))
-
-    dispatch(SuppliersActions.getChouetteJobStatus(activeId, filter, actionFilter))
-
   }
 
   moveDown = () => {

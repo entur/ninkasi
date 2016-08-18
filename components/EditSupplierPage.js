@@ -11,7 +11,7 @@ import SuppliersActions from '../actions/SuppliersActions'
 require('../sass/components/forms.scss')
 
 
-class EditSupplierForm extends React.Component {
+class EditSupplierPage extends React.Component {
 
   componentDidMount() {
     cfgreader.readConfig( (function(config) {
@@ -70,11 +70,11 @@ class EditSupplierForm extends React.Component {
           <input type="text" placeholder="regtopp_calendar_strategy" {...regtopp_calendar_strategy}/>
         </div>
         <div>
-          <label for="enable_validation">Enable validation</label>
-          <input id="enable_validation" type="checkbox" {...enable_validation}/>
+          <label>Enable validation</label>
+          <input type="checkbox" {...enable_validation}/>
         </div>
-        <div classname="button-panel">
-          <button id="back" onClick={(e) => { e.preventDefault(); browserHistory.push('/admin/ninkasi/') }}>Back</button>
+        <div className="button-panel">
+          <button id="backf" onClick={(e) => { e.preventDefault(); browserHistory.push('/admin/ninkasi/') }}>Back</button>
           <button className="primary" type="submit">Submit</button>
         </div>
       </form>
@@ -98,10 +98,10 @@ const mapStateToProps = (state, ownProps) => ({
   }
 })
 
-EditSupplierForm = reduxForm({
+EditSupplierPage = reduxForm({
   form: 'provider',
   fields: ['name', 'sftp_account', 'prefix', 'referential', 'organisation', 'cuser', 'regtopp_version',
           'regtopp_coordinate_projection', 'data_format', 'regtopp_calendar_strategy', 'enable_validation']
-}, mapStateToProps)(EditSupplierForm)
+}, mapStateToProps)(EditSupplierPage)
 
-export default EditSupplierForm
+export default EditSupplierPage

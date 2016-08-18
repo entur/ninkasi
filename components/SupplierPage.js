@@ -4,8 +4,8 @@ import SuppliersContainer from '../components/SuppliersContainer'
 import NotificationContainer from '../components/NotificationContainer'
 import cfgreader from '../config/readConfig'
 import { Link, browserHistory } from 'react-router'
-import EditSupplierForm from  '../components/EditSupplierForm'
-import NewSupplierForm from  '../components/NewSupplierForm'
+import EditSupplierPage from  '../components/EditSupplierPage'
+import NewSupplierPage from  '../components/NewSupplierPage'
 
 import SuppliersActions from '../actions/SuppliersActions'
 
@@ -19,6 +19,7 @@ class SupplierPage extends React.Component {
       window.config = config
 
       if (id) {
+        console.log("DOES THIS EVER HAPPEN YO")
         dispatch(SuppliersActions.fetchProvider(id))
       }
 
@@ -63,7 +64,7 @@ class SupplierPage extends React.Component {
 
   render() {
 
-    const {id, filter} = this.props
+    const {id} = this.props
 
     const providerDummy = {
         name:"",
@@ -86,8 +87,8 @@ class SupplierPage extends React.Component {
     return (
       <div className="supplierPage">
         {(id ?
-          <EditSupplierForm provider={provider} onSubmit={this.handleSubmit.bind(this)}/> :
-          <NewSupplierForm provider={provider} onSubmit={this.handleSubmit.bind(this)}/>
+          <EditSupplierPage provider={provider} onSubmit={this.handleSubmit.bind(this)}/> :
+          <NewSupplierPage provider={provider} onSubmit={this.handleSubmit.bind(this)}/>
         )}
         <NotificationContainer/>
       </div>
@@ -101,7 +102,6 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     id: ownProps.params.id,
-    filter: ownProps.location.query.filter,
     provider: provider
   }
 }

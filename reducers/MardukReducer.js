@@ -79,8 +79,7 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {chouetteJobFilter: chouetteJobFilter})
 
     case types.SET_ACTIVE_ACTION_FILTER:
-      return Object.assign({}, state, {actionFilter: action.payLoad
-      })
+      return Object.assign({}, state, {actionFilter: action.payLoad})
 
     default:
       return state

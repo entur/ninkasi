@@ -27,11 +27,6 @@ const FaFresh = require('react-icons/lib/fa/refresh')
 
 class SupplierTabWrapper extends React.Component {
 
-  constructor(props) {
-    super(props)
-    this.activeTab = 'migrateData'
-  }
-
   componentWillMount() {
     var self = this
     cfgreader.readConfig( (function(config) {
@@ -41,13 +36,6 @@ class SupplierTabWrapper extends React.Component {
   }
 
 
-  startPolling = () => {
-    var self = this
-    setTimeout(() => {
-      this._timer = setInterval(self.poll, 10000)
-    }, 1000)
-  }
-
   handleDeleteProvider = () => {
 
     const response = confirm("Are you sure you want to delete current provider?")
@@ -55,19 +43,24 @@ class SupplierTabWrapper extends React.Component {
     if (response == true) {
       const {dispatch} = this.props
       dispatch(SuppliersActions.deleteProvider(this.props.activeId))
-      dispatch(SuppliersActions.selectActiveSupplier(0))
-      dispatch(SuppliersActions.fetchSuppliers())
     }
 
+  }
+
+  startPolling = () => {
+    var self = this
+    setTimeout(() => {
+      this._timer = setInterval(self.poll, 10000)
+    }, 1000)
   }
 
 
   poll = () => {
 
-    const {dispatch, activeId, choutteJobFilter, activeTab, actionFilter} = this.props
+    const {dispatch, activeId, activeTab} = this.props
 
     if (activeTab === 'chouetteJobs' && activeId) {
-      dispatch(SuppliersActions.getChouetteJobStatus(activeId,choutteJobFilter, actionFilter))
+       dispatch(SuppliersActions.getChouetteJobStatus())
     }
   }
 
@@ -90,6 +83,12 @@ class SupplierTabWrapper extends React.Component {
      }
 
   }
+
+  handleRefresh = () => {
+    const {dispatch, activeId, filter, actionFilter} = this.props
+    dispatch(SuppliersActions.refreshSupplierData(activeId, filter, actionFilter))
+  }
+
 
   onActive(tab) {
    //console.log(arguments)
@@ -122,9 +121,10 @@ class SupplierTabWrapper extends React.Component {
           <div className="supplier-header">
           <Container fluid={true}>
             <Row>
-              <Col md="4"><p>{supplier.name}</p></Col>
-              <Col md="2" className="edit-dashboard" md="20">
-                <Button onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}><FaEdit/> Edit</Button>
+              <Col md="2"><p>{supplier.name}</p></Col>
+              <Col md="1"><Button color="primary" onClick={this.handleRefresh}><FaFresh/> Refresh</Button></Col>
+              <Col md="2" className="edit-dashboard">
+                <Button color="primary" onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}><FaEdit/> Edit</Button>
                 <Button color="danger" onClick={this.handleDeleteProvider}><FaRemove/> Delete</Button>
               </Col>
             </Row>

@@ -33,11 +33,11 @@ class ChouetteJobDetails extends React.Component {
     dispatch(SuppliersActions.cancelAllChouetteJobsforProvider(activeId))
   }
 
-  handleScheduledChange = (event) => {
-    const {dispatch, activeId, chouetteJobFilter, actionFilter} = this.props
+  handleStatusFilterChange = (event) => {
+    const {dispatch} = this.props
     dispatch(SuppliersActions.toggleChouetteInfoCheckboxFilter(event.target.name, event.target.checked))
-    dispatch(SuppliersActions.getChouetteJobStatus(activeId, chouetteJobFilter, actionFilter))
   }
+
 
   handlePageClick (e, pageIndex) {
     e.preventDefault()
@@ -46,11 +46,9 @@ class ChouetteJobDetails extends React.Component {
   }
 
   setActiveActionFilter (event) {
-      const {dispatch, activeId, chouetteJobFilter, actionFilter} = this.props
-
       if (event.target.name === 'action-filter') {
+        const {dispatch} = this.props
         dispatch(SuppliersActions.setActiveActionFilter(event.target.value))
-        dispatch(SuppliersActions.getChouetteJobStatus(activeId, chouetteJobFilter, actionFilter))
       }
   }
 
@@ -67,19 +65,19 @@ class ChouetteJobDetails extends React.Component {
               <p><b>Status</b></p>
             </Col>
             <Col md="1">
-              <Checkbox onChange={(event) => this.handleScheduledChange(event)} defaultChecked={chouetteJobFilter.SCHEDULED} name="SCHEDULED" label="Scheduled" />
+              <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.SCHEDULED} name="SCHEDULED" label="Scheduled" />
             </Col>
             <Col md="1">
-              <Checkbox onChange={(event) => this.handleScheduledChange(event)} defaultChecked={chouetteJobFilter.STARTED} name="STARTED" label="Started" />
+              <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.STARTED} name="STARTED" label="Started" />
             </Col>
             <Col md="1">
-              <Checkbox onChange={(event) => this.handleScheduledChange(event)} defaultChecked={chouetteJobFilter.TERMINATED}  name="TERMINATED" label="Terminated" />
+              <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.TERMINATED}  name="TERMINATED" label="Terminated" />
             </Col>
             <Col md="1">
-              <Checkbox onChange={(event) => this.handleScheduledChange(event)} defaultChecked={chouetteJobFilter.CANCELED} name="CANCELED" label="Canceled" />
+              <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.CANCELED} name="CANCELED" label="Canceled" />
             </Col>
             <Col md="1">
-              <Checkbox onChange={(event) => this.handleScheduledChange(event)} defaultChecked={chouetteJobFilter.ABORTED} name="ABORTED" label="Aborted" />
+              <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.ABORTED} name="ABORTED" label="Aborted" />
             </Col>
           </Row>
           <Row>

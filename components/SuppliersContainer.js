@@ -26,9 +26,7 @@ class SuppliersContainer extends React.Component {
 
     cfgreader.readConfig( (function(config) {
       window.config = config
-      dispatch(SuppliersActions.fetchSuppliers( window.config ))
-      dispatch(SuppliersActions.selectActiveSupplier( 0 ))
-
+      dispatch(SuppliersActions.fetchSuppliers())
     }).bind(this))
   }
 
@@ -48,26 +46,13 @@ class SuppliersContainer extends React.Component {
   }
 
   selectSupplier(value) {
-
     const {dispatch} = this.props
-
     dispatch(SuppliersActions.selectActiveSupplier(value))
-
-    dispatch(SuppliersActions.restoreFilesToOutbound())
-
-    dispatch(SuppliersActions.fetchFilenames(value))
-
-    dispatch(SuppliersActions.setActivePageIndex(0))
-
-    dispatch(SuppliersActions.setActiveActionFilter(""))
-
   }
 
   render() {
 
-    const { store }  = this.props
     const {suppliers} = this.props
-
 
     return (
 
@@ -86,7 +71,7 @@ class SuppliersContainer extends React.Component {
         </Col>
       </Row>
       <Row>
-        <Col md="8">
+        <Col md="10">
           <Button id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}><FaAdd/>  New provider</Button>
           <Button color="primary" onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</Button>
           <Button color="primary" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</Button>
@@ -100,7 +85,7 @@ class SuppliersContainer extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    suppliers: state.SuppliersReducer.data || []
+    suppliers: state.SuppliersReducer.data
   }
 }
 

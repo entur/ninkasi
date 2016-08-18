@@ -5,28 +5,6 @@ import moment from 'moment'
 
 var SuppliersActions = {}
 
-/* nabu actions */
-
-function requestData() {
-	return {type: types.REQ_DATA}
-}
-
-SuppliersActions.formatProviderStatusDate = (list) => {
-
-	return list.map( (listItem) => {
-
-		listItem.duration = listItem.duration || "Not implemented"
-		listItem.firstEvent = moment(listItem.firstEvent).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
-		listItem.lastEvent = moment(listItem.lastEvent).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
-
-		listItem.events.forEach(function (event) {
-			event.date = moment(event.date).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
-		})
-
-			return listItem
-	})
-
-}
 
 SuppliersActions.getProviderStatus = (id) => {
 
@@ -85,6 +63,8 @@ SuppliersActions.deleteProvider = (id) => {
 			dispatch(receiveData(response.data, types.SUCCESS_DELETE_PROVIDER))
 			dispatch(SuppliersActions.addNotification('Provider deleted', 'success'))
 			dispatch(SuppliersActions.logEvent({title: `Deleted provider ${id} successfully`}))
+			dispatch(SuppliersActions.selectActiveSupplier(0))
+			dispatch(SuppliersActions.fetchSuppliers())
 		})
 		.catch(function(response) {
 			dispatch(receiveError(response.data, types.ERROR_DELETE_PROVIDER))
@@ -93,6 +73,19 @@ SuppliersActions.deleteProvider = (id) => {
 		})
 	}
 }
+
+SuppliersActions.refreshSupplierData = () => {
+	return function(dispatch, getState) {
+		const state = getState()
+		const {activeId} = state.SuppliersReducer
+		dispatch(SuppliersActions.selectActiveSupplier(activeId))
+		dispatch(SuppliersActions.fetchFilenames(activeId))
+		dispatch(SuppliersActions.getProviderStatus(activeId))
+		dispatch(SuppliersActions.getChouetteJobStatus())
+	}
+
+}
+
 
 SuppliersActions.createProvider = (provider) => {
 
@@ -132,25 +125,6 @@ SuppliersActions.updateProvider = (provider) => {
 	}
 }
 
-SuppliersActions.resetProvider = (dispatch) => {
-	const providerDummy = {
-			name:"",
-			sftpAccount:"",
-			chouetteInfo: {
-				prefix: "",
-				referential: "",
-				organisation: "",
-				user: "",
-				regtoppVersion: "",
-				regtoppCoordinateProjection: "",
-				data_format: "",
-				regtoppCalendarStrategy: "",
-				enable_validation: false
-			}
-	}
-	dispatch(receiveData(providerDummy, types.SUCCESS_FETCH_PROVIDER))
-}
-
 SuppliersActions.fetchProvider = (id) => {
 
 	const url = `${window.config.nabuBaseUrl}jersey/providers/${id}`
@@ -169,6 +143,19 @@ SuppliersActions.fetchProvider = (id) => {
 
 
 SuppliersActions.selectActiveSupplier = (id) => {
+
+	return function(dispatch) {
+		dispatch(SuppliersActions.changeActiveSupplierId(id))
+		dispatch(SuppliersActions.restoreFilesToOutbound())
+		dispatch(SuppliersActions.fetchFilenames(id))
+		dispatch(SuppliersActions.setActivePageIndex(0))
+		dispatch(SuppliersActions.setActiveActionFilter(""))
+	}
+
+}
+
+
+SuppliersActions.changeActiveSupplierId = (id) => {
 	return {
 		type: types.SELECT_SUPPLIER,
 		payLoad: id
@@ -222,12 +209,17 @@ SuppliersActions.cancelAllChouetteJobsforProvider = (providerId) => {
 	}
 }
 
+
 SuppliersActions.setActiveActionFilter = (value) => {
-	return {
-		type: types.SET_ACTIVE_ACTION_FILTER,
-		payLoad: value
+
+	return function(dispatch) {
+		dispatch(receiveData(value, types.SET_ACTIVE_ACTION_FILTER))
+ 		dispatch(SuppliersActions.getChouetteJobStatus())
 	}
+
 }
+
+
 
 SuppliersActions.formatChouetteJobsWithDate = (jobs) => {
 
@@ -252,24 +244,31 @@ SuppliersActions.setActiveChouettePageIndex = (index) => {
 	}
 }
 
-SuppliersActions.getChouetteJobStatus = (id, chouetteJobFilter, actionFilter) => {
+SuppliersActions.getChouetteJobStatus = () => {
 
-	let queryString = ''
-	for(let [key, value] of Object.entries(chouetteJobFilter)) {
-    if (value)
-			queryString += `&status=${key}`
-  }
+	return function(dispatch, getState) {
 
-	if (actionFilter && actionFilter.length) {
-		queryString += `&action=${actionFilter}`
-	}
+		const state = getState()
 
-	if (queryString.length)
-		queryString = queryString.substring(1)
+		const {chouetteJobFilter, actionFilter} = state.MardukReducer
 
-	const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/jobs?${queryString}`
+		const {activeId} = state.SuppliersReducer
 
-	return function(dispatch) {
+		let queryString = ''
+		for(let [key, value] of Object.entries(chouetteJobFilter)) {
+			if (value)
+				queryString += `&status=${key}`
+		}
+
+		if (actionFilter && actionFilter.length) {
+			queryString += `&action=${actionFilter}`
+		}
+
+		if (queryString.length)
+			queryString = queryString.substring(1)
+
+		const url = window.config.mardukBaseUrl+`admin/services/chouette/${activeId}/jobs?${queryString}`
+
 		return axios({
 			url: url,
 			timeout: 20000,
@@ -278,20 +277,11 @@ SuppliersActions.getChouetteJobStatus = (id, chouetteJobFilter, actionFilter) =>
 		.then(function(response) {
 			const jobs = SuppliersActions.formatChouetteJobsWithDate(response.data.reverse())
 			dispatch(receiveData(jobs, types.SUCCESS_CHOUETTE_JOB_STATUS))
+			dispatch(SuppliersActions.setActiveChouettePageIndex(0))
 		})
 		.catch(function(response){
 			dispatch(receiveError(response.data, types.ERROR_CHOUETTE_JOB_STATUS))
 		})
-	}
-}
-
-SuppliersActions.toggleChouetteInfoCheckboxFilter = (option, value) => {
-	return {
-		type: types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER,
-		payLoad: {
-			option: option,
-			value: value
-		}
 	}
 }
 
@@ -459,9 +449,6 @@ SuppliersActions.fetchOSM = () => {
 	}
 }
 
-SuppliersActions.setActiveTab = (value) => {
-	return {type: types.SET_ACTIVE_TAB, payLoad: value}
-}
 
 function requestBuildGraph() {
 	return {type: types.REQUEST_BUILD_GRAPH}
@@ -487,8 +474,12 @@ function requestFilenames() {
 	return {type: types.REQUEST_FILENAMES}
 }
 
+function requestData() {
+	return {type: types.REQ_DATA}
+}
 
-/* utils */
+
+/* helpers and util methods */
 
 function receiveData(json, type) {
 	return{
@@ -502,6 +493,36 @@ function receiveError(json, type) {
 		type: type,
 		payLoad: json
 	}
+}
+
+
+SuppliersActions.toggleChouetteInfoCheckboxFilter = (option, value) => {
+	return function(dispatch) {
+		dispatch(receiveData({ option: option,	value: value}, types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER))
+		dispatch(SuppliersActions.getChouetteJobStatus())
+	}
+}
+
+
+SuppliersActions.formatProviderStatusDate = (list) => {
+
+	return list.map( (listItem) => {
+
+		listItem.duration = listItem.duration || "Not implemented"
+		listItem.firstEvent = moment(listItem.firstEvent).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+		listItem.lastEvent = moment(listItem.lastEvent).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+
+		listItem.events.forEach(function (event) {
+			event.date = moment(event.date).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+		})
+
+			return listItem
+	})
+
+}
+
+SuppliersActions.setActiveTab = (value) => {
+	return {type: types.SET_ACTIVE_TAB, payLoad: value}
 }
 
 SuppliersActions.restoreFilesToOutbound = () => {
