@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react'
 import SuppliersActions from '../actions/SuppliersActions'
 import StatusList from './StatusList'
 import ChouetteJobDetails from './ChouetteJobDetails'
+import ChouetteAllJobs from './ChouetteAllJobs'
+
 import DataMigrationDetails from './DataMigrationDetails'
 
 import cfgreader from '../config/readConfig'
@@ -84,6 +86,10 @@ class SupplierTabWrapper extends React.Component {
 
   }
 
+  onAllProvidersTabChange(i, value, tab, ev) {
+    console.log("Does trigger")
+  }
+
   handleRefresh = () => {
     const {dispatch, activeId, filter, actionFilter} = this.props
     dispatch(SuppliersActions.refreshSupplierData(activeId, filter, actionFilter))
@@ -96,11 +102,7 @@ class SupplierTabWrapper extends React.Component {
 
   render() {
 
-    const { store, activeId, suppliers, files, filelistIsLoading, outboundFiles, statusList, chouetteJobStatus}  = this.props
-
-    if (suppliers && suppliers.length > 0) {
-      var supplier = suppliers.filter(function(p) { return p.id == activeId })[0]
-    }
+    const { displayAllSuppliers, store, activeId, suppliers, filelistIsLoading, statusList}  = this.props
 
     if (filelistIsLoading) {
 
@@ -113,36 +115,55 @@ class SupplierTabWrapper extends React.Component {
       )
     }
 
-    if (supplier) {
+    if (!displayAllSuppliers && suppliers.length) {
+      var supplier = suppliers.filter(function(p) { return p.id == activeId })[0]
+    }
+
+    if (displayAllSuppliers || supplier) {
 
       return (
 
         <div>
           <div className="supplier-header">
           <Container fluid={true}>
-            <Row>
-              <Col md="2"><p>{supplier.name}</p></Col>
-              <Col md="1"><Button color="primary" onClick={this.handleRefresh}><FaFresh/> Refresh</Button></Col>
-              <Col md="2" className="edit-dashboard">
-                <Button color="primary" onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}><FaEdit/> Edit</Button>
-                <Button color="danger" onClick={this.handleDeleteProvider}><FaRemove/> Delete</Button>
-              </Col>
-            </Row>
+          { !displayAllSuppliers ?
+              <Row>
+                <Col md="3"><p>{supplier.name}</p></Col>
+                <Col md="1"><Button  onClick={this.handleRefresh}><FaFresh/></Button></Col>
+                <Col md="2">
+                  <Button color="primary" onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}><FaEdit/> Edit</Button>
+                </Col>
+                <Col md="2">
+                  <Button color="danger" onClick={this.handleDeleteProvider}><FaRemove/> Delete</Button>
+                </Col>
+              </Row> :
+              <Row>
+                <Col md="4"><h2>All suppliers ({suppliers.length})</h2></Col>
+              </Row>
+          }
           </Container>
         </div>
+
         <Container fluid={true}>
-        <Tabs onChange={this.onTabChange.bind(this)} initialSelectedIndex={0}>
-          <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
-            <DataMigrationDetails></DataMigrationDetails>
-          </Tab>
-          <Tab value="events" label="Events">
-            <StatusList key="statusList"></StatusList>
-          </Tab>
-          <Tab value="chouetteJobs" label="Chouette jobs">
-            <ChouetteJobDetails></ChouetteJobDetails>
-          </Tab>
-        </Tabs>
-        </Container>
+
+          { !displayAllSuppliers ?
+
+            <Tabs onChange={this.onTabChange.bind(this)} initialSelectedIndex={0}>
+              <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
+                <DataMigrationDetails></DataMigrationDetails>
+              </Tab>
+              <Tab value="events" label="Events">
+                <StatusList key="statusList"></StatusList>
+              </Tab>
+              <Tab value="chouetteJobs" label="Chouette jobs">
+                <ChouetteJobDetails></ChouetteJobDetails>
+              </Tab>
+            </Tabs> :
+
+            <ChouetteAllJobs></ChouetteAllJobs>
+          }
+          </Container>
+
         </div>
       )
     }
@@ -161,12 +182,10 @@ const mapStateToProps = (state, ownProps) => {
   return {
     suppliers: state.SuppliersReducer.data,
     activeId: state.SuppliersReducer.activeId,
-    files: state.MardukReducer.filenames.fetch_filesnames ? state.MardukReducer.filenames.fetch_filesnames['files'] : [],
     filelistIsLoading: state.MardukReducer.filenames.isLoading,
-    outboundFiles: state.UtilsReducer.outboundFilelist,
-    choutteJobFilter: state.MardukReducer.chouetteJobFilter,
     activeTab: state.UtilsReducer.activeTab,
-    actionFilter: state.MardukReducer.actionFilter
+    actionFilter: state.MardukReducer.actionFilter,
+    displayAllSuppliers: state.MardukReducer.all_suppliers_selected
   }
 }
 

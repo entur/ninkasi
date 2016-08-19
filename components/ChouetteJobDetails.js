@@ -64,16 +64,16 @@ class ChouetteJobDetails extends React.Component {
             <Col md="1">
               <p><b>Status</b></p>
             </Col>
-            <Col md="1">
+            <Col md="2">
               <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.SCHEDULED} name="SCHEDULED" label="Scheduled" />
             </Col>
-            <Col md="1">
+            <Col md="2">
               <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.STARTED} name="STARTED" label="Started" />
             </Col>
-            <Col md="1">
+            <Col md="2">
               <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.TERMINATED}  name="TERMINATED" label="Terminated" />
             </Col>
-            <Col md="1">
+            <Col md="2">
               <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.CANCELED} name="CANCELED" label="Canceled" />
             </Col>
             <Col md="1">
@@ -97,6 +97,9 @@ class ChouetteJobDetails extends React.Component {
             <Col md="2">
               <Radio onClick={ (event) => this.setActiveActionFilter(event)}  value="validator" name="action-filter" label="Validator"/>
             </Col>
+            <Col md="2">
+              <Button key={"btn-delete-all"} onClick={this.handleCancelAllChouetteJobs} size="small" color="danger">Cancel all</Button>
+            </Col>
             </Form>
           </Row>
           <Row>
@@ -108,9 +111,6 @@ class ChouetteJobDetails extends React.Component {
                 return <span className={isActive} onClick={(e) => this.handlePageClick(e, index)} key={"link-" + index}>{index}</span>
               })}
             </div>
-          </Col>
-          <Col md="2">
-            <Button key={"btn-delete-all"} onClick={this.handleCancelAllChouetteJobs} size="small" color="danger">Cancel all</Button>
           </Col>
           </Row>
           <Row>
@@ -158,9 +158,12 @@ class ChouetteJobDetails extends React.Component {
               <Col md="1">
                 <p><span className={statusClass}>{job.status}</span></p>
               </Col>
-              <Col md="1">
-                <Button key={"btn-delete-" + index} onClick={ () => this.handleCancelChouetteJob(job.id)} size="small" color="danger">Cancel</Button>
-              </Col>
+              { (job.status === 'STARTED' || job.status === 'SCHEDULED') ?
+                <Col md="1">
+                  <Button key={"btn-delete-" + index} onClick={ () => this.handleCancelChouetteJob(job.id)} size="small" color="danger">Cancel</Button>
+                </Col> : <div></div>
+              }
+
             </Row>
           }) }
         </Container> : <div></div> }

@@ -38,8 +38,6 @@ class DataMigrationDetails extends React.Component {
                 <Col md="2"> <Button color="primary" onClick={this.handleImportData}>Import</Button></Col>
                 <Col md="2"><Button color="primary" onClick={this.handleValidateProvider}>Validate</Button></Col>
                 <Col md="2"><Button color="primary" onClick={this.handleExportData}>Export</Button></Col>
-              </Row>
-              <Row>
                 <Col md="2"><Button color="danger" onClick={this.handleCleanDataspace}>Clean</Button></Col>
               </Row>
             </Container>
@@ -211,7 +209,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     providers: state.SuppliersReducer.data,
     activeId: state.SuppliersReducer.activeId,
-    files: state.MardukReducer.filenames.fetch_filesnames ? state.MardukReducer.filenames.fetch_filesnames['files'] : [],
+    files: state.MardukReducer.filenames.fetch_filesnames['files'],
     filelistIsLoading: state.MardukReducer.filenames.isLoading,
     outboundFiles: state.UtilsReducer.outboundFilelist,
     statusList: state.SuppliersReducer.statusList,

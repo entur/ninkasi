@@ -19,7 +19,6 @@ class SupplierPage extends React.Component {
       window.config = config
 
       if (id) {
-        console.log("DOES THIS EVER HAPPEN YO")
         dispatch(SuppliersActions.fetchProvider(id))
       }
 

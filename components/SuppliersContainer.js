@@ -46,8 +46,15 @@ class SuppliersContainer extends React.Component {
   }
 
   selectSupplier(value) {
+
     const {dispatch} = this.props
-    dispatch(SuppliersActions.selectActiveSupplier(value))
+
+    if (value > 0) {
+      dispatch(SuppliersActions.selectActiveSupplier(value))
+    } else {
+      dispatch(SuppliersActions.selectAllSuppliers())
+    }
+
   }
 
   render() {
@@ -60,7 +67,8 @@ class SuppliersContainer extends React.Component {
       <Row>
         <Col md="7">
           <Select id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
-            <Option value="-1" label="Select provider"></Option>
+            <Option value="0" label="Select provider"></Option>
+            <Option key="-1" value="-1" label={"All providers"}></Option>
             {suppliers.map(supplier => {
               return (
                   <Option key={supplier.id} value={supplier.id} label={supplier.id + " " + supplier.name}>
@@ -73,7 +81,7 @@ class SuppliersContainer extends React.Component {
       <Row>
         <Col md="10">
           <Button id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}><FaAdd/>  New provider</Button>
-          <Button color="primary" onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</Button>
+          <Button color="primary"  onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</Button>
           <Button color="primary" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</Button>
           <Button color="primary" onClick={() => this.openModal()}><FaHistory/> History</Button>
         </Col>

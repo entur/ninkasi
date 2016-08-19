@@ -28,6 +28,18 @@ SuppliersActions.getProviderStatus = (id) => {
   }
 }
 
+SuppliersActions.selectAllSuppliers = () => {
+  return {
+    type: types.SELECT_ALL_SUPPLIERS
+  }
+}
+
+SuppliersActions.unselectAllSuppliers = () => {
+  return {
+    type: types.UNSELECT_ALL_SUPPLIERS
+  }
+}
+
 SuppliersActions.fetchSuppliers = () => {
 
 	const url = window.config.nabuBaseUrl+'jersey/providers/all'
@@ -83,7 +95,6 @@ SuppliersActions.refreshSupplierData = () => {
 		dispatch(SuppliersActions.getProviderStatus(activeId))
 		dispatch(SuppliersActions.getChouetteJobStatus())
 	}
-
 }
 
 
@@ -150,8 +161,8 @@ SuppliersActions.selectActiveSupplier = (id) => {
 		dispatch(SuppliersActions.fetchFilenames(id))
 		dispatch(SuppliersActions.setActivePageIndex(0))
 		dispatch(SuppliersActions.setActiveActionFilter(""))
+    dispatch(SuppliersActions.unselectAllSuppliers())
 	}
-
 }
 
 
@@ -219,6 +230,12 @@ SuppliersActions.setActiveActionFilter = (value) => {
 
 }
 
+SuppliersActions.setActiveActionAllFilter = (value) => {
+  return function(dispatch) {
+		dispatch(receiveData(value, types.SET_ACTIVE_ACTION_ALL_FILTER))
+ 		dispatch(SuppliersActions.getChouetteJobsForAllSuppliers())
+	}
+}
 
 
 SuppliersActions.formatChouetteJobsWithDate = (jobs) => {
@@ -242,6 +259,60 @@ SuppliersActions.setActiveChouettePageIndex = (index) => {
 		type: types.SET_ACTIVE_CHOUTTE_PAGE_INDEX,
 		payLoad: index
 	}
+}
+
+SuppliersActions.getChouetteJobsForAllSuppliers = () => {
+
+  return function(dispatch, getState) {
+
+    const state = getState()
+    const {chouetteJobAllFilter, actionAllFilter} = state.MardukReducer
+
+    let queryString = ''
+
+    for(let [key, value] of Object.entries(chouetteJobAllFilter)) {
+      if (value)
+        queryString += `&status=${key}`
+    }
+
+    if (actionAllFilter && actionAllFilter.length) {
+      queryString += `&action=${actionAllFilter}`
+    }
+
+    const url = window.config.mardukBaseUrl+`admin/services/chouette/jobs?${queryString}`
+
+    return axios({
+			url: url,
+			timeout: 20000,
+			method: 'get'
+		})
+		.then(function(response) {
+
+      let jobs = response.data
+      var allJobs = []
+
+      if (jobs.length) {
+        jobs.forEach( (job) => {
+            if (job.pendingJobs) {
+              job.pendingJobs.forEach ( (pendingJob) => {
+                pendingJob.providerId = job.providerId
+                pendingJob.created = moment(pendingJob.created).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+            		pendingJob.started = moment(pendingJob.started).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+            		pendingJob.updated = moment(pendingJob.updated).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+                allJobs.push(pendingJob)
+              })
+            }
+        })
+      }
+
+      allJobs = allJobs.reverse()
+
+			dispatch(receiveData(allJobs, types.SUCCESS_ALL_CHOUETTE_JOB_STATUS))
+		})
+		.catch(function(response){
+			dispatch(receiveError(response.data, types.ERROR_ALL_CHOUETTE_JOB_STATUS))
+		})
+  }
 }
 
 SuppliersActions.getChouetteJobStatus = () => {
@@ -503,6 +574,12 @@ SuppliersActions.toggleChouetteInfoCheckboxFilter = (option, value) => {
 	}
 }
 
+SuppliersActions.toggleChouetteInfoCheckboxAllFilter = (option, value) => {
+  return function (dispatch) {
+    dispatch(receiveData( { option: option, value: value}, types.TOGGLE_CHOUETTE_INFO_CHECKBOX_ALL_FILTER))
+    dispatch(SuppliersActions.getChouetteJobsForAllSuppliers())
+  }
+}
 
 SuppliersActions.formatProviderStatusDate = (list) => {
 
