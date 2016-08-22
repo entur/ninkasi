@@ -27,6 +27,9 @@ const FaRemove = require('react-icons/lib/fa/times-circle')
 const FaAdd = require('react-icons/lib/fa/plus-circle')
 const FaFresh = require('react-icons/lib/fa/refresh')
 
+require('../sass/main.scss')
+
+
 class SupplierTabWrapper extends React.Component {
 
   componentWillMount() {
@@ -86,9 +89,6 @@ class SupplierTabWrapper extends React.Component {
 
   }
 
-  onAllProvidersTabChange(i, value, tab, ev) {
-    console.log("Does trigger")
-  }
 
   handleRefresh = () => {
     const {dispatch, activeId, filter, actionFilter} = this.props
@@ -121,20 +121,22 @@ class SupplierTabWrapper extends React.Component {
 
     if (displayAllSuppliers || supplier) {
 
+      let initialSelectedIndex = displayAllSuppliers ? 2 : 0
+
       return (
 
-        <div>
+        <div className="supplier-info">
           <div className="supplier-header">
           <Container fluid={true}>
           { !displayAllSuppliers ?
               <Row>
-                <Col md="3"><p>{supplier.name}</p></Col>
-                <Col md="1"><Button  onClick={this.handleRefresh}><FaFresh/></Button></Col>
-                <Col md="2">
-                  <Button color="primary" onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}><FaEdit/> Edit</Button>
+                <Col md="10">
+                  <h1>{supplier.name}</h1>
+                  <div className="small-button" onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}><FaEdit/></div>
+                  <div className="small-button"  onClick={this.handleDeleteProvider}><FaRemove/></div>
                 </Col>
                 <Col md="2">
-                  <Button color="danger" onClick={this.handleDeleteProvider}><FaRemove/> Delete</Button>
+                  <div onClick={this.handleRefresh}><FaFresh/></div>
                 </Col>
               </Row> :
               <Row>
@@ -145,23 +147,30 @@ class SupplierTabWrapper extends React.Component {
         </div>
 
         <Container fluid={true}>
+            <Tabs onChange={this.onTabChange.bind(this)} initialSelectedIndex={initialSelectedIndex}>
 
-          { !displayAllSuppliers ?
+              { !displayAllSuppliers ?
 
-            <Tabs onChange={this.onTabChange.bind(this)} initialSelectedIndex={0}>
-              <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
-                <DataMigrationDetails></DataMigrationDetails>
-              </Tab>
-              <Tab value="events" label="Events">
-                <StatusList key="statusList"></StatusList>
-              </Tab>
+                <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
+                  <DataMigrationDetails></DataMigrationDetails>
+                </Tab> :
+
+                <Tab value="migrateData" label="Migrate data" className="hidden"></Tab>
+              }
+
+              { !displayAllSuppliers ?
+
+                <Tab value="events" label="Events">
+                  <StatusList key="statusList"></StatusList>
+                </Tab> :
+
+                <Tab value="statistics" label="Statistics"></Tab>
+              }
+
               <Tab value="chouetteJobs" label="Chouette jobs">
-                <ChouetteJobDetails></ChouetteJobDetails>
+                { !displayAllSuppliers ? <ChouetteJobDetails></ChouetteJobDetails> : <ChouetteAllJobs></ChouetteAllJobs> }
               </Tab>
-            </Tabs> :
-
-            <ChouetteAllJobs></ChouetteAllJobs>
-          }
+            </Tabs>
           </Container>
 
         </div>

@@ -26,6 +26,7 @@
     "classnames": "^2.2.5",
     "convict": "^1.4.0",
     "css-loader": "^0.23.1",
+    "debounce": "^1.0.0",
     "express": "^4.13.4",
     "halogen": "^0.2.0",
     "history": "^3.0.0",

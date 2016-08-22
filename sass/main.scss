@@ -11,6 +11,7 @@ $open-sans: 'Open Sans', sans-serif;
 body {
   font-family: $open-sans;
   font-weight: normal;
+  background: #e5e5e5;
 }
 
 h1, h2, h3, h4, h5, h6,p {
@@ -18,19 +19,55 @@ h1, h2, h3, h4, h5, h6,p {
   font-weight: normal;
 }
 
-.supplier-details {
-  margin-top: 30px;
+.supplier-info {
+  background: #fff;
+  margin-top: 20px;
   padding-bottom: 20px;
-  padding-top: 20px;
+  margin-left: 40px;
+  border: 1px solid #ccc;
+  width: 80%;
+
+  .supplier-details {
+    margin-top: 30px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+  }
+
+  .small-button {
+    display: inline-block;
+    margin-left: 8px;
+    margin-right: 8px;
+    font-size: 0.7em;
+    color: #366dab;
+  }
 }
 
+.suppliers-container {
+  padding: 20px;
+  margin-left: 20px;
+  > h1 {
+    margin-bottom: 40px;
+  }
+
+  #select-supplier {
+    background-color: #fff;
+    text-indent:5px;
+  }
+}
+
+.new-provider {
+  margin-top: 20px;
+  cursor: pointer;
+}
 
 #providerFilelist, #outboundFilelist {
   margin-top: 20px;
   margin-bottom: 20px;
   resize: vertical;
   min-height: 400px;
-  min-width: 600px;
+  min-width: 610px;
+  max-width: 120%;
+  font-size: 0.9em;
 }
 
 #choutte-jobs {
@@ -65,6 +102,10 @@ h1, h2, h3, h4, h5, h6,p {
 
 .mui--is-active {
   margin-top: 20px;
+}
+
+.mui-select > label {
+  overflow-x: initial;
 }
 
 .long-text {

@@ -59,14 +59,15 @@ class SuppliersContainer extends React.Component {
 
   render() {
 
-    const {suppliers} = this.props
+    const {suppliers, activeProviderId} = this.props
 
     return (
 
-      <Container fluid={true}>
+      <Container className="suppliers-container" fluid={true}>
+        <h1>Ninkasi</h1>
       <Row>
         <Col md="7">
-          <Select id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
+          <Select className="select-supplier" defaultValue={activeProviderId} id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
             <Option value="0" label="Select provider"></Option>
             <Option key="-1" value="-1" label={"All providers"}></Option>
             {suppliers.map(supplier => {
@@ -77,10 +78,12 @@ class SuppliersContainer extends React.Component {
             })}
           </Select>
         </Col>
+        <Col>
+          <div className="new-provider" id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}><FaAdd/> New provider</div>
+        </Col>
       </Row>
       <Row>
         <Col md="10">
-          <Button id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}><FaAdd/>  New provider</Button>
           <Button color="primary"  onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</Button>
           <Button color="primary" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</Button>
           <Button color="primary" onClick={() => this.openModal()}><FaHistory/> History</Button>
@@ -93,7 +96,8 @@ class SuppliersContainer extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    suppliers: state.SuppliersReducer.data
+    suppliers: state.SuppliersReducer.data,
+    activeProviderId: state.SuppliersReducer.activeId
   }
 }
 

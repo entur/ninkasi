@@ -1,5 +1,6 @@
 import axios from 'axios'
 import * as types from './actionTypes'
+import debounce from 'debounce'
 
 import moment from 'moment'
 
@@ -263,7 +264,7 @@ SuppliersActions.setActiveChouettePageIndex = (index) => {
 
 SuppliersActions.getChouetteJobsForAllSuppliers = () => {
 
-  return function(dispatch, getState) {
+  return debounce(function(dispatch, getState) {
 
     const state = getState()
     const {chouetteJobAllFilter, actionAllFilter} = state.MardukReducer
@@ -312,12 +313,12 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => {
 		.catch(function(response){
 			dispatch(receiveError(response.data, types.ERROR_ALL_CHOUETTE_JOB_STATUS))
 		})
-  }
+  }, 300, false)
 }
 
 SuppliersActions.getChouetteJobStatus = () => {
 
-	return function(dispatch, getState) {
+	return debounce(function(dispatch, getState) {
 
 		const state = getState()
 
@@ -353,7 +354,8 @@ SuppliersActions.getChouetteJobStatus = () => {
 		.catch(function(response){
 			dispatch(receiveError(response.data, types.ERROR_CHOUETTE_JOB_STATUS))
 		})
-	}
+	}, 300, false)
+
 }
 
 
