@@ -192,7 +192,7 @@ class SupplierTabWrapper extends React.Component {
                 </Col>
               </Row> :
               <Row>
-                <Col md="4"><h2>All suppliers ({suppliers.length})</h2></Col>
+                <Col md="4"><h2>All providers ({suppliers.length})</h2></Col>
               </Row>
           }
           </Container>

@@ -243,9 +243,9 @@ SuppliersActions.formatChouetteJobsWithDate = (jobs) => {
 
 	return jobs.map( (job) => {
 
-		job.created = moment(job.created).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
-		job.started = moment(job.started).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
-		job.updated = moment(job.updated).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+		job.created = moment(job.created).locale("nb").format("YYYY-MM-DD HH:mm:ss")
+		job.started = moment(job.started).locale("nb").format("YYYY-MM-DD HH:mm:ss")
+		job.updated = moment(job.updated).locale("nb").format("YYYY-MM-DD HH:mm:ss")
 
 		return job
 
@@ -588,11 +588,11 @@ SuppliersActions.formatProviderStatusDate = (list) => {
 	return list.map( (listItem) => {
 
     listItem.duration = moment(moment(listItem.lastEvent).diff(moment(listItem.firstEvent))).locale("nb").utc().format("HH:mm:ss")
-    listItem.firstEvent = moment(listItem.firstEvent).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
-		listItem.lastEvent = moment(listItem.lastEvent).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+    listItem.firstEvent = moment(listItem.firstEvent).locale("nb").format("YYYY-MM-DD HH:mm:ss")
+		listItem.lastEvent = moment(listItem.lastEvent).locale("nb").format("YYYY-MM-DD HH:mm:ss")
 
 		listItem.events.forEach(function (event) {
-			event.date = moment(event.date).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
+			event.date = moment(event.date).locale("nb").format("YYYY-MM-DD HH:mm:ss")
 		})
 
 			return listItem

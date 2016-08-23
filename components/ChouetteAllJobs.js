@@ -156,7 +156,7 @@ class ChouetteAllJobs extends React.Component {
 
               return <Row key={'ch-job-' + index}>
                 <Col md="1">
-                  <p>{job.providerId}</p>
+                  <p>{job.referential}</p>
                 </Col>
                 <Col md="1">
                   <p>{job.id}</p>
