@@ -1,17 +1,25 @@
 .page-link-parent {
+
   display: block;
-  margin: 20px;
-}
-.page-link {
-  display: inline-block;
-  cursor: pointer;
-  margin-left: 5px;
-}
+  margin-bottom: 20px;
 
-.active-link {
-  color: red;
-}
+  .page-link {
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 5px;
+    margin-top: 3px;
 
-.inactive-link {
-  color: blue;
+    &.active-link {
+      color: black;
+      border: 1px solid red;
+      border-radius: 50%;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+
+    &.inactive-link {
+      color: #2196F3;
+    }
+  }
+
 }

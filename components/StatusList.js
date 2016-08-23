@@ -13,7 +13,6 @@ import SuppliersActions from '../actions/SuppliersActions'
 
 class StatusList extends React.Component {
 
-
   componentWillMount(){
     cfgreader.readConfig( (function(config) {
       window.config = config
@@ -40,16 +39,10 @@ class StatusList extends React.Component {
       return (
 
         <div>
-
           <Container fluid={true}>
             <Row>
-              <Col md="12">
-                <h3>Events</h3>
-              </Col>
-            </Row>
-            <Row>
               <div className="page-link-parent">
-                <span>Pages: </span>
+                <span className="ml-17">Pages: </span>
                 {paginationMap.map ( (page, index) => {
                   const isActive = (index == activePageIndex) ? 'page-link active-link' : 'page-link inactive-link'
                   return <span className={isActive} onClick={(e) => this.handlePageClick(e, index)} key={"link-" + index}>{index}</span>

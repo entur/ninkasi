@@ -31,7 +31,6 @@ require('../sass/main.scss')
 
 
 class SupplierTabWrapper extends React.Component {
-
   componentWillMount() {
     var self = this
     cfgreader.readConfig( (function(config) {
@@ -100,6 +99,33 @@ class SupplierTabWrapper extends React.Component {
    //console.log(arguments)
   }
 
+  getTabsToRender = (displayAllSuppliers) => {
+
+    let tabsToRender
+    if (!displayAllSuppliers) {
+      tabsToRender = (
+        <Tabs onChange={this.onTabChange.bind(this)} initialSelectedIndex={0}>
+            <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
+              <DataMigrationDetails></DataMigrationDetails>
+            </Tab>
+            <Tab value="events" label="Events">
+              <StatusList key="statusList"></StatusList>
+            </Tab>
+            <Tab value="migrateData" label="Migrate data" className="hidden"></Tab>
+            <Tab value="chouetteJobs" label="Chouette jobs">
+              <ChouetteJobDetails></ChouetteJobDetails>
+            </Tab>
+        </Tabs>
+      )
+    } else {
+        tabsToRender = (<Tabs onChange={this.onTabChange.bind(this)} initialSelectedIndex={0}>
+            <Tab value="chouetteJobs" label="Chouette jobs">
+              <ChouetteAllJobs></ChouetteAllJobs>
+            </Tab>
+        </Tabs>)
+    }
+  }
+
   render() {
 
     const { displayAllSuppliers, store, activeId, suppliers, filelistIsLoading, statusList}  = this.props
@@ -121,7 +147,33 @@ class SupplierTabWrapper extends React.Component {
 
     if (displayAllSuppliers || supplier) {
 
-      let initialSelectedIndex = displayAllSuppliers ? 2 : 0
+      let tabsToRender
+      if (!displayAllSuppliers) {
+
+        tabsToRender =
+          <Tabs onChange={this.onTabChange.bind(this)} initialSelectedIndex={0}>
+              <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
+                <DataMigrationDetails></DataMigrationDetails>
+              </Tab>
+              <Tab value="events" label="Events">
+                <StatusList key="statusList"></StatusList>
+              </Tab>
+              <Tab value="chouetteJobs" label="Chouette jobs">
+                <ChouetteJobDetails></ChouetteJobDetails>
+              </Tab>
+          </Tabs>
+
+      } else {
+          tabsToRender =
+            <Tabs initialSelectedIndex={0}>
+              <Tab value="chouetteJobs" label="Chouette jobs">
+                <ChouetteAllJobs></ChouetteAllJobs>
+              </Tab>
+              <Tab value="statistics" label="Statistics">
+                <p>Statics for providers</p>
+              </Tab>
+          </Tabs>
+      }
 
       return (
 
@@ -131,7 +183,7 @@ class SupplierTabWrapper extends React.Component {
           { !displayAllSuppliers ?
               <Row>
                 <Col md="10">
-                  <h1>{supplier.name}</h1>
+                  <span>{supplier.id} {supplier.name}</span>
                   <div className="small-button" onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}><FaEdit/></div>
                   <div className="small-button"  onClick={this.handleDeleteProvider}><FaRemove/></div>
                 </Col>
@@ -147,32 +199,8 @@ class SupplierTabWrapper extends React.Component {
         </div>
 
         <Container fluid={true}>
-            <Tabs onChange={this.onTabChange.bind(this)} initialSelectedIndex={initialSelectedIndex}>
-
-              { !displayAllSuppliers ?
-
-                <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
-                  <DataMigrationDetails></DataMigrationDetails>
-                </Tab> :
-
-                <Tab value="migrateData" label="Migrate data" className="hidden"></Tab>
-              }
-
-              { !displayAllSuppliers ?
-
-                <Tab value="events" label="Events">
-                  <StatusList key="statusList"></StatusList>
-                </Tab> :
-
-                <Tab value="statistics" label="Statistics"></Tab>
-              }
-
-              <Tab value="chouetteJobs" label="Chouette jobs">
-                { !displayAllSuppliers ? <ChouetteJobDetails></ChouetteJobDetails> : <ChouetteAllJobs></ChouetteAllJobs> }
-              </Tab>
-            </Tabs>
-          </Container>
-
+            {(tabsToRender)}
+        </Container>
         </div>
       )
     }

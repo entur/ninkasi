@@ -61,12 +61,19 @@ class SuppliersContainer extends React.Component {
 
     const {suppliers, activeProviderId} = this.props
 
+    console.log("activeProviderId", activeProviderId)
+
     return (
 
       <Container className="suppliers-container" fluid={true}>
         <h1>Ninkasi</h1>
+          <div>
+              <div className="subtle-button" onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</div>
+              <div className="subtle-button" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</div>
+              <div className="subtle-button" onClick={() => this.openModal()}><FaHistory/> History</div>
+          </div>
       <Row>
-        <Col md="7">
+        <Col md="6">
           <Select className="select-supplier" defaultValue={activeProviderId} id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
             <Option value="0" label="Select provider"></Option>
             <Option key="-1" value="-1" label={"All providers"}></Option>
@@ -79,14 +86,7 @@ class SuppliersContainer extends React.Component {
           </Select>
         </Col>
         <Col>
-          <div className="new-provider" id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}><FaAdd/> New provider</div>
-        </Col>
-      </Row>
-      <Row>
-        <Col md="10">
-          <Button color="primary"  onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</Button>
-          <Button color="primary" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</Button>
-          <Button color="primary" onClick={() => this.openModal()}><FaHistory/> History</Button>
+          <div className="new-provider" id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}><FaAdd/> New</div>
         </Col>
       </Row>
     </Container>

@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react'
 import SuppliersContainer from '../components/SuppliersContainer'
 import SupplierTabWrapper from '../components/SupplierTabWrapper'
 import NotificationContainer from '../components/NotificationContainer'
+import Footer from '../components/Footer'
+
 import cfgreader from '../config/readConfig'
 import { Link, browserHistory } from 'react-router'
 
@@ -19,6 +21,7 @@ export default class MainPage extends React.Component {
         <SupplierTabWrapper/>
         <NotificationContainer/>
         <ModalViewContainer/>
+        <Footer/>
       </div>
     )
   }

@@ -33,20 +33,18 @@ class DataMigrationDetails extends React.Component {
 
           <div>
 
-            <Container fluid={true}>
-              <Row>
-                <Col md="2"> <Button color="primary" onClick={this.handleImportData}>Import</Button></Col>
-                <Col md="2"><Button color="primary" onClick={this.handleValidateProvider}>Validate</Button></Col>
-                <Col md="2"><Button color="primary" onClick={this.handleExportData}>Export</Button></Col>
-                <Col md="2"><Button color="danger" onClick={this.handleCleanDataspace}>Clean</Button></Col>
-              </Row>
-            </Container>
+            <div className="button-group">
+                <Button color="primary" onClick={this.handleImportData}>Import</Button>
+                <Button color="primary" onClick={this.handleValidateProvider}>Validate</Button>
+                <Button color="primary" onClick={this.handleExportData}>Export</Button>
+                <Button color="danger" onClick={this.handleCleanDataspace}>Clean</Button>
+            </div>
 
             <Container fluid={true}>
               <Row>
-                <Col md="8">
+                <div>
                   <ProviderFilelist files={files}></ProviderFilelist>
-                </Col>
+                </div>
               </Row>
               <Row>
                 <Col md="8">
@@ -55,9 +53,9 @@ class DataMigrationDetails extends React.Component {
                 </Col>
               </Row>
               <Row>
-                <Col md="8">
+                <div>
                   <OutboundFilelist files={outboundFiles}></OutboundFilelist>
-                </Col>
+                </div>
               </Row>
               {outboundFiles.length ? <Row>
                 <Col md="8">

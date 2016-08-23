@@ -4,6 +4,9 @@
 @import "components/forms";
 @import "components/links";
 @import "components/colors";
+@import "components/Footer";
+@import "components/buttons";
+@import "helpers";
 
 $roboto-slab: 'Roboto Slab', serif;
 $open-sans: 'Open Sans', sans-serif;
@@ -12,12 +15,9 @@ body {
   font-family: $open-sans;
   font-weight: normal;
   background: #e5e5e5;
+  font-family: $open-sans;
 }
 
-h1, h2, h3, h4, h5, h6,p {
-  font-family: $open-sans;
-  font-weight: normal;
-}
 
 .supplier-info {
   background: #fff;
@@ -35,10 +35,11 @@ h1, h2, h3, h4, h5, h6,p {
 
   .small-button {
     display: inline-block;
-    margin-left: 8px;
-    margin-right: 8px;
-    font-size: 0.7em;
+    margin-left: 10px;
+    margin-right: 5px;
+    font-size: 0.6em;
     color: #366dab;
+    vertical-align: bottom;
   }
 }
 
@@ -47,11 +48,14 @@ h1, h2, h3, h4, h5, h6,p {
   margin-left: 20px;
   > h1 {
     margin-bottom: 40px;
+    font-weight: 500;
   }
 
   #select-supplier {
     background-color: #fff;
     text-indent:5px;
+    background-size: 13px;
+    background-position-x: 99%;
   }
 }
 
@@ -60,14 +64,27 @@ h1, h2, h3, h4, h5, h6,p {
   cursor: pointer;
 }
 
+.filter-wrapper {
+
+  &:first-child {
+    border-bottom: 1px dotted #eee;
+    padding-bottom: 10px;
+  }
+  &:last-child {
+    padding-top: 10px;
+  }
+}
+
 #providerFilelist, #outboundFilelist {
   margin-top: 20px;
   margin-bottom: 20px;
+  margin-left: 17px;
   resize: vertical;
   min-height: 400px;
-  min-width: 610px;
-  max-width: 120%;
   font-size: 0.9em;
+  width: 90%;
+  overflow: auto;
+  white-space: nowrap;
 }
 
 #choutte-jobs {

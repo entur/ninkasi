@@ -188,13 +188,13 @@ SuppliersActions.cancelChouetteJobForProvider = (providerId, chouetteId) => {
 		.then(function (response) {
 			dispatch(receiveData(response.data, types.SUCCESS_DELETE_PROVIDERS_CHOUETTE_JOB))
 			dispatch(SuppliersActions.addNotification(`Cancelled chouettejob with id ${chouetteId}`, 'success'))
-			dispatch(SuppliersActions.logEvent({title: `Chouette job with ${chouetteId} successfully cancelled for provider ${provider.id}`}))
+			dispatch(SuppliersActions.logEvent({title: `Chouette job with ${chouetteId} successfully cancelled for provider ${providerId}`}))
 
 		})
 		.catch(function (response) {
 			dispatch(receiveData(response.data, types.ERROR_DELETE_PROVIDERS_CHOUETTE_JOB))
 			dispatch(SuppliersActions.addNotification(`Unable to cancel chouettejob with id ${chouetteId}`, 'error'))
-			dispatch(SuppliersActions.logEvent({title: `Unable to cancel chouette job with id ${chouetteId} for provider ${provider.id}`}))
+			dispatch(SuppliersActions.logEvent({title: `Unable to cancel chouette job with id ${chouetteId} for provider ${providerId}`}))
 		})
 	}
 }
@@ -211,12 +211,12 @@ SuppliersActions.cancelAllChouetteJobsforProvider = (providerId) => {
 		.then(function (response) {
 			dispatch(receiveData(response.data, types.SUCCESS_DELETE_ALL_PROVIDERS_CHOUETTE_JOB))
 			dispatch(SuppliersActions.addNotification(`Deleted all chouttejobs for provider ${providerId}`, 'success'))
-			dispatch(SuppliersActions.logEvent({title: `All chouette jobs for provider ${provider.id} successfully  cancelled `}))
+			dispatch(SuppliersActions.logEvent({title: `All chouette jobs for provider ${providerId} successfully  cancelled `}))
 		})
 		.catch(function (response) {
 			dispatch(receiveData(response.data, types.ERROR_DELETE_ALL_PROVIDERS_CHOUETTE_JOB))
 			dispatch(SuppliersActions.addNotification(`Failed deleting all chouttejobs for provider ${providerId}`, 'error'))
-			dispatch(SuppliersActions.logEvent({title: `Unable to cancel chouette jobs for provider ${provider.id}`}))
+			dispatch(SuppliersActions.logEvent({title: `Unable to cancel chouette jobs for provider ${providerId}`}))
 		})
 	}
 }
