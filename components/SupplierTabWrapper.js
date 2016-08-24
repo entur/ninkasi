@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import SuppliersActions from '../actions/SuppliersActions'
-import StatusList from './StatusList'
+import EventDetails from './EventDetails'
 import ChouetteJobDetails from './ChouetteJobDetails'
 import ChouetteAllJobs from './ChouetteAllJobs'
 
@@ -109,7 +109,7 @@ class SupplierTabWrapper extends React.Component {
               <DataMigrationDetails></DataMigrationDetails>
             </Tab>
             <Tab value="events" label="Events">
-              <StatusList key="statusList"></StatusList>
+              <EventDetails key="EventDetails"></EventDetails>
             </Tab>
             <Tab value="migrateData" label="Migrate data" className="hidden"></Tab>
             <Tab value="chouetteJobs" label="Chouette jobs">
@@ -156,7 +156,7 @@ class SupplierTabWrapper extends React.Component {
                 <DataMigrationDetails></DataMigrationDetails>
               </Tab>
               <Tab value="events" label="Events">
-                <StatusList key="statusList"></StatusList>
+                <EventDetails key="statusList"></EventDetails>
               </Tab>
               <Tab value="chouetteJobs" label="Chouette jobs">
                 <ChouetteJobDetails></ChouetteJobDetails>

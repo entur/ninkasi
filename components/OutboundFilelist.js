@@ -23,7 +23,7 @@ class OutboundFilelist extends React.Component {
       )
     } else {
         return (
-            <i> No files are currently outbound</i>
+            <div className="no-files">No files are added to export.</div>
         )
     }
 

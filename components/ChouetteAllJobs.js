@@ -17,7 +17,6 @@ import SuppliersActions from '../actions/SuppliersActions'
 
 
 class ChouetteAllJobs extends React.Component {
-
   componentWillMount(){
     const {dispatch} = this.props
     cfgreader.readConfig( (function(config) {
@@ -47,6 +46,11 @@ class ChouetteAllJobs extends React.Component {
       const {dispatch} = this.props
       dispatch(SuppliersActions.setActiveActionAllFilter(event.target.value))
     }
+  }
+
+  handleSortForColumn(columnName) {
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.sortListByColumn("chouetteAll", columnName))
   }
 
   render() {
@@ -122,25 +126,25 @@ class ChouetteAllJobs extends React.Component {
 
             <Row>
               <Col md="1">
-                <p><b>Provider</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("referential") }>Provider</div>
               </Col>
               <Col md="1">
-                <p><b>Id</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("id") }>Id</div>
               </Col>
               <Col md="1">
-                <p><b>Action</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("action") }>Action</div>
               </Col>
               <Col md="2">
-                <p><b>Created</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("created") }>Created</div>
               </Col>
               <Col md="2">
-                <p><b>Started</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("started") }>Started</div>
               </Col>
               <Col md="2">
-                <p><b>Updated</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("updated") }>Updated</div>
               </Col>
               <Col md="1">
-                <p><b>Status</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("status") }>Status</div>
               </Col>
             </Row> :
 
@@ -192,8 +196,24 @@ class ChouetteAllJobs extends React.Component {
 
     const mapStateToProps = (state, ownProps) => {
 
-      var paginationMap = []
       var list = state.MardukReducer.chouetteAllJobStatus
+
+      let sortProperty = state.UtilsReducer.chouetteListAllSortOrder.property
+      let sortOrder = state.UtilsReducer.chouetteListAllSortOrder.sortOrder
+
+      list.sort( (curr, prev) => {
+
+        if (sortOrder == 0) {
+          return (curr[sortProperty] > prev[sortProperty] ? -1 : 1)
+        }
+
+        if (sortOrder == 1) {
+          return (curr[sortProperty] > prev[sortProperty] ? 1 : -1)
+        }
+
+      })
+
+      var paginationMap = []
 
       for (let i = 0, j = list.length; i < j; i+=20) {
         paginationMap.push(list.slice(i,i+20))

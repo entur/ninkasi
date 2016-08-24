@@ -25,7 +25,9 @@ const cleanSlate = {
   },
   actionFilter: "",
   actionAllFilter: "",
-  all_suppliers_selected: true
+  all_suppliers_selected: true,
+  requesting_chouette_job: false,
+  requesting_chouette_all_job: false
 }
 
 
@@ -81,10 +83,10 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {filesnames: {isLoading: false, error: action.payLoad}})
 
     case types.SUCCESS_CHOUETTE_JOB_STATUS:
-      return Object.assign({}, state, {chouetteJobStatus: action.payLoad})
+      return Object.assign({}, state, {requesting_chouette_job: false, chouetteJobStatus: action.payLoad})
 
     case types.SUCCESS_ALL_CHOUETTE_JOB_STATUS:
-      return Object.assign({}, state, {chouetteAllJobStatus: action.payLoad})
+      return Object.assign({}, state, {requesting_chouette_all_job: false, chouetteAllJobStatus: action.payLoad})
 
     case types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER:
       let chouetteJobFilter = {...state.chouetteJobFilter}
@@ -107,6 +109,12 @@ const MardukReducer = (state = cleanSlate, action) => {
 
     case types.UNSELECT_ALL_SUPPLIERS:
       return Object.assign({}, state, {all_suppliers_selected: false})
+
+    case types.REQUEST_CHOUETTE_JOBS_FOR_PROVIDER:
+      return Object.assign({}, state, {requesting_chouette_job: true})
+
+    case types.REQUEST_CHOUETTE_JOBS_FOR_ALL_PROVIDERS:
+      return Object.assign({}, state, {requesting_chouette_all_job: true})
 
     default:
       return state

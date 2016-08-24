@@ -18,6 +18,12 @@ body {
   font-family: $open-sans;
 }
 
+.description-title {
+  margin-top: 20px;
+  margin-left: 20px;
+  font-weight: 600;
+}
+
 
 .supplier-info {
   background: #fff;
@@ -103,7 +109,6 @@ body {
 }
 
 .jobstatus-wrapper {
-  margin-top: 20px;
   margin-bottom: 20px;
   border: 1px solid #eee;
   padding: 10px;
@@ -127,4 +132,16 @@ body {
 
 .long-text {
   word-break: break-all;
+}
+
+.table-header {
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.no-files {
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

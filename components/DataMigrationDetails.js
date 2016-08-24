@@ -43,6 +43,7 @@ class DataMigrationDetails extends React.Component {
             <Container fluid={true}>
               <Row>
                 <div>
+                  <div className="description-title">Files from S3</div>
                   <ProviderFilelist files={files}></ProviderFilelist>
                 </div>
               </Row>

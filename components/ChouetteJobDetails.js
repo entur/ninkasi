@@ -39,7 +39,6 @@ class ChouetteJobDetails extends React.Component {
     dispatch(SuppliersActions.toggleChouetteInfoCheckboxFilter(event.target.name, event.target.checked))
   }
 
-
   handlePageClick (e, pageIndex) {
     e.preventDefault()
     const {dispatch} = this.props
@@ -51,6 +50,11 @@ class ChouetteJobDetails extends React.Component {
         const {dispatch} = this.props
         dispatch(SuppliersActions.setActiveActionFilter(event.target.value))
       }
+  }
+
+  handleSortForColumn(columnName) {
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.sortListByColumn("chouette", columnName))
   }
 
   render() {
@@ -130,22 +134,22 @@ class ChouetteJobDetails extends React.Component {
 
             <Row>
               <Col md="1">
-                <p><b>Id</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("id") }>Id</div>
               </Col>
               <Col md="2">
-                <p><b>Action</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("action") }>Action</div>
               </Col>
               <Col md="2">
-                <p><b>Created</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("created") }>Created</div>
               </Col>
               <Col md="2">
-                <p><b>Started</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("started") }>Started</div>
               </Col>
               <Col md="2">
-                <p><b>Updated</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("updated") }>Updated</div>
               </Col>
               <Col md="1">
-                <p><b>Status</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("status") }>Status</div>
               </Col>
             </Row> :
 
@@ -194,8 +198,24 @@ class ChouetteJobDetails extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
 
-  var paginationMap = []
-  var list = state.MardukReducer.chouetteJobStatus
+  let list = state.MardukReducer.chouetteJobStatus
+
+  let sortProperty = state.UtilsReducer.chouetteListSortOrder.property
+  let sortOrder = state.UtilsReducer.chouetteListSortOrder.sortOrder
+
+  list.sort( (curr, prev) => {
+
+    if (sortOrder == 0) {
+      return (curr[sortProperty] > prev[sortProperty] ? -1 : 1)
+    }
+
+    if (sortOrder == 1) {
+      return (curr[sortProperty] > prev[sortProperty] ? 1 : -1)
+    }
+
+  })
+
+  let paginationMap = []
 
   for (let i = 0, j = list.length; i < j; i+=20) {
     paginationMap.push(list.slice(i,i+20))

@@ -22,7 +22,19 @@ const intialState = {
   filteredLoggedEvents: [],
   activePageIndex: 0,
   activeChouettePageIndex: 0,
-  activeTab: 'migrateData'
+  activeTab: 'migrateData',
+  eventListSortOrder: {
+    property: "firstEvent",
+    sortOrder: 0 // 0 = asc, 1 = desc
+  },
+  chouetteListAllSortOrder: {
+    property: "id",
+    sortOrder: 0
+  },
+  chouetteListSortOrder: {
+    property: "id",
+    sortOrder: 0
+  }
 }
 
 const filterHelper = (loggedEvents, loggedEventsFilter) => {
@@ -30,6 +42,7 @@ const filterHelper = (loggedEvents, loggedEventsFilter) => {
     return item.title.toLowerCase().indexOf(loggedEventsFilter.toLowerCase()) > -1
   })
 }
+
 
 const UtilsReducer = (state = intialState, action) => {
 
@@ -77,6 +90,35 @@ const UtilsReducer = (state = intialState, action) => {
 
     case types.SET_ACTIVE_TAB:
       return Object.assign({}, state, {activeTab: action.payLoad})
+
+    case types.SORT_EVENTLIST_BY_COLUMN:
+      let eventsSortOrder = 0
+
+      if (state.eventListSortOrder.property == action.payLoad) {
+        eventsSortOrder = state.eventListSortOrder.sortOrder == 1 ? 0 : 1
+      }
+
+      console.log("eventsSortOrder", eventsSortOrder)
+
+      return Object.assign({}, state, {eventListSortOrder: {property: action.payLoad, sortOrder: eventsSortOrder} })
+
+    case types.SORT_CHOUETTE_ALL_BY_COLUMN:
+      let chouetteAllSortOrder = 0
+
+      if (state.chouetteListAllSortOrder.property == action.payLoad) {
+        chouetteAllSortOrder = state.chouetteListAllSortOrder.sortOrder >= 1 ? 0 : 1
+      }
+
+      return Object.assign({}, state, {chouetteListAllSortOrder: {property: action.payLoad, sortOrder: chouetteAllSortOrder} })
+
+    case types.SORT_CHOUETTE_BY_COLUMN:
+      let chouetteSortOrder = 0
+
+      if (state.chouetteListSortOrder.property == action.payLoad) {
+        chouetteSortOrder = state.chouetteListSortOrder.sortOrder >= 1 ? 0 : 1
+      }
+
+      return Object.assign({}, state, {chouetteListSortOrder: {property: action.payLoad, sortOrder: chouetteSortOrder} })
 
 
     default:

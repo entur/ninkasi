@@ -3,15 +3,17 @@ import React, { Component, PropTypes } from 'react'
 import cfgreader from '../config/readConfig'
 import { bindActionCreators } from 'redux'
 
-import StatusEventList from './StatusEventList'
+import EventExpandableContent from './EventExpandableContent'
 
 import Container from 'muicss/lib/react/container'
 import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
+const FaChevronDown = require('react-icons/lib/fa/chevron-down')
+const FaChevronUp  = require('react-icons/lib/fa/chevron-up')
 
 import SuppliersActions from '../actions/SuppliersActions'
 
-class StatusList extends React.Component {
+class EventDetails extends React.Component {
 
   componentWillMount(){
     cfgreader.readConfig( (function(config) {
@@ -30,9 +32,14 @@ class StatusList extends React.Component {
     dispatch(SuppliersActions.setActivePageIndex(pageIndex))
   }
 
+  handleSortForColumn(columnName) {
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.sortListByColumn("events", columnName))
+  }
+
   render() {
 
-    const {page, paginationMap, activePageIndex} = this.props
+    const {page, paginationMap, activePageIndex, expandedEventId} = this.props
 
     if (page && page.length && paginationMap) {
 
@@ -51,22 +58,19 @@ class StatusList extends React.Component {
             </Row>
             <Row>
               <Col md="2">
-                <p><b>Correlation id</b></p>
-              </Col>
-              <Col md="3">
-                <p><b>Filename</b></p>
+              <div className="table-header" onClick={ () => this.handleSortForColumn("fileName") }>Filename</div>
               </Col>
               <Col md="1">
-                <p><b>End state</b></p>
+                <div className="table-header" onClick={ () => this.handleSortForColumn("endState") }>End state</div>
               </Col>
-              <Col md="2">
-                <p><b>First event</b></p>
+              <Col md="3">
+              <div className="table-header" onClick={ () => this.handleSortForColumn("firstEvent") }>First event</div>
               </Col>
-              <Col md="2">
-                <p><b>Last Event</b></p>
+              <Col md="3">
+              <div className="table-header" onClick={ () => this.handleSortForColumn("lastEvent") }>Last event</div>
               </Col>
-              <Col md="2">
-                <p><b>Duration</b></p>
+              <Col md="3">
+              <div className="table-header" onClick={ (e) => this.handleSortForColumn("duration") }>Duration</div>
               </Col>
             </Row>
           </Container>
@@ -79,19 +83,21 @@ class StatusList extends React.Component {
 
               return (
 
-                <div className="jobstatus-wrapper" key={"jobstatus-wrapper-" + index} onClick={() => this.handleToggleVisibility(index)}>
+                <div className="jobstatus-wrapper" key={"jobstatus-wrapper-" + index}>
                   <Row key={"k-" + index}>
-                    <Col md="2">
-                      <p>{listItem.correlationId}</p>
-                    </Col>
-                    <Col md="3"><p><span className="long-text">{listItem.fileName}</span></p></Col>
+                    <Col md="2"><p><span className="long-text">{listItem.fileName}</span></p></Col>
                     <Col md="1"><p><span className={endStateClass}>{listItem.endState}</span></p></Col>
-                    <Col md="2"><p>{listItem.firstEvent}</p></Col>
-                    <Col md="2"><p>{listItem.lastEvent}</p></Col>
+                    <Col md="3"><p>{listItem.firstEvent}</p></Col>
+                    <Col md="3"><p>{listItem.lastEvent}</p></Col>
                     <Col md="2"><p>{listItem.duration}</p></Col>
+                    <Col md="1">
+                      <div onClick={() => this.handleToggleVisibility(index)}>
+                        { (index != expandedEventId) ? <FaChevronDown/> : <FaChevronUp/> }
+                      </div>
+                    </Col>
                   </Row>
                   <Row key={"k2-" + index}>
-                    <StatusEventList key={"statusEventList-" + index} refId={index} events={listItem.events}></StatusEventList>
+                    <EventExpandableContent key={"statusEventList-" + index} refId={index} corrId={listItem.correlationId} events={listItem.events}></EventExpandableContent>
                   </Row>
                 </div>
               )
@@ -122,6 +128,21 @@ const mapStateToProps = (state, ownProps) => {
   var paginationMap = []
   var list = state.SuppliersReducer.statusList
 
+  var sortOrder = state.UtilsReducer.eventListSortOrder.sortOrder
+  var sortProperty = state.UtilsReducer.eventListSortOrder.property
+
+  list.sort( (curr, prev) => {
+
+    if (sortOrder === 0) {
+      return (curr[sortProperty] > prev[sortProperty] ? -1 : 1)
+    }
+
+    if (sortOrder === 1) {
+      return (curr[sortProperty] > prev[sortProperty] ? 1 : -1)
+    }
+
+  })
+
   if (list && list.length) {
     for (let i = 0, j = list.length; i < j; i+=10) {
       paginationMap.push(list.slice(i,i+10))
@@ -131,7 +152,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     activePageIndex: state.UtilsReducer.activePageIndex,
     page: paginationMap[state.UtilsReducer.activePageIndex],
-    paginationMap: paginationMap
+    paginationMap: paginationMap,
+    expandedEventId: state.UtilsReducer.visible_event_wrapper_id
   }
 }
 
@@ -142,4 +164,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StatusList)
+export default connect(mapStateToProps, mapDispatchToProps)(EventDetails)

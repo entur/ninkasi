@@ -7,18 +7,18 @@ import Container from 'muicss/lib/react/container'
 import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
 
-class StatusEventList extends React.Component {
+class EventExpandableContent extends React.Component {
 
   render() {
 
-    const {events, refId, visible_event_wrapper_id} = this.props
+    const {events, refId, visible_event_wrapper_id, corrId} = this.props
 
     const wrapperClassName = (visible_event_wrapper_id == refId) ? "visible-wrapper" : "hidden"
 
       return  (
 
           <div key={"action-wrapper-" + refId} className={wrapperClassName}>
-            <p><b>Events</b></p>
+            <p>Events for {corrId}</p>
             <Row>
               <Col md="4"><b>Action</b></Col>
               <Col md="4"><b>Date</b></Col>
@@ -47,7 +47,7 @@ class StatusEventList extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    visible_event_wrapper_id: state.UtilsReducer.visible_event_wrapper_id,
+    visible_event_wrapper_id: state.UtilsReducer.visible_event_wrapper_id
   }
 }
 
@@ -59,4 +59,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(StatusEventList)
+export default connect(mapStateToProps, mapDispatchToProps)(EventExpandableContent)
