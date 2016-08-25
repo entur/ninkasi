@@ -8,7 +8,6 @@ const initialState = {
 
 const SuppliersReducer = (state = initialState, action) => {
 
-
   switch (action.type) {
 
     case types.ERRORS_SUPPLIERS:

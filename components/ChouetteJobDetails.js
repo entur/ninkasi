@@ -11,10 +11,8 @@ import Checkbox from 'muicss/lib/react/checkbox'
 import Radio from 'muicss/lib/react/radio'
 import Form from 'muicss/lib/react/form'
 import Panel from 'muicss/lib/react/panel'
-
-
 import SuppliersActions from '../actions/SuppliersActions'
-
+import Loader from 'halogen/DotLoader'
 
 class ChouetteJobDetails extends React.Component {
 
@@ -59,7 +57,7 @@ class ChouetteJobDetails extends React.Component {
 
   render() {
 
-    const {page, chouetteJobFilter, paginationMap, activeChouettePageIndex} = this.props
+    const {page, chouetteJobFilter, paginationMap, activeChouettePageIndex, requestingJobs} = this.props
 
     return(
 
@@ -114,7 +112,7 @@ class ChouetteJobDetails extends React.Component {
             </div>
           </Panel>
           <Row>
-          <Col md="12">
+          <Col md="10">
 
             { (paginationMap.length > 0) ?
 
@@ -129,6 +127,12 @@ class ChouetteJobDetails extends React.Component {
               <div></div>
             }
           </Col>
+
+          { requestingJobs ?
+            <Col md="2">
+            <Loader color="#26A65B" size="16px" margin="4px"/>
+          </Col> : <Col></Col> }
+          
           </Row>
           { (page && page.length) ?
 
@@ -222,12 +226,13 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   return {
-    page: paginationMap[state.UtilsReducer.activeChouettePageIndex],
+    page: paginationMap[state.MardukReducer.activeChouettePageIndex],
     activeId: state.SuppliersReducer.activeId,
     chouetteJobFilter: state.MardukReducer.chouetteJobFilter,
     paginationMap: paginationMap,
-    activeChouettePageIndex: state.UtilsReducer.activeChouettePageIndex,
-    actionFilter: state.MardukReducer.actionFilter
+    activeChouettePageIndex: state.MardukReducer.activeChouettePageIndex,
+    actionFilter: state.MardukReducer.actionFilter,
+    requestingJobs: state.MardukReducer.requesting_chouette_job
   }
 }
 

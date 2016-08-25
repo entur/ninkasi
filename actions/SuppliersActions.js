@@ -7,28 +7,12 @@ import moment from 'moment'
 var SuppliersActions = {}
 
 
-/* helpers and util methods */
-
-function receiveData(json, type) {
-  return{
-    type: type,
-    payLoad: json
-  }
-}
-
-function receiveError(json, type) {
-  return {
-    type: type,
-    payLoad: json
-  }
-}
-
 SuppliersActions.getProviderStatus = (id) => {
 
   const url = `${window.config.nabuBaseUrl}jersey/jobs/${id}`
 
   return function(dispatch) {
-    dispatch(() => {type: types.REQUEST_SUPPLIER_STATUS })
+    dispatch(sendData(null, types.REQUEST_SUPPLIER_STATUS) )
     return axios({
       url: url,
       timeout: 20000,
@@ -37,11 +21,10 @@ SuppliersActions.getProviderStatus = (id) => {
     })
     .then(function(response) {
       SuppliersActions.formatProviderStatusDate(response.data.reverse())
-
-      dispatch(receiveData(response.data, types.RECEIVED_SUPPLIER_STATUS))
+      dispatch( sendData(response.data,types.RECEIVED_SUPPLIER_STATUS) )
     })
     .catch(function(response){
-      dispatch(receiveError(response.data, types.ERROR_SUPPLIER_STATUS))
+      dispatch( sendData(response.data, types.ERROR_SUPPLIER_STATUS) )
     })
   }
 }
@@ -58,12 +41,19 @@ SuppliersActions.unselectAllSuppliers = () => {
   }
 }
 
+function sendData(payLoad, type) {
+  return {
+    payLoad: payLoad,
+    type: type
+  }
+}
+
 SuppliersActions.fetchSuppliers = () => {
 
   const url = window.config.nabuBaseUrl+'jersey/providers/all'
 
   return function(dispatch) {
-    dispatch(requestData(types.REQUEST_SUPPLIERS))
+    dispatch( sendData(null,types.REQUEST_SUPPLIERS) )
     return axios({
       url: url,
       timeout: 20000,
@@ -71,13 +61,14 @@ SuppliersActions.fetchSuppliers = () => {
       responseType: 'json'
     })
     .then(function(response) {
-      dispatch(receiveData(response.data, types.RECEIVED_SUPPLIERS))
+      dispatch( sendData(response.data, types.RECEIVED_SUPPLIERS) )
     })
     .catch(function(response){
-      dispatch(receiveError(response.data, types.ERROR_SUPPLIERS))
+      dispatch( sendData(response.data, types.ERROR_SUPPLIERS) )
     })
   }
 }
+
 
 SuppliersActions.deleteProvider = (id) => {
 
@@ -90,14 +81,14 @@ SuppliersActions.deleteProvider = (id) => {
       method: 'delete'
     })
     .then(function(response) {
-      dispatch(receiveData(response.data, types.SUCCESS_DELETE_PROVIDER))
+      dispatch( sendData(response.data, types.SUCCESS_DELETE_PROVIDER ))
       dispatch(SuppliersActions.addNotification('Provider deleted', 'success'))
       dispatch(SuppliersActions.logEvent({title: `Deleted provider ${id} successfully`}))
       dispatch(SuppliersActions.selectActiveSupplier(0))
       dispatch(SuppliersActions.fetchSuppliers())
     })
     .catch(function(response) {
-      dispatch(receiveError(response.data, types.ERROR_DELETE_PROVIDER))
+      dispatch( sendData(response.data, types.ERROR_DELETE_PROVIDER) )
       dispatch(SuppliersActions.addNotification('Unable to delete provider', 'error'))
       dispatch(SuppliersActions.logEvent({title: `Deleting provider ${id} failed`}))
     })
@@ -107,7 +98,7 @@ SuppliersActions.deleteProvider = (id) => {
 SuppliersActions.refreshSupplierData = () => {
   return function(dispatch, getState) {
     const state = getState()
-    const {activeId} = state.SuppliersReducer
+    const { activeId } = state.SuppliersReducer
     dispatch(SuppliersActions.selectActiveSupplier(activeId))
     dispatch(SuppliersActions.fetchFilenames(activeId))
     dispatch(SuppliersActions.getProviderStatus(activeId))
@@ -123,12 +114,12 @@ SuppliersActions.createProvider = (provider) => {
   return function(dispatch) {
     return axios.post(url, provider)
     .then(function(response) {
-      dispatch(receiveData(response.data, types.SUCCESS_CREATE_PROVIDER))
+      dispatch( sendData(response.data, types.SUCCESS_CREATE_PROVIDER))
       dispatch(SuppliersActions.addNotification('Provider created', 'success'))
       dispatch(SuppliersActions.logEvent({title: 'New provider created'}))
     })
     .catch(function(response) {
-      dispatch(receiveError(response.data, types.ERROR_CREATE_PROVIDER))
+      dispatch( sendData(response.data, types.ERROR_CREATE_PROVIDER) )
       dispatch(SuppliersActions.addNotification('Unable to create provider', 'error'))
       dispatch(SuppliersActions.logEvent({title: 'Creating new provider failed'}))
     })
@@ -142,12 +133,12 @@ SuppliersActions.updateProvider = (provider) => {
   return function(dispatch) {
     return axios.put(url, provider)
     .then(function(response) {
-      dispatch(receiveData(response.data, types.SUCCESS_UPDATE_PROVIDER))
+      dispatch( sendData(response.data, types.SUCCESS_UPDATE_PROVIDER) )
       dispatch(SuppliersActions.addNotification('Updated provider successfully', 'success'))
       dispatch(SuppliersActions.logEvent({title: `Updated provider ${provider.id} successfully`}))
     })
     .catch(function(response) {
-      dispatch(receiveError(response.data, types.ERROR_UPDATE_PROVIDER))
+      dispatch( sendData(response.data, types.ERROR_UPDATE_PROVIDER ))
       dispatch(SuppliersActions.addNotification('Unable to update provider', 'error'))
       dispatch(SuppliersActions.logEvent({title: `Updating provider ${provider.id} failed`}))
     })
@@ -161,10 +152,10 @@ SuppliersActions.fetchProvider = (id) => {
   return function(dispatch) {
     return axios.get(url)
     .then(function(response) {
-      dispatch(receiveData(response.data, types.SUCCESS_FETCH_PROVIDER))
+      dispatch( sendData(response.data, types.SUCCESS_FETCH_PROVIDER ))
     })
     .catch(function(response) {
-      dispatch(receiveError(response.data, types.ERROR_FETCH_PROVIDER))
+      dispatch( sendData(response.data, types.ERROR_FETCH_PROVIDER) )
       dispatch(SuppliersActions.addNotification('Unable to fetch provider', 'error'))
     })
   }
@@ -177,7 +168,6 @@ SuppliersActions.selectActiveSupplier = (id) => {
     dispatch(SuppliersActions.changeActiveSupplierId(id))
     dispatch(SuppliersActions.restoreFilesToOutbound())
     dispatch(SuppliersActions.fetchFilenames(id))
-    dispatch(SuppliersActions.setActivePageIndex(0))
     dispatch(SuppliersActions.setActiveActionFilter(""))
     dispatch(SuppliersActions.unselectAllSuppliers())
   }
@@ -203,13 +193,13 @@ SuppliersActions.cancelChouetteJobForProvider = (providerId, chouetteId) => {
       method: 'delete'
     })
     .then(function (response) {
-      dispatch(receiveData(response.data, types.SUCCESS_DELETE_PROVIDERS_CHOUETTE_JOB))
+      dispatch( sendData(response.data, types.SUCCESS_DELETE_PROVIDERS_CHOUETTE_JOB) )
       dispatch(SuppliersActions.addNotification(`Cancelled chouettejob with id ${chouetteId}`, 'success'))
       dispatch(SuppliersActions.logEvent({title: `Chouette job with ${chouetteId} successfully cancelled for provider ${providerId}`}))
 
     })
     .catch(function (response) {
-      dispatch(receiveData(response.data, types.ERROR_DELETE_PROVIDERS_CHOUETTE_JOB))
+      dispatch( sendData(response.data, types.ERROR_DELETE_PROVIDERS_CHOUETTE_JOB) )
       dispatch(SuppliersActions.addNotification(`Unable to cancel chouettejob with id ${chouetteId}`, 'error'))
       dispatch(SuppliersActions.logEvent({title: `Unable to cancel chouette job with id ${chouetteId} for provider ${providerId}`}))
     })
@@ -226,12 +216,12 @@ SuppliersActions.cancelAllChouetteJobsforProvider = (providerId) => {
       method: 'delete'
     })
     .then(function (response) {
-      dispatch(receiveData(response.data, types.SUCCESS_DELETE_ALL_PROVIDERS_CHOUETTE_JOB))
+      dispatch( sendData(response.data, types.SUCCESS_DELETE_ALL_PROVIDERS_CHOUETTE_JOB))
       dispatch(SuppliersActions.addNotification(`Deleted all chouttejobs for provider ${providerId}`, 'success'))
       dispatch(SuppliersActions.logEvent({title: `All chouette jobs for provider ${providerId} successfully  cancelled `}))
     })
     .catch(function (response) {
-      dispatch(receiveData(response.data, types.ERROR_DELETE_ALL_PROVIDERS_CHOUETTE_JOB))
+      dispatch( sendData(response.data, types.ERROR_DELETE_ALL_PROVIDERS_CHOUETTE_JOB) )
       dispatch(SuppliersActions.addNotification(`Failed deleting all chouttejobs for provider ${providerId}`, 'error'))
       dispatch(SuppliersActions.logEvent({title: `Unable to cancel chouette jobs for provider ${providerId}`}))
     })
@@ -240,9 +230,8 @@ SuppliersActions.cancelAllChouetteJobsforProvider = (providerId) => {
 
 
 SuppliersActions.setActiveActionFilter = (value) => {
-
   return function(dispatch) {
-    dispatch(receiveData(value, types.SET_ACTIVE_ACTION_FILTER))
+    dispatch( sendData(value, types.SET_ACTIVE_ACTION_FILTER) )
     dispatch(SuppliersActions.getChouetteJobStatus())
   }
 
@@ -250,7 +239,7 @@ SuppliersActions.setActiveActionFilter = (value) => {
 
 SuppliersActions.setActiveActionAllFilter = (value) => {
   return function(dispatch) {
-    dispatch(receiveData(value, types.SET_ACTIVE_ACTION_ALL_FILTER))
+    dispatch( sendData(value, types.SET_ACTIVE_ACTION_ALL_FILTER) )
     dispatch(SuppliersActions.getChouetteJobsForAllSuppliers())
   }
 }
@@ -299,7 +288,7 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => {
 
     const url = window.config.mardukBaseUrl+`admin/services/chouette/jobs?${queryString}`
 
-    dispatch(() => {type: types.REQUEST_CHOUETTE_JOBS_FOR_ALL_PROVIDERS} )
+    dispatch( sendData(null, types.REQUEST_CHOUETTE_JOBS_FOR_ALL_PROVIDERS) )
 
     return axios({
       url: url,
@@ -326,11 +315,10 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => {
       }
 
       allJobs = allJobs.reverse()
-
-      dispatch(receiveData(allJobs, types.SUCCESS_ALL_CHOUETTE_JOB_STATUS))
+      dispatch( sendData(allJobs, types.SUCCESS_ALL_CHOUETTE_JOB_STATUS) )
     })
     .catch(function(response){
-      dispatch(receiveError(response.data, types.ERROR_ALL_CHOUETTE_JOB_STATUS))
+      dispatch( sendData(response.data, types.ERROR_ALL_CHOUETTE_JOB_STATUS) )
     })
   }, 300, false)
 }
@@ -356,12 +344,13 @@ SuppliersActions.getChouetteJobStatus = () => {
       queryString += `&action=${actionFilter}`
     }
 
-    if (queryString.length)
-    queryString = queryString.substring(1)
+    if (queryString.length) {
+      queryString = queryString.substring(1)
+    }
 
     const url = window.config.mardukBaseUrl+`admin/services/chouette/${activeId}/jobs?${queryString}`
 
-    dispatch(() => {type: types.REQUEST_CHOUETTE_JOBS_FOR_PROVIDER})
+    dispatch( sendData(null, types.REQUEST_CHOUETTE_JOBS_FOR_PROVIDER) )
 
     return axios({
       url: url,
@@ -370,11 +359,10 @@ SuppliersActions.getChouetteJobStatus = () => {
     })
     .then(function(response) {
       const jobs = SuppliersActions.formatChouetteJobsWithDate(response.data.reverse())
-      dispatch(receiveData(jobs, types.SUCCESS_CHOUETTE_JOB_STATUS))
-      dispatch(SuppliersActions.setActiveChouettePageIndex(0))
+      dispatch( sendData(jobs, types.SUCCESS_CHOUETTE_JOB_STATUS) )
     })
     .catch(function(response){
-      dispatch(receiveError(response.data, types.ERROR_CHOUETTE_JOB_STATUS))
+      dispatch( sendData(response.data, types.ERROR_CHOUETTE_JOB_STATUS) )
     })
   }, 300, false)
 
@@ -393,12 +381,12 @@ SuppliersActions.exportData = (id) => {
       method: 'post'
     })
     .then(function(response) {
-      dispatch(receiveData(response.data, types.SUCESS_EXPORT_DATA))
+      dispatch( sendData(response.data, types.SUCESS_EXPORT_DATA) )
       dispatch(SuppliersActions.addNotification('Export started', 'success'))
       dispatch(SuppliersActions.logEvent({title: `Exported data for provider ${id}`}))
     })
     .catch(function(response){
-      dispatch(receiveError(response.data, types.ERROR_EXPORT_DATA))
+      dispatch( sendData(response.data, types.ERROR_EXPORT_DATA) )
       dispatch(SuppliersActions.addNotification('Export failed', 'error'))
       dispatch(SuppliersActions.logEvent({title: `Export failed for provider ${id}`}))
     })
@@ -417,10 +405,10 @@ SuppliersActions.fetchFilenames = (id) => {
       method: 'get'
     })
     .then(function(response) {
-      dispatch(receiveData(response.data, types.SUCCESS_FILENAMES))
+      dispatch( sendData(response.data,types.SUCCESS_FILENAMES) )
     })
     .catch(function(response) {
-      dispatch(receiveError(response.data, types.ERROR_FILENAMES))
+      dispatch( sendData(response.data, types.ERROR_FILENAMES) )
     })
   }
 }
@@ -436,12 +424,12 @@ SuppliersActions.importData = (id, selectedFiles) => {
     dispatch(requestImport())
     return axios.post(url, {files: bodySelectedFiles})
     .then(function(response) {
-      dispatch(receiveData(response.data, types.SUCCESS_IMPORT_DATA))
+      dispatch( sendData(response.data, types.SUCCESS_IMPORT_DATA) )
       dispatch(SuppliersActions.addNotification('Import started', 'success'))
       dispatch(SuppliersActions.logEvent({title: `Imported data for provider ${id}`}))
     })
     .catch(function(response){
-      dispatch(receiveError(response.data, types.ERROR_IMPORT_DATA))
+      dispatch( sendData(response.data, types.ERROR_IMPORT_DATA) )
       dispatch(SuppliersActions.addNotification('Import failed', 'error'))
       dispatch(SuppliersActions.logEvent({title: `Import failed for provider ${id}`}))
     })
@@ -460,12 +448,12 @@ SuppliersActions.cleanDataspace = (id) => {
       method: 'post'
     })
     .then(function(response) {
-      dispatch(receiveData(response.data, types.SUCCESS_DELETE_DATA))
+      dispatch( sendData(response.data, types.SUCCESS_DELETE_DATA) )
       dispatch(SuppliersActions.addNotification('Cleaning of dataspace started', 'success'))
       dispatch(SuppliersActions.logEvent({title: `Cleaned data space for provider ${id}`}))
     })
     .catch(function(response){
-      dispatch(receiveError(response.data, types.ERROR_DELETE_DATA))
+      dispatch( sendData(response.data, types.ERROR_DELETE_DATA) )
       dispatch(SuppliersActions.addNotification('Cleaning of dataspace failed', 'error'))
       dispatch(SuppliersActions.logEvent({title: `Cleaning data space failed for provider ${id}`}))
     })
@@ -485,12 +473,12 @@ SuppliersActions.validateProvider = (id) => {
       method: 'post'
     })
     .then(function(response) {
-      dispatch(receiveData(response.data, types.SUCCESS_VALIDATE_PROVIDER))
+      dispatch( sendData(response.data, types.SUCCESS_VALIDATE_PROVIDER))
       dispatch(SuppliersActions.addNotification('Validation started', 'success'))
       dispatch(SuppliersActions.logEvent({title: `Validated, imported and exported data for provider ${id} successfully`}))
     })
     .catch(function(response){
-      dispatch(receiveError(response.data, types.ERROR_VALIDATE_PROVIDER))
+      dispatch( sendData(response.data, types.ERROR_VALIDATE_PROVIDER) )
       dispatch(SuppliersActions.addNotification('Validation failed', 'error'))
       dispatch(SuppliersActions.logEvent({title: `Validating, importing and exporting data for provider ${id} failed`}))
     })
@@ -509,12 +497,12 @@ SuppliersActions.buildGraph = () => {
       method: 'post'
     })
     .then(function(response) {
-      dispatch(receiveData(response.data, types.SUCCESS_BUILD_GRAPH))
+      dispatch( sendData(response.data, types.SUCCESS_BUILD_GRAPH))
       dispatch(SuppliersActions.addNotification('Graph build started', 'success'))
       dispatch(SuppliersActions.logEvent({title: 'Graph build started'}))
     })
     .catch(function(response){
-      dispatch(receiveError(response.data, types.ERROR_BUILD_GRAPH))
+      dispatch( sendData(response.data, types.ERROR_BUILD_GRAPH) )
       dispatch(SuppliersActions.addNotification('Graph build failed', 'error'))
       dispatch(SuppliersActions.logEvent({title: 'Graph build failed'}))
     })
@@ -532,12 +520,12 @@ SuppliersActions.fetchOSM = () => {
       method: 'post'
     })
     .then(function(response) {
-      dispatch(receiveData(response.data, types.SUCCESS_FETCH_OSM))
+      dispatch( sendData(response.data, types.SUCCESS_FETCH_OSM) )
       dispatch(SuppliersActions.addNotification('OSM update started', 'success'))
       dispatch(SuppliersActions.logEvent({title: 'OSM update started'}))
     })
     .catch(function(response){
-      dispatch(receiveError(response.data, types.ERROR_FETCH_OSM))
+      dispatch( sendData(response.data, types.ERROR_FETCH_OSM) )
       dispatch(SuppliersActions.addNotification('OSM update failed', 'error'))
       dispatch(SuppliersActions.logEvent({title: 'OSM update failed'}))
     })
@@ -606,22 +594,17 @@ function requestFilenames() {
   return {type: types.REQUEST_FILENAMES}
 }
 
-function requestData(type) {
-  console.log("requestData", type)
-  return {type: type}
-}
-
 
 SuppliersActions.toggleChouetteInfoCheckboxFilter = (option, value) => {
   return function(dispatch) {
-    dispatch(receiveData({ option: option,	value: value}, types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER))
+    dispatch( sendData({option: option,	value: value }, types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER) )
     dispatch(SuppliersActions.getChouetteJobStatus())
   }
 }
 
 SuppliersActions.toggleChouetteInfoCheckboxAllFilter = (option, value) => {
   return function (dispatch) {
-    dispatch(receiveData( { option: option, value: value}, types.TOGGLE_CHOUETTE_INFO_CHECKBOX_ALL_FILTER))
+    dispatch( sendData({option: option, value: value}, types.TOGGLE_CHOUETTE_INFO_CHECKBOX_ALL_FILTER) )
     dispatch(SuppliersActions.getChouetteJobsForAllSuppliers())
   }
 }
@@ -659,14 +642,6 @@ SuppliersActions.logEventFilter = (filter) => {
     payLoad: filter
   }
 }
-
-SuppliersActions.setActivePageIndex = (index) => {
-  return {
-    type: types.SET_ACTIVE_PAGE_INDEX,
-    payLoad: index
-  }
-}
-
 
 SuppliersActions.updateOutboundFilelist = (files) => {
   return {

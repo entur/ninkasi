@@ -21,7 +21,6 @@ const intialState = {
   loggedEventsFilter: '',
   filteredLoggedEvents: [],
   activePageIndex: 0,
-  activeChouettePageIndex: 0,
   activeTab: 'migrateData',
   eventListSortOrder: {
     property: "firstEvent",
@@ -82,12 +81,6 @@ const UtilsReducer = (state = intialState, action) => {
     case types.LOG_EVENT_FILTER:
       return Object.assign({}, state, {logEventFilter: action.payLoad, filteredLoggedEvents: filterHelper(state.loggedEvents, action.payLoad)})
 
-    case types.SET_ACTIVE_PAGE_INDEX:
-      return Object.assign({}, state, {activePageIndex: action.payLoad})
-
-    case types.SET_ACTIVE_CHOUTTE_PAGE_INDEX:
-      return Object.assign({}, state, {activeChouettePageIndex: action.payLoad})
-
     case types.SET_ACTIVE_TAB:
       return Object.assign({}, state, {activeTab: action.payLoad})
 
@@ -97,8 +90,6 @@ const UtilsReducer = (state = intialState, action) => {
       if (state.eventListSortOrder.property == action.payLoad) {
         eventsSortOrder = state.eventListSortOrder.sortOrder == 1 ? 0 : 1
       }
-
-      console.log("eventsSortOrder", eventsSortOrder)
 
       return Object.assign({}, state, {eventListSortOrder: {property: action.payLoad, sortOrder: eventsSortOrder} })
 

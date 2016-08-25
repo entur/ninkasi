@@ -61,8 +61,6 @@ class SuppliersContainer extends React.Component {
 
     const {suppliers, activeProviderId} = this.props
 
-    console.log("activeProviderId", activeProviderId)
-
     return (
 
       <Container className="suppliers-container" fluid={true}>

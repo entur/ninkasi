@@ -16,7 +16,6 @@ class Footer extends React.Component {
   }
 }
 
-
 export default connect(
   null,
   null
