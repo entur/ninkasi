@@ -381,7 +381,7 @@ SuppliersActions.exportData = (id) => {
       method: 'post'
     })
     .then(function(response) {
-      dispatch( sendData(response.data, types.SUCESS_EXPORT_DATA) )
+      dispatch( sendData(response.data, types.SUCCESS_EXPORT_DATA) )
       dispatch(SuppliersActions.addNotification('Export started', 'success'))
       dispatch(SuppliersActions.logEvent({title: `Exported data for provider ${id}`}))
     })
