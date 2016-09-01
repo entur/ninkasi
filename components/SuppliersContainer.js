@@ -61,31 +61,36 @@ class SuppliersContainer extends React.Component {
 
     const {suppliers, activeProviderId} = this.props
 
+    let selectedValue = (typeof(activeProviderId) !== 'undefined') ? String(activeProviderId) : "0"
+
     return (
 
-      <Container className="suppliers-container" fluid={true}>
+      <Container className="suppliers-container">
         <h1>Ninkasi</h1>
-          <div>
-              <div className="subtle-button" onClick={this.handleBuildGraph.bind(this)}>Build OTP graph</div>
-              <div className="subtle-button" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM data</div>
-              <div className="subtle-button" onClick={() => this.openModal()}><FaHistory/> History</div>
-          </div>
-      <Row>
-        <Col md="6">
-          <Select className="select-supplier" defaultValue={activeProviderId} id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
-            <Option value="0" label="Select provider"></Option>
-            <Option key="-1" value="-1" label={"All providers"}></Option>
-            {suppliers.map(supplier => {
-              return (
-                  <Option key={supplier.id} value={supplier.id} label={supplier.id + " " + supplier.name}>
-                  </Option>
-              )
-            })}
-          </Select>
-        </Col>
-        <Col>
-          <div className="new-provider" id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}><FaAdd/> New</div>
-        </Col>
+        <Row>
+          <Col md="15">
+            <div style={ {float: "right"}}>
+                <div className="subtle-button mui-btn mui-btn--raised" onClick={this.handleBuildGraph.bind(this)}>Build Graph</div>
+                <div className="subtle-button mui-btn mui-btn--raised" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</div>
+                <div className="subtle-button mui-btn mui-btn--raised" onClick={() => this.openModal()}><FaHistory/> History</div>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="5">
+            <Select className="select-supplier" value={ selectedValue } id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
+              <Option key="supplier-all" value="-1" label={"All providers"}></Option>
+              {suppliers.map(supplier => {
+                return (
+                    <Option key={supplier.id} value={String(supplier.id)} label={`${supplier.id} ${supplier.name}`}>
+                    </Option>
+                )
+              })}
+            </Select>
+          </Col>
+          <Col md="2">
+            <div className="new-provider" id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}><FaAdd/> New</div>
+          </Col>
       </Row>
     </Container>
     )

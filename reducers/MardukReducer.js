@@ -25,7 +25,6 @@ const cleanSlate = {
   },
   actionFilter: "",
   actionAllFilter: "",
-  all_suppliers_selected: true,
   requesting_chouette_job: false,
   requesting_chouette_all_job: false,
   activeChouettePageIndex: 0
@@ -118,16 +117,10 @@ const MardukReducer = (state = cleanSlate, action) => {
     case types.SET_ACTIVE_ACTION_ALL_FILTER:
       return Object.assign({}, state, {actionAllFilter: action.payLoad})
 
-    case types.SELECT_ALL_SUPPLIERS:
-      return Object.assign({}, state, {all_suppliers_selected: true})
-
-    case types.UNSELECT_ALL_SUPPLIERS:
-      return Object.assign({}, state, {all_suppliers_selected: false})
-
-    case types.REQUEST_CHOUETTE_JOBS_FOR_PROVIDER:
+    case types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER:
       return Object.assign({}, state, {requesting_chouette_job: true})
 
-    case types.REQUEST_CHOUETTE_JOBS_FOR_ALL_PROVIDERS:
+    case types.REQUESTED_ALL_CHOUETTE_JOB_STATUS:
       return Object.assign({}, state, {requesting_chouette_all_job: true})
 
     default:

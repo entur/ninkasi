@@ -39,7 +39,7 @@ class EventDetails extends React.Component {
 
   render() {
 
-    const {page, paginationMap, activePageIndex, expandedEventId} = this.props
+    const {page, paginationMap, activePageIndex, expandedEvents} = this.props
 
     if (page && page.length && paginationMap) {
 
@@ -80,11 +80,12 @@ class EventDetails extends React.Component {
             {page.map ( (listItem, index) => {
 
               const endStateClass = (listItem.endState === 'TIMEOUT' || listItem.endState === 'ERROR' || listItem.endState === 'FAILED') ? 'error' : 'success'
+              const isExpanded = (expandedEvents.indexOf(index) > -1)
 
               return (
 
                 <div className="jobstatus-wrapper" key={"jobstatus-wrapper-" + index}>
-                  <Row key={"k-" + index}>
+                  <Row key={"event-" + index}>
                     <Col md="2"><p><span className="long-text">{listItem.fileName}</span></p></Col>
                     <Col md="1"><p><span className={endStateClass}>{listItem.endState}</span></p></Col>
                     <Col md="3"><p>{listItem.firstEvent}</p></Col>
@@ -92,20 +93,21 @@ class EventDetails extends React.Component {
                     <Col md="2"><p>{listItem.duration}</p></Col>
                     <Col md="1">
                       <div onClick={() => this.handleToggleVisibility(index)}>
-                        { (index != expandedEventId) ? <FaChevronDown/> : <FaChevronUp/> }
+                        { !isExpanded ? <FaChevronDown/> : <FaChevronUp/> }
                       </div>
                     </Col>
                   </Row>
-                  <Row key={"k2-" + index}>
-                    <EventExpandableContent key={"statusEventList-" + index} refId={index} corrId={listItem.correlationId} events={listItem.events}></EventExpandableContent>
+                  <Row key={"eventDetails-" + index}>
+                    { isExpanded ?
+                        <EventExpandableContent key={"statusEventList-" + index} correlationId={listItem.correlationId} events={listItem.events}></EventExpandableContent>
+                        : null
+                    }
                   </Row>
                 </div>
               )
             })}
           </Container>
-
         </div>
-
       )
 
     } else {
@@ -131,19 +133,19 @@ const mapStateToProps = (state, ownProps) => {
   var sortOrder = state.UtilsReducer.eventListSortOrder.sortOrder
   var sortProperty = state.UtilsReducer.eventListSortOrder.property
 
-  list.sort( (curr, prev) => {
-
-    if (sortOrder === 0) {
-      return (curr[sortProperty] > prev[sortProperty] ? -1 : 1)
-    }
-
-    if (sortOrder === 1) {
-      return (curr[sortProperty] > prev[sortProperty] ? 1 : -1)
-    }
-
-  })
-
   if (list && list.length) {
+    list.sort( (curr, prev) => {
+
+      if (sortOrder === 0) {
+        return (curr[sortProperty] > prev[sortProperty] ? -1 : 1)
+      }
+
+      if (sortOrder === 1) {
+        return (curr[sortProperty] > prev[sortProperty] ? 1 : -1)
+      }
+
+    })
+
     for (let i = 0, j = list.length; i < j; i+=10) {
       paginationMap.push(list.slice(i,i+10))
     }
@@ -153,7 +155,7 @@ const mapStateToProps = (state, ownProps) => {
     activePageIndex: state.UtilsReducer.activePageIndex,
     page: paginationMap[state.UtilsReducer.activePageIndex],
     paginationMap: paginationMap,
-    expandedEventId: state.UtilsReducer.visible_event_wrapper_id
+    expandedEvents: state.UtilsReducer.expandedEvents
   }
 }
 

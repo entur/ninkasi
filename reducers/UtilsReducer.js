@@ -15,7 +15,7 @@ const eventHelper = (event, loggedEvents) => {
 
 const intialState = {
   outboundFilelist: [],
-  visible_event_wrapper_id: -1,
+  expandedEvents: [],
   isModalOpen: false,
   loggedEvents: [],
   loggedEventsFilter: '',
@@ -66,7 +66,7 @@ const UtilsReducer = (state = intialState, action) => {
       return Object.assign({}, state, {outboundFilelist: action.payLoad})
 
     case types.TOGGLE_EXPANDABLE_FOR_EVENT_WRAPPER:
-      return Object.assign({}, state, {visible_event_wrapper_id: (state.visible_event_wrapper_id == action.payLoad) ? -1 : action.payLoad})
+      return Object.assign({}, state, {expandedEvents: toggleExpandedEvents(action.payLoad, state.expandedEvents)} )
 
     case types.OPEN_MODAL_DIALOG:
       return Object.assign({}, state, {isModalOpen: true, filteredLoggedEvents: state.loggedEvents})
@@ -116,5 +116,15 @@ const UtilsReducer = (state = intialState, action) => {
       return state
   }
 }
+
+const toggleExpandedEvents = (index, expanded) => {
+
+  if (expanded.indexOf(index) === -1) {
+    return expanded.concat(index)
+  }
+
+  return expanded.filter( (item) => item != index)
+}
+
 
 export default UtilsReducer

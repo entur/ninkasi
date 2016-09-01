@@ -1,6 +1,6 @@
 import axios from 'axios'
 import * as types from './actionTypes'
-import debounce from 'debounce'
+import debounce from 'debounce-promise'
 
 import moment from 'moment'
 
@@ -12,7 +12,7 @@ SuppliersActions.getProviderStatus = (id) => {
   const url = `${window.config.nabuBaseUrl}jersey/jobs/${id}`
 
   return function(dispatch) {
-    dispatch(sendData(null, types.REQUEST_SUPPLIER_STATUS) )
+    dispatch(sendData(null, types.REQUESTED_SUPPLIER_STATUS) )
     return axios({
       url: url,
       timeout: 20000,
@@ -20,8 +20,8 @@ SuppliersActions.getProviderStatus = (id) => {
       responseType: 'json'
     })
     .then(function(response) {
-      SuppliersActions.formatProviderStatusDate(response.data.reverse())
-      dispatch( sendData(response.data,types.RECEIVED_SUPPLIER_STATUS) )
+      let providerStatus = SuppliersActions.formatProviderStatusDate(response.data.reverse())
+      dispatch( sendData(providerStatus,types.RECEIVED_SUPPLIER_STATUS) )
     })
     .catch(function(response){
       dispatch( sendData(response.data, types.ERROR_SUPPLIER_STATUS) )
@@ -31,13 +31,13 @@ SuppliersActions.getProviderStatus = (id) => {
 
 SuppliersActions.selectAllSuppliers = () => {
   return {
-    type: types.SELECT_ALL_SUPPLIERS
+    type: types.SELECTED_ALL_SUPPLIERS
   }
 }
 
 SuppliersActions.unselectAllSuppliers = () => {
   return {
-    type: types.UNSELECT_ALL_SUPPLIERS
+    type: types.UNSELECTED_ALL_SUPPLIERS
   }
 }
 
@@ -53,7 +53,7 @@ SuppliersActions.fetchSuppliers = () => {
   const url = window.config.nabuBaseUrl+'jersey/providers/all'
 
   return function(dispatch) {
-    dispatch( sendData(null,types.REQUEST_SUPPLIERS) )
+    dispatch( sendData(null,types.REQUESTED_SUPPLIERS) )
     return axios({
       url: url,
       timeout: 20000,
@@ -288,7 +288,7 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => {
 
     const url = window.config.mardukBaseUrl+`admin/services/chouette/jobs?${queryString}`
 
-    dispatch( sendData(null, types.REQUEST_CHOUETTE_JOBS_FOR_ALL_PROVIDERS) )
+    dispatch( sendData(null, types.REQUESTED_ALL_CHOUETTE_JOB_STATUS) )
 
     return axios({
       url: url,
@@ -297,12 +297,14 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => {
     })
     .then(function(response) {
 
-      let jobs = response.data
+      let jobs = response.data.reverse()
       var allJobs = []
 
       if (jobs.length) {
+
         jobs.forEach( (job) => {
           if (job.pendingJobs) {
+
             job.pendingJobs.forEach ( (pendingJob) => {
               pendingJob.providerId = job.providerId
               pendingJob.created = moment(pendingJob.created).locale("nb").format("Do MMMM YYYY, HH:mm:ss")
@@ -314,7 +316,6 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => {
         })
       }
 
-      allJobs = allJobs.reverse()
       dispatch( sendData(allJobs, types.SUCCESS_ALL_CHOUETTE_JOB_STATUS) )
     })
     .catch(function(response){
@@ -350,7 +351,7 @@ SuppliersActions.getChouetteJobStatus = () => {
 
     const url = window.config.mardukBaseUrl+`admin/services/chouette/${activeId}/jobs?${queryString}`
 
-    dispatch( sendData(null, types.REQUEST_CHOUETTE_JOBS_FOR_PROVIDER) )
+    dispatch( sendData(null, types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER) )
 
     return axios({
       url: url,
@@ -617,9 +618,11 @@ SuppliersActions.formatProviderStatusDate = (list) => {
     listItem.firstEvent = moment(listItem.firstEvent).locale("nb").format("YYYY-MM-DD HH:mm:ss")
     listItem.lastEvent = moment(listItem.lastEvent).locale("nb").format("YYYY-MM-DD HH:mm:ss")
 
-    listItem.events.forEach(function (event) {
-      event.date = moment(event.date).locale("nb").format("YYYY-MM-DD HH:mm:ss")
-    })
+    if (listItem.events) {
+      listItem.events.forEach(function (event) {
+        event.date = moment(event.date).locale("nb").format("YYYY-MM-DD HH:mm:ss")
+      })
+    }
 
     return listItem
   })

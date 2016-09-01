@@ -222,7 +222,7 @@ const mapStateToProps = (state, ownProps) => {
     filelistIsLoading: state.MardukReducer.filenames.isLoading,
     activeTab: state.UtilsReducer.activeTab,
     actionFilter: state.MardukReducer.actionFilter,
-    displayAllSuppliers: state.MardukReducer.all_suppliers_selected
+    displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected
   }
 }
 

@@ -1,0 +1,64 @@
+[ {
+  "id" : 1614,
+  "referential" : "rut",
+  "action" : "validator",
+  "type" : "",
+  "created" : 1470669186903,
+  "started" : 1470672362642,
+  "updated" : 1470672772833,
+  "status" : "ABORTED"
+}, {
+  "id" : 1911,
+  "referential" : "rut",
+  "action" : "importer",
+  "type" : "regtopp",
+  "created" : 1470676854863,
+  "started" : 1470694659949,
+  "updated" : 1470695312935,
+  "status" : "ABORTED"
+}, {
+  "id" : 2040,
+  "referential" : "rut",
+  "action" : "importer",
+  "type" : "regtopp",
+  "created" : 1470743857678,
+  "started" : 1470751179324,
+  "updated" : 1470756101327,
+  "status" : "ABORTED"
+}, {
+  "id" : 3918,
+  "referential" : "rut",
+  "action" : "validator",
+  "type" : "",
+  "created" : 1471331146363,
+  "started" : 1471332813070,
+  "updated" : 1471333068462,
+  "status" : "ABORTED"
+}, {
+  "id" : 4147,
+  "referential" : "rut",
+  "action" : "importer",
+  "type" : "regtopp",
+  "created" : 1471344455646,
+  "started" : 1471349133270,
+  "updated" : 1471349434020,
+  "status" : "ABORTED"
+}, {
+  "id" : 5022,
+  "referential" : "rut",
+  "action" : "importer",
+  "type" : "regtopp",
+  "created" : 1471441211975,
+  "started" : 1471441244300,
+  "updated" : 1471441292210,
+  "status" : "ABORTED"
+}, {
+  "id" : 5146,
+  "referential" : "rut",
+  "action" : "validator",
+  "type" : "",
+  "created" : 1471594470741,
+  "started" : 1471594759135,
+  "updated" : 1471595246039,
+  "status" : "ABORTED"
+} ]

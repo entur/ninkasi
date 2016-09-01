@@ -11,7 +11,7 @@ const loggerMiddleware = createLogger()
 const initialState = {}
 
 const combinedReducer = combineReducers({
-  ...reducers.default,
+  ...reducers,
   form: formReducer,
   routing: routerReducer,
 })

@@ -1,0 +1,72 @@
+[
+  {
+    "events": [
+      {
+        "state": "STARTED",
+        "date": 1472564356000,
+        "action": "EXPORT"
+      },
+      {
+        "state": "PENDING",
+        "date": 1472564356000,
+        "action": "EXPORT"
+      },
+      {
+        "state": "OK",
+        "date": 1472564416000,
+        "action": "EXPORT"
+      }
+    ],
+    "correlationId": "7f4f7c2f-a8f9-43b0-a4ee-9d7d47bfe247",
+    "firstEvent": 1472564356000,
+    "lastEvent": 1472564416000,
+    "durationMillis": 60000,
+    "endState": "OK",
+    "fileName": "None"
+  },
+  {
+    "events": [
+      {
+        "state": "PENDING",
+        "date": 1472564366000,
+        "action": "EXPORT"
+      },
+      {
+        "state": "OK",
+        "date": 1472564427000,
+        "action": "EXPORT"
+      }
+    ],
+    "correlationId": "2b839d75-ee58-48c0-95c9-b54eaed321d8",
+    "firstEvent": 1472564366000,
+    "lastEvent": 1472564427000,
+    "durationMillis": 61000,
+    "endState": "OK",
+    "fileName": "None"
+  },
+  {
+    "events": [
+      {
+        "state": "STARTED",
+        "date": 1472564391000,
+        "action": "EXPORT"
+      },
+      {
+        "state": "PENDING",
+        "date": 1472564391000,
+        "action": "EXPORT"
+      },
+      {
+        "state": "OK",
+        "date": 1472564451000,
+        "action": "EXPORT"
+      }
+    ],
+    "correlationId": "5adbe5f6-7de2-43df-886b-f34cb6d6ddd8",
+    "firstEvent": 1472564391000,
+    "lastEvent": 1472564451000,
+    "durationMillis": 60000,
+    "endState": "OK",
+    "fileName": "None"
+  }
+]

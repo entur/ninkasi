@@ -37,7 +37,7 @@ function renderIndex() {
           <Route path="/admin/ninkasi/provider/:id/edit/" component={SupplierPage}/>
           <Route path="/admin/ninkasi/provider/new/" component={SupplierPage}/>
         </Route>
-    </Router>
+      </Router>
     </Provider>,
     document.getElementById('root')
   )

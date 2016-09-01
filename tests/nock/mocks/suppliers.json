@@ -1,0 +1,17 @@
+[{
+  "id": 1,
+  "name": "Ã˜stfold / Ã˜stfold Kollektivtrafikk",
+    "sftpAccount": "ostfold",
+    "chouetteInfo": {
+    "id": 1,
+    "prefix": "OST",
+    "referential": "ost",
+    "organisation": "Rutebanken",
+    "user": "admin@rutebanken.org",
+    "regtoppVersion": null,
+    "regtoppCoordinateProjection": "EPSG:32632",
+    "regtoppCalendarStrategy": null,
+    "dataFormat": "regtopp",
+    "enableValidation": true
+    }
+}]

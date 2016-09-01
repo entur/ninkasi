@@ -6,7 +6,6 @@ import NotificationContainer from '../components/NotificationContainer'
 import Footer from '../components/Footer'
 
 import cfgreader from '../config/readConfig'
-import { Link, browserHistory } from 'react-router'
 
 import ModalViewContainer from '../components/ModalActionContainer'
 
