@@ -1,27 +1,16 @@
-import { connect } from 'react-redux'
-import React, { Component, PropTypes } from 'react'
-import cfgreader from '../config/readConfig'
-import { bindActionCreators } from 'redux'
+import React from 'react'
 import classNames from 'classnames'
 
-class ProviderFilelist extends React.Component {
-
-  render() {
-
-    const {files} = this.props
-
-      return (
-
-        <select multiple id="providerFilelist" className="multiselect">
-        {files.map((file, index) => {
+const ProviderFilelist = (props) => {
+  return (
+      <select multiple id="providerFilelist" className="multiselect">
+        {props.files.map((file, index) => {
           return (
               <option key={index}>{file.name}</option>
           )
         })}
       </select>
-      )
-  }
+    )
 }
 
-export default connect(
-)(ProviderFilelist)
+export default ProviderFilelist

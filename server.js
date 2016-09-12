@@ -9,8 +9,6 @@ var ENDPOINTBASE = "/admin/ninkasi/"
 var app = new (require('express'))()
 var port = process.env.port || 8988
 
-
-
 var compiler = webpack(config)
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
 app.use(webpackHotMiddleware(compiler))

@@ -1,20 +1,12 @@
-import { connect } from 'react-redux'
-import React, { Component, PropTypes } from 'react'
-import cfgreader from '../config/readConfig'
-import { bindActionCreators } from 'redux'
+import React from 'react'
 import classNames from 'classnames'
 
-class OutboundFilelist extends React.Component {
+const OutboundFilelist = (props) => {
 
-  render() {
-
-    const {files} = this.props
-
-    if (files && files.length) {
+    if (props.files && props.files.length) {
       return (
-
-        <select id='outboundFilelist' multiple className="multiselect">
-          {files.map((file,index) => {
+        <select ref="outboundFilelist" id='outboundFilelist' multiple className="multiselect">
+          {props.files.map((file,index) => {
             return (
                 <option key={index}>{file}</option>
             )
@@ -26,12 +18,6 @@ class OutboundFilelist extends React.Component {
             <div className="no-files">No files are added to export.</div>
         )
     }
-
-  }
 }
 
-
-export default connect(
-  null,
-  null
-)(OutboundFilelist)
+export default OutboundFilelist

@@ -14,6 +14,8 @@ const eventHelper = (event, loggedEvents) => {
 }
 
 const intialState = {
+  shouldUpdateProvider: false,
+  editProviderModal: false,
   outboundFilelist: [],
   expandedEvents: [],
   isModalOpen: false,
@@ -33,6 +35,37 @@ const intialState = {
   chouetteListSortOrder: {
     property: "id",
     sortOrder: 0
+  },
+  supplierForm: {
+    name: "",
+    sftpAccount: "",
+    chouetteInfo: {
+      prefix: "",
+      referential: "",
+      organisation: "",
+      user: "",
+      regtoppVersion: "",
+      regtoppCoordinateProjection: "",
+      regtoppCalendarStrategy: "",
+      dataFormat: "",
+      enableValidation: false
+    }
+  }
+}
+
+const supplierFormDefault = {
+  name: "",
+  sftpAccount: "",
+  chouetteInfo: {
+    prefix: "",
+    referential: "",
+    organisation: "",
+    user: "",
+    regtoppVersion: "",
+    regtoppCoordinateProjection: "",
+    regtoppCalendarStrategy: "",
+    dataFormat: "",
+    enableValidation: false
   }
 }
 
@@ -74,6 +107,15 @@ const UtilsReducer = (state = intialState, action) => {
     case types.DISMISS_MODAL_DIALOG:
       return Object.assign({}, state, {isModalOpen: false})
 
+    case types.DISMISS_EDIT_PROVIDER_DIALOG:
+      return Object.assign({}, state, {editProviderModal: false})
+
+    case types.OPENED_EDIT_PROVIDER_DIALOG:
+      return Object.assign({}, state, {shouldUpdateProvider: true, editProviderModal: true})
+
+    case types.OPENED_NEW_PROVIDER_DIALOG:
+      return Object.assign({}, state, {shouldUpdateProvider: false, supplierForm: supplierFormDefault, editProviderModal: true})
+
     case types.LOG_EVENT:
       const event = eventHelper(action.payLoad, state.loggedEvents)
       return Object.assign({}, state, {loggedEvents: state.loggedEvents.concat(event)})
@@ -83,6 +125,9 @@ const UtilsReducer = (state = intialState, action) => {
 
     case types.SET_ACTIVE_TAB:
       return Object.assign({}, state, {activeTab: action.payLoad})
+
+    case types.SUCCESS_FETCH_PROVIDER:
+      return Object.assign({}, state, {supplierForm: action.payLoad})
 
     case types.SORT_EVENTLIST_BY_COLUMN:
       let eventsSortOrder = 0
@@ -111,6 +156,9 @@ const UtilsReducer = (state = intialState, action) => {
 
       return Object.assign({}, state, {chouetteListSortOrder: {property: action.payLoad, sortOrder: chouetteSortOrder} })
 
+    case types.UPDATED_SUPPLIER_FORM:
+      return Object.assign({}, state, {supplierForm: createUpdatedSupplierFormObject(state.supplierForm, action.payLoad) } )
+
 
     default:
       return state
@@ -118,12 +166,22 @@ const UtilsReducer = (state = intialState, action) => {
 }
 
 const toggleExpandedEvents = (index, expanded) => {
-
-  if (expanded.indexOf(index) === -1) {
+  if (expanded.indexOf(index) === -1)
     return expanded.concat(index)
-  }
 
   return expanded.filter( (item) => item != index)
+}
+
+const createUpdatedSupplierFormObject = (original, change) => {
+  let updatedObject = Object.assign({}, original)
+
+  if (change.key === "name" || change.key === 'sftpAccount') {
+    updatedObject[change.key] = change.value
+  } else {
+    updatedObject.chouetteInfo[change.key] = change.value
+  }
+
+   return updatedObject
 }
 
 

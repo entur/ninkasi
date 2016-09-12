@@ -1,14 +1,10 @@
-import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import SuppliersContainer from '../components/SuppliersContainer'
-import SupplierTabWrapper from '../components/SupplierTabWrapper'
-import NotificationContainer from '../components/NotificationContainer'
+import SuppliersContainer from './SuppliersContainer'
+import SupplierTabWrapper from './SupplierTabWrapper'
+import SupplierPage from './SupplierPage'
+import NotificationContainer from './NotificationContainer'
 import Footer from '../components/Footer'
-
-import cfgreader from '../config/readConfig'
-
-import ModalViewContainer from '../components/ModalActionContainer'
-
+import ModalViewContainer from './ModalActionContainer'
 
 export default class MainPage extends React.Component {
 
@@ -20,6 +16,7 @@ export default class MainPage extends React.Component {
         <SupplierTabWrapper/>
         <NotificationContainer/>
         <ModalViewContainer/>
+        <SupplierPage/>
         <Footer/>
       </div>
     )

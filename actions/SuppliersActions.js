@@ -106,12 +106,16 @@ SuppliersActions.refreshSupplierData = () => {
   }
 }
 
-
-SuppliersActions.createProvider = (provider) => {
+SuppliersActions.createProvider = () => {
 
   const url = `${window.config.nabuBaseUrl}jersey/providers/create`
 
-  return function(dispatch) {
+  return function(dispatch, getState) {
+
+    const state = getState()
+
+    let provider = state.UtilsReducer.supplierForm
+
     return axios.post(url, provider)
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_CREATE_PROVIDER))
@@ -126,11 +130,15 @@ SuppliersActions.createProvider = (provider) => {
   }
 }
 
-SuppliersActions.updateProvider = (provider) => {
+SuppliersActions.updateProvider = (id) => {
 
   const url = `${window.config.nabuBaseUrl}jersey/providers/update`
 
-  return function(dispatch) {
+  return function(dispatch, getState) {
+
+    const state = getState()
+    let provider = state.UtilsReducer.supplierForm
+
     return axios.put(url, provider)
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_UPDATE_PROVIDER) )
@@ -161,15 +169,25 @@ SuppliersActions.fetchProvider = (id) => {
   }
 }
 
-
 SuppliersActions.selectActiveSupplier = (id) => {
 
   return function(dispatch) {
     dispatch(SuppliersActions.changeActiveSupplierId(id))
     dispatch(SuppliersActions.restoreFilesToOutbound())
     dispatch(SuppliersActions.fetchFilenames(id))
+    dispatch(SuppliersActions.fetchProvider(id))
     dispatch(SuppliersActions.setActiveActionFilter(""))
     dispatch(SuppliersActions.unselectAllSuppliers())
+  }
+}
+
+SuppliersActions.updateSupplierForm = (key, value) => {
+  return {
+    type: types.UPDATED_SUPPLIER_FORM,
+    payLoad: {
+      key: key,
+      value: value
+    }
   }
 }
 
@@ -486,7 +504,6 @@ SuppliersActions.validateProvider = (id) => {
   }
 }
 
-
 SuppliersActions.buildGraph = () => {
   const url = window.config.mardukBaseUrl+'admin/services/graph/build'
 
@@ -503,6 +520,7 @@ SuppliersActions.buildGraph = () => {
       dispatch(SuppliersActions.logEvent({title: 'Graph build started'}))
     })
     .catch(function(response){
+      console.log("ERROR BUILDING GRAPH", response)
       dispatch( sendData(response.data, types.ERROR_BUILD_GRAPH) )
       dispatch(SuppliersActions.addNotification('Graph build failed', 'error'))
       dispatch(SuppliersActions.logEvent({title: 'Graph build failed'}))
@@ -691,6 +709,24 @@ SuppliersActions.openModalDialog = () => {
 SuppliersActions.dismissModalDialog = () => {
   return {
     type: types.DISMISS_MODAL_DIALOG
+  }
+}
+
+SuppliersActions.openEditProviderDialog = () => {
+  return {
+    type: types.OPENED_EDIT_PROVIDER_DIALOG
+  }
+}
+
+SuppliersActions.openNewProviderDialog = () => {
+  return {
+    type: types.OPENED_NEW_PROVIDER_DIALOG
+  }
+}
+
+SuppliersActions.dismissEditProviderDialog = () => {
+  return {
+    type: types.DISMISS_EDIT_PROVIDER_DIALOG
   }
 }
 

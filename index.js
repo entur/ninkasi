@@ -5,12 +5,10 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import Keycloak from 'keycloak-js'
 
-import MainPage from './components/MainPage'
-import SupplierPage from './components/SupplierPage'
+import MainPage from './containers/MainPage'
+import SupplierPage from './containers/SupplierPage'
 
 import configureStore from './store/store'
-import { Router, Route, browserHistory, IndexRoute } from 'react-router'
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 require('./sass/main.scss')
 
@@ -27,17 +25,10 @@ function authWithKeyCloak(renderCallback) {
 function renderIndex() {
 
   const store = configureStore()
-  const history = syncHistoryWithStore(browserHistory, store)
 
   render(
     <Provider store={store}>
-      <Router history={history}>
-        <Route path="/admin/ninkasi/">
-          <IndexRoute component={MainPage}/>
-          <Route path="/admin/ninkasi/provider/:id/edit/" component={SupplierPage}/>
-          <Route path="/admin/ninkasi/provider/new/" component={SupplierPage}/>
-        </Route>
-      </Router>
+      <MainPage/>
     </Provider>,
     document.getElementById('root')
   )

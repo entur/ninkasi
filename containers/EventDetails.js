@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import cfgreader from '../config/readConfig'
 import { bindActionCreators } from 'redux'
 
-import EventExpandableContent from './EventExpandableContent'
+import EventExpandableContent from '../components/EventExpandableContent'
 
 import Container from 'muicss/lib/react/container'
 import Row from 'muicss/lib/react/row'

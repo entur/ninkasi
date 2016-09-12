@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react'
 import SuppliersActions from '../actions/SuppliersActions'
 import { bindActionCreators } from 'redux'
 import cfgreader from '../config/readConfig'
-import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import Button from 'muicss/lib/react/button'
 import Option from 'muicss/lib/react/option'
 import Select from 'muicss/lib/react/select'
@@ -57,6 +56,11 @@ class SuppliersContainer extends React.Component {
 
   }
 
+  handleNewProvider() {
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.openNewProviderDialog())
+  }
+
   render() {
 
     const {suppliers, activeProviderId} = this.props
@@ -89,7 +93,7 @@ class SuppliersContainer extends React.Component {
             </Select>
           </Col>
           <Col md="2">
-            <div className="new-provider" id="new-provider" onClick={() => browserHistory.push('/admin/ninkasi/provider/new/')}><FaAdd/> New</div>
+            <div className="new-provider" onClick={() => this.handleNewProvider()}><FaAdd/> New</div>
           </Col>
       </Row>
     </Container>

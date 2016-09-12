@@ -2,7 +2,6 @@ import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import Modal from './Modal.js'
 import SuppliersActions from '../actions/SuppliersActions'
-
 import Button from 'muicss/lib/react/button'
 
 class ModalActionContainer extends React.Component {

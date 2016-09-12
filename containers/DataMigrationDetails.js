@@ -3,8 +3,6 @@ import React, { Component, PropTypes } from 'react'
 import cfgreader from '../config/readConfig'
 import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
-import { browserHistory } from 'react-router'
-
 
 import Button from 'muicss/lib/react/button'
 import Panel from 'muicss/lib/react/panel'
@@ -12,8 +10,8 @@ import Container from 'muicss/lib/react/container'
 import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
 
-import ProviderFilelist from './ProviderFilelist'
-import OutboundFilelist from './OutboundFilelist'
+import ProviderFilelist from '../components/ProviderFilelist'
+import OutboundFilelist from '../components/OutboundFilelist'
 import SuppliersActions from '../actions/SuppliersActions'
 
 const FaArrowDown = require('react-icons/lib/fa/arrow-down')

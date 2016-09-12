@@ -231,7 +231,6 @@ class ChouetteAllJobs extends React.Component {
         activeChouettePageIndex: state.MardukReducer.activeChouettePageIndex,
         actionAllFilter: state.MardukReducer.actionAllFilter,
         requestingJobs: state.MardukReducer.requesting_chouette_all_job
-
       }
     }
 

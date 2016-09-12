@@ -8,7 +8,7 @@
     "start": "node server.js",
     "test": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests/nock/index.js",
     "autotest": "./node_modules/.bin/supervisor -q -n exit -x npm run test",
-    "smoke-test": "nightwatch",
+    "smoke-test": "nightwatch babel-core/register.js",
     "dev": "NODE_ENV=development node server.js"
   },
   "author": "Sean Erik Scully",

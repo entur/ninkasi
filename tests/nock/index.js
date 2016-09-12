@@ -128,6 +128,28 @@ describe('async actions: testing correct states', () => {
       })
   })
 
+  it('Should build OTP graph and display notification message', () => {
+
+    nock(`${mardukBaseUrl}admin/services/`)
+      .log(console.log)
+      .post(`/graph/build`)
+      .reply(200, {})
+
+    const store = mockStore()
+
+    const expectedActions = [
+      { type: types.REQUEST_BUILD_GRAPH },
+      { type: types.SUCCESS_BUILD_GRAPH, payLoad: {}},
+      { type: types.ADD_NOTIFICATION, level: "success", message: "Graph build started" },
+      { type: types.LOG_EVENT, payLoad: {title: 'Graph build started'} }
+    ]
+
+    return store.dispatch(SuppliersActions.buildGraph())
+      .then((result) => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+
+  })
 
 
 })

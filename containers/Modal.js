@@ -5,8 +5,9 @@ class Modal extends React.Component {
 
   render() {
 
-    if (this.props.isOpen === false)
-    return null
+    if (this.props.isOpen === false) return null
+
+    const {minWidth, minHeight} = this.props
 
     let modalStyle = {
       position: 'absolute',
@@ -14,8 +15,9 @@ class Modal extends React.Component {
       left: '50%',
       transform: 'translate(-50%, -50%)',
       zIndex: '9999',
-      minWidth: '500px',
-      minHeight: '600px',
+      minWidth: minWidth || '50%',
+      height: minHeight,
+      minHeight: minHeight || '60%',
       background: '#fff'
     }
 

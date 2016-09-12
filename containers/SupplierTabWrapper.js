@@ -8,7 +8,6 @@ import ChouetteAllJobs from './ChouetteAllJobs'
 import DataMigrationDetails from './DataMigrationDetails'
 
 import cfgreader from '../config/readConfig'
-import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import Button from 'muicss/lib/react/button'
 import Panel from 'muicss/lib/react/panel'
 import Container from 'muicss/lib/react/container'
@@ -83,11 +82,8 @@ class SupplierTabWrapper extends React.Component {
         break
 
        default: break
-
      }
-
   }
-
 
   handleRefresh = () => {
     const {dispatch, activeId, filter, actionFilter} = this.props
@@ -97,6 +93,11 @@ class SupplierTabWrapper extends React.Component {
 
   onActive(tab) {
    //console.log(arguments)
+  }
+
+  handleEditProvider = () => {
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.openEditProviderDialog())
   }
 
   getTabsToRender = (displayAllSuppliers) => {
@@ -184,7 +185,7 @@ class SupplierTabWrapper extends React.Component {
               <Row>
                 <Col md="10">
                   <span>{supplier.id} {supplier.name}</span>
-                  <div className="small-button" onClick={() => browserHistory.push(`/admin/ninkasi/provider/${activeId}/edit/`)}><FaEdit/></div>
+                  <div className="small-button" onClick={() => this.handleEditProvider()}><FaEdit/></div>
                   <div className="small-button"  onClick={this.handleDeleteProvider}><FaRemove/></div>
                 </Col>
                 <Col md="2">
