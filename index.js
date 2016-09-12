@@ -5,7 +5,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import Keycloak from 'keycloak-js'
 
-import MainPage from './containers/MainPage'
+import App from './containers/App'
 import SupplierPage from './containers/SupplierPage'
 
 import configureStore from './store/store'
@@ -28,7 +28,7 @@ function renderIndex() {
 
   render(
     <Provider store={store}>
-      <MainPage/>
+      <App/>
     </Provider>,
     document.getElementById('root')
   )
