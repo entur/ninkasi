@@ -51,7 +51,21 @@ class ModalActionContainer extends React.Component {
           <input onChange={this.handleFilterChange.bind(this)} style={inputStyle} type="text" placeholder="Filter"/>
           <select style={selectStyle} multiple>
             { filteredLoggedEvents.map( event => {
-              return <option key={event.id}>{event.title}</option>
+
+              if (event.files && event.files.length) {
+
+                let options = []
+                options.push(<option key={event.id}>{event.title}</option>)
+                options.push(<option key={event.id+"-files"}>{'Files imported:'}</option>)
+                let fileOptions = event.files.map( (file, index) => <option key={event.id+'-files' + index}>{file}</option> )
+                options.push(fileOptions)
+
+                return options
+
+              } else {
+                return <option key={event.id}>{event.title}</option>
+              }
+
             })}
           </select>
         </Modal>

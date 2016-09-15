@@ -98,9 +98,9 @@ class EventDetails extends React.Component {
                     </Col>
                   </Row>
                   <Row key={"eventDetails-" + index}>
-                    { isExpanded ?
-                        <EventExpandableContent key={"statusEventList-" + index} correlationId={listItem.correlationId} events={listItem.events}></EventExpandableContent>
-                        : null
+                    { isExpanded
+                      ? <EventExpandableContent key={"statusEventList-" + index} correlationId={listItem.correlationId} events={listItem.events}></EventExpandableContent>
+                      : null
                     }
                   </Row>
                 </div>

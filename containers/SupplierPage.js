@@ -30,9 +30,9 @@ class SupplierPage extends React.Component {
 
     event.preventDefault()
 
-    const {dispatch, id} = this.props
+    const {dispatch, id, shouldUpdate} = this.props
 
-    if (id) {
+    if (shouldUpdate) {
       dispatch(SuppliersActions.updateProvider(id))
     } else {
       dispatch(SuppliersActions.createProvider())
@@ -42,7 +42,7 @@ class SupplierPage extends React.Component {
 
   render() {
 
-    const {provider, dispatch, isModalOpen, shouldUpdate} = this.props
+    const {provider, dispatch, isModalOpen, shouldUpdate, providers} = this.props
 
     const closeStyle = {
       float: "right",
@@ -53,7 +53,13 @@ class SupplierPage extends React.Component {
       <Modal isOpen={isModalOpen} onClose={() => this.closeModal()} minWidth="70%">
         <Button style={closeStyle} onClick={() => this.closeModal()}>X</Button>
         <div className="supplierPage">
-          <EditSupplierPage dispatch={dispatch} shouldUpdate={shouldUpdate} provider={provider} handleOnSubmit={this.handleOnSubmit.bind(this)}/> 
+          <EditSupplierPage
+            dispatch={dispatch}
+            shouldUpdate={shouldUpdate}
+            provider={provider}
+            providers={providers}
+            handleOnSubmit={this.handleOnSubmit.bind(this)}
+          />
           <NotificationContainer/>
         </div>
       </Modal>
@@ -71,7 +77,8 @@ const mapStateToProps = (state, ownProps) => {
     provider: state.UtilsReducer.supplierForm,
     id: state.SuppliersReducer.activeId,
     isModalOpen: state.UtilsReducer.editProviderModal,
-    shouldUpdate: state.UtilsReducer.shouldUpdateProvider
+    shouldUpdate: state.UtilsReducer.shouldUpdateProvider,
+    providers: state.SuppliersReducer.data
   }
 }
 

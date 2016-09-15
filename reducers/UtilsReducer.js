@@ -3,14 +3,21 @@ import {reducer as formReducer} from 'redux-form'
 
 import moment from 'moment'
 
-
-const eventHelper = (event, loggedEvents) => {
-  event.id = loggedEvents.length+1
-  const nowDate = moment().locale("nb").format("Do MMMM HH:mm:ss")
-  event.date = nowDate
-  event.title = `${nowDate}: ${event.title}`
-
-  return event
+const supplierFormDefault = {
+  name: "",
+  sftpAccount: "",
+  chouetteInfo: {
+    prefix: "",
+    referential: "",
+    organisation: "",
+    user: "",
+    regtoppVersion: "",
+    regtoppCoordinateProjection: "",
+    regtoppCalendarStrategy: "",
+    dataFormat: "",
+    enableValidation: false,
+    migrateDataToProvider: null
+  }
 }
 
 const intialState = {
@@ -36,37 +43,7 @@ const intialState = {
     property: "id",
     sortOrder: 0
   },
-  supplierForm: {
-    name: "",
-    sftpAccount: "",
-    chouetteInfo: {
-      prefix: "",
-      referential: "",
-      organisation: "",
-      user: "",
-      regtoppVersion: "",
-      regtoppCoordinateProjection: "",
-      regtoppCalendarStrategy: "",
-      dataFormat: "",
-      enableValidation: false
-    }
-  }
-}
-
-const supplierFormDefault = {
-  name: "",
-  sftpAccount: "",
-  chouetteInfo: {
-    prefix: "",
-    referential: "",
-    organisation: "",
-    user: "",
-    regtoppVersion: "",
-    regtoppCoordinateProjection: "",
-    regtoppCalendarStrategy: "",
-    dataFormat: "",
-    enableValidation: false
-  }
+  supplierForm: {...supplierFormDefault}
 }
 
 const filterHelper = (loggedEvents, loggedEventsFilter) => {
@@ -75,6 +52,13 @@ const filterHelper = (loggedEvents, loggedEventsFilter) => {
   })
 }
 
+const eventHelper = (event, loggedEvents) => {
+  event.id = loggedEvents.length+1
+  const nowDate = moment().locale("nb").format("Do MMMM HH:mm:ss")
+  event.date = nowDate
+  event.title = `${nowDate}: ${event.title}`
+  return event
+}
 
 const UtilsReducer = (state = intialState, action) => {
 

@@ -25,7 +25,9 @@ class DataMigrationDetails extends React.Component {
 
   render() {
 
-    const {files, outboundFiles, activeId} = this.props
+    const {files, outboundFiles, activeId, chouetteInfo} = this.props
+
+    const shouldRenderTransfer = !!chouetteInfo.migrateDataToProvider
 
     return (
 
@@ -34,7 +36,10 @@ class DataMigrationDetails extends React.Component {
             <div className="button-group">
                 <Button color="primary" onClick={this.handleImportData}>Import</Button>
                 <Button color="primary" onClick={this.handleValidateProvider}>Validate</Button>
-                <Button color="primary" onClick={this.handleExportData}>Export</Button>
+                { shouldRenderTransfer
+                  ? <Button color="primary" onClick={this.handleTransferData}>Transfer</Button>
+                  : <Button color="primary" onClick={this.handleExportData}>Export</Button>
+                }
                 <Button color="danger" onClick={this.handleCleanDataspace}>Clean</Button>
             </div>
 
@@ -72,12 +77,22 @@ class DataMigrationDetails extends React.Component {
 
   handleImportData = () => {
     const {dispatch, outboundFiles} = this.props
-    dispatch(SuppliersActions.importData(this.props.activeId, outboundFiles))
+
+    if (outboundFiles.length) {
+      dispatch(SuppliersActions.importData(this.props.activeId, outboundFiles))
+    } else {
+      alert("No files added to import")
+    }
   }
 
   handleExportData = () => {
     const {dispatch} = this.props
     dispatch(SuppliersActions.exportData(this.props.activeId))
+  }
+
+  handleTransferData = () => {
+    const {dispatch} = this.props
+    dispatch(SuppliersActions.transferData(this.props.activeId))
   }
 
   handleCleanDataspace = () => {
@@ -211,7 +226,7 @@ const mapStateToProps = (state, ownProps) => {
     outboundFiles: state.UtilsReducer.outboundFilelist,
     statusList: state.SuppliersReducer.statusList,
     filter: state.MardukReducer.chouetteJobFilter,
-    actionFilter: state.MardukReducer.actionFilter
+    chouetteInfo: state.UtilsReducer.supplierForm.chouetteInfo
   }
 }
 

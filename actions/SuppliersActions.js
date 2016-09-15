@@ -412,6 +412,31 @@ SuppliersActions.exportData = (id) => {
   }
 }
 
+SuppliersActions.transferData = (id) => {
+
+  const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/transfer`
+
+  return function(dispatch) {
+    dispatch(requestTransfer())
+    return axios({
+      url: url,
+      timeout: 20000,
+      method: 'post'
+    })
+    .then(function(response) {
+      dispatch( sendData(response.data, types.SUCCESS_TRANSFER_DATA) )
+      dispatch(SuppliersActions.addNotification('Transfer started', 'success'))
+      dispatch(SuppliersActions.logEvent({title: `Transfered data for provider ${id}`}))
+    })
+    .catch(function(response){
+      dispatch( sendData(response.data, types.ERROR_TRANSFER_DATA) )
+      dispatch(SuppliersActions.addNotification('Transfer failed', 'error'))
+      dispatch(SuppliersActions.logEvent({title: `Transfer failed for provider ${id}`}))
+    })
+  }
+}
+
+
 SuppliersActions.fetchFilenames = (id) => {
 
   const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/files`
@@ -445,7 +470,10 @@ SuppliersActions.importData = (id, selectedFiles) => {
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_IMPORT_DATA) )
       dispatch(SuppliersActions.addNotification('Import started', 'success'))
-      dispatch(SuppliersActions.logEvent({title: `Imported data for provider ${id}`}))
+      dispatch(SuppliersActions.logEvent({
+        title: `Imported data for provider ${id}`,
+        files: selectedFiles
+      }))
     })
     .catch(function(response){
       dispatch( sendData(response.data, types.ERROR_IMPORT_DATA) )
@@ -609,6 +637,10 @@ function requestExport() {
   return {type: types.REQUEST_EXPORT_DATA}
 }
 
+function requestTransfer() {
+  return {type: types.REQUEST_TRANSFER_DATA}
+}
+
 function requestFilenames() {
   return {type: types.REQUEST_FILENAMES}
 }
@@ -712,10 +744,19 @@ SuppliersActions.dismissModalDialog = () => {
   }
 }
 
-SuppliersActions.openEditProviderDialog = () => {
+SuppliersActions.openEditModalDialog = () => {
   return {
     type: types.OPENED_EDIT_PROVIDER_DIALOG
   }
+}
+
+SuppliersActions.openEditProviderDialog = () => {
+  return function(dispatch, getState) {
+    const state = getState()
+    dispatch(  SuppliersActions.fetchProvider(state.SuppliersReducer.activeId) )
+    dispatch( SuppliersActions.openEditModalDialog() )
+  }
+
 }
 
 SuppliersActions.openNewProviderDialog = () => {

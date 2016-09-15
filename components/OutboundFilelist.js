@@ -5,7 +5,7 @@ const OutboundFilelist = (props) => {
 
     if (props.files && props.files.length) {
       return (
-        <select ref="outboundFilelist" id='outboundFilelist' multiple className="multiselect">
+        <select id='outboundFilelist' multiple className="multiselect">
           {props.files.map((file,index) => {
             return (
                 <option key={index}>{file}</option>

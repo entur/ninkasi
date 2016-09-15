@@ -4,7 +4,7 @@ import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import * as reducers from '../reducers'
 
-//const loggerMiddleware = createLogger()
+const loggerMiddleware = createLogger()
 
 const initialState = {}
 
@@ -17,7 +17,8 @@ export default function configureStore(history) {
     combinedReducer,
     initialState,
     applyMiddleware(
-      thunkMiddleware
+      thunkMiddleware,
+      loggerMiddleware
     )
   )
 }
