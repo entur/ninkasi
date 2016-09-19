@@ -31,6 +31,7 @@ class EditSupplierPage extends React.Component {
       value = event.target.checked
     } else if (key === "migrateDataToProvider" ) {
       value = event.replace("option-","")
+      if (value === 'none') value = null
     } else {
       value = event.target.value
     }
