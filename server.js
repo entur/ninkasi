@@ -48,7 +48,7 @@ app.listen(port, function(error) {
   if (error) {
     console.error(error)
   } else {
-    const url = process.env.NODE_ENV == 'development' ? ' ' : '/admin/ninkasi/'
-    console.info("==> Listening on port %s. Open up http://localhost:%s/%s in your browser.", port, port, url)
+    const path = process.env.NODE_ENV == 'development' ? ' ' : 'admin/ninkasi/'
+    console.info("==> Listening on port %s. Open up http://localhost:%s/%s in your browser.", port, port, path)
   }
 })
