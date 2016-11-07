@@ -1,54 +1,101 @@
 var webpack = require('webpack')
-var webpackDevMiddleware = require('webpack-dev-middleware')
-var webpackHotMiddleware = require('webpack-hot-middleware')
-var config = require('./webpack.config')
-var convict = require('./config/convict.js')
-
-var ENDPOINTBASE = "/admin/ninkasi/"
-
-var app = new (require('express'))()
+var convictPromise = require('./config/convict-promise.js')
+var express = require('express')
 var port = process.env.port || 8988
+var app = express()
 
-var compiler = webpack(config)
-app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
-app.use(webpackHotMiddleware(compiler))
+convictPromise.then( (convict) => {
 
-app.get('/', function(req, res) {
-  res.redirect('/admin/ninkasi/')
-})
+  var ENDPOINTBASE = convict.get('endpointBase')
 
-app.get(ENDPOINTBASE, function(req, res) {
-  res.sendFile(__dirname + '/index.html')
-})
+  console.info("ENDPOINTBASE is set to", ENDPOINTBASE)
 
-app.get(ENDPOINTBASE + '_health', function(req, res) {
-  res.sendStatus(200)
-})
+  app.use(ENDPOINTBASE + 'public/', express.static(__dirname + '/public'))
 
+  if (process.env.NODE_ENV !== 'production') {
 
-if (process.env.NODE_ENV == 'production') {
-  app.get(ENDPOINTBASE + "static/bundle.js", function(req, res) {
-    res.sendFile(__dirname + '/admin/ninkasi/static/bundle.js')
-  })
-}
+    let config = require('./webpack.config')
+    config.output.publicPath = ENDPOINTBASE + 'public/'
 
-app.get(ENDPOINTBASE + "config/keycloak.json", function(req, res) {
-  res.sendFile(__dirname + '/config/keycloak.json')
-})
+    var compiler = new webpack(config)
 
-app.get(ENDPOINTBASE + "config.json", function(req, res) {
-  var cfg = {
-    nabuBaseUrl: convict.get('nabuBaseUrl'),
-    mardukBaseUrl: convict.get('mardukBaseUrl')
-  }
-  res.send(cfg)
-})
+    app.use(require('webpack-dev-middleware')(compiler, {
+      noInfo: true, publicPath: config.output.publicPath, stats: {colors: true}
+    }))
 
-app.listen(port, function(error) {
-  if (error) {
-    console.error(error)
+    app.use(require('webpack-hot-middleware')(compiler))
   } else {
-    const url = process.env.NODE_ENV == 'development' ? ' ' : '/admin/ninkasi/'
-    console.info("==> Listening on port %s. Open up http://localhost:%s/%s in your browser.", port, port, url)
+
+    // expose build bundle for production
+    app.get(ENDPOINTBASE + 'public/bundle.js', function(req, res) {
+      res.sendFile(__dirname + '/public/bundle.js')
+    })
+
+    app.get(ENDPOINTBASE + 'public/react.bundle.js', function(req, res) {
+      res.sendFile(__dirname + '/public/react.bundle.js')
+    })
   }
+
+  app.get(ENDPOINTBASE, function(req, res) {
+    res.send(getPage())
+  })
+
+  app.get(ENDPOINTBASE, function(req, res) {
+    res.sendFile(__dirname + '/index.html')
+  })
+
+  app.get(ENDPOINTBASE + '_health', function(req, res) {
+    res.sendStatus(200)
+  })
+
+
+  if (process.env.NODE_ENV == 'production') {
+    app.get(ENDPOINTBASE + "static/bundle.js", function(req, res) {
+      res.sendFile(__dirname + '/admin/ninkasi/static/bundle.js')
+    })
+  }
+
+  app.get(ENDPOINTBASE + 'config/keycloak.json', function(req, res) {
+    res.sendFile(__dirname + '/config/keycloak.json')
+  })
+
+  app.get(ENDPOINTBASE + 'config.json', function(req, res) {
+    var cfg = {
+      nabuBaseUrl: convict.get('nabuBaseUrl'),
+      mardukBaseUrl: convict.get('mardukBaseUrl')
+    }
+    res.send(cfg)
+  })
+
+  app.listen(port, function(error) {
+    if (error) {
+      console.error(error)
+    } else {
+      console.info("==> Listening on port %s. Open up http://localhost:%s/%s in your browser.", port, port, ENDPOINTBASE)
+    }
+  })
+
+  const getPage = () =>
+    `<!DOCTYPE html>
+     <html>
+      <head>
+        <title>Ninkasi</title>
+      </head>
+      <body>
+        <div id="root">
+        </div>
+        ${getBundles()}
+      </body>
+    </html>`
+
+  const getBundles = () => {
+    if (process.env.NODE_ENV === 'production') {
+      return (`
+        <script src="${ENDPOINTBASE}public/react.bundle.js"></script>
+        <script src="${ENDPOINTBASE}public/bundle.js"></script>
+      `)
+    }
+    return `<script src="${ENDPOINTBASE}public/bundle.js"></script>`
+  }
+
 })

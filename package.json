@@ -1,15 +1,16 @@
 {
   "name": "Ninkasi",
-  "version": "0.0.1",
-  "description": "Seed ...",
+  "version": "0.0.2",
+  "description": "Admin GUI for internal usage",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config ./webpack.prod.config.js --progress --colors",
+    "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.prod.config.js",
     "start": "node server.js",
     "test": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests/nock/index.js",
     "autotest": "./node_modules/.bin/supervisor -q -n exit -x npm run test",
     "smoke-test": "nightwatch ./nightwatch/smoke-test.js",
-    "dev": "NODE_ENV=development node server.js"
+    "dev": "BABEL_ENV=development NODE_ENV=development node server.js",
+    "prod": "BABEL_ENV=production NODE_ENV=production node server.js"
   },
   "author": "Sean Erik Scully",
   "license": "MIT",
