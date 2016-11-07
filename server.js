@@ -71,7 +71,7 @@ convictPromise.then( (convict) => {
     if (error) {
       console.error(error)
     } else {
-      console.info("==> Listening on port %s. Open up http://localhost:%s/%s in your browser.", port, port, ENDPOINTBASE)
+      console.info("==> Listening on port %s. Open up http://localhost:%s%s in your browser.", port, port, ENDPOINTBASE)
     }
   })
 
@@ -96,6 +96,7 @@ convictPromise.then( (convict) => {
       `)
     }
     return `<script src="${ENDPOINTBASE}public/bundle.js"></script>`
+
   }
 
 })
