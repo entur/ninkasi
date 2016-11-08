@@ -27,7 +27,8 @@ class ChouetteJobDetails extends React.Component {
     dispatch(SuppliersActions.cancelChouetteJobForProvider(activeId, index))
   }
 
-  handleCancelAllChouetteJobs = () => {
+  handleCancelAllChouetteJobs = (event) => {
+    event.preventDefault()
     const {dispatch, activeId} = this.props
     dispatch(SuppliersActions.cancelAllChouetteJobsforProvider(activeId))
   }
@@ -132,7 +133,7 @@ class ChouetteJobDetails extends React.Component {
             <Col md="2">
             <Loader color="#26A65B" size="16px" margin="4px"/>
           </Col> : <Col></Col> }
-          
+
           </Row>
           { (page && page.length) ?
 

@@ -214,7 +214,6 @@ SuppliersActions.cancelChouetteJobForProvider = (providerId, chouetteId) => {
       dispatch( sendData(response.data, types.SUCCESS_DELETE_PROVIDERS_CHOUETTE_JOB) )
       dispatch(SuppliersActions.addNotification(`Cancelled chouettejob with id ${chouetteId}`, 'success'))
       dispatch(SuppliersActions.logEvent({title: `Chouette job with ${chouetteId} successfully cancelled for provider ${providerId}`}))
-
     })
     .catch(function (response) {
       dispatch( sendData(response.data, types.ERROR_DELETE_PROVIDERS_CHOUETTE_JOB) )
