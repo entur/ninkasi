@@ -8,22 +8,15 @@ import ChouetteAllJobs from './ChouetteAllJobs'
 import DataMigrationDetails from './DataMigrationDetails'
 
 import cfgreader from '../config/readConfig'
-import Button from 'muicss/lib/react/button'
-import Panel from 'muicss/lib/react/panel'
 import Container from 'muicss/lib/react/container'
 import Loader from 'halogen/PulseLoader'
 import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
-import Dropdown from 'muicss/lib/react/dropdown'
-import DropdownItem from 'muicss/lib/react/dropdown-item'
 import Tabs from 'muicss/lib/react/tabs'
 import Tab from 'muicss/lib/react/tab'
 
-const FaArrowDown = require('react-icons/lib/fa/arrow-down')
-const FaArrowUp = require('react-icons/lib/fa/arrow-up')
 const FaEdit = require('react-icons/lib/fa/pencil')
 const FaRemove = require('react-icons/lib/fa/times-circle')
-const FaAdd = require('react-icons/lib/fa/plus-circle')
 const FaFresh = require('react-icons/lib/fa/refresh')
 
 require('../sass/main.scss')
@@ -100,36 +93,9 @@ class SupplierTabWrapper extends React.Component {
     dispatch(SuppliersActions.openEditProviderDialog())
   }
 
-  getTabsToRender = (displayAllSuppliers) => {
-
-    let tabsToRender
-    if (!displayAllSuppliers) {
-      tabsToRender = (
-        <Tabs onChange={this.onTabChange.bind(this)} initialSelectedIndex={0}>
-            <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
-              <DataMigrationDetails></DataMigrationDetails>
-            </Tab>
-            <Tab value="events" label="Events">
-              <EventDetails key="EventDetails"></EventDetails>
-            </Tab>
-            <Tab value="migrateData" label="Migrate data" className="hidden"></Tab>
-            <Tab value="chouetteJobs" label="Chouette jobs">
-              <ChouetteJobDetails></ChouetteJobDetails>
-            </Tab>
-        </Tabs>
-      )
-    } else {
-        tabsToRender = (<Tabs onChange={this.onTabChange.bind(this)} initialSelectedIndex={0}>
-            <Tab value="chouetteJobs" label="Chouette jobs">
-              <ChouetteAllJobs></ChouetteAllJobs>
-            </Tab>
-        </Tabs>)
-    }
-  }
-
   render() {
 
-    const { displayAllSuppliers, store, activeId, suppliers, filelistIsLoading, statusList}  = this.props
+    const { displayAllSuppliers, activeId, suppliers, filelistIsLoading}  = this.props
 
     if (filelistIsLoading) {
 

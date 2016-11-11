@@ -1,11 +1,7 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import cfgreader from '../config/readConfig'
 import { bindActionCreators } from 'redux'
-import classNames from 'classnames'
-
 import Button from 'muicss/lib/react/button'
-import Panel from 'muicss/lib/react/panel'
 import Container from 'muicss/lib/react/container'
 import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
@@ -25,7 +21,7 @@ class DataMigrationDetails extends React.Component {
 
   render() {
 
-    const {files, outboundFiles, activeId, chouetteInfo} = this.props
+    const {files, outboundFiles, chouetteInfo} = this.props
 
     const shouldRenderTransfer = !!chouetteInfo.migrateDataToProvider
 

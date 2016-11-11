@@ -51,8 +51,6 @@ class Modal extends React.Component {
       }
     }
 
-    const {loggedEvents} = this.props
-
     return (
       <div className={this.props.containerClassName}>
       <div className={this.props.className} style={modalStyle}>

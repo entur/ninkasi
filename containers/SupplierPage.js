@@ -1,6 +1,5 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import SuppliersContainer from './SuppliersContainer'
 import NotificationContainer from './NotificationContainer'
 import cfgreader from '../config/readConfig'
 import EditSupplierPage from  './EditSupplierPage'

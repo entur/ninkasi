@@ -9,6 +9,8 @@ var SuppliersActions = {}
 
 SuppliersActions.getProviderStatus = (id) => {
 
+  if (id < 0) return;
+
   const url = `${window.config.nabuBaseUrl}jersey/jobs/${id}`
 
   return function(dispatch) {
@@ -72,6 +74,8 @@ SuppliersActions.fetchSuppliers = () => {
 
 SuppliersActions.deleteProvider = (id) => {
 
+  if (id < 0) return;
+
   const url = `${window.config.nabuBaseUrl}jersey/providers/${id}`
 
   return function(dispatch) {
@@ -132,6 +136,9 @@ SuppliersActions.createProvider = () => {
 
 SuppliersActions.updateProvider = (id) => {
 
+  if (id < 0) return;
+
+
   const url = `${window.config.nabuBaseUrl}jersey/providers/update`
 
   return function(dispatch, getState) {
@@ -155,6 +162,8 @@ SuppliersActions.updateProvider = (id) => {
 
 SuppliersActions.fetchProvider = (id) => {
 
+  if (id < 0) return;
+
   const url = `${window.config.nabuBaseUrl}jersey/providers/${id}`
 
   return function(dispatch) {
@@ -170,7 +179,6 @@ SuppliersActions.fetchProvider = (id) => {
 }
 
 SuppliersActions.selectActiveSupplier = (id) => {
-
   return function(dispatch) {
     dispatch(SuppliersActions.changeActiveSupplierId(id))
     dispatch(SuppliersActions.restoreFilesToOutbound())
@@ -202,6 +210,9 @@ SuppliersActions.changeActiveSupplierId = (id) => {
 /* marduk actions */
 
 SuppliersActions.cancelChouetteJobForProvider = (providerId, chouetteId) => {
+
+  if (providerId < 0) return;
+
   const url = window.config.mardukBaseUrl+`admin/services/chouette/${providerId}/jobs/${chouetteId}`
 
   return function (dispatch) {
@@ -224,6 +235,9 @@ SuppliersActions.cancelChouetteJobForProvider = (providerId, chouetteId) => {
 }
 
 SuppliersActions.cancelAllChouetteJobsforProvider = (providerId) => {
+
+  if (providerId < 0) return;
+
   const url = window.config.mardukBaseUrl+`admin/services/chouette/${providerId}/jobs`
 
   return function (dispatch) {
@@ -350,6 +364,8 @@ SuppliersActions.getChouetteJobStatus = () => {
     const {chouetteJobFilter, actionFilter} = state.MardukReducer
 
     const {activeId} = state.SuppliersReducer
+
+    if (activeId < 0) return;
 
     let queryString = ''
 

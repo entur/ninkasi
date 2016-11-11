@@ -2,7 +2,6 @@ import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import cfgreader from '../config/readConfig'
 import { bindActionCreators } from 'redux'
-import classNames from 'classnames'
 import Container from 'muicss/lib/react/container'
 import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
@@ -15,7 +14,6 @@ import Loader from 'halogen/DotLoader'
 
 
 import SuppliersActions from '../actions/SuppliersActions'
-
 
 class ChouetteAllJobs extends React.Component {
   componentWillMount(){

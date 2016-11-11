@@ -1,7 +1,4 @@
-import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import SuppliersContainer from './SuppliersContainer'
-import NotificationContainer from './NotificationContainer'
 import cfgreader from '../config/readConfig'
 import {reduxForm} from 'redux-form'
 import { browserHistory } from 'react-router'
@@ -43,7 +40,7 @@ class EditSupplierPage extends React.Component {
 
   render() {
 
-    const {handleOnSubmit, shouldUpdate, dispatch, providers, provider} = this.props
+    const {handleOnSubmit, shouldUpdate, providers, provider} = this.props
 
     if (shouldUpdate && !provider.name.length) return <div>Loading ... </div>
 
