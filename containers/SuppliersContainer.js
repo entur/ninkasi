@@ -1,7 +1,6 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import SuppliersActions from '../actions/SuppliersActions'
-import { bindActionCreators } from 'redux'
 import cfgreader from '../config/readConfig'
 import Option from 'muicss/lib/react/option'
 import Select from 'muicss/lib/react/select'
@@ -11,6 +10,7 @@ import Col from 'muicss/lib/react/col'
 
 const FaAdd = require('react-icons/lib/fa/plus-circle')
 const FaHistory = require('react-icons/lib/fa/history')
+const FaExclamation = require('react-icons/lib/fa/exclamation-triangle')
 
 class SuppliersContainer extends React.Component {
 
@@ -60,6 +60,15 @@ class SuppliersContainer extends React.Component {
     dispatch(SuppliersActions.openNewProviderDialog())
   }
 
+  handleCancelAllJobs() {
+    const confirmedByUser = confirm('Are you want to cancel all chouette jobs for all providers?');
+
+    if (confirmedByUser) {
+      const {dispatch} = this.props
+      dispatch(SuppliersActions.cancelAllChouetteJobsforAllProviders())
+    }
+  }
+
   render() {
 
     const {suppliers, activeProviderId} = this.props
@@ -73,9 +82,10 @@ class SuppliersContainer extends React.Component {
         <Row>
           <Col md="15">
             <div style={ {float: "right"}}>
-                <div className="subtle-button mui-btn mui-btn--raised" onClick={this.handleBuildGraph.bind(this)}>Build Graph</div>
-                <div className="subtle-button mui-btn mui-btn--raised" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</div>
-                <div className="subtle-button mui-btn mui-btn--raised" onClick={() => this.openModal()}><FaHistory/> History</div>
+              <div className="subtle-button mui-btn mui-btn--raised" onClick={() => this.handleCancelAllJobs()}><FaExclamation color="#972702"/> Cancel all jobs</div>
+              <div className="subtle-button mui-btn mui-btn--raised" onClick={this.handleBuildGraph.bind(this)}>Build Graph</div>
+              <div className="subtle-button mui-btn mui-btn--raised" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</div>
+              <div className="subtle-button mui-btn mui-btn--raised" onClick={() => this.openModal()}><FaHistory color="#024797"/> History</div>
             </div>
           </Col>
         </Row>

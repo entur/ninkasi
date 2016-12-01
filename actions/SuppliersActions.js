@@ -234,6 +234,24 @@ SuppliersActions.cancelChouetteJobForProvider = (providerId, chouetteId) => {
   }
 }
 
+SuppliersActions.cancelAllChouetteJobsforAllProviders = () => {
+  return function (dispatch) {
+    return axios({
+      url: window.config.mardukBaseUrl+`admin/services/chouette/jobs/`,
+      timeout: 20000,
+      method: 'delete'
+    })
+    .then(function (response) {
+      dispatch(SuppliersActions.addNotification(`Cancelled all chouette jobs for all providers`, 'success'))
+      dispatch(SuppliersActions.logEvent({title: `All chouette jobs for all providers successfully cancelled `}))
+    })
+    .catch(function (response) {
+      dispatch(SuppliersActions.addNotification(`Failed deleting all chouttejobs for all providers`, 'error'))
+      dispatch(SuppliersActions.logEvent({title: `Unable to cancel all chouette jobs for all providers`}))
+    })
+  }
+}
+
 SuppliersActions.cancelAllChouetteJobsforProvider = (providerId) => {
 
   if (providerId < 0) return;
