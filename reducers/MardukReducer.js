@@ -1,5 +1,4 @@
 import * as types from './../actions/actionTypes'
-import {reducer as formReducer} from 'redux-form'
 
 const cleanSlate = {
   filenames: {

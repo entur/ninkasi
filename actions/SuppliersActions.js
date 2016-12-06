@@ -540,6 +540,27 @@ SuppliersActions.cleanDataspace = (id) => {
   }
 }
 
+SuppliersActions.cleanAllDataspaces = (filter) => {
+
+    const url = window.config.mardukBaseUrl+`admin/services/chouette/clean/${filter}`
+
+    return function(dispatch) {
+        return axios({
+            url: url,
+            timeout: 20000,
+            method: 'post'
+        })
+        .then(function(response) {
+            dispatch(SuppliersActions.addNotification('Cleaning of all dataspaces started with filter ' + filter, 'success'))
+            dispatch(SuppliersActions.logEvent({title: `Cleaned all dataspaces with filter ${filter}`}))
+        })
+        .catch(function(response){
+            dispatch(SuppliersActions.addNotification('Cleaning of all dataspaces failed with filter ' + filter, 'error'))
+            dispatch(SuppliersActions.logEvent({title: `Cleaning all dataspaces failed for filter ${filter}`}))
+        })
+    }
+}
+
 
 SuppliersActions.validateProvider = (id) => {
 

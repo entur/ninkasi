@@ -11,12 +11,11 @@ import Col from 'muicss/lib/react/col'
 const FaAdd = require('react-icons/lib/fa/plus-circle')
 const FaHistory = require('react-icons/lib/fa/history')
 const FaExclamation = require('react-icons/lib/fa/exclamation-triangle')
+import Dropdown from 'muicss/lib/react/dropdown'
+import DropdownItem from 'muicss/lib/react/dropdown-item'
 
 class SuppliersContainer extends React.Component {
 
-  constructor(props) {
-    super(props)
-  }
 
   componentWillMount() {
 
@@ -69,6 +68,16 @@ class SuppliersContainer extends React.Component {
     }
   }
 
+  handleCleanAllDataSpaces(filter) {
+    const confirmedByUser = confirm(`Are you sure you want to clean all dataspaces with filter ${filter}?`)
+
+    if (confirmedByUser) {
+      const {dispatch} = this.props
+      dispatch(SuppliersActions.cleanAllDataspaces(filter))
+    }
+  }
+
+
   render() {
 
     const {suppliers, activeProviderId} = this.props
@@ -80,9 +89,14 @@ class SuppliersContainer extends React.Component {
       <Container className="suppliers-container">
         <h1>Ninkasi</h1>
         <Row>
-          <Col md="15">
-            <div style={ {float: "right"}}>
-              <div className="subtle-button mui-btn mui-btn--raised" onClick={() => this.handleCancelAllJobs()}><FaExclamation color="#972702"/> Cancel all jobs</div>
+          <Col md="18">
+            <div style={{float: 'right'}}>
+              <Dropdown className="subtle-button" style={{marginRight: 7}} color="secondary" label="Clean all">
+                <DropdownItem onClick={() => this.handleCleanAllDataSpaces('all')}>All</DropdownItem>
+                <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level1')}>Level 1</DropdownItem>
+                <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level2')}>Level 2</DropdownItem>
+              </Dropdown>
+              <div className="subtle-button mui-btn mui-btn--raised" style={{marginLeft: 7}} onClick={() => this.handleCancelAllJobs()}><FaExclamation color="#972702"/> Cancel all jobs</div>
               <div className="subtle-button mui-btn mui-btn--raised" onClick={this.handleBuildGraph.bind(this)}>Build Graph</div>
               <div className="subtle-button mui-btn mui-btn--raised" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</div>
               <div className="subtle-button mui-btn mui-btn--raised" onClick={() => this.openModal()}><FaHistory color="#024797"/> History</div>

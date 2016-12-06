@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import cfgreader from '../config/readConfig'
-import {reduxForm} from 'redux-form'
-import { browserHistory } from 'react-router'
 import SuppliersActions from '../actions/SuppliersActions'
 
 import Form from 'muicss/lib/react/form'
