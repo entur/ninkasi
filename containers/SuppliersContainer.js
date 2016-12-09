@@ -42,9 +42,9 @@ class SuppliersContainer extends React.Component {
     dispatch(SuppliersActions.openModalDialog())
   }
 
-  selectSupplier(value) {
-
+  selectSupplier(event) {
     const {dispatch} = this.props
+    const {value} = event.target
 
     if (value > 0) {
       dispatch(SuppliersActions.selectActiveSupplier(value))
@@ -100,7 +100,7 @@ class SuppliersContainer extends React.Component {
         <Row>
           <Col md="18">
             <div style={{float: 'right'}}>
-              <Dropdown className="subtle-button" style={{marginRight: 7}} color="secondary" label="Clean all">
+              <Dropdown className="subtle-button" label="Clean all">
                 <DropdownItem onClick={() => this.handleCleanAllDataSpaces('all')}>All</DropdownItem>
                 <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level1')}>Level 1</DropdownItem>
                 <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level2')}>Level 2</DropdownItem>
