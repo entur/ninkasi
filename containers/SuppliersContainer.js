@@ -77,6 +77,15 @@ class SuppliersContainer extends React.Component {
     }
   }
 
+  handleCleanFileFilter() {
+    const confirmedByUser = confirm('Are you sure you want to clean file filter?')
+
+    if (confirmedByUser) {
+      const {dispatch} = this.props
+      dispatch(SuppliersActions.cleanFileFilter())
+    }
+  }
+
 
   render() {
 
@@ -96,6 +105,7 @@ class SuppliersContainer extends React.Component {
                 <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level1')}>Level 1</DropdownItem>
                 <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level2')}>Level 2</DropdownItem>
               </Dropdown>
+              <div className="subtle-button mui-btn mui-btn--raised" style={{marginLeft: 7}} onClick={() => this.handleCleanFileFilter()}><FaExclamation color="#972702"/> Clean file filter</div>
               <div className="subtle-button mui-btn mui-btn--raised" style={{marginLeft: 7}} onClick={() => this.handleCancelAllJobs()}><FaExclamation color="#972702"/> Cancel all jobs</div>
               <div className="subtle-button mui-btn mui-btn--raised" onClick={this.handleBuildGraph.bind(this)}>Build Graph</div>
               <div className="subtle-button mui-btn mui-btn--raised" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</div>

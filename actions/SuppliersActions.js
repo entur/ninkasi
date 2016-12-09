@@ -8,7 +8,6 @@ var SuppliersActions = {}
 
 
 SuppliersActions.getProviderStatus = (id) => {
-
   if (id < 0) return;
 
   const url = `${window.config.nabuBaseUrl}jersey/jobs/${id}`
@@ -51,7 +50,6 @@ function sendData(payLoad, type) {
 }
 
 SuppliersActions.fetchSuppliers = () => {
-
   const url = window.config.nabuBaseUrl+'jersey/providers/all'
 
   return function(dispatch) {
@@ -73,7 +71,6 @@ SuppliersActions.fetchSuppliers = () => {
 
 
 SuppliersActions.deleteProvider = (id) => {
-
   if (id < 0) return;
 
   const url = `${window.config.nabuBaseUrl}jersey/providers/${id}`
@@ -111,7 +108,6 @@ SuppliersActions.refreshSupplierData = () => {
 }
 
 SuppliersActions.createProvider = () => {
-
   const url = `${window.config.nabuBaseUrl}jersey/providers/create`
 
   return function(dispatch, getState) {
@@ -135,9 +131,7 @@ SuppliersActions.createProvider = () => {
 }
 
 SuppliersActions.updateProvider = (id) => {
-
   if (id < 0) return;
-
 
   const url = `${window.config.nabuBaseUrl}jersey/providers/update`
 
@@ -715,7 +709,6 @@ SuppliersActions.toggleChouetteInfoCheckboxAllFilter = (option, value) => {
 }
 
 SuppliersActions.formatProviderStatusDate = (list) => {
-
   return list.map( (listItem) => {
 
     listItem.duration = moment(moment(listItem.lastEvent).diff(moment(listItem.firstEvent))).locale("nb").utc().format("HH:mm:ss")
@@ -727,7 +720,6 @@ SuppliersActions.formatProviderStatusDate = (list) => {
         event.date = moment(event.date).locale("nb").format("YYYY-MM-DD HH:mm:ss")
       })
     }
-
     return listItem
   })
 
@@ -810,7 +802,6 @@ SuppliersActions.openEditProviderDialog = () => {
     dispatch(  SuppliersActions.fetchProvider(state.SuppliersReducer.activeId) )
     dispatch( SuppliersActions.openEditModalDialog() )
   }
-
 }
 
 SuppliersActions.openNewProviderDialog = () => {
@@ -829,6 +820,24 @@ SuppliersActions.logEvent = (event) => {
   return {
     type: types.LOG_EVENT,
     payLoad: event
+  }
+}
+
+SuppliersActions.cleanFileFilter = () => {
+  return function(dispatch) {
+    return axios({
+        url: window.config.mardukBaseUrl+'admin/application/filestores/clean',
+        timeout: 20000,
+        method: 'post'
+    })
+    .then(function(response) {
+        dispatch(SuppliersActions.addNotification('File filter cleaned', 'success'))
+        dispatch(SuppliersActions.logEvent({title: 'File filter cleaned'}))
+    })
+    .catch(function(response){
+        dispatch(SuppliersActions.addNotification('Cleaning file filter failed', 'error'))
+        dispatch(SuppliersActions.logEvent({title: 'Cleaning file filter failed'}))
+    })
   }
 }
 
