@@ -277,7 +277,6 @@ SuppliersActions.setActiveActionFilter = (value) => {
     dispatch( sendData(value, types.SET_ACTIVE_ACTION_FILTER) )
     dispatch(SuppliersActions.getChouetteJobStatus())
   }
-
 }
 
 SuppliersActions.setActiveActionAllFilter = (value) => {
@@ -438,6 +437,23 @@ SuppliersActions.exportData = (id) => {
     })
   }
 }
+
+SuppliersActions.getGraphStatus = () => {
+
+  return function(dispatch) {
+
+    const url = window.config.mardukBaseUrl+`admin/services/graph/status`
+
+    return axios.get(url)
+      .then( (response) => {
+        dispatch( sendData(response.data, types.RECEIVED_GRAPH_STATUS) )
+      })
+      .catch( (response) => {
+        console.error('error receiving graph status', response)
+      })
+  }
+}
+
 
 SuppliersActions.transferData = (id) => {
 

@@ -1,12 +1,10 @@
 .subtle-button {
   display: inline-block;
-  float: right;
   cursor: pointer;
   position: relative;
-  top: -40px;
 
   &:first-child {
-    margin-left: 8px;
+    margin-left: 12px;
   }
 
 }

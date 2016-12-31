@@ -33,14 +33,11 @@ class SupplierTabWrapper extends React.Component {
 
 
   handleDeleteProvider = () => {
-
     const response = confirm("Are you sure you want to delete current provider?")
-
     if (response == true) {
       const {dispatch} = this.props
       dispatch(SuppliersActions.deleteProvider(this.props.activeId))
     }
-
   }
 
   startPolling = () => {
@@ -49,7 +46,6 @@ class SupplierTabWrapper extends React.Component {
       this._timer = setInterval(self.poll, 10000)
     }, 1000)
   }
-
 
   poll = () => {
 

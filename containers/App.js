@@ -3,9 +3,9 @@ import SuppliersContainer from './SuppliersContainer'
 import SupplierTabWrapper from './SupplierTabWrapper'
 import SupplierPage from './SupplierPage'
 import NotificationContainer from './NotificationContainer'
-import Footer from '../components/Footer'
 import ModalViewContainer from './ModalActionContainer'
 import cfgreader from '../config/readConfig'
+import Header from '../components/Header'
 
 export default class MainPage extends React.Component {
 
@@ -20,12 +20,12 @@ export default class MainPage extends React.Component {
 
     return (
       <div className="app">
+        <Header/>
         <SuppliersContainer/>
         <SupplierTabWrapper/>
         <NotificationContainer/>
         <ModalViewContainer/>
         <SupplierPage/>
-        <Footer/>
       </div>
     )
   }

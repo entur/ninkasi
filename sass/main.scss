@@ -13,7 +13,7 @@ $open-sans: 'Open Sans', sans-serif;
 
 body {
   font-family: $open-sans;
-  font-weight: normal;
+  font-weight: 500;
   background: #e5e5e5;
   font-family: $open-sans;
 }
@@ -24,10 +24,8 @@ body {
   font-weight: 600;
 }
 
-
 .supplier-info {
   background: #fff;
-  margin-top: 20px;
   padding-bottom: 20px;
   margin-left: 40px;
   border: 1px solid #ccc;
@@ -50,8 +48,8 @@ body {
 }
 
 .suppliers-container {
-  padding: 20px;
-  margin-left: 20px;
+  padding-top: 20px;
+  margin-left: 25px;
   > h1 {
     margin-bottom: 40px;
     font-weight: 500;
@@ -63,6 +61,7 @@ body {
     background-size: 13px;
     background-position-x: 99%;
     max-width: 440px;
+    display: inline-block;
   }
 }
 

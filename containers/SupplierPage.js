@@ -11,25 +11,19 @@ import SuppliersActions from '../actions/SuppliersActions'
 class SupplierPage extends React.Component {
 
   componentWillMount() {
-
-    const {id, dispatch} = this.props
-
+    const { id, dispatch } = this.props
     cfgreader.readConfig( (function(config) {
       window.config = config
-
       if (id) {
         dispatch(SuppliersActions.fetchProvider(id))
       }
-
     }).bind(this))
-
   }
 
   handleOnSubmit(event) {
-
     event.preventDefault()
 
-    const {dispatch, id, shouldUpdate} = this.props
+    const { dispatch, id, shouldUpdate } = this.props
 
     if (shouldUpdate) {
       dispatch(SuppliersActions.updateProvider(id))
@@ -41,7 +35,7 @@ class SupplierPage extends React.Component {
 
   render() {
 
-    const {provider, dispatch, isModalOpen, shouldUpdate, providers} = this.props
+    const { provider, dispatch, isModalOpen, shouldUpdate, providers } = this.props
 
     const closeStyle = {
       float: "right",

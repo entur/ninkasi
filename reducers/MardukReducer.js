@@ -144,6 +144,9 @@ const MardukReducer = (state = cleanSlate, action) => {
     case types.REQUESTED_ALL_CHOUETTE_JOB_STATUS:
       return Object.assign({}, state, {requesting_chouette_all_job: true})
 
+    case types.RECEIVED_GRAPH_STATUS:
+      return Object.assign({}, state, { graphStatus: action.payLoad})
+
     default:
       return state
   }
