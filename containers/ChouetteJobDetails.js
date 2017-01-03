@@ -1,7 +1,6 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import cfgreader from '../config/readConfig'
-import { bindActionCreators } from 'redux'
 import Container from 'muicss/lib/react/container'
 import Row from 'muicss/lib/react/row'
 import Col from 'muicss/lib/react/col'
@@ -14,6 +13,13 @@ import SuppliersActions from '../actions/SuppliersActions'
 import Loader from 'halogen/DotLoader'
 
 class ChouetteJobDetails extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      activeChouettePageIndex: 0
+    }
+  }
 
   componentWillMount(){
     cfgreader.readConfig( (function(config) {
@@ -39,8 +45,9 @@ class ChouetteJobDetails extends React.Component {
 
   handlePageClick (e, pageIndex) {
     e.preventDefault()
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.setActiveChouettePageIndex(pageIndex))
+    this.setState({
+      activeChouettePageIndex: pageIndex
+    })
   }
 
   setActiveActionFilter (event) {
@@ -57,7 +64,9 @@ class ChouetteJobDetails extends React.Component {
 
   render() {
 
-    const {page, chouetteJobFilter, paginationMap, activeChouettePageIndex, requestingJobs} = this.props
+    const {chouetteJobFilter, paginationMap, requestingJobs} = this.props
+    const { activeChouettePageIndex } = this.state
+    const page = paginationMap ? paginationMap[activeChouettePageIndex] : null
 
     return(
 
@@ -226,11 +235,9 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   return {
-    page: paginationMap[state.MardukReducer.activeChouettePageIndex],
     activeId: state.SuppliersReducer.activeId,
     chouetteJobFilter: state.MardukReducer.chouetteJobFilter,
     paginationMap: paginationMap,
-    activeChouettePageIndex: state.MardukReducer.activeChouettePageIndex,
     actionFilter: state.MardukReducer.actionFilter,
     requestingJobs: state.MardukReducer.requesting_chouette_job
   }

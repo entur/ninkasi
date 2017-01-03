@@ -26,7 +26,6 @@ const cleanSlate = {
   actionAllFilter: "",
   requesting_chouette_job: false,
   requesting_chouette_all_job: false,
-  activeChouettePageIndex: 0
 }
 
 
@@ -103,24 +102,11 @@ const MardukReducer = (state = cleanSlate, action) => {
     case types.ERROR_FILENAMES:
       return Object.assign({}, state, {filesnames: {isLoading: false, error: action.payLoad}})
 
-    case types.SET_ACTIVE_CHOUTTE_PAGE_INDEX:
-      return Object.assign({}, state, {activeChouettePageIndex: action.payLoad})
-
     case types.SUCCESS_CHOUETTE_JOB_STATUS:
-      // Set default pageIndex for the new request if pageIndex is out of bounds
-      let activePage = state.activeChouettePageIndex
-      if (state.activeChouettePageIndex > (action.payLoad.length / 20)) {
-        activePage = 0
-      }
-      return Object.assign({}, state, {requesting_chouette_job: false, activeChouettePageIndex: activePage, chouetteJobStatus: action.payLoad})
+      return Object.assign({}, state, {requesting_chouette_job: false, chouetteJobStatus: action.payLoad})
 
     case types.SUCCESS_ALL_CHOUETTE_JOB_STATUS:
-      // Set default pageIndex for the new request if pageIndex is out of bounds
-      let activeAllPage = state.activeChouettePageIndex
-      if (state.activeChouettePageIndex > (action.payLoad.length / 20)) {
-        activeAllPage = 0
-      }
-      return Object.assign({}, state, {requesting_chouette_all_job: false, activeChouettePageIndex: activeAllPage, chouetteAllJobStatus: action.payLoad})
+      return Object.assign({}, state, {requesting_chouette_all_job: false, chouetteAllJobStatus: action.payLoad})
 
     case types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER:
       let chouetteJobFilter = {...state.chouetteJobFilter}

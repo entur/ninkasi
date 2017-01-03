@@ -13,6 +13,13 @@ import SuppliersActions from '../actions/SuppliersActions'
 
 class EventDetails extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      activePageIndex: 0
+    }
+  }
+
   componentWillMount(){
     cfgreader.readConfig( (function(config) {
       window.config = config
@@ -26,8 +33,9 @@ class EventDetails extends React.Component {
 
   handlePageClick (e, pageIndex) {
     e.preventDefault()
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.setActivePageIndex(pageIndex))
+    this.setState({
+      activePageIndex: pageIndex
+    })
   }
 
   handleSortForColumn(columnName) {
@@ -37,7 +45,9 @@ class EventDetails extends React.Component {
 
   render() {
 
-    const {page, paginationMap, activePageIndex, expandedEvents} = this.props
+    const { paginationMap, expandedEvents } = this.props
+    const { activePageIndex } = this.state
+    const page = paginationMap[activePageIndex]
 
     if (page && page.length && paginationMap) {
 
@@ -150,8 +160,6 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   return {
-    activePageIndex: state.UtilsReducer.activePageIndex,
-    page: paginationMap[state.UtilsReducer.activePageIndex],
     paginationMap: paginationMap,
     expandedEvents: state.UtilsReducer.expandedEvents
   }

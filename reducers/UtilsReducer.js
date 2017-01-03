@@ -28,7 +28,6 @@ const intialState = {
   loggedEvents: [],
   loggedEventsFilter: '',
   filteredLoggedEvents: [],
-  activePageIndex: 0,
   activeTab: 'migrateData',
   eventListSortOrder: {
     property: "firstEvent",
@@ -135,7 +134,7 @@ const UtilsReducer = (state = intialState, action) => {
 
       if (state.chouetteListSortOrder.property == action.payLoad) {
         chouetteSortOrder = state.chouetteListSortOrder.sortOrder >= 1 ? 0 : 1
-      }
+      } 
 
       return Object.assign({}, state, {chouetteListSortOrder: {property: action.payLoad, sortOrder: chouetteSortOrder} })
 

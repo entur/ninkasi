@@ -37,7 +37,7 @@ const EventExpandableContent = (props) => {
 
 EventExpandableContent.propTypes = {
   events: PropTypes.arrayOf(React.PropTypes.object).isRequired,
-  correlationId: PropTypes.number.isRequired
+  correlationId: PropTypes.string.isRequired
 }
 
 export default EventExpandableContent

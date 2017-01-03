@@ -303,12 +303,6 @@ SuppliersActions.formatChouetteJobsWithDate = (jobs) => {
 
 }
 
-SuppliersActions.setActiveChouettePageIndex = (index) => {
-  return {
-    type: types.SET_ACTIVE_CHOUTTE_PAGE_INDEX,
-    payLoad: index
-  }
-}
 
 SuppliersActions.getChouetteJobsForAllSuppliers = () => {
 

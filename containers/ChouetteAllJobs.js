@@ -15,6 +15,15 @@ import Loader from 'halogen/DotLoader'
 import SuppliersActions from '../actions/SuppliersActions'
 
 class ChouetteAllJobs extends React.Component {
+
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      activeChouettePageIndex: 0
+    }
+  }
+
   componentWillMount(){
     const {dispatch} = this.props
     cfgreader.readConfig( (function(config) {
@@ -35,8 +44,9 @@ class ChouetteAllJobs extends React.Component {
 
   handlePageClick (e, pageIndex) {
     e.preventDefault()
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.setActiveChouettePageIndex(pageIndex))
+    this.setState({
+      activeChouettePageIndex: pageIndex
+    })
   }
 
   setActiveActionAllFilter (event) {
@@ -53,7 +63,9 @@ class ChouetteAllJobs extends React.Component {
 
   render() {
 
-    const {page, chouetteJobAllFilter, paginationMap, activeChouettePageIndex, requestingJobs} = this.props
+    const { chouetteJobAllFilter, paginationMap, requestingJobs} = this.props
+    const { activeChouettePageIndex } = this.state
+    const page = paginationMap ? paginationMap[activeChouettePageIndex] : null
 
     return(
 
@@ -222,10 +234,8 @@ class ChouetteAllJobs extends React.Component {
       }
 
       return {
-        page: paginationMap[state.MardukReducer.activeChouettePageIndex],
         chouetteJobAllFilter: state.MardukReducer.chouetteJobAllFilter,
         paginationMap: paginationMap,
-        activeChouettePageIndex: state.MardukReducer.activeChouettePageIndex,
         actionAllFilter: state.MardukReducer.actionAllFilter,
         requestingJobs: state.MardukReducer.requesting_chouette_all_job
       }
