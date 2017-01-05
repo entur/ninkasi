@@ -16,7 +16,6 @@ import Tabs from 'muicss/lib/react/tabs'
 import Tab from 'muicss/lib/react/tab'
 
 const FaEdit = require('react-icons/lib/fa/pencil')
-const FaRemove = require('react-icons/lib/fa/times-circle')
 const FaFresh = require('react-icons/lib/fa/refresh')
 
 require('../sass/main.scss')
@@ -31,14 +30,6 @@ class SupplierTabWrapper extends React.Component {
     }).bind(this))
   }
 
-
-  handleDeleteProvider = () => {
-    const response = confirm("Are you sure you want to delete current provider?")
-    if (response == true) {
-      const {dispatch} = this.props
-      dispatch(SuppliersActions.deleteProvider(this.props.activeId))
-    }
-  }
 
   startPolling = () => {
     var self = this
@@ -85,8 +76,7 @@ class SupplierTabWrapper extends React.Component {
   }
 
   handleEditProvider = () => {
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.openEditProviderDialog())
+    this.props.dispatch(SuppliersActions.openEditProviderDialog())
   }
 
   render() {
@@ -110,7 +100,8 @@ class SupplierTabWrapper extends React.Component {
 
     if (displayAllSuppliers || supplier) {
 
-      let tabsToRender
+      let tabsToRender = null
+
       if (!displayAllSuppliers) {
 
         tabsToRender =
@@ -142,23 +133,18 @@ class SupplierTabWrapper extends React.Component {
 
         <div className="supplier-info">
           <div className="supplier-header">
-          <Container fluid={true}>
+          <div>
           { !displayAllSuppliers ?
-              <Row>
-                <Col md="10">
+              <div style={{display: 'flex', alignItems: 'center'}}>
                   <span>{supplier.id} {supplier.name}</span>
                   <div className="small-button" onClick={() => this.handleEditProvider()}><FaEdit/></div>
-                  <div className="small-button"  onClick={this.handleDeleteProvider}><FaRemove/></div>
-                </Col>
-                <Col md="2">
-                  <div onClick={this.handleRefresh}><FaFresh/></div>
-                </Col>
-              </Row> :
-              <Row>
-                <Col md="4"><h2>All providers ({suppliers.length})</h2></Col>
-              </Row>
+                  <div style={{marginLeft: 'auto', paddingRight: 20}}><FaFresh onClick={this.handleRefresh}/></div>
+              </div> :
+              <div>
+                <span>All providers ({suppliers.length})</span>
+              </div>
           }
-          </Container>
+          </div>
         </div>
 
         <Container fluid={true}>

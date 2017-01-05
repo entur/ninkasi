@@ -70,32 +70,6 @@ SuppliersActions.fetchSuppliers = () => {
 }
 
 
-SuppliersActions.deleteProvider = (id) => {
-  if (id < 0) return;
-
-  const url = `${window.config.nabuBaseUrl}jersey/providers/${id}`
-
-  return function(dispatch) {
-    return axios({
-      url: url,
-      timeout: 20000,
-      method: 'delete'
-    })
-    .then(function(response) {
-      dispatch( sendData(response.data, types.SUCCESS_DELETE_PROVIDER ))
-      dispatch(SuppliersActions.addNotification('Provider deleted', 'success'))
-      dispatch(SuppliersActions.logEvent({title: `Deleted provider ${id} successfully`}))
-      dispatch(SuppliersActions.selectActiveSupplier(0))
-      dispatch(SuppliersActions.fetchSuppliers())
-    })
-    .catch(function(response) {
-      dispatch( sendData(response.data, types.ERROR_DELETE_PROVIDER) )
-      dispatch(SuppliersActions.addNotification('Unable to delete provider', 'error'))
-      dispatch(SuppliersActions.logEvent({title: `Deleting provider ${id} failed`}))
-    })
-  }
-}
-
 SuppliersActions.refreshSupplierData = () => {
   return function(dispatch, getState) {
     const state = getState()

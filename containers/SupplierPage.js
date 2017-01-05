@@ -21,6 +21,7 @@ class SupplierPage extends React.Component {
   }
 
   handleOnSubmit(event) {
+
     event.preventDefault()
 
     const { dispatch, id, shouldUpdate } = this.props
