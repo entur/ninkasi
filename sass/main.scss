@@ -27,9 +27,9 @@ body {
 .supplier-info {
   background: #fff;
   padding-bottom: 20px;
-  margin-left: 40px;
+  margin: auto;
   border: 1px solid #ccc;
-  width: 80%;
+  width: 98%;
 
   .supplier-details {
     margin-top: 30px;
@@ -49,7 +49,8 @@ body {
 
 .suppliers-container {
   padding-top: 20px;
-  margin-left: 25px;
+  width: 98%;
+  margin: auto;
   > h1 {
     margin-bottom: 40px;
     font-weight: 500;
@@ -81,14 +82,12 @@ body {
   }
 }
 
-#providerFilelist, #outboundFilelist {
+.multiselect {
   margin-top: 20px;
   margin-bottom: 20px;
-  margin-left: 17px;
   resize: vertical;
   min-height: 400px;
   font-size: 0.9em;
-  width: 90%;
   overflow: auto;
   white-space: nowrap;
 }

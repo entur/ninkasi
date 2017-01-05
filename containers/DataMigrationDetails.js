@@ -1,34 +1,25 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
 import Button from 'muicss/lib/react/button'
-import Container from 'muicss/lib/react/container'
-import Row from 'muicss/lib/react/row'
-import Col from 'muicss/lib/react/col'
-
-import ProviderFilelist from '../components/ProviderFilelist'
-import OutboundFilelist from '../components/OutboundFilelist'
+import FileList from '../components/FileList'
 import SuppliersActions from '../actions/SuppliersActions'
 
 const FaArrowDown = require('react-icons/lib/fa/arrow-down')
 const FaArrowUp = require('react-icons/lib/fa/arrow-up')
-const FaEdit = require('react-icons/lib/fa/pencil')
-const FaRemove = require('react-icons/lib/fa/times-circle')
-const FaAdd = require('react-icons/lib/fa/plus-circle')
-const FaFresh = require('react-icons/lib/fa/refresh')
+const FaRemove = require('react-icons/lib/fa/arrow-left')
+const FaAdd = require('react-icons/lib/fa/arrow-right')
 
 class DataMigrationDetails extends React.Component {
 
   render() {
 
-    const {files, outboundFiles, chouetteInfo} = this.props
+    const { files, outboundFiles, chouetteInfo } = this.props
 
     const shouldRenderTransfer = !!chouetteInfo.migrateDataToProvider
 
     return (
 
           <div>
-
             <div className="button-group">
                 <Button color="primary" onClick={this.handleImportData}>Import</Button>
                 <Button color="primary" onClick={this.handleValidateProvider}>Validate</Button>
@@ -38,36 +29,20 @@ class DataMigrationDetails extends React.Component {
                 }
                 <Button color="danger" onClick={this.handleCleanDataspace}>Clean</Button>
             </div>
-
-            <Container fluid={true}>
-              <Row>
-                <div>
-                  <div className="description-title">Files from S3</div>
-                  <ProviderFilelist files={files}></ProviderFilelist>
-                </div>
-              </Row>
-              <Row>
-                <Col md="8">
-                  <Button onClick={this.appendSelectedFiles}><FaAdd/> Add</Button>
-                  <Button onClick={this.removeSelectedFiles}><FaRemove/> Remove</Button>
-                </Col>
-              </Row>
-              <Row>
-                <div>
-                  <OutboundFilelist files={outboundFiles}></OutboundFilelist>
-                </div>
-              </Row>
-              {outboundFiles.length ? <Row>
-                <Col md="8">
-                  <Button onClick={this.moveDown}><FaArrowDown/> Down</Button>
-                  <Button onClick={this.moveUp}><FaArrowUp/> Up</Button>
-                </Col>
-              </Row> : <Row></Row>}
-            </Container>
-
-            <div className="mui--divider-bottom"></div>
-            <div className="mui--divider-bottom"></div>
-          </div> )
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <FileList key="providerFilelist" wrapperId="providerFilelist" files={files}/>
+              <div style={{display: 'flex', alignItem: 'center', flexDirection: 'column', flex: 0.1, cursor: 'pointer'}}>
+                <FaAdd style={{transform: 'scale(2)', color: '#2196f3', marginBottom: 30, marginLeft: 20, marginRight: 20}} onClick={this.appendSelectedFiles}/>
+                <FaRemove style={{transform: 'scale(2)', color: outboundFiles.length ? '#b91c1c' : '#9e9e9e', marginLeft: 20, marginRight: 20}} onClick={this.removeSelectedFiles}/>
+              </div>
+              <FileList key="outboundFilelist" wrapperId="outboundFilelist" files={outboundFiles}/>
+              <div style={{flex: 0.2, display: outboundFiles.length ? 'flex' : 'none', alignItems: 'center', flexDirection: 'column', cursor: 'pointer'}}>
+                <FaArrowDown style={{transform: 'scale(2)', marginBottom: 30, marginLeft: 20}} onClick={this.moveDown}/>
+                <FaArrowUp style={{transform: 'scale(2)', marginLeft: 20}} onClick={this.moveUp}/>
+              </div>
+            </div>
+          </div>
+    )
   }
 
 
@@ -185,20 +160,22 @@ class DataMigrationDetails extends React.Component {
     let providerFilelist = document.querySelector('#providerFilelist')
 
     var selectedFiles = []
+
     for (let i = 0; i < providerFilelist.length; i++) {
-      if (providerFilelist.options[i].selected)
-      selectedFiles.push(providerFilelist[i].text)
+      if (providerFilelist.options[i].selected) {
+        selectedFiles.push(providerFilelist[i].text)
+      }
     }
 
-    const {dispatch} = this.props
+    const { dispatch } = this.props
 
     dispatch(SuppliersActions.appendFilesToOutbound(selectedFiles))
+
+    Array.prototype.forEach.call(document.querySelectorAll("#providerFilelist :checked"), (el) => { el.selected = false })
 
   }
 
   removeSelectedFiles = () => {
-
-    const {dispatch} = this.props
 
     let outboundFilelist = document.querySelector('#outboundFilelist')
 
@@ -207,17 +184,20 @@ class DataMigrationDetails extends React.Component {
       if (outboundFilelist.options[i].selected) selectedFiles.push(outboundFilelist[i].text)
     }
 
-    dispatch(SuppliersActions.removeFilesToOutbound(selectedFiles))
+    this.props.dispatch(SuppliersActions.removeFilesToOutbound(selectedFiles))
 
+    Array.prototype.forEach.call(document.querySelectorAll("#outboundFilelist :checked"), (el) => { el.selected = false })
   }
-
 }
 
 const mapStateToProps = (state, ownProps) => {
+
+  const files = state.MardukReducer.filenames.fetch_filesnames['files'].map( (file) => file.name)
+
   return {
     providers: state.SuppliersReducer.data,
     activeId: state.SuppliersReducer.activeId,
-    files: state.MardukReducer.filenames.fetch_filesnames['files'],
+    files: files || [],
     filelistIsLoading: state.MardukReducer.filenames.isLoading,
     outboundFiles: state.UtilsReducer.outboundFilelist,
     statusList: state.SuppliersReducer.statusList,
