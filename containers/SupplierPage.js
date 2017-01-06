@@ -40,7 +40,7 @@ class SupplierPage extends React.Component {
 
     const closeStyle = {
       float: "right",
-      marginRight: "5px"
+      marginRight: 5
     }
 
     return (

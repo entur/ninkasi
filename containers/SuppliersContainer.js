@@ -4,9 +4,7 @@ import SuppliersActions from '../actions/SuppliersActions'
 import cfgreader from '../config/readConfig'
 import Option from 'muicss/lib/react/option'
 import Select from 'muicss/lib/react/select'
-import Container from 'muicss/lib/react/container'
-import Row from 'muicss/lib/react/row'
-import Col from 'muicss/lib/react/col'
+import Button from 'muicss/lib/react/button'
 const FaAdd = require('react-icons/lib/fa/plus')
 const FaHistory = require('react-icons/lib/fa/history')
 const FaExclamation = require('react-icons/lib/fa/exclamation-triangle')
@@ -17,7 +15,6 @@ class SuppliersContainer extends React.Component {
 
   componentWillMount() {
    const { dispatch } = this.props
-
     cfgreader.readConfig( (function(config) {
       window.config = config
       dispatch(SuppliersActions.fetchSuppliers())
@@ -82,25 +79,31 @@ class SuppliersContainer extends React.Component {
 
     let selectedValue = (typeof(activeProviderId) !== 'undefined') ? String(activeProviderId) : "0"
 
+    let innerContainerStyle = {
+      display: 'flex',
+      background: '#2f2f2f',
+      color: '#fff',
+      justifyContent: 'flex-end',
+      padding: '10px 20px'
+    }
+
     return (
 
       <div className="suppliers-container">
-          <div style={{display: 'flex'}}>
-            <div style={{marginTop: 0, marginBottom: 20}}>
-              <div className="subtle-button mui-btn mui-btn--raised" onClick={() => this.openModal()}><FaHistory color="#024797"/> History</div>
-              <div className="subtle-button mui-btn mui-btn--raised" onClick={this.handleBuildGraph.bind(this)}>Build Graph</div>
-              <div className="subtle-button mui-btn mui-btn--raised" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</div>
-              <div className="subtle-button mui-btn mui-btn--raised" style={{marginLeft: 7}} onClick={() => this.handleCleanFileFilter()}><FaExclamation color="#972702"/> Clean file filter</div>
-              <div className="subtle-button mui-btn mui-btn--raised" style={{marginLeft: 7}} onClick={() => this.handleCancelAllJobs()}><FaExclamation color="#972702"/> Cancel all jobs</div>
-              <Dropdown style={{marginLeft: 7}} className="subtle-button" label="Clean all">
-                <DropdownItem onClick={() => this.handleCleanAllDataSpaces('all')}>All</DropdownItem>
-                <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level1')}>Level 1</DropdownItem>
-                <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level2')}>Level 2</DropdownItem>
-              </Dropdown>
-            </div>
+          <div style={innerContainerStyle}>
+            <Button style={{fontSize: 12}} color="dark" onClick={() => this.openModal()}><FaHistory color="#fff"/> History</Button>
+            <Button style={{fontSize: 12}} color="dark" onClick={this.handleBuildGraph.bind(this)}>Build Graph</Button>
+            <Button style={{fontSize: 12}} color="dark" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</Button>
+            <Button style={{fontSize: 12}} color="dark" onClick={() => this.handleCleanFileFilter()}><FaExclamation color="#b8c500"/> Clean file filter</Button>
+            <Button style={{fontSize: 12}} color="dark" onClick={() => this.handleCancelAllJobs()}><FaExclamation color="#b8c500"/> Cancel all jobs</Button>
+            <Dropdown id="dropdown-clean-all" color="dark" label="Clean all">
+              <DropdownItem onClick={() => this.handleCleanAllDataSpaces('all')}>All</DropdownItem>
+              <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level1')}>Level 1</DropdownItem>
+              <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level2')}>Level 2</DropdownItem>
+            </Dropdown>
           </div>
         <div>
-          <Select style={{display: 'inline-block', marginLeft: 15}} className="select-supplier" value={ selectedValue } id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
+          <Select style={{display: 'inline-block', margin: 15}} className="select-supplier" value={ selectedValue } id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
               <Option key="supplier-all" value="-1" label={"All providers"}></Option>
               {suppliers.map(supplier => {
                 return (

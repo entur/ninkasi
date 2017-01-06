@@ -6,7 +6,6 @@ import { Provider } from 'react-redux'
 import Keycloak from 'keycloak-js'
 
 import App from './containers/App'
-import SupplierPage from './containers/SupplierPage'
 
 import configureStore from './store/store'
 

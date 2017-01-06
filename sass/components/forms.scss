@@ -9,7 +9,6 @@ form.supplier-form {
       display: block;
     }
 
-
     input {
       min-width: 300px;
       max-width: 300px;
@@ -90,4 +89,12 @@ form.supplier-form {
       margin-top: 20px;
     }
 
+}
+
+.mui-btn--dark {
+  background: #2f2f2f;
+}
+
+.mui-btn__ripple-container {
+  font-size: 12px;
 }
