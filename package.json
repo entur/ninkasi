@@ -29,7 +29,6 @@
     "classnames": "^2.2.5",
     "convict": "^1.4.0",
     "css-loader": "^0.26.1",
-    "debounce-promise": "^2.0.1",
     "expect": "^1.20.2",
     "express": "^4.13.4",
     "halogen": "^0.2.0",

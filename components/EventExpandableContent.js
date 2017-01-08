@@ -19,15 +19,15 @@ const EventExpandableContent = (props) => {
           <div className="mui--divider-bottom"></div>
 
          { (events && events.length) ?
-
-           <div>{events.map( (event, index) => {
+           <div>
+             {events.map( (event, index) => {
              const stateClass = (event.state === 'TIMEOUT' || event.state === 'ERROR' || event.state === 'FAILED') ? 'error' : 'success'
              return (
-               <Row key={"action-" + index}>
-                 <Col md="4" key={"event-action-" + index}>{event.action}</Col>
-                 <Col md="4" key={"event-date-" + index}>{event.date}</Col>
-                 <Col md="4" key={"event-state-" + index}><span className={stateClass}>{event.state}</span></Col>
-               </Row>
+                 <Row key={"action-" + index}>
+                   <Col md="4" key={"event-action-" + index}>{event.action}</Col>
+                   <Col md="4" key={"event-date-" + index}>{event.date}</Col>
+                   <Col md="4" key={"event-state-" + index}><span className={stateClass}>{event.state}</span></Col>
+                 </Row>
              )
            })}</div> : <div>No events found</div> }
 

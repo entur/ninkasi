@@ -33,13 +33,11 @@ class ChouetteAllJobs extends React.Component {
   }
 
   handleCancelChouetteJob = (id, providerId) => {
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.cancelChouetteJobForProvider(providerId, id))
+    this.props.dispatch(SuppliersActions.cancelChouetteJobForProvider(providerId, id))
   }
 
   handleStatusFilterAllChange = (event) => {
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.toggleChouetteInfoCheckboxAllFilter(event.target.name, event.target.checked))
+    this.props.dispatch(SuppliersActions.toggleChouetteInfoCheckboxAllFilter(event.target.name, event.target.checked))
   }
 
   handlePageClick (e, pageIndex) {
@@ -132,9 +130,7 @@ class ChouetteAllJobs extends React.Component {
               }
             </Col>
             { requestingJobs ?
-              <Col md="2">
-              <Loader color="#26A65B" size="16px" margin="4x"/>
-            </Col> : <Col></Col> }
+              <div style={{float: 'right', position: 'absolute', right: 40}}><Loader color="#26A65B" size="23px"/></div> : null }
           </Row>
           { (page && page.length) ?
 

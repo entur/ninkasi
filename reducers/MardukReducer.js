@@ -125,10 +125,22 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {actionAllFilter: action.payLoad})
 
     case types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER:
-      return Object.assign({}, state, {requesting_chouette_job: true})
+
+      if (state.chouette_cancel_token) {
+        let cancelToken = state.chouette_cancel_token
+        cancelToken('Operation canceled by new request.')
+      }
+
+      return Object.assign({}, state, {requesting_chouette_job: true, chouette_cancel_token: action.payLoad})
 
     case types.REQUESTED_ALL_CHOUETTE_JOB_STATUS:
-      return Object.assign({}, state, {requesting_chouette_all_job: true})
+
+      if (state.chouette_cancel_all_token) {
+        let cancelAllToken = state.chouette_cancel_all_token
+        cancelAllToken('Operation canceled by new request')
+      }
+
+      return Object.assign({}, state, {requesting_chouette_all_job: true, chouette_cancel_all_token: action.payLoad})
 
     case types.RECEIVED_GRAPH_STATUS:
       return Object.assign({}, state, { graphStatus: action.payLoad})

@@ -136,12 +136,8 @@ class ChouetteJobDetails extends React.Component {
               <div></div>
             }
           </Col>
-
-          { requestingJobs ?
-            <Col md="2">
-            <Loader color="#26A65B" size="16px" margin="4px"/>
-          </Col> : <Col></Col> }
-
+            { requestingJobs ?
+              <div style={{float: 'right', position: 'absolute', right: 40}}><Loader color="#26A65B" size="23px"/></div> : null }
           </Row>
           { (page && page.length) ?
 

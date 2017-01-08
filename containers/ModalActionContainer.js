@@ -21,27 +21,27 @@ class ModalActionContainer extends React.Component {
 
     const closeStyle = {
       float: "right",
-      marginRight: "5px"
+      marginRight: 5
     }
 
     const selectStyle = {
       height: "100%",
       minHeight: "500px",
       width: "95%",
-      margin: "10px"
+      margin: 10
     }
 
     const inputStyle = {
       width: "95%",
-      margin: "10px"
+      margin: 10
     }
 
     const headerSyle = {
       width: "95%",
-      marginLeft: "10px",
+      marginLeft: 10,
       fontSize: "1.5em",
       position: "absolute",
-      marginTop: "10px"
+      marginTop: 10
     }
 
     return (

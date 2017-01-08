@@ -1,7 +1,5 @@
 import axios from 'axios'
 import * as types from './actionTypes'
-import debounce from 'debounce-promise'
-
 import moment from 'moment'
 
 var SuppliersActions = {}
@@ -280,7 +278,7 @@ SuppliersActions.formatChouetteJobsWithDate = (jobs) => {
 
 SuppliersActions.getChouetteJobsForAllSuppliers = () => {
 
-  return debounce(function(dispatch, getState) {
+  return function(dispatch, getState) {
 
     const state = getState()
     const {chouetteJobAllFilter, actionAllFilter} = state.MardukReducer
@@ -298,12 +296,12 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => {
 
     const url = window.config.mardukBaseUrl+`admin/services/chouette/jobs?${queryString}`
 
-    dispatch( sendData(null, types.REQUESTED_ALL_CHOUETTE_JOB_STATUS) )
+    var CancelToken = axios.CancelToken
 
-    return axios({
-      url: url,
-      timeout: 20000,
-      method: 'get'
+    return axios.get(url, {
+      cancelToken: new CancelToken(function executor(cancel) {
+        dispatch( sendData(CancelToken, types.REQUESTED_ALL_CHOUETTE_JOB_STATUS) )
+      })
     })
     .then(function(response) {
 
@@ -331,16 +329,16 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => {
     .catch(function(response){
       dispatch( sendData(response.data, types.ERROR_ALL_CHOUETTE_JOB_STATUS) )
     })
-  }, 300, false)
+  }
 }
 
 SuppliersActions.getChouetteJobStatus = () => {
 
-  return debounce(function(dispatch, getState) {
+  return function(dispatch, getState) {
 
     const state = getState()
 
-    const {chouetteJobFilter, actionFilter} = state.MardukReducer
+    const { chouetteJobFilter, actionFilter } = state.MardukReducer
 
     const {activeId} = state.SuppliersReducer
 
@@ -363,12 +361,12 @@ SuppliersActions.getChouetteJobStatus = () => {
 
     const url = window.config.mardukBaseUrl+`admin/services/chouette/${activeId}/jobs?${queryString}`
 
-    dispatch( sendData(null, types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER) )
+    var CancelToken = axios.CancelToken
 
-    return axios({
-      url: url,
-      timeout: 20000,
-      method: 'get'
+    return axios.get(url, {
+      cancelToken: new CancelToken(function executor(cancel) {
+        dispatch( sendData(cancel, types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER) )
+      })
     })
     .then(function(response) {
       const jobs = SuppliersActions.formatChouetteJobsWithDate(response.data.reverse())
@@ -377,8 +375,7 @@ SuppliersActions.getChouetteJobStatus = () => {
     .catch(function(response){
       dispatch( sendData(response.data, types.ERROR_CHOUETTE_JOB_STATUS) )
     })
-  }, 300, false)
-
+  }
 }
 
 
