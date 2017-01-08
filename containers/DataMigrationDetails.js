@@ -17,17 +17,31 @@ class DataMigrationDetails extends React.Component {
 
     const shouldRenderTransfer = !!chouetteInfo.migrateDataToProvider
 
+    const toolTips = {
+      import: 'Import all files listed in the list below',
+      validate: 'Validate files in space',
+      transfer: 'Transfer files to provider with id ' + chouetteInfo.migrateDataToProvider,
+      export: 'Export files',
+      clean: 'Clean data space'
+    }
+
+    if (!files.length) {
+      return (
+        <div>No files</div>
+      )
+    }
+
     return (
 
           <div>
-            <div className="button-group">
-                <Button color="primary" onClick={this.handleImportData}>Import</Button>
-                <Button color="primary" onClick={this.handleValidateProvider}>Validate</Button>
+            <div style={{display: 'flex', justfiyContent: 'flex-start'}}>
+                <Button title={toolTips.import} color="primary" onClick={this.handleImportData}>Import</Button>
+                <Button title={toolTips.validate} color="primary" onClick={this.handleValidateProvider}>Validate</Button>
                 { shouldRenderTransfer
-                  ? <Button color="primary" onClick={this.handleTransferData}>Transfer</Button>
-                  : <Button color="primary" onClick={this.handleExportData}>Export</Button>
+                  ? <Button title={toolTips.transfer} color="primary" onClick={this.handleTransferData}>Transfer</Button>
+                  : <Button title={toolTips.export} color="primary" onClick={this.handleExportData}>Export</Button>
                 }
-                <Button color="danger" onClick={this.handleCleanDataspace}>Clean</Button>
+                <Button title={toolTips.clean} color="danger" onClick={this.handleCleanDataspace}>Clean</Button>
             </div>
             <div style={{display: 'flex', alignItems: 'center'}}>
               <FileList key="providerFilelist" wrapperId="providerFilelist" files={files}/>
@@ -57,13 +71,11 @@ class DataMigrationDetails extends React.Component {
   }
 
   handleExportData = () => {
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.exportData(this.props.activeId))
+    this.props.dispatch(SuppliersActions.exportData(this.props.activeId))
   }
 
   handleTransferData = () => {
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.transferData(this.props.activeId))
+    this.props.dispatch(SuppliersActions.transferData(this.props.activeId))
   }
 
   handleCleanDataspace = () => {

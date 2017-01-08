@@ -10,15 +10,11 @@ import DataMigrationDetails from './DataMigrationDetails'
 import cfgreader from '../config/readConfig'
 import Container from 'muicss/lib/react/container'
 import Loader from 'halogen/PulseLoader'
-import Row from 'muicss/lib/react/row'
-import Col from 'muicss/lib/react/col'
+import '../sass/main.scss'
 import Tabs from 'muicss/lib/react/tabs'
 import Tab from 'muicss/lib/react/tab'
-
 const FaEdit = require('react-icons/lib/fa/pencil')
 const FaFresh = require('react-icons/lib/fa/refresh')
-
-require('../sass/main.scss')
 
 
 class SupplierTabWrapper extends React.Component {
@@ -29,7 +25,6 @@ class SupplierTabWrapper extends React.Component {
       self.startPolling()
     }).bind(this))
   }
-
 
   startPolling = () => {
     var self = this
@@ -105,7 +100,7 @@ class SupplierTabWrapper extends React.Component {
       if (!displayAllSuppliers) {
 
         tabsToRender =
-          <Tabs onChange={this.onTabChange.bind(this)} initialSelectedIndex={0}>
+          <Tabs justified={true} onChange={this.onTabChange.bind(this)} defaultSelectedIndex={0}>
               <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
                 <DataMigrationDetails></DataMigrationDetails>
               </Tab>
@@ -119,7 +114,7 @@ class SupplierTabWrapper extends React.Component {
 
       } else {
           tabsToRender =
-            <Tabs initialSelectedIndex={0}>
+            <Tabs justified={true} defaultSelectedIndex={0}>
               <Tab value="chouetteJobs" label="Chouette jobs">
                 <ChouetteAllJobs></ChouetteAllJobs>
               </Tab>
@@ -129,22 +124,25 @@ class SupplierTabWrapper extends React.Component {
           </Tabs>
       }
 
+      const providerTitle = {
+        display: 'flex',
+        alignItems: 'center',
+        fontSize: '1.2em',
+        fontWeight: 600,
+        margin: 10,
+      }
+
       return (
 
         <div className="supplier-info">
-          <div className="supplier-header">
           <div>
           { !displayAllSuppliers ?
-              <div style={{display: 'flex', alignItems: 'center'}}>
-                  <span>{supplier.id} {supplier.name}</span>
-                  <div className="small-button" onClick={() => this.handleEditProvider()}><FaEdit/></div>
-                  <div style={{marginLeft: 'auto', paddingRight: 20}}><FaFresh onClick={this.handleRefresh}/></div>
+              <div style={providerTitle}>
+                  <div style={{marginLeft: 'auto'}} onClick={() => this.handleEditProvider()}><FaEdit/></div>
+                  <div style={{marginLeft: 20}}><FaFresh onClick={this.handleRefresh}/></div>
               </div> :
-              <div>
-                <span>All providers ({suppliers.length})</span>
-              </div>
+              null
           }
-          </div>
         </div>
 
         <Container fluid={true}>

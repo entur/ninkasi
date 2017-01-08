@@ -10,6 +10,7 @@ const FaHistory = require('react-icons/lib/fa/history')
 const FaExclamation = require('react-icons/lib/fa/exclamation-triangle')
 import Dropdown from 'muicss/lib/react/dropdown'
 import DropdownItem from 'muicss/lib/react/dropdown-item'
+import GraphStatus from '../components/GraphStatus'
 
 class SuppliersContainer extends React.Component {
 
@@ -84,37 +85,46 @@ class SuppliersContainer extends React.Component {
       background: '#2f2f2f',
       color: '#fff',
       justifyContent: 'flex-end',
-      padding: '10px 20px'
+      borderTop: '1px solid rgba(158, 158, 158, 0.15)'
+    }
+
+    const toolTips = {
+      history: 'Browse the history of your activites in Ninkasi',
+      buildGraph: 'Build graph for all providers',
+      fetchOSM: 'Fetch Open Street Map data',
+      cleanFileFilter: 'Clean file filter',
+      canceAllJobs: 'Cancel all current chouette jobs',
+      cleanAll: 'Clean all specificed by level',
+      createNewProvider: 'Create new provider'
     }
 
     return (
 
       <div className="suppliers-container">
           <div style={innerContainerStyle}>
-            <Button style={{fontSize: 12}} color="dark" onClick={() => this.openModal()}><FaHistory color="#fff"/> History</Button>
-            <Button style={{fontSize: 12}} color="dark" onClick={this.handleBuildGraph.bind(this)}>Build Graph</Button>
-            <Button style={{fontSize: 12}} color="dark" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</Button>
-            <Button style={{fontSize: 12}} color="dark" onClick={() => this.handleCleanFileFilter()}><FaExclamation color="#b8c500"/> Clean file filter</Button>
-            <Button style={{fontSize: 12}} color="dark" onClick={() => this.handleCancelAllJobs()}><FaExclamation color="#b8c500"/> Cancel all jobs</Button>
-            <Dropdown id="dropdown-clean-all" color="dark" label="Clean all">
+            <Button title={toolTips.history} style={{fontSize: 12}} color="dark" onClick={() => this.openModal()}><FaHistory color="#fff"/> History</Button>
+            <Button title={toolTips.buildGraph} style={{fontSize: 12}} color="dark" onClick={this.handleBuildGraph.bind(this)}>Build Graph</Button>
+            <Button title={toolTips.fetchOSM} style={{fontSize: 12}} color="dark" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</Button>
+            <Button title={toolTips.cleanFileFilter} style={{fontSize: 12}} color="dark" onClick={() => this.handleCleanFileFilter()}><FaExclamation color="#b8c500"/> Clean file filter</Button>
+            <Button title={toolTips.canceAllJobs} style={{fontSize: 12}} color="dark" onClick={() => this.handleCancelAllJobs()}><FaExclamation color="#b8c500"/> Cancel all jobs</Button>
+            <Dropdown title={toolTips.cleanAll} id="dropdown-clean-all" color="dark" label="Clean all">
               <DropdownItem onClick={() => this.handleCleanAllDataSpaces('all')}>All</DropdownItem>
               <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level1')}>Level 1</DropdownItem>
               <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level2')}>Level 2</DropdownItem>
             </Dropdown>
           </div>
-        <div>
           <Select style={{display: 'inline-block', margin: 15}} className="select-supplier" value={ selectedValue } id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
-              <Option key="supplier-all" value="-1" label={"All providers"}></Option>
-              {suppliers.map(supplier => {
-                return (
-                    <Option key={supplier.id} value={String(supplier.id)} label={`${supplier.id} ${supplier.name}`}>
-                    </Option>
-                )
-              })}
-            </Select>
-          <div className="new-provider" style={{display: 'inline-block', marginLeft: 10}} onClick={() => this.handleNewProvider()}><FaAdd/> New</div>
-        </div>
-    </div>
+            <Option key="supplier-all" value="-1" label={"All providers"}></Option>
+            {suppliers.map(supplier => {
+              return (
+                <Option key={supplier.id} value={String(supplier.id)} label={`${supplier.id} ${supplier.name}`}>
+                </Option>
+              )
+            })}
+          </Select>
+          <div title={toolTips.createNewProvider} style={{display: 'inline-block', cursor: 'pointer'}} onClick={() => this.handleNewProvider()}><FaAdd/> New</div>
+          <GraphStatus/>
+      </div>
     )
   }
 }

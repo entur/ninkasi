@@ -4,7 +4,7 @@ import SupplierActions from '../actions/SuppliersActions'
 import cfgreader from '../config/readConfig'
 import moment from 'moment'
 
-class Footer extends React.Component {
+class GraphStatus extends React.Component {
 
   componentWillMount() {
     cfgreader.readConfig( (function(config) {
@@ -30,18 +30,20 @@ class Footer extends React.Component {
 
     const statusStyle = {
       float: 'right',
-      marginRight: 10,
-      marginTop: 10
+      marginRight: 15,
+      marginTop: 20
     }
 
     if (!graphStatus) {
       return null
     }
 
+    const { status } = graphStatus
+
     return (
       <div style={statusStyle}>
-        <span style={{display: 'block'}}>Graph status: {graphStatus.status}</span>
-        <span style={{display: 'block', fontSize: '0.8em'}}>Since {moment(graphStatus.started).format('LLLL')}</span>
+        <span style={{display: 'block'}}>Graph status: <span style={{fontWeight: 600, color: status === 'IDLE' ? '#ff9800' : '#08920e' }}>{status}</span></span>
+        <span style={{display: 'block', fontSize: '0.8em'}}>{moment(graphStatus.started).fromNow()}</span>
       </div>
     )
   }
@@ -59,4 +61,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Footer)
+export default connect(mapStateToProps, mapDispatchToProps)(GraphStatus)

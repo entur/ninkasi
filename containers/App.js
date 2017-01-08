@@ -6,7 +6,6 @@ import NotificationContainer from './NotificationContainer'
 import ModalViewContainer from './ModalActionContainer'
 import cfgreader from '../config/readConfig'
 import Header from '../components/Header'
-import Footer from '../components/Footer'
 
 export default class MainPage extends React.Component {
 
@@ -27,7 +26,6 @@ export default class MainPage extends React.Component {
         <NotificationContainer/>
         <ModalViewContainer/>
         <SupplierPage/>
-        <Footer/>
       </div>
     )
   }

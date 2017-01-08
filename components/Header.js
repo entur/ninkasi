@@ -14,7 +14,7 @@ class Header extends React.Component {
     const textStyle = {
       fontSize: '1.6em',
       fontWeight: 500,
-      padding: 15,
+      padding: 5,
     }
 
     return (
