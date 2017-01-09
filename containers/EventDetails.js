@@ -1,15 +1,11 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import cfgreader from '../config/readConfig'
-import { bindActionCreators } from 'redux'
-import EventExpandableContent from '../components/EventExpandableContent'
 import Container from 'muicss/lib/react/container'
-import Row from 'muicss/lib/react/row'
-import Col from 'muicss/lib/react/col'
-const FaChevronDown = require('react-icons/lib/fa/chevron-down')
-const FaChevronUp  = require('react-icons/lib/fa/chevron-up')
-
+import EventStepper from '../components/EventStepper'
 import SuppliersActions from '../actions/SuppliersActions'
+const FaFresh = require('react-icons/lib/fa/refresh')
+
 
 class EventDetails extends React.Component {
 
@@ -26,11 +22,6 @@ class EventDetails extends React.Component {
     }).bind(this))
   }
 
-  handleToggleVisibility (id) {
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.toggleExpandableEventsContent(id))
-  }
-
   handlePageClick (e, pageIndex) {
     e.preventDefault()
     this.setState({
@@ -38,95 +29,69 @@ class EventDetails extends React.Component {
     })
   }
 
-  handleSortForColumn(columnName) {
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.sortListByColumn("events", columnName))
+  handleRefresh() {
+    const { dispatch, activeId } = this.props
+    dispatch(SuppliersActions.getProviderStatus(activeId))
   }
 
   render() {
 
-    const { paginationMap, expandedEvents } = this.props
+    const { paginationMap } = this.props
     const { activePageIndex } = this.state
     const page = paginationMap[activePageIndex]
+
+    const refreshButton = (
+      <div style={{marginRight: 10, float: 'right', cursor: 'pointer'}}><FaFresh style={{transform: 'scale(1.5)'}} onClick={this.handleRefresh.bind(this)}/></div>
+    )
 
     if (page && page.length && paginationMap) {
 
       return (
 
         <div>
-          <Container fluid={true}>
-            <Row>
-              <div className="page-link-parent">
-                <span className="ml-17">Pages: </span>
-                {paginationMap.map ( (page, index) => {
-                  const isActive = (index == activePageIndex) ? 'page-link active-link' : 'page-link inactive-link'
-                  return <span className={isActive} onClick={(e) => this.handlePageClick(e, index)} key={"link-" + index}>{index}</span>
-                })}
-              </div>
-            </Row>
-            <Row>
-              <Col md="2">
-              <div className="table-header" onClick={ () => this.handleSortForColumn("fileName") }>Filename</div>
-              </Col>
-              <Col md="1">
-                <div className="table-header" onClick={ () => this.handleSortForColumn("endState") }>End state</div>
-              </Col>
-              <Col md="3">
-              <div className="table-header" onClick={ () => this.handleSortForColumn("firstEvent") }>First event</div>
-              </Col>
-              <Col md="3">
-              <div className="table-header" onClick={ () => this.handleSortForColumn("lastEvent") }>Last event</div>
-              </Col>
-              <Col md="3">
-              <div className="table-header" onClick={ (e) => this.handleSortForColumn("duration") }>Duration</div>
-              </Col>
-            </Row>
-          </Container>
+          { refreshButton}
+          <div className="page-link-parent">
+            <span className="ml-17">Pages: </span>
+            {paginationMap.map ( (page, index) => {
+              const isActive = (index == activePageIndex) ? 'page-link active-link' : 'page-link inactive-link'
+              return <span className={isActive} onClick={(e) => this.handlePageClick(e, index)} key={"link-" + index}>{index+1}</span>
+            })}
+          </div>
+          <div>
 
-          <Container fluid={true}>
+            { page.map ( (listItem, index) => {
 
-            {page.map ( (listItem, index) => {
+              let eventGroup = {}
 
-              const endStateClass = (listItem.endState === 'TIMEOUT' || listItem.endState === 'ERROR' || listItem.endState === 'FAILED') ? 'error' : 'success'
-              const isExpanded = (expandedEvents.indexOf(index) > -1)
+              listItem.events.forEach( event => {
+
+                if (!eventGroup[event.action]) {
+                  eventGroup[event.action] = {}
+                  eventGroup[event.action].states = []
+                }
+                eventGroup[event.action].states.push(event)
+                eventGroup[event.action].endState = event.state
+              })
 
               return (
 
-                <div className="jobstatus-wrapper" key={"jobstatus-wrapper-" + index}>
-                  <Row key={"event-" + index}>
-                    <Col md="2"><p><span className="long-text">{listItem.fileName}</span></p></Col>
-                    <Col md="1"><p><span className={endStateClass}>{listItem.endState}</span></p></Col>
-                    <Col md="3"><p>{listItem.firstEvent}</p></Col>
-                    <Col md="3"><p>{listItem.lastEvent}</p></Col>
-                    <Col md="2"><p>{listItem.duration}</p></Col>
-                    <Col md="1">
-                      <div onClick={() => this.handleToggleVisibility(index)}>
-                        { !isExpanded ? <FaChevronDown/> : <FaChevronUp/> }
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row key={"eventDetails-" + index}>
-                    { isExpanded
-                      ? <EventExpandableContent key={"statusEventList-" + index} correlationId={listItem.correlationId} events={listItem.events}></EventExpandableContent>
-                      : null
-                    }
-                  </Row>
+                <div className="jobstatus-wrapper" key={"jobstatus-wrapper-" + listItem.chouetteJobId + '-' + index}>
+                  <EventStepper key={"event-group-" + listItem.chouetteJobId + '-' + index} groups={eventGroup} listItem={listItem}/>
                 </div>
               )
-            })}
-          </Container>
+            }) }
+          </div>
         </div>
       )
 
     } else {
       return (
-        <Container className="jobstatus-wrapper" fluid={true}>
-          <Row>
-            <Col md="8">
-              <p>No status found</p>
-            </Col>
-          </Row>
-        </Container>
+        <div className="jobstatus-wrapper">
+          <div>
+            <div style={{fontWeight: 600}}>No status</div>
+            { refreshButton}
+          </div>
+        </div>
       )
     }
 
@@ -136,24 +101,10 @@ class EventDetails extends React.Component {
 const mapStateToProps = (state, ownProps) => {
 
   var paginationMap = []
-  var list = state.SuppliersReducer.statusList
+  var list = []
 
-  var sortOrder = state.UtilsReducer.eventListSortOrder.sortOrder
-  var sortProperty = state.UtilsReducer.eventListSortOrder.property
-
-  if (list && list.length) {
-    list.sort( (curr, prev) => {
-
-      if (sortOrder === 0) {
-        return (curr[sortProperty] > prev[sortProperty] ? -1 : 1)
-      }
-
-      if (sortOrder === 1) {
-        return (curr[sortProperty] > prev[sortProperty] ? 1 : -1)
-      }
-
-    })
-
+  if (state.SuppliersReducer.statusList) {
+    list = state.SuppliersReducer.statusList.slice()
     for (let i = 0, j = list.length; i < j; i+=10) {
       paginationMap.push(list.slice(i,i+10))
     }
@@ -161,7 +112,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     paginationMap: paginationMap,
-    expandedEvents: state.UtilsReducer.expandedEvents
+    activeId: state.SuppliersReducer.activeId
   }
 }
 

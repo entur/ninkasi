@@ -10,8 +10,6 @@ import Radio from 'muicss/lib/react/radio'
 import Form from 'muicss/lib/react/form'
 import Panel from 'muicss/lib/react/panel'
 import Loader from 'halogen/DotLoader'
-
-
 import SuppliersActions from '../actions/SuppliersActions'
 
 class ChouetteAllJobs extends React.Component {

@@ -60,12 +60,6 @@ class SupplierTabWrapper extends React.Component {
      }
   }
 
-  handleRefresh = () => {
-    const {dispatch, activeId, filter, actionFilter} = this.props
-    dispatch(SuppliersActions.refreshSupplierData(activeId, filter, actionFilter))
-  }
-
-
   onActive(tab) {
    //console.log(arguments)
   }
@@ -138,8 +132,7 @@ class SupplierTabWrapper extends React.Component {
           <div>
           { !displayAllSuppliers ?
               <div style={providerTitle}>
-                  <div style={{marginLeft: 'auto'}} onClick={() => this.handleEditProvider()}><FaEdit/></div>
-                  <div style={{marginLeft: 20}}><FaFresh onClick={this.handleRefresh}/></div>
+                  <div style={{marginLeft: 'auto', cursor: 'pointer'}} onClick={() => this.handleEditProvider()}><FaEdit/></div>
               </div> :
               null
           }

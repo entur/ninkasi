@@ -25,37 +25,35 @@ class DataMigrationDetails extends React.Component {
       clean: 'Clean data space'
     }
 
-    if (!files.length) {
-      return (
-        <div>No files</div>
-      )
-    }
-
     return (
 
-          <div>
-            <div style={{display: 'flex', justfiyContent: 'flex-start'}}>
-                <Button title={toolTips.import} color="primary" onClick={this.handleImportData}>Import</Button>
-                <Button title={toolTips.validate} color="primary" onClick={this.handleValidateProvider}>Validate</Button>
-                { shouldRenderTransfer
-                  ? <Button title={toolTips.transfer} color="primary" onClick={this.handleTransferData}>Transfer</Button>
-                  : <Button title={toolTips.export} color="primary" onClick={this.handleExportData}>Export</Button>
-                }
-                <Button title={toolTips.clean} color="danger" onClick={this.handleCleanDataspace}>Clean</Button>
+      <div>
+        <div style={{display: 'flex', justfiyContent: 'flex-start'}}>
+          <Button title={toolTips.import} color="primary" onClick={this.handleImportData}>Import</Button>
+          <Button title={toolTips.validate} color="primary" onClick={this.handleValidateProvider}>Validate</Button>
+          { shouldRenderTransfer
+            ? <Button title={toolTips.transfer} color="primary" onClick={this.handleTransferData}>Transfer</Button>
+            : <Button title={toolTips.export} color="primary" onClick={this.handleExportData}>Export</Button>
+          }
+          <Button title={toolTips.clean} color="danger" onClick={this.handleCleanDataspace}>Clean</Button>
+        </div>
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <FileList key="providerFilelist" wrapperId="providerFilelist" files={files}/>
+          { files.length
+            ?
+            <div style={{display: 'flex', alignItem: 'center', flexDirection: 'column', flex: 0.1, cursor: 'pointer'}}>
+              <FaAdd style={{transform: 'scale(2)', color: '#2196f3', marginBottom: 30, marginLeft: 20, marginRight: 20}} onClick={this.appendSelectedFiles}/>
+              <FaRemove style={{transform: 'scale(2)', color: outboundFiles.length ? '#b91c1c' : '#9e9e9e', marginLeft: 20, marginRight: 20}} onClick={this.removeSelectedFiles}/>
             </div>
-            <div style={{display: 'flex', alignItems: 'center'}}>
-              <FileList key="providerFilelist" wrapperId="providerFilelist" files={files}/>
-              <div style={{display: 'flex', alignItem: 'center', flexDirection: 'column', flex: 0.1, cursor: 'pointer'}}>
-                <FaAdd style={{transform: 'scale(2)', color: '#2196f3', marginBottom: 30, marginLeft: 20, marginRight: 20}} onClick={this.appendSelectedFiles}/>
-                <FaRemove style={{transform: 'scale(2)', color: outboundFiles.length ? '#b91c1c' : '#9e9e9e', marginLeft: 20, marginRight: 20}} onClick={this.removeSelectedFiles}/>
-              </div>
-              <FileList key="outboundFilelist" wrapperId="outboundFilelist" files={outboundFiles}/>
-              <div style={{flex: 0.2, display: outboundFiles.length ? 'flex' : 'none', alignItems: 'center', flexDirection: 'column', cursor: 'pointer'}}>
-                <FaArrowDown style={{transform: 'scale(2)', marginBottom: 30, marginLeft: 20}} onClick={this.moveDown}/>
-                <FaArrowUp style={{transform: 'scale(2)', marginLeft: 20}} onClick={this.moveUp}/>
-              </div>
-            </div>
+            : null
+          }
+          <FileList key="outboundFilelist" wrapperId="outboundFilelist" files={outboundFiles}/>
+          <div style={{flex: 0.2, display: outboundFiles.length ? 'flex' : 'none', alignItems: 'center', flexDirection: 'column', cursor: 'pointer'}}>
+            <FaArrowDown style={{transform: 'scale(2)', marginBottom: 30, marginLeft: 20}} onClick={this.moveDown}/>
+            <FaArrowUp style={{transform: 'scale(2)', marginLeft: 20}} onClick={this.moveUp}/>
           </div>
+        </div>
+      </div>
     )
   }
 
