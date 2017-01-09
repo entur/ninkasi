@@ -43,9 +43,13 @@ class EventStepper extends React.Component {
 
   addUnlistedStates(groups) {
 
-    const states = ["FILE_TRANSFER", "IMPORT", "VALIDATION", "DATASPACE_TRANSFER", "EXPORT"]
+    const states = ["FILE_TRANSFER", "IMPORT", "DATASPACE_TRANSFER", "VALIDATION", "EXPORT"]
 
-    states.forEach( state => {
+    const lastState = Object.keys(groups)[Object.keys(groups).length-1]
+    const indexOfLastState = states.indexOf(lastState)
+    const availableStates = states.splice(indexOfLastState)
+
+    availableStates.forEach( state => {
       if (!groups[state]) {
         groups[state] = {
           endState: "IGNORED"
@@ -106,9 +110,6 @@ class EventStepper extends React.Component {
 
     const formattedGroups = this.addUnlistedStates(groups)
 
-    const endStateClass = (listItem.endState === 'TIMEOUT' || listItem.endState === 'ERROR' || listItem.endState === 'FAILED') ? 'error' : 'success'
-
-
     const bullets = Object.keys(groups).map( (group, index) => {
 
       const isLast = Object.keys(formattedGroups).length == index+1
@@ -141,7 +142,6 @@ class EventStepper extends React.Component {
           ?
           <div style={{display: 'inline-block'}}>
             <div style={{display: 'flex', flexDirection: 'column', lineHeight: '25px', marginTop: 10, cursor: 'default'}} onClick={event => event.stopPropagation()}>
-              <div>End state: <span className={endStateClass}>{listItem.endState}</span></div>
               <div>Started: {listItem.firstEvent}</div>
               <div>Ended: {listItem.lastEvent}</div>
               <div>Duration: {listItem.duration}</div>
