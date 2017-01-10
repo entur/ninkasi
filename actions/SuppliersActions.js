@@ -19,11 +19,42 @@ SuppliersActions.getProviderStatus = (id) => {
       responseType: 'json'
     })
     .then(function(response) {
-      let providerStatus = SuppliersActions.formatProviderStatusDate(response.data.reverse())
+      let providerStatus = SuppliersActions.formatProviderStatusDate(response.data.reverse(), null)
       dispatch( sendData(providerStatus,types.RECEIVED_SUPPLIER_STATUS) )
     })
     .catch(function(response){
       dispatch( sendData(response.data, types.ERROR_SUPPLIER_STATUS) )
+    })
+  }
+}
+
+SuppliersActions.getAllProviderStatus = () => {
+
+  return function(dispatch, getState) {
+
+    const providerList = getState().SuppliersReducer.data
+
+    dispatch( sendData( null, types.REQUESTED_ALL_SUPPLIERS_STATUS) )
+
+    providerList.forEach( (provider) => {
+
+      const url = `${window.config.nabuBaseUrl}jersey/jobs/${provider.id}`
+
+      return axios({
+        url: url,
+        timeout: 20000,
+        method: 'get',
+        responseType: 'json'
+      })
+      .then(function(response) {
+
+        let providerStatus = SuppliersActions.formatProviderStatusDate(response.data.reverse(), provider)
+
+        dispatch( sendData( providerStatus, types.RECEIVED_ALL_SUPPLIERS_STATUS) )
+      })
+      .catch(function(response){
+        dispatch( sendData(response.data, types.ERROR_SUPPLIER_STATUS) )
+      })
     })
   }
 }
@@ -103,6 +134,7 @@ SuppliersActions.createProvider = () => {
 }
 
 SuppliersActions.updateProvider = (id) => {
+
   if (id < 0) return;
 
   const url = `${window.config.nabuBaseUrl}jersey/providers/update`
@@ -260,34 +292,27 @@ SuppliersActions.setActiveActionAllFilter = (value) => {
 
 
 SuppliersActions.formatChouetteJobsWithDate = (jobs) => {
-
   return jobs.map( (job) => {
-
     job.created = moment(job.created).locale("nb").format("YYYY-MM-DD HH:mm:ss")
     job.started = moment(job.started).locale("nb").format("YYYY-MM-DD HH:mm:ss")
     job.updated = moment(job.updated).locale("nb").format("YYYY-MM-DD HH:mm:ss")
-
     return job
-
   })
-
   return jobs
-
 }
-
 
 SuppliersActions.getChouetteJobsForAllSuppliers = () => {
 
   return function(dispatch, getState) {
 
     const state = getState()
-    const {chouetteJobAllFilter, actionAllFilter} = state.MardukReducer
+    const { chouetteJobAllFilter, actionAllFilter } = state.MardukReducer
 
     let queryString = ''
 
     for(let [key, value] of Object.entries(chouetteJobAllFilter)) {
       if (value)
-      queryString += `&status=${key}`
+        queryString += `&status=${key}`
     }
 
     if (actionAllFilter && actionAllFilter.length) {
@@ -300,7 +325,7 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => {
 
     return axios.get(url, {
       cancelToken: new CancelToken(function executor(cancel) {
-        dispatch( sendData(CancelToken, types.REQUESTED_ALL_CHOUETTE_JOB_STATUS) )
+        dispatch( sendData(cancel, types.REQUESTED_ALL_CHOUETTE_JOB_STATUS) )
       })
     })
     .then(function(response) {
@@ -348,7 +373,7 @@ SuppliersActions.getChouetteJobStatus = () => {
 
     for(let [key, value] of Object.entries(chouetteJobFilter)) {
       if (value)
-      queryString += `&status=${key}`
+        queryString += `&status=${key}`
     }
 
     if (actionFilter && actionFilter.length) {
@@ -410,12 +435,12 @@ SuppliersActions.getGraphStatus = () => {
     const url = window.config.mardukBaseUrl+`admin/services/graph/status`
 
     return axios.get(url)
-      .then( (response) => {
-        dispatch( sendData(response.data, types.RECEIVED_GRAPH_STATUS) )
-      })
-      .catch( (response) => {
-        console.error('error receiving graph status', response)
-      })
+    .then( (response) => {
+      dispatch( sendData(response.data, types.RECEIVED_GRAPH_STATUS) )
+    })
+    .catch( (response) => {
+      console.error('error receiving graph status', response)
+    })
   }
 }
 
@@ -517,23 +542,23 @@ SuppliersActions.cleanDataspace = (id) => {
 
 SuppliersActions.cleanAllDataspaces = (filter) => {
 
-    const url = window.config.mardukBaseUrl+`admin/services/chouette/clean/${filter}`
+  const url = window.config.mardukBaseUrl+`admin/services/chouette/clean/${filter}`
 
-    return function(dispatch) {
-        return axios({
-            url: url,
-            timeout: 20000,
-            method: 'post'
-        })
-        .then(function(response) {
-            dispatch(SuppliersActions.addNotification('Cleaning of all dataspaces started with filter ' + filter, 'success'))
-            dispatch(SuppliersActions.logEvent({title: `Cleaned all dataspaces with filter ${filter}`}))
-        })
-        .catch(function(response){
-            dispatch(SuppliersActions.addNotification('Cleaning of all dataspaces failed with filter ' + filter, 'error'))
-            dispatch(SuppliersActions.logEvent({title: `Cleaning all dataspaces failed for filter ${filter}`}))
-        })
-    }
+  return function(dispatch) {
+    return axios({
+      url: url,
+      timeout: 20000,
+      method: 'post'
+    })
+    .then(function(response) {
+      dispatch(SuppliersActions.addNotification('Cleaning of all dataspaces started with filter ' + filter, 'success'))
+      dispatch(SuppliersActions.logEvent({title: `Cleaned all dataspaces with filter ${filter}`}))
+    })
+    .catch(function(response){
+      dispatch(SuppliersActions.addNotification('Cleaning of all dataspaces failed with filter ' + filter, 'error'))
+      dispatch(SuppliersActions.logEvent({title: `Cleaning all dataspaces failed for filter ${filter}`}))
+    })
+  }
 }
 
 
@@ -613,7 +638,7 @@ SuppliersActions.sortListByColumn = (listName, columnName) => {
     switch (listName) {
       case "events":
         dispatch(SuppliersActions.sortEventlistByColumn(columnName))
-      break
+        break
       case "chouetteAll":
         dispatch(SuppliersActions.sortChouetteAllByColumn(columnName))
         break
@@ -689,12 +714,17 @@ SuppliersActions.toggleChouetteInfoCheckboxAllFilter = (option, value) => {
   }
 }
 
-SuppliersActions.formatProviderStatusDate = (list) => {
+SuppliersActions.formatProviderStatusDate = (list, provider) => {
   return list.map( (listItem) => {
 
     listItem.duration = moment(moment(listItem.lastEvent).diff(moment(listItem.firstEvent))).locale("nb").utc().format("HH:mm:ss")
     listItem.firstEvent = moment(listItem.firstEvent).locale("nb").format("YYYY-MM-DD HH:mm:ss")
     listItem.lastEvent = moment(listItem.lastEvent).locale("nb").format("YYYY-MM-DD HH:mm:ss")
+    listItem.started = moment(listItem.firstEvent).locale("en").fromNow()
+
+    if (provider) {
+      listItem.provider = provider
+    }
 
     if (listItem.events) {
       listItem.events.forEach(function (event) {
@@ -706,9 +736,6 @@ SuppliersActions.formatProviderStatusDate = (list) => {
 
 }
 
-SuppliersActions.setActiveTab = (value) => {
-  return {type: types.SET_ACTIVE_TAB, payLoad: value}
-}
 
 SuppliersActions.restoreFilesToOutbound = () => {
   return {
@@ -807,17 +834,17 @@ SuppliersActions.logEvent = (event) => {
 SuppliersActions.cleanFileFilter = () => {
   return function(dispatch) {
     return axios({
-        url: window.config.mardukBaseUrl+'admin/application/filestores/clean',
-        timeout: 20000,
-        method: 'post'
+      url: window.config.mardukBaseUrl+'admin/application/filestores/clean',
+      timeout: 20000,
+      method: 'post'
     })
     .then(function(response) {
-        dispatch(SuppliersActions.addNotification('File filter cleaned', 'success'))
-        dispatch(SuppliersActions.logEvent({title: 'File filter cleaned'}))
+      dispatch(SuppliersActions.addNotification('File filter cleaned', 'success'))
+      dispatch(SuppliersActions.logEvent({title: 'File filter cleaned'}))
     })
     .catch(function(response){
-        dispatch(SuppliersActions.addNotification('Cleaning file filter failed', 'error'))
-        dispatch(SuppliersActions.logEvent({title: 'Cleaning file filter failed'}))
+      dispatch(SuppliersActions.addNotification('Cleaning file filter failed', 'error'))
+      dispatch(SuppliersActions.logEvent({title: 'Cleaning file filter failed'}))
     })
   }
 }

@@ -4,9 +4,7 @@ import SuppliersActions from '../actions/SuppliersActions'
 import EventDetails from './EventDetails'
 import ChouetteJobDetails from './ChouetteJobDetails'
 import ChouetteAllJobs from './ChouetteAllJobs'
-
 import DataMigrationDetails from './DataMigrationDetails'
-
 import cfgreader from '../config/readConfig'
 import Container from 'muicss/lib/react/container'
 import Loader from 'halogen/PulseLoader'
@@ -14,10 +12,18 @@ import '../sass/main.scss'
 import Tabs from 'muicss/lib/react/tabs'
 import Tab from 'muicss/lib/react/tab'
 const FaEdit = require('react-icons/lib/fa/pencil')
-const FaFresh = require('react-icons/lib/fa/refresh')
 
 
 class SupplierTabWrapper extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      activeTabForProvider: 'migrateData',
+      activeTabForAllProvider: 'chouetteJobs'
+    }
+  }
+
   componentWillMount() {
     var self = this
     cfgreader.readConfig( (function(config) {
@@ -35,33 +41,58 @@ class SupplierTabWrapper extends React.Component {
 
   poll = () => {
 
-    const {dispatch, activeId, activeTab} = this.props
+    const { dispatch, activeId, displayAllSuppliers } = this.props
+    const { activeTabForProvider, activeTabForAllProvider } = this.state
 
-    if (activeTab === 'chouetteJobs' && activeId) {
-       dispatch(SuppliersActions.getChouetteJobStatus())
+    if (!displayAllSuppliers && activeTabForProvider === 'chouetteJobs' && activeId) {
+      dispatch(SuppliersActions.getChouetteJobStatus())
+    }
+
+    if (displayAllSuppliers && activeTabForAllProvider === 'chouetteJobs') {
+      dispatch(SuppliersActions.getChouetteJobsForAllSuppliers())
     }
   }
 
-  onTabChange(i, value, tab, ev) {
+  onTabChangeForProvider(i, value, tab, ev) {
 
-   const {dispatch, activeId, choutteJobFilter, actionFilter} = this.props
+    const { dispatch, activeId }  = this.props
 
-     switch (value) {
-       case 'chouetteJobs':
-        dispatch(SuppliersActions.getChouetteJobStatus(activeId, choutteJobFilter, actionFilter))
-        dispatch(SuppliersActions.setActiveTab(value))
-         break
-       case 'events':
+    switch (value) {
+      case 'chouetteJobs':
+        dispatch(SuppliersActions.getChouetteJobStatus())
+        break
+      case 'events':
         dispatch(SuppliersActions.getProviderStatus(activeId))
-        dispatch(SuppliersActions.setActiveTab(value))
         break
 
-       default: break
-     }
+      default: break
+    }
+  }
+
+  onTabChangeForAllProviders(i, value, tab, ev) {
+    switch (value) {
+      case 'chouetteJobs':
+        this.props.dispatch(SuppliersActions.getChouetteJobsForAllSuppliers())
+        break
+      case 'events':
+        this.props.dispatch(SuppliersActions.getAllProviderStatus())
+        break
+
+      default: break
+    }
+  }
+
+  handleRefreshAllProviders() {
+    this.props.dispatch(SuppliersActions.getAllProviderStatus())
+  }
+
+  handleRefreshActiveProvider() {
+    const { dispatch, activeId } = this.props
+    dispatch(SuppliersActions.getProviderStatus(activeId))
   }
 
   onActive(tab) {
-   //console.log(arguments)
+    //console.log(arguments)
   }
 
   handleEditProvider = () => {
@@ -84,7 +115,7 @@ class SupplierTabWrapper extends React.Component {
     }
 
     if (!displayAllSuppliers && suppliers.length) {
-      var supplier = suppliers.filter(function(p) { return p.id == activeId })[0]
+      var supplier = suppliers.filter( p => { return p.id == activeId })[0]
     }
 
     if (displayAllSuppliers || supplier) {
@@ -94,59 +125,49 @@ class SupplierTabWrapper extends React.Component {
       if (!displayAllSuppliers) {
 
         tabsToRender =
-          <Tabs justified={true} onChange={this.onTabChange.bind(this)} defaultSelectedIndex={0}>
-              <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
-                <DataMigrationDetails></DataMigrationDetails>
-              </Tab>
-              <Tab value="events" label="Events">
-                <EventDetails key="statusList"></EventDetails>
-              </Tab>
-              <Tab value="chouetteJobs" label="Chouette jobs">
-                <ChouetteJobDetails></ChouetteJobDetails>
-              </Tab>
+          <Tabs justified={true} onChange={this.onTabChangeForProvider.bind(this)} defaultSelectedIndex={0}>
+            <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
+              <DataMigrationDetails></DataMigrationDetails>
+            </Tab>
+            <Tab value="events" label="Events">
+              <EventDetails handleRefresh={this.handleRefreshActiveProvider.bind(this)} paginationMap={this.props.paginationMapActiveProvider} key="statusList"></EventDetails>
+            </Tab>
+            <Tab value="chouetteJobs" label="Chouette jobs">
+              <ChouetteJobDetails></ChouetteJobDetails>
+            </Tab>
           </Tabs>
 
       } else {
-          tabsToRender =
-            <Tabs justified={true} defaultSelectedIndex={0}>
-              <Tab value="chouetteJobs" label="Chouette jobs">
-                <ChouetteAllJobs></ChouetteAllJobs>
-              </Tab>
-              <Tab value="statistics" label="Statistics">
-                <p>Statics for providers</p>
-              </Tab>
+        tabsToRender =
+          <Tabs justified={true} onChange={this.onTabChangeForAllProviders.bind(this)} defaultSelectedIndex={0}>
+            <Tab value="chouetteJobs" label="Chouette jobs">
+              <ChouetteAllJobs></ChouetteAllJobs>
+            </Tab>
+            <Tab value="events" label="Events">
+              <EventDetails handleRefresh={this.handleRefreshAllProviders.bind(this)} paginationMap={this.props.paginationMapAllProvider} key="statusList"></EventDetails>
+            </Tab>
+            <Tab value="statistics" label="Statistics">
+              <p>Statics for providers</p>
+            </Tab>
           </Tabs>
-      }
-
-      const providerTitle = {
-        display: 'flex',
-        alignItems: 'center',
-        fontSize: '1.2em',
-        fontWeight: 600,
-        margin: 10,
       }
 
       return (
 
         <div className="supplier-info">
-          <div>
-          { !displayAllSuppliers ?
-              <div style={providerTitle}>
-                  <div style={{marginLeft: 'auto', cursor: 'pointer'}} onClick={() => this.handleEditProvider()}><FaEdit/></div>
-              </div> :
-              null
-          }
-        </div>
-
-        <Container fluid={true}>
+          <Container fluid={true}>
             {(tabsToRender)}
-        </Container>
+          </Container>
+          { !displayAllSuppliers
+          ? <div style={{display: 'flex', cursor: 'pointer', justifyContent: 'flex-end', marginRight: 20}} onClick={() => this.handleEditProvider()}>
+              <FaEdit style={{transform: 'scale(1.5)'}}/>
+            </div>
+          : null}
         </div>
       )
     }
 
-     else {
-
+    else {
       return (
         <div></div>
       )
@@ -160,17 +181,36 @@ const mapStateToProps = (state, ownProps) => {
     suppliers: state.SuppliersReducer.data,
     activeId: state.SuppliersReducer.activeId,
     filelistIsLoading: state.MardukReducer.filenames.isLoading,
-    activeTab: state.UtilsReducer.activeTab,
-    actionFilter: state.MardukReducer.actionFilter,
-    displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected
+    displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
+    paginationMapActiveProvider: getPaginationMapActiveProvider(state.SuppliersReducer.statusList ? state.SuppliersReducer.statusList.slice() : []),
+    paginationMapAllProvider: getPaginationMapAllProvider(state.SuppliersReducer.statusListAllProviders.slice()),
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    dispatch: dispatch,
-    props: ownProps
+    dispatch: dispatch
   }
+}
+
+const getPaginationMapActiveProvider = (statusList = []) => {
+  let paginationMap = []
+
+  for (let i = 0, j = statusList.length; i < j; i+=10) {
+    paginationMap.push(statusList.slice(i,i+10))
+  }
+  return paginationMap
+}
+
+const getPaginationMapAllProvider = (statusList = []) => {
+
+  let paginationMap = []
+
+  for (let i = 0, j = statusList.length; i < j; i+=10) {
+    paginationMap.push(statusList.slice(i,i+10))
+  }
+
+  return paginationMap
 }
 
 export default connect(

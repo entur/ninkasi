@@ -1,11 +1,7 @@
-import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import cfgreader from '../config/readConfig'
-import Container from 'muicss/lib/react/container'
 import EventStepper from '../components/EventStepper'
-import SuppliersActions from '../actions/SuppliersActions'
 const FaFresh = require('react-icons/lib/fa/refresh')
-
 
 class EventDetails extends React.Component {
 
@@ -29,19 +25,14 @@ class EventDetails extends React.Component {
     })
   }
 
-  handleRefresh() {
-    const { dispatch, activeId } = this.props
-    dispatch(SuppliersActions.getProviderStatus(activeId))
-  }
-
   render() {
 
-    const { paginationMap } = this.props
+    const { paginationMap, handleRefresh } = this.props
     const { activePageIndex } = this.state
     const page = paginationMap[activePageIndex]
 
     const refreshButton = (
-      <div style={{marginRight: 10, float: 'right', cursor: 'pointer'}}><FaFresh style={{transform: 'scale(1.5)'}} onClick={this.handleRefresh.bind(this)}/></div>
+      <div style={{marginRight: 10, float: 'right', cursor: 'pointer'}}><FaFresh style={{transform: 'scale(1.5)'}} onClick={handleRefresh}/></div>
     )
 
     if (page && page.length && paginationMap) {
@@ -87,10 +78,7 @@ class EventDetails extends React.Component {
     } else {
       return (
         <div className="jobstatus-wrapper">
-          <div>
-            <div style={{fontWeight: 600}}>No status</div>
-            { refreshButton}
-          </div>
+          <div style={{fontWeight: 600}}>No status { refreshButton }</div>
         </div>
       )
     }
@@ -98,29 +86,5 @@ class EventDetails extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
 
-  var paginationMap = []
-  var list = []
-
-  if (state.SuppliersReducer.statusList) {
-    list = state.SuppliersReducer.statusList.slice()
-    for (let i = 0, j = list.length; i < j; i+=10) {
-      paginationMap.push(list.slice(i,i+10))
-    }
-  }
-
-  return {
-    paginationMap: paginationMap,
-    activeId: state.SuppliersReducer.activeId
-  }
-}
-
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(EventDetails)
+export default EventDetails

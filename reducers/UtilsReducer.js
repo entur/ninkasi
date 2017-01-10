@@ -105,9 +105,6 @@ const UtilsReducer = (state = intialState, action) => {
     case types.LOG_EVENT_FILTER:
       return Object.assign({}, state, {logEventFilter: action.payLoad, filteredLoggedEvents: filterHelper(state.loggedEvents, action.payLoad)})
 
-    case types.SET_ACTIVE_TAB:
-      return Object.assign({}, state, {activeTab: action.payLoad})
-
     case types.SUCCESS_FETCH_PROVIDER:
       return Object.assign({}, state, {supplierForm: action.payLoad})
 

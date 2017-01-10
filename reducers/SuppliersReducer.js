@@ -3,6 +3,7 @@ import * as types from './../actions/actionTypes'
 const initialState = {
   data: [],
   statusList: [],
+  statusListAllProviders: [],
   all_suppliers_selected: true,
   activeId: 0
 }
@@ -30,6 +31,12 @@ const SuppliersReducer = (state = initialState, action) => {
 
     case types.UNSELECTED_ALL_SUPPLIERS:
       return Object.assign({}, state, {all_suppliers_selected: false})
+
+    case types.REQUESTED_ALL_SUPPLIERS_STATUS:
+      return Object.assign({}, state, { statusListAllProviders: [] })
+
+    case types.RECEIVED_ALL_SUPPLIERS_STATUS:
+      return Object.assign({}, state, { statusListAllProviders: state.statusListAllProviders.concat(action.payLoad) })
 
     default:
       return state

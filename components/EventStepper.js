@@ -131,7 +131,14 @@ class EventStepper extends React.Component {
 
     return (
       <div key={"event" + listItem.chouetteJobId} style={{marginLeft: 20, cursor: 'pointer'}} onClick={() => this.handleToggleVisibility()}>
-        <div style={{fontSize: '0.9em', fontWeight: 600}}>{listItem.fileName}</div>
+        <div style={{display: 'flex', marginLeft: -20}}>
+          <div title={"Duration: " + listItem.duration} style={{fontSize: '0.9em', fontWeight: 600, color: '#e59400', marginTop: -8, marginRight: 20}}>{listItem.started}</div>
+          { listItem.provider && listItem.provider.name ?
+            <div style={{fontSize: '0.8em', fontWeight: 600, flex: 1}}>{listItem.provider.name}</div>
+            : null
+          }
+          <div style={{fontSize: '0.9em', fontWeight: 600, flex: 2}}>{listItem.fileName}</div>
+        </div>
         <div style={stepperstyle}>
           {bullets}
           <div style={{marginLeft: 'auto', marginRight: 20, marginTop: -50}} onClick={() => this.handleToggleVisibility()}>

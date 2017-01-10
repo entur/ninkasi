@@ -45,7 +45,7 @@ class DataMigrationDetails extends React.Component {
               <FaAdd style={{transform: 'scale(2)', color: '#2196f3', marginBottom: 30, marginLeft: 20, marginRight: 20}} onClick={this.appendSelectedFiles}/>
               <FaRemove style={{transform: 'scale(2)', color: outboundFiles.length ? '#b91c1c' : '#9e9e9e', marginLeft: 20, marginRight: 20}} onClick={this.removeSelectedFiles}/>
             </div>
-            : null
+            : <div style={{margin: 20, fontWeight: 600}}>No files available</div>
           }
           <FileList key="outboundFilelist" wrapperId="outboundFilelist" files={outboundFiles}/>
           <div style={{flex: 0.2, display: outboundFiles.length ? 'flex' : 'none', alignItems: 'center', flexDirection: 'column', cursor: 'pointer'}}>
