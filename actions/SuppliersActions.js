@@ -1,9 +1,9 @@
 import axios from 'axios'
 import * as types from './actionTypes'
 import moment from 'moment'
+import { getQueryVariable } from '../containers/utils'
 
 var SuppliersActions = {}
-
 
 SuppliersActions.getProviderStatus = (id) => {
   if (id < 0) return;
@@ -60,6 +60,11 @@ SuppliersActions.getAllProviderStatus = () => {
 }
 
 SuppliersActions.selectAllSuppliers = () => {
+
+  let tabQueryParam = getQueryVariable('tab') ? `?tab=${getQueryVariable('tab')}` : ''
+
+  window.history.pushState(window.config.endpointBase, 'Title', `${window.config.endpointBase}${tabQueryParam}`)
+
   return {
     type: types.SELECTED_ALL_SUPPLIERS
   }
@@ -91,6 +96,17 @@ SuppliersActions.fetchSuppliers = () => {
     })
     .then(function(response) {
       dispatch( sendData(response.data, types.RECEIVED_SUPPLIERS) )
+
+      let queryTab = getQueryVariable('tab')
+      let queryId = getQueryVariable('id')
+
+      /* TODO: This is a hack to ensure that all providers are loaded before
+          before getting their respective job status
+       */
+      if (!queryId && queryTab == 1) {
+        dispatch(SuppliersActions.getAllProviderStatus())
+      }
+
     })
     .catch(function(response){
       dispatch( sendData(response.data, types.ERROR_SUPPLIERS) )
@@ -168,6 +184,17 @@ SuppliersActions.fetchProvider = (id) => {
     return axios.get(url)
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_FETCH_PROVIDER ))
+
+      let tabQueryParam = getQueryVariable('tab') ? `&tab=${getQueryVariable('tab')}` : ''
+
+      if (getQueryVariable('tab') == 1) {
+        dispatch(SuppliersActions.getProviderStatus(id))
+      } else if (getQueryVariable('tab') == 1) {
+        dispatch(SuppliersActions.getChouetteJobStatus())
+      }
+
+      window.history.pushState(window.config.endpointBase, 'Title', `${window.config.endpointBase}?id=${id}${tabQueryParam}`)
+
     })
     .catch(function(response) {
       dispatch( sendData(response.data, types.ERROR_FETCH_PROVIDER) )

@@ -12,6 +12,7 @@ import '../sass/main.scss'
 import Tabs from 'muicss/lib/react/tabs'
 import Tab from 'muicss/lib/react/tab'
 const FaEdit = require('react-icons/lib/fa/pencil')
+import { getQueryVariable } from './utils'
 
 
 class SupplierTabWrapper extends React.Component {
@@ -24,11 +25,39 @@ class SupplierTabWrapper extends React.Component {
     }
   }
 
+  componentDidMount() {
+
+    let queryTab = getQueryVariable('tab')
+    let queryId = getQueryVariable('id')
+
+    const { dispatch } = this.props
+
+    cfgreader.readConfig( (function(config) {
+      window.config = config
+
+      if (!!queryId) {
+        if (queryTab == 1) {
+          dispatch(SuppliersActions.getProviderStatus(queryId))
+        } else if (queryTab == 2) {
+          dispatch(SuppliersActions.getChouetteJobStatus())
+        }
+      } else {
+        if (queryTab == 0) {
+          dispatch(SuppliersActions.getChouetteJobsForAllSuppliers())
+        } else if (queryTab == 3) {
+          // TODO: Fetch stats for all providers
+        }
+      }
+
+    }).bind(this))
+  }
+
   componentWillMount() {
     var self = this
     cfgreader.readConfig( (function(config) {
       window.config = config
       self.startPolling()
+
     }).bind(this))
   }
 
@@ -57,6 +86,8 @@ class SupplierTabWrapper extends React.Component {
 
     const { dispatch, activeId }  = this.props
 
+    window.history.pushState(window.config.endpointBase, 'Title', `?id=${activeId}&tab=${i}`)
+
     switch (value) {
       case 'chouetteJobs':
         dispatch(SuppliersActions.getChouetteJobStatus())
@@ -70,6 +101,8 @@ class SupplierTabWrapper extends React.Component {
   }
 
   onTabChangeForAllProviders(i, value, tab, ev) {
+    window.history.pushState(window.config.endpointBase, 'Title', `?tab=${i}`)
+
     switch (value) {
       case 'chouetteJobs':
         this.props.dispatch(SuppliersActions.getChouetteJobsForAllSuppliers())
@@ -92,7 +125,7 @@ class SupplierTabWrapper extends React.Component {
   }
 
   onActive(tab) {
-    //console.log(arguments)
+    //console.log(tab)
   }
 
   handleEditProvider = () => {
@@ -125,7 +158,7 @@ class SupplierTabWrapper extends React.Component {
       if (!displayAllSuppliers) {
 
         tabsToRender =
-          <Tabs justified={true} onChange={this.onTabChangeForProvider.bind(this)} defaultSelectedIndex={0}>
+          <Tabs justified={true} onChange={this.onTabChangeForProvider.bind(this)} defaultSelectedIndex={Number(getQueryVariable('tab')) || 0}>
             <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
               <DataMigrationDetails></DataMigrationDetails>
             </Tab>
@@ -139,7 +172,7 @@ class SupplierTabWrapper extends React.Component {
 
       } else {
         tabsToRender =
-          <Tabs justified={true} onChange={this.onTabChangeForAllProviders.bind(this)} defaultSelectedIndex={0}>
+          <Tabs justified={true} onChange={this.onTabChangeForAllProviders.bind(this)} defaultSelectedIndex={Number(getQueryVariable('tab')) || 0}>
             <Tab value="chouetteJobs" label="Chouette jobs">
               <ChouetteAllJobs></ChouetteAllJobs>
             </Tab>

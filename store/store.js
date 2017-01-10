@@ -26,7 +26,7 @@ const combinedReducer = combineReducers({
   ...reducers
 })
 
-export default function configureStore(history) {
+export default function configureStore() {
 
   let store = createStore(combinedReducer, initialState, enchancer)
 

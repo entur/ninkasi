@@ -11,19 +11,25 @@ const FaExclamation = require('react-icons/lib/fa/exclamation-triangle')
 import Dropdown from 'muicss/lib/react/dropdown'
 import DropdownItem from 'muicss/lib/react/dropdown-item'
 import GraphStatus from '../components/GraphStatus'
+import { getQueryVariable } from './utils'
 
 class SuppliersContainer extends React.Component {
 
   componentWillMount() {
-   const { dispatch } = this.props
+    const { dispatch } = this.props
     cfgreader.readConfig( (function(config) {
       window.config = config
       dispatch(SuppliersActions.fetchSuppliers())
+
+      if (!!getQueryVariable('id')) {
+        dispatch(SuppliersActions.selectActiveSupplier(getQueryVariable('id')))
+      }
+
     }).bind(this))
   }
 
   handleBuildGraph() {
-   this.props.dispatch(SuppliersActions.buildGraph())
+    this.props.dispatch(SuppliersActions.buildGraph())
   }
 
   handleFetchOSM() {
@@ -101,29 +107,29 @@ class SuppliersContainer extends React.Component {
     return (
 
       <div className="suppliers-container">
-          <div style={innerContainerStyle}>
-            <Button title={toolTips.history} style={{fontSize: 12}} color="dark" onClick={() => this.openModal()}><FaHistory color="#fff"/> History</Button>
-            <Button title={toolTips.buildGraph} style={{fontSize: 12}} color="dark" onClick={this.handleBuildGraph.bind(this)}>Build Graph</Button>
-            <Button title={toolTips.fetchOSM} style={{fontSize: 12}} color="dark" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</Button>
-            <Button title={toolTips.cleanFileFilter} style={{fontSize: 12}} color="dark" onClick={() => this.handleCleanFileFilter()}><FaExclamation color="#b8c500"/> Clean file filter</Button>
-            <Button title={toolTips.canceAllJobs} style={{fontSize: 12}} color="dark" onClick={() => this.handleCancelAllJobs()}><FaExclamation color="#b8c500"/> Cancel all jobs</Button>
-            <Dropdown title={toolTips.cleanAll} id="dropdown-clean-all" color="dark" label="Clean all">
-              <DropdownItem onClick={() => this.handleCleanAllDataSpaces('all')}>All</DropdownItem>
-              <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level1')}>Level 1</DropdownItem>
-              <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level2')}>Level 2</DropdownItem>
-            </Dropdown>
-          </div>
-          <Select style={{display: 'inline-block', margin: 15}} className="select-supplier" value={ selectedValue } id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
-            <Option key="supplier-all" value="-1" label={"All providers"}></Option>
-            {suppliers.map(supplier => {
-              return (
-                <Option key={supplier.id} value={String(supplier.id)} label={`${supplier.id} ${supplier.name}`}>
-                </Option>
-              )
-            })}
-          </Select>
-          <div title={toolTips.createNewProvider} style={{display: 'inline-block', cursor: 'pointer'}} onClick={() => this.handleNewProvider()}><FaAdd/> New</div>
-          <GraphStatus/>
+        <div style={innerContainerStyle}>
+          <Button title={toolTips.history} style={{fontSize: 12}} color="dark" onClick={() => this.openModal()}><FaHistory color="#fff"/> History</Button>
+          <Button title={toolTips.buildGraph} style={{fontSize: 12}} color="dark" onClick={this.handleBuildGraph.bind(this)}>Build Graph</Button>
+          <Button title={toolTips.fetchOSM} style={{fontSize: 12}} color="dark" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</Button>
+          <Button title={toolTips.cleanFileFilter} style={{fontSize: 12}} color="dark" onClick={() => this.handleCleanFileFilter()}><FaExclamation color="#b8c500"/> Clean file filter</Button>
+          <Button title={toolTips.canceAllJobs} style={{fontSize: 12}} color="dark" onClick={() => this.handleCancelAllJobs()}><FaExclamation color="#b8c500"/> Cancel all jobs</Button>
+          <Dropdown title={toolTips.cleanAll} id="dropdown-clean-all" color="dark" label="Clean all">
+            <DropdownItem onClick={() => this.handleCleanAllDataSpaces('all')}>All</DropdownItem>
+            <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level1')}>Level 1</DropdownItem>
+            <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level2')}>Level 2</DropdownItem>
+          </Dropdown>
+        </div>
+        <Select style={{display: 'inline-block', margin: 15}} className="select-supplier" value={ selectedValue } id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
+          <Option key="supplier-all" value="-1" label={"All providers"}></Option>
+          {suppliers.map(supplier => {
+            return (
+              <Option key={supplier.id} value={String(supplier.id)} label={`${supplier.id} ${supplier.name}`}>
+              </Option>
+            )
+          })}
+        </Select>
+        <div title={toolTips.createNewProvider} style={{display: 'inline-block', cursor: 'pointer'}} onClick={() => this.handleNewProvider()}><FaAdd/> New</div>
+        <GraphStatus/>
       </div>
     )
   }

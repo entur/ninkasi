@@ -1,12 +1,9 @@
 import 'babel-polyfill'
-
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import Keycloak from 'keycloak-js'
-
 import App from './containers/App'
-
 import configureStore from './store/store'
 
 require('./sass/main.scss')
