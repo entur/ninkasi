@@ -30,6 +30,13 @@ endpoints. E.g.
   NABU_BASE_URL=http://localhost:10001/ MARDUK_BASE_URL=http://localhost:11002/ npm start dev
 ```
 
+Optional environment variable `ENDPOINTBASE` overrides namespace for client including slash. E.g.
+
+```
+  ENDPOINTBASE=/admin/ninkasi/ NABU_BASE_URL=http://localhost:10001/ MARDUK_BASE_URL=http://localhost:11002/ npm start dev
+```
+
+
 ## Authentification
 
 Uses Keycloak-js for authentification
