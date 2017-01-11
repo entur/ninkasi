@@ -11,6 +11,7 @@ import Form from 'muicss/lib/react/form'
 import Panel from 'muicss/lib/react/panel'
 import SuppliersActions from '../actions/SuppliersActions'
 import Loader from 'halogen/DotLoader'
+import ChouetteLink from '../components/ChouetteLink'
 
 class ChouetteJobDetails extends React.Component {
 
@@ -174,7 +175,7 @@ class ChouetteJobDetails extends React.Component {
 
             return <Row key={'ch-job-' + index}>
               <Col md="1">
-                <p>{job.id}</p>
+                <ChouetteLink id={job.id} action={job.action} referential={job.referential}>{job.id}</ChouetteLink>
               </Col>
               <Col md="2">
                 <p>{job.action}</p>

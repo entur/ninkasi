@@ -11,6 +11,7 @@ import Form from 'muicss/lib/react/form'
 import Panel from 'muicss/lib/react/panel'
 import Loader from 'halogen/DotLoader'
 import SuppliersActions from '../actions/SuppliersActions'
+import ChouetteLink from '../components/ChouetteLink'
 
 class ChouetteAllJobs extends React.Component {
 
@@ -113,7 +114,7 @@ class ChouetteAllJobs extends React.Component {
             </div>
           </Panel>
           <Row>
-            <Col md="10">
+            <div>
               { (paginationMap.length > 0) ?
 
                 <div className="page-link-parent">
@@ -126,7 +127,7 @@ class ChouetteAllJobs extends React.Component {
 
                 <div></div>
               }
-            </Col>
+            </div>
             { requestingJobs ?
               <div style={{float: 'right', position: 'absolute', right: 40}}><Loader color="#26A65B" size="23px"/></div> : null }
           </Row>
@@ -165,13 +166,14 @@ class ChouetteAllJobs extends React.Component {
           <Container fluid={true}> { page.map( (job, index) => {
 
               const statusClass = (job.status === 'ABORTED' || job.status === 'CANCELED') ? 'error' : 'success'
+              const chouetteURL = `https://redigering.rutebanken.org/referentials/${job.referential}/`
 
-              return <Row key={'ch-job-' + index}>
+              return <Row key={'ch-job-' + index}>`
                 <Col md="1">
-                  <p>{job.referential}</p>
+                  <a title={chouetteURL} target="_blank" href={chouetteURL}>{job.referential}</a>
                 </Col>
                 <Col md="1">
-                  <p>{job.id}</p>
+                  <ChouetteLink id={job.id} referential={job.referential} action={job.action}>{job.id}</ChouetteLink>
                 </Col>
                 <Col md="1">
                   <p>{job.action}</p>
