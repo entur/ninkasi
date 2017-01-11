@@ -28,6 +28,40 @@ SuppliersActions.getProviderStatus = (id) => {
   }
 }
 
+SuppliersActions.uploadFiles = (files, providerId) => {
+
+  return function (dispatch) {
+
+    dispatch( sendData(0, types.UPDATED_FILE_UPLOAD_PROGRESS))
+
+    const url = `${window.config.nabuBaseUrl}jersey/files/${providerId}`
+
+    var data = new FormData()
+
+    files.forEach( (file) => {
+      data.append("files", file)
+    })
+
+    var config = {
+      onUploadProgress: function(progressEvent) {
+        let percentCompleted = (progressEvent.loaded / progressEvent.total) * 100
+        dispatch( sendData(percentCompleted, types.UPDATED_FILE_UPLOAD_PROGRESS))
+      }
+    }
+
+    return axios.post(url, data, config)
+    .then(function(response) {
+      dispatch(SuppliersActions.addNotification('Uploaded file' + (files.length > 1) ? 's' : '', 'success'))
+      dispatch(SuppliersActions.logEvent({title: 'Uploaded files ' + files.join(',')}))
+      dispatch( sendData(0, types.UPDATED_FILE_UPLOAD_PROGRESS))
+    })
+    .catch(function(response) {
+      dispatch(SuppliersActions.addNotification('Unable to upload files', 'error'))
+      dispatch( sendData(0, types.UPDATED_FILE_UPLOAD_PROGRESS))
+    })
+  }
+}
+
 SuppliersActions.getAllProviderStatus = () => {
 
   return function(dispatch, getState) {
@@ -101,7 +135,7 @@ SuppliersActions.fetchSuppliers = () => {
       let queryId = getQueryVariable('id')
 
       /* TODO: This is a hack to ensure that all providers are loaded before
-          before getting their respective job status
+       before getting their respective job status
        */
       if (!queryId && queryTab == 1) {
         dispatch(SuppliersActions.getAllProviderStatus())

@@ -13,6 +13,7 @@ import Tabs from 'muicss/lib/react/tabs'
 import Tab from 'muicss/lib/react/tab'
 const FaEdit = require('react-icons/lib/fa/pencil')
 import { getQueryVariable } from './utils'
+import FileUpload from './FileUpload'
 
 
 class SupplierTabWrapper extends React.Component {
@@ -86,7 +87,9 @@ class SupplierTabWrapper extends React.Component {
 
     const { dispatch, activeId }  = this.props
 
-    window.history.pushState(window.config.endpointBase, 'Title', `?id=${activeId}&tab=${i}`)
+    if (!isNaN(i)) {
+      window.history.pushState(window.config.endpointBase, 'Title', `?id=${activeId}&tab=${i}`)
+    }
 
     switch (value) {
       case 'chouetteJobs':
@@ -101,7 +104,10 @@ class SupplierTabWrapper extends React.Component {
   }
 
   onTabChangeForAllProviders(i, value, tab, ev) {
-    window.history.pushState(window.config.endpointBase, 'Title', `?tab=${i}`)
+
+    if (!isNaN(i)) {
+      window.history.pushState(window.config.endpointBase, 'Title', `?tab=${i}`)
+    }
 
     switch (value) {
       case 'chouetteJobs':
@@ -113,6 +119,11 @@ class SupplierTabWrapper extends React.Component {
 
       default: break
     }
+  }
+
+  handleFileUpload(files) {
+    const { dispatch, activeId } = this.props
+    dispatch(SuppliersActions.uploadFiles(files, activeId))
   }
 
   handleRefreshAllProviders() {
@@ -134,7 +145,7 @@ class SupplierTabWrapper extends React.Component {
 
   render() {
 
-    const { displayAllSuppliers, activeId, suppliers, filelistIsLoading}  = this.props
+    const { displayAllSuppliers, activeId, suppliers, filelistIsLoading, fileUploadProgress }  = this.props
 
     if (filelistIsLoading) {
 
@@ -160,13 +171,16 @@ class SupplierTabWrapper extends React.Component {
         tabsToRender =
           <Tabs justified={true} onChange={this.onTabChangeForProvider.bind(this)} defaultSelectedIndex={Number(getQueryVariable('tab')) || 0}>
             <Tab value="migrateData" label="Migrate data" onActive={this.onActive}>
-              <DataMigrationDetails></DataMigrationDetails>
+              <DataMigrationDetails/>
             </Tab>
             <Tab value="events" label="Events">
-              <EventDetails handleRefresh={this.handleRefreshActiveProvider.bind(this)} paginationMap={this.props.paginationMapActiveProvider} key="statusList"></EventDetails>
+              <EventDetails handleRefresh={this.handleRefreshActiveProvider.bind(this)} paginationMap={this.props.paginationMapActiveProvider} key="statusList"/>
             </Tab>
             <Tab value="chouetteJobs" label="Chouette jobs">
-              <ChouetteJobDetails></ChouetteJobDetails>
+              <ChouetteJobDetails/>
+            </Tab>
+            <Tab value="uploadFiles" label="Upload file">
+              <FileUpload fileUploadProgress={fileUploadProgress} handleFileUpload={this.handleFileUpload.bind(this)}/>
             </Tab>
           </Tabs>
 
@@ -217,6 +231,7 @@ const mapStateToProps = (state, ownProps) => {
     displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
     paginationMapActiveProvider: getPaginationMapActiveProvider(state.SuppliersReducer.statusList ? state.SuppliersReducer.statusList.slice() : []),
     paginationMapAllProvider: getPaginationMapAllProvider(state.SuppliersReducer.statusListAllProviders.slice()),
+    fileUploadProgress: state.SuppliersReducer.fileUploadProgress
   }
 }
 

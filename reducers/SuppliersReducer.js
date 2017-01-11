@@ -5,7 +5,8 @@ const initialState = {
   statusList: [],
   statusListAllProviders: [],
   all_suppliers_selected: true,
-  activeId: 0
+  activeId: 0,
+  fileUploadProgress: 0
 }
 
 const SuppliersReducer = (state = initialState, action) => {
@@ -37,6 +38,9 @@ const SuppliersReducer = (state = initialState, action) => {
 
     case types.RECEIVED_ALL_SUPPLIERS_STATUS:
       return Object.assign({}, state, { statusListAllProviders: state.statusListAllProviders.concat(action.payLoad) })
+
+    case types.UPDATED_FILE_UPLOAD_PROGRESS:
+      return Object.assign({}, state, { fileUploadProgress: action.payLoad })
 
     default:
       return state
