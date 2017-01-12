@@ -11,9 +11,10 @@ import Loader from 'halogen/PulseLoader'
 import '../sass/main.scss'
 import Tabs from 'muicss/lib/react/tabs'
 import Tab from 'muicss/lib/react/tab'
-const FaEdit = require('react-icons/lib/fa/pencil')
+import FaEdit from 'react-icons/lib/fa/pencil'
 import { getQueryVariable } from './utils'
 import FileUpload from './FileUpload'
+import StatisticsDetails from './StatisticsDetails'
 
 
 class SupplierTabWrapper extends React.Component {
@@ -194,7 +195,7 @@ class SupplierTabWrapper extends React.Component {
               <EventDetails handleRefresh={this.handleRefreshAllProviders.bind(this)} paginationMap={this.props.paginationMapAllProvider} key="statusList"></EventDetails>
             </Tab>
             <Tab value="statistics" label="Statistics">
-              <p>Statics for providers</p>
+              { suppliers.length && <StatisticsDetails dispatch={this.props.dispatch} suppliers={suppliers}/> }
             </Tab>
           </Tabs>
       }
@@ -203,7 +204,7 @@ class SupplierTabWrapper extends React.Component {
 
         <div className="supplier-info">
           <Container fluid={true}>
-            {(tabsToRender)}
+            { tabsToRender }
           </Container>
           { !displayAllSuppliers
           ? <div style={{display: 'flex', cursor: 'pointer', justifyContent: 'flex-end', marginRight: 20}} onClick={() => this.handleEditProvider()}>

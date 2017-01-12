@@ -530,6 +530,145 @@ SuppliersActions.transferData = (id) => {
   }
 }
 
+SuppliersActions.getLineStats = () => {
+
+  return function(dispatch, getState) {
+
+    dispatch( sendData(null, types.REQUESTED_LINE_STATS) )
+
+    const suppliers = getState().SuppliersReducer.data.filter( (supplier) => supplier.chouetteInfo.migrateDataToProvider)
+
+    suppliers.forEach( (supplier) => {
+      return axios({
+        url: `${window.config.mardukBaseUrl}admin/services/chouette/${supplier.id}/lineStats`,
+        timeout: 10000,
+        method: 'get',
+        responseType: 'json'
+      })
+      .then( (response) => {
+        dispatch( sendData({id: supplier.id, data: formatLineStats(response.data)}, types.RECEIVED_LINE_STATS))
+      })
+      .catch( (response) => {
+        console.error(response)
+      })
+    })
+  }
+}
+
+const formatLineStats = (lineStats) => {
+
+  try {
+
+    const defaultObject = { lineNumbers: [] }
+
+    let formattedLines = {
+      invalid: lineStats.validityCategories
+      .filter( (category) => category.numDaysAtLeastValid < 120)[0] || defaultObject,
+      valid: lineStats.validityCategories
+      .filter( (category) => category.numDaysAtLeastValid >= 127)[0] || defaultObject,
+      soonInvalid: lineStats.validityCategories
+      .filter( (category) => (category.numDaysAtLeastValid >= 120 && category.numDaysAtLeastValid < 127))[0] || defaultObject,
+      all: defaultObject
+    }
+
+    formattedLines.all.lineNumbers = [].concat(
+      formattedLines.invalid.lineNumbers,
+      formattedLines.soonInvalid.lineNumbers,
+      formattedLines.valid.lineNumbers
+    )
+
+    let linesMap = {}
+
+    let startDate = moment(lineStats.startDate, 'YYYY-MM-DD')
+    formattedLines.startDate = startDate.format('YYYY-MM-DD')
+    formattedLines.days = lineStats.days
+    formattedLines.endDate = startDate.add(formattedLines.days, 'days').format('YYYY-MM-DD')
+
+    let minDays = {days: 365, valid: 'VALID'}
+
+    lineStats.publicLines.forEach ( (publicLine) => {
+
+      publicLine.effectivePeriods.forEach( (effectivePeriod) => {
+
+        let fromDiff = moment(lineStats.startDate, 'YYYY-MM-DD').diff(moment(effectivePeriod.from, 'YYYY-MM-DD'), 'days', true)
+
+        if (fromDiff > 0) {
+          // now is after start date of effective period
+          effectivePeriod.timelineStartPosition = 0
+        } else {
+          effectivePeriod.timelineStartPosition = ( Math.abs(fromDiff) / formattedLines.days ) * 100
+        }
+
+        let timelineEndPosition = 100
+
+        let toDiff = moment(formattedLines.endDate, 'YYYY-MM-DD').diff(moment(effectivePeriod.to, 'YYYY-MM-DD'), 'days', true)
+
+        if (toDiff > 0) {
+          timelineEndPosition = 100 - (toDiff / (formattedLines.days/100))
+        }
+
+        effectivePeriod.timelineEndPosition = timelineEndPosition
+
+        effectivePeriod.validationLevel = 'INVALID'
+        let daysForward = (effectivePeriod.timelineEndPosition / 100) * formattedLines.days
+
+        if (daysForward >= 120 && daysForward < 127) {
+          effectivePeriod.validationLevel = 'SOON_INVALID'
+        } else if (daysForward > 127) {
+          effectivePeriod.validationLevel = 'VALID'
+        }
+
+        if (daysForward < minDays.days) {
+          minDays = {days: daysForward, validity: effectivePeriod.validationLevel}
+        }
+
+      })
+
+      publicLine.lines.forEach( (line) => {
+
+        line.timetables.forEach( (timetable) => {
+          timetable.periods.forEach( (period) => {
+
+            let fromDiff = moment(lineStats.startDate, 'YYYY-MM-DD').diff(moment(period.from, 'YYYY-MM-DD'), 'days', true)
+
+            if (fromDiff < 0) {
+              period.timelineStartPosition = ( Math.abs(fromDiff) / formattedLines.days ) * 100
+            } else {
+              period.timelineStartPosition = 0
+            }
+
+            let timelineEndPosition = 100
+
+            let toDiff = moment(formattedLines.endDate, 'YYYY-MM-DD').diff(moment(period.to, 'YYYY-MM-DD'), 'days', true)
+
+            if (toDiff > 0) {
+              timelineEndPosition = 100 - (toDiff / (formattedLines.days/100))
+            }
+
+            period.timelineEndPosition = timelineEndPosition
+          })
+        })
+      })
+
+      if (publicLine.effectivePeriods.length == 0) {
+        minDays = {days: 0, validity: 'INVALID'}
+      }
+      linesMap[publicLine.lineNumber] = publicLine
+    })
+
+    formattedLines.linesMap = linesMap
+    formattedLines.validDaysOffset = 33
+    formattedLines.validFromDate = moment(lineStats.startDate, 'YYYY-MM-DD').add(120, 'days').format('YYYY-MM-DD')
+    formattedLines.minDays = minDays
+
+    return formattedLines
+
+  } catch (e) {
+    console.error("error in getLineStats", e)
+  }
+}
+
+
 
 SuppliersActions.fetchFilenames = (id) => {
 
