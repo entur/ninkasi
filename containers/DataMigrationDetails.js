@@ -59,7 +59,7 @@ class DataMigrationDetails extends React.Component {
 
 
   handleImportData = () => {
-    const {dispatch, outboundFiles} = this.props
+    const { dispatch, outboundFiles } = this.props
 
     if (outboundFiles.length) {
       dispatch(SuppliersActions.importData(this.props.activeId, outboundFiles))
