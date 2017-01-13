@@ -98,7 +98,6 @@ class PieCard extends React.Component {
   }
 }
 
-
 const mapStateToProps = (state, ownProps) => {
   return {
     stats: Object.keys(state.SuppliersReducer.lineStats).length ? state.SuppliersReducer.lineStats[ownProps.provider.id] : null

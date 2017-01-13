@@ -117,6 +117,9 @@ class SupplierTabWrapper extends React.Component {
       case 'events':
         this.props.dispatch(SuppliersActions.getAllProviderStatus())
         break
+      case 'statistics':
+        this.props.dispatch(SuppliersActions.getLineStats())
+        break
 
       default: break
     }
