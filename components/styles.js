@@ -20,9 +20,6 @@ export const color = {
     info3: colorDef.black,
     warn: colorDef.red,
 
-    valid: "#449d48",
-    expiring: "#FDB45C",
-    invalid: "#b20000",
     tooltip: colorDef.white,
   },
   background: colorDef.darkGrey,
@@ -43,14 +40,18 @@ export const color = {
   tableRow: '#ebf2f1',
   tableInfo: '#ffffdb',
 
-  // highlight
-  valid: "#4caf50",
-  expiring: "#FFC870",
-  invalid: "#cc0000",
+  valid: '#33e146',
+  invalid: '#b20000',
+  soonInvalid: '#449d48',
+  highlight : {
+    valid: '#4caf50',
+    soonInvalid: '#4caf50',
+    invalid: '#cc0000',
+  }
 }
 
 export const dimension = {
-  // TODO ?
+
 }
 
 export const styles = {

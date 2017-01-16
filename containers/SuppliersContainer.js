@@ -121,12 +121,7 @@ class SuppliersContainer extends React.Component {
         </div>
         <Select style={{display: 'inline-block', margin: 15}} className="select-supplier" value={ selectedValue } id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
           <Option key="supplier-all" value="-1" label={"All providers"}></Option>
-          {suppliers.map(supplier => {
-            return (
-              <Option key={supplier.id} value={String(supplier.id)} label={`${supplier.id} ${supplier.name}`}>
-              </Option>
-            )
-          })}
+          { suppliers.map(supplier => <Option key={supplier.id} value={String(supplier.id)} label={`${supplier.id} ${supplier.name}`}/> ) }
         </Select>
         <div title={toolTips.createNewProvider} style={{display: 'inline-block', cursor: 'pointer'}} onClick={() => this.handleNewProvider()}><FaAdd/> New</div>
         <GraphStatus/>

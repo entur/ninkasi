@@ -7,6 +7,8 @@ import App from './containers/App'
 import configureStore from './store/store'
 
 require('./sass/main.scss')
+import injectTapEventPlugin from 'react-tap-event-plugin'
+
 
 renderIndex()
 /* use authWithKeyCloak(renderIndex) for keycloak authentification */
@@ -21,6 +23,7 @@ function authWithKeyCloak(renderCallback) {
 function renderIndex() {
 
   const store = configureStore()
+  injectTapEventPlugin()
 
   render(
     <Provider store={store}>

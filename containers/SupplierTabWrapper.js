@@ -16,14 +16,13 @@ import { getQueryVariable } from './utils'
 import FileUpload from './FileUpload'
 import StatisticsDetails from './StatisticsDetails'
 
-
 class SupplierTabWrapper extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
       activeTabForProvider: 'migrateData',
-      activeTabForAllProvider: 'chouetteJobs'
+      activeTabForAllProvider: 'chouetteJobs',
     }
   }
 
@@ -149,7 +148,7 @@ class SupplierTabWrapper extends React.Component {
 
   render() {
 
-    const { displayAllSuppliers, activeId, suppliers, filelistIsLoading, fileUploadProgress }  = this.props
+    const { displayAllSuppliers, activeId, suppliers, filelistIsLoading, fileUploadProgress, lineStats }  = this.props
 
     if (filelistIsLoading) {
 
@@ -198,7 +197,7 @@ class SupplierTabWrapper extends React.Component {
               <EventDetails handleRefresh={this.handleRefreshAllProviders.bind(this)} paginationMap={this.props.paginationMapAllProvider} key="statusList"></EventDetails>
             </Tab>
             <Tab value="statistics" label="Statistics">
-              { suppliers.length && <StatisticsDetails dispatch={this.props.dispatch} suppliers={suppliers}/> }
+              { suppliers.length && <StatisticsDetails dispatch={this.props.dispatch} lineStats={lineStats} suppliers={suppliers}/> }
             </Tab>
           </Tabs>
       }
@@ -235,7 +234,8 @@ const mapStateToProps = (state, ownProps) => {
     displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
     paginationMapActiveProvider: getPaginationMapActiveProvider(state.SuppliersReducer.statusList ? state.SuppliersReducer.statusList.slice() : []),
     paginationMapAllProvider: getPaginationMapAllProvider(state.SuppliersReducer.statusListAllProviders.slice()),
-    fileUploadProgress: state.SuppliersReducer.fileUploadProgress
+    fileUploadProgress: state.SuppliersReducer.fileUploadProgress,
+    lineStats: state.SuppliersReducer.lineStats
   }
 }
 

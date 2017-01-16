@@ -3,6 +3,7 @@ import { Pie as PieChart } from 'react-chartjs'
 import { color } from '../components/styles'
 import { connect } from 'react-redux'
 import Loader from 'halogen/DotLoader'
+import { segmentName } from '../util/dataManipulation'
 
 class PieCard extends React.Component {
 
@@ -10,20 +11,6 @@ class PieCard extends React.Component {
     handlePieOnClick: PropTypes.func.isRequired,
     handleshowAllClick: PropTypes.func.isRequired,
     provider: PropTypes.object.isRequired
-  }
-
-  constructor(props) {
-    super(props)
-    this.segmentMap = {
-      'Gyldige' : 'valid',
-      'Snart ugyldige' : 'soonInvalid',
-      'Ugyldige' : 'invalid',
-      'valid' : 'Gyldige',
-      'soonInvalid' : 'Snart ugyldige',
-      'invalid' : 'Ugyldige',
-      'all' : 'Alle linjer',
-      'Alle linjer' : 'all'
-    }
   }
 
   render() {
@@ -55,6 +42,7 @@ class PieCard extends React.Component {
     const valid = stats.valid.lineNumbers.length
     const invalid = stats.invalid.lineNumbers.length
     const soonInvalid = stats.soonInvalid.lineNumbers.length
+    const expiring = stats.validity.filter( lines => lines.numDaysAtLeastValid > 0 && lines.numDaysAtLeastValid < 120).reverse()
 
     const isInvalid = !valid && !invalid && !soonInvalid
 
@@ -62,34 +50,49 @@ class PieCard extends React.Component {
       {
         value: valid,
         highlight: color.valid,
-        color: color.font.valid,
-        label: this.segmentMap['valid'],
+        color: color.highlight.valid,
+        label: segmentName('valid'),
       },
       {
         value: soonInvalid,
-        color: color.font.expiring,
-        highlight: color.expiring,
-        label: this.segmentMap['soonInvalid'],
-      },
-      {
-        value: invalid,
-        color: color.font.invalid,
-        highlight: color.invalid,
-        label: this.segmentMap['invalid'],
+        color: color.soonInvalid,
+        highlight: color.highlight.soonInvalid,
+        label: segmentName('soonInvalid'),
       }
     ]
+
+    for (let i in expiring) {
+      let category = expiring[i]
+      let numDays = category.numDaysAtLeastValid
+      let length = category.lineNumbers.length
+
+      pieData.push({
+          value: length,
+          color: 'rgba(80, 150, 80, ' + numDays/90.0 + ')',
+          highlight: 'rgba(100, 150, 100, ' + numDays/90.0 + ')',
+          label: segmentName('dynamic', numDays),
+        }
+      )
+    }
+    pieData.push({
+      value: invalid,
+      color: color.invalid,
+      highlight: color.highlight.invalid,
+      label: segmentName('invalid'),
+    })
 
     return (
       <div style={{width: 200, height: 300, display: 'flex', flexDirection: 'column', margin: 50}}>
         <div>
-          <div style={{fontWeight: 600, textAlign: 'center', marginBottom: 5}}>{provider.name}</div>
+          <div style={{fontWeight: 600, textAlign: 'center', marginBottom: 5, textOverflow: 'ellipses', whiteSpace: 'nowrap'}}>{provider.name}</div>
           { isInvalid
             ? <div style={{color: 'red', fontWeight: 600, textAlign: 'center'}}>No valid lines</div>
-            :  <PieChart style={{marginTop: 0}} ref="chart" onClick={(e) => { this.props.handlePieOnClick(e, this.refs.chart.getChart()) } } data={pieData} width="100" height="100"  options={pieOptions}/>
+            :  <PieChart style={{marginTop: 0}} ref="chart" onClick={(e) => { this.props.handlePieOnClick(e, this.refs.chart.getChart(), provider.id)} } data={pieData} width="100" height="100"  options={pieOptions}/>
           }
           { isInvalid
             ? null
-            : <div onClick={() => this.props.handleshowAllClick()} style={showAllStyle}>Vis alle</div>
+            : <div onClick={() => this.props.handleShowAllClick(120, provider.id)} style={showAllStyle}>Vis alle</div>
+
           }
         </div>
       </div>

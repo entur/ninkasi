@@ -6,6 +6,7 @@ import NotificationContainer from './NotificationContainer'
 import ModalViewContainer from './ModalActionContainer'
 import cfgreader from '../config/readConfig'
 import Header from '../components/Header'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 export default class MainPage extends React.Component {
 
@@ -19,14 +20,16 @@ export default class MainPage extends React.Component {
   render() {
 
     return (
-      <div className="app">
-        <Header/>
-        <SuppliersContainer/>
-        <SupplierTabWrapper/>
-        <NotificationContainer/>
-        <ModalViewContainer/>
-        <SupplierPage/>
-      </div>
+      <MuiThemeProvider>
+        <div className="app">
+          <Header/>
+          <SuppliersContainer/>
+          <SupplierTabWrapper/>
+          <NotificationContainer/>
+          <ModalViewContainer/>
+          <SupplierPage/>
+        </div>
+      </MuiThemeProvider>
     )
   }
 }
