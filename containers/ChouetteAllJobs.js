@@ -58,6 +58,11 @@ class ChouetteAllJobs extends React.Component {
     dispatch(SuppliersActions.sortListByColumn("chouetteAll", columnName))
   }
 
+  getJobStatus(status) {
+    if (status == "TERMINATED") return "COMPLETED"
+    return status
+  }
+
   render() {
 
     const { chouetteJobAllFilter, paginationMap, requestingJobs} = this.props
@@ -168,7 +173,7 @@ class ChouetteAllJobs extends React.Component {
               const statusClass = (job.status === 'ABORTED' || job.status === 'CANCELED') ? 'error' : 'success'
               const chouetteURL = `https://redigering.rutebanken.org/referentials/${job.referential}/`
 
-              return <Row key={'ch-job-' + index}>`
+              return <Row key={'ch-job-' + index} style={{display: 'flex', alignItems: 'center'}}>
                 <Col md="1">
                   <a title={chouetteURL} target="_blank" href={chouetteURL}>{job.referential}</a>
                 </Col>
@@ -188,7 +193,7 @@ class ChouetteAllJobs extends React.Component {
                   <p>{job.updated}</p>
                 </Col>
                 <Col md="1">
-                  <p><span className={statusClass}>{job.status}</span></p>
+                  <p><span className={statusClass}>{this.getJobStatus(job.status)}</span></p>
                 </Col>
                 { (job.status === 'STARTED' || job.status === 'SCHEDULED') ?
                   <Col md="1">

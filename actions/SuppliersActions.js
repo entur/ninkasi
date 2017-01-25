@@ -358,11 +358,6 @@ SuppliersActions.formatChouetteJobsWithDate = (jobs) => {
     job.created = moment(job.created).locale("nb").format("YYYY-MM-DD HH:mm:ss")
     job.started = moment(job.started).locale("nb").format("YYYY-MM-DD HH:mm:ss")
     job.updated = moment(job.updated).locale("nb").format("YYYY-MM-DD HH:mm:ss")
-
-    if (job.status === "TERMINATED") {
-      job.status = "COMPLETED"
-    }
-
     return job
   })
   return jobs

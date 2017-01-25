@@ -12,10 +12,6 @@ class PieCard extends React.Component {
     provider: PropTypes.object.isRequired
   }
 
-  componentDidMount() {
-    console.log("DID MOUNT")
-  }
-
   render() {
 
     const showAllStyle = {

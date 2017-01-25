@@ -28,6 +28,11 @@ class ChouetteJobDetails extends React.Component {
     }).bind(this))
   }
 
+  getJobStatus(status) {
+    if (status == "TERMINATED") return "COMPLETED"
+    return status
+  }
+
   handleCancelChouetteJob = (index) => {
     const {dispatch, activeId} = this.props
     dispatch(SuppliersActions.cancelChouetteJobForProvider(activeId, index))
@@ -171,7 +176,7 @@ class ChouetteJobDetails extends React.Component {
 
             const statusClass = (job.status === 'ABORTED' || job.status === 'CANCELED') ? 'error' : 'success'
 
-            return <Row key={'ch-job-' + index}>
+            return <Row key={'ch-job-' + index} style={{display: 'flex', alignItems: 'center'}}>
               <Col md="1">
                 <ChouetteLink id={job.id} action={job.action} referential={job.referential}>{job.id}</ChouetteLink>
               </Col>
@@ -188,7 +193,7 @@ class ChouetteJobDetails extends React.Component {
                 <p>{job.updated}</p>
               </Col>
               <Col md="1">
-                <p><span className={statusClass}>{job.status}</span></p>
+                <p><span className={statusClass}>{this.getJobStatus(job.status)}</span></p>
               </Col>
               { (job.status === 'STARTED' || job.status === 'SCHEDULED') ?
                 <Col md="1">
