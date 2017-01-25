@@ -39,10 +39,10 @@ export const color = {
   tableHeader: colorDef.lightGrey,
   tableRow: '#ebf2f1',
   tableInfo: '#ffffdb',
-
-  valid: '#33e146',
+  valid: '#33c146',
   invalid: '#b20000',
-  soonInvalid: '#449d48',
+  soonInvalid: '#33c146',
+  expired: '#FFAA00',
   highlight : {
     valid: '#4caf50',
     soonInvalid: '#4caf50',

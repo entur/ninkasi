@@ -35,6 +35,11 @@ export const segmentName = (segment, numDays) => {
   return segmentMap['dynamic'].replace('DAYS', numDays)
 }
 
+export const segmentColor = (daysValid, modifier = 0) => {
+  let green = 120 + daysValid + modifier
+  return '#FF' + green.toString(16) +'00'
+}
+
 export const segmentName2Key = (segmentName) => {
   if (!text2key.hasOwnProperty(segmentName)) {
     let idxStart = segmentName.indexOf('- ') + 2
