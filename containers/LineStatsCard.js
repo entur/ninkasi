@@ -12,9 +12,9 @@ class StatusCard extends React.Component {
 
   static propTypes = {
     selectedSegment: PropTypes.string.isRequired,
-    stats: PropTypes.object.isRequired,
+    stats: PropTypes.object,
     title: PropTypes.string.isRequired,
-    handleClose: PropTypes.func.isRequired
+    handleClose: PropTypes.func
   }
 
   constructor(props) {

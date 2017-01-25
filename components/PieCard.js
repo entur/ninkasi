@@ -8,7 +8,7 @@ class PieCard extends React.Component {
 
   static propTypes = {
     handlePieOnClick: PropTypes.func.isRequired,
-    handleshowAllClick: PropTypes.func.isRequired,
+    handleshowAllClick: PropTypes.func,
     provider: PropTypes.object.isRequired
   }
 
@@ -77,6 +77,14 @@ class PieCard extends React.Component {
       highlight: color.highlight.invalid,
       label: segmentName('invalid'),
     })
+
+    let pieDataIsNotEmpty = false
+
+    pieData.forEach( data => {
+      if (data.value) pieDataIsNotEmpty = true
+    })
+
+    if (!pieDataIsNotEmpty) return null
 
     return (
       <div style={{width: 200, height: 300, display: 'flex', flexDirection: 'column', margin: 50}}>

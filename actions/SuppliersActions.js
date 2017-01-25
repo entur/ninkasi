@@ -559,6 +559,8 @@ SuppliersActions.getLineStats = () => {
 SuppliersActions.getLineStatsForProvider = providerId => {
   return function (dispatch) {
 
+    dispatch( sendData(null, types.REQUESTED_LINE_STATS) )
+
     return axios.get(`${window.config.mardukBaseUrl}admin/services/chouette/${providerId}/lineStats`)
     .then( response => {
       dispatch( sendData({id: providerId, data: formatLineStats(response.data)}, types.RECEIVED_LINE_STATS))
