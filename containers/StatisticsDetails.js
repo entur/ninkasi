@@ -59,8 +59,11 @@ class StatisticsDetails extends React.Component {
     const title = segmentName(selectedSegment, daysValid)
 
     if (selectedProvider) {
+
+      const provider =  suppliers.filter( provider => provider.id == selectedProvider)[0]
+
       return (
-        <LineStatsCard handleClose={this.handleClose.bind(this)} selectedSegment={this.state.selectedSegment} title={`${suppliers[selectedProvider].name} - ${title}`} stats={lineStats[selectedProvider]}/>
+        <LineStatsCard handleClose={this.handleClose.bind(this)} selectedSegment={this.state.selectedSegment} title={`${provider.name} - ${title}`} stats={lineStats[selectedProvider]}/>
       )
     }
 
