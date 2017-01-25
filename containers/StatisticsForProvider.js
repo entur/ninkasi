@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import PieCard from '../components/PieCard'
 import SuppliersActions from '../actions/SuppliersActions'
 import LineStatsCard from './LineStatsCard'
 import { segmentName, segmentName2Key } from '../util/dataManipulation'
+import { connect } from 'react-redux'
 
-class StatisticsDetails extends React.Component {
+class StatisticsForProvider extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      selectedProvider: false
+      selectedSegment: 'all',
+      daysValid: 180
     }
+  }
+
+
+  static propTypes = {
+    provider: PropTypes.object.isRequired,
   }
 
   handlePieOnClick(e, chart, provider) {
@@ -46,47 +53,38 @@ class StatisticsDetails extends React.Component {
     })
   }
 
-
   componentDidMount() {
-    this.props.dispatch(SuppliersActions.getLineStats())
+    this.props.dispatch(SuppliersActions.getLineStatsForProvider(this.props.provider.id))
   }
 
   render() {
 
-    const { suppliers, lineStats } = this.props
-    const { selectedProvider, selectedSegment, daysValid } = this.state
+    const { lineStats, provider } = this.props
+    const { selectedSegment, daysValid } = this.state
 
     const title = segmentName(selectedSegment, daysValid)
 
-    if (selectedProvider) {
-
-      const provider =  suppliers.filter( provider => provider.id == selectedProvider)[0]
-
-      return (
-        <LineStatsCard handleClose={this.handleClose.bind(this)} selectedSegment={this.state.selectedSegment} title={`${provider.name} - ${title}`} stats={lineStats[selectedProvider]}/>
-      )
-    }
-
-    const providerPies = suppliers.map( (provider, index) => (
-      provider.chouetteInfo.migrateDataToProvider &&
-        <PieCard
-          provider={provider}
-          key={'supplier-pie' + index}
-          providerName={provider.name}
-          handleShowAllClick={this.handleShowAll.bind(this)}
-          handlePieOnClick={this.handlePieOnClick.bind(this)}
-          stats={lineStats[provider.id]}
-        />
-    ))
-
     return (
       <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
-        { providerPies }
+        <LineStatsCard hideClose={true} handleClose={this.handleClose.bind(this)} selectedSegment={selectedSegment} title={`${provider.name} - ${title}`} stats={lineStats}/>
+        <PieCard
+          provider={provider}
+          key={'supplier-pie'}
+          handleShowAllClick={this.handleShowAll.bind(this)}
+          handlePieOnClick={this.handlePieOnClick.bind(this)}
+          stats={lineStats}
+          hideHeader
+        />
       </div>
     )
   }
 }
 
+const mapStateToProps = (state, ownProps) => {
+  return {
+    lineStats: state.SuppliersReducer.lineStats[ownProps.provider.id]
+  }
+}
 
 
-export default StatisticsDetails
+export default connect(mapStateToProps)(StatisticsForProvider)

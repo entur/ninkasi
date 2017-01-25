@@ -162,9 +162,7 @@ class ChouetteJobDetails extends React.Component {
                 <div className="table-header" onClick={ () => this.handleSortForColumn("status") }>Status</div>
               </Col>
             </Row> :
-
             <Row><p>No chouette jobs found for your search criterias.</p></Row>
-
           }
 
         </Container>

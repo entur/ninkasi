@@ -138,12 +138,12 @@ class StatusCard extends React.Component {
                   <CardText style={{minHeight: 700}}>
                     <div style={{textTransform: 'uppercase', fontWeight: 600, marginLeft: 10, fontSize: '1.4em', display: 'block', paddingTop: 10, paddingBottom: 10}}>
                       { title }
-                      <IconButton style={{float: 'right'}} onClick={() => this.props.handleClose()} touch={true}><CloseButton/></IconButton>
+                      { this.props.hideClose ? null : <IconButton style={{float: 'right'}} onClick={() => this.props.handleClose()} touch={true}><CloseButton/></IconButton> }
                     </div>
                     <div style={{display: 'block', marginTop: 10, marginBottom: 10, marginLeft: 4, padding: 2, background: color.tableHeader, opacity: '0.8', borderRadius: 7}}>
                       <div style={sortIconStyle} onClick={this.changeSorting.bind(this)} title="Sorter linjer">{this.sortIcon()}</div>
                       <div style={validDateStartStyle}>{stats.startDate}</div>
-                      <div style={validDateMiddleStyle}>{stats.validFromDate} (120 dager)</div>
+                      <div style={validDateMiddleStyle}>{stats.validFromDate} (120 days)</div>
                       <div style={validDateEndStyle}>{stats.endDate}</div>
                     </div>
                     <div

@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Pie as PieChart } from 'react-chartjs'
 import { color } from '../components/styles'
-import { connect } from 'react-redux'
 import Loader from 'halogen/DotLoader'
 import { segmentName, segmentColor } from '../util/dataManipulation'
 
@@ -11,6 +10,10 @@ class PieCard extends React.Component {
     handlePieOnClick: PropTypes.func.isRequired,
     handleshowAllClick: PropTypes.func.isRequired,
     provider: PropTypes.object.isRequired
+  }
+
+  componentDidMount() {
+    console.log("DID MOUNT")
   }
 
   render() {
@@ -82,28 +85,14 @@ class PieCard extends React.Component {
     return (
       <div style={{width: 200, height: 300, display: 'flex', flexDirection: 'column', margin: 50}}>
         <div>
-          <div style={{fontWeight: 600, textAlign: 'center', marginBottom: 5, textOverflow: 'ellipses', whiteSpace: 'nowrap'}}>{provider.name}</div>
+          { this.props.hideHeader ? null : <div style={{fontWeight: 600, textAlign: 'center', marginBottom: 5, textOverflow: 'ellipses', whiteSpace: 'nowrap'}}>{provider.name}</div> }
             <PieChart style={{marginTop: 0}} ref="chart" onClick={(e) => { this.props.handlePieOnClick(e, this.refs.chart.getChart(), provider.id)} } data={pieData} width="100" height="100"  options={pieOptions}/>
-          <div onClick={() => this.props.handleShowAllClick(120, provider.id)} style={showAllStyle}>Vis alle</div>
+          <div onClick={() => this.props.handleShowAllClick(120, provider.id)} style={showAllStyle}>Show all</div>
         </div>
       </div>
     )
-
   }
 }
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    stats: Object.keys(state.SuppliersReducer.lineStats).length ? state.SuppliersReducer.lineStats[ownProps.provider.id] : null
-  }
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps())(PieCard)
+export default PieCard
 
 

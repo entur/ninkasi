@@ -15,6 +15,7 @@ import FaEdit from 'react-icons/lib/fa/pencil'
 import { getQueryVariable } from './utils'
 import FileUpload from './FileUpload'
 import StatisticsDetails from './StatisticsDetails'
+import StaticsForProvider from './StatisticsForProvider'
 
 class SupplierTabWrapper extends React.Component {
 
@@ -41,6 +42,8 @@ class SupplierTabWrapper extends React.Component {
           dispatch(SuppliersActions.getProviderStatus(queryId))
         } else if (queryTab == 2) {
           dispatch(SuppliersActions.getChouetteJobStatus())
+        } else if (queryId == 3) {
+          dispatch(SuppliersActions.getLineStatsForProvider(queryId))
         }
       } else {
         if (queryTab == 0) {
@@ -78,6 +81,10 @@ class SupplierTabWrapper extends React.Component {
       dispatch(SuppliersActions.getChouetteJobStatus())
     }
 
+    if (!displayAllSuppliers && activeTabForProvider === 'statistics' && activeId) {
+      dispatch(SuppliersActions.getLineStatsForProvider(activeId))
+    }
+
     if (displayAllSuppliers && activeTabForAllProvider === 'chouetteJobs') {
       dispatch(SuppliersActions.getChouetteJobsForAllSuppliers())
     }
@@ -98,6 +105,8 @@ class SupplierTabWrapper extends React.Component {
       case 'events':
         dispatch(SuppliersActions.getProviderStatus(activeId))
         break
+      case 'statistics':
+        dispatch(SuppliersActions.getLineStatsForProvider(activeId))
 
       default: break
     }
@@ -162,10 +171,10 @@ class SupplierTabWrapper extends React.Component {
     }
 
     if (!displayAllSuppliers && suppliers.length) {
-      var supplier = suppliers.filter( p => { return p.id == activeId })[0]
+      var provider = suppliers.filter( p => { return p.id == activeId })[0]
     }
 
-    if (displayAllSuppliers || supplier) {
+    if (displayAllSuppliers || provider) {
 
       let tabsToRender = null
 
@@ -181,6 +190,9 @@ class SupplierTabWrapper extends React.Component {
             </Tab>
             <Tab value="chouetteJobs" label="Chouette jobs">
               <ChouetteJobDetails/>
+            </Tab>
+            <Tab value="statistics" label="Statistics">
+               <StaticsForProvider provider={provider}/>
             </Tab>
             <Tab value="uploadFiles" label="Upload file">
               <FileUpload fileUploadProgress={fileUploadProgress} handleFileUpload={this.handleFileUpload.bind(this)}/>
@@ -203,7 +215,6 @@ class SupplierTabWrapper extends React.Component {
       }
 
       return (
-
         <div className="supplier-info">
           <Container fluid={true}>
             { tabsToRender }
@@ -218,11 +229,8 @@ class SupplierTabWrapper extends React.Component {
     }
 
     else {
-      return (
-        <div></div>
-      )
+      return null
     }
-
   }
 }
 
@@ -236,12 +244,6 @@ const mapStateToProps = (state, ownProps) => {
     paginationMapAllProvider: getPaginationMapAllProvider(state.SuppliersReducer.statusListAllProviders.slice()),
     fileUploadProgress: state.SuppliersReducer.fileUploadProgress,
     lineStats: state.SuppliersReducer.lineStats
-  }
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
   }
 }
 
@@ -265,7 +267,4 @@ const getPaginationMapAllProvider = (statusList = []) => {
   return paginationMap
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SupplierTabWrapper)
+export default connect(mapStateToProps)(SupplierTabWrapper)
