@@ -19,9 +19,10 @@ class EventStepper extends React.Component {
   getGroupText(group) {
     const groupTextMap = {
       "EXPORT" : "Export",
-      "VALIDATION" : "Validation",
       "IMPORT" : "Import",
+      "VALIDATION_LEVEL_1" : "Validation level 1",
       "DATASPACE_TRANSFER" : "Dataspace transfer",
+      "VALIDATION_LEVEL_2" : "Validation level 2",
       "FILE_TRANSFER" : "File transfer"
     }
     return groupTextMap[group] || 'Unknown'
