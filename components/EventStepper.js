@@ -35,6 +35,7 @@ class EventStepper extends React.Component {
       case "PENDING": return  "orange"
       case "STARTED": return "yellow"
       case "FAILED": return "red"
+      case "DUPLICATE": return "red"
       case "TERMINATED": return "green"
       case "IGNORED": return "grey"
     }
