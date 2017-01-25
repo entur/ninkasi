@@ -1,6 +1,6 @@
 # Ninkasi
 
-This is the private admin GUI for importing and exporting data.
+This is the private admin GUI for managing the data pipeline and inspection of data status
 
 ## Run the app
 
