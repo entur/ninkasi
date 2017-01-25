@@ -18,11 +18,11 @@ class DataMigrationDetails extends React.Component {
     const shouldRenderTransfer = !!chouetteInfo.migrateDataToProvider
 
     const toolTips = {
-      import: 'Import all files listed in the list below',
-      validate: 'Validate files in space',
-      transfer: 'Transfer files to provider with id ' + chouetteInfo.migrateDataToProvider,
-      export: 'Export files',
-      clean: 'Clean data space'
+      import: 'Import all files listed in the list on the right side below. Files will be imported in the given order. If success, VALIDATE will be called',
+      validate: 'Validate data in dataspace. If success, TRANSFER will be called if in level 1 space or EXPORT if in level 2 space',
+      transfer: 'Transfer data from this space to the next space (Rutebanken space with id ' + chouetteInfo.migrateDataToProvider+ '). If success, VALIDATE in level 2 space will be called',
+      export: 'Export GTFS data and trigger bulding',
+      clean: 'Clean data space (delete ALL transport data)'
     }
 
     return (

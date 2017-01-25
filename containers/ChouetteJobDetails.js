@@ -86,13 +86,13 @@ class ChouetteJobDetails extends React.Component {
                   <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.STARTED} name="STARTED" label="Started" />
                 </Col>
                 <Col md="2">
-                  <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.TERMINATED}  name="TERMINATED" label="Terminated" />
+                  <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.TERMINATED}  name="TERMINATED" label="Completed" />
                 </Col>
                 <Col md="2">
                   <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.CANCELED} name="CANCELED" label="Canceled" />
                 </Col>
                 <Col md="1">
-                  <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.ABORTED} name="ABORTED" label="Aborted" />
+                  <Checkbox onChange={(event) => this.handleStatusFilterChange(event)} defaultChecked={chouetteJobFilter.ABORTED} name="ABORTED" label="Aborted/Error" />
                 </Col>
               </Row>
             </div>
