@@ -358,6 +358,11 @@ SuppliersActions.formatChouetteJobsWithDate = (jobs) => {
     job.created = moment(job.created).locale("nb").format("YYYY-MM-DD HH:mm:ss")
     job.started = moment(job.started).locale("nb").format("YYYY-MM-DD HH:mm:ss")
     job.updated = moment(job.updated).locale("nb").format("YYYY-MM-DD HH:mm:ss")
+
+    if (job.status === "TERMINATED") {
+      job.status = "COMPLETED"
+    }
+
     return job
   })
   return jobs
@@ -552,6 +557,19 @@ SuppliersActions.getLineStats = () => {
       .catch( (response) => {
         console.error(response)
       })
+    })
+  }
+}
+
+SuppliersActions.getLineStatsForProvider = providerId => {
+  return function (dispatch) {
+
+    return axios.get(`${window.config.mardukBaseUrl}admin/services/chouette/${providerId}/lineStats`)
+    .then( response => {
+      dispatch( sendData({id: providerId, data: formatLineStats(response.data)}, types.RECEIVED_LINE_STATS))
+    })
+    .catch( response => {
+      console.error(response)
     })
   }
 }
