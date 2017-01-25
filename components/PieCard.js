@@ -44,8 +44,6 @@ class PieCard extends React.Component {
     const soonInvalid = stats.soonInvalid.lineNumbers.length
     const expiring = stats.validity.filter( lines => lines.numDaysAtLeastValid > 0 && lines.numDaysAtLeastValid < 120).reverse()
 
-    const isInvalid = !valid && !invalid && !soonInvalid
-
     const pieData = [
       {
         value: valid,
@@ -85,15 +83,8 @@ class PieCard extends React.Component {
       <div style={{width: 200, height: 300, display: 'flex', flexDirection: 'column', margin: 50}}>
         <div>
           <div style={{fontWeight: 600, textAlign: 'center', marginBottom: 5, textOverflow: 'ellipses', whiteSpace: 'nowrap'}}>{provider.name}</div>
-          { isInvalid
-            ? <div style={{color: 'red', fontWeight: 600, textAlign: 'center'}}>No valid lines</div>
-            :  <PieChart style={{marginTop: 0}} ref="chart" onClick={(e) => { this.props.handlePieOnClick(e, this.refs.chart.getChart(), provider.id)} } data={pieData} width="100" height="100"  options={pieOptions}/>
-          }
-          { isInvalid
-            ? null
-            : <div onClick={() => this.props.handleShowAllClick(120, provider.id)} style={showAllStyle}>Vis alle</div>
-
-          }
+            <PieChart style={{marginTop: 0}} ref="chart" onClick={(e) => { this.props.handlePieOnClick(e, this.refs.chart.getChart(), provider.id)} } data={pieData} width="100" height="100"  options={pieOptions}/>
+          <div onClick={() => this.props.handleShowAllClick(120, provider.id)} style={showAllStyle}>Vis alle</div>
         </div>
       </div>
     )
