@@ -10,11 +10,8 @@
     margin-top: 3px;
 
     &.active-link {
-      color: black;
-      border: 1px solid red;
-      border-radius: 50%;
-      padding-left: 2px;
-      padding-right: 2px;
+      color: #0D3C61;
+      text-decoration: underline;
     }
 
     &.inactive-link {

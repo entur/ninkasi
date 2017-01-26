@@ -3,6 +3,7 @@ import cfgreader from '../config/readConfig'
 import EventStepper from '../components/EventStepper'
 const FaFresh = require('react-icons/lib/fa/refresh')
 
+
 class EventDetails extends React.Component {
 
   constructor(props) {

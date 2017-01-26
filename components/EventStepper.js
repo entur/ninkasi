@@ -1,6 +1,12 @@
 import React, { PropTypes } from 'react'
 const FaChevronDown = require('react-icons/lib/fa/chevron-down')
 const FaChevronUp  = require('react-icons/lib/fa/chevron-up')
+import MdError from 'react-icons/lib/md/error'
+import MdDone from 'react-icons/lib/md/check-circle'
+import MdSchedule from 'react-icons/lib/md/schedule'
+import MdBuild from 'react-icons/lib/md/build'
+import MdHelpOutLine from 'react-icons/lib/md/help-outline'
+import MdHour from 'react-icons/lib/md/hourglass-empty'
 
 class EventStepper extends React.Component {
 
@@ -28,37 +34,40 @@ class EventStepper extends React.Component {
     return groupTextMap[group] || 'Unknown'
   }
 
-  getBulletColor(state) {
-
+  getIconByState(state) {
     switch (state) {
-      case "OK": return "green"
-      case "PENDING": return  "orange"
-      case "STARTED": return "yellow"
-      case "FAILED": return "red"
-      case "TERMINATED": return "green"
-      case "IGNORED": return "grey"
+      case "OK": return <MdDone style={{color: 'green', width: 24, height: 22, marginTop: -2}}/>
+      case "PENDING": return <MdHour style={{color: 'orange', width: 24, height: 22, marginTop: -2}}/>
+      case "STARTED": return <MdBuild style={{color: '#2274b5', width: 24, height: 22, marginTop: -2}}/>
+      case "FAILED": return <MdError style={{color: 'red', width: 24, height: 22, marginTop: -2}}/>
+      case "DUPLICATE": return <MdError style={{color: 'red', width: 24, height: 22, marginTop: -2}}/>
+      case "IGNORED": return <MdSchedule style={{color: 'grey', width: 24, height: 22, marginTop: -2}}/>
     }
-
-    return "blue"
+    return <MdHelpOutLine style={{color: 'grey', width: 24, height: 22}}/>
   }
 
   addUnlistedStates(groups) {
 
-    const states = ["FILE_TRANSFER", "IMPORT", "DATASPACE_TRANSFER", "VALIDATION", "EXPORT"]
+    const states = ["FILE_TRANSFER", "IMPORT", "VALIDATION_LEVEL_1", "DATASPACE_TRANSFER", "VALIDATION_LEVEL_2", "EXPORT"]
 
-    const lastState = Object.keys(groups)[Object.keys(groups).length-1]
-    const indexOfLastState = states.indexOf(lastState)
-    const availableStates = states.splice(indexOfLastState)
+    let groupsWithUnlisted = Object.assign({}, groups)
 
-    availableStates.forEach( state => {
-      if (!groups[state]) {
-        groups[state] = {
+    states.forEach( state => {
+      if (!groupsWithUnlisted[state]) {
+        groupsWithUnlisted[state] = {
           endState: "IGNORED"
         }
       }
     })
 
-    return groups
+    let finalGroups = {}
+
+    Object.keys(groupsWithUnlisted)
+    .sort( (key1, key2) => states.indexOf(key1) - states.indexOf(key2) )
+    .forEach( key  => {
+      finalGroups[key] = groupsWithUnlisted[key]
+    })
+    return finalGroups
   }
 
   handleToggleVisibility (id) {
@@ -76,14 +85,6 @@ class EventStepper extends React.Component {
       alignItems: "center",
       justifyContent : "center",
       marginTop: 10
-    }
-
-    const bulletStyle = {
-      height: 20,
-      width: 20,
-      borderRadius: 100,
-      background: 'green',
-      border: '1px solid #fff',
     }
 
     const groupStyle = {
@@ -111,18 +112,18 @@ class EventStepper extends React.Component {
 
     const formattedGroups = this.addUnlistedStates(groups)
 
-    const bullets = Object.keys(groups).map( (group, index) => {
+    const bullets = Object.keys(formattedGroups).map( (group, index) => {
 
       const isLast = Object.keys(formattedGroups).length == index+1
-      let toolTipText = groups[group].endState
+      let toolTipText = formattedGroups[group].endState
 
-      if (groups[group].states && groups[group].states[groups[group].states.length-1]) {
-        toolTipText += ' ' + groups[group].states[groups[group].states.length-1].date
+      if (formattedGroups[group].states && formattedGroups[group].states[formattedGroups[group].states.length-1]) {
+        toolTipText += ' ' + formattedGroups[group].states[groups[group].states.length-1].date
       }
 
       return (
           <div style={groupStyle} key={"group-" + group + index}>
-            <div title={toolTipText} style={Object.assign({}, bulletStyle, { background: this.getBulletColor(groups[group].endState)})}/>
+            <div title={toolTipText}>{ this.getIconByState((formattedGroups[group].endState))}</div>
             <div style={groupText}> { this.getGroupText(group) }</div>
             {!isLast ? <div style={linkStyle}></div> : null }
           </div>
@@ -148,14 +149,12 @@ class EventStepper extends React.Component {
         </div>
         { expanded
           ?
-          <div style={{display: 'inline-block'}}>
-            <div style={{display: 'flex', flexDirection: 'column', lineHeight: '25px', marginTop: 10, cursor: 'default'}} onClick={event => event.stopPropagation()}>
+            <div style={{display: 'flex', padding: 8, flexDirection: 'column', lineHeight: '25px', marginTop: 10, cursor: 'default', border: '1px solid #9E9E9E'}} onClick={event => event.stopPropagation()}>
               <div>Started: {listItem.firstEvent}</div>
               <div>Ended: {listItem.lastEvent}</div>
               <div>Duration: {listItem.duration}</div>
               <div>Correlation Id: <span style={{fontWeight: 600}}>{listItem.correlationId}</span></div>
             </div>
-          </div>
           : null
         }
       </div>
