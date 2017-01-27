@@ -77,19 +77,15 @@ class DataMigrationDetails extends React.Component {
   }
 
   handleCleanDataspace = () => {
-
     const response = confirm("Are you sure you want to clean up the dataspace current provider?")
-
     if (response == true) {
       const {dispatch} = this.props
       dispatch(SuppliersActions.cleanDataspace(this.props.activeId))
     }
-
   }
 
   handleValidateProvider = () => {
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.validateProvider(this.props.activeId))
+    this.props.dispatch(SuppliersActions.validateProvider(this.props.activeId))
   }
 
   moveDown = () => {
@@ -216,14 +212,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch,
-    props: ownProps
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DataMigrationDetails)
+export default connect(mapStateToProps,)(DataMigrationDetails)

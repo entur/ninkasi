@@ -4,7 +4,7 @@ const FaChevronUp  = require('react-icons/lib/fa/chevron-up')
 import MdError from 'react-icons/lib/md/error'
 import MdDone from 'react-icons/lib/md/check-circle'
 import MdSchedule from 'react-icons/lib/md/schedule'
-import MdBuild from 'react-icons/lib/md/build'
+import FaCog from 'react-icons/lib/fa/cog'
 import MdHelpOutLine from 'react-icons/lib/md/help-outline'
 import MdHour from 'react-icons/lib/md/hourglass-empty'
 
@@ -29,7 +29,8 @@ class EventStepper extends React.Component {
       "VALIDATION_LEVEL_1" : "Validation level 1",
       "DATASPACE_TRANSFER" : "Dataspace transfer",
       "VALIDATION_LEVEL_2" : "Validation level 2",
-      "FILE_TRANSFER" : "File transfer"
+      "FILE_TRANSFER" : "File transfer",
+      "FILE_CLASSIFICATION": "File classification",
     }
     return groupTextMap[group] || 'Unknown'
   }
@@ -38,25 +39,30 @@ class EventStepper extends React.Component {
     switch (state) {
       case "OK": return <MdDone style={{color: 'green', width: 24, height: 22, marginTop: -2}}/>
       case "PENDING": return <MdHour style={{color: 'orange', width: 24, height: 22, marginTop: -2}}/>
-      case "STARTED": return <MdBuild style={{color: '#2274b5', width: 24, height: 22, marginTop: -2}}/>
+      case "STARTED": return <FaCog style={{color: '#2274b5', width: 24, height: 22, marginTop: -2}}/>
       case "FAILED": return <MdError style={{color: 'red', width: 24, height: 22, marginTop: -2}}/>
       case "DUPLICATE": return <MdError style={{color: 'red', width: 24, height: 22, marginTop: -2}}/>
-      case "IGNORED": return <MdSchedule style={{color: 'grey', width: 24, height: 22, marginTop: -2}}/>
+      case "IGNORED": return <MdSchedule style={{color: 'black', width: 24, height: 22, marginTop: -2}}/>
     }
     return <MdHelpOutLine style={{color: 'grey', width: 24, height: 22}}/>
   }
 
   addUnlistedStates(groups) {
 
-    const states = ["FILE_TRANSFER", "IMPORT", "VALIDATION_LEVEL_1", "DATASPACE_TRANSFER", "VALIDATION_LEVEL_2", "EXPORT"]
+    const states = ["FILE_TRANSFER", "FILE_CLASSIFICATION", "IMPORT", "VALIDATION_LEVEL_1", "DATASPACE_TRANSFER", "VALIDATION_LEVEL_2", "EXPORT"]
 
     let groupsWithUnlisted = Object.assign({}, groups)
+
+    let firstStateFound = false
 
     states.forEach( state => {
       if (!groupsWithUnlisted[state]) {
         groupsWithUnlisted[state] = {
-          endState: "IGNORED"
+          endState: "IGNORED",
+          missingBeforeStartStart: !firstStateFound
         }
+      } else {
+        firstStateFound = true
       }
     })
 
@@ -123,8 +129,14 @@ class EventStepper extends React.Component {
 
       return (
           <div style={groupStyle} key={"group-" + group + index}>
-            <div title={toolTipText}>{ this.getIconByState((formattedGroups[group].endState))}</div>
-            <div style={groupText}> { this.getGroupText(group) }</div>
+            <div title={toolTipText}
+                 style={{opacity: formattedGroups[group].missingBeforeStartStart ? 0.2 : 1 }}
+            >
+              { this.getIconByState((formattedGroups[group].endState))}
+            </div>
+            <div style={{...groupText, opacity: formattedGroups[group].missingBeforeStartStart ? 0.2 : 1 }}>
+              { this.getGroupText(group) }
+            </div>
             {!isLast ? <div style={linkStyle}></div> : null }
           </div>
         )

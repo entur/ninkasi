@@ -216,9 +216,9 @@ class SupplierTabWrapper extends React.Component {
 
       return (
         <div className="supplier-info">
-          <Container fluid={true}>
+          <div style={{marginLeft: 10, marginRight: 10}}>
             { tabsToRender }
-          </Container>
+          </div>
           { !displayAllSuppliers
           ? <div style={{display: 'flex', cursor: 'pointer', justifyContent: 'flex-end', marginRight: 20}} onClick={() => this.handleEditProvider()}>
               <FaEdit style={{transform: 'scale(1.5)'}}/>
