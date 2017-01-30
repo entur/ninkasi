@@ -80,10 +80,10 @@ class DataMigrationDetails extends React.Component {
   }
 
   handleDownloadFile() {
-    const { URL } = this.state.downloadLink
+    const {  downloadLink } = this.state
     let link = document.createElement('a')
-    link.setAttribute('href', URL)
-    link.setAttribute('download', null)
+    link.setAttribute('href', downloadLink.URL)
+    link.setAttribute('download',downloadLink.filename)
     var event = document.createEvent("MouseEvents");
     event.initMouseEvent(
       "click", true, false, window, 0, 0, 0, 0, 0
@@ -95,7 +95,8 @@ class DataMigrationDetails extends React.Component {
   handleSelectFileToDownload(filename) {
     this.setState({
       downloadLink: {
-        URL: window.config.mardukBaseUrl+`admin/services/chouette/${this.props.activeId}/files/${filename}`
+        URL: window.config.mardukBaseUrl+`admin/services/chouette/${this.props.activeId}/files/${filename}`,
+        filename: filename
       }
     })
   }
