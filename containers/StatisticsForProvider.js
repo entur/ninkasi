@@ -66,7 +66,7 @@ class StatisticsForProvider extends React.Component {
 
     return (
       <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
-        <LineStatsCard hideClose={true} handleClose={this.handleClose.bind(this)} selectedSegment={selectedSegment} title={`${provider.name} - ${title}`} stats={lineStats}/>
+        <LineStatsCard hideClose={true} handleClose={this.handleClose.bind(this)} daysValid={daysValid} selectedSegment={selectedSegment} title={`${provider.name} - ${title}`} stats={lineStats}/>
         <PieCard
           provider={provider}
           key={'supplier-pie'}

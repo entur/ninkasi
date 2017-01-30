@@ -8,10 +8,11 @@ import { filterLines} from '../util/dataManipulation'
 import IconButton from 'material-ui/IconButton'
 import CloseButton from 'material-ui/svg-icons/navigation/close';
 
-class StatusCard extends React.Component {
+class LineStatsCard extends React.Component {
 
   static propTypes = {
     selectedSegment: PropTypes.string.isRequired,
+    daysValid: PropTypes.number.isRequired,
     stats: PropTypes.object,
     title: PropTypes.string.isRequired,
     handleClose: PropTypes.func
@@ -24,13 +25,26 @@ class StatusCard extends React.Component {
     }
   }
 
+  handleToggleListItem(line) {
+    let isOpen = !this.state['open'+line];
+    this.saveNestedState(isOpen, line)
+  }
+
+  handleToggle(item, line) {
+    let isOpen = !this.state['open'+line] || item.state.open
+    this.saveNestedState(isOpen, line)
+  }
+
+  saveNestedState(isOpen, line) {
+    let state = this.state
+    state['open'+line] = isOpen
+    this.setState(state)
+  }
+
   changeSorting() {
     let states = 5
     let sort = (this.state.sorting + 1) % states
-    this.setState({
-      ...this.state,
-      sorting: sort
-    })
+    this.setState({sorting: sort})
   }
 
   sortMethod( index = 0, ascending = true) {
@@ -56,11 +70,11 @@ class StatusCard extends React.Component {
       case 2:
         return order.sort().reverse()
       case 3:
-        let daysAsc = stats.daysValid.sort( this.sortMethod('days', true) )
-        return daysAsc.filter( (line) => order.indexOf(line.lineNumber) > 0).map((line) => line.lineNumber)
+        let daysAsc = stats.daysValid.slice().sort( this.sortMethod('days', true) )
+        return daysAsc.filter( (line) => order.indexOf(line.lineNumber) != -1).map((line) => line.lineNumber)
       case 4:
-        let daysDesc = stats.daysValid.sort( this.sortMethod('days', false) )
-        return daysDesc.filter( (line) => order.indexOf(line.lineNumber) > 0 ).map( (line) => line.lineNumber)
+        let daysDesc = stats.daysValid.slice().sort( this.sortMethod('days', false) )
+        return daysDesc.filter( (line) => order.indexOf(line.lineNumber) != -1 ).map( (line) => line.lineNumber)
     }
   }
 
@@ -85,17 +99,9 @@ class StatusCard extends React.Component {
     }
   }
 
-  handleToggleListItem(index) {
-    let ref = this.refs['listItem'+index]
-    ref.setState({
-      ...ref.state,
-      open: !ref.state.open
-    })
-  }
-
   render() {
 
-    const { stats, title } = this.props
+    const { stats, selectedSegment, daysValid, title } = this.props
 
     if (!stats) return <div>Loading ...</div>
 
@@ -123,19 +129,19 @@ class StatusCard extends React.Component {
       display: 'inline-block',
       float: 'left',
       cursor: 'pointer',
+      width: 48,
     }
 
-    const { selectedSegment } = this.props
-    const order = this.sortLines(stats, selectedSegment, stats.daysValid)
+    const order = this.sortLines(stats, selectedSegment, daysValid)
 
     return (
-        <Card expanded={true} style={{flex: 4}}>
+        <Card expanded={true} style={{flex: 4, boxShadow: 'none'}}>
           <CardText
             style={{padding: '0vh 0'}}
           >
-            <div style={{overflow: 'auto'}}>
+            <div>
                 <Card>
-                  <CardText style={{minHeight: 700}}>
+                  <CardText>
                     <div style={{textTransform: 'uppercase', fontWeight: 600, marginLeft: 10, fontSize: '1.4em', display: 'block', paddingTop: 10, paddingBottom: 10}}>
                       { title }
                       { this.props.hideClose ? null : <IconButton style={{float: 'right'}} onClick={() => this.props.handleClose()} touch={true}><CloseButton/></IconButton> }
@@ -147,7 +153,7 @@ class StatusCard extends React.Component {
                       <div style={validDateEndStyle}>{stats.endDate}</div>
                     </div>
                     <div
-                      style={{maxHeight: 800, minHeight: 800, overflowY: 'scroll', overflowX: 'hidden', margin: 'auto', width: '100%'}}
+                      style={{height: 'calc(100vh - 435px)', overflowY: 'scroll', overflowX: 'hidden', margin: 'auto', width: '100%'}}
                     >
                       <List
                         style={{width: '100%', boxShadow: 'none'}}
@@ -156,12 +162,13 @@ class StatusCard extends React.Component {
                           <ListItem
                             key={'line'+index}
                             disabled
-                            ref={'listItem'+index}
                             style={{padding: 0, marginLeft: 0, marginRight: 0, marginTop: 0, lineHeight: 0}}
+                            open={this.state['open'+line] ? this.state['open'+line] : false}
+                            onNestedListToggle={ (item) => this.handleToggle(item, line) }
                             children={
                               <div
                                 key={'ht-wrapper'+index}
-                                onClick={() => { this.handleToggleListItem(index) }}
+                                onClick={() => { this.handleToggleListItem(line) }}
                               >
                                 <HeaderTimeline line={line}
                                   hoverText={stats.linesMap[line].lineNames.join(', ')}
@@ -203,4 +210,4 @@ class StatusCard extends React.Component {
   }
 }
 
-export default StatusCard
+export default LineStatsCard
