@@ -33,14 +33,13 @@ class HeaderTimeline extends React.Component {
         fontWeight: 500,
         fontSize: '0.8rem',
         textAlign: 'center',
-        display: 'inline-block'
+        display: 'inline-block',
+        borderRight: '1px solid black',
       }
 
       const textSpanStyle = {
         color: color.font.inverse,
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
-        height: 17,
+        height: 16,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -88,7 +87,7 @@ class HeaderTimeline extends React.Component {
 
                 let itemText = effectivePeriod.to
 
-                if (effectivePeriod.timelineStartPosition > 0) {
+                if (effectivePeriod.timelineStartPosition > 0 && effectivePeriod.from.localeCompare(effectivePeriod.to) !== 0) {
                   itemText = effectivePeriod.from + ' - ' + effectivePeriod.to
                 }
 
