@@ -8,8 +8,18 @@ const FaArrowDown = require('react-icons/lib/fa/arrow-down')
 const FaArrowUp = require('react-icons/lib/fa/arrow-up')
 const FaRemove = require('react-icons/lib/fa/arrow-left')
 const FaAdd = require('react-icons/lib/fa/arrow-right')
+import MdFileDownLoad from 'react-icons/lib/md/file-download'
 
 class DataMigrationDetails extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      downloadLink: {
+        URL: null
+      }
+    }
+  }
 
   render() {
 
@@ -38,7 +48,7 @@ class DataMigrationDetails extends React.Component {
           <Button title={toolTips.clean} color="danger" onClick={this.handleCleanDataspace}>Clean</Button>
         </div>
         <div style={{display: 'flex', alignItems: 'center'}}>
-          <FileList key="providerFilelist" wrapperId="providerFilelist" files={files}/>
+          <FileList key="providerFilelist" wrapperId="providerFilelist" files={files} handleSelectFileToDownload={this.handleSelectFileToDownload.bind(this)}/>
           { files.length
             ?
             <div style={{display: 'flex', alignItem: 'center', flexDirection: 'column', flex: 0.1, cursor: 'pointer'}}>
@@ -53,6 +63,7 @@ class DataMigrationDetails extends React.Component {
             <FaArrowUp style={{transform: 'scale(2)', marginLeft: 20}} onClick={this.moveUp}/>
           </div>
         </div>
+        <Button color="primary" disabled={!this.state.downloadLink.URL} onClick={this.handleDownloadFile.bind(this)}><MdFileDownLoad style={{marginRight: 5}}/>Download</Button>
       </div>
     )
   }
@@ -66,6 +77,27 @@ class DataMigrationDetails extends React.Component {
     } else {
       alert("No files added to import")
     }
+  }
+
+  handleDownloadFile() {
+    const { URL } = this.state.downloadLink
+    let link = document.createElement('a')
+    link.setAttribute('href', URL)
+    link.setAttribute('download', null)
+    var event = document.createEvent("MouseEvents");
+    event.initMouseEvent(
+      "click", true, false, window, 0, 0, 0, 0, 0
+      , false, false, false, false, 0, null
+    )
+    link.dispatchEvent(event)
+  }
+
+  handleSelectFileToDownload(filename) {
+    this.setState({
+      downloadLink: {
+        URL: window.config.mardukBaseUrl+`admin/services/chouette/${this.props.activeId}/files/${filename}`
+      }
+    })
   }
 
   handleExportData = () => {
@@ -178,7 +210,6 @@ class DataMigrationDetails extends React.Component {
     dispatch(SuppliersActions.appendFilesToOutbound(selectedFiles))
 
     Array.prototype.forEach.call(document.querySelectorAll("#providerFilelist :checked"), (el) => { el.selected = false })
-
   }
 
   removeSelectedFiles = () => {
