@@ -47,12 +47,6 @@ class StatisticsForProvider extends React.Component {
     })
   }
 
-  handleClose() {
-    this.setState({
-      selectedProvider: false
-    })
-  }
-
   componentDidMount() {
     this.props.dispatch(SuppliersActions.getLineStatsForProvider(this.props.provider.id))
   }
@@ -66,7 +60,7 @@ class StatisticsForProvider extends React.Component {
 
     return (
       <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
-        <LineStatsCard hideClose={true} handleClose={this.handleClose.bind(this)} daysValid={daysValid} selectedSegment={selectedSegment} title={`${provider.name} - ${title}`} stats={lineStats}/>
+        <LineStatsCard daysValid={daysValid} selectedSegment={selectedSegment} title={`${provider.name} - ${title}`} stats={lineStats}/>
         <PieCard
           provider={provider}
           key={'supplier-pie'}
