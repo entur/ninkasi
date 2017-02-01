@@ -1,5 +1,5 @@
 import React from 'react'
-import { color } from '../components/styles'
+import { color } from '../styles/styles'
 
 class HeaderTimeline extends React.Component {
 

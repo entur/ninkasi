@@ -8,6 +8,7 @@ const colorDef = {
   bigblue: '#1169A7',
   darkBlue: '#083453',
   darkGrey: '#2F2F2F',
+  grey: '#DDDDDD',
   lightGrey: '#F2F2F2',
 }
 
@@ -19,6 +20,7 @@ export const color = {
     info2: colorDef.darkBlue,
     info3: colorDef.black,
     warn: colorDef.red,
+    disabled: colorDef.grey,
 
     tooltip: colorDef.white,
   },
@@ -39,6 +41,7 @@ export const color = {
   tableHeader: colorDef.lightGrey,
   tableRow: '#ebf2f1',
   tableInfo: '#ffffdb',
+
   valid: '#33c146',
   invalid: '#b20000',
   soonInvalid: '#33c146',

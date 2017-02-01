@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Pie as PieChart } from 'react-chartjs'
-import { color } from '../components/styles'
+import { color } from '../styles/styles'
 import Loader from 'halogen/DotLoader'
 import { segmentName, segmentColor } from '../util/dataManipulation'
 
