@@ -615,7 +615,7 @@ export const formatLineStats = (lineStats) => {
     formattedLines.days = lineStats.days
     formattedLines.endDate = endDate.format('YYYY-MM-DD')
 
-    lineStats.publicLines.forEach ( (publicLine, idx) => {
+    lineStats.publicLines.forEach ( publicLine => {
 
       publicLine.effectivePeriods.forEach( (effectivePeriod) => {
 
