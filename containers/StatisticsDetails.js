@@ -2,7 +2,7 @@ import React from 'react'
 import PieCard from '../components/PieCard'
 import SuppliersActions from '../actions/SuppliersActions'
 import LineStatsCard from './LineStatsCard'
-import { segmentName, segmentName2Key } from '../util/dataManipulation'
+import { segmentName, segmentName2Key } from 'bogu/utils'
 
 class StatisticsDetails extends React.Component {
 
