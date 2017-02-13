@@ -243,14 +243,5 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch,
-    props: ownProps
-  }
-}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ChouetteJobDetails)
+export default connect(mapStateToProps)(ChouetteJobDetails)

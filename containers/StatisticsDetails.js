@@ -48,7 +48,9 @@ class StatisticsDetails extends React.Component {
 
 
   componentDidMount() {
-    this.props.dispatch(SuppliersActions.getLineStats())
+    if (window.location.search.indexOf("?tab=2") > -1) {
+      this.props.dispatch(SuppliersActions.getLineStats())
+    }
   }
 
   render() {

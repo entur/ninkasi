@@ -7,7 +7,7 @@ import NotificationSystem from 'react-notification-system'
 class NotificationContainer extends Component {
 
   componentDidMount() {
-      this.notificationSystem = this.refs.notificationSystem
+    this.notificationSystem = this.refs.notificationSystem
   }
 
   componentWillReceiveProps(newProps) {
