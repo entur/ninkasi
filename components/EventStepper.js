@@ -31,6 +31,7 @@ class EventStepper extends React.Component {
       "VALIDATION_LEVEL_2" : "Validation level 2",
       "FILE_TRANSFER" : "File transfer",
       "FILE_CLASSIFICATION": "File classification",
+      "BUILD_GRAPH": "Build graph",
     }
     return groupTextMap[group] || 'Unknown'
   }
@@ -49,7 +50,7 @@ class EventStepper extends React.Component {
 
   addUnlistedStates(groups) {
 
-    const states = ["FILE_TRANSFER", "FILE_CLASSIFICATION", "IMPORT", "VALIDATION_LEVEL_1", "DATASPACE_TRANSFER", "VALIDATION_LEVEL_2", "EXPORT"]
+    const states = ["FILE_TRANSFER", "FILE_CLASSIFICATION", "IMPORT", "VALIDATION_LEVEL_1", "DATASPACE_TRANSFER", "VALIDATION_LEVEL_2", "EXPORT", "BUILD_GRAPH"]
 
     let groupsWithUnlisted = Object.assign({}, groups)
 
