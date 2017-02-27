@@ -6,12 +6,8 @@ import Button from 'muicss/lib/react/button'
 
 class ModalActionContainer extends React.Component {
 
-  constructor(props) {
-    super(props)
-  }
-
   handleFilterChange = (event) => {
-    const {dispatch} = this.props
+    const { dispatch } = this.props
     dispatch(SuppliersActions.logEventFilter(event.target.value))
   }
 
@@ -85,13 +81,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ModalActionContainer)
+export default connect(mapStateToProps)(ModalActionContainer)

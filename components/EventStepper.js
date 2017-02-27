@@ -7,6 +7,7 @@ import MdSchedule from 'react-icons/lib/md/schedule'
 import FaCog from 'react-icons/lib/fa/cog'
 import MdHelpOutLine from 'react-icons/lib/md/help-outline'
 import MdHour from 'react-icons/lib/md/hourglass-empty'
+import ControlledChouetteLink from '../components/ControlledChouetteLink'
 
 class EventStepper extends React.Component {
 
@@ -31,6 +32,7 @@ class EventStepper extends React.Component {
       "VALIDATION_LEVEL_2" : "Validation level 2",
       "FILE_TRANSFER" : "File transfer",
       "FILE_CLASSIFICATION": "File classification",
+      "BUILD_GRAPH": "Build graph",
     }
     return groupTextMap[group] || 'Unknown'
   }
@@ -49,7 +51,7 @@ class EventStepper extends React.Component {
 
   addUnlistedStates(groups) {
 
-    const states = ["FILE_TRANSFER", "FILE_CLASSIFICATION", "IMPORT", "VALIDATION_LEVEL_1", "DATASPACE_TRANSFER", "VALIDATION_LEVEL_2", "EXPORT"]
+    const states = ["FILE_TRANSFER", "FILE_CLASSIFICATION", "IMPORT", "VALIDATION_LEVEL_1", "DATASPACE_TRANSFER", "VALIDATION_LEVEL_2", "EXPORT", "BUILD_GRAPH"]
 
     let groupsWithUnlisted = Object.assign({}, groups)
 
@@ -116,6 +118,7 @@ class EventStepper extends React.Component {
     const { groups, listItem } = this.props
     const { expanded } = this.state
 
+
     const formattedGroups = this.addUnlistedStates(groups)
 
     const bullets = Object.keys(formattedGroups).map( (group, index) => {
@@ -132,16 +135,18 @@ class EventStepper extends React.Component {
             <div title={toolTipText}
                  style={{opacity: formattedGroups[group].missingBeforeStartStart ? 0.2 : 1 }}
             >
-              { this.getIconByState((formattedGroups[group].endState))}
+              { this.getIconByState((formattedGroups[group].endState)) }
             </div>
             <div style={{...groupText, opacity: formattedGroups[group].missingBeforeStartStart ? 0.2 : 1 }}>
-              { this.getGroupText(group) }
+              <ControlledChouetteLink events={formattedGroups[group]}> { this.getGroupText(group) } </ControlledChouetteLink>
             </div>
-            {!isLast ? <div style={linkStyle}></div> : null }
+            { !isLast ? <div style={linkStyle}></div> : null }
           </div>
         )
       }
     )
+
+    // action, id, referential, children
 
     return (
       <div key={"event" + listItem.chouetteJobId} style={{marginLeft: 20, cursor: 'pointer'}} onClick={() => this.handleToggleVisibility()}>
@@ -154,7 +159,7 @@ class EventStepper extends React.Component {
           <div style={{fontSize: '0.9em', fontWeight: 600, flex: 2}}>{listItem.fileName}</div>
         </div>
         <div style={stepperstyle}>
-          {bullets}
+          { bullets }
           <div style={{marginLeft: 'auto', marginRight: 20, marginTop: -50}} onClick={() => this.handleToggleVisibility()}>
             { !expanded ? <FaChevronDown/> : <FaChevronUp/> }
           </div>

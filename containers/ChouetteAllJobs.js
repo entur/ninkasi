@@ -242,14 +242,4 @@ class ChouetteAllJobs extends React.Component {
       }
     }
 
-    const mapDispatchToProps = (dispatch, ownProps) => {
-      return {
-        dispatch: dispatch,
-        props: ownProps
-      }
-    }
-
-    export default connect(
-      mapStateToProps,
-      mapDispatchToProps
-    )(ChouetteAllJobs)
+    export default connect(mapStateToProps)(ChouetteAllJobs)

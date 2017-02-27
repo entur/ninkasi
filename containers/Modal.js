@@ -7,7 +7,7 @@ class Modal extends React.Component {
 
     if (this.props.isOpen === false) return null
 
-    const {minWidth, minHeight} = this.props
+    const { minWidth, minHeight } = this.props
 
     let modalStyle = {
       position: 'absolute',
@@ -78,13 +78,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Modal)
+export default connect(mapStateToProps)(Modal)

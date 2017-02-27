@@ -21,8 +21,8 @@ cfgreader.readConfig( (function(config) {
   window.config = config
 }))
 
-const nabuBaseUrl = "https://carbon.rutebanken.org/apiman-gateway/rutebanken/nabu/1.0/"
-const mardukBaseUrl = "https://carbon.rutebanken.org/apiman-gateway/rutebanken/marduk/1.0/"
+const nabuBaseUrl = "https://carbon.rutebanken.org/api/nabu/1.0/"
+const mardukBaseUrl = "https://carbon.rutebanken.org/api/marduk/1.0/"
 
 // Using JDom to inject window object and later the config object used by cfgreader.readConfig
 window.config = {

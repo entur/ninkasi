@@ -130,20 +130,12 @@ class SuppliersContainer extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
     suppliers: state.SuppliersReducer.data,
     activeProviderId: state.SuppliersReducer.activeId
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SuppliersContainer)
+export default connect(mapStateToProps)(SuppliersContainer)
