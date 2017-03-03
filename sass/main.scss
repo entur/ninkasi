@@ -81,7 +81,6 @@ body {
 }
 
 .multiselect {
-  margin-top: 20px;
   margin-bottom: 20px;
   resize: vertical;
   min-height: 400px;
@@ -134,3 +133,19 @@ body {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+.unselectable {
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  align-items: center;
+  -o-user-select: none;
+  box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: initial;
+  border-image: initial;
+  user-select: none;
+  -webkit-appearance: listbox;
+}
+

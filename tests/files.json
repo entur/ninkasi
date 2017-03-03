@@ -1,0 +1,603 @@
+{
+  "files" : [ {
+    "name" : "akt-20170215150756-1060_106_20160330-0626.zip",
+    "updated" : 1487167677439,
+    "fileSize" : 4532963
+  }, {
+    "name" : "akt-20170215150810-1100_Haga_20160329-0703.rar",
+    "updated" : 1487167690812,
+    "fileSize" : 36552
+  }, {
+    "name" : "akt-20170215150810-1100_Haga_20160329-0703.rar_part_0001_of_1.zip",
+    "updated" : 1487167691321,
+    "fileSize" : 47995
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar",
+    "updated" : 1487167718380,
+    "fileSize" : 10513578
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0001_of_21.zip",
+    "updated" : 1487167725265,
+    "fileSize" : 533213
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0002_of_21.zip",
+    "updated" : 1487167725434,
+    "fileSize" : 47995
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0003_of_21.zip",
+    "updated" : 1487167725810,
+    "fileSize" : 1509022
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0004_of_21.zip",
+    "updated" : 1487167726176,
+    "fileSize" : 1503581
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0005_of_21.zip",
+    "updated" : 1487167726401,
+    "fileSize" : 821136
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0006_of_21.zip",
+    "updated" : 1487167726690,
+    "fileSize" : 599863
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0007_of_21.zip",
+    "updated" : 1487167727033,
+    "fileSize" : 1476291
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0008_of_21.zip",
+    "updated" : 1487167727365,
+    "fileSize" : 1475993
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0009_of_21.zip",
+    "updated" : 1487167727803,
+    "fileSize" : 1497223
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0010_of_21.zip",
+    "updated" : 1487167728167,
+    "fileSize" : 1586130
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0011_of_21.zip",
+    "updated" : 1487167728449,
+    "fileSize" : 742270
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0012_of_21.zip",
+    "updated" : 1487167728593,
+    "fileSize" : 24354
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0013_of_21.zip",
+    "updated" : 1487167728820,
+    "fileSize" : 23792
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0014_of_21.zip",
+    "updated" : 1487167729205,
+    "fileSize" : 968573
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0015_of_21.zip",
+    "updated" : 1487167729388,
+    "fileSize" : 27039
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0016_of_21.zip",
+    "updated" : 1487167729612,
+    "fileSize" : 23843
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0017_of_21.zip",
+    "updated" : 1487167729769,
+    "fileSize" : 21094
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0018_of_21.zip",
+    "updated" : 1487167729943,
+    "fileSize" : 19179
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0019_of_21.zip",
+    "updated" : 1487167730163,
+    "fileSize" : 47290
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0020_of_21.zip",
+    "updated" : 1487167730573,
+    "fileSize" : 1276223
+  }, {
+    "name" : "akt-20170215150837-1216_NRI_20160426.rar_part_0021_of_21.zip",
+    "updated" : 1487167730716,
+    "fileSize" : 26930
+  }, {
+    "name" : "akt-20170215150910-1442_Båtruter_sommeren_2016.rar",
+    "updated" : 1487167751005,
+    "fileSize" : 119677
+  }, {
+    "name" : "akt-20170215150910-1442_Båtruter_sommeren_2016.rar_part_0001_of_1.zip",
+    "updated" : 1487167755252,
+    "fileSize" : 126536
+  }, {
+    "name" : "akt-20170215150911-1442_BB_høst_2016.rar",
+    "updated" : 1487167751537,
+    "fileSize" : 13028
+  }, {
+    "name" : "akt-20170215150911-1442_BB_høst_2016.rar_part_0001_of_1.zip",
+    "updated" : 1487167755838,
+    "fileSize" : 16697
+  }, {
+    "name" : "akt-20170215150912-1442_BB_Sommer_2016.rar",
+    "updated" : 1487167752105,
+    "fileSize" : 13060
+  }, {
+    "name" : "akt-20170215150912-1442_BB_Sommer_2016.rar_part_0001_of_1.zip",
+    "updated" : 1487167756342,
+    "fileSize" : 16558
+  }, {
+    "name" : "akt-20170215150912-1442_LL_høst_2016.rar",
+    "updated" : 1487167752690,
+    "fileSize" : 30095
+  }, {
+    "name" : "akt-20170215150912-1442_LL_høst_2016.rar_part_0001_of_1.zip",
+    "updated" : 1487167756715,
+    "fileSize" : 41219
+  }, {
+    "name" : "akt-20170215150913-1442_LL_Sommer_2016.rar",
+    "updated" : 1487167753213,
+    "fileSize" : 23320
+  }, {
+    "name" : "akt-20170215150913-1442_LL_Sommer_2016.rar_part_0001_of_1.zip",
+    "updated" : 1487167757035,
+    "fileSize" : 32088
+  }, {
+    "name" : "akt-20170215150913-1442_Setedsdalsekspressen_sommer_2016.rar",
+    "updated" : 1487167753716,
+    "fileSize" : 12559
+  }, {
+    "name" : "akt-20170215150913-1442_Setedsdalsekspressen_sommer_2016.rar_part_0001_of_1.zip",
+    "updated" : 1487167757425,
+    "fileSize" : 15661
+  }, {
+    "name" : "akt-20170215150918-1450_NRI_20160603.rar",
+    "updated" : 1487167758925,
+    "fileSize" : 55491
+  }, {
+    "name" : "akt-20170215150918-1450_NRI_20160603.rar_part_0001_of_2.zip",
+    "updated" : 1487167762367,
+    "fileSize" : 47942
+  }, {
+    "name" : "akt-20170215150918-1450_NRI_20160603.rar_part_0002_of_2.zip",
+    "updated" : 1487167762537,
+    "fileSize" : 23403
+  }, {
+    "name" : "akt-20170215150933-1589_NRI_20160624.rar",
+    "updated" : 1487167773431,
+    "fileSize" : 64905
+  }, {
+    "name" : "akt-20170215150933-1589_NRI_20160624.rar_part_0001_of_3.zip",
+    "updated" : 1487167773876,
+    "fileSize" : 17995
+  }, {
+    "name" : "akt-20170215150933-1589_NRI_20160624.rar_part_0002_of_3.zip",
+    "updated" : 1487167774115,
+    "fileSize" : 47523
+  }, {
+    "name" : "akt-20170215150933-1589_NRI_20160624.rar_part_0003_of_3.zip",
+    "updated" : 1487167774326,
+    "fileSize" : 21425
+  }, {
+    "name" : "akt-20170215150933-1590_RestProdREE20160624.zip",
+    "updated" : 1487167774122,
+    "fileSize" : 25437
+  }, {
+    "name" : "akt-20170215150940-1606_regtopp.rar",
+    "updated" : 1487167780244,
+    "fileSize" : 15788
+  }, {
+    "name" : "akt-20170215150940-1606_regtopp.rar_part_0001_of_1.zip",
+    "updated" : 1487167780593,
+    "fileSize" : 21587
+  }, {
+    "name" : "akt-20170215151012-1726_BB.RAR",
+    "updated" : 1487167812496,
+    "fileSize" : 15556
+  }, {
+    "name" : "akt-20170215151012-1726_BB.RAR_part_0001_of_1.zip",
+    "updated" : 1487167812815,
+    "fileSize" : 21167
+  }, {
+    "name" : "akt-20170215151017-1744_NRI_20160817.rar",
+    "updated" : 1487167817288,
+    "fileSize" : 149248
+  }, {
+    "name" : "akt-20170215151017-1744_NRI_20160817.rar_part_0001_of_6.zip",
+    "updated" : 1487167817830,
+    "fileSize" : 21439
+  }, {
+    "name" : "akt-20170215151017-1744_NRI_20160817.rar_part_0002_of_6.zip",
+    "updated" : 1487167818040,
+    "fileSize" : 23595
+  }, {
+    "name" : "akt-20170215151017-1744_NRI_20160817.rar_part_0003_of_6.zip",
+    "updated" : 1487167818622,
+    "fileSize" : 37763
+  }, {
+    "name" : "akt-20170215151017-1744_NRI_20160817.rar_part_0004_of_6.zip",
+    "updated" : 1487167818798,
+    "fileSize" : 49806
+  }, {
+    "name" : "akt-20170215151017-1744_NRI_20160817.rar_part_0005_of_6.zip",
+    "updated" : 1487167818964,
+    "fileSize" : 23663
+  }, {
+    "name" : "akt-20170215151017-1744_NRI_20160817.rar_part_0006_of_6.zip",
+    "updated" : 1487167819151,
+    "fileSize" : 39425
+  }, {
+    "name" : "akt-20170215151035-1778_NRI_20160826.rar",
+    "updated" : 1487167835696,
+    "fileSize" : 5370
+  }, {
+    "name" : "akt-20170215151035-1778_NRI_20160826.rar_part_0001_of_1.zip",
+    "updated" : 1487167836099,
+    "fileSize" : 6141
+  }, {
+    "name" : "akt-20170215151148-1938_Regtopp_Agder_Flyekspress_161018-161030.zip",
+    "updated" : 1487167908205,
+    "fileSize" : 24522
+  }, {
+    "name" : "akt-20170215151148-1938_Regtopp_Agder_Flyekspress_161031-170326.zip",
+    "updated" : 1487167908747,
+    "fileSize" : 24653
+  }, {
+    "name" : "akt-20170215151332-2163_Regtopp_Agder_Flyekspress_161213-170326.zip",
+    "updated" : 1487168013014,
+    "fileSize" : 24659
+  }, {
+    "name" : "akt-20170215151333-2163_Regtopp_Nettbuss_Flybussen_161213-171130.zip",
+    "updated" : 1487168013660,
+    "fileSize" : 25413
+  }, {
+    "name" : "akt-20170215151441-2258_110_rest_prod_20170103-0622_V3.rar",
+    "updated" : 1487168081197,
+    "fileSize" : 489060
+  }, {
+    "name" : "akt-20170215151441-2258_110_rest_prod_20170103-0622_V3.rar_part_0001_of_1.zip",
+    "updated" : 1487168081869,
+    "fileSize" : 644409
+  }, {
+    "name" : "akt-20170222163943-2352_RuteData.391_20170217-20170630.zip",
+    "updated" : 1487777983379,
+    "fileSize" : 205418
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar",
+    "updated" : 1488460617989,
+    "fileSize" : 9132641
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0001_of_15.zip",
+    "updated" : 1488460624312,
+    "fileSize" : 968468
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0002_of_15.zip",
+    "updated" : 1488460624617,
+    "fileSize" : 742270
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0003_of_15.zip",
+    "updated" : 1488460625023,
+    "fileSize" : 1479695
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0004_of_15.zip",
+    "updated" : 1488460625167,
+    "fileSize" : 27039
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0005_of_15.zip",
+    "updated" : 1488460625427,
+    "fileSize" : 5863
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0006_of_15.zip",
+    "updated" : 1488460625772,
+    "fileSize" : 1335991
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0007_of_15.zip",
+    "updated" : 1488460626227,
+    "fileSize" : 1451969
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0008_of_15.zip",
+    "updated" : 1488460626512,
+    "fileSize" : 533213
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0009_of_15.zip",
+    "updated" : 1488460626825,
+    "fileSize" : 1469327
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0010_of_15.zip",
+    "updated" : 1488460627210,
+    "fileSize" : 1501111
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0011_of_15.zip",
+    "updated" : 1488460627364,
+    "fileSize" : 23843
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0012_of_15.zip",
+    "updated" : 1488460627617,
+    "fileSize" : 23769
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0013_of_15.zip",
+    "updated" : 1488460627786,
+    "fileSize" : 24538
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0014_of_15.zip",
+    "updated" : 1488460628193,
+    "fileSize" : 1586315
+  }, {
+    "name" : "akt-20170302141657-968_NRI_20160219.rar_part_0015_of_15.zip",
+    "updated" : 1488460628591,
+    "fileSize" : 1238324
+  }, {
+    "name" : "akt-20170302141730-1044_160321-160328.zip",
+    "updated" : 1488460651341,
+    "fileSize" : 615721
+  }, {
+    "name" : "akt-20170302141731-1044_160329.zip",
+    "updated" : 1488460653370,
+    "fileSize" : 1507800
+  }, {
+    "name" : "akt-20170302141733-1044_160330-160504.zip",
+    "updated" : 1488460654220,
+    "fileSize" : 1515639
+  }, {
+    "name" : "akt-20170302141734-1044_160505-161231.zip",
+    "updated" : 1488460655069,
+    "fileSize" : 1536049
+  }, {
+    "name" : "akt-20170302141757-1060_106_20160330-0626.zip",
+    "updated" : 1488460678154,
+    "fileSize" : 4532963
+  }, {
+    "name" : "akt-20170302141810-1100_Haga_20160329-0703.rar",
+    "updated" : 1488460690821,
+    "fileSize" : 36552
+  }, {
+    "name" : "akt-20170302141810-1100_Haga_20160329-0703.rar_part_0001_of_1.zip",
+    "updated" : 1488460691226,
+    "fileSize" : 47995
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar",
+    "updated" : 1488460719459,
+    "fileSize" : 10513578
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0001_of_21.zip",
+    "updated" : 1488460726926,
+    "fileSize" : 533213
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0002_of_21.zip",
+    "updated" : 1488460727133,
+    "fileSize" : 47995
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0003_of_21.zip",
+    "updated" : 1488460728033,
+    "fileSize" : 1509022
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0004_of_21.zip",
+    "updated" : 1488460728382,
+    "fileSize" : 1503581
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0005_of_21.zip",
+    "updated" : 1488460728732,
+    "fileSize" : 821136
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0006_of_21.zip",
+    "updated" : 1488460728971,
+    "fileSize" : 599863
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0007_of_21.zip",
+    "updated" : 1488460729299,
+    "fileSize" : 1476291
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0008_of_21.zip",
+    "updated" : 1488460729640,
+    "fileSize" : 1475993
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0009_of_21.zip",
+    "updated" : 1488460729980,
+    "fileSize" : 1497223
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0010_of_21.zip",
+    "updated" : 1488460730375,
+    "fileSize" : 1586130
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0011_of_21.zip",
+    "updated" : 1488460730601,
+    "fileSize" : 742270
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0012_of_21.zip",
+    "updated" : 1488460730744,
+    "fileSize" : 24354
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0013_of_21.zip",
+    "updated" : 1488460730931,
+    "fileSize" : 23792
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0014_of_21.zip",
+    "updated" : 1488460731236,
+    "fileSize" : 968573
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0015_of_21.zip",
+    "updated" : 1488460731567,
+    "fileSize" : 27039
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0016_of_21.zip",
+    "updated" : 1488460731779,
+    "fileSize" : 23843
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0017_of_21.zip",
+    "updated" : 1488460732032,
+    "fileSize" : 21094
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0018_of_21.zip",
+    "updated" : 1488460732234,
+    "fileSize" : 19179
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0019_of_21.zip",
+    "updated" : 1488460732459,
+    "fileSize" : 47290
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0020_of_21.zip",
+    "updated" : 1488460732850,
+    "fileSize" : 1276223
+  }, {
+    "name" : "akt-20170302141838-1216_NRI_20160426.rar_part_0021_of_21.zip",
+    "updated" : 1488460732994,
+    "fileSize" : 26930
+  }, {
+    "name" : "akt-20170302141912-1442_Båtruter_sommeren_2016.rar",
+    "updated" : 1488460752667,
+    "fileSize" : 119677
+  }, {
+    "name" : "akt-20170302141912-1442_Båtruter_sommeren_2016.rar_part_0001_of_1.zip",
+    "updated" : 1488460761524,
+    "fileSize" : 126536
+  }, {
+    "name" : "akt-20170302141913-1442_BB_Sommer_2016.rar",
+    "updated" : 1488460754099,
+    "fileSize" : 13060
+  }, {
+    "name" : "akt-20170302141913-1442_BB_Sommer_2016.rar_part_0001_of_1.zip",
+    "updated" : 1488460762288,
+    "fileSize" : 16558
+  }, {
+    "name" : "akt-20170302141913-1442_BB_høst_2016.rar",
+    "updated" : 1488460753123,
+    "fileSize" : 13028
+  }, {
+    "name" : "akt-20170302141913-1442_BB_høst_2016.rar_part_0001_of_1.zip",
+    "updated" : 1488460761870,
+    "fileSize" : 16697
+  }, {
+    "name" : "akt-20170302141914-1442_LL_høst_2016.rar",
+    "updated" : 1488460754618,
+    "fileSize" : 30095
+  }, {
+    "name" : "akt-20170302141914-1442_LL_høst_2016.rar_part_0001_of_1.zip",
+    "updated" : 1488460762898,
+    "fileSize" : 41219
+  }, {
+    "name" : "akt-20170302141915-1442_LL_Sommer_2016.rar",
+    "updated" : 1488460755106,
+    "fileSize" : 23320
+  }, {
+    "name" : "akt-20170302141915-1442_LL_Sommer_2016.rar_part_0001_of_1.zip",
+    "updated" : 1488460763329,
+    "fileSize" : 32088
+  }, {
+    "name" : "akt-20170302141915-1442_Setedsdalsekspressen_sommer_2016.rar",
+    "updated" : 1488460755590,
+    "fileSize" : 12559
+  }, {
+    "name" : "akt-20170302141915-1442_Setedsdalsekspressen_sommer_2016.rar_part_0001_of_1.zip",
+    "updated" : 1488460763712,
+    "fileSize" : 15661
+  }, {
+    "name" : "akt-20170302141920-1450_NRI_20160603.rar",
+    "updated" : 1488460760549,
+    "fileSize" : 55491
+  }, {
+    "name" : "akt-20170302141920-1450_NRI_20160603.rar_part_0001_of_2.zip",
+    "updated" : 1488460766065,
+    "fileSize" : 47942
+  }, {
+    "name" : "akt-20170302141920-1450_NRI_20160603.rar_part_0002_of_2.zip",
+    "updated" : 1488460766215,
+    "fileSize" : 23403
+  }, {
+    "name" : "akt-20170302141933-1589_NRI_20160624.rar",
+    "updated" : 1488460773591,
+    "fileSize" : 64905
+  }, {
+    "name" : "akt-20170302141933-1589_NRI_20160624.rar_part_0001_of_3.zip",
+    "updated" : 1488460776542,
+    "fileSize" : 17995
+  }, {
+    "name" : "akt-20170302141933-1589_NRI_20160624.rar_part_0002_of_3.zip",
+    "updated" : 1488460776714,
+    "fileSize" : 47523
+  }, {
+    "name" : "akt-20170302141933-1589_NRI_20160624.rar_part_0003_of_3.zip",
+    "updated" : 1488460777050,
+    "fileSize" : 21425
+  }, {
+    "name" : "akt-20170302141934-1590_RestProdREE20160624.zip",
+    "updated" : 1488460774122,
+    "fileSize" : 25437
+  }, {
+    "name" : "akt-20170302141950-1606_regtopp.rar",
+    "updated" : 1488460790381,
+    "fileSize" : 15788
+  }, {
+    "name" : "akt-20170302141950-1606_regtopp.rar_part_0001_of_1.zip",
+    "updated" : 1488460790788,
+    "fileSize" : 21587
+  }, {
+    "name" : "akt-20170302142021-1726_BB.RAR",
+    "updated" : 1488460822018,
+    "fileSize" : 15556
+  }, {
+    "name" : "akt-20170302142021-1726_BB.RAR_part_0001_of_1.zip",
+    "updated" : 1488460822453,
+    "fileSize" : 21167
+  }, {
+    "name" : "akt-20170302142025-1744_NRI_20160817.rar",
+    "updated" : 1488460826078,
+    "fileSize" : 149248
+  }, {
+    "name" : "akt-20170302142025-1744_NRI_20160817.rar_part_0001_of_6.zip",
+    "updated" : 1488460826673,
+    "fileSize" : 21439
+  }, {
+    "name" : "akt-20170302142025-1744_NRI_20160817.rar_part_0002_of_6.zip",
+    "updated" : 1488460827244,
+    "fileSize" : 23595
+  }, {
+    "name" : "akt-20170302142025-1744_NRI_20160817.rar_part_0003_of_6.zip",
+    "updated" : 1488460828243,
+    "fileSize" : 37763
+  }, {
+    "name" : "akt-20170302142025-1744_NRI_20160817.rar_part_0004_of_6.zip",
+    "updated" : 1488460828396,
+    "fileSize" : 49806
+  }, {
+    "name" : "akt-20170302142025-1744_NRI_20160817.rar_part_0005_of_6.zip",
+    "updated" : 1488460828555,
+    "fileSize" : 23663
+  }, {
+    "name" : "akt-20170302142025-1744_NRI_20160817.rar_part_0006_of_6.zip",
+    "updated" : 1488460828716,
+    "fileSize" : 39425
+  }, {
+    "name" : "akt-20170302142042-1778_NRI_20160826.rar",
+    "updated" : 1488460842918,
+    "fileSize" : 5370
+  }, {
+    "name" : "akt-20170302142042-1778_NRI_20160826.rar_part_0001_of_1.zip",
+    "updated" : 1488460843249,
+    "fileSize" : 6141
+  }, {
+    "name" : "akt-20170302142202-1938_Regtopp_Agder_Flyekspress_161018-161030.zip",
+    "updated" : 1488460922878,
+    "fileSize" : 24522
+  }, {
+    "name" : "akt-20170302142203-1938_Regtopp_Agder_Flyekspress_161031-170326.zip",
+    "updated" : 1488460923623,
+    "fileSize" : 24653
+  }, {
+    "name" : "akt-20170302142340-2163_Regtopp_Agder_Flyekspress_161213-170326.zip",
+    "updated" : 1488461020299,
+    "fileSize" : 24659
+  }, {
+    "name" : "akt-20170302142340-2163_Regtopp_Nettbuss_Flybussen_161213-171130.zip",
+    "updated" : 1488461020891,
+    "fileSize" : 25413
+  }, {
+    "name" : "akt-20170302142444-2258_110_rest_prod_20170103-0622_V3.rar",
+    "updated" : 1488461084931,
+    "fileSize" : 489060
+  }, {
+    "name" : "akt-20170302142444-2258_110_rest_prod_20170103-0622_V3.rar_part_0001_of_1.zip",
+    "updated" : 1488461086031,
+    "fileSize" : 644409
+  }, {
+    "name" : "akt-20170302142549-2352_RuteData.391_20170217-20170630.zip",
+    "updated" : 1488461150079,
+    "fileSize" : 205418
+  } ]
+}

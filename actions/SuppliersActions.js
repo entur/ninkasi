@@ -701,7 +701,10 @@ SuppliersActions.fetchFilenames = (id) => {
       method: 'get'
     })
     .then(function(response) {
-      dispatch( sendData(response.data,types.SUCCESS_FILENAMES) )
+
+      const files = addFileExtensions(response.data.files)
+
+      dispatch( sendData(files,types.SUCCESS_FILENAMES) )
     })
     .catch(function(response) {
       dispatch( sendData(response.data, types.ERROR_FILENAMES) )
@@ -709,6 +712,16 @@ SuppliersActions.fetchFilenames = (id) => {
   }
 }
 
+
+export const addFileExtensions = (files = []) => {
+  return files.map( file => {
+    if (file.name) {
+      file.ext = file.name.substring(file.name.lastIndexOf('.')+1).toLowerCase()
+    }
+    return file
+  })
+
+}
 
 SuppliersActions.importData = (id, selectedFiles) => {
 

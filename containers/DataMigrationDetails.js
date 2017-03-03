@@ -1,31 +1,202 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import Button from 'muicss/lib/react/button'
-import FileList from '../components/FileList'
 import SuppliersActions from '../actions/SuppliersActions'
-
 const FaArrowDown = require('react-icons/lib/fa/arrow-down')
 const FaArrowUp = require('react-icons/lib/fa/arrow-up')
 const FaRemove = require('react-icons/lib/fa/arrow-left')
 const FaAdd = require('react-icons/lib/fa/arrow-right')
-import MdFileDownLoad from 'react-icons/lib/md/file-download'
+import AdvancedFileList from '../components/AdvancedFileList'
+import _ from 'underscore'
+import TextField from 'material-ui/TextField'
+
 
 class DataMigrationDetails extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      downloadLink: {
-        URL: null
+      outboundFiles: [],
+      selectedIndicesOutbound: new Set(),
+      selectedIndicesSource: new Set(),
+      sortOrder: {
+        ext: 0,
+        name: 0,
+        size: 0,
+        date: 0
+      },
+      filterText: ''
+    }
+  }
+
+  handleUpdateIndicesSource(indices) {
+    this.setState({
+      selectedIndicesSource: indices
+    })
+  }
+
+  handleUpdateIndicesOutbound(indices) {
+    this.setState({
+      selectedIndicesOutbound: indices
+    })
+  }
+
+  handleKeyDown(isSource, event) {
+
+    if (isSource) {
+
+      const { selectedIndicesSource } = this.state
+      const { files } = this.props
+
+      const isAllSelected = selectedIndicesSource.size === files.length
+      const highestIndex = Math.max.apply(Math, Array.from(selectedIndicesSource.values()))
+      const isLastSelected = highestIndex == (files.length -1)
+
+      if (!isAllSelected && !isLastSelected) {
+        this.handleUpdateIndicesSource(new Set([highestIndex+1]))
+        event.preventDefault()
+      }
+    } else {
+
+      const { selectedIndicesOutbound, outboundFiles } = this.state
+
+      const isAllSelected = outboundFiles.length == selectedIndicesOutbound.size
+      const highestIndex = Math.max.apply(Math, Array.from(selectedIndicesOutbound.values()))
+      const isLastSelected = highestIndex == (outboundFiles.length -1)
+
+      if (!isAllSelected && !isLastSelected) {
+        this.handleUpdateIndicesOutbound(new Set([highestIndex+1]))
+        event.preventDefault()
       }
     }
   }
 
+  handleKeyUp(isSource, event) {
+
+    if (isSource) {
+
+      const { selectedIndicesSource } = this.state
+      const { files } = this.props
+
+      const isAllSelected = selectedIndicesSource.size === files.length
+      const lowestIndex = Math.min.apply(Math, Array.from(selectedIndicesSource.values()))
+      const isFirstSelected = lowestIndex == 0
+
+      if (!isAllSelected && !isFirstSelected) {
+        this.handleUpdateIndicesSource(new Set([lowestIndex-1]))
+        event.preventDefault()
+      }
+    } else {
+
+      const { selectedIndicesOutbound, outboundFiles } = this.state
+
+      const isAllSelected = outboundFiles.length == selectedIndicesOutbound.size
+      const lowestIndex = Math.max.apply(Math, Array.from(selectedIndicesOutbound.values()))
+      const isFirstSelected = lowestIndex == 0
+
+      if (!isAllSelected && !isFirstSelected) {
+        this.handleUpdateIndicesOutbound(new Set([lowestIndex - 1]))
+        event.preventDefault()
+      }
+
+    }
+  }
+
+  handleSortByExt() {
+    const { sortOrder } = this.state
+    this.setState({
+      sortOrder: {
+        ext: sortOrder.ext == 2 ? 0 : sortOrder.ext+1,
+        name: 0,
+        date: 0,
+        size: 0,
+      }
+    })
+  }
+
+  handleSortByName() {
+    const { sortOrder } = this.state
+    this.setState({
+      sortOrder: {
+        name: sortOrder.name == 2 ? 0 : sortOrder.name+1,
+        ext: 0,
+        date: 0,
+        size: 0,
+      }
+    })
+  }
+
+  handleSortBySize() {
+    const { sortOrder } = this.state
+    this.setState({
+      sortOrder: {
+        size: sortOrder.size == 2 ? 0 : sortOrder.size+1,
+        ext: 0,
+        date: 0,
+        name: 0
+      }
+    })
+  }
+
+  handleSortByDate() {
+    const { sortOrder } = this.state
+    this.setState({
+      sortOrder: {
+        date: sortOrder.date == 2 ? 0 : sortOrder.date+1,
+        ext: 0,
+        name: 0,
+        size: 0
+      }
+    })
+  }
+
+  sortFiles() {
+    const { sortOrder } = this.state
+    const unsortedFile = this.props.files
+
+    let files = unsortedFile.slice()
+
+    let sortedFiles = !sortOrder.ext
+      ? _.sortBy(files, file => new Date(file.updated))
+      : (sortOrder.ext == 1
+          ? _.sortBy(files, file => file.ext)
+          : _.sortBy(files, file => file.ext).reverse()
+      )
+
+    sortedFiles = !sortOrder.name
+      ? sortedFiles
+      : (sortOrder.name == 1
+          ? _.sortBy(files, file => file.name)
+          : _.sortBy(files, file => file.name).reverse()
+      )
+
+    sortedFiles = !sortOrder.size
+      ? sortedFiles
+      : (sortOrder.size == 1
+          ? _.sortBy(files, file => file.fileSize)
+          : _.sortBy(files, file => file.fileSize).reverse()
+      )
+
+    sortedFiles = !sortOrder.date
+      ? sortedFiles
+      : (sortOrder.date == 1
+          ? _.sortBy(files, file => new Date(file.date))
+          : _.sortBy(files, file => new Date(file.date)).reverse()
+      )
+
+    return sortedFiles
+  }
+
   render() {
 
-    const { files, outboundFiles, chouetteInfo } = this.props
+    const { files, chouetteInfo } = this.props
+    const { outboundFiles, selectedIndicesOutbound, selectedIndicesSource, filterText } = this.state
 
     const shouldRenderTransfer = !!chouetteInfo.migrateDataToProvider
+
+    const sortedFiles = this.sortFiles(files).filter( file => {
+      if (file.name.indexOf(filterText) > -1) return file
+    })
 
     const toolTips = {
       import: 'Import all files listed in the list on the right side below. Files will be imported in the given order. If success, VALIDATE will be called',
@@ -47,9 +218,27 @@ class DataMigrationDetails extends React.Component {
           }
           <Button title={toolTips.clean} color="danger" onClick={this.handleCleanDataspace}>Clean</Button>
         </div>
+        <TextField
+          hintText="Filter ..."
+          value={filterText}
+          onChange={ e => this.setState({filterText: e.target.value})}
+        />
         <div style={{display: 'flex', alignItems: 'center'}}>
-          <FileList key="providerFilelist" wrapperId="providerFilelist" files={files} handleSelectFileToDownload={this.handleSelectFileToDownload.bind(this)}/>
-          { files.length
+          <AdvancedFileList
+            selectedIndices={selectedIndicesSource}
+            updateIndices={this.handleUpdateIndicesSource.bind(this)}
+            downloadButton
+            activeProviderId={this.props.activeId}
+            files={sortedFiles}
+            isSource
+            handleSortBySize={this.handleSortBySize.bind(this)}
+            handleSortByName={this.handleSortByName.bind(this)}
+            handleSortByDate={this.handleSortByDate.bind(this)}
+            handleSortByExt={this.handleSortByExt.bind(this)}
+            handleKeyDown={this.handleKeyDown.bind(this)}
+            handleKeyUp={this.handleKeyUp.bind(this)}
+          />
+          { sortedFiles.length
             ?
             <div style={{display: 'flex', alignItem: 'center', flexDirection: 'column', flex: 0.1, cursor: 'pointer'}}>
               <FaAdd style={{transform: 'scale(2)', color: '#2196f3', marginBottom: 30, marginLeft: 20, marginRight: 20}} onClick={this.appendSelectedFiles}/>
@@ -57,20 +246,26 @@ class DataMigrationDetails extends React.Component {
             </div>
             : <div style={{margin: 20, fontWeight: 600}}>No files available</div>
           }
-          <FileList key="outboundFilelist" wrapperId="outboundFilelist" files={outboundFiles}/>
+          <AdvancedFileList
+            selectedIndices={selectedIndicesOutbound}
+            files={outboundFiles}
+            updateIndices={this.handleUpdateIndicesOutbound.bind(this)}
+            handleKeyDown={this.handleKeyDown.bind(this)}
+            handleKeyUp={this.handleKeyUp.bind(this)}
+          />
           <div style={{flex: 0.2, display: outboundFiles.length ? 'flex' : 'none', alignItems: 'center', flexDirection: 'column', cursor: 'pointer'}}>
             <FaArrowDown style={{transform: 'scale(2)', marginBottom: 30, marginLeft: 20}} onClick={this.moveDown}/>
             <FaArrowUp style={{transform: 'scale(2)', marginLeft: 20}} onClick={this.moveUp}/>
           </div>
         </div>
-        <Button color="primary" disabled={!this.state.downloadLink.URL} onClick={this.handleDownloadFile.bind(this)}><MdFileDownLoad style={{marginRight: 5}}/>Download</Button>
       </div>
     )
   }
 
 
   handleImportData = () => {
-    const { dispatch, outboundFiles } = this.props
+    const { dispatch } = this.props
+    const { outboundFiles } = this.state
 
     if (outboundFiles.length) {
       dispatch(SuppliersActions.importData(this.props.activeId, outboundFiles))
@@ -79,27 +274,6 @@ class DataMigrationDetails extends React.Component {
     }
   }
 
-  handleDownloadFile() {
-    const {  downloadLink } = this.state
-    let link = document.createElement('a')
-    link.setAttribute('href', downloadLink.URL)
-    link.setAttribute('download',downloadLink.filename)
-    var event = document.createEvent("MouseEvents");
-    event.initMouseEvent(
-      "click", true, false, window, 0, 0, 0, 0, 0
-      , false, false, false, false, 0, null
-    )
-    link.dispatchEvent(event)
-  }
-
-  handleSelectFileToDownload(filename) {
-    this.setState({
-      downloadLink: {
-        URL: window.config.mardukBaseUrl+`admin/services/chouette/${this.props.activeId}/files/${filename}`,
-        filename: filename
-      }
-    })
-  }
 
   handleExportData = () => {
     this.props.dispatch(SuppliersActions.exportData(this.props.activeId))
@@ -123,124 +297,110 @@ class DataMigrationDetails extends React.Component {
 
   moveDown = () => {
 
-    let outboundFilelist = document.querySelector('#outboundFilelist')
-    var options = outboundFilelist && outboundFilelist.options
-    var selected = []
+    const { outboundFiles, selectedIndicesOutbound } = this.state
 
-    for (var i = 0, iLen = options.length; i < iLen; i++) {
-      if (options[i].selected) {
-        selected.push(options[i])
+    const updatedIndices = new Set()
+
+    const maxValue = Math.max.apply(Math, Array.from(selectedIndicesOutbound.values()))
+
+    if (maxValue >= outboundFiles.length-1) return
+
+    selectedIndicesOutbound.forEach( value => {
+      if (value) {
+        outboundFiles.splice(value+1, 0, outboundFiles.splice(value, 1)[0])
+        updatedIndices.add(value+1)
+      } else {
+        updatedIndices.add(value)
       }
-    }
 
-    for (i = selected.length - 1, iLen = 0; i >= iLen; i--) {
-      var index = selected[i].index
+    })
 
-      if(index == (options.length - 1)){
-        break
-      }
+    this.setState({
+      outboundFiles: outboundFiles,
+      selectedIndicesOutbound: updatedIndices
+    })
 
-      var temp = selected[i].text
-      selected[i].text = options[index + 1].text
-      options[index + 1].text = temp
-
-      temp = selected[i].value;
-      selected[i].value = options[index + 1].value
-      options[index + 1].value = temp
-
-      selected[i].selected = false
-      options[index + 1].selected = true
-    }
-
-    const {dispatch} = this.props
-    const files = Array.map(document.querySelector('#outboundFilelist').options, x => x.text)
-    dispatch(SuppliersActions.updateOutboundFilelist(files))
   }
 
   moveUp = () => {
 
-    let outboundFilelist = document.querySelector('#outboundFilelist')
-    let options = outboundFilelist && outboundFilelist.options
-    let selected = []
+    const { outboundFiles, selectedIndicesOutbound } = this.state
 
-    for (var i = 0, iLen = options.length; i < iLen; i++) {
-      if (options[i].selected) {
-        selected.push(options[i])
+    const updatedIndices = new Set()
+
+    const minIndex = Math.min.apply(Math, Array.from(selectedIndicesOutbound.values()))
+
+    if (!minIndex) return
+
+    selectedIndicesOutbound.forEach( value => {
+      if (value) {
+        outboundFiles.splice(value-1, 0, outboundFiles.splice(value, 1)[0])
+        updatedIndices.add(value-1)
+      } else {
+        updatedIndices.add(value)
       }
-    }
 
-    for (i = 0, iLen = selected.length; i < iLen; i++) {
-      var index = selected[i].index
+    })
 
-      if(index == 0) break
-
-      var temp = selected[i].text
-      selected[i].text = options[index - 1].text
-      options[index - 1].text = temp
-
-      temp = selected[i].value
-      selected[i].value = options[index - 1].value
-      options[index - 1].value = temp
-
-      selected[i].selected = false
-      options[index - 1].selected = true
-    }
-
-    const {dispatch} = this.props
-
-    const files = Array.map(document.querySelector('#outboundFilelist').options, x => x.text)
-
-    dispatch(SuppliersActions.updateOutboundFilelist(files))
+    this.setState({
+      outboundFiles: outboundFiles,
+      selectedIndicesOutbound: updatedIndices
+    })
 
   }
 
   appendSelectedFiles = () => {
 
-    let providerFilelist = document.querySelector('#providerFilelist')
+    let { selectedIndicesSource, outboundFiles } = this.state
 
-    var selectedFiles = []
+    if (!selectedIndicesSource.size) return
 
-    for (let i = 0; i < providerFilelist.length; i++) {
-      if (providerFilelist.options[i].selected) {
-        selectedFiles.push(providerFilelist[i].text)
-      }
-    }
+    const { files } = this.props
 
-    const { dispatch } = this.props
+    const sortedFiles = this.sortFiles(files.slice(0))
 
-    dispatch(SuppliersActions.appendFilesToOutbound(selectedFiles))
+    const filestoAppend = Array.from(selectedIndicesSource).map( i => sortedFiles[i])
 
-    Array.prototype.forEach.call(document.querySelectorAll("#providerFilelist :checked"), (el) => { el.selected = false })
+    const updateOutboundFiles = Array.from(new Set(outboundFiles.concat(filestoAppend)))
+
+    this.setState({
+      outboundFiles: updateOutboundFiles,
+      selectedIndicesSource: new Set()
+    })
+
   }
 
   removeSelectedFiles = () => {
 
-    let outboundFilelist = document.querySelector('#outboundFilelist')
+    const { outboundFiles, selectedIndicesOutbound  } = this.state
 
-    let selectedFiles = []
-    for (let i = 0; i < outboundFilelist.length; i++) {
-      if (outboundFilelist.options[i].selected) selectedFiles.push(outboundFilelist[i].text)
-    }
+    let filteredList = []
 
-    this.props.dispatch(SuppliersActions.removeFilesToOutbound(selectedFiles))
+    outboundFiles.forEach( (file, index) => {
+      let indices = Array.from(selectedIndicesOutbound)
+      if (indices.indexOf(index) == -1) {
+        filteredList.push(file)
+      }
+    })
 
-    Array.prototype.forEach.call(document.querySelectorAll("#outboundFilelist :checked"), (el) => { el.selected = false })
+    this.setState({
+      outboundFiles: filteredList,
+      selectedIndicesOutbound: new Set()
+    })
+
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-
-  const files = state.MardukReducer.filenames.fetch_filesnames['files'].map( (file) => file.name)
+const mapStateToProps = (state, ownProps, ownState) => {
 
   return {
     providers: state.SuppliersReducer.data,
     activeId: state.SuppliersReducer.activeId,
-    files: files || [],
     filelistIsLoading: state.MardukReducer.filenames.isLoading,
-    outboundFiles: state.UtilsReducer.outboundFilelist,
     statusList: state.SuppliersReducer.statusList,
     filter: state.MardukReducer.chouetteJobFilter,
-    chouetteInfo: state.UtilsReducer.supplierForm.chouetteInfo
+    chouetteInfo: state.UtilsReducer.supplierForm.chouetteInfo,
+    files: state.MardukReducer.filenames.data || []
   }
 }
 

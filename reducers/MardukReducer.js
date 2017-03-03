@@ -97,7 +97,7 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {filenames: { isLoading: true, error: false}} )
 
     case types.SUCCESS_FILENAMES:
-      return Object.assign({}, state, {filenames: {isLoading: false, fetch_filesnames: action.payLoad, error: false}})
+      return Object.assign({}, state, {filenames: {isLoading: false, data: action.payLoad, error: false}})
 
     case types.ERROR_FILENAMES:
       return Object.assign({}, state, {filesnames: {isLoading: false, error: action.payLoad}})
