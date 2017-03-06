@@ -727,7 +727,11 @@ SuppliersActions.importData = (id, selectedFiles) => {
 
   const url = window.config.mardukBaseUrl+`admin/services/chouette/${id}/import`
 
-  const bodySelectedFiles = selectedFiles.map(file => { return {"name": file }})
+  const bodySelectedFiles = selectedFiles.map(file => {
+    return {
+      name: file.name
+    }
+  })
 
   return function(dispatch) {
     dispatch(requestImport())
