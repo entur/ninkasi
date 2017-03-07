@@ -41,16 +41,41 @@ class DataMigrationDetails extends React.Component {
     })
   }
 
+  handleSelectAllShowingIndices(source) {
+
+    const { outboundFiles, filterText } = this.state
+    const { files } = this.props
+
+    if (source) {
+
+      const sortedFiles = this.sortFiles(files).filter( file => {
+        if (file.name.indexOf(filterText) > -1) return file
+      }).map( (f, i) => i)
+
+      this.setState({
+        selectedIndicesSource: new Set(sortedFiles)
+      })
+
+
+    } else {
+      this.setState({
+        selectedIndicesOutbound: new Set(outboundFiles.map( (f, i) => i))
+      })
+    }
+  }
+
   handleKeyDown(isSource, event) {
 
     if (isSource) {
 
-      const { selectedIndicesSource } = this.state
+      const { selectedIndicesSource, filterText } = this.state
       const { files } = this.props
 
       const isAllSelected = selectedIndicesSource.size === files.length
       const highestIndex = Math.max.apply(Math, Array.from(selectedIndicesSource.values()))
-      const isLastSelected = highestIndex == (files.length -1)
+      const isLastSelected = highestIndex == (files.filter( file => {
+          if (file.name.indexOf(filterText) > -1) return file
+        }).length -1)
 
       if (!isAllSelected && !isLastSelected) {
         this.handleUpdateIndicesSource(new Set([highestIndex+1]))
@@ -64,6 +89,7 @@ class DataMigrationDetails extends React.Component {
       const highestIndex = Math.max.apply(Math, Array.from(selectedIndicesOutbound.values()))
       const isLastSelected = highestIndex == (outboundFiles.length -1)
 
+
       if (!isAllSelected && !isLastSelected) {
         this.handleUpdateIndicesOutbound(new Set([highestIndex+1]))
         event.preventDefault()
@@ -75,28 +101,31 @@ class DataMigrationDetails extends React.Component {
 
     if (isSource) {
 
-      const { selectedIndicesSource } = this.state
+      const { selectedIndicesSource, filterText } = this.state
       const { files } = this.props
 
-      const isAllSelected = selectedIndicesSource.size === files.length
+      const isAllSelected = selectedIndicesSource.size === files.filter( file => {
+        if (file.name.indexOf(filterText) > -1) return file
+      }).length
       const lowestIndex = Math.min.apply(Math, Array.from(selectedIndicesSource.values()))
       const isFirstSelected = lowestIndex == 0
 
       if (!isAllSelected && !isFirstSelected) {
-        this.handleUpdateIndicesSource(new Set([lowestIndex-1]))
         event.preventDefault()
+        this.handleUpdateIndicesSource(new Set([lowestIndex-1]))
       }
     } else {
 
       const { selectedIndicesOutbound, outboundFiles } = this.state
 
       const isAllSelected = outboundFiles.length == selectedIndicesOutbound.size
+
       const lowestIndex = Math.max.apply(Math, Array.from(selectedIndicesOutbound.values()))
       const isFirstSelected = lowestIndex == 0
 
       if (!isAllSelected && !isFirstSelected) {
-        this.handleUpdateIndicesOutbound(new Set([lowestIndex - 1]))
         event.preventDefault()
+        this.handleUpdateIndicesOutbound(new Set([lowestIndex - 1]))
       }
 
     }
@@ -151,7 +180,8 @@ class DataMigrationDetails extends React.Component {
   }
 
   sortFiles() {
-    const { sortOrder } = this.state
+
+    const { sortOrder, filterText } = this.state
     const unsortedFile = this.props.files
 
     let files = unsortedFile.slice()
@@ -180,11 +210,13 @@ class DataMigrationDetails extends React.Component {
     sortedFiles = !sortOrder.date
       ? sortedFiles
       : (sortOrder.date == 1
-          ? _.sortBy(files, file => new Date(file.date))
-          : _.sortBy(files, file => new Date(file.date)).reverse()
+          ? _.sortBy(files, file => new Date(file.updated))
+          : _.sortBy(files, file => new Date(file.updated)).reverse()
       )
 
-    return sortedFiles
+    return sortedFiles.filter( file => {
+      if (file.name.indexOf(filterText) > -1) return file
+    })
   }
 
   render() {
@@ -194,9 +226,7 @@ class DataMigrationDetails extends React.Component {
 
     const shouldRenderTransfer = !!chouetteInfo.migrateDataToProvider
 
-    const sortedFiles = this.sortFiles(files).filter( file => {
-      if (file.name.indexOf(filterText) > -1) return file
-    })
+    const sortedFiles = this.sortFiles(files)
 
     const toolTips = {
       import: 'Import all files listed in the list on the right side below. Files will be imported in the given order. If success, VALIDATE will be called',
@@ -237,6 +267,7 @@ class DataMigrationDetails extends React.Component {
             handleSortByExt={this.handleSortByExt.bind(this)}
             handleKeyDown={this.handleKeyDown.bind(this)}
             handleKeyUp={this.handleKeyUp.bind(this)}
+            handleSelectAllShowingIndices={this.handleSelectAllShowingIndices.bind(this)}
           />
           { sortedFiles.length
             ?
@@ -252,6 +283,7 @@ class DataMigrationDetails extends React.Component {
             updateIndices={this.handleUpdateIndicesOutbound.bind(this)}
             handleKeyDown={this.handleKeyDown.bind(this)}
             handleKeyUp={this.handleKeyUp.bind(this)}
+            handleSelectAllShowingIndices={this.handleSelectAllShowingIndices.bind(this)}
           />
           <div style={{flex: 0.2, display: outboundFiles.length ? 'flex' : 'none', alignItems: 'center', flexDirection: 'column', cursor: 'pointer'}}>
             <FaArrowDown style={{transform: 'scale(2)', marginBottom: 30, marginLeft: 20}} onClick={this.moveDown}/>
@@ -306,7 +338,7 @@ class DataMigrationDetails extends React.Component {
     if (maxValue >= outboundFiles.length-1) return
 
     selectedIndicesOutbound.forEach( value => {
-      if (value) {
+      if (value > -1) {
         outboundFiles.splice(value+1, 0, outboundFiles.splice(value, 1)[0])
         updatedIndices.add(value+1)
       } else {

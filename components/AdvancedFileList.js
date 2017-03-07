@@ -34,7 +34,7 @@ class AdvancedFileList extends React.Component {
 
   handleSelectAll(e) {
 
-    const { files, updateIndices, handleKeyDown, handleKeyUp, isSource } = this.props
+    const { files, updateIndices, handleKeyDown, handleKeyUp, isSource, handleSelectAllShowingIndices } = this.props
 
     if (e.keyCode == 40) {
       handleKeyDown(isSource, e)
@@ -47,7 +47,7 @@ class AdvancedFileList extends React.Component {
     // handle select-all (cmd+a or ctrl+a)
     if (files.length && e.keyCode == 65 && (e.ctrlKey || e.metaKey)) {
       e.preventDefault()
-      updateIndices(new Set(files.map( (f, i) => i)))
+      handleSelectAllShowingIndices(isSource)
     }
   }
 
