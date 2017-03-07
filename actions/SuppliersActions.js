@@ -29,6 +29,24 @@ SuppliersActions.getProviderStatus = (id) => {
   }
 }
 
+SuppliersActions.executePeliasTask = tasks => {
+
+  return function(dispatch) {
+
+    const queryParams = Object.keys(tasks).filter( (entry) => tasks[entry]).join('&task=')
+    const url = window.config.mardukBaseUrl+`admin/geocoder/start?task=${queryParams}`
+
+    return axios.post(url).then( response => {
+      dispatch(SuppliersActions.addNotification('Pelias task execution', 'success'))
+      dispatch(SuppliersActions.logEvent({title: 'Pelias tasks executed successfully'}))
+    }).catch( err => {
+      dispatch(SuppliersActions.addNotification('Unable to execute pelias tasks', 'error'))
+      dispatch(SuppliersActions.logEvent({title: 'Running pelias tasks failed'}))
+      console.log("err", err)
+    })
+  }
+}
+
 SuppliersActions.uploadFiles = (files, providerId) => {
 
   return function (dispatch) {

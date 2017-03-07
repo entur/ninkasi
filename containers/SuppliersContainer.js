@@ -12,8 +12,28 @@ import Dropdown from 'muicss/lib/react/dropdown'
 import DropdownItem from 'muicss/lib/react/dropdown-item'
 import GraphStatus from '../components/GraphStatus'
 import { getQueryVariable } from './utils'
+import Checkbox from 'material-ui/Checkbox'
+import Popover from 'material-ui/Popover'
+import MdDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
+import Divider from 'material-ui/Divider'
+import peliasTasks from '../config/peliasTasks'
 
 class SuppliersContainer extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+    let tasks = {}
+    peliasTasks.forEach( option => tasks[option.task] = true )
+
+    this.state = {
+      peliasOpen: false,
+      anchorEl: null,
+      peliasOptions: {
+        ...tasks
+      }
+    }
+  }
 
   componentWillMount() {
     const { dispatch } = this.props
@@ -79,6 +99,22 @@ class SuppliersContainer extends React.Component {
     }
   }
 
+  handleTogglePeliasOpen(event, open) {
+    this.setState({
+      peliasOpen: open,
+      anchorEl: event.currentTarget
+    } )
+  }
+
+  handlePeliasOptionChecked(event, task) {
+    this.setState({ peliasOptions: Object.assign({}, this.state.peliasOptions, { [task]: event.target.checked }) })
+  }
+
+  handleExecutePelias() {
+    const { dispatch } = this.props
+    dispatch(SuppliersActions.executePeliasTask(this.state.peliasOptions))
+  }
+
 
   render() {
 
@@ -104,17 +140,63 @@ class SuppliersContainer extends React.Component {
       createNewProvider: 'Create new provider'
     }
 
+    const peliasPopoverStyle = {
+      width: 300,
+      overflowY: "hidden",
+      padding: 10
+    }
+
+    let peliasOptions = peliasTasks.map( option => (
+      <Checkbox
+        key={"pelias-checkbox-" + option.task}
+        label={option.label}
+        onCheck={e => this.handlePeliasOptionChecked(e, option.task)}
+        defaultChecked={true}
+        labelPosition="left"
+        style={{marginTop: 5, marginBottom: 5}}
+      />
+    ))
+
+    peliasOptions.push( <Divider style={{marginTop: 10, marginBottom: 10}}/> )
+
+    peliasOptions.push( (
+      <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+        <Button
+          color="primary"
+          style={{fontSize: 12, textAlign: 'middle', marginTop: -2}}
+          onClick={() => this.handleExecutePelias()}
+          disabled={Object.values(this.state.peliasOptions).every( value => !value )}
+        >
+          Execute
+        </Button>
+      </div>
+    ) )
+
     return (
 
       <div className="suppliers-container">
         <div style={innerContainerStyle}>
           <Button title={toolTips.history} style={{fontSize: 12}} color="dark" onClick={() => this.openModal()}><FaHistory color="#fff"/> History</Button>
+           <Button title={toolTips.history} style={{fontSize: 12}} color="dark" onClick={(event) => this.handleTogglePeliasOpen(event, true)}>
+             Pelias
+             <MdDropDown color="#fff" style={{verticalAlign: 'middle'}}/>
+           </Button>
+           <Popover
+            open={this.state.peliasOpen}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+            onRequestClose={ (event) => this.handleTogglePeliasOpen(event, false)}
+            style={peliasPopoverStyle}
+          >
+            { peliasOptions }
+          </Popover>
           <Button title={toolTips.buildGraph} style={{fontSize: 12}} color="dark" onClick={this.handleBuildGraph.bind(this)}>Build Graph</Button>
           <Button title={toolTips.fetchOSM} style={{fontSize: 12}} color="dark" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</Button>
           <Button title={toolTips.cleanFileFilter} style={{fontSize: 12}} color="dark" onClick={() => this.handleCleanFileFilter()}><FaExclamation color="#b8c500"/> Clean file filter</Button>
           <Button title={toolTips.canceAllJobs} style={{fontSize: 12}} color="dark" onClick={() => this.handleCancelAllJobs()}><FaExclamation color="#b8c500"/> Cancel all jobs</Button>
           <Dropdown title={toolTips.cleanAll} id="dropdown-clean-all" color="dark" label="Clean all">
-            <DropdownItem onClick={() => this.handleCleanAllDataSpaces('all')}>All</DropdownItem>
+            <DropdownItem onClick={() => this.handleCleanAllDataSpaces('all')}></DropdownItem>
             <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level1')}>Level 1</DropdownItem>
             <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level2')}>Level 2</DropdownItem>
           </Dropdown>
