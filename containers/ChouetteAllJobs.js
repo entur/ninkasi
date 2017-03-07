@@ -12,6 +12,8 @@ import Panel from 'muicss/lib/react/panel'
 import Loader from 'halogen/DotLoader'
 import SuppliersActions from '../actions/SuppliersActions'
 import ChouetteLink from '../components/ChouetteLink'
+import DatePicker from 'material-ui/DatePicker'
+import MdClear from 'material-ui/svg-icons/content/clear'
 
 class ChouetteAllJobs extends React.Component {
 
@@ -19,7 +21,8 @@ class ChouetteAllJobs extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeChouettePageIndex: 0
+      activeChouettePageIndex: 0,
+      filterFromDate: null
     }
   }
 
@@ -63,10 +66,49 @@ class ChouetteAllJobs extends React.Component {
     return status
   }
 
+  handleOnDatePickerChange(event, date) {
+    this.setState({
+      filterFromDate: date
+    })
+  }
+
+  getPaginationMap() {
+
+    let { chouetteAllJobStatus, sortProperty, sortOrder } = this.props
+
+    const { filterFromDate } = this.state
+
+    let filteredStatus = chouetteAllJobStatus.filter( job => {
+
+      if (!filterFromDate) return true
+
+      return (new Date(job.created) > new Date(filterFromDate))
+
+    }).sort( (curr, prev) => {
+
+      if (sortOrder == 0) {
+        return (curr[sortProperty] > prev[sortProperty] ? -1 : 1)
+      }
+
+      if (sortOrder == 1) {
+        return (curr[sortProperty] > prev[sortProperty] ? 1 : -1)
+      }
+    })
+
+    let paginationMap = []
+
+    for (let i = 0, j = filteredStatus.length; i < j; i+=20) {
+      paginationMap.push(filteredStatus.slice(i,i+20))
+    }
+
+    return paginationMap
+  }
+
   render() {
 
-    const { chouetteJobAllFilter, paginationMap, requestingJobs} = this.props
+    const { chouetteJobAllFilter, requestingJobs} = this.props
     const { activeChouettePageIndex } = this.state
+    const paginationMap = this.getPaginationMap()
     const page = paginationMap ? paginationMap[activeChouettePageIndex] : null
 
     return(
@@ -113,6 +155,22 @@ class ChouetteAllJobs extends React.Component {
                   </Col>
                   <Col md="2">
                     <Radio onClick={ (event) => this.setActiveActionAllFilter(event)}  value="validator" name="action-filter" label="Validator"/>
+                  </Col>
+                  <Col md="3">
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                      <MdClear
+                        onClick={ () => this.setState({filterFromDate: null})}
+                        style={{marginRight: 5}}
+                      />
+                      <DatePicker
+                        hintText="Filter from date"
+                        autoOk
+                        onChange={this.handleOnDatePickerChange.bind(this)}
+                        style={{display: 'inline-block'}}
+                        textFieldStyle={{width: '60%'}}
+                        value={this.state.filterFromDate}
+                      />
+                    </div>
                   </Col>
                 </Form>
               </Row>
@@ -209,34 +267,12 @@ class ChouetteAllJobs extends React.Component {
       }
     }
 
-    const mapStateToProps = (state, ownProps) => {
-
-      var list = state.MardukReducer.chouetteAllJobStatus
-
-      let sortProperty = state.UtilsReducer.chouetteListAllSortOrder.property
-      let sortOrder = state.UtilsReducer.chouetteListAllSortOrder.sortOrder
-
-      list.sort( (curr, prev) => {
-
-        if (sortOrder == 0) {
-          return (curr[sortProperty] > prev[sortProperty] ? -1 : 1)
-        }
-
-        if (sortOrder == 1) {
-          return (curr[sortProperty] > prev[sortProperty] ? 1 : -1)
-        }
-
-      })
-
-      var paginationMap = []
-
-      for (let i = 0, j = list.length; i < j; i+=20) {
-        paginationMap.push(list.slice(i,i+20))
-      }
-
+    const mapStateToProps = state => {
       return {
         chouetteJobAllFilter: state.MardukReducer.chouetteJobAllFilter,
-        paginationMap: paginationMap,
+        chouetteAllJobStatus: state.MardukReducer.chouetteAllJobStatus || [],
+        sortProperty: state.UtilsReducer.chouetteListAllSortOrder.property,
+        sortOrder: state.UtilsReducer.chouetteListAllSortOrder.sortOrder,
         actionAllFilter: state.MardukReducer.actionAllFilter,
         requestingJobs: state.MardukReducer.requesting_chouette_all_job
       }

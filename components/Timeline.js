@@ -9,7 +9,7 @@ class Timeline extends React.Component {
 
   render() {
 
-      const { timetables, validDaysOffset, isLast } = this.props
+      const { timetables, isLast } = this.props
 
       let { periods } = timetables[0]
 
