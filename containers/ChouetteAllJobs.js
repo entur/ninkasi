@@ -163,7 +163,7 @@ class ChouetteAllJobs extends React.Component {
                         style={{marginRight: 5}}
                       />
                       <DatePicker
-                        hintText="Filter from date"
+                        hintText="From ..."
                         autoOk
                         onChange={this.handleOnDatePickerChange.bind(this)}
                         style={{display: 'inline-block'}}

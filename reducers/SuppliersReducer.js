@@ -51,6 +51,9 @@ const SuppliersReducer = (state = initialState, action) => {
       data[action.payLoad.id] = action.payLoad.data
       return Object.assign({}, state, { lineStats: Object.assign(state.lineStats, data) })
 
+    case types.RECEIVED_GRAPH_STATUS:
+      return Object.assign({}, state, { ... action.payLoad })
+
     default:
       return state
   }

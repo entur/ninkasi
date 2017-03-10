@@ -22,8 +22,8 @@ class ModalActionContainer extends React.Component {
 
     const selectStyle = {
       height: "100%",
-      minHeight: "500px",
-      width: "95%",
+      minHeight: '50vh',
+      width: "96%",
       margin: 10
     }
 
@@ -37,7 +37,8 @@ class ModalActionContainer extends React.Component {
       marginLeft: 10,
       fontSize: "1.5em",
       position: "absolute",
-      marginTop: 10
+      marginTop: 10,
+      fontWeight: 600
     }
 
     return (

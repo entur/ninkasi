@@ -73,7 +73,7 @@ class EditSupplierPage extends React.Component {
     return (
 
       <Form onSubmit={(event) => handleOnSubmit(event)} style={ {background: "#fff"}}>
-        <div style={{marginLeft: '10%',}}>
+        <div style={{marginLeft: '5%',}}>
          <legend style={headerStyle}>{header}</legend>
          <div style={labelStyle}>Provider name</div>
          <input onChange={ (event) => this.handleValueChange("name", event)} value={provider.name} style={inputStyle} />

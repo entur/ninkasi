@@ -17,6 +17,8 @@ import Popover from 'material-ui/Popover'
 import MdDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
 import Divider from 'material-ui/Divider'
 import peliasTasks from '../config/peliasTasks'
+import moment from 'moment'
+
 
 class SuppliersContainer extends React.Component {
 
@@ -115,10 +117,24 @@ class SuppliersContainer extends React.Component {
     dispatch(SuppliersActions.executePeliasTask(this.state.peliasOptions))
   }
 
+  getColorByStatus(status) {
+    switch (status) {
+      case 'STARTED': return '#08920e'
+      case 'OK': return '#08920e'
+      case 'FAILED': return '#990000'
+      default: return 'grey'
+    }
+  }
+
+  getLabelByJobType(type) {
+    for (let i = 0; i < peliasTasks.length; i++) {
+      if (peliasTasks[i].task === type) return peliasTasks[i].label
+    }
+  }
 
   render() {
 
-    const {suppliers, activeProviderId} = this.props
+    const {suppliers, activeProviderId, otherStatus } = this.props
 
     let selectedValue = (typeof(activeProviderId) !== 'undefined') ? String(activeProviderId) : "0"
 
@@ -141,7 +157,6 @@ class SuppliersContainer extends React.Component {
     }
 
     const peliasPopoverStyle = {
-      width: 300,
       overflowY: "hidden",
       padding: 10
     }
@@ -156,6 +171,22 @@ class SuppliersContainer extends React.Component {
         style={{marginTop: 5, marginBottom: 5}}
       />
     ))
+
+    peliasOptions.push( <Divider style={{marginTop: 10, marginBottom: 10}}/> )
+
+    peliasOptions.push(
+      <div style={{display: 'flex', flexDirection: 'column'}}>
+        <span style={{fontWeight: 600}}>Status</span>
+        { otherStatus.map( status => (
+            <div key={status.jobType} style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+              <div style={{marginLeft: 5, flex: '1 1'}}>{this.getLabelByJobType(status.type)}</div>
+              <div style={{marginLeft: 5, color: this.getColorByStatus(status.status)}}>{status.status}</div>
+              <div style={{marginLeft: 5, fontSize: '0.9em'}}>{moment(status.started).format('HH:mm:ss DD-MM')}</div>
+            </div>
+          ))
+        }
+      </div>
+    )
 
     peliasOptions.push( <Divider style={{marginTop: 10, marginBottom: 10}}/> )
 
@@ -215,9 +246,9 @@ class SuppliersContainer extends React.Component {
 const mapStateToProps = state => {
   return {
     suppliers: state.SuppliersReducer.data,
-    activeProviderId: state.SuppliersReducer.activeId
+    activeProviderId: state.SuppliersReducer.activeId,
+    otherStatus: state.SuppliersReducer.otherStatus || [],
   }
 }
-
 
 export default connect(mapStateToProps)(SuppliersContainer)

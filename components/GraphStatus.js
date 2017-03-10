@@ -24,6 +24,15 @@ class GraphStatus extends React.Component {
     this.props.dispatch(SupplierActions.getGraphStatus())
   }
 
+  getColorByStatus(status) {
+    switch (status) {
+      case 'STARTED': return '#08920e'
+      case 'OK': return '#08920e'
+      case 'FAILED': return '#990000'
+      default: return 'grey'
+    }
+  }
+
   render() {
 
     const { graphStatus } = this.props
@@ -42,23 +51,18 @@ class GraphStatus extends React.Component {
 
     return (
       <div style={statusStyle}>
-        <span style={{display: 'block'}}>Graph status: <span style={{fontWeight: 600, color: status === 'IDLE' ? '#ff9800' : '#08920e' }}>{status}</span></span>
+        <span style={{display: 'block'}}>Graph status: <span style={{fontWeight: 600, color: this.getColorByStatus(status) }}>{status}</span></span>
         <span style={{display: 'block', fontSize: '0.8em'}}>{moment(graphStatus.started).fromNow()}</span>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
-    graphStatus: state.MardukReducer.graphStatus
+    graphStatus: state.SuppliersReducer.graphStatus
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(GraphStatus)
+export default connect(mapStateToProps)(GraphStatus)

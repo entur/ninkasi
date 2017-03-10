@@ -512,11 +512,31 @@ SuppliersActions.getGraphStatus = () => {
 
   return function(dispatch) {
 
-    const url = window.config.mardukBaseUrl+`admin/services/graph/status`
+    const url = window.config.nabuBaseUrl+`jersey/systemJobs/status/aggregation`
 
     return axios.get(url)
     .then( (response) => {
-      dispatch( sendData(response.data, types.RECEIVED_GRAPH_STATUS) )
+
+      let status = {
+        otherStatus: []
+      }
+      response.data.forEach( type => {
+
+        if (type.jobType === 'BUILD_GRAPH') {
+          status.graphStatus = {
+            status: type.currentState,
+            started: type.currentStateDate
+          }
+        } else {
+          status.otherStatus.push({
+            type: type.jobType,
+            status: type.currentState,
+            started: type.currentStateDate
+          })
+        }
+      })
+
+      dispatch( sendData(status, types.RECEIVED_GRAPH_STATUS) )
     })
     .catch( (response) => {
       console.error('error receiving graph status', response)
