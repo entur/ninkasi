@@ -1,0 +1,29 @@
+.organization-row {
+
+  div {
+    margin: 2px;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+
+  }
+
+  .col-1-4 {
+    width: 28%;
+    max-width: 28%;
+    min-width: 28%  ;
+    display: inline-block;
+  }
+
+  .col-icon {
+    width: 8%;
+    display: inline-block;
+  }
+
+  .organization-header {
+    font-weight: 600;
+    text-transform: uppercase;
+    background: rgba(238, 238, 238, 0.28);
+    margin-bottom: 5px;
+  }
+
+}

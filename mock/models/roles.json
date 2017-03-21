@@ -1,0 +1,12 @@
+[
+  {
+    "id": "editStops",
+    "privateCode": "editStops",
+    "name": "Opplasting og redigering av stopp"
+  },
+  {
+    "id": "editPlaceOfInterest",
+    "privateCode": "editPlaceOfInterest",
+    "name": "Opplasting og redigering av POI"
+  }
+]

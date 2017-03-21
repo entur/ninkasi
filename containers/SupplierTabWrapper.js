@@ -6,7 +6,6 @@ import ChouetteJobDetails from './ChouetteJobDetails'
 import ChouetteAllJobs from './ChouetteAllJobs'
 import DataMigrationDetails from './DataMigrationDetails'
 import cfgreader from '../config/readConfig'
-import Container from 'muicss/lib/react/container'
 import Loader from 'halogen/PulseLoader'
 import '../sass/main.scss'
 import Tabs from 'muicss/lib/react/tabs'
@@ -16,6 +15,7 @@ import { getQueryVariable } from './utils'
 import FileUpload from './FileUpload'
 import StatisticsDetails from './StatisticsDetails'
 import StaticsForProvider from './StatisticsForProvider'
+import OrganizationRegister from './OrganizationRegister'
 
 class SupplierTabWrapper extends React.Component {
 
@@ -210,6 +210,9 @@ class SupplierTabWrapper extends React.Component {
             </Tab>
             <Tab value="statistics" label="Statistics">
               { suppliers.length && <StatisticsDetails dispatch={this.props.dispatch} lineStats={lineStats} suppliers={suppliers}/> }
+            </Tab>
+            <Tab value="Organization register" label="Organization register">
+                <OrganizationRegister/>
             </Tab>
           </Tabs>
       }
