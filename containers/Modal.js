@@ -22,10 +22,10 @@ class Modal extends React.Component {
     }
 
     if (this.props.width && this.props.height) {
-      modalStyle.width = this.props.width + 'px'
-      modalStyle.height = this.props.height + 'px'
-      modalStyle.marginLeft = '-' + (this.props.width/2) + 'px',
-      modalStyle.marginTop = '-' + (this.props.height/2) + 'px',
+      modalStyle.width = this.props.width
+      modalStyle.height = this.props.height
+      modalStyle.marginLeft = (this.props.width/2) * (-1),
+      modalStyle.marginTop =  (this.props.height/2) * (-1),
       modalStyle.transform = null
     }
 
@@ -39,8 +39,8 @@ class Modal extends React.Component {
       position: 'absolute',
       width: '100%',
       height: '100%',
-      top: '0px',
-      left: '0px',
+      top: 0,
+      left: 0,
       zIndex: '9998',
       background: 'rgba(0, 0, 0, 0.3)'
     }
@@ -72,7 +72,7 @@ class Modal extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
       loggedEvents: state.UtilsReducer.loggedEvents
   }

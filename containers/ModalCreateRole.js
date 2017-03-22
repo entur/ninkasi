@@ -4,25 +4,30 @@ import TextField from 'material-ui/TextField'
 import MdClose from 'material-ui/svg-icons/navigation/close'
 import RaisedButton from 'material-ui/RaisedButton'
 
-class ModalEditRole extends React.Component {
+const initialState = {
+  role: {
+    name: '',
+    privateCode: ''
+  }
+}
 
+class ModalCreateRole extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      role: null
-    }
+    this.state = initialState
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      role: nextProps.role
-    })
+
+  handleOnClose() {
+    this.setState(initialState)
+    this.props.handleCloseModal()
   }
 
   render() {
 
-    const { isModalOpen, handleSubmit } = this.props
+    const { isModalOpen, handleSubmit, takenPrivateCodes } = this.props
+
     const { role } = this.state
 
     const titleStyle = {
@@ -32,39 +37,40 @@ class ModalEditRole extends React.Component {
       width: '80%',
     }
 
-    if (!role) return null
+    const invalidPrivateCode = takenPrivateCodes.indexOf(role.privateCode) > -1
 
     return (
-        <Modal isOpen={isModalOpen} onClose={() => this.props.handleCloseModal()} minWidth="35vw" minHeight="auto">
+        <Modal isOpen={isModalOpen} onClose={() => this.handleOnClose()} minWidth="35vw" minHeight="auto">
           <div>
             <div style={{display: 'flex', alignItems: 'center'}}>
-              <div style={titleStyle}>Editing role</div>
-              <MdClose style={{marginRight: 10, cursor: 'pointer'}} onClick={() => this.props.handleCloseModal()}/>
+              <div style={titleStyle}>Creating a new role</div>
+              <MdClose style={{marginRight: 10, cursor: 'pointer'}} onClick={() => this.handleOnClose()}/>
             </div>
-            <div style={{fontSize: '1.1em', textAlign: 'center'}}> { role.privateCode } </div>
             <div style={{display: 'flex', justifyContent: 'space-around'}}>
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '80%', marginTop: '20px'}}>
                 <TextField
                   hintText="Name"
                   value={role.name}
-                  onChange={ (e, value) => this.setState({role: {
-                    ...role,
-                    name: value
-                  }})}
+                  onChange={ (e, value) => this.setState({
+                    role: { ...role, name: value }
+                  })}
                   fullWidth={true}
                   style={{marginBottom: 20}}
                 />
                 <TextField
-                  disabled={true}
-                  defaultValue={role.privateCode}
                   hintText="private code"
+                  errorText={invalidPrivateCode ? 'Private code already exists' : ''}
+                  value={role.privateCode}
+                  onChange={ (e, value) => this.setState({
+                    role: { ...role, privateCode: value }
+                  })}
                   fullWidth={true}
                 />
               </div>
             </div>
             <div style={{display: 'flex', justifyContent: 'space-between', marginRight: 15}}>
               <div style={{fontSize: 12, marginLeft: 15}}></div>
-              <RaisedButton label="Update" primary={true} onClick={() => handleSubmit(role) }/>
+              <RaisedButton disabled={invalidPrivateCode} label="Create" primary={true} onClick={ () => handleSubmit(role)} />
             </div>
           </div>
         </Modal>
@@ -74,4 +80,4 @@ class ModalEditRole extends React.Component {
 }
 
 
-export default ModalEditRole
+export default ModalCreateRole
