@@ -47,7 +47,59 @@ OrganizationRegisterActions.updateRole = role => {
     }).then(response => {
       dispatch(OrganizationRegisterActions.getRoles())
     }).catch( error => {
-      console.log("Error creating role", error)
+      console.log("Error updating role", error)
+    })
+  }
+}
+
+OrganizationRegisterActions.getOrganizations = () => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/organisations`
+    return axios.get(url)
+    .then(response => {
+      dispatch(sendData(response.data, types.RECEIVED_ORGANIZATIONS))
+    }).catch( error => {
+      console.log("Error receiving organizations", error)
+    })
+  }
+}
+
+OrganizationRegisterActions.createOrganization = organization => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/organisations`
+    return axios.post(url, organization, {
+      headers: {'Content-Type': 'application/json'}
+    }).then(response => {
+      dispatch(sendData(null, types.CREATED_ORGANIZATION))
+      dispatch(OrganizationRegisterActions.getOrganizations())
+    }).catch( error => {
+      dispatch(sendData(types.FAILED_CREATING_ORGANIZATION, error))
+    })
+  }
+}
+
+OrganizationRegisterActions.updateOrganization = organization => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/organisations/${organization.id}`
+    return axios.put(url, organization, {
+      headers: {'Content-Type': 'application/json'}
+    }).then(response => {
+      dispatch(sendData(null, types.UPDATED_ORGANIZATION))
+      dispatch(OrganizationRegisterActions.getOrganizations())
+    }).catch( error => {
+      console.log("Error updating organization", error)
+    })
+  }
+}
+
+OrganizationRegisterActions.getCodeSpaces = () => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/code_spaces`
+    return axios.get(url)
+    .then(response => {
+      dispatch(sendData(response.data, types.RECEIVED_CODESPACES))
+    }).catch( error => {
+      console.log("Error receiving code spaces", error)
     })
   }
 }

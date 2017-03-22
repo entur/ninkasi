@@ -18,6 +18,10 @@ class ModalCreateRole extends React.Component {
     this.state = initialState
   }
 
+  componentWillUnmount() {
+    this.state = initialState
+  }
+
 
   handleOnClose() {
     this.setState(initialState)

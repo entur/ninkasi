@@ -85,18 +85,24 @@ class RoleView extends React.Component {
             onClick={() => this.setState({isCreateModalOpen: true})}
           />
         </FloatingActionButton>
-        <ModalCreateRole
-          isModalOpen={this.state.isCreateModalOpen}
-          handleCloseModal={() => this.setState({isCreateModalOpen: false})}
-          takenPrivateCodes={roles.map( role => role.privateCode)}
-          handleSubmit={this.handleCreateRole.bind(this)}
-        />
-        <ModalEditRole
-          isModalOpen={this.state.isEditModalOpen}
-          role={this.state.activeRole}
-          handleCloseModal={() => this.setState({isEditModalOpen: false})}
-          handleSubmit={this.handleUpdateRole.bind(this)}
-        />
+        { this.state.isCreateModalOpen ?
+          <ModalCreateRole
+            isModalOpen={this.state.isCreateModalOpen}
+            handleCloseModal={() => this.setState({isCreateModalOpen: false})}
+            takenPrivateCodes={roles.map( role => role.privateCode)}
+            handleSubmit={this.handleCreateRole.bind(this)}
+          />
+          : null
+        }
+        { this.state.isEditModalOpen ?
+          <ModalEditRole
+            isModalOpen={this.state.isEditModalOpen}
+            role={this.state.activeRole}
+            handleCloseModal={() => this.setState({isEditModalOpen: false})}
+            handleSubmit={this.handleUpdateRole.bind(this)}
+          />
+          : null
+        }
       </div>
     )
   }

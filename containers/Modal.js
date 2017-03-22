@@ -14,7 +14,7 @@ class Modal extends React.Component {
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
-      zIndex: '9999',
+      zIndex: '11',
       minWidth: minWidth || '50%',
       height: minHeight,
       minHeight: minHeight || '60%',
@@ -41,7 +41,7 @@ class Modal extends React.Component {
       height: '100%',
       top: 0,
       left: 0,
-      zIndex: '9998',
+      zIndex: '10',
       background: 'rgba(0, 0, 0, 0.3)'
     }
 
