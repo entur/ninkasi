@@ -28,6 +28,7 @@ const intialState = {
   loggedEvents: [],
   loggedEventsFilter: '',
   filteredLoggedEvents: [],
+  isConfigLoaded: false,
   activeTab: 'migrateData',
   eventListSortOrder: {
     property: "firstEvent",
@@ -137,6 +138,9 @@ const UtilsReducer = (state = intialState, action) => {
 
     case types.UPDATED_SUPPLIER_FORM:
       return Object.assign({}, state, {supplierForm: createUpdatedSupplierFormObject(state.supplierForm, action.payLoad) } )
+
+    case types.CONFIG_LOADED:
+      return Object.assign({}, state, { isConfigLoaded: true })
 
 
     default:

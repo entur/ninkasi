@@ -3,7 +3,8 @@ import * as types from './../actions/actionTypes'
 const initialState = {
   roles: [],
   organizations: [],
-  codeSpaces: []
+  codeSpaces: [],
+  users: [],
 }
 
 const OrganizationReducer = (state = initialState, action) => {
@@ -48,6 +49,9 @@ const OrganizationReducer = (state = initialState, action) => {
 
     case types.RECEIVED_CODESPACES:
       return Object.assign({}, state, { codeSpaces: action.payLoad })
+
+    case types.RECEIVED_USERS:
+      return Object.assign({}, state, { users: action.payLoad })
 
     default:
       return state

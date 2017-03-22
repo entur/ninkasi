@@ -104,6 +104,17 @@ OrganizationRegisterActions.getCodeSpaces = () => {
   }
 }
 
+OrganizationRegisterActions.getUsers = () => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/users`
+    return axios.get(url)
+    .then(response => {
+      dispatch(sendData(response.data, types.RECEIVED_USERS))
+    }).catch( error => {
+      console.log("Error receiving users", error)
+    })
+  }
+}
 
 
 export default OrganizationRegisterActions

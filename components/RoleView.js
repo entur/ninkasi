@@ -59,7 +59,7 @@ class RoleView extends React.Component {
         <div className="role-header">
           <div className="col-1-4">id</div>
           <div className="col-1-4">name</div>
-          <div className="col-1-4">privatecode</div>
+          <div className="col-1-4">private code</div>
         </div>
         {
           roles.map( role => {
