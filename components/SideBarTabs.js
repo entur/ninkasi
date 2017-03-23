@@ -39,6 +39,11 @@ class SideBarTabs extends React.Component {
           active={activeTab === 1}
           onClick={() => this.setActiveTab(1)}
         />
+        <SideBarTabsElement
+          label="Responsibilities"
+          active={activeTab === 3}
+          onClick={() => this.setActiveTab(3)}
+        />
 
       </div>
     )

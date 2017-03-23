@@ -5,6 +5,7 @@ const initialState = {
   organizations: [],
   codeSpaces: [],
   users: [],
+  responsibilities: [],
 }
 
 const OrganizationReducer = (state = initialState, action) => {
@@ -52,6 +53,9 @@ const OrganizationReducer = (state = initialState, action) => {
 
     case types.RECEIVED_USERS:
       return Object.assign({}, state, { users: action.payLoad })
+
+    case types.RECEIVED_RESPONSIBILITES:
+      return Object.assign({}, state, { responsibilities: action.payLoad })
 
     default:
       return state

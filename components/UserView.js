@@ -19,19 +19,19 @@ class UserView extends React.Component {
     return (
       <div className="user-row">
         <div className="user-header">
-          <div className="col-1-5">Username</div>
-          <div className="col-1-5">OrganisationRef</div>
-          <div className="col-1-5">Code Space</div>
-          <div className="col-1-5">Private Code</div>
+          <div className="col-1-5">Id</div>
+          <div className="col-1-5">username</div>
+          <div className="col-1-5">organisation</div>
+          <div className="col-1-5">responsibilities</div>
         </div>
         {
           users.map( user => {
             return (
               <div key={'user-' + user.id}>
+                <div className="col-1-5">{ user.id }</div>
                 <div className="col-1-5">{ user.username }</div>
                 <div className="col-1-5">{ user.organisationRef }</div>
-                <div className="col-1-5">{ user.codeSpace }</div>
-                <div className="col-1-5">{ user.privateCode }</div>
+                <div className="col-1-5">{ user.responsibilitySetRefs }</div>
                 <div className="col-icon">
                   <MdEdit color="rgba(25, 118, 210, 0.59)" style={{height: 20, width: 20, verticalAlign: 'middle', cursor: 'pointer'}}/>
                 </div>

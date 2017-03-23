@@ -1,0 +1,49 @@
+.responsibility-row {
+
+  div {
+    margin: 2px;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+
+  }
+
+  .col-1-5 {
+    width: 18%;
+    max-width: 18%;
+    min-width: 18%;
+    display: inline-block;
+  }
+
+  .col-1-4 {
+    width: 25%;
+    max-width: 25%;
+    min-width: 25%;
+    display: inline-block;
+  }
+
+  .col-1-6 {
+    width: 15%;
+    max-width: 15%;
+    min-width: 15%;
+    display: inline-block;
+  }
+
+  .expandable {
+    color: #366dab;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .col-icon {
+    width: 8%;
+    display: inline-block;
+  }
+
+  .responsibility-header {
+    font-weight: 600;
+    text-transform: uppercase;
+    background: rgba(238, 238, 238, 0.28);
+    margin-bottom: 5px;
+  }
+
+}

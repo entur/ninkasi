@@ -1,0 +1,32 @@
+.resp-roles-row {
+
+  div {
+    margin: 2px;
+    margin-bottom: 5px;
+    font-size: 12px;
+  }
+
+  .col-1-6 {
+    width: 17%;
+    max-width: 17%;
+    min-width: 17%  ;
+    display: inline-block;
+  }
+
+  .col-icon {
+    width: 8%;
+    display: inline-block;
+  }
+
+  .resp-roles-header {
+    font-weight: 600;
+    text-transform: uppercase;
+    background: rgba(238, 238, 238, 0.28);
+    margin-bottom: 5px;
+  }
+
+  ul {
+    font-size: 12px;
+  }
+
+}

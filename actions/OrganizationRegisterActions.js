@@ -116,5 +116,17 @@ OrganizationRegisterActions.getUsers = () => {
   }
 }
 
+OrganizationRegisterActions.getResponsibilities = () => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/responsibility_sets`
+    return axios.get(url)
+    .then(response => {
+      dispatch(sendData(response.data, types.RECEIVED_RESPONSIBILITES))
+    }).catch( error => {
+      console.log("Error responsibility_sets users", error)
+    })
+  }
+}
+
 
 export default OrganizationRegisterActions
