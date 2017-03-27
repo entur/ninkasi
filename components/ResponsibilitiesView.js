@@ -5,6 +5,8 @@ import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions'
 import ModalResponsibilityRolesView from '../containers/ModalResponsibilityRolesView'
+import ModalCreateResponsibilitySet from '../containers/ModalCreateResponsibilitySet'
+import ModalEditingResponsibilitySet from '../containers/ModalEditResponsibilitySet'
 import { connect } from 'react-redux'
 
 const initialState = {
@@ -12,7 +14,10 @@ const initialState = {
     roles: [],
     open: false,
     name: '',
-  }
+  },
+  isCreatingResponsibilitySet: false,
+  isEditingResponsibilitySet: false,
+  activeResponsibilitySet: null
 }
 
 class ResponsibilitiesView extends React.Component {
@@ -22,14 +27,35 @@ class ResponsibilitiesView extends React.Component {
     this.state = initialState
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.status && nextProps.status.error == null) {
+      this.setState({
+        isCreatingResponsibilitySet: false,
+        isEditingResponsibilitySet: false
+      })
+    }
+  }
+
   componentWillMount() {
     this.props.dispatch(OrganizationRegisterActions.getResponsibilities())
+    this.props.dispatch(OrganizationRegisterActions.getCodeSpaces())
+    this.props.dispatch(OrganizationRegisterActions.getRoles())
+    this.props.dispatch(OrganizationRegisterActions.getOrganizations())
+    this.props.dispatch(OrganizationRegisterActions.getEntityTypes())
+  }
+
+  handleCreateResponsibilitySet(responsibilitySet) {
+    this.props.dispatch(OrganizationRegisterActions.createResponsibilitySet(responsibilitySet))
+  }
+
+  handleUpdateResponsibilitySet(responsibilitySet) {
+    this.props.dispatch(OrganizationRegisterActions.updateResponsibilitySet(responsibilitySet))
   }
 
   render() {
 
-    const { responsibilities } = this.props
-    const { rolesView } = this.state
+    const { responsibilities, codeSpaces, roles, organizations, entityTypes } = this.props
+    const { rolesView, isCreatingResponsibilitySet, isEditingResponsibilitySet, activeResponsibilitySet } = this.state
 
     return (
       <div className="responsibility-row">
@@ -59,14 +85,23 @@ class ResponsibilitiesView extends React.Component {
                 >
                   { responsibility.roles.length }
                 </div>
-                <div className="col-icon">
+                <div className="col-icon"
+                  onClick={() => this.setState({
+                    isEditingResponsibilitySet: true,
+                    activeResponsibilitySet: responsibility
+                  })}
+                >
                   <MdEdit color="rgba(25, 118, 210, 0.59)" style={{height: 20, width: 20, verticalAlign: 'middle', cursor: 'pointer'}}/>
                 </div>
               </div>
             )
           })
         }
-        <FloatingActionButton mini={true} style={{float: 'right', marginRight: 10}}>
+        <FloatingActionButton
+          mini={true}
+          style={{float: 'right', marginRight: 10}}
+          onClick={() => this.setState({isCreatingResponsibilitySet: true})}
+        >
           <ContentAdd />
         </FloatingActionButton>
         { rolesView.open
@@ -78,13 +113,47 @@ class ResponsibilitiesView extends React.Component {
             />
           : null
         }
+        {
+          isCreatingResponsibilitySet
+            ? <ModalCreateResponsibilitySet
+                modalOpen={isCreatingResponsibilitySet}
+                codeSpaces={codeSpaces}
+                handleOnClose={ () => this.setState({isCreatingResponsibilitySet: false})}
+                takenPrivateCodes={responsibilities.map( r => r.privateCode )}
+                roles={roles}
+                organizations={organizations}
+                handleSubmit={this.handleCreateResponsibilitySet.bind(this)}
+                entityTypes={entityTypes}
+            />
+            : null
+        }
+        {
+          isEditingResponsibilitySet
+            ? <ModalEditingResponsibilitySet
+                modalOpen={isEditingResponsibilitySet}
+                responsibilitySet={activeResponsibilitySet}
+                codeSpaces={codeSpaces}
+                handleOnClose={ () => this.setState({isEditingResponsibilitySet: false})}
+                takenPrivateCodes={responsibilities.map( r => r.privateCode )}
+                roles={roles}
+                organizations={organizations}
+                handleSubmit={this.handleUpdateResponsibilitySet.bind(this)}
+                entityTypes={entityTypes}
+              />
+            : null
+        }
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  responsibilities: state.OrganizationReducer.responsibilities
+  responsibilities: state.OrganizationReducer.responsibilities,
+  codeSpaces: state.OrganizationReducer.codeSpaces,
+  roles: state.OrganizationReducer.roles,
+  organizations: state.OrganizationReducer.organizations,
+  status: state.OrganizationReducer.organizationStatus,
+  entityTypes: state.OrganizationReducer.entityTypes
 })
 
 export default connect(mapStateToProps)(ResponsibilitiesView)

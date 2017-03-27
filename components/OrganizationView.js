@@ -126,7 +126,7 @@ class OrganizationView extends React.Component {
 const mapStateToProps = state => ({
   organizations: state.OrganizationReducer.organizations,
   codeSpaces: state.OrganizationReducer.codeSpaces,
-  status: state.OrganizationReducer.organizationStatus
+  status: state.OrganizationReducer.organizationStatus,
 })
 
 export default connect(mapStateToProps)(OrganizationView)

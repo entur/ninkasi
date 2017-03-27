@@ -6,6 +6,7 @@ const initialState = {
   codeSpaces: [],
   users: [],
   responsibilities: [],
+  entityTypes: [],
 }
 
 const OrganizationReducer = (state = initialState, action) => {
@@ -48,6 +49,18 @@ const OrganizationReducer = (state = initialState, action) => {
         code: 'ORGANIZATION_CREATED_FAILED'
       }})
 
+    case types.CREATED_RESPONSIBILITY_SET:
+      return Object.assign({}, state, { organizationStatus: {
+        error: null,
+        code: 'RESPONSIBILITY_SET_CREATED'
+      }})
+
+    case types.UPDATED_RESPONSIBILITY_SET:
+      return Object.assign({}, state, { organizationStatus: {
+        error: null,
+        code: 'RESPONSIBILITY_SET_UPDATED'
+      }})
+
     case types.RECEIVED_CODESPACES:
       return Object.assign({}, state, { codeSpaces: action.payLoad })
 
@@ -56,6 +69,9 @@ const OrganizationReducer = (state = initialState, action) => {
 
     case types.RECEIVED_RESPONSIBILITES:
       return Object.assign({}, state, { responsibilities: action.payLoad })
+
+    case types.RECEIVED_ENTITY_TYPES:
+      return Object.assign({}, state, { entityTypes: action.payLoad })
 
     default:
       return state

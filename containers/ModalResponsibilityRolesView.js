@@ -26,18 +26,16 @@ class ModalResponsibilityRolesView extends React.Component {
             </div>
             <div className="resp-roles-row">
               <div className="resp-roles-header">
-                <div className="col-1-4">id</div>
-                <div className="col-1-6">type</div>
-                <div className="col-1-6">organisation</div>
+                <div className="col-1-4">type</div>
+                <div className="col-1-4">organisation</div>
                 <div className="col-1-6">entity class</div>
               </div>
               {
                 roles.map( role => {
                   return (
                     <div key={'resp-role-' + role.id}>
-                      <div className="col-1-4">{ role.id }</div>
-                      <div className="col-1-6">{ role.typeOfResponsibilityRoleRef }</div>
-                      <div className="col-1-6">{ role.responsibleOrganisationRef }</div>
+                      <div className="col-1-4">{ role.typeOfResponsibilityRoleRef }</div>
+                      <div className="col-1-4">{ role.responsibleOrganisationRef }</div>
                       <div className="col-1-6">
                         <ul style={{display: 'flex', flexFlow: 'row wrap', listStyleType: 'circle'}}>
                           { role.entityClassificationRefs

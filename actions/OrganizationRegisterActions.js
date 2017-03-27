@@ -128,5 +128,50 @@ OrganizationRegisterActions.getResponsibilities = () => {
   }
 }
 
+OrganizationRegisterActions.createResponsibilitySet = responsibilitySet => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/responsibility_sets`
+    return axios.post(url, responsibilitySet, {
+      headers: {'Content-Type': 'application/json'}
+    }).then(response => {
+      dispatch(sendData(null, types.CREATED_RESPONSIBILITY_SET))
+      dispatch(OrganizationRegisterActions.getResponsibilities())
+    }).catch( error => {
+      dispatch(sendData(types.FAILED_CREATING_ORGANIZATION, error))
+    })
+  }
+}
+
+OrganizationRegisterActions.updateResponsibilitySet = responsibilitySet => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/responsibility_sets/${responsibilitySet.id}`
+    return axios.put(url, responsibilitySet, {
+      headers: {'Content-Type': 'application/json'}
+    }).then(response => {
+      dispatch(sendData(null, types.UPDATED_RESPONSIBILITY_SET))
+      dispatch(OrganizationRegisterActions.getResponsibilities())
+    }).catch( error => {
+      console.log("Error updating responsibility set", error)
+    })
+  }
+}
+
+OrganizationRegisterActions.getEntityTypes = () => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/entity_types`
+    return axios.get(url)
+    .then(response => {
+      dispatch(sendData(response.data, types.RECEIVED_ENTITY_TYPES))
+    }).catch( error => {
+      console.log("Error receiving entity_types", error)
+    })
+  }
+}
+
+OrganizationRegisterActions.getEntityByClassification = entityType => {
+  const url = `${window.config.nabuBaseUrl}jersey/entity_types/${entityType}/entity_classifications`
+  return axios.get(url)
+}
+
 
 export default OrganizationRegisterActions
