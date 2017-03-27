@@ -60,6 +60,7 @@ class ModalCreateOrganization extends React.Component {
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '80%', marginTop: '20px'}}>
                 <TextField
                   hintText="Name"
+                  floatingLabelText="Name"
                   errorText={isOrganizationNameTaken ? 'Organization name already exists' : ''}
                   value={organization.name}
                   onChange={ (e, value) => this.setState({
@@ -70,6 +71,7 @@ class ModalCreateOrganization extends React.Component {
                 />
                 <TextField
                   hintText="Private code"
+                  floatingLabelText="Private code"
                   errorText={isOrganizationPrivateCodeTaken ? 'Organization private code already exists' : ''}
                   value={organization.privateCode}
                   onChange={ (e, value) => this.setState({
@@ -79,7 +81,8 @@ class ModalCreateOrganization extends React.Component {
                   style={{marginBottom: 20}}
                 />
                 <SelectField
-                  hintText="Organisation type"
+                  hintText="Organization type"
+                  floatingLabelText="Organization type"
                   value={organization.organisationType}
                   onChange={ (e, index, value) => this.setState({
                     organization: { ...organization, organisationType: value }
@@ -91,6 +94,7 @@ class ModalCreateOrganization extends React.Component {
                 </SelectField>
                 <SelectField
                   hintText="Code space"
+                  floatingLabelText="Code space"
                   value={organization.codeSpace}
                   onChange={ (e, index, value) => this.setState({
                     organization: { ...organization, codeSpace: value }

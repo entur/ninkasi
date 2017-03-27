@@ -5,8 +5,8 @@ import FloatingActionButton from 'material-ui/FloatingActionButton'
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import { connect } from 'react-redux'
-import ModalCreateOrganization from '../containers/ModalCreateOrganization'
-import ModalEditOrganization from '../containers/ModalEditOrganization'
+import ModalCreateOrganization from '../modals/ModalCreateOrganization'
+import ModalEditOrganization from '../modals/ModalEditOrganization'
 
 
 class OrganizationView extends React.Component {

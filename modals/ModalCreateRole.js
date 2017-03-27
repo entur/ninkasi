@@ -54,6 +54,7 @@ class ModalCreateRole extends React.Component {
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '80%', marginTop: '20px'}}>
                 <TextField
                   hintText="Name"
+                  floatingLabelText="Name"
                   value={role.name}
                   onChange={ (e, value) => this.setState({
                     role: { ...role, name: value }
@@ -63,6 +64,7 @@ class ModalCreateRole extends React.Component {
                 />
                 <TextField
                   hintText="private code"
+                  floatingLabelText="Private code"
                   errorText={invalidPrivateCode ? 'Private code already exists' : ''}
                   value={role.privateCode}
                   onChange={ (e, value) => this.setState({

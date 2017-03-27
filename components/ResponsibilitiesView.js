@@ -4,9 +4,9 @@ import MdEdit from 'material-ui/svg-icons/image/edit'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions'
-import ModalResponsibilityRolesView from '../containers/ModalResponsibilityRolesView'
-import ModalCreateResponsibilitySet from '../containers/ModalCreateResponsibilitySet'
-import ModalEditingResponsibilitySet from '../containers/ModalEditResponsibilitySet'
+import ModalResponsibilityRolesView from '../modals/ModalResponsibilityRolesView'
+import ModalCreateResponsibilitySet from '../modals/ModalCreateResponsibilitySet'
+import ModalEditingResponsibilitySet from '../modals/ModalEditResponsibilitySet'
 import { connect } from 'react-redux'
 
 const initialState = {

@@ -46,6 +46,7 @@ class ModalEditRole extends React.Component {
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '80%', marginTop: '20px'}}>
                 <TextField
                   hintText="Name"
+                  floatingLabelText="Name"
                   value={role.name}
                   onChange={ (e, value) => this.setState({role: {
                     ...role,
@@ -58,6 +59,7 @@ class ModalEditRole extends React.Component {
                   disabled={true}
                   defaultValue={role.privateCode}
                   hintText="private code"
+                  floatingLabelText="Private code"
                   fullWidth={true}
                 />
               </div>

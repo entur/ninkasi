@@ -3,8 +3,8 @@ import "../sass/views/roleView.scss"
 import MdEdit from 'material-ui/svg-icons/image/edit'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
-import ModalEditRole from '../containers/ModalEditRole'
-import ModalCreateRole from '../containers/ModalCreateRole'
+import ModalEditRole from '../modals/ModalEditRole'
+import ModalCreateRole from '../modals/ModalCreateRole'
 import { connect } from 'react-redux'
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions'
 

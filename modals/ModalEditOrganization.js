@@ -61,11 +61,12 @@ class ModalEditOrganization extends React.Component {
               <div style={titleStyle}>Editing organization</div>
               <MdClose style={{marginRight: 10, cursor: 'pointer'}} onClick={() => this.handleOnClose()}/>
             </div>
-            <div style={{fontSize: '1.1em', textAlign: 'center'}}> { organization.name } </div>
+            <div style={{fontSize: '1.1em', textAlign: 'center'}}> { organization.id } </div>
             <div style={{display: 'flex', justifyContent: 'space-around'}}>
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '80%', marginTop: '20px'}}>
                 <TextField
                   hintText="Name"
+                  floatingLabelText="Name"
                   errorText={isOrganizationNameTaken ? 'Organization name already exists' : ''}
                   value={organization.name}
                   onChange={ (e, value) => this.setState({
@@ -76,6 +77,7 @@ class ModalEditOrganization extends React.Component {
                 />
                 <TextField
                   hintText="Private code"
+                  floatingLabelText="Private code"
                   errorText={isOrganizationPrivateCodeTaken ? 'Organization private code already exists' : ''}
                   value={organization.privateCode}
                   disabled={true}
@@ -83,7 +85,8 @@ class ModalEditOrganization extends React.Component {
                   style={{marginBottom: 20}}
                 />
                 <SelectField
-                  hintText="Organisation type"
+                  hintText="Organization type"
+                  floatingLabelText="Organization type"
                   value={organization.organisationType}
                   onChange={ (e, index, value) => this.setState({
                     organization: { ...organization, organisationType: value }
@@ -95,6 +98,7 @@ class ModalEditOrganization extends React.Component {
                 </SelectField>
                 <SelectField
                   hintText="Code space"
+                  floatingLabelText="Code space"
                   value={organization.codeSpace}
                   disabled={true}
                   fullWidth={true}

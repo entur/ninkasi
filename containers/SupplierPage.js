@@ -4,7 +4,7 @@ import NotificationContainer from './NotificationContainer'
 import cfgreader from '../config/readConfig'
 import EditSupplierPage from  './EditSupplierPage'
 import Button from 'muicss/lib/react/button'
-import Modal from './Modal'
+import Modal from '../modals/Modal'
 
 import SuppliersActions from '../actions/SuppliersActions'
 
