@@ -60,7 +60,7 @@ class ModalCreateRole extends React.Component {
                     role: { ...role, name: value }
                   })}
                   fullWidth={true}
-                  style={{marginBottom: 20}}
+                  style={{marginTop: -20}}
                 />
                 <TextField
                   hintText="private code"

@@ -92,6 +92,20 @@ OrganizationRegisterActions.updateOrganization = organization => {
   }
 }
 
+OrganizationRegisterActions.updateUser = user => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/users/${user.id}`
+    return axios.put(url, user, {
+      headers: {'Content-Type': 'application/json'}
+    }).then(response => {
+      dispatch(sendData(null, types.UPDATED_USER))
+      dispatch(OrganizationRegisterActions.getUsers())
+    }).catch( error => {
+      console.log("Error updating user", error)
+    })
+  }
+}
+
 OrganizationRegisterActions.getCodeSpaces = () => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/code_spaces`
@@ -112,6 +126,66 @@ OrganizationRegisterActions.getUsers = () => {
       dispatch(sendData(response.data, types.RECEIVED_USERS))
     }).catch( error => {
       console.log("Error receiving users", error)
+    })
+  }
+}
+
+OrganizationRegisterActions.deleteUser = userId => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/users/${userId}`
+    return axios.delete(url)
+    .then(response => {
+      dispatch(OrganizationRegisterActions.getUsers())
+    }).catch( error => {
+      console.log("Error deleting user with id " + userId, error)
+    })
+  }
+}
+
+OrganizationRegisterActions.deleteOrganization = organizationId => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/organisations/${organizationId}`
+    return axios.delete(url)
+    .then(response => {
+      dispatch(OrganizationRegisterActions.getOrganizations())
+    }).catch( error => {
+      console.log("Error deleting organization with id " + organizationId, error)
+    })
+  }
+}
+
+OrganizationRegisterActions.deleteEntityType = entityTypeId => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/entity_types/${entityTypeId}`
+    return axios.delete(url)
+    .then(response => {
+      dispatch(OrganizationRegisterActions.getEntityTypes())
+    }).catch( error => {
+      console.log("Error deleting entity_type with id " + entityTypeId, error)
+    })
+  }
+}
+
+OrganizationRegisterActions.deleteResponsibilitySet = responsibilitySetId => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/responsibility_sets/${responsibilitySetId}`
+    return axios.delete(url)
+    .then(response => {
+      dispatch(OrganizationRegisterActions.getResponsibilities())
+    }).catch( error => {
+      console.log("Error deleting responsibility_set with id " + responsibilitySetId, error)
+    })
+  }
+}
+
+OrganizationRegisterActions.deleteRole = roleId => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/roles/${roleId}`
+    return axios.delete(url)
+    .then(response => {
+      dispatch(OrganizationRegisterActions.getRoles())
+    }).catch( error => {
+      console.log("Error deleting role with id " + roleId, error)
     })
   }
 }
@@ -138,6 +212,48 @@ OrganizationRegisterActions.createResponsibilitySet = responsibilitySet => {
       dispatch(OrganizationRegisterActions.getResponsibilities())
     }).catch( error => {
       dispatch(sendData(types.FAILED_CREATING_ORGANIZATION, error))
+    })
+  }
+}
+
+OrganizationRegisterActions.createUser = user => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/users`
+    return axios.post(url, user, {
+      headers: {'Content-Type': 'application/json'}
+    }).then(response => {
+      dispatch(sendData(null, types.CREATED_USER))
+      dispatch(OrganizationRegisterActions.getUsers())
+    }).catch( error => {
+      dispatch(sendData(types.FAILED_CREATING_USER, error))
+    })
+  }
+}
+
+OrganizationRegisterActions.createEntityType = entityType => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/entity_types`
+    return axios.post(url, entityType, {
+      headers: {'Content-Type': 'application/json'}
+    }).then(response => {
+      dispatch(sendData(null, types.CREATED_ENTITY_TYPE))
+      dispatch(OrganizationRegisterActions.getEntityTypes())
+    }).catch( error => {
+      dispatch(sendData(types.FAILED_CREATING_ENTITY_TYPE, error))
+    })
+  }
+}
+
+OrganizationRegisterActions.updateEntityType = entityType => {
+  return function (dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/entity_types/${entityType.id}`
+    return axios.put(url, entityType, {
+      headers: {'Content-Type': 'application/json'}
+    }).then(response => {
+      dispatch(sendData(null, types.UPDATED_ENTITY_TYPE))
+      dispatch(OrganizationRegisterActions.getEntityTypes())
+    }).catch( error => {
+      console.log("Error updating entity type set", error)
     })
   }
 }

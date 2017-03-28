@@ -50,15 +50,45 @@ const OrganizationReducer = (state = initialState, action) => {
       }})
 
     case types.CREATED_RESPONSIBILITY_SET:
-      return Object.assign({}, state, { organizationStatus: {
+      return Object.assign({}, state, { responsibilitySetStatus: {
         error: null,
         code: 'RESPONSIBILITY_SET_CREATED'
       }})
 
+    case types.CREATED_USER:
+      return Object.assign({}, state, { userStatus: {
+        error: null,
+        code: 'USER_CREATED'
+      }})
+
+    case types.UPDATED_USER:
+      return Object.assign({}, state, { userStatus: {
+        error: null,
+        code: 'USER_UPDATED'
+      }})
+
+    case types.CREATED_ENTITY_TYPE:
+      return Object.assign({}, state, { entityTypeStatus: {
+        error: null,
+        code: 'ENTITY_TYPE_CREATED'
+      }})
+
+    case types.FAILED_CREATING_ENTITY_TYPE:
+      return Object.assign({}, state, { entityTypeStatus: {
+        error: action.payLoad,
+        code: 'ENTITY_TYPE_CREATED_FAILED'
+      }})
+
     case types.UPDATED_RESPONSIBILITY_SET:
-      return Object.assign({}, state, { organizationStatus: {
+      return Object.assign({}, state, { responsibilitySetStatus: {
         error: null,
         code: 'RESPONSIBILITY_SET_UPDATED'
+      }})
+
+    case types.UPDATED_ENTITY_TYPE:
+      return Object.assign({}, state, { entityTypeStatus: {
+        error: null,
+        code: 'ENTITY_TYPE_UPDATED'
       }})
 
     case types.RECEIVED_CODESPACES:

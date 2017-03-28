@@ -16,7 +16,6 @@ class SideBarTabs extends React.Component {
     const style = {
       maxWidth: 120,
       fontSize: '0.9em',
-      textTransform: 'capitalize',
       marginRight: 10,
     }
 
@@ -40,11 +39,15 @@ class SideBarTabs extends React.Component {
           onClick={() => this.setActiveTab(1)}
         />
         <SideBarTabsElement
-          label="Responsibilities"
+          label="Responsibility sets"
           active={activeTab === 3}
           onClick={() => this.setActiveTab(3)}
         />
-
+        <SideBarTabsElement
+          label="Entity types"
+          active={activeTab === 4}
+          onClick={() => this.setActiveTab(4)}
+        />
       </div>
     )
   }

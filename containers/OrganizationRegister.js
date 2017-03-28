@@ -4,6 +4,7 @@ import UserView from '../components/UserView'
 import OrganizationView from '../components/OrganizationView'
 import RoleView from '../components/RoleView'
 import ResponsibilitiesView from '../components/ResponsibilitiesView'
+import EntityTypesView from '../components/EntityTypesView'
 
 class OrganizationRegister extends React.Component {
 
@@ -37,6 +38,7 @@ class OrganizationRegister extends React.Component {
           { activeTab == 1  ? <RoleView/> : null }
           { activeTab == 2  ? <OrganizationView/> : null }
           { activeTab == 3  ? <ResponsibilitiesView/> : null }
+          { activeTab == 4  ? <EntityTypesView/> : null }
         </div>
       </div>
     )

@@ -7,7 +7,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add'
 import { connect } from 'react-redux'
 import ModalCreateOrganization from '../modals/ModalCreateOrganization'
 import ModalEditOrganization from '../modals/ModalEditOrganization'
-
+import MdDelete from 'material-ui/svg-icons/action/delete'
 
 class OrganizationView extends React.Component {
 
@@ -38,6 +38,10 @@ class OrganizationView extends React.Component {
       activeOrganization: organization,
       isEditModalOpen: true
     })
+  }
+
+  handleDeleteOrganization(organization) {
+    this.props.dispatch(OrganizationRegisterActions.deleteOrganization(organization.id))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -73,12 +77,14 @@ class OrganizationView extends React.Component {
                 <div className="col-1-6">{ organization.organisationType }</div>
                 <div className="col-1-6">{ organization.privateCode }</div>
                 <div className="col-1-6">{ organization.codeSpace }</div>
-                <div className="col-icon"
-                     onClick={() => this.handleEditOrganization(organization)}
-                     style={{cursor: 'pointer'}}
-                >
+                <div className="col-icon" style={{cursor: 'pointer'}}>
+                  <MdDelete
+                    color="#fa7b81" style={{height: 20, width: 20, marginRight: 10, verticalAlign: 'middle', cursor: 'pointer'}}
+                    onClick={() => this.handleDeleteOrganization(organization)}
+                  />
                   <MdEdit
                     color="rgba(25, 118, 210, 0.59)"
+                    onClick={() => this.handleEditOrganization(organization)}
                     style={{height: 20, width: 20, verticalAlign: 'middle'}}
                   />
                 </div>

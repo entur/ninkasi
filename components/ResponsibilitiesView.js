@@ -1,6 +1,7 @@
 import React from 'react'
 import '../sass/views/responsibilityView.scss'
 import MdEdit from 'material-ui/svg-icons/image/edit'
+import MdDelete from 'material-ui/svg-icons/action/delete'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions'
@@ -52,6 +53,10 @@ class ResponsibilitiesView extends React.Component {
     this.props.dispatch(OrganizationRegisterActions.updateResponsibilitySet(responsibilitySet))
   }
 
+  handleDeleteResponsibility(responsibility) {
+    this.props.dispatch(OrganizationRegisterActions.deleteResponsibilitySet(responsibility.id))
+  }
+
   render() {
 
     const { responsibilities, codeSpaces, roles, organizations, entityTypes } = this.props
@@ -85,13 +90,18 @@ class ResponsibilitiesView extends React.Component {
                 >
                   { responsibility.roles.length }
                 </div>
-                <div className="col-icon"
-                  onClick={() => this.setState({
-                    isEditingResponsibilitySet: true,
-                    activeResponsibilitySet: responsibility
-                  })}
-                >
-                  <MdEdit color="rgba(25, 118, 210, 0.59)" style={{height: 20, width: 20, verticalAlign: 'middle', cursor: 'pointer'}}/>
+                <div className="col-icon" style={{cursor: 'pointer'}}>
+                  <MdDelete
+                    color="#fa7b81" style={{height: 20, width: 20, marginRight: 10, verticalAlign: 'middle', cursor: 'pointer'}}
+                    onClick={() => this.handleDeleteResponsibility(responsibility)}
+                  />
+                  <MdEdit
+                    color="rgba(25, 118, 210, 0.59)" style={{height: 20, width: 20, verticalAlign: 'middle', cursor: 'pointer'}}
+                    onClick={() => this.setState({
+                      isEditingResponsibilitySet: true,
+                      activeResponsibilitySet: responsibility
+                    })}
+                  />
                 </div>
               </div>
             )
@@ -152,7 +162,7 @@ const mapStateToProps = state => ({
   codeSpaces: state.OrganizationReducer.codeSpaces,
   roles: state.OrganizationReducer.roles,
   organizations: state.OrganizationReducer.organizations,
-  status: state.OrganizationReducer.organizationStatus,
+  status: state.OrganizationReducer.responsibilitySetStatus,
   entityTypes: state.OrganizationReducer.entityTypes
 })
 

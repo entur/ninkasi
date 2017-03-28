@@ -1,6 +1,7 @@
 import React from 'react'
 import "../sass/views/roleView.scss"
 import MdEdit from 'material-ui/svg-icons/image/edit'
+import MdDelete from 'material-ui/svg-icons/action/delete'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import ModalEditRole from '../modals/ModalEditRole'
@@ -40,6 +41,10 @@ class RoleView extends React.Component {
     this.props.dispatch(OrganizationRegisterActions.updateRole(role))
   }
 
+  handleDeleteRole(role) {
+    this.props.dispatch(OrganizationRegisterActions.deleteRole(role.id))
+  }
+
   componentWillReceiveProps(nextProps) {
     const { isCreateModalOpen, isEditModalOpen } = this.state
     if (nextProps.status && nextProps.status.error == null && (isCreateModalOpen || isEditModalOpen)) {
@@ -68,11 +73,14 @@ class RoleView extends React.Component {
                 <div className="col-1-4">{ role.id }</div>
                 <div className="col-1-4">{ role.name }</div>
                 <div className="col-1-4">{ role.privateCode }</div>
-                <div className="col-icon"
-                     onClick={() => this.handleEditRole(role)}
-                >
+                <div className="col-icon" style={{cursor: 'pointer'}}>
+                  <MdDelete
+                    color="#fa7b81" style={{height: 20, width: 20, marginRight: 10, verticalAlign: 'middle', cursor: 'pointer'}}
+                    onClick={() => this.handleDeleteRole(role)}
+                  />
                   <MdEdit
                     color="rgba(25, 118, 210, 0.59)"
+                    onClick={() => this.handleEditRole(role)}
                     style={{height: 20, width: 20, verticalAlign: 'middle', cursor: 'pointer'}}
                   />
                 </div>

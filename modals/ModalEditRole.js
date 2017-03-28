@@ -53,7 +53,7 @@ class ModalEditRole extends React.Component {
                     name: value
                   }})}
                   fullWidth={true}
-                  style={{marginBottom: 20}}
+                  style={{marginTop: -20}}
                 />
                 <TextField
                   disabled={true}
