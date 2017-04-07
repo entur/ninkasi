@@ -33,6 +33,12 @@ module.exports = new Promise(function(resolve, reject){
       format: String,
       default: "/",
       env: "ENDPOINTBASE"
+    },
+    authServerUrl: {
+      doc: "URL to keycloak auth server",
+      format: String,
+      default: "https://test.rutebanken.org/auth",
+      env: "AUTH_SERVER_URL"
     }
 
   });

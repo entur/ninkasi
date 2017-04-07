@@ -1,8 +1,9 @@
 var webpack = require('webpack')
-var convictPromise = require('./config/convict-promise.js')
+var convictPromise = require('./config/convict.js')
 var express = require('express')
 var port = process.env.port || 8988
 var app = express()
+var fs = require('fs')
 
 convictPromise.then( (convict) => {
 
@@ -65,6 +66,9 @@ convictPromise.then( (convict) => {
       mardukBaseUrl: convict.get('mardukBaseUrl'),
       endpointBase: convict.get('endpointBase')
     }
+
+    createKeyCloakConfig(convict.get('authServerUrl'))
+
     res.send(cfg)
   })
 
@@ -75,6 +79,18 @@ convictPromise.then( (convict) => {
       console.info("==> Listening on port %s. Open up http://localhost:%s%s in your browser.", port, port, ENDPOINTBASE)
     }
   })
+
+  const createKeyCloakConfig = authServerUrl => {
+    let config = {
+      "realm": "rutebanken",
+      "tokens-not-before": 1490857383,
+      "public-client" : true,
+      "auth-server-url": authServerUrl,
+      "resource": "neti-frontend"
+    }
+    fs.writeFileSync('./config/keycloak.json', JSON.stringify(config), 'utf8')
+  }
+
 
   const getPage = () =>
     `<!DOCTYPE html>
