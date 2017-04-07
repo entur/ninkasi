@@ -37,7 +37,7 @@
     "jsdom": "^9.4.5",
     "jsdom-global": "^2.1.0",
     "json-loader": "^0.5.4",
-    "keycloak-js": "^2.4.0",
+    "keycloak-js": "^2.5.5",
     "material-ui": "^0.16.6",
     "mocha": "^3.0.2",
     "moment": "^2.14.1",
