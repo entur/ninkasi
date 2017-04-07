@@ -51,7 +51,7 @@ class ModalEditResponsibilitySet extends React.Component {
 
 
   getRoleString(role) {
-    return `ORG=${role.responsibleOrganisationRef}, type=${role.responsibleOrganisationRef}, entities=${role.entityClassificationRefs ?
+    return `ORG=${role.responsibleOrganisationRef}, type=${role.typeOfResponsibilityRoleRef}, entities=${role.entityClassificationRefs ?
       role.entityClassificationRefs.join(',') : ''}`;
   }
 

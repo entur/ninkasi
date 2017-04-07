@@ -46,7 +46,7 @@ class ModalCreateResponsibilitySet extends React.Component {
   }
 
   getRoleString(role) {
-      return `ORG=${role.responsibleOrganisationRef}, type=${role.responsibleOrganisationRef}, entities=${role.entityClassificationRefs.join(',')}`;
+      return `ORG=${role.responsibleOrganisationRef}, type=${role.typeOfResponsibilityRoleRef}, entities=${role.entityClassificationRefs.join(',')}`;
   }
 
   handleAddRole() {
