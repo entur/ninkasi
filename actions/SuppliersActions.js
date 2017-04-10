@@ -6,6 +6,19 @@ import { validity } from '../util/dataManipulation'
 
 var SuppliersActions = {}
 
+const getConfig = () => {
+
+  let config = {}
+  let token = localStorage.getItem('NINKASI::jwt')
+
+  config.headers = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer ' + token
+  }
+  return config
+}
+
 SuppliersActions.getProviderStatus = (id) => {
   if (id < 0) return;
 
@@ -17,7 +30,8 @@ SuppliersActions.getProviderStatus = (id) => {
       url: url,
       timeout: 20000,
       method: 'get',
-      responseType: 'json'
+      responseType: 'json',
+      ...getConfig()
     })
     .then(function(response) {
       let providerStatus = SuppliersActions.formatProviderStatusDate(response.data.reverse(), null)
@@ -36,7 +50,7 @@ SuppliersActions.executePeliasTask = tasks => {
     const queryParams = Object.keys(tasks).filter( (entry) => tasks[entry]).join('&task=')
     const url = window.config.mardukBaseUrl+`admin/geocoder/start?task=${queryParams}`
 
-    return axios.post(url).then( response => {
+    return axios.post(url, getConfig()).then( response => {
       dispatch(SuppliersActions.addNotification('Pelias task execution', 'success'))
       dispatch(SuppliersActions.logEvent({title: 'Pelias tasks executed successfully'}))
     }).catch( err => {
@@ -65,7 +79,8 @@ SuppliersActions.uploadFiles = (files, providerId) => {
       onUploadProgress: function(progressEvent) {
         let percentCompleted = (progressEvent.loaded / progressEvent.total) * 100
         dispatch( sendData(percentCompleted, types.UPDATED_FILE_UPLOAD_PROGRESS))
-      }
+      },
+      ...getConfig()
     }
 
     return axios.post(url, data, config)
@@ -97,7 +112,8 @@ SuppliersActions.getAllProviderStatus = () => {
         url: url,
         timeout: 20000,
         method: 'get',
-        responseType: 'json'
+        responseType: 'json',
+        ...getConfig()
       })
       .then(function(response) {
 
@@ -145,7 +161,8 @@ SuppliersActions.fetchSuppliers = () => {
       url: url,
       timeout: 20000,
       method: 'get',
-      responseType: 'json'
+      responseType: 'json',
+      ...getConfig()
     })
     .then(function(response) {
       dispatch( sendData(response.data, types.RECEIVED_SUPPLIERS) )
@@ -188,7 +205,7 @@ SuppliersActions.createProvider = () => {
 
     let provider = state.UtilsReducer.supplierForm
 
-    return axios.post(url, provider)
+    return axios.post(url, provider, getConfig())
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_CREATE_PROVIDER))
       dispatch(SuppliersActions.addNotification('Provider created', 'success'))
@@ -213,7 +230,7 @@ SuppliersActions.updateProvider = (id) => {
     const state = getState()
     let provider = state.UtilsReducer.supplierForm
 
-    return axios.put(url, provider)
+    return axios.put(url, provider, getConfig())
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_UPDATE_PROVIDER) )
       dispatch(SuppliersActions.addNotification('Updated provider successfully', 'success'))
@@ -234,7 +251,7 @@ SuppliersActions.fetchProvider = (id) => {
   const url = `${window.config.nabuBaseUrl}jersey/providers/${id}`
 
   return function(dispatch) {
-    return axios.get(url)
+    return axios.get(url, getConfig())
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_FETCH_PROVIDER ))
 
@@ -297,7 +314,8 @@ SuppliersActions.cancelChouetteJobForProvider = (providerId, chouetteId) => {
     return axios({
       url: url,
       timeout: 20000,
-      method: 'delete'
+      method: 'delete',
+      ...getConfig()
     })
     .then(function (response) {
       dispatch( sendData(response.data, types.SUCCESS_DELETE_PROVIDERS_CHOUETTE_JOB) )
@@ -317,7 +335,8 @@ SuppliersActions.cancelAllChouetteJobsforAllProviders = () => {
     return axios({
       url: window.config.mardukBaseUrl+`admin/services/chouette/jobs/`,
       timeout: 20000,
-      method: 'delete'
+      method: 'delete',
+      ...getConfig()
     })
     .then(function (response) {
       dispatch(SuppliersActions.addNotification(`Cancelled all chouette jobs for all providers`, 'success'))
@@ -340,7 +359,8 @@ SuppliersActions.cancelAllChouetteJobsforProvider = (providerId) => {
     return axios({
       url: url,
       timeout: 20000,
-      method: 'delete'
+      method: 'delete',
+      ...getConfig()
     })
     .then(function (response) {
       dispatch( sendData(response.data, types.SUCCESS_DELETE_ALL_PROVIDERS_CHOUETTE_JOB))
@@ -471,7 +491,7 @@ SuppliersActions.getChouetteJobStatus = () => {
     return axios.get(url, {
       cancelToken: new CancelToken(function executor(cancel) {
         dispatch( sendData(cancel, types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER) )
-      })
+      }, getConfig())
     })
     .then(function(response) {
       const jobs = SuppliersActions.formatChouetteJobsWithDate(response.data.reverse())
@@ -493,7 +513,8 @@ SuppliersActions.exportData = (id) => {
     return axios({
       url: url,
       timeout: 20000,
-      method: 'post'
+      method: 'post',
+      ...getConfig()
     })
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_EXPORT_DATA) )
@@ -514,7 +535,7 @@ SuppliersActions.getGraphStatus = () => {
 
     const url = window.config.nabuBaseUrl+`jersey/systemJobs/status/aggregation`
 
-    return axios.get(url)
+    return axios.get(url, getConfig())
     .then( (response) => {
 
       let status = {
@@ -554,7 +575,8 @@ SuppliersActions.transferData = (id) => {
     return axios({
       url: url,
       timeout: 20000,
-      method: 'post'
+      method: 'post',
+      ...getConfig()
     })
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_TRANSFER_DATA) )
@@ -582,7 +604,8 @@ SuppliersActions.getLineStats = () => {
         url: `${window.config.mardukBaseUrl}admin/services/chouette/${supplier.id}/lineStats`,
         timeout: 10000,
         method: 'get',
-        responseType: 'json'
+        responseType: 'json',
+        ...getConfig()
       })
       .then( (response) => {
         dispatch( sendData({id: supplier.id, data: formatLineStats(response.data)}, types.RECEIVED_LINE_STATS))
@@ -599,7 +622,7 @@ SuppliersActions.getLineStatsForProvider = providerId => {
 
     dispatch( sendData(null, types.REQUESTED_LINE_STATS) )
 
-    return axios.get(`${window.config.mardukBaseUrl}admin/services/chouette/${providerId}/lineStats`)
+    return axios.get(`${window.config.mardukBaseUrl}admin/services/chouette/${providerId}/lineStats`, getConfig())
     .then( response => {
       dispatch( sendData({id: providerId, data: formatLineStats(response.data)}, types.RECEIVED_LINE_STATS))
     })
@@ -736,7 +759,8 @@ SuppliersActions.fetchFilenames = (id) => {
     return axios({
       url: url,
       timeout: 20000,
-      method: 'get'
+      method: 'get',
+      ...getConfig()
     })
     .then(function(response) {
 
@@ -773,7 +797,7 @@ SuppliersActions.importData = (id, selectedFiles) => {
 
   return function(dispatch) {
     dispatch(requestImport())
-    return axios.post(url, {files: bodySelectedFiles})
+    return axios.post(url, {files: bodySelectedFiles}, getConfig())
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_IMPORT_DATA) )
       dispatch(SuppliersActions.addNotification('Import started', 'success'))
@@ -799,7 +823,8 @@ SuppliersActions.cleanDataspace = (id) => {
     return axios({
       url: url,
       timeout: 20000,
-      method: 'post'
+      method: 'post',
+      ...getConfig()
     })
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_DELETE_DATA) )
@@ -822,7 +847,8 @@ SuppliersActions.cleanAllDataspaces = (filter) => {
     return axios({
       url: url,
       timeout: 20000,
-      method: 'post'
+      method: 'post',
+      ...getConfig()
     })
     .then(function(response) {
       dispatch(SuppliersActions.addNotification('Cleaning of all dataspaces started with filter ' + filter, 'success'))
@@ -845,7 +871,8 @@ SuppliersActions.validateProvider = (id) => {
     return axios({
       url: url,
       timeout: 20000,
-      method: 'post'
+      method: 'post',
+      ...getConfig()
     })
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_VALIDATE_PROVIDER))
@@ -868,7 +895,8 @@ SuppliersActions.buildGraph = () => {
     return axios({
       url: url,
       timeout: 20000,
-      method: 'post'
+      method: 'post',
+      ...getConfig()
     })
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_BUILD_GRAPH))
@@ -892,7 +920,8 @@ SuppliersActions.fetchOSM = () => {
     return axios({
       url: url,
       timeout: 20000,
-      method: 'post'
+      method: 'post',
+      ...getConfig()
     })
     .then(function(response) {
       dispatch( sendData(response.data, types.SUCCESS_FETCH_OSM) )
@@ -1110,7 +1139,8 @@ SuppliersActions.cleanFileFilter = () => {
     return axios({
       url: window.config.mardukBaseUrl+'admin/application/filestores/clean',
       timeout: 20000,
-      method: 'post'
+      method: 'post',
+      ...getConfig()
     })
     .then(function(response) {
       dispatch(SuppliersActions.addNotification('File filter cleaned', 'success'))

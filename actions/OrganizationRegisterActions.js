@@ -10,10 +10,24 @@ function sendData(payLoad, type) {
 
 var OrganizationRegisterActions = {}
 
+
+const getConfig = () => {
+
+  let config = {}
+  let token = localStorage.getItem('NINKASI::jwt')
+
+  config.headers = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer ' + token
+  }
+  return config
+}
+
 OrganizationRegisterActions.getRoles = () => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/roles`
-    return axios.get(url)
+    return axios.get(url, getConfig())
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_ROLES))
     }).catch( error => {
@@ -25,9 +39,7 @@ OrganizationRegisterActions.getRoles = () => {
 OrganizationRegisterActions.createRole = role => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/roles`
-    return axios.post(url, role, {
-      headers: {'Content-Type': 'application/json'}
-    }).then(response => {
+    return axios.post(url, role, getConfig()).then(response => {
       dispatch(sendData(null, types.CREATED_ROLE))
       dispatch(OrganizationRegisterActions.getRoles())
     }).catch( error => {
@@ -42,9 +54,7 @@ OrganizationRegisterActions.updateRole = role => {
     const payLoad = {name: role.name}
 
     const url = `${window.config.nabuBaseUrl}jersey/roles/${role.id}`
-    return axios.put(url, payLoad, {
-      headers: {'Content-Type': 'application/json'}
-    }).then(response => {
+    return axios.put(url, payLoad, getConfig()).then(response => {
       dispatch(OrganizationRegisterActions.getRoles())
     }).catch( error => {
       console.log("Error updating role", error)
@@ -55,7 +65,7 @@ OrganizationRegisterActions.updateRole = role => {
 OrganizationRegisterActions.getOrganizations = () => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/organisations`
-    return axios.get(url)
+    return axios.get(url, getConfig())
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_ORGANIZATIONS))
     }).catch( error => {
@@ -67,9 +77,7 @@ OrganizationRegisterActions.getOrganizations = () => {
 OrganizationRegisterActions.createOrganization = organization => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/organisations`
-    return axios.post(url, organization, {
-      headers: {'Content-Type': 'application/json'}
-    }).then(response => {
+    return axios.post(url, organization, getConfig()).then(response => {
       dispatch(sendData(null, types.CREATED_ORGANIZATION))
       dispatch(OrganizationRegisterActions.getOrganizations())
     }).catch( error => {
@@ -81,9 +89,7 @@ OrganizationRegisterActions.createOrganization = organization => {
 OrganizationRegisterActions.updateOrganization = organization => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/organisations/${organization.id}`
-    return axios.put(url, organization, {
-      headers: {'Content-Type': 'application/json'}
-    }).then(response => {
+    return axios.put(url, organization, getConfig()).then(response => {
       dispatch(sendData(null, types.UPDATED_ORGANIZATION))
       dispatch(OrganizationRegisterActions.getOrganizations())
     }).catch( error => {
@@ -95,9 +101,7 @@ OrganizationRegisterActions.updateOrganization = organization => {
 OrganizationRegisterActions.updateUser = user => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/users/${user.id}`
-    return axios.put(url, user, {
-      headers: {'Content-Type': 'application/json'}
-    }).then(response => {
+    return axios.put(url, user, getConfig()).then(response => {
       dispatch(sendData(null, types.UPDATED_USER))
       dispatch(OrganizationRegisterActions.getUsers())
     }).catch( error => {
@@ -109,7 +113,7 @@ OrganizationRegisterActions.updateUser = user => {
 OrganizationRegisterActions.getCodeSpaces = () => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/code_spaces`
-    return axios.get(url)
+    return axios.get(url, getConfig())
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_CODESPACES))
     }).catch( error => {
@@ -121,7 +125,7 @@ OrganizationRegisterActions.getCodeSpaces = () => {
 OrganizationRegisterActions.getUsers = () => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/users`
-    return axios.get(url)
+    return axios.get(url, getConfig())
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_USERS))
     }).catch( error => {
@@ -133,7 +137,7 @@ OrganizationRegisterActions.getUsers = () => {
 OrganizationRegisterActions.deleteUser = userId => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/users/${userId}`
-    return axios.delete(url)
+    return axios.delete(url, getConfig())
     .then(response => {
       dispatch(OrganizationRegisterActions.getUsers())
     }).catch( error => {
@@ -145,7 +149,7 @@ OrganizationRegisterActions.deleteUser = userId => {
 OrganizationRegisterActions.deleteOrganization = organizationId => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/organisations/${organizationId}`
-    return axios.delete(url)
+    return axios.delete(url, getConfig())
     .then(response => {
       dispatch(OrganizationRegisterActions.getOrganizations())
     }).catch( error => {
@@ -157,7 +161,7 @@ OrganizationRegisterActions.deleteOrganization = organizationId => {
 OrganizationRegisterActions.deleteEntityType = entityTypeId => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/entity_types/${entityTypeId}`
-    return axios.delete(url)
+    return axios.delete(url, getConfig())
     .then(response => {
       dispatch(OrganizationRegisterActions.getEntityTypes())
     }).catch( error => {
@@ -169,7 +173,7 @@ OrganizationRegisterActions.deleteEntityType = entityTypeId => {
 OrganizationRegisterActions.deleteResponsibilitySet = responsibilitySetId => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/responsibility_sets/${responsibilitySetId}`
-    return axios.delete(url)
+    return axios.delete(url, getConfig())
     .then(response => {
       dispatch(OrganizationRegisterActions.getResponsibilities())
     }).catch( error => {
@@ -181,7 +185,7 @@ OrganizationRegisterActions.deleteResponsibilitySet = responsibilitySetId => {
 OrganizationRegisterActions.deleteRole = roleId => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/roles/${roleId}`
-    return axios.delete(url)
+    return axios.delete(url, getConfig())
     .then(response => {
       dispatch(OrganizationRegisterActions.getRoles())
     }).catch( error => {
@@ -193,7 +197,7 @@ OrganizationRegisterActions.deleteRole = roleId => {
 OrganizationRegisterActions.getResponsibilities = () => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/responsibility_sets`
-    return axios.get(url)
+    return axios.get(url, getConfig())
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_RESPONSIBILITES))
     }).catch( error => {
@@ -205,9 +209,7 @@ OrganizationRegisterActions.getResponsibilities = () => {
 OrganizationRegisterActions.createResponsibilitySet = responsibilitySet => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/responsibility_sets`
-    return axios.post(url, responsibilitySet, {
-      headers: {'Content-Type': 'application/json'}
-    }).then(response => {
+    return axios.post(url, responsibilitySet, getConfig()).then(response => {
       dispatch(sendData(null, types.CREATED_RESPONSIBILITY_SET))
       dispatch(OrganizationRegisterActions.getResponsibilities())
     }).catch( error => {
@@ -219,9 +221,7 @@ OrganizationRegisterActions.createResponsibilitySet = responsibilitySet => {
 OrganizationRegisterActions.createUser = user => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/users`
-    return axios.post(url, user, {
-      headers: {'Content-Type': 'application/json'}
-    }).then(response => {
+    return axios.post(url, user, getConfig()).then(response => {
       dispatch(sendData(null, types.CREATED_USER))
       dispatch(OrganizationRegisterActions.getUsers())
     }).catch( error => {
@@ -233,9 +233,7 @@ OrganizationRegisterActions.createUser = user => {
 OrganizationRegisterActions.createEntityType = entityType => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/entity_types`
-    return axios.post(url, entityType, {
-      headers: {'Content-Type': 'application/json'}
-    }).then(response => {
+    return axios.post(url, entityType, getConfig()).then(response => {
       dispatch(sendData(null, types.CREATED_ENTITY_TYPE))
       dispatch(OrganizationRegisterActions.getEntityTypes())
     }).catch( error => {
@@ -247,9 +245,7 @@ OrganizationRegisterActions.createEntityType = entityType => {
 OrganizationRegisterActions.updateEntityType = entityType => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/entity_types/${entityType.id}`
-    return axios.put(url, entityType, {
-      headers: {'Content-Type': 'application/json'}
-    }).then(response => {
+    return axios.put(url, entityType, getConfig()).then(response => {
       dispatch(sendData(null, types.UPDATED_ENTITY_TYPE))
       dispatch(OrganizationRegisterActions.getEntityTypes())
     }).catch( error => {
@@ -261,9 +257,7 @@ OrganizationRegisterActions.updateEntityType = entityType => {
 OrganizationRegisterActions.updateResponsibilitySet = responsibilitySet => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/responsibility_sets/${responsibilitySet.id}`
-    return axios.put(url, responsibilitySet, {
-      headers: {'Content-Type': 'application/json'}
-    }).then(response => {
+    return axios.put(url, responsibilitySet, getConfig()).then(response => {
       dispatch(sendData(null, types.UPDATED_RESPONSIBILITY_SET))
       dispatch(OrganizationRegisterActions.getResponsibilities())
     }).catch( error => {
@@ -275,7 +269,7 @@ OrganizationRegisterActions.updateResponsibilitySet = responsibilitySet => {
 OrganizationRegisterActions.getEntityTypes = () => {
   return function (dispatch) {
     const url = `${window.config.nabuBaseUrl}jersey/entity_types`
-    return axios.get(url)
+    return axios.get(url, getConfig())
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_ENTITY_TYPES))
     }).catch( error => {
@@ -286,7 +280,7 @@ OrganizationRegisterActions.getEntityTypes = () => {
 
 OrganizationRegisterActions.getEntityByClassification = entityType => {
   const url = `${window.config.nabuBaseUrl}jersey/entity_types/${entityType}/entity_classifications`
-  return axios.get(url)
+  return axios.get(url, getConfig())
 }
 
 

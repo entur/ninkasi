@@ -8,13 +8,11 @@ import configureStore from './store/store'
 import './sass/main.scss'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import cfgreader from './config/readConfig'
-import axios from 'axios'
 
 cfgreader.readConfig( (function(config) {
   window.config = config
   authWithKeyCloak(config.endpointBase)
 }).bind(this))
-
 
 
 function authWithKeyCloak(endpointBase) {
@@ -24,16 +22,12 @@ function authWithKeyCloak(endpointBase) {
   kc.init({ onLoad: 'login-required', checkLoginIframe: false }).success( authenticated => {
 
     if (authenticated) {
+
+      localStorage.setItem('NINKASI::jwt', kc.token)
+
       setInterval(() => {
         kc.updateToken(10).error(() => kc.logout())
-        axios.interceptors.request.use(config => {
-          config.headers = {...config.headers, ...{
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            Authorization: 'Bearer ' + kc.token
-          }}
-          return config;
-        })
+        localStorage.setItem('NINKASI::jwt', kc.token)
 
       }, 10000)
 
