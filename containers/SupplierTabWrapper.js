@@ -16,6 +16,7 @@ import FileUpload from './FileUpload'
 import StatisticsDetails from './StatisticsDetails'
 import StaticsForProvider from './StatisticsForProvider'
 import OrganizationRegister from './OrganizationRegister'
+import rolesParser from '../roles/rolesParser'
 
 class SupplierTabWrapper extends React.Component {
 
@@ -157,7 +158,7 @@ class SupplierTabWrapper extends React.Component {
 
   render() {
 
-    const { displayAllSuppliers, activeId, suppliers, filelistIsLoading, fileUploadProgress, lineStats }  = this.props
+    const { displayAllSuppliers, activeId, suppliers, filelistIsLoading, fileUploadProgress, lineStats, kc }  = this.props
 
     if (filelistIsLoading) {
 
@@ -173,6 +174,8 @@ class SupplierTabWrapper extends React.Component {
     if (!displayAllSuppliers && suppliers.length) {
       var provider = suppliers.filter( p => { return p.id == activeId })[0]
     }
+
+    let canEditOrganisation = rolesParser.canEditOrganisation(kc.tokenParsed)
 
     if (displayAllSuppliers || provider) {
 
@@ -211,9 +214,12 @@ class SupplierTabWrapper extends React.Component {
             <Tab value="statistics" label="Statistics">
               { suppliers.length && <StatisticsDetails dispatch={this.props.dispatch} lineStats={lineStats} suppliers={suppliers}/> }
             </Tab>
-            <Tab value="Organization register" label="Organization register">
+            { canEditOrganisation ?
+              <Tab value="Organization register" label="Organization register">
                 <OrganizationRegister/>
-            </Tab>
+              </Tab>
+              : null
+            }
           </Tabs>
       }
 
@@ -237,7 +243,7 @@ class SupplierTabWrapper extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
     suppliers: state.SuppliersReducer.data,
     activeId: state.SuppliersReducer.activeId,
@@ -246,7 +252,8 @@ const mapStateToProps = (state, ownProps) => {
     paginationMapActiveProvider: getPaginationMapActiveProvider(state.SuppliersReducer.statusList ? state.SuppliersReducer.statusList.slice() : []),
     paginationMapAllProvider: getPaginationMapAllProvider(state.SuppliersReducer.statusListAllProviders.slice()),
     fileUploadProgress: state.SuppliersReducer.fileUploadProgress,
-    lineStats: state.SuppliersReducer.lineStats
+    lineStats: state.SuppliersReducer.lineStats,
+    kc: state.UserReducer.kc
   }
 }
 
