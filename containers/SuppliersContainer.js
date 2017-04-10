@@ -117,6 +117,11 @@ class SuppliersContainer extends React.Component {
     dispatch(SuppliersActions.executePeliasTask(this.state.peliasOptions))
   }
 
+  handleLogout() {
+    const { kc } = this.props
+    kc.logout()
+  }
+
   getColorByStatus(status) {
     switch (status) {
       case 'STARTED': return '#08920e'
@@ -231,6 +236,7 @@ class SuppliersContainer extends React.Component {
             <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level1')}>Level 1</DropdownItem>
             <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level2')}>Level 2</DropdownItem>
           </Dropdown>
+          <Button style={{fontSize: 12}} color="dark" onClick={this.handleLogout.bind(this)}>Log out</Button>
         </div>
         <Select style={{display: 'inline-block', margin: 15}} className="select-supplier" value={ selectedValue } id="select-supplier" label="Provider" onChange={ (value) => this.selectSupplier(value)}>
           <Option key="supplier-all" value="-1" label={"All providers"}></Option>
@@ -248,6 +254,7 @@ const mapStateToProps = state => {
     suppliers: state.SuppliersReducer.data,
     activeProviderId: state.SuppliersReducer.activeId,
     otherStatus: state.SuppliersReducer.otherStatus || [],
+    kc: state.UserReducer.kc
   }
 }
 
