@@ -426,7 +426,8 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => {
     return axios.get(url, {
       cancelToken: new CancelToken(function executor(cancel) {
         dispatch( sendData(cancel, types.REQUESTED_ALL_CHOUETTE_JOB_STATUS) )
-      })
+      }),
+      ...getConfig()
     })
     .then(function(response) {
 
@@ -488,10 +489,10 @@ SuppliersActions.getChouetteJobStatus = () => {
 
     var CancelToken = axios.CancelToken
 
-    return axios.get(url, {
+    return axios.get(url, getConfig(), {
       cancelToken: new CancelToken(function executor(cancel) {
         dispatch( sendData(cancel, types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER) )
-      }, getConfig())
+      })
     })
     .then(function(response) {
       const jobs = SuppliersActions.formatChouetteJobsWithDate(response.data.reverse())
