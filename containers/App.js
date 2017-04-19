@@ -26,6 +26,7 @@ import UtilsActions from '../actions/UtilsActions'
       return (
         <MuiThemeProvider>
           <div className="app">
+            <div className="version">v{process.env.VERSION}</div>
             <Header/>
             <SuppliersContainer/>
             <SupplierTabWrapper/>
