@@ -47,18 +47,6 @@ class LineStatsCard extends React.Component {
     this.setState({sorting: sort})
   }
 
-  sortMethod( index = 0, ascending = true) {
-    return function (a, b) {
-      if (a[index] === b[index]) {
-        return 0
-      } else if (a[index] <  b[index]) {
-        return (ascending) ? -1 : 1
-      } else {
-        return (ascending) ? 1 : -1
-      }
-    }
-  }
-
   render() {
 
     const { stats, selectedSegment, daysValid, title } = this.props
