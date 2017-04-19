@@ -1,5 +1,5 @@
 import React from 'react'
-import { color } from '../styles/styles'
+import { color } from 'bogu/styles'
 
 class Timeline extends React.Component {
 

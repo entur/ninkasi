@@ -2,7 +2,7 @@ import axios from 'axios'
 import * as types from './actionTypes'
 import moment from 'moment'
 import { getQueryVariable } from '../containers/utils'
-import { validity } from '../util/dataManipulation'
+import { formatLineStats } from 'bogu/utils'
 
 var SuppliersActions = {}
 
@@ -630,124 +630,6 @@ SuppliersActions.getLineStatsForProvider = providerId => {
     .catch( response => {
       console.error(response)
     })
-  }
-}
-
-const validPeriod = (endDate, from, to) => (moment(endDate).add(1, 'days').isBetween(from, to, 'days', '[]')) ? to : endDate
-
-const validDays = (lines) => lines.map(line => {return {lineNumber: line.lineNumber, days: line.daysValid} })
-
-const getDaysRange = (startDate, end = 0) => moment.isMoment(end) ? end.diff(startDate, 'days') : end
-
-const minDays = (lineNumber2Days) => {
-  let days = Math.min(...lineNumber2Days.map( line => line.days))
-  return {
-    days: days,
-    validity: validity(days)
-  }
-}
-
-const sortValidity = validity => validity.sort( (a, b) => a['numDaysAtLeastValid'] < b['numDaysAtLeastValid'] ? -1 : 1)
-
-export const formatLineStats = (lineStats) => {
-
-  try {
-
-    const defaultObject = { lineNumbers: [] }
-
-    let formattedLines = {
-      invalid: lineStats.validityCategories
-      .filter( (category) => category.numDaysAtLeastValid < 120)[0] || defaultObject,
-      valid: lineStats.validityCategories
-      .filter( (category) => category.numDaysAtLeastValid >= 127)[0] || defaultObject,
-      soonInvalid: lineStats.validityCategories
-      .filter( (category) => (category.numDaysAtLeastValid >= 120 && category.numDaysAtLeastValid < 127))[0] || defaultObject,
-      validity: sortValidity(lineStats.validityCategories),
-      all: defaultObject
-    }
-
-    formattedLines.all.lineNumbers = [].concat(... formattedLines.validity.map(lines => lines.lineNumbers ) )
-
-    let linesMap = {}
-
-    let startDate = moment(lineStats.startDate, 'YYYY-MM-DD')
-    let endDate = moment(startDate).add(lineStats.days, 'days')
-
-    formattedLines.startDate = startDate.format('YYYY-MM-DD')
-    formattedLines.days = lineStats.days
-    formattedLines.endDate = endDate.format('YYYY-MM-DD')
-
-    lineStats.publicLines.forEach ( publicLine => {
-
-      publicLine.effectivePeriods.forEach( (effectivePeriod) => {
-
-        let fromDate = moment(effectivePeriod.from, 'YYYY-MM-DD')
-        let fromDiff = startDate.diff(fromDate, 'days', true)
-
-        if (fromDiff > 0) {
-          // now is after start date of effective period
-          effectivePeriod.timelineStartPosition = 0
-        } else {
-          effectivePeriod.timelineStartPosition = ( Math.abs(fromDiff) / formattedLines.days ) * 100
-        }
-
-        let timelineEndPosition = 100
-
-        let toDate = moment(effectivePeriod.to, 'YYYY-MM-DD')
-        let toDiff = moment(formattedLines.endDate, 'YYYY-MM-DD').diff(moment(toDate).add(1, 'days'), 'days', true)
-
-        if (toDiff > 0) {
-          timelineEndPosition = 100 - (toDiff / (formattedLines.days/100))
-        }
-
-        effectivePeriod.timelineEndPosition = timelineEndPosition
-
-        let daysForward = (effectivePeriod.timelineEndPosition / 100) * formattedLines.days
-        effectivePeriod.validationLevel = validity(daysForward)
-
-        publicLine.daysValid = validPeriod(publicLine.daysValid || startDate, fromDate, toDate)
-      })
-      publicLine.daysValid = getDaysRange(startDate, publicLine.daysValid)
-
-      publicLine.lines.forEach( (line) => {
-
-        line.timetables.forEach( (timetable) => {
-          timetable.periods.forEach( (period) => {
-
-            let fromDiff = startDate.diff(moment(period.from, 'YYYY-MM-DD'), 'days', true)
-
-            if (fromDiff < 0) {
-              period.timelineStartPosition = ( Math.abs(fromDiff) / formattedLines.days ) * 100
-            } else {
-              period.timelineStartPosition = 0
-            }
-
-            let timelineEndPosition = 100
-
-            let toDiff = moment(formattedLines.endDate, 'YYYY-MM-DD').diff(moment(period.to, 'YYYY-MM-DD').add(1, 'days'), 'days', true)
-
-            if (toDiff > 0) {
-              timelineEndPosition = 100 - (toDiff / (formattedLines.days/100))
-            }
-
-            period.timelineEndPosition = timelineEndPosition
-          })
-        })
-      })
-
-      linesMap[publicLine.lineNumber] = publicLine
-    })
-
-    formattedLines.linesMap = linesMap
-    formattedLines.validDaysOffset = 33
-    formattedLines.validFromDate = moment(startDate).add(120, 'days').format('YYYY-MM-DD')
-    formattedLines.daysValid = validDays(lineStats.publicLines)
-    formattedLines.minDays = minDays(formattedLines.daysValid)
-
-    return formattedLines
-
-  } catch (e) {
-    console.error("error in getLineStats", e)
   }
 }
 

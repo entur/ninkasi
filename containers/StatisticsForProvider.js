@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import PieCard from '../components/PieCard'
 import SuppliersActions from '../actions/SuppliersActions'
 import LineStatsCard from './LineStatsCard'
-import { segmentName, segmentName2Key } from '../util/dataManipulation'
+import { segmentName, segmentName2Key } from 'bogu/utils'
 import { connect } from 'react-redux'
 
 class StatisticsForProvider extends React.Component {
