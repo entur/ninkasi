@@ -37,6 +37,14 @@ Optional environment variable `ENDPOINTBASE` overrides namespace for client incl
 ```
 
 
-## Authentification
+### Authentication
 
-Uses Keycloak-js for authentification
+Uses Keycloak to authenticate user and read JWT, set `auth-server-url`:
+
+```
+AUTH_SERVER_URL=https://test.rutebanken.org/auth port=9000 ENDPOINTBASE=/admin/ninkasi/ NABU_BASE_URL=http://localhost:10001/ MARDUK_BASE_URL=http://localhost:11002/ npm start dev
+
+```
+
+***NB*** Use `PORT=8000` or `PORT=9000` for development against `https://test.rutebanken.org/auth` since these are whitelisted.
+
