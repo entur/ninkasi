@@ -21,7 +21,7 @@ class AdvancedFileList extends React.Component {
 
     const URL = window.config.mardukBaseUrl+`admin/services/chouette/${this.props.activeProviderId}/files/${filename}`
     const token = localStorage.getItem('NINKASI::jwt')
-    const params = `?access_token=Bearer ${token}`
+    const params = `?access_token=${token}`
 
     let link = document.createElement('a')
     link.setAttribute('href', URL+params)
