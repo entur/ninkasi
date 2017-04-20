@@ -50,7 +50,7 @@ SuppliersActions.executePeliasTask = tasks => {
     const queryParams = Object.keys(tasks).filter( (entry) => tasks[entry]).join('&task=')
     const url = window.config.mardukBaseUrl+`admin/geocoder/start?task=${queryParams}`
 
-    return axios.post(url, getConfig()).then( response => {
+    return axios.post(url, null, getConfig()).then( response => {
       dispatch(SuppliersActions.addNotification('Pelias task execution', 'success'))
       dispatch(SuppliersActions.logEvent({title: 'Pelias tasks executed successfully'}))
     }).catch( err => {
