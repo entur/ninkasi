@@ -23,7 +23,7 @@ class DataMigrationDetails extends React.Component {
         ext: 0,
         name: 0,
         size: 0,
-        date: 0
+        date: 2
       },
       filterText: ''
     }
