@@ -20,10 +20,13 @@ class AdvancedFileList extends React.Component {
     e.stopPropagation()
 
     const URL = window.config.mardukBaseUrl+`admin/services/chouette/${this.props.activeProviderId}/files/${filename}`
+    const token = localStorage.getItem('NINKASI::jwt')
+    const params = `?access_token=${token}`
 
     let link = document.createElement('a')
-    link.setAttribute('href', URL)
+    link.setAttribute('href', URL+params)
     link.setAttribute('download', filename)
+
     var event = document.createEvent("MouseEvents")
     event.initMouseEvent(
       "click", true, false, window, 0, 0, 0, 0, 0
@@ -34,7 +37,7 @@ class AdvancedFileList extends React.Component {
 
   handleSelectAll(e) {
 
-    const { files, updateIndices, handleKeyDown, handleKeyUp, isSource, handleSelectAllShowingIndices } = this.props
+    const { files, handleKeyDown, handleKeyUp, isSource, handleSelectAllShowingIndices } = this.props
 
     if (e.keyCode == 40) {
       handleKeyDown(isSource, e)

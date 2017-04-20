@@ -10,9 +10,7 @@ function sendData(payLoad, type) {
 
 var OrganizationRegisterActions = {}
 
-
 const getConfig = () => {
-
   let config = {}
   let token = localStorage.getItem('NINKASI::jwt')
 
@@ -29,7 +27,7 @@ OrganizationRegisterActions.getRoles = () => {
     const url = `${window.config.nabuBaseUrl}jersey/roles`
     return axios.get(url, getConfig())
     .then(response => {
-      dispatch(sendData(response.data, types.RECEIVED_ROLES))
+      dispatch(sendData(sortBy(response.data, 'id'), types.RECEIVED_ROLES))
     }).catch( error => {
       console.log("Error receiving roles", error)
     })
@@ -67,7 +65,7 @@ OrganizationRegisterActions.getOrganizations = () => {
     const url = `${window.config.nabuBaseUrl}jersey/organisations`
     return axios.get(url, getConfig())
     .then(response => {
-      dispatch(sendData(response.data, types.RECEIVED_ORGANIZATIONS))
+      dispatch(sendData(sortBy(response.data, 'id'), types.RECEIVED_ORGANIZATIONS))
     }).catch( error => {
       console.log("Error receiving organizations", error)
     })
@@ -127,7 +125,7 @@ OrganizationRegisterActions.getUsers = () => {
     const url = `${window.config.nabuBaseUrl}jersey/users`
     return axios.get(url, getConfig())
     .then(response => {
-      dispatch(sendData(response.data, types.RECEIVED_USERS))
+      dispatch(sendData(sortBy(response.data, 'username'), types.RECEIVED_USERS))
     }).catch( error => {
       console.log("Error receiving users", error)
     })
@@ -199,7 +197,7 @@ OrganizationRegisterActions.getResponsibilities = () => {
     const url = `${window.config.nabuBaseUrl}jersey/responsibility_sets`
     return axios.get(url, getConfig())
     .then(response => {
-      dispatch(sendData(response.data, types.RECEIVED_RESPONSIBILITES))
+      dispatch(sendData(sortBy(response.data, 'id'), types.RECEIVED_RESPONSIBILITES))
     }).catch( error => {
       console.log("Error responsibility_sets users", error)
     })
@@ -271,7 +269,7 @@ OrganizationRegisterActions.getEntityTypes = () => {
     const url = `${window.config.nabuBaseUrl}jersey/entity_types`
     return axios.get(url, getConfig())
     .then(response => {
-      dispatch(sendData(response.data, types.RECEIVED_ENTITY_TYPES))
+      dispatch(sendData(sortBy(response.data, 'id'), types.RECEIVED_ENTITY_TYPES))
     }).catch( error => {
       console.log("Error receiving entity_types", error)
     })
@@ -283,5 +281,8 @@ OrganizationRegisterActions.getEntityByClassification = entityType => {
   return axios.get(url, getConfig())
 }
 
+const sortBy = (list, key) => {
+  return list.sort( (a, b) => a[key] > b[key])
+}
 
 export default OrganizationRegisterActions
