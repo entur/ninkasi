@@ -3,6 +3,7 @@ import * as types from './actionTypes'
 import moment from 'moment'
 import { getQueryVariable } from '../containers/utils'
 import { formatLineStats } from 'bogu/utils'
+import roleParser from '../roles/rolesParser'
 
 var SuppliersActions = {}
 
@@ -162,10 +163,9 @@ function sendData(payLoad, type) {
   }
 }
 
-SuppliersActions.fetchSuppliers = () => {
-  const url = window.config.nabuBaseUrl+'jersey/providers/all'
-
-  return function(dispatch) {
+SuppliersActions.getAllProviders = () => {
+  return function(dispatch, getState) {
+    const url = window.config.nabuBaseUrl+'jersey/providers/all'
     dispatch( sendData(null,types.REQUESTED_SUPPLIERS) )
     return axios({
       url: url,
@@ -175,7 +175,12 @@ SuppliersActions.fetchSuppliers = () => {
       ...getConfig()
     })
     .then(function(response) {
-      dispatch( sendData(response.data, types.RECEIVED_SUPPLIERS) )
+
+
+      const tokenParsed = getState().UserReducer.kc.tokenParsed
+      const providers = roleParser.getUserProviders(tokenParsed, response.data)
+
+      dispatch( sendData(providers, types.RECEIVED_SUPPLIERS) )
 
       let queryTab = getQueryVariable('tab')
       let queryId = getQueryVariable('id')

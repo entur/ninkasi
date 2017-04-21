@@ -41,7 +41,7 @@ class SuppliersContainer extends React.Component {
     const { dispatch } = this.props
     cfgreader.readConfig( (function(config) {
       window.config = config
-      dispatch(SuppliersActions.fetchSuppliers())
+      dispatch(SuppliersActions.getAllProviders())
 
       if (!!getQueryVariable('id')) {
         dispatch(SuppliersActions.selectActiveSupplier(getQueryVariable('id')))
