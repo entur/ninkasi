@@ -19,6 +19,16 @@ const getConfig = () => {
   return config
 }
 
+SuppliersActions.deleteAllJobs = () => {
+  return function(dispatch) {
+    const url = `${window.config.nabuBaseUrl}jersey/jobs/`
+    return axios.delete(url, getConfig()).then( response => {
+      dispatch(SuppliersActions.addNotification('Deleted event history', 'success'))
+      dispatch(SuppliersActions.logEvent({title: 'Deleted event history'}))
+    })
+  }
+}
+
 SuppliersActions.getProviderStatus = (id) => {
   if (id < 0) return;
 
