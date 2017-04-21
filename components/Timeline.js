@@ -3,10 +3,6 @@ import { color } from 'bogu/styles'
 
 class Timeline extends React.Component {
 
-  constructor(props) {
-    super(props)
-  }
-
   render() {
 
       const { timetables, isLast } = this.props

@@ -4,7 +4,7 @@ import Col from 'muicss/lib/react/col'
 
 const EventExpandableContent = (props) => {
 
-    const {events, correlationId} = props
+    const { events, correlationId } = props
 
     return  (
 

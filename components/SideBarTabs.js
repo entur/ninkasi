@@ -3,10 +3,6 @@ import SideBarTabsElement from './SideBarTabsElement'
 
 class SideBarTabs extends React.Component {
 
-  constructor(props) {
-    super(props)
-  }
-
   setActiveTab(value) {
     this.props.setActiveTab(value)
   }
