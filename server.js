@@ -1,11 +1,11 @@
 var webpack = require('webpack')
-var convictPromise = require('./config/convict.js')
+var convictConfig = require('./config/convict.js')
 var express = require('express')
 var port = process.env.port || 8988
 var app = express()
 var fs = require('fs')
 
-convictPromise.then( (convict) => {
+convictConfig.then( (convict) => {
 
   var ENDPOINTBASE = convict.get('endpointBase')
 
@@ -61,10 +61,12 @@ convictPromise.then( (convict) => {
   })
 
   app.get(ENDPOINTBASE + 'config.json', function(req, res) {
+
     var cfg = {
       nabuBaseUrl: convict.get('nabuBaseUrl'),
       mardukBaseUrl: convict.get('mardukBaseUrl'),
-      endpointBase: convict.get('endpointBase')
+      endpointBase: convict.get('endpointBase'),
+      chouetteBaseUrl: convict.get('chouetteBaseUrl')
     }
 
     createKeyCloakConfig(convict.get('authServerUrl'))

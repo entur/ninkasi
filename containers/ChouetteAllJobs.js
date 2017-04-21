@@ -229,7 +229,7 @@ class ChouetteAllJobs extends React.Component {
           <Container fluid={true}> { page.map( (job, index) => {
 
               const statusClass = (job.status === 'ABORTED' || job.status === 'CANCELED') ? 'error' : 'success'
-              const chouetteURL = `https://redigering.rutebanken.org/referentials/${job.referential}/`
+              const chouetteURL = `${window.config.chouetteBaseUrl}/referentials/${job.referential}/`
 
               return <Row key={'ch-job-' + index} style={{display: 'flex', alignItems: 'center'}}>
                 <Col md="1">

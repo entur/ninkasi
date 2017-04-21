@@ -39,7 +39,13 @@ module.exports = new Promise(function(resolve, reject){
       format: String,
       default: "https://test.rutebanken.org/auth",
       env: "AUTH_SERVER_URL"
-    }
+    },
+    chouetteBaseUrl: {
+      doc: "URL to Chouette UI",
+      format: String,
+      default: "https://redigering.rutebanken.org/",
+      env: "CHOUETTE_BASE_URL"
+    },
 
   });
 
