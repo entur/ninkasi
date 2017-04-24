@@ -33,8 +33,9 @@ class EventStepper extends React.Component {
       "FILE_TRANSFER" : "File transfer",
       "FILE_CLASSIFICATION": "File classification",
       "BUILD_GRAPH": "Build graph",
+      "EXPORT_NETEX": "Netex Export",
     }
-    return groupTextMap[group] || 'Unknown'
+    return groupTextMap[group] || group || 'Unknown'
   }
 
   getIconByState(state) {
