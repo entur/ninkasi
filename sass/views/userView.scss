@@ -4,18 +4,36 @@
     margin: 2px;
     margin-bottom: 5px;
     font-size: 0.9em;
-
   }
 
-  .col-1-4 {
-    width: 29%;
-    max-width: 29%;
-    min-width: 29%;
+  .col-1-7 {
+    width: 17%;
+    max-width: 17%;
+    min-width: 17%;
     display: inline-block;
+    word-break: break-all;
+  }
+
+  .col-1-8 {
+    width: 15%;
+    max-width: 15%;
+    min-width: 15%;
+    display: inline-block;
+    word-break: break-all;
+  }
+
+  .col-1-9 {
+    width: 12%;
+    max-width: 12%;
+    min-width: 12%;
+    display: inline-block;
+    word-break: break-all;
   }
 
   .col-icon {
-    width: 8%;
+    float: right;
+    margin-right: 10px;
+    width: auto;
     display: inline-block;
   }
 
@@ -25,5 +43,8 @@
     background: rgba(238, 238, 238, 0.28);
     margin-bottom: 5px;
   }
+}
 
+.user-row-item:nth-child(2n) {
+  background: hsla(0, 0%, 50%, 0.07);
 }

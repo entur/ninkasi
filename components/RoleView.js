@@ -62,17 +62,15 @@ class RoleView extends React.Component {
     return (
       <div className="role-row">
         <div className="role-header">
-          <div className="col-1-4">id</div>
-          <div className="col-1-4">name</div>
-          <div className="col-1-4">private code</div>
+          <div className="col-1-3">private code</div>
+          <div className="col-1-3">name</div>
         </div>
         {
           roles.map( role => {
             return (
-              <div key={'role-' + role.id}>
-                <div className="col-1-4">{ role.id }</div>
-                <div className="col-1-4">{ role.name }</div>
-                <div className="col-1-4">{ role.privateCode }</div>
+              <div key={'role-' + role.id} className="role-row-item">
+                <div className="col-1-3">{ role.privateCode }</div>
+                <div className="col-1-3">{ role.name }</div>
                 <div className="col-icon" style={{cursor: 'pointer'}}>
                   <MdDelete
                     color="#fa7b81" style={{height: 20, width: 20, marginRight: 10, verticalAlign: 'middle', cursor: 'pointer'}}

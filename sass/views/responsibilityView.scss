@@ -22,9 +22,9 @@
   }
 
   .col-1-6 {
-    width: 15%;
-    max-width: 15%;
-    min-width: 15%;
+    width: 16%;
+    max-width: 16%;
+    min-width: 16%;
     display: inline-block;
   }
 
@@ -35,7 +35,9 @@
   }
 
   .col-icon {
-    width: 8%;
+    float: right;
+    margin-right: 10px;
+    width: auto;
     display: inline-block;
   }
 

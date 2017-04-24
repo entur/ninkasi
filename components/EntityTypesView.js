@@ -71,7 +71,7 @@ class EntityTypesView extends React.Component {
         {
           entityTypes.map( et => {
             return (
-              <div key={'et-' + et.id}>
+              <div key={'et-' + et.id} className="et-row-item">
                 <div className="col-1-5">{ et.id }</div>
                 <div className="col-1-5">{ et.name }</div>
                 <div className="col-1-5">{ et.privateCode }</div>

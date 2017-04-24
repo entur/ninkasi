@@ -28,5 +28,8 @@
   ul {
     font-size: 12px;
   }
+}
 
+.resp-row-item:nth-child(2n) {
+  background: hsla(0, 0%, 50%, 0.07);
 }
