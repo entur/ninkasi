@@ -2,11 +2,21 @@
 
 This is the private admin GUI for managing the data pipeline and inspection of data status
 
-## Run the app
+## Run the app 
+
+### Dev
 
 ```
 
 npm install
+npm dev-local
+```
+
+### Production
+```
+
+npm install
+npm run build
 npm start
 ```
 
