@@ -43,4 +43,15 @@ rolesParser.getUserProviders = (tokenParsed, providers) => {
   return userOrganisations
 }
 
+rolesParser.isAdmin = tokenParsed => {
+  if (!tokenParsed || !tokenParsed.roles) return false
+
+  for (let i = 0; i < tokenParsed.roles.length; i++) {
+    let role = JSON.parse(tokenParsed.roles[i])
+    if (role.r === 'adminEditRouteData') return true
+  }
+
+  return false
+}
+
 export default rolesParser

@@ -122,7 +122,7 @@ OrganizationRegisterActions.getCodeSpaces = () => {
 
 OrganizationRegisterActions.getUsers = () => {
   return function (dispatch) {
-    const url = `${window.config.nabuBaseUrl}jersey/users`
+    const url = `${window.config.nabuBaseUrl}jersey/users?full=true`
     return axios.get(url, getConfig())
     .then(response => {
       dispatch(sendData(sortBy(response.data, 'username'), types.RECEIVED_USERS))

@@ -18,6 +18,7 @@ import MdDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down'
 import Divider from 'material-ui/Divider'
 import peliasTasks from '../config/peliasTasks'
 import moment from 'moment'
+import roleParser from '../roles/rolesParser'
 
 
 class SuppliersContainer extends React.Component {
@@ -117,6 +118,16 @@ class SuppliersContainer extends React.Component {
     dispatch(SuppliersActions.executePeliasTask(this.state.peliasOptions))
   }
 
+  handleClearEventHistory() {
+    const { dispatch } = this.props
+
+    const confirmedByUser = confirm('Are you want to clean all event history?');
+
+    if (confirmedByUser) {
+      dispatch(SuppliersActions.deleteAllJobs())
+    }
+  }
+
   handleLogout() {
     const { kc } = this.props
     kc.logout()
@@ -139,9 +150,11 @@ class SuppliersContainer extends React.Component {
 
   render() {
 
-    const {suppliers, activeProviderId, otherStatus } = this.props
+    const { suppliers, activeProviderId, otherStatus, kc } = this.props
 
     let selectedValue = (typeof(activeProviderId) !== 'undefined') ? String(activeProviderId) : "0"
+
+    let isAdmin = roleParser.isAdmin(kc.tokenParsed)
 
     let innerContainerStyle = {
       display: 'flex',
@@ -158,7 +171,8 @@ class SuppliersContainer extends React.Component {
       cleanFileFilter: 'Clean file filter',
       canceAllJobs: 'Cancel all current chouette jobs',
       cleanAll: 'Clean all specificed by level',
-      createNewProvider: 'Create new provider'
+      createNewProvider: 'Create new provider',
+      pelias: "Execute pelias operations",
     }
 
     const peliasPopoverStyle = {
@@ -213,7 +227,7 @@ class SuppliersContainer extends React.Component {
       <div className="suppliers-container">
         <div style={innerContainerStyle}>
           <Button title={toolTips.history} style={{fontSize: 12}} color="dark" onClick={() => this.openModal()}><FaHistory color="#fff"/> History</Button>
-           <Button title={toolTips.history} style={{fontSize: 12}} color="dark" onClick={(event) => this.handleTogglePeliasOpen(event, true)}>
+           <Button disabled={!isAdmin} title={toolTips.pelias} style={{fontSize: 12}} color="dark" onClick={(event) => this.handleTogglePeliasOpen(event, true)}>
              Pelias
              <MdDropDown color="#fff" style={{verticalAlign: 'middle'}}/>
            </Button>
@@ -227,11 +241,12 @@ class SuppliersContainer extends React.Component {
           >
             { peliasOptions }
           </Popover>
-          <Button title={toolTips.buildGraph} style={{fontSize: 12}} color="dark" onClick={this.handleBuildGraph.bind(this)}>Build Graph</Button>
-          <Button title={toolTips.fetchOSM} style={{fontSize: 12}} color="dark" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</Button>
-          <Button title={toolTips.cleanFileFilter} style={{fontSize: 12}} color="dark" onClick={() => this.handleCleanFileFilter()}><FaExclamation color="#b8c500"/> Clean file filter</Button>
-          <Button title={toolTips.canceAllJobs} style={{fontSize: 12}} color="dark" onClick={() => this.handleCancelAllJobs()}><FaExclamation color="#b8c500"/> Cancel all jobs</Button>
-          <Dropdown title={toolTips.cleanAll} id="dropdown-clean-all" color="dark" label="Clean all">
+          <Button disabled={!isAdmin} title={toolTips.buildGraph} style={{fontSize: 12}} color="dark" onClick={this.handleBuildGraph.bind(this)}>Build Graph</Button>
+          <Button disabled={!isAdmin}  title={toolTips.fetchOSM} style={{fontSize: 12}} color="dark" onClick={this.handleFetchOSM.bind(this)}>Fetch OSM</Button>
+          <Button disabled={!isAdmin}  title={toolTips.cleanFileFilter} style={{fontSize: 12}} color="dark" onClick={() => this.handleCleanFileFilter()}><FaExclamation color="#b8c500"/> Clean file filter</Button>
+          <Button disabled={!isAdmin}  title={toolTips.canceAllJobs} style={{fontSize: 12}} color="dark" onClick={() => this.handleCancelAllJobs()}><FaExclamation color="#b8c500"/> Cancel all jobs</Button>
+          <Button disabled={!isAdmin}  title={toolTips.canceAllJobs} style={{fontSize: 12}} color="dark" onClick={() => this.handleClearEventHistory()}><FaExclamation color="#b8c500"/> Clean event history</Button>
+          <Dropdown disabled={!isAdmin}  title={toolTips.cleanAll} id="dropdown-clean-all" color="dark" label="Clean all">
             <DropdownItem onClick={() => this.handleCleanAllDataSpaces('all')}></DropdownItem>
             <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level1')}>Level 1</DropdownItem>
             <DropdownItem onClick={() => this.handleCleanAllDataSpaces('level2')}>Level 2</DropdownItem>

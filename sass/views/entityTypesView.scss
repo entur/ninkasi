@@ -15,7 +15,9 @@
   }
 
   .col-icon {
-    width: 8%;
+    float: right;
+    margin-right: 10px;
+    width: auto;
     display: inline-block;
   }
 
@@ -25,5 +27,8 @@
     background: rgba(238, 238, 238, 0.28);
     margin-bottom: 5px;
   }
+}
 
+.et-row-item:nth-child(2n) {
+  background: hsla(0, 0%, 50%, 0.07);
 }

@@ -74,7 +74,7 @@ class ResponsibilitiesView extends React.Component {
         {
           responsibilities.map( responsibility => {
             return (
-              <div key={'responsibility-' + responsibility.id}>
+              <div key={'responsibility-' + responsibility.id} className="resp-row-item">
                 <div className="col-1-5">{ responsibility.id }</div>
                 <div className="col-1-5">{ responsibility.name }</div>
                 <div className="col-1-5">{ responsibility.codeSpace }</div>

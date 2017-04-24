@@ -56,21 +56,27 @@ class UserView extends React.Component {
     return (
       <div className="user-row">
         <div className="user-header">
-          <div className="col-1-4">username</div>
-          <div className="col-1-4">organisation</div>
-          <div className="col-1-4">Responsiblity set</div>
+          <div className="col-1-9">username</div>
+          <div className="col-1-9">firstname</div>
+          <div className="col-1-9">lastname</div>
+          <div className="col-1-8">e-mail</div>
+          <div className="col-1-9">organisation</div>
+          <div className="col-1-7">Responsiblity set</div>
         </div>
         {
           users.map( user => {
             return (
-              <div key={'user-' + user.id}>
-                <div className="col-1-4">{ user.username }</div>
-                <div className="col-1-4">{ user.organisationRef }</div>
-                <div className="col-1-4">
+              <div key={'user-' + user.id} className="user-row-item">
+                <div className="col-1-9">{ user.username }</div>
+                <div className="col-1-9">{ user.contactDetails.firstName }</div>
+                <div className="col-1-9">{ user.contactDetails.lastName }</div>
+                <div className="col-1-8">{ user.contactDetails.email }</div>
+                <div className="col-1-9">{ user.organisation.name }</div>
+                <div className="col-1-7">
                   <ul style={{display: 'flex', flexDirection: 'column', listStyleType: 'circle'}}>
-                    { user.responsibilitySetRefs
-                      ? user.responsibilitySetRefs.map( (ref,i) => (
-                        <li key={i}>{ ref } </li>
+                    { user.responsibilitySets
+                      ? user.responsibilitySets.map( (resp,i) => (
+                        <li key={resp.id}>{ resp.name } </li>
                       ))
                       : null
                     }

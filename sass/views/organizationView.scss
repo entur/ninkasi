@@ -8,14 +8,16 @@
   }
 
   .col-1-6 {
-    width: 17%;
-    max-width: 17%;
-    min-width: 17%  ;
+    width: 18%;
+    max-width: 18%;
+    min-width: 18%  ;
     display: inline-block;
   }
 
   .col-icon {
-    width: 8%;
+    float: right;
+    margin-right: 10px;
+    width: auto;
     display: inline-block;
   }
 
@@ -25,5 +27,8 @@
     background: rgba(238, 238, 238, 0.28);
     margin-bottom: 5px;
   }
+}
 
+.organization-row-item:nth-child(2n) {
+  background: hsla(0, 0%, 50%, 0.07);
 }

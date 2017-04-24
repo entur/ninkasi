@@ -71,7 +71,7 @@ class OrganizationView extends React.Component {
         {
           organizations.map( organization => {
             return (
-              <div key={'organization-' + organization.id}>
+              <div key={'organization-' + organization.id} className='organization-row-item'>
                 <div className="col-1-6">{ organization.id }</div>
                 <div className="col-1-6">{ organization.name }</div>
                 <div className="col-1-6">{ organization.organisationType }</div>
