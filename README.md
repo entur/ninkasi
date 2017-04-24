@@ -9,7 +9,7 @@ This is the private admin GUI for managing the data pipeline and inspection of d
 ```
 
 npm install
-npm dev-local
+npm run dev
 ```
 
 ### Production
