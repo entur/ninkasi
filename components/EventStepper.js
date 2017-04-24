@@ -52,7 +52,7 @@ class EventStepper extends React.Component {
 
   addUnlistedStates(groups) {
 
-    const states = ["FILE_TRANSFER", "FILE_CLASSIFICATION", "IMPORT", "VALIDATION_LEVEL_1", "DATASPACE_TRANSFER", "VALIDATION_LEVEL_2", "EXPORT", "BUILD_GRAPH"]
+    const states = ["FILE_TRANSFER", "FILE_CLASSIFICATION", "IMPORT", "VALIDATION_LEVEL_1", "DATASPACE_TRANSFER", "VALIDATION_LEVEL_2", "EXPORT", "BUILD_GRAPH", "EXPORT_NETEX"]
 
     let groupsWithUnlisted = Object.assign({}, groups)
 
