@@ -120,7 +120,12 @@ class SuppliersContainer extends React.Component {
 
   handleClearEventHistory() {
     const { dispatch } = this.props
-    dispatch(SuppliersActions.deleteAllJobs())
+
+    const confirmedByUser = confirm('Are you want to clean all event history?');
+
+    if (confirmedByUser) {
+      dispatch(SuppliersActions.deleteAllJobs())
+    }
   }
 
   handleLogout() {
