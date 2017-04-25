@@ -233,6 +233,7 @@ class DataMigrationDetails extends React.Component {
       validate: 'Validate data in dataspace. If success, TRANSFER will be called if in level 1 space or EXPORT if in level 2 space',
       transfer: 'Transfer data from this space to the next space (Rutebanken space with id ' + chouetteInfo.migrateDataToProvider+ '). If success, VALIDATE in level 2 space will be called',
       export: 'Export GTFS data and trigger bulding',
+      clearEventHistory: 'Clean event history',
       clean: 'Clean data space (delete ALL transport data)'
     }
 
@@ -246,6 +247,7 @@ class DataMigrationDetails extends React.Component {
             ? <Button title={toolTips.transfer} color="primary" onClick={this.handleTransferData}>Transfer</Button>
             : <Button title={toolTips.export} color="primary" onClick={this.handleExportData}>Export</Button>
           }
+          <Button title={toolTips.clearEventHistory} color="danger" onClick={this.handleClearHistory}>Clear history</Button>
           <Button title={toolTips.clean} color="danger" onClick={this.handleCleanDataspace}>Clean</Button>
         </div>
         <TextField
@@ -306,7 +308,6 @@ class DataMigrationDetails extends React.Component {
     }
   }
 
-
   handleExportData = () => {
     this.props.dispatch(SuppliersActions.exportData(this.props.activeId))
   }
@@ -318,8 +319,16 @@ class DataMigrationDetails extends React.Component {
   handleCleanDataspace = () => {
     const response = confirm("Are you sure you want to clean up the dataspace current provider?")
     if (response == true) {
-      const {dispatch} = this.props
+      const { dispatch } = this.props
       dispatch(SuppliersActions.cleanDataspace(this.props.activeId))
+    }
+  }
+
+  handleClearHistory = () => {
+    const response = confirm("Are you sure you want to clear event history for current provider?")
+    if (response == true) {
+      const { dispatch } = this.props
+      dispatch(SuppliersActions.deleteJobsForProvider(this.props.activeId))
     }
   }
 
@@ -403,7 +412,6 @@ class DataMigrationDetails extends React.Component {
   }
 
   removeSelectedFiles = () => {
-
     const { outboundFiles, selectedIndicesOutbound  } = this.state
 
     let filteredList = []
@@ -424,7 +432,6 @@ class DataMigrationDetails extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps, ownState) => {
-
   return {
     providers: state.SuppliersReducer.data,
     activeId: state.SuppliersReducer.activeId,
