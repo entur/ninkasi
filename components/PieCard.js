@@ -23,7 +23,13 @@ class PieCard extends React.Component {
       textAlign: 'center'
     }
 
-    let pieOptions = {
+    const sumStyle = {
+      color: color.font.info2,
+      fontWeight: 400,
+      textAlign: 'center',
+    }
+
+    const pieOptions = {
       animation: false,
       showTooltips: true,
       responsive: true,
@@ -34,7 +40,7 @@ class PieCard extends React.Component {
     const { stats, provider } = this.props
 
     if (!stats) return (
-      <div style={{width: 200, height: 300, display: 'flex', alignItems: 'center',  margin: 50}}>
+      <div style={{width: 200, height: 300, display: 'flex', alignItems: 'center',  margin: 20}}>
         <Loader color={color.font.info1} size="23px"/>
       </div>
     )
@@ -59,10 +65,12 @@ class PieCard extends React.Component {
       }
     ]
 
+    let expiringSum = 0
     for (let i in expiring) {
       let category = expiring[i]
       let numDays = category.numDaysAtLeastValid
       let length = category.lineNumbers.length
+      expiringSum += length
 
       pieData.push({
           value: length,
@@ -88,10 +96,11 @@ class PieCard extends React.Component {
     if (!pieDataIsNotEmpty) return null
 
     return (
-      <div style={{width: 200, height: 300, display: 'flex', flexDirection: 'column', margin: 50}}>
+      <div style={{width: 200, height: 300, display: 'flex', flexDirection: 'column', margin: 10}}>
         <div>
           { this.props.hideHeader ? null : <div style={{fontWeight: 600, textAlign: 'center', marginBottom: 5, textOverflow: 'ellipses', whiteSpace: 'nowrap'}}>{provider.name}</div> }
             <PieChart style={{marginTop: 0}} ref="chart" onClick={(e) => { this.props.handlePieOnClick(e, this.refs.chart.getChart(), provider.id)} } data={pieData} width="100" height="100"  options={pieOptions}/>
+          <div style={sumStyle}>{valid + soonInvalid + expiringSum}</div>
           <div onClick={() => this.props.handleShowAllClick(120, provider.id)} style={showAllStyle}>Show all</div>
         </div>
       </div>
