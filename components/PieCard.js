@@ -47,8 +47,8 @@ class PieCard extends React.Component {
 
     const valid = stats.valid.lineNumbers.length
     const invalid = stats.invalid.lineNumbers.length
-    const soonInvalid = stats.soonInvalid.lineNumbers.length
-    const expiring = stats.validity.filter( lines => lines.numDaysAtLeastValid > 0 && lines.numDaysAtLeastValid < 120).reverse()
+    const expiring = stats.expiring.lineNumbers.length
+    const dynamic = [] //stats.validity.filter( lines => lines.numDaysAtLeastValid > 0 && lines.numDaysAtLeastValid < 120).reverse()
 
     const pieData = [
       {
@@ -58,19 +58,17 @@ class PieCard extends React.Component {
         label: segmentName('valid'),
       },
       {
-        value: soonInvalid,
-        color: color.soonInvalid,
-        highlight: color.highlight.soonInvalid,
-        label: segmentName('soonInvalid'),
+        value: expiring,
+        color: color.expiring,
+        highlight: color.highlight.expiring,
+        label: segmentName('expiring'),
       }
     ]
 
-    let expiringSum = 0
-    for (let i in expiring) {
-      let category = expiring[i]
+    for (let i in dynamic) {
+      let category = dynamic[i]
       let numDays = category.numDaysAtLeastValid
       let length = category.lineNumbers.length
-      expiringSum += length
 
       pieData.push({
           value: length,
@@ -100,7 +98,7 @@ class PieCard extends React.Component {
         <div>
           { this.props.hideHeader ? null : <div style={{fontWeight: 600, textAlign: 'center', marginBottom: 5, textOverflow: 'ellipses', whiteSpace: 'nowrap'}}>{provider.name}</div> }
             <PieChart style={{marginTop: 0}} ref="chart" onClick={(e) => { this.props.handlePieOnClick(e, this.refs.chart.getChart(), provider.id)} } data={pieData} width="100" height="100"  options={pieOptions}/>
-          <div style={sumStyle}>{valid + soonInvalid + expiringSum}</div>
+          <div style={sumStyle}>Number of lines: {valid + expiring}</div>
           <div onClick={() => this.props.handleShowAllClick(120, provider.id)} style={showAllStyle}>Show all</div>
         </div>
       </div>
