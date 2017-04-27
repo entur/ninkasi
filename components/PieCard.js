@@ -27,7 +27,8 @@ class PieCard extends React.Component {
       animation: false,
       showTooltips: true,
       responsive: true,
-      tooltipTemplate: "<%= label %> - <%= value %>"
+      tooltipTemplate: "<%= label %> - <%= value %>",
+      cursor: 'pointer',
     }
 
     const { stats, provider } = this.props
