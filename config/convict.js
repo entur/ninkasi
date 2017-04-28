@@ -37,7 +37,7 @@ module.exports = new Promise(function(resolve, reject){
     authServerUrl: {
       doc: "URL to keycloak auth server",
       format: String,
-      default: "https://test.rutebanken.org/auth",
+      default: "https://www-test.rutebanken.org/auth",
       env: "AUTH_SERVER_URL"
     },
     chouetteBaseUrl: {

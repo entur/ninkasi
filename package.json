@@ -1,13 +1,13 @@
 {
   "name": "Ninkasi",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "Admin GUI for internal usage",
   "main": "index.js",
   "scripts": {
     "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.prod.config.js",
     "start": "node server.js",
     "test": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests",
-    "dev": "port=9000 NABU_BASE_URL=https://test.rutebanken.org/apiman-gateway/rutebanken/nabu/1.0/ MARDUK_BASE_URL=https://test.rutebanken.org/apiman-gateway/rutebanken/marduk/1.0/ BABEL_ENV=development NODE_ENV=development node server.js",
+    "dev": "port=9000 NABU_BASE_URL=https://www-test.rutebanken.org/api/nabu/1.0/ MARDUK_BASE_URL=https://www-test.rutebanken.org/api/marduk/1.0/ BABEL_ENV=development NODE_ENV=development node server.js",
     "prod": "BABEL_ENV=production NODE_ENV=production node server.js"
   },
   "author": "Sean Erik Scully",
