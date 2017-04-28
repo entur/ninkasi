@@ -12,6 +12,28 @@ class PieCard extends React.Component {
     provider: PropTypes.object.isRequired
   }
 
+  state = {
+    showSum: true,
+  }
+
+  renderNumber(all, valid, invalid, expiring) {
+    const sumStyle = {
+      color: color.font.info2,
+      fontWeight: 400,
+      textAlign: 'center',
+      cursor: 'pointer',
+      userSelect: 'none',
+    }
+
+    const detail = (color, text) => <span style={{color: color}}>{text}</span>
+
+    return (
+      <div onClick={() => this.setState({showSum: !this.state.showSum})} style={sumStyle}>
+        Number of lines: {this.state.showSum ? all : <div>{detail(color.invalid, invalid)} / {detail(color.valid, valid)} / {detail(color.expiring, expiring)}</div>}
+      </div>
+    )
+  }
+
   render() {
 
     const showAllStyle = {
@@ -21,12 +43,6 @@ class PieCard extends React.Component {
       cursor: 'pointer',
       marginTop: 10,
       textAlign: 'center'
-    }
-
-    const sumStyle = {
-      color: color.font.info2,
-      fontWeight: 400,
-      textAlign: 'center',
     }
 
     const pieOptions = {
@@ -45,6 +61,7 @@ class PieCard extends React.Component {
       </div>
     )
 
+    const all = stats.all.lineNumbers.length
     const valid = stats.valid.lineNumbers.length
     const invalid = stats.invalid.lineNumbers.length
     const expiring = stats.expiring.lineNumbers.length
@@ -98,7 +115,7 @@ class PieCard extends React.Component {
         <div>
           { this.props.hideHeader ? null : <div style={{fontWeight: 600, textAlign: 'center', marginBottom: 5, textOverflow: 'ellipses', whiteSpace: 'nowrap'}}>{provider.name}</div> }
             <PieChart style={{marginTop: 0}} ref="chart" onClick={(e) => { this.props.handlePieOnClick(e, this.refs.chart.getChart(), provider.id)} } data={pieData} width="100" height="100"  options={pieOptions}/>
-          <div style={sumStyle}>Number of lines: {valid + expiring}</div>
+          {this.renderNumber(all, valid, invalid, expiring)}
           <div onClick={() => this.props.handleShowAllClick(120, provider.id)} style={showAllStyle}>Show all</div>
         </div>
       </div>

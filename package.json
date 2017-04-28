@@ -1,6 +1,6 @@
 {
   "name": "Ninkasi",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "Admin GUI for internal usage",
   "main": "index.js",
   "scripts": {
