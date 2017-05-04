@@ -224,7 +224,7 @@ class DataMigrationDetails extends React.Component {
     const { files, chouetteInfo } = this.props
     const { outboundFiles, selectedIndicesOutbound, selectedIndicesSource, filterText } = this.state
 
-    const shouldRenderTransfer = !!chouetteInfo.migrateDataToProvider
+    const isLevel1Provider = !!chouetteInfo.migrateDataToProvider
 
     const sortedFiles = this.sortFiles(files)
 
@@ -241,57 +241,66 @@ class DataMigrationDetails extends React.Component {
 
       <div>
         <div style={{display: 'flex', justfiyContent: 'flex-start'}}>
-          <Button title={toolTips.import} color="primary" onClick={this.handleImportData}>Import</Button>
+          { isLevel1Provider ?
+            <Button title={toolTips.import} color="primary" onClick={this.handleImportData}>Import</Button>
+            : null
+          }
           <Button title={toolTips.validate} color="primary" onClick={this.handleValidateProvider}>Validate</Button>
-          { shouldRenderTransfer
+          { isLevel1Provider
             ? <Button title={toolTips.transfer} color="primary" onClick={this.handleTransferData}>Transfer</Button>
             : <Button title={toolTips.export} color="primary" onClick={this.handleExportData}>Export</Button>
           }
           <Button title={toolTips.clearEventHistory} color="danger" onClick={this.handleClearHistory}>Clear history</Button>
           <Button title={toolTips.clean} color="danger" onClick={this.handleCleanDataspace}>Clean</Button>
         </div>
-        <TextField
-          hintText="Filter ..."
-          value={filterText}
-          onChange={ e => this.setState({filterText: e.target.value})}
-        />
-        <div style={{display: 'flex', alignItems: 'center'}}>
-          <AdvancedFileList
-            selectedIndices={selectedIndicesSource}
-            updateIndices={this.handleUpdateIndicesSource.bind(this)}
-            downloadButton
-            activeProviderId={this.props.activeId}
-            files={sortedFiles}
-            isSource
-            handleSortBySize={this.handleSortBySize.bind(this)}
-            handleSortByName={this.handleSortByName.bind(this)}
-            handleSortByDate={this.handleSortByDate.bind(this)}
-            handleSortByExt={this.handleSortByExt.bind(this)}
-            handleKeyDown={this.handleKeyDown.bind(this)}
-            handleKeyUp={this.handleKeyUp.bind(this)}
-            handleSelectAllShowingIndices={this.handleSelectAllShowingIndices.bind(this)}
+        { isLevel1Provider ?
+          <TextField
+            hintText="Filter ..."
+            value={filterText}
+            onChange={ e => this.setState({filterText: e.target.value})}
           />
-          { sortedFiles.length
-            ?
-            <div style={{display: 'flex', alignItem: 'center', flexDirection: 'column', flex: 0.1, cursor: 'pointer'}}>
-              <FaAdd style={{transform: 'scale(2)', color: '#2196f3', marginBottom: 30, marginLeft: 20, marginRight: 20}} onClick={this.appendSelectedFiles}/>
-              <FaRemove style={{transform: 'scale(2)', color: outboundFiles.length ? '#b91c1c' : '#9e9e9e', marginLeft: 20, marginRight: 20}} onClick={this.removeSelectedFiles}/>
+          : <div style={{fontWeight: 600, marginTop: 20, width: '100%', textAlign: 'center'}}>Level 2 provider</div>
+        }
+        { isLevel1Provider ?
+          <div style={{display: 'flex', alignItems: 'center'}}>
+            <AdvancedFileList
+              selectedIndices={selectedIndicesSource}
+              updateIndices={this.handleUpdateIndicesSource.bind(this)}
+              downloadButton
+              activeProviderId={this.props.activeId}
+              files={sortedFiles}
+              isSource
+              handleSortBySize={this.handleSortBySize.bind(this)}
+              handleSortByName={this.handleSortByName.bind(this)}
+              handleSortByDate={this.handleSortByDate.bind(this)}
+              handleSortByExt={this.handleSortByExt.bind(this)}
+              handleKeyDown={this.handleKeyDown.bind(this)}
+              handleKeyUp={this.handleKeyUp.bind(this)}
+              handleSelectAllShowingIndices={this.handleSelectAllShowingIndices.bind(this)}
+            />
+            { sortedFiles.length
+              ?
+              <div style={{display: 'flex', alignItem: 'center', flexDirection: 'column', flex: 0.1, cursor: 'pointer'}}>
+                <FaAdd style={{transform: 'scale(2)', color: '#2196f3', marginBottom: 30, marginLeft: 20, marginRight: 20}} onClick={this.appendSelectedFiles}/>
+                <FaRemove style={{transform: 'scale(2)', color: outboundFiles.length ? '#b91c1c' : '#9e9e9e', marginLeft: 20, marginRight: 20}} onClick={this.removeSelectedFiles}/>
+              </div>
+              : <div style={{margin: 20, fontWeight: 600}}>No files available</div>
+            }
+            <AdvancedFileList
+              selectedIndices={selectedIndicesOutbound}
+              files={outboundFiles}
+              updateIndices={this.handleUpdateIndicesOutbound.bind(this)}
+              handleKeyDown={this.handleKeyDown.bind(this)}
+              handleKeyUp={this.handleKeyUp.bind(this)}
+              handleSelectAllShowingIndices={this.handleSelectAllShowingIndices.bind(this)}
+            />
+            <div style={{flex: 0.2, display: outboundFiles.length ? 'flex' : 'none', alignItems: 'center', flexDirection: 'column', cursor: 'pointer'}}>
+              <FaArrowDown style={{transform: 'scale(2)', marginBottom: 30, marginLeft: 20}} onClick={this.moveDown}/>
+              <FaArrowUp style={{transform: 'scale(2)', marginLeft: 20}} onClick={this.moveUp}/>
             </div>
-            : <div style={{margin: 20, fontWeight: 600}}>No files available</div>
-          }
-          <AdvancedFileList
-            selectedIndices={selectedIndicesOutbound}
-            files={outboundFiles}
-            updateIndices={this.handleUpdateIndicesOutbound.bind(this)}
-            handleKeyDown={this.handleKeyDown.bind(this)}
-            handleKeyUp={this.handleKeyUp.bind(this)}
-            handleSelectAllShowingIndices={this.handleSelectAllShowingIndices.bind(this)}
-          />
-          <div style={{flex: 0.2, display: outboundFiles.length ? 'flex' : 'none', alignItems: 'center', flexDirection: 'column', cursor: 'pointer'}}>
-            <FaArrowDown style={{transform: 'scale(2)', marginBottom: 30, marginLeft: 20}} onClick={this.moveDown}/>
-            <FaArrowUp style={{transform: 'scale(2)', marginLeft: 20}} onClick={this.moveUp}/>
           </div>
-        </div>
+          : null
+        }
       </div>
     )
   }
