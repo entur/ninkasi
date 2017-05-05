@@ -927,8 +927,8 @@ SuppliersActions.toggleChouetteInfoCheckboxAllFilter = (option, value) => {
 }
 
 SuppliersActions.formatProviderStatusDate = (list, provider) => {
-  return list.map( (listItem) => {
-
+  return list
+  .map( listItem => {
     listItem.duration = moment(moment(listItem.lastEvent).diff(moment(listItem.firstEvent))).locale("nb").utc().format("HH:mm:ss")
     listItem.firstEvent = moment(listItem.firstEvent).locale("nb").format("YYYY-MM-DD HH:mm:ss")
     listItem.lastEvent = moment(listItem.lastEvent).locale("nb").format("YYYY-MM-DD HH:mm:ss")

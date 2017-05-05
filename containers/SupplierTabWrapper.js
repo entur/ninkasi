@@ -191,9 +191,10 @@ class SupplierTabWrapper extends React.Component {
             <Tab value="events" label="Events">
               <EventDetails
                 handleRefresh={this.handleRefreshActiveProvider.bind(this)} 
-                paginationMap={this.props.paginationMapActiveProvider}
+                dataSource={this.props.providerEvents}
                 locale="en"
                 key="statusList"
+                includeLevel2={true}
               />
             </Tab>
             <Tab value="chouetteJobs" label="Chouette jobs">
@@ -216,9 +217,10 @@ class SupplierTabWrapper extends React.Component {
             <Tab value="events" label="Events">
               <EventDetails
                 handleRefresh={this.handleRefreshAllProviders.bind(this)}
-                paginationMap={this.props.paginationMapAllProvider}
+                dataSource={this.props.allProvidersEvents}
                 key="statusList"
                 locale="en"
+                includeLevel2={true}
               />
             </Tab>
             <Tab value="statistics" label="Statistics">
@@ -259,32 +261,12 @@ const mapStateToProps = state => {
     activeId: state.SuppliersReducer.activeId,
     filelistIsLoading: state.MardukReducer.filenames.isLoading,
     displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
-    paginationMapActiveProvider: getPaginationMapActiveProvider(state.SuppliersReducer.statusList ? state.SuppliersReducer.statusList.slice() : []),
-    paginationMapAllProvider: getPaginationMapAllProvider(state.SuppliersReducer.statusListAllProviders.slice()),
+    providerEvents: state.SuppliersReducer.statusList,
+    allProvidersEvents: state.SuppliersReducer.statusListAllProviders,
     fileUploadProgress: state.SuppliersReducer.fileUploadProgress,
     lineStats: state.SuppliersReducer.lineStats,
     kc: state.UserReducer.kc
   }
-}
-
-const getPaginationMapActiveProvider = (statusList = []) => {
-  let paginationMap = []
-
-  for (let i = 0, j = statusList.length; i < j; i+=10) {
-    paginationMap.push(statusList.slice(i,i+10))
-  }
-  return paginationMap
-}
-
-const getPaginationMapAllProvider = (statusList = []) => {
-
-  let paginationMap = []
-
-  for (let i = 0, j = statusList.length; i < j; i+=10) {
-    paginationMap.push(statusList.slice(i,i+10))
-  }
-
-  return paginationMap
 }
 
 export default connect(mapStateToProps)(SupplierTabWrapper)
