@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import SuppliersActions from '../actions/SuppliersActions'
-import EventDetails from './EventDetails'
+import { EventDetails } from 'bogu'
 import ChouetteJobDetails from './ChouetteJobDetails'
 import ChouetteAllJobs from './ChouetteAllJobs'
 import DataMigrationDetails from './DataMigrationDetails'
@@ -189,7 +189,12 @@ class SupplierTabWrapper extends React.Component {
               <DataMigrationDetails/>
             </Tab>
             <Tab value="events" label="Events">
-              <EventDetails handleRefresh={this.handleRefreshActiveProvider.bind(this)} paginationMap={this.props.paginationMapActiveProvider} key="statusList"/>
+              <EventDetails
+                handleRefresh={this.handleRefreshActiveProvider.bind(this)} 
+                paginationMap={this.props.paginationMapActiveProvider}
+                locale="en"
+                key="statusList"
+              />
             </Tab>
             <Tab value="chouetteJobs" label="Chouette jobs">
               <ChouetteJobDetails/>
@@ -209,7 +214,12 @@ class SupplierTabWrapper extends React.Component {
               <ChouetteAllJobs></ChouetteAllJobs>
             </Tab>
             <Tab value="events" label="Events">
-              <EventDetails handleRefresh={this.handleRefreshAllProviders.bind(this)} paginationMap={this.props.paginationMapAllProvider} key="statusList"></EventDetails>
+              <EventDetails
+                handleRefresh={this.handleRefreshAllProviders.bind(this)}
+                paginationMap={this.props.paginationMapAllProvider}
+                key="statusList"
+                locale="en"
+              />
             </Tab>
             <Tab value="statistics" label="Statistics">
               { suppliers.length && <StatisticsDetails dispatch={this.props.dispatch} lineStats={lineStats} suppliers={suppliers}/> }
