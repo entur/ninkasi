@@ -14,6 +14,7 @@ import Loader from 'halogen/DotLoader'
 import ChouetteLink from '../components/ChouetteLink'
 import DatePicker from 'material-ui/DatePicker'
 import MdClear from 'material-ui/svg-icons/content/clear'
+import { getPaginationMap } from '../models/'
 
 class ChouetteJobDetails extends React.Component {
 
@@ -77,41 +78,11 @@ class ChouetteJobDetails extends React.Component {
     })
   }
 
-  getPaginationMap() {
-    let { chouetteJobStatus, sortProperty, sortOrder } = this.props
-    const { filterFromDate } = this.state
-
-    let filteredStatus = chouetteJobStatus.filter( job => {
-
-      if (!filterFromDate) return true
-
-      return (new Date(job.created) > new Date(filterFromDate))
-
-    }).sort( (curr, prev) => {
-
-      if (sortOrder == 0) {
-        return (curr[sortProperty] > prev[sortProperty] ? -1 : 1)
-      }
-
-      if (sortOrder == 1) {
-        return (curr[sortProperty] > prev[sortProperty] ? 1 : -1)
-      }
-    })
-
-    let paginationMap = []
-
-    for (let i = 0, j = filteredStatus.length; i < j; i+=20) {
-      paginationMap.push(filteredStatus.slice(i,i+20))
-    }
-
-    return paginationMap
-  }
-
   render() {
 
-    const { chouetteJobFilter, requestingJobs } = this.props
-    const { activeChouettePageIndex } = this.state
-    const paginationMap = this.getPaginationMap()
+    const { chouetteJobFilter, requestingJobs, chouetteJobStatus, sortProperty, sortOrder } = this.props
+    const { activeChouettePageIndex, filterFromDate } = this.state
+    const paginationMap = getPaginationMap(chouetteJobStatus, sortProperty, sortOrder, filterFromDate)
 
     const page = paginationMap ? paginationMap[activeChouettePageIndex] : null
 
@@ -265,17 +236,15 @@ class ChouetteJobDetails extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-  return {
-    activeId: state.SuppliersReducer.activeId,
-    chouetteJobStatus: state.MardukReducer.chouetteJobStatus,
-    sortProperty: state.UtilsReducer.chouetteListSortOrder.property,
-    sortOrder: state.UtilsReducer.chouetteListSortOrder.sortOrder,
-    chouetteJobFilter: state.MardukReducer.chouetteJobFilter,
-    actionFilter: state.MardukReducer.actionFilter,
-    requestingJobs: state.MardukReducer.requesting_chouette_job
-  }
-}
+const mapStateToProps = state => ({
+  activeId: state.SuppliersReducer.activeId,
+  chouetteJobStatus: state.MardukReducer.chouetteJobStatus,
+  sortProperty: state.UtilsReducer.chouetteListSortOrder.property,
+  sortOrder: state.UtilsReducer.chouetteListSortOrder.sortOrder,
+  chouetteJobFilter: state.MardukReducer.chouetteJobFilter,
+  actionFilter: state.MardukReducer.actionFilter,
+  requestingJobs: state.MardukReducer.requesting_chouette_job
+})
 
 
 export default connect(mapStateToProps)(ChouetteJobDetails)

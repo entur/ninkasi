@@ -14,6 +14,7 @@ import SuppliersActions from '../actions/SuppliersActions'
 import ChouetteLink from '../components/ChouetteLink'
 import DatePicker from 'material-ui/DatePicker'
 import MdClear from 'material-ui/svg-icons/content/clear'
+import { getPaginationMap } from '../models/'
 
 class ChouetteAllJobs extends React.Component {
 
@@ -72,43 +73,11 @@ class ChouetteAllJobs extends React.Component {
     })
   }
 
-  getPaginationMap() {
-
-    let { chouetteAllJobStatus, sortProperty, sortOrder } = this.props
-
-    const { filterFromDate } = this.state
-
-    let filteredStatus = chouetteAllJobStatus.filter( job => {
-
-      if (!filterFromDate) return true
-
-      return (new Date(job.created) > new Date(filterFromDate))
-
-    }).sort( (curr, prev) => {
-
-      if (sortOrder == 0) {
-        return (curr[sortProperty] > prev[sortProperty] ? -1 : 1)
-      }
-
-      if (sortOrder == 1) {
-        return (curr[sortProperty] > prev[sortProperty] ? 1 : -1)
-      }
-    })
-
-    let paginationMap = []
-
-    for (let i = 0, j = filteredStatus.length; i < j; i+=20) {
-      paginationMap.push(filteredStatus.slice(i,i+20))
-    }
-
-    return paginationMap
-  }
-
   render() {
 
-    const { chouetteJobAllFilter, requestingJobs} = this.props
-    const { activeChouettePageIndex } = this.state
-    const paginationMap = this.getPaginationMap()
+    const { chouetteJobAllFilter, requestingJobs, chouetteAllJobStatus, sortProperty, sortOrder} = this.props
+    const { activeChouettePageIndex, filterFromDate } = this.state
+    const paginationMap = getPaginationMap(chouetteAllJobStatus, sortProperty, sortOrder, filterFromDate)
     const page = paginationMap ? paginationMap[activeChouettePageIndex] : null
 
     return(

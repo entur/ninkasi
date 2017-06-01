@@ -7,7 +7,7 @@
     "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.prod.config.js",
     "start": "node server.js",
     "test": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests",
-    "dev": "port=9000 NABU_BASE_URL=https://www-test.rutebanken.org/api/nabu/1.0/ MARDUK_BASE_URL=https://www-test.rutebanken.org/api/marduk/1.0/ BABEL_ENV=development NODE_ENV=development node server.js",
+    "dev": "port=9000 NABU_BASE_URL=https://www-test.entur.org/api/nabu/1.0/ MARDUK_BASE_URL=https://www-test.entur.org/api/marduk/1.0/ BABEL_ENV=development NODE_ENV=development node server.js",
     "prod": "BABEL_ENV=production NODE_ENV=production node server.js"
   },
   "author": "Sean Erik Scully",
@@ -24,7 +24,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.7.2",
     "babel-runtime": "^6.6.1",
-    "bogu": "git@github.com:rutebanken/bogu.git#0.4.2",
+    "bogu": "git@github.com:rutebanken/bogu.git#0.5.1",
     "chai": "^3.5.0",
     "chart.js": "1.1.1",
     "classnames": "^2.2.5",
