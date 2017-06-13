@@ -20,7 +20,7 @@ class UserView extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(OrganizationRegisterActions.getUsers())
     this.props.dispatch(OrganizationRegisterActions.getOrganizations())
     this.props.dispatch(OrganizationRegisterActions.getResponsibilities())
