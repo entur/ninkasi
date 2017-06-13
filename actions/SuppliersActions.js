@@ -19,6 +19,19 @@ const getConfig = () => {
   return config;
 };
 
+SuppliersActions.cleanStopPlacesInChouette = () => dispatch => {
+  const url =
+    window.config.mardukBaseUrl + 'admin/services/chouette/stop_places/clean';
+  return axios.post(url, getConfig()).then(response => {
+    dispatch(
+      SuppliersActions.addNotification('Deleted Stop Place Register in Chouette', 'success')
+    );
+    dispatch(SuppliersActions.logEvent({ title: 'Deleted Stop Place Register in Chouette' }));
+  }).catch( err => {
+    SuppliersActions.addNotification('Failed to delete Stop Place Register in Chouette', 'error');
+  });
+};
+
 SuppliersActions.deleteAllJobs = () => dispatch => {
   const url = `${window.config.nabuBaseUrl}jersey/jobs/`;
   return axios.delete(url, getConfig()).then(response => {

@@ -28,7 +28,6 @@ class DataMigrationDetails extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("nextProps", this.props.importIsLoading, nextProps.importIsLoading)
     if (
       this.props.importIsLoading &&
       !nextProps.importIsLoading &&
@@ -259,7 +258,8 @@ class DataMigrationDetails extends React.Component {
           '). If success, VALIDATE in level 2 space will be called',
       export: 'Export GTFS data and trigger bulding',
       clearEventHistory: 'Clean event history',
-      clean: 'Clean data space (delete ALL transport data)'
+      clean: 'Clean data space (delete ALL transport data)',
+      cleanStopPlacesChouette: 'Clean Stop place register in Chouette'
     };
 
     return (

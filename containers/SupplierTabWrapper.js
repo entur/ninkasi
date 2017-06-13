@@ -62,7 +62,6 @@ class SupplierTabWrapper extends React.Component {
     cfgreader.readConfig( (function(config) {
       window.config = config
       self.startPolling()
-
     }).bind(this))
   }
 
@@ -212,7 +211,7 @@ class SupplierTabWrapper extends React.Component {
         tabsToRender =
           <Tabs justified={true} onChange={this.onTabChangeForAllProviders.bind(this)} defaultSelectedIndex={Number(getQueryVariable('tab')) || 0}>
             <Tab value="chouetteJobs" label="Chouette jobs">
-              <ChouetteAllJobs></ChouetteAllJobs>
+              <ChouetteAllJobs/>
             </Tab>
             <Tab value="events" label="Events">
               <EventDetails
