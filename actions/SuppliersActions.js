@@ -22,7 +22,7 @@ const getConfig = () => {
 SuppliersActions.cleanStopPlacesInChouette = () => dispatch => {
   const url =
     window.config.mardukBaseUrl + 'admin/services/chouette/stop_places/clean';
-  return axios.post(url, getConfig()).then(response => {
+  return axios.post(url, null, getConfig()).then(response => {
     dispatch(
       SuppliersActions.addNotification('Deleted Stop Place Register in Chouette', 'success')
     );
