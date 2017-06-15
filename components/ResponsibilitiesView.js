@@ -7,7 +7,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
 import ModalResponsibilityRolesView from '../modals/ModalResponsibilityRolesView';
 import ModalCreateResponsibilitySet from '../modals/ModalCreateResponsibilitySet';
-import ModalEditingResponsibilitySet from '../modals/ModalEditResponsibilitySet';
+import ModalEditResponsibilitySet from '../modals/ModalEditResponsibilitySet';
 import { connect } from 'react-redux';
 
 const initialState = {
@@ -169,7 +169,7 @@ class ResponsibilitiesView extends React.Component {
             />
           : null}
         {isEditingResponsibilitySet
-          ? <ModalEditingResponsibilitySet
+          ? <ModalEditResponsibilitySet
               modalOpen={isEditingResponsibilitySet}
               responsibilitySet={activeResponsibilitySet}
               codeSpaces={codeSpaces}

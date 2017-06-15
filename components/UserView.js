@@ -2,11 +2,13 @@ import React from 'react'
 import '../sass/views/userView.scss'
 import MdEdit from 'material-ui/svg-icons/image/edit'
 import MdDelete from 'material-ui/svg-icons/action/delete'
+import MdNotification from 'material-ui/svg-icons/social/notifications'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions'
 import ModalCreateUser from '../modals/ModalCreateUser'
 import ModalEditUser from '../modals/ModalEditUser'
+import ModalEditNotifications from '../modals/ModalEditNotifications';
 import { connect } from 'react-redux'
 
 class UserView extends React.Component {
@@ -16,6 +18,7 @@ class UserView extends React.Component {
     this.state = {
       isCreateModalOpen: false,
       isEditModalOpen: false,
+      isNotificationsOpen: false,
       activeUser: null,
     }
   }
@@ -38,6 +41,14 @@ class UserView extends React.Component {
     this.props.dispatch(OrganizationRegisterActions.deleteUser(user.id))
   }
 
+  openModalWindow(activeUser, attribute) {
+    this.setState({
+      activeUser,
+      [attribute]: true
+    })
+    window.scrollTo(window.scrollX,0);
+  }
+
   componentWillReceiveProps(nextProps) {
     const { isCreateModalOpen, isEditModalOpen } = this.state
     if (nextProps.status && nextProps.status.error == null && (isCreateModalOpen || isEditModalOpen)) {
@@ -51,7 +62,7 @@ class UserView extends React.Component {
   render() {
 
     const { users, organizations, responsibilities } = this.props
-    const { isCreateModalOpen, isEditModalOpen } = this.state
+    const { isCreateModalOpen, isEditModalOpen, isNotificationsOpen } = this.state
 
     return (
       <div className="user-row">
@@ -89,7 +100,11 @@ class UserView extends React.Component {
                   />
                   <MdEdit
                     color="rgba(25, 118, 210, 0.59)" style={{height: 20, width: 20, verticalAlign: 'middle', cursor: 'pointer'}}
-                    onClick={() => this.setState({activeUser: user, isEditModalOpen: true})}
+                    onClick={() => this.openModalWindow(user, 'isEditModalOpen')}
+                  />
+                  <MdNotification
+                    color="rgba(25, 118, 210, 0.59)" style={{marginLeft: 4, height: 20, width: 20, verticalAlign: 'middle', cursor: 'pointer'}}
+                    onClick={() => this.openModalWindow(user, 'isNotificationsOpen')}
                   />
                 </div>
               </div>
@@ -102,7 +117,7 @@ class UserView extends React.Component {
           />
         </FloatingActionButton>
         { isCreateModalOpen
-          ? <ModalCreateUser
+          && <ModalCreateUser
               isModalOpen={isCreateModalOpen}
               handleCloseModal={() => this.setState({isCreateModalOpen: false})}
               takenUsernames={users.map( user => user.username)}
@@ -110,10 +125,9 @@ class UserView extends React.Component {
               responsibilities={responsibilities}
               handleSubmit={this.handleCreateUser.bind(this)}
           />
-          : null
         }
         { isEditModalOpen
-          ? <ModalEditUser
+          && <ModalEditUser
               isModalOpen={isEditModalOpen}
               handleCloseModal={() => this.setState({isEditModalOpen: false})}
               takenUsernames={users.map( user => user.username)}
@@ -122,7 +136,15 @@ class UserView extends React.Component {
               responsibilities={responsibilities}
               handleSubmit={this.handleUpdateUser.bind(this)}
           />
-          : null
+        }
+        {
+          isNotificationsOpen
+          &&
+            <ModalEditNotifications
+              handleCloseModal={() => this.setState({isNotificationsOpen: false})}
+              isModalOpen={isNotificationsOpen}
+              user={this.state.activeUser}
+            />
         }
       </div>
     )

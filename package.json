@@ -47,6 +47,7 @@
     "nock": "^9.0.2",
     "node-sass": "^3.8.0",
     "notie": "^3.2.0",
+    "prop-types": "^15.5.10",
     "react": "^15.4.1",
     "react-chartjs": "^0.8.0",
     "react-dom": "^15.3.1",
