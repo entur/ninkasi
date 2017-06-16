@@ -41,6 +41,7 @@ class EventFilterStatesPopover extends React.Component {
   render() {
     const { anchorEl, open } = this.state;
     const { enabled, eventFilter, allStates } = this.props;
+    const states = eventFilter.states || [];
 
     return (
       <div>
@@ -59,7 +60,7 @@ class EventFilterStatesPopover extends React.Component {
           {
             allStates.map( (state, i) => {
 
-              let checked = eventFilter.states.indexOf(state) > -1
+              let checked = states.indexOf(state) > -1
 
               return (
                 <Menu

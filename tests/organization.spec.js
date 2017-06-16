@@ -1,4 +1,4 @@
-import { changeFilterValue, changeFilterActions, changeFilterStates } from '../reducers/OrganizationReducerUtils';
+import { changeFilterValue, changeFilterActions, changeFilterStates, addAdminRef, removeAdminRef } from '../reducers/OrganizationReducerUtils';
 import { assert } from 'chai'
 
 describe('Organization reducer utils', ()  => {
@@ -90,8 +90,37 @@ describe('Organization reducer utils', ()  => {
 
     let failedRemovedAgain = changeFilterStates(failedAdded, 0, 'FAILED', false);
     assert.deepEqual(failedRemovedAgain[0].eventFilter.states, []);
-
   });
+
+  it('should add adminZoneRef', () => {
+
+    let notifications = [{
+      notificationType: "EMAIL",
+      eventFilter: {
+        administrativeZoneRefs: []
+      },
+      enabled: true
+    }];
+
+    let adminZoneRef = 'RB:AdministrativeZone:0127';
+    let newNotifications = addAdminRef(notifications, 0, adminZoneRef);
+    assert.deepEqual(newNotifications[0].eventFilter.administrativeZoneRefs, [adminZoneRef]);
+  })
+
+  it('should remove adminZoneRef', () => {
+
+    let notifications = [{
+      notificationType: "EMAIL",
+      eventFilter: {
+        administrativeZoneRefs: ['RB:AdministrativeZone:0127', 'RB:AdministrativeZone:0128']
+      },
+      enabled: true
+    }];
+
+    let adminZoneRefRemove = 'RB:AdministrativeZone:0127';
+    let newNotifications = removeAdminRef(notifications, 0, adminZoneRefRemove);
+    assert.deepEqual(newNotifications[0].eventFilter.administrativeZoneRefs, ['RB:AdministrativeZone:0128']);
+  })
 
 })
 

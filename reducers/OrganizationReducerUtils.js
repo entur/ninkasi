@@ -23,7 +23,6 @@ export const changeFilterActions = (original, index, action, isChecked) => {
   if (isChecked) {
     actions.push(action);
   } else {
-
     let allWasChosen = actions.indexOf('*') > -1;
 
     actions = actions.filter(entry => !(action === entry || entry === '*'));
@@ -48,4 +47,24 @@ export const changeFilterStates = (original, index, state, isChecked) => {
   }
 
   return changeFilterValue(original, 'states', index, states);
+};
+
+export const addAdminRef = (original, index, id) => {
+  let adminRefs = original[index].eventFilter.administrativeZoneRefs
+    ? original[index].eventFilter.administrativeZoneRefs.slice()
+    : [];
+  if (adminRefs.indexOf(id) === -1) {
+    adminRefs.push(id);
+  }
+  return changeFilterValue(original, 'administrativeZoneRefs', index, adminRefs);
+};
+
+export const removeAdminRef = (original, index, id) => {
+  let adminRefs = original[index].eventFilter.administrativeZoneRefs
+    ? original[index].eventFilter.administrativeZoneRefs.slice()
+    : [];
+
+  adminRefs = adminRefs.filter(ref => ref !== id);
+
+  return changeFilterValue(original, 'administrativeZoneRefs', index, adminRefs);
 };

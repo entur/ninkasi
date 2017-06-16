@@ -41,12 +41,15 @@ class EventFilterActionsPopover extends React.Component {
   render() {
     const { anchorEl, open } = this.state;
     const { enabled, allActions, eventFilter } = this.props;
-    const allActionsChecked = eventFilter.actions.indexOf('*') > -1
+
+    const actions = eventFilter.actions || [];
+
+    const allActionsChecked = actions.indexOf('*') > -1
 
     return (
       <div>
         <RaisedButton
-          disabled={!enabled}
+          disabled={!enabled && !eventFilter.jobDomain}
           label="Actions"
           onClick={this.handleOpen.bind(this)}
         />
@@ -58,11 +61,11 @@ class EventFilterActionsPopover extends React.Component {
           targetOrigin={{horizontal: 'left', vertical: 'top'}}
           animation={PopoverAnimationVertical}        >
           {
-            allActions[eventFilter.jobDomain].map( (action, i) => {
+            eventFilter.jobDomain && allActions[eventFilter.jobDomain].map( (action, i) => {
 
               //TODO: Map all values to plain English
               let actionLabel = action === '*' ? 'ALL' : action
-              let checked = allActionsChecked ? true : eventFilter.actions.indexOf(action) > -1
+              let checked = allActionsChecked ? true : actions.indexOf(action) > -1
 
               return (
                 <Menu

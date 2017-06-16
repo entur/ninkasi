@@ -8,25 +8,25 @@ import NotificationTypeBox from './NotificationTypeBox';
 
 class ModalEditNotifications extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      indexExpanded: null
+    }
+  }
+
   componentDidMount() {
-    const { user, dispatch, eventFilterTypes, jobDomains, eventFilterStates, organizations } = this.props;
+    const {
+      user,
+      dispatch,
+    } = this.props;
     dispatch(OrganizationRegisterActions.getUserNotifications(user.username));
+  }
 
-    if (!eventFilterTypes.length) {
-      this.props.dispatch(OrganizationRegisterActions.getEventFilterTypes());
-    }
-
-    if (!jobDomains.length) {
-      this.props.dispatch(OrganizationRegisterActions.getJobDomains());
-    }
-
-    if (!eventFilterStates.length) {
-      this.props.dispatch(OrganizationRegisterActions.getEventFilterStates());
-    }
-
-    if (!organizations.length) {
-      this.props.dispatch(OrganizationRegisterActions.getOrganizations());
-    }
+  handleExpandItem(index, value) {
+    this.setState({
+      indexExpanded: value ? index : null
+    });
   }
 
   render() {
@@ -65,6 +65,8 @@ class ModalEditNotifications extends React.Component {
               index={i}
               key={'notificationTypeBox-' + i}
               notification={un}
+              handleExpand={this.handleExpandItem.bind(this)}
+              expanded={this.state.indexExpanded === i}
             />
           )}
         </div>
@@ -86,9 +88,6 @@ class ModalEditNotifications extends React.Component {
 const mapStateToProps = state => ({
   userNotifications: state.OrganizationReducer.userNotifications,
   eventFilterTypes: state.OrganizationReducer.eventFilterTypes,
-  jobDomains: state.OrganizationReducer.jobDomains,
-  eventFilterStates: state.OrganizationReducer.eventFilterStates,
-  organizations: state.OrganizationReducer.organizations
 });
 
 export default connect(mapStateToProps)(ModalEditNotifications);

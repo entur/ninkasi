@@ -9,23 +9,16 @@ import NotificationEventFilter from './NotificationEventFilter';
 
 class NotificationTypeBox extends React.Component {
   static propTypes = {
-    notification: PropTypes.object.isRequired
+    notification: PropTypes.object.isRequired,
+    handleExpand: PropTypes.func.isRequired,
+    expanded: PropTypes.bool.isRequired
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      expanded: false,
-    };
-  }
-
   render() {
-    const { expanded } = this.state;
-    const { notification, index } = this.props;
+    const { notification, index, handleExpand, expanded } = this.props;
 
-    // TODO: use loader instead
+    // TODO: use loader instead and check "isReceiving"
     if (notification == null) return null;
-
 
     return (
       <div style={{
@@ -49,8 +42,8 @@ class NotificationTypeBox extends React.Component {
           </div>
           <IconButton>
             {expanded ?
-              <MdLess onClick={() => { this.setState({expanded: false})}}/>
-              : <MdMore onClick={() => { this.setState({expanded: true})}}/>}
+              <MdLess onClick={() => { handleExpand(index, false)}}/>
+              : <MdMore onClick={() => { handleExpand(index, true)}}/>}
           </IconButton>
         </div>
         { expanded && <NotificationEventFilter index={index} notification={notification}/> }

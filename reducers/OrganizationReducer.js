@@ -2,7 +2,9 @@ import * as types from './../actions/actionTypes';
 import {
   changeFilterValue,
   changeFilterActions,
-  changeFilterStates
+  changeFilterStates,
+  addAdminRef,
+  removeAdminRef
 } from './OrganizationReducerUtils';
 
 const initialState = {
@@ -16,7 +18,9 @@ const initialState = {
   eventFilterTypes: [],
   eventFilterStates: [],
   jobDomains: [],
-  jobDomainActions: {}
+  jobDomainActions: {},
+  administrativeZones: [],
+  notificationTypes: []
 };
 
 const OrganizationReducer = (state = initialState, action) => {
@@ -163,6 +167,19 @@ const OrganizationReducer = (state = initialState, action) => {
         )
       });
 
+    case types.CHANGED_NOTIFICATION_TYPE:
+      return Object.assign({}, state, {
+        userNotifications: state.userNotifications.map((un, i) => {
+          if (i === action.payLoad.index) {
+            return {
+              ...un,
+              notificationType: action.payLoad.type
+            };
+          }
+          return un;
+        })
+      });
+
     case types.CHANGE_EVENT_FILTER_STATE:
       return Object.assign({}, state, {
         userNotifications: changeFilterStates(
@@ -171,6 +188,11 @@ const OrganizationReducer = (state = initialState, action) => {
           action.payLoad.state,
           action.payLoad.isChecked
         )
+      });
+
+    case types.RECEIVED_ADMINISTRATIVE_ZONES:
+      return Object.assign({}, state, {
+        administrativeZones: action.payLoad
       });
 
     case types.RECEIVED_CODESPACES:
@@ -213,6 +235,29 @@ const OrganizationReducer = (state = initialState, action) => {
         eventFilterStates: action.payLoad
       });
 
+    case types.RECEIVED_NOTIFICATION_TYPES:
+      return Object.assign({}, state, {
+        notificationTypes: action.payLoad
+      });
+
+    case types.ADDED_ADMIN_ZONE_REF:
+      return Object.assign({}, state, {
+        userNotifications: addAdminRef(
+          state.userNotifications,
+          action.payLoad.index,
+          action.payLoad.id
+        )
+      });
+
+    case types.REMOVED_ADMIN_ZONE_REF:
+      return Object.assign({}, state, {
+        userNotifications: removeAdminRef(
+          state.userNotifications,
+          action.payLoad.index,
+          action.payLoad.id
+        )
+      });
+
     case types.ENABLED_USER_NOTIFICATION:
       return Object.assign({}, state, {
         userNotifications: state.userNotifications.map((un, i) => {
@@ -222,6 +267,7 @@ const OrganizationReducer = (state = initialState, action) => {
               enabled: action.payLoad.enabled
             };
           }
+          return un;
         })
       });
 

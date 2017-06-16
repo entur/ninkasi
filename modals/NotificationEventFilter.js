@@ -6,6 +6,10 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import EventFilterStatesPopover from './EventFilterStatesPopover';
 import EventFilterActionsPopover from './EventFilterActionsPopover';
+import OrganisationSelect from './OrganisationSelect';
+import NotificationTypeSelect from './NotificationTypeSelect';
+import NotificationAdminZoneRefs from './NotificationAdminZoneRefs'
+import NotificationEntityClassRef from './NotificationEntityClassRefs'
 
 class NotificationEventFilter extends React.Component {
   handleEnabled(value) {
@@ -32,6 +36,13 @@ class NotificationEventFilter extends React.Component {
     );
   }
 
+  handleChangeNotificationType(type) {
+    const { index, dispatch } = this.props;
+    dispatch(
+      OrganizationRegisterActions.changeNotificationType(index, type)
+    );
+  }
+
   render() {
     const {
       notification,
@@ -40,32 +51,47 @@ class NotificationEventFilter extends React.Component {
       jobDomains,
       jobDomainActions,
       index,
-      organizations
+      organizations,
+      notificationTypes
     } = this.props;
     const enableJobSpecific =
       notification.eventFilter.type && notification.eventFilter.type === 'JOB';
 
     return (
       <div style={{ display: 'block', padding: 10 }}>
-        <SelectField
-          floatingLabelText="Type"
-          onChange={this.handleChangeEventFilterType.bind(this)}
-          value={notification.eventFilter.type}
-        >
-          {eventFilterTypes.map((eft, i) =>
-            <MenuItem key={'filter-' + i} value={eft} primaryText={eft} />
-          )}
-        </SelectField>
-        <SelectField
-          floatingLabelText="JobDomain"
-          onChange={this.handleChangeJobDomain.bind(this)}
-          disabled={!enableJobSpecific}
-          value={notification.eventFilter.jobDomain}
-        >
-          {jobDomains.map((domain, i) =>
-            <MenuItem key={'domain-' + i} value={domain} primaryText={domain} />
-          )}
-        </SelectField>
+        <div style={{display: 'flex', marginTop: -20}}>
+          <NotificationTypeSelect
+            notification={notification}
+            notificationTypes={notificationTypes}
+            handleChangeNotificationType={this.handleChangeNotificationType.bind(this)}
+          />
+          <OrganisationSelect
+            organizations={organizations}
+            notification={notification}
+            handleChangeOrganization={this.handleChangeOrganization.bind(this)}
+          />
+        </div>
+        <div style={{display: 'flex', marginTop: -20}}>
+          <SelectField
+            floatingLabelText="Type"
+            onChange={this.handleChangeEventFilterType.bind(this)}
+            value={notification.eventFilter.type}
+          >
+            {eventFilterTypes.map((eft, i) =>
+              <MenuItem key={'filter-' + i} value={eft} primaryText={eft} />
+            )}
+          </SelectField>
+          <SelectField
+            floatingLabelText="JobDomain"
+            onChange={this.handleChangeJobDomain.bind(this)}
+            disabled={!enableJobSpecific}
+            value={notification.eventFilter.jobDomain}
+          >
+            {jobDomains.map((domain, i) =>
+              <MenuItem key={'domain-' + i} value={domain} primaryText={domain} />
+            )}
+          </SelectField>
+        </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div
             style={{
@@ -74,53 +100,17 @@ class NotificationEventFilter extends React.Component {
               flex: 2
             }}
           >
-            <div style={{ width: '100%', fontSize: 12 }}>
-              Entity classification
-            </div>
-            <select multiple="multiple" style={{ width: '100%', fontSize: 12 }}>
-              {(notification.eventFilter.entityClassificationRefs || [])
-                .map((ref, index) =>
-                  <option key={'entity-' + index}>{ref} </option>
-                )}
-            </select>
+            <NotificationAdminZoneRefs
+              index={index}
+              notification={notification}
+              visible={enableJobSpecific}
+            />
+            <NotificationEntityClassRef
+              notification={notification}
+              visible={enableJobSpecific}
+            />
           </div>
-          <div
-            style={{
-              display: enableJobSpecific ? 'none' : 'flex',
-              flexDirection: 'column',
-              flex: 2
-            }}
-          >
-            <div style={{ width: '100%', fontSize: 12 }}>
-              Administrative zones
-            </div>
-            <select multiple="multiple" style={{ width: '100%', fontSize: 12 }}>
-              {(notification.eventFilter.administrativeZoneRefs || [])
-                .map((ref, index) =>
-                  <option key={'entity-' + index}>{ref} </option>
-                )}
-            </select>
-          </div>
-          <SelectField
-            hintText="Organization"
-            floatingLabelText="Organization"
-            value={notification.eventFilter.organisationRef}
-            onChange={(e, index, value) => {
-              this.handleChangeOrganization(value);
-            }}
-            fullWidth={true}
-          >
-            {organizations.map(org =>
-              <MenuItem
-                key={org.id}
-                id={org.id}
-                value={org.id}
-                label={org.id}
-                primaryText={org.name}
-              />
-            )}
-          </SelectField>
-          <div style={{ display: enableJobSpecific ? 'flex' : 'none' }}>
+          <div style={{ display: enableJobSpecific ? 'flex' : 'none'}}>
             <EventFilterActionsPopover
               index={index}
               eventFilter={notification.eventFilter}
@@ -151,7 +141,8 @@ const mapStateToProps = state => ({
   jobDomains: state.OrganizationReducer.jobDomains,
   jobDomainActions: state.OrganizationReducer.jobDomainActions,
   eventFilterStates: state.OrganizationReducer.eventFilterStates,
-  organizations: state.OrganizationReducer.organizations
+  organizations: state.OrganizationReducer.organizations,
+  notificationTypes: state.OrganizationReducer.notificationTypes
 });
 
 export default connect(mapStateToProps)(NotificationEventFilter);
