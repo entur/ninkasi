@@ -141,7 +141,9 @@ class SuppliersContainer extends React.Component {
 
   handleClearStopPlaces() {
     const { dispatch } = this.props;
-    const confirmedByUser = confirm('Are you want to clean Stop Place Register in Chouette?');
+    const confirmedByUser = confirm(
+      'Are you want to clean Stop Place Register in Chouette?'
+    );
     if (confirmedByUser) {
       dispatch(SuppliersActions.cleanStopPlacesInChouette());
     }
@@ -215,14 +217,22 @@ class SuppliersContainer extends React.Component {
       />
     );
 
-    peliasOptions.push(<Divider style={{ marginTop: 10, marginBottom: 10 }} />);
+    peliasOptions.push(
+      <Divider
+        key={'pelias-divider1'}
+        style={{ marginTop: 10, marginBottom: 10 }}
+      />
+    );
 
     peliasOptions.push(
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div
+        key={'pelias-options-status-wrapper'}
+        style={{ display: 'flex', flexDirection: 'column' }}
+      >
         <span style={{ fontWeight: 600 }}>Status</span>
-        {otherStatus.map(status =>
+        {otherStatus.map((status, index) =>
           <div
-            key={status.jobType}
+            key={'jobtype-status' + index}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -248,10 +258,18 @@ class SuppliersContainer extends React.Component {
       </div>
     );
 
-    peliasOptions.push(<Divider style={{ marginTop: 10, marginBottom: 10 }} />);
+    peliasOptions.push(
+      <Divider
+        key={'pelias-divider2'}
+        style={{ marginTop: 10, marginBottom: 10 }}
+      />
+    );
 
     peliasOptions.push(
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <div
+        key={'pelias-buttons'}
+        style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+      >
         <Button
           color="primary"
           style={{ fontSize: 12, textAlign: 'middle', marginTop: -2 }}
