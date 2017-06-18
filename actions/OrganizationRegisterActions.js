@@ -34,6 +34,30 @@ OrganizationRegisterActions.getRoles = () => dispatch => {
     });
 };
 
+OrganizationRegisterActions.addEntityRefToNotification = (index, entityClassRef) => dispatch => {
+  dispatch(
+    sendData(
+      {
+        index,
+        entityClassRef
+      },
+      types.ADDED_ENTITY_CLASS_REF
+    )
+  );
+};
+
+OrganizationRegisterActions.removeEntityClassRefNotification = (index, entityClassRef) => dispatch => {
+  dispatch(
+    sendData(
+      {
+        index,
+        entityClassRef
+      },
+      types.REMOVED_ENTITY_CLASS_REF
+    )
+  );
+}
+
 OrganizationRegisterActions.createRole = role => dispatch => {
   const url = `${window.config.nabuBaseUrl}jersey/roles`;
   return axios
@@ -310,12 +334,23 @@ OrganizationRegisterActions.getEntityByClassification = entityType => {
   return axios.get(url, getConfig());
 };
 
-OrganizationRegisterActions.getUserNotifications = username => (dispatch, getState) => {
+OrganizationRegisterActions.getUserNotifications = username => (
+  dispatch,
+  getState
+) => {
   const url = `${window.config
     .nabuBaseUrl}jersey/users/${username}/notification_configurations`;
 
   let state = getState();
-  const { eventFilterTypes, jobDomains, eventFilterStates, organizations, administrativeZones, notificationTypes, entityTypes } = state.OrganizationReducer
+  const {
+    eventFilterTypes,
+    jobDomains,
+    eventFilterStates,
+    organizations,
+    administrativeZones,
+    notificationTypes,
+    entityTypes
+  } = state.OrganizationReducer;
 
   if (!eventFilterTypes.length) {
     dispatch(OrganizationRegisterActions.getEventFilterTypes());
@@ -420,14 +455,20 @@ OrganizationRegisterActions.changeEventFilterJobDomain = (
   );
 };
 
-OrganizationRegisterActions.changeEventFilterOrganizationRef = (index, organisationRef) => dispatch => {
+OrganizationRegisterActions.changeEventFilterOrganizationRef = (
+  index,
+  organisationRef
+) => dispatch => {
   dispatch(
-    sendData({
-      index,
-      organisationRef
-    }, types.CHANGED_EVENT_FILTER_ORG_REF)
+    sendData(
+      {
+        index,
+        organisationRef
+      },
+      types.CHANGED_EVENT_FILTER_ORG_REF
+    )
   );
-}
+};
 
 OrganizationRegisterActions.getJobActionsByDomain = domain => dispatch => {
   const url = `${window.config
@@ -496,56 +537,75 @@ OrganizationRegisterActions.getEventFilterStates = () => dispatch => {
     });
 };
 
-OrganizationRegisterActions.changeNotificationType = (index, type) => dispatch => {
+OrganizationRegisterActions.changeNotificationType = (
+  index,
+  type
+) => dispatch => {
   dispatch(
-    sendData({
-      index,
-      type
-    }, types.CHANGED_NOTIFICATION_TYPE)
+    sendData(
+      {
+        index,
+        type
+      },
+      types.CHANGED_NOTIFICATION_TYPE
+    )
   );
 };
 
 OrganizationRegisterActions.getNotificationTypes = () => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/notifications/notification_types`;
+  const url = `${window.config
+    .nabuBaseUrl}jersey/notifications/notification_types`;
   return axios
-  .get(url, getConfig())
-  .then(response => {
-    dispatch(sendData(response.data, types.RECEIVED_NOTIFICATION_TYPES));
-  })
-  .catch(error => {
-    console.log('Error receiving notification types', error);
-  });
-}
+    .get(url, getConfig())
+    .then(response => {
+      dispatch(sendData(response.data, types.RECEIVED_NOTIFICATION_TYPES));
+    })
+    .catch(error => {
+      console.log('Error receiving notification types', error);
+    });
+};
 
 OrganizationRegisterActions.getAdministrativeZones = () => dispatch => {
   const url = `${window.config.nabuBaseUrl}jersey/administrative_zones`;
   return axios
-  .get(url, getConfig())
-  .then(response => {
-    dispatch(sendData(response.data, types.RECEIVED_ADMINISTRATIVE_ZONES));
-  })
-  .catch(error => {
-    console.log('Error receiving administrative zones', error);
-  });
+    .get(url, getConfig())
+    .then(response => {
+      dispatch(sendData(response.data, types.RECEIVED_ADMINISTRATIVE_ZONES));
+    })
+    .catch(error => {
+      console.log('Error receiving administrative zones', error);
+    });
 };
 
-OrganizationRegisterActions.addAdminZoneRefToNotification = (index, id) => dispatch => {
+OrganizationRegisterActions.addAdminZoneRefToNotification = (
+  index,
+  id
+) => dispatch => {
   dispatch(
-    sendData({
-      index,
-      id
-    }, types.ADDED_ADMIN_ZONE_REF)
+    sendData(
+      {
+        index,
+        id
+      },
+      types.ADDED_ADMIN_ZONE_REF
+    )
   );
-}
+};
 
-OrganizationRegisterActions.removeAdminZoneRefToNotification = (index, id) => dispatch => {
+OrganizationRegisterActions.removeAdminZoneRefToNotification = (
+  index,
+  id
+) => dispatch => {
   dispatch(
-    sendData({
-      index,
-      id
-    }, types.REMOVED_ADMIN_ZONE_REF)
+    sendData(
+      {
+        index,
+        id
+      },
+      types.REMOVED_ADMIN_ZONE_REF
+    )
   );
-}
+};
 
 const sortBy = (list, key) => {
   return list.sort((a, b) => a[key] > b[key]);

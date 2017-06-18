@@ -106,6 +106,7 @@ class NotificationEventFilter extends React.Component {
               visible={enableJobSpecific}
             />
             <NotificationEntityClassRef
+              index={index}
               notification={notification}
               visible={enableJobSpecific}
             />

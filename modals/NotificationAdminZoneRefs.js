@@ -55,6 +55,12 @@ class NotificationAdminZoneRefs extends React.Component {
               <option key={'entity-' + index}>{ref} </option>
             )}
           </select>
+            <NotificationAddZoneRef
+              handleAdd={this.handleAddAdminRefRole.bind(this)}
+              dataSource={administrativeZones}
+              handleDelete={this.handleRemoveAdminRefRole.bind(this)}
+            />
+          </div>
             <IconButton
               onClick={this.handleRemoveAdminRefRole.bind(this)}
             >
@@ -63,12 +69,6 @@ class NotificationAdminZoneRefs extends React.Component {
               />
             </IconButton>
           </div>
-          <NotificationAddZoneRef
-            handleAdd={this.handleAddAdminRefRole.bind(this)}
-            dataSource={administrativeZones}
-            handleDelete={this.handleRemoveAdminRefRole.bind(this)}
-          />
-        </div>
       </div>
     )
   }

@@ -23,7 +23,7 @@ class NotificationAddZoneRef extends React.Component {
         <div style={{display: 'flex', flexDirection: 'column'}}>
           <AutoComplete
             maxSearchResults={7}
-            style={{marginTop: -20}}
+            style={{marginTop: -15, marginBottom: -20}}
             floatingLabelText={"Add administrative zone"}
             animated={true}
             filter={(searchText, key) => searchText !== '' && key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1}

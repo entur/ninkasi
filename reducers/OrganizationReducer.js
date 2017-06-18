@@ -4,7 +4,9 @@ import {
   changeFilterActions,
   changeFilterStates,
   addAdminRef,
-  removeAdminRef
+  removeAdminRef,
+  addEntityClassRef,
+  removeEntityClassRef
 } from './OrganizationReducerUtils';
 
 const initialState = {
@@ -257,6 +259,25 @@ const OrganizationReducer = (state = initialState, action) => {
           action.payLoad.id
         )
       });
+
+    case types.ADDED_ENTITY_CLASS_REF:
+    return Object.assign({}, state, {
+      userNotifications: addEntityClassRef(
+        state.userNotifications,
+        action.payLoad.index,
+        action.payLoad.entityClassRef
+      )
+    });
+
+    case types.REMOVED_ENTITY_CLASS_REF:
+      return Object.assign({}, state, {
+        userNotifications: removeEntityClassRef(
+          state.userNotifications,
+          action.payLoad.index,
+          action.payLoad.entityClassRef
+        )
+      });
+
 
     case types.ENABLED_USER_NOTIFICATION:
       return Object.assign({}, state, {

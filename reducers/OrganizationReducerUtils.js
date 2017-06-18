@@ -59,6 +59,27 @@ export const addAdminRef = (original, index, id) => {
   return changeFilterValue(original, 'administrativeZoneRefs', index, adminRefs);
 };
 
+export const addEntityClassRef = (original, index, id) => {
+  let entityClassRefs = original[index].eventFilter.entityClassificationRefs
+    ? original[index].eventFilter.entityClassificationRefs.slice()
+    : [];
+  if (entityClassRefs .indexOf(id) === -1) {
+    entityClassRefs .push(id);
+  }
+  return changeFilterValue(original, 'entityClassificationRefs', index, entityClassRefs );
+}
+
+export const removeEntityClassRef = (original, index, id) => {
+  let entityClassRefs = original[index].eventFilter.entityClassificationRefs
+    ? original[index].eventFilter.entityClassificationRefs.slice()
+    : [];
+
+  entityClassRefs = entityClassRefs.filter(ref => ref !== id);
+
+  return changeFilterValue(original, 'entityClassificationRefs', index, entityClassRefs);
+};
+
+
 export const removeAdminRef = (original, index, id) => {
   let adminRefs = original[index].eventFilter.administrativeZoneRefs
     ? original[index].eventFilter.administrativeZoneRefs.slice()
