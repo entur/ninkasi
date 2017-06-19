@@ -15,6 +15,24 @@ export const changeFilterValue = (original, key, index, newValue) => {
   });
 };
 
+
+export const changeJobDomainValue = (original, index, newValue) => {
+  return original.map( (notification, i) => {
+    if (index === i) {
+      let newEventFilter = Object.assign({}, notification.eventFilter, {
+        jobDomain: newValue,
+        actions: [],
+      });
+      return {
+        ...notification,
+        eventFilter: newEventFilter
+      };
+    } else {
+      return notification;
+    }
+  })
+}
+
 export const changeFilterActions = (original, index, action, isChecked) => {
   let actions = original[index].eventFilter.actions
     ? original[index].eventFilter.actions.slice()

@@ -17,12 +17,11 @@ class NotificationTypeBox extends React.Component {
   render() {
     const { notification, index, handleExpand, expanded } = this.props;
 
-    // TODO: use loader instead and check "isReceiving"
     if (notification == null) return null;
 
     return (
       <div style={{
-        border: '1px solid #777',
+        border: '1px solid #2196f3',
       }}>
         <div
           style={{
@@ -35,10 +34,13 @@ class NotificationTypeBox extends React.Component {
         >
           <div style={{display: 'flex'}}>
             { notification.enabled ?
-              <MdActive color="green"/>
-              : <MdInactive color="red"/>
+              <MdActive color="#1d9439"/>
+              : <MdInactive color="#777"/>
             }
-            <div style={{ fontWeight: 600, fontSize: 14 }}>{notification.notificationType}</div>
+            <div style={{ fontWeight: 600, fontSize: 14 }}>
+              {notification.notificationType}
+              { notification.isNew && <span style={{color: 'orange', fontSize: 8, verticalAlign: 'super'}}>New</span>}
+            </div>
           </div>
           <IconButton>
             {expanded ?

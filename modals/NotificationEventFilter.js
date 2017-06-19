@@ -10,6 +10,8 @@ import OrganisationSelect from './OrganisationSelect';
 import NotificationTypeSelect from './NotificationTypeSelect';
 import NotificationAdminZoneRefs from './NotificationAdminZoneRefs'
 import NotificationEntityClassRef from './NotificationEntityClassRefs'
+import IconButton from 'material-ui/IconButton';
+import MdDelete from 'material-ui/svg-icons/action/delete'
 
 class NotificationEventFilter extends React.Component {
   handleEnabled(value) {
@@ -41,6 +43,35 @@ class NotificationEventFilter extends React.Component {
     dispatch(
       OrganizationRegisterActions.changeNotificationType(index, type)
     );
+  }
+
+  deleteUserNotification() {
+    const { index, dispatch } = this.props;
+    dispatch(
+      OrganizationRegisterActions.deleteUserNotification(index)
+    );
+  }
+
+  getErrorMessage() {
+    const { notification } = this.props;
+    if (notification.eventFilter.type === 'JOB') {
+
+      let missingFields = [];
+
+      if (notification.eventFilter.actions && notification.eventFilter.actions.length === 0) {
+        missingFields.push('actions');
+      }
+
+      if (notification.eventFilter.states && notification.eventFilter.states.length === 0) {
+        missingFields.push('states');
+      }
+
+      if (missingFields.length) {
+        let fieldIsOrAre = missingFields.length === 1 ? 'field is ' : 'fields are ';
+        return `Required* ${fieldIsOrAre} missing for ${missingFields.join(' and ')}`;
+      }
+    }
+    return '';
   }
 
   render() {
@@ -126,12 +157,22 @@ class NotificationEventFilter extends React.Component {
             />
           </div>
         </div>
-        <Checkbox
-          labelStyle={{ fontSize: 12, marginTop: 4, fontWeight: 600 }}
-          label="Enabled"
-          checked={notification.enabled}
-          onCheck={(e, v) => this.handleEnabled(v)}
-        />
+        <div style={{width: '100%', textAlign: 'right', fontSize: 12, color: 'red'}}>{ this.getErrorMessage() }</div>
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <Checkbox
+            labelStyle={{ fontSize: 12, marginTop: 4, fontWeight: 600 }}
+            label="Enabled"
+            style={{width: 'auto'}}
+            checked={notification.enabled}
+            onCheck={(e, v) => this.handleEnabled(v)}
+          />
+          <IconButton style={{marginTop: -10}}
+            onClick={this.deleteUserNotification.bind(this)}
+          >
+            <MdDelete/>
+          </IconButton>
+          <span style={{fontSize: 12, fontWeight: 600, marginTop: -5}}>Delete</span>
+        </div>
       </div>
     );
   }

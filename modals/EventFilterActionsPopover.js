@@ -50,7 +50,7 @@ class EventFilterActionsPopover extends React.Component {
       <div>
         <RaisedButton
           disabled={!enabled && !eventFilter.jobDomain}
-          label="Actions"
+          label={<span>Actions<span style={{color: 'red'}}>*</span></span>}
           onClick={this.handleOpen.bind(this)}
         />
         <Popover

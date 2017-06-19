@@ -1,5 +1,7 @@
 import axios from 'axios';
 import * as types from './actionTypes';
+import { formatUserNotifications } from './OrganizationUtils';
+import SuppliersActions from './SuppliersActions';
 
 function sendData(payLoad, type) {
   return {
@@ -45,6 +47,10 @@ OrganizationRegisterActions.addEntityRefToNotification = (index, entityClassRef)
     )
   );
 };
+
+OrganizationRegisterActions.deleteUserNotification = index => dispatch => {
+  dispatch(sendData(index, types.DELETED_USER_NOTIFICATION));
+}
 
 OrganizationRegisterActions.removeEntityClassRefNotification = (index, entityClassRef) => dispatch => {
   dispatch(
@@ -328,6 +334,10 @@ OrganizationRegisterActions.getEntityTypes = () => dispatch => {
     });
 };
 
+OrganizationRegisterActions.addNewUserNotification = () => dispatch => {
+  dispatch(sendData(null, types.ADDED_NEW_USER_NOTIFICATION));
+}
+
 OrganizationRegisterActions.getEntityByClassification = entityType => {
   const url = `${window.config
     .nabuBaseUrl}jersey/entity_types/${entityType}/entity_classifications`;
@@ -340,6 +350,8 @@ OrganizationRegisterActions.getUserNotifications = username => (
 ) => {
   const url = `${window.config
     .nabuBaseUrl}jersey/users/${username}/notification_configurations`;
+
+  dispatch(sendData(null, types.REQUESTED_USER_NOTIFICATION));
 
   let state = getState();
   const {
@@ -606,6 +618,28 @@ OrganizationRegisterActions.removeAdminZoneRefToNotification = (
     )
   );
 };
+
+OrganizationRegisterActions.updateUserNotification = username => (dispatch, getState) => {
+  let state = getState();
+  let jobDomainActions = state.OrganizationReducer.jobDomainActions
+  let notificationConfiguration = formatUserNotifications(state.OrganizationReducer.userNotifications, jobDomainActions);
+
+  const url = `${window.config.nabuBaseUrl}jersey/users/${username}/notification_configurations`;
+  return axios
+  .put(url, notificationConfiguration, getConfig())
+  .then(response => {
+    dispatch(sendData(null, types.UPDATED_NOTIFICATION_CONFIGURATION));
+    dispatch(
+      SuppliersActions.addNotification('Notification configuration updated', 'success')
+    );
+  })
+  .catch(error => {
+    dispatch(
+      SuppliersActions.addNotification('Unable to save notification configuration', 'error')
+    );
+  });
+
+}
 
 const sortBy = (list, key) => {
   return list.sort((a, b) => a[key] > b[key]);

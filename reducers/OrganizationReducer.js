@@ -1,6 +1,7 @@
 import * as types from './../actions/actionTypes';
 import {
   changeFilterValue,
+  changeJobDomainValue,
   changeFilterActions,
   changeFilterStates,
   addAdminRef,
@@ -22,8 +23,15 @@ const initialState = {
   jobDomains: [],
   jobDomainActions: {},
   administrativeZones: [],
-  notificationTypes: []
+  notificationTypes: [],
+  userNotificationsLoading: false
 };
+
+const removeByIndex = (list, index) =>
+  [
+    ...list.slice(0, index),
+    ...list.slice(index + 1)
+  ];
 
 const OrganizationReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -141,9 +149,8 @@ const OrganizationReducer = (state = initialState, action) => {
 
     case types.CHANGED_EVENT_FILTER_JOB_DOMAIN:
       return Object.assign({}, state, {
-        userNotifications: changeFilterValue(
+        userNotifications: changeJobDomainValue(
           state.userNotifications,
-          'jobDomain',
           action.payLoad.index,
           action.payLoad.value
         )
@@ -168,6 +175,14 @@ const OrganizationReducer = (state = initialState, action) => {
           action.payLoad.organisationRef
         )
       });
+
+    case types.UPDATED_NOTIFICATION_CONFIGURATION:
+      return Object.assign({}, state, {
+      userNotifications: state.userNotifications.map( un => {
+        delete un.isNew;
+        return un;
+      })
+    });
 
     case types.CHANGED_NOTIFICATION_TYPE:
       return Object.assign({}, state, {
@@ -211,7 +226,8 @@ const OrganizationReducer = (state = initialState, action) => {
 
     case types.RECEIVED_USER_NOTIFICATIONS:
       return Object.assign({}, state, {
-        userNotifications: action.payLoad
+        userNotifications: action.payLoad,
+        userNotificationsLoading: false
       });
 
     case types.RECEIVED_EVENT_FILTER_TYPES:
@@ -278,6 +294,30 @@ const OrganizationReducer = (state = initialState, action) => {
         )
       });
 
+    case types.DELETED_USER_NOTIFICATION:
+      return Object.assign({}, state, {
+        userNotifications: removeByIndex(state.userNotifications, action.payLoad)
+      });
+
+    case types.REQUESTED_USER_NOTIFICATION:
+      return Object.assign({}, state, {
+        userNotificationsLoading: true
+      });
+
+    case types.ADDED_NEW_USER_NOTIFICATION:
+      return Object.assign({}, state, {
+        userNotifications: state.userNotifications.concat({
+          enabled: false,
+          isNew: true,
+          notificationType: 'EMAIL',
+          eventFilter: {
+            type: 'JOB',
+            jobDomain: 'TIMETABLE',
+            actions: [],
+            states: [],
+          }
+        })
+      });
 
     case types.ENABLED_USER_NOTIFICATION:
       return Object.assign({}, state, {

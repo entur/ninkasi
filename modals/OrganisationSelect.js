@@ -19,8 +19,8 @@ class OrganisationSelect extends React.Component {
 
     return (
       <SelectField
-        hintText="Organization"
-        floatingLabelText="Organization"
+        hintText="Organization only"
+        floatingLabelText="Organization only"
         value={notification.eventFilter.organisationRef}
         onChange={(e, index, value) => {
           handleChangeOrganization(value);
