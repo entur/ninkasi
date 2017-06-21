@@ -9,6 +9,8 @@ import Header from '../components/Header'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { connect } from 'react-redux'
 import UtilsActions from '../actions/UtilsActions'
+import roleParser from '../roles/rolesParser'
+import NoAccess from '../components/NoAccess'
 
  class MainPage extends React.Component {
 
@@ -22,17 +24,27 @@ import UtilsActions from '../actions/UtilsActions'
 
   render() {
 
-    if (this.props.isConfigLoaded) {
+    const { isConfigLoaded, kc } = this.props;
+
+    if (isConfigLoaded) {
       return (
         <MuiThemeProvider>
           <div className="app">
             <div className="version">v{process.env.VERSION}</div>
             <Header/>
-            <SuppliersContainer/>
-            <SupplierTabWrapper/>
-            <NotificationContainer/>
-            <ModalViewContainer/>
-            <SupplierPage/>
+            { roleParser.isAdmin(kc.tokenParsed) ?
+              <div>
+                <SuppliersContainer/>
+                <SupplierTabWrapper/>
+                <NotificationContainer/>
+                <ModalViewContainer/>
+                <SupplierPage/>
+              </div>
+              : <NoAccess
+                  username={kc.tokenParsed.preferred_username}
+                  handleLogout={() => { kc.logout()}}
+              />
+            }
           </div>
         </MuiThemeProvider>
       )
@@ -44,6 +56,7 @@ import UtilsActions from '../actions/UtilsActions'
 }
 
 const mapStateToProps = state => ({
+  kc: state.UserReducer.kc,
   isConfigLoaded: state.UtilsReducer.isConfigLoaded
 })
 
