@@ -734,7 +734,7 @@ SuppliersActions.transferData = id => dispatch => {
     });
 };
 
-SuppliersActions.getLineStats = () => (dispatch, getState) => {
+SuppliersActions.getAllLineStats = () => (dispatch, getState) => {
   dispatch(sendData(null, types.REQUESTED_LINE_STATS));
 
   const suppliers = getState().SuppliersReducer.data.filter(

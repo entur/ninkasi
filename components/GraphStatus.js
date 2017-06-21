@@ -6,7 +6,7 @@ import moment from 'moment'
 
 class GraphStatus extends React.Component {
 
-  componentWillMount() {
+  componentDidMount() {
     cfgreader.readConfig( (function(config) {
       window.config = config
       this.props.dispatch(SupplierActions.getGraphStatus())

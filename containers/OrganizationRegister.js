@@ -10,7 +10,6 @@ class OrganizationRegister extends React.Component {
 
   constructor(props) {
     super(props)
-
     this.state = {
       activeTab: 0
     }
