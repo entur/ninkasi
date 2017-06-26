@@ -42,34 +42,30 @@ class ModalEditNotifications extends React.Component {
 
   shouldUpdateBtnBeDisabled() {
     const { userNotifications } = this.props;
-    if (userNotifications === null || !userNotifications.length) return true;
+    if (userNotifications === null) return true;
 
-    return userNotifications.some( un => {
-
+    return userNotifications.some(un => {
       if (un.eventFilter.type === 'JOB') {
-
         if (!un.eventFilter.actions || !un.eventFilter.states) {
           return true;
         }
 
-        return !(un.eventFilter.actions.length && un.eventFilter.states.length)
+        return !(un.eventFilter.actions.length && un.eventFilter.states.length);
       }
 
       if (un.eventFilter.type === 'CRUD') {
-
         if (!un.eventFilter.entityClassificationRefs) {
           return true;
         }
 
-        return !(un.eventFilter.entityClassificationRefs.length)
+        return !un.eventFilter.entityClassificationRefs.length;
       }
 
       return false;
-    })
+    });
   }
 
   render() {
-
     const {
       isModalOpen,
       handleCloseModal,
@@ -91,7 +87,7 @@ class ModalEditNotifications extends React.Component {
       paddingBottom: 10,
       marginLeft: 10,
       fontStyle: 'italic'
-    }
+    };
 
     const updateDisabled = this.shouldUpdateBtnBeDisabled();
 
@@ -112,17 +108,23 @@ class ModalEditNotifications extends React.Component {
               onClick={() => handleCloseModal()}
             />
           </div>
-          { !isLoading && !!userNotifications.length && userNotifications.map((un, i) =>
-            <NotificationTypeBox
-              index={i}
-              key={'notificationTypeBox-' + i}
-              notification={un}
-              handleExpand={this.handleExpandItem.bind(this)}
-              expanded={this.state.indexExpanded === i}
-            />
-          )}
-          { isLoading && <div style={{fontSize: 12}}>Loading ...</div> }
-          { !isLoading && !userNotifications.length && <div style={noUserConfigStyle}>No notification configuration found for this user</div> }
+          {!isLoading &&
+            !!userNotifications.length &&
+            userNotifications.map((un, i) =>
+              <NotificationTypeBox
+                index={i}
+                key={'notificationTypeBox-' + i}
+                notification={un}
+                handleExpand={this.handleExpandItem.bind(this)}
+                expanded={this.state.indexExpanded === i}
+              />
+            )}
+          {isLoading && <div style={{ fontSize: 12 }}>Loading ...</div>}
+          {!isLoading &&
+            !userNotifications.length &&
+            <div style={noUserConfigStyle}>
+              No notification configuration found for this user
+            </div>}
         </div>
         <div
           style={{
