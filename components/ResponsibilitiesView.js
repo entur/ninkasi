@@ -42,6 +42,10 @@ class ResponsibilitiesView extends React.Component {
     this.props.dispatch(OrganizationRegisterActions.getRoles());
     this.props.dispatch(OrganizationRegisterActions.getOrganizations());
     this.props.dispatch(OrganizationRegisterActions.getEntityTypes());
+
+    if (!this.props.administrativeZones.length) {
+      this.props.dispatch(OrganizationRegisterActions.getAdministrativeZones());
+    }
   }
 
   handleCreateResponsibilitySet(responsibilitySet) {
@@ -166,6 +170,7 @@ class ResponsibilitiesView extends React.Component {
               organizations={organizations}
               handleSubmit={this.handleCreateResponsibilitySet.bind(this)}
               entityTypes={entityTypes}
+              administrativeZones={this.props.administrativeZones}
             />
           : null}
         {isEditingResponsibilitySet
@@ -180,7 +185,8 @@ class ResponsibilitiesView extends React.Component {
               organizations={organizations}
               handleSubmit={this.handleUpdateResponsibilitySet.bind(this)}
               entityTypes={entityTypes}
-            />
+              administrativeZones={this.props.administrativeZones}
+          />
           : null}
       </div>
     );
@@ -193,7 +199,8 @@ const mapStateToProps = state => ({
   roles: state.OrganizationReducer.roles,
   organizations: state.OrganizationReducer.organizations,
   status: state.OrganizationReducer.responsibilitySetStatus,
-  entityTypes: state.OrganizationReducer.entityTypes
+  entityTypes: state.OrganizationReducer.entityTypes,
+  administrativeZones: state.OrganizationReducer.administrativeZones
 });
 
 export default connect(mapStateToProps)(ResponsibilitiesView);
