@@ -92,25 +92,25 @@ class RoleView extends React.Component {
           <div className="col-1-3">
             <span
               className="sortable"
-              onClick={() => this.handleSortOrder('privateCode')}
+              onClick={() => this.handleSortOrder('name')}
             >
-              private code
+              name
             </span>
           </div>
           <div className="col-1-3">
             <span
               className="sortable"
-              onClick={() => this.handleSortOrder('name')}
+              onClick={() => this.handleSortOrder('privateCode')}
             >
-              name
+              private code
             </span>
           </div>
         </div>
         {sortedRoles.map(role => {
           return (
             <div key={'role-' + role.id} className="role-row-item">
-              <div className="col-1-3">{role.privateCode}</div>
               <div className="col-1-3">{role.name}</div>
+              <div className="col-1-3">{role.privateCode}</div>
               <div className="col-icon" style={{ cursor: 'pointer' }}>
                 <MdDelete
                   color="#fa7b81"
