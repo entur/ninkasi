@@ -6,10 +6,9 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
 import AdminZoneSearchWrapper from './AdminZoneSearchWrapper';
-import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import OrganizationRegisterActions, { sortBy } from '../actions/OrganizationRegisterActions';
 
-
-class NewRole extends React.Component {
+class NewRoleAssignment extends React.Component {
 
   constructor(props) {
     super(props);
@@ -28,7 +27,7 @@ class NewRole extends React.Component {
     ).then(response => {
       this.setState({
         tempEntityClassification: entityType,
-        tempEntityTypes: response.data
+        tempEntityTypes: sortBy(response.data, 'name')
       });
     });
   }
@@ -210,4 +209,4 @@ class NewRole extends React.Component {
   }
 }
 
-export default connect(null)(NewRole);
+export default connect(null)(NewRoleAssignment);

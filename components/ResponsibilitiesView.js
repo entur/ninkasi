@@ -58,7 +58,7 @@ class ResponsibilitiesView extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(OrganizationRegisterActions.getResponsibilities());
+    this.props.dispatch(OrganizationRegisterActions.getResponbilitySets());
     this.props.dispatch(OrganizationRegisterActions.getCodeSpaces());
     this.props.dispatch(OrganizationRegisterActions.getRoles());
     this.props.dispatch(OrganizationRegisterActions.getOrganizations());

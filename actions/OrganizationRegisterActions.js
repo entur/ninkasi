@@ -217,7 +217,7 @@ OrganizationRegisterActions.deleteResponsibilitySet = responsibilitySetId => dis
   return axios
     .delete(url, getConfig())
     .then(response => {
-      dispatch(OrganizationRegisterActions.getResponsibilities());
+      dispatch(OrganizationRegisterActions.getResponbilitySets());
     })
     .catch(error => {
       console.log(
@@ -239,13 +239,13 @@ OrganizationRegisterActions.deleteRole = roleId => dispatch => {
     });
 };
 
-OrganizationRegisterActions.getResponsibilities = () => dispatch => {
+OrganizationRegisterActions.getResponbilitySets = () => dispatch => {
   const url = `${window.config.nabuBaseUrl}jersey/responsibility_sets`;
   return axios
     .get(url, getConfig())
     .then(response => {
       dispatch(
-        sendData(sortBy(response.data, 'id'), types.RECEIVED_RESPONSIBILITES)
+        sendData(sortBy(response.data, 'name'), types.RECEIVED_RESPONSIBILITES)
       );
     })
     .catch(error => {
@@ -259,7 +259,7 @@ OrganizationRegisterActions.createResponsibilitySet = responsibilitySet => dispa
     .post(url, responsibilitySet, getConfig())
     .then(response => {
       dispatch(sendData(null, types.CREATED_RESPONSIBILITY_SET));
-      dispatch(OrganizationRegisterActions.getResponsibilities());
+      dispatch(OrganizationRegisterActions.getResponbilitySets());
     })
     .catch(error => {
       dispatch(sendData(types.FAILED_CREATING_ORGANIZATION, error));
@@ -313,7 +313,7 @@ OrganizationRegisterActions.updateResponsibilitySet = responsibilitySet => dispa
     .put(url, responsibilitySet, getConfig())
     .then(response => {
       dispatch(sendData(null, types.UPDATED_RESPONSIBILITY_SET));
-      dispatch(OrganizationRegisterActions.getResponsibilities());
+      dispatch(OrganizationRegisterActions.getResponbilitySets());
     })
     .catch(error => {
       console.log('Error updating responsibility set', error);
@@ -326,7 +326,7 @@ OrganizationRegisterActions.getEntityTypes = () => dispatch => {
     .get(url, getConfig())
     .then(response => {
       dispatch(
-        sendData(sortBy(response.data, 'id'), types.RECEIVED_ENTITY_TYPES)
+        sendData(sortBy(response.data, 'name'), types.RECEIVED_ENTITY_TYPES)
       );
     })
     .catch(error => {
@@ -641,7 +641,7 @@ OrganizationRegisterActions.updateUserNotification = username => (dispatch, getS
 
 }
 
-const sortBy = (list, key) => {
+export const sortBy = (list, key) => {
   return list.sort((a, b) => a[key].localeCompare(b[key]));
 };
 
