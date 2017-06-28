@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import '../sass/views/responsibilityView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete';
@@ -8,7 +9,7 @@ import OrganizationRegisterActions from '../actions/OrganizationRegisterActions'
 import ModalResponsibilityRolesView from '../modals/ModalResponsibilityRolesView';
 import ModalCreateResponsibilitySet from '../modals/ModalCreateResponsibilitySet';
 import ModalEditResponsibilitySet from '../modals/ModalEditResponsibilitySet';
-import { connect } from 'react-redux';
+import { sortByColumns } from '../modals/utils';
 
 const initialState = {
   rolesView: {
@@ -18,7 +19,11 @@ const initialState = {
   },
   isCreatingResponsibilitySet: false,
   isEditingResponsibilitySet: false,
-  activeResponsibilitySet: null
+  activeResponsibilitySet: null,
+  sortOrder: {
+    column: null,
+    asc: true
+  }
 };
 
 class ResponsibilitiesView extends React.Component {
@@ -34,6 +39,25 @@ class ResponsibilitiesView extends React.Component {
         isEditingResponsibilitySet: false
       });
     }
+  }
+
+  handleSortOrder(column) {
+    const { sortOrder } = this.state;
+
+    let asc = true;
+
+    if (sortOrder.column == column) {
+      if (sortOrder.asc) {
+        asc = false;
+      }
+    }
+
+    this.setState({
+      sortOrder: {
+        column,
+        asc
+      }
+    });
   }
 
   componentDidMount() {
@@ -78,19 +102,50 @@ class ResponsibilitiesView extends React.Component {
       rolesView,
       isCreatingResponsibilitySet,
       isEditingResponsibilitySet,
-      activeResponsibilitySet
+      activeResponsibilitySet,
+      sortOrder
     } = this.state;
+
+    const sortedResponsibilities = sortByColumns(responsibilities, sortOrder);
 
     return (
       <div className="responsibility-row">
         <div className="responsibility-header">
-          <div className="col-1-5">Id</div>
-          <div className="col-1-5">name</div>
-          <div className="col-1-5">code space</div>
-          <div className="col-1-5">private code</div>
+          <div className="col-1-5">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('id')}
+            >
+              id
+            </span>
+          </div>
+          <div className="col-1-5">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('name')}
+            >
+              name
+            </span>
+          </div>
+          <div className="col-1-5">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('codeSpace')}
+            >
+              code space
+            </span>
+          </div>
+          <div className="col-1-5">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('privateCode')}
+            >
+              private code
+            </span>
+          </div>
           <div className="col-1-6">Roles</div>
         </div>
-        {responsibilities.map(responsibility => {
+        {sortedResponsibilities.map(responsibility => {
           return (
             <div
               key={'responsibility-' + responsibility.id}
@@ -186,7 +241,7 @@ class ResponsibilitiesView extends React.Component {
               handleSubmit={this.handleUpdateResponsibilitySet.bind(this)}
               entityTypes={entityTypes}
               administrativeZones={this.props.administrativeZones}
-          />
+            />
           : null}
       </div>
     );

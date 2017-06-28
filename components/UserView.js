@@ -10,6 +10,7 @@ import ModalCreateUser from '../modals/ModalCreateUser';
 import ModalEditUser from '../modals/ModalEditUser';
 import ModalEditNotifications from '../modals/ModalEditNotifications';
 import { connect } from 'react-redux';
+import { sortUsersby } from '../modals/utils';
 
 class UserView extends React.Component {
   constructor(props) {
@@ -18,7 +19,11 @@ class UserView extends React.Component {
       isCreateModalOpen: false,
       isEditModalOpen: false,
       isNotificationsOpen: false,
-      activeUser: null
+      activeUser: null,
+      sortOrder: {
+        column: null,
+        asc: true
+      }
     };
   }
 
@@ -38,6 +43,25 @@ class UserView extends React.Component {
 
   handleDeleteUser(user) {
     this.props.dispatch(OrganizationRegisterActions.deleteUser(user.id));
+  }
+
+  handleSortOrder(column) {
+    const { sortOrder } = this.state;
+
+    let asc = true;
+
+    if (sortOrder.column == column) {
+      if (sortOrder.asc) {
+        asc = false;
+      }
+    }
+
+    this.setState({
+      sortOrder: {
+        column,
+        asc
+      }
+    });
   }
 
   openModalWindow(activeUser, attribute) {
@@ -67,20 +91,58 @@ class UserView extends React.Component {
     const {
       isCreateModalOpen,
       isEditModalOpen,
-      isNotificationsOpen
+      isNotificationsOpen,
+      sortOrder
     } = this.state;
+
+    const sortedUsers = sortUsersby(users, sortOrder);
 
     return (
       <div className="user-row">
         <div className="user-header">
-          <div className="col-1-9">username</div>
-          <div className="col-1-9">firstname</div>
-          <div className="col-1-9">lastname</div>
-          <div className="col-1-8">e-mail</div>
-          <div className="col-1-9">organisation</div>
+          <div className="col-1-9">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('username')}
+            >
+              username
+            </span>
+          </div>
+          <div className="col-1-9">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('firstName')}
+            >
+              firstname
+            </span>
+          </div>
+          <div className="col-1-9">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('lastName')}
+            >
+              lastname
+            </span>
+          </div>
+          <div className="col-1-8">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('email')}
+            >
+              e-mail
+            </span>
+          </div>
+          <div className="col-1-9">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('organisation')}
+            >
+              organisation
+            </span>
+          </div>
           <div className="col-1-7">Responsiblity set</div>
         </div>
-        {users.map(user => {
+        {sortedUsers.map(user => {
           return (
             <div key={'user-' + user.id} className="user-row-item">
               <div className="col-1-9">{user.username}</div>

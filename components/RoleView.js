@@ -8,6 +8,7 @@ import ModalEditRole from '../modals/ModalEditRole';
 import ModalCreateRole from '../modals/ModalCreateRole';
 import { connect } from 'react-redux';
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import { sortByColumns } from '../modals/utils';
 
 class RoleView extends React.Component {
   constructor(props) {
@@ -15,7 +16,11 @@ class RoleView extends React.Component {
     this.state = {
       isCreateModalOpen: false,
       isEditModalOpen: false,
-      activeRole: null
+      activeRole: null,
+      sortOrder: {
+        column: null,
+        asc: true
+      }
     };
   }
 
@@ -23,6 +28,25 @@ class RoleView extends React.Component {
     this.setState({
       activeRole: role,
       isEditModalOpen: true
+    });
+  }
+
+  handleSortOrder(column) {
+    const { sortOrder } = this.state;
+
+    let asc = true;
+
+    if (sortOrder.column == column) {
+      if (sortOrder.asc) {
+        asc = false;
+      }
+    }
+
+    this.setState({
+      sortOrder: {
+        column,
+        asc
+      }
     });
   }
 
@@ -58,14 +82,31 @@ class RoleView extends React.Component {
 
   render() {
     const { roles } = this.props;
+    const { sortOrder } = this.state;
+
+    const sortedRoles = sortByColumns(roles, sortOrder);
 
     return (
       <div className="role-row">
         <div className="role-header">
-          <div className="col-1-3">private code</div>
-          <div className="col-1-3">name</div>
+          <div className="col-1-3">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('privateCode')}
+            >
+              private code
+            </span>
+          </div>
+          <div className="col-1-3">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('name')}
+            >
+              name
+            </span>
+          </div>
         </div>
-        {roles.map(role => {
+        {sortedRoles.map(role => {
           return (
             <div key={'role-' + role.id} className="role-row-item">
               <div className="col-1-3">{role.privateCode}</div>

@@ -1,13 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import '../sass/views/entityTypesView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ModalCreateEntityType from '../modals/ModalCreateEntityType';
 import ModalEditEntiyType from '../modals/ModalEditEntityType';
-import { connect } from 'react-redux';
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
 import MdDelete from 'material-ui/svg-icons/action/delete';
+import { sortByColumns } from '../modals/utils';
+
 
 class EntityTypesView extends React.Component {
   constructor(props) {
@@ -15,7 +17,11 @@ class EntityTypesView extends React.Component {
     this.state = {
       isCreateModalOpen: false,
       isEditModalOpen: false,
-      activeEntityType: null
+      activeEntityType: null,
+      sortOrder: {
+        column: null,
+        asc: true
+      }
     };
   }
 
@@ -23,6 +29,25 @@ class EntityTypesView extends React.Component {
     this.setState({
       activeEntityType: entityType,
       isEditModalOpen: true
+    });
+  }
+
+  handleSortOrder(column) {
+    const { sortOrder } = this.state;
+
+    let asc = true;
+
+    if (sortOrder.column == column) {
+      if (sortOrder.asc) {
+        asc = false;
+      }
+    }
+
+    this.setState({
+      sortOrder: {
+        column,
+        asc
+      }
     });
   }
 
@@ -65,16 +90,47 @@ class EntityTypesView extends React.Component {
 
   render() {
     const { entityTypes } = this.props;
+    const { sortOrder } = this.state;
+
+    const sortedEntityTypes = sortByColumns(entityTypes, sortOrder);
 
     return (
       <div className="et-row">
         <div className="et-header">
-          <div className="col-1-5">id</div>
-          <div className="col-1-5">name</div>
-          <div className="col-1-5">private code</div>
-          <div className="col-1-5">code space</div>
+          <div className="col-1-5">
+           <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('id')}
+            >
+              id
+            </span>
+          </div>
+          <div className="col-1-5">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('name')}
+            >
+              name
+            </span>
+          </div>
+          <div className="col-1-5">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('privateCode')}
+            >
+              private code
+            </span>
+          </div>
+          <div className="col-1-5">
+            <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('codeSpace')}
+            >
+              code space
+            </span>
+          </div>
         </div>
-        {entityTypes.map(et => {
+        {sortedEntityTypes.map(et => {
           return (
             <div key={'et-' + et.id} className="et-row-item">
               <div className="col-1-5">{et.id}</div>

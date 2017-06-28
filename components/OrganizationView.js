@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import ModalCreateOrganization from '../modals/ModalCreateOrganization';
 import ModalEditOrganization from '../modals/ModalEditOrganization';
 import MdDelete from 'material-ui/svg-icons/action/delete';
+import { sortByColumns } from '../modals/utils';
 
 class OrganizationView extends React.Component {
   constructor(props) {
@@ -15,8 +16,31 @@ class OrganizationView extends React.Component {
     this.state = {
       isCreateModalOpen: false,
       isEditModalOpen: false,
-      activeOrganization: null
+      activeOrganization: null,
+      sortOrder: {
+        column: null,
+        asc: true
+      }
     };
+  }
+
+  handleSortOrder(column) {
+    const { sortOrder } = this.state;
+
+    let asc = true;
+
+    if (sortOrder.column == column) {
+      if (sortOrder.asc) {
+        asc = false;
+      }
+    }
+
+    this.setState({
+      sortOrder: {
+        column,
+        asc
+      }
+    });
   }
 
   componentDidMount() {
@@ -68,19 +92,48 @@ class OrganizationView extends React.Component {
     const {
       activeOrganization,
       isCreateModalOpen,
-      isEditModalOpen
+      isEditModalOpen,
+      sortOrder
     } = this.state;
+
+
+    const sortedOrganizations = sortByColumns(organizations, sortOrder);
 
     return (
       <div className="organization-row">
         <div className="organization-header">
-          <div className="col-1-6">id</div>
-          <div className="col-1-6">name</div>
-          <div className="col-1-6">organisation Type</div>
-          <div className="col-1-6">private code</div>
-          <div className="col-1-6">code space</div>
+          <div className="col-1-6"><span
+            className="sortable"
+            onClick={() => this.handleSortOrder('id')}
+          >
+              id
+            </span></div>
+          <div className="col-1-6"><span
+            className="sortable"
+            onClick={() => this.handleSortOrder('name')}
+          >
+              name
+            </span></div>
+          <div className="col-1-6"><span
+            className="sortable"
+            onClick={() => this.handleSortOrder('organisationType')}
+          >
+              organisation type
+            </span></div>
+          <div className="col-1-6"><span
+            className="sortable"
+            onClick={() => this.handleSortOrder('privateCode')}
+          >
+              private code
+            </span></div>
+          <div className="col-1-6"><span
+            className="sortable"
+            onClick={() => this.handleSortOrder('codeSpace')}
+          >
+              code space
+            </span></div>
         </div>
-        {organizations.map(organization => {
+        {sortedOrganizations.map(organization => {
           return (
             <div
               key={'organization-' + organization.id}
