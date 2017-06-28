@@ -22,14 +22,27 @@ const getConfig = () => {
 SuppliersActions.cleanStopPlacesInChouette = () => dispatch => {
   const url =
     window.config.mardukBaseUrl + 'admin/services/chouette/stop_places/clean';
-  return axios.post(url, null, getConfig()).then(response => {
-    dispatch(
-      SuppliersActions.addNotification('Deleted Stop Place Register in Chouette', 'success')
-    );
-    dispatch(SuppliersActions.logEvent({ title: 'Deleted Stop Place Register in Chouette' }));
-  }).catch( err => {
-    SuppliersActions.addNotification('Failed to delete Stop Place Register in Chouette', 'error');
-  });
+  return axios
+    .post(url, null, getConfig())
+    .then(response => {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Deleted Stop Place Register in Chouette',
+          'success'
+        )
+      );
+      dispatch(
+        SuppliersActions.logEvent({
+          title: 'Deleted Stop Place Register in Chouette'
+        })
+      );
+    })
+    .catch(err => {
+      SuppliersActions.addNotification(
+        'Failed to delete Stop Place Register in Chouette',
+        'error'
+      );
+    });
 };
 
 SuppliersActions.deleteAllJobs = () => dispatch => {
@@ -681,20 +694,22 @@ SuppliersActions.getGraphStatus = () => dispatch => {
       let status = {
         otherStatus: []
       };
-      response.data.forEach(type => {
-        if (type.jobType === 'BUILD_GRAPH') {
-          status.graphStatus = {
-            status: type.currentState,
-            started: type.currentStateDate
-          };
-        } else {
-          status.otherStatus.push({
-            type: type.jobType,
-            status: type.currentState,
-            started: type.currentStateDate
-          });
-        }
-      });
+      response.data
+        .filter(type => type.jobDomain === 'GEOCODER')
+        .forEach(type => {
+          if (type.jobType === 'BUILD_GRAPH') {
+            status.graphStatus = {
+              status: type.currentState,
+              started: type.currentStateDate
+            };
+          } else {
+            status.otherStatus.push({
+              type: type.jobType,
+              status: type.currentState,
+              started: type.currentStateDate
+            });
+          }
+        });
 
       dispatch(sendData(status, types.RECEIVED_GRAPH_STATUS));
     })
