@@ -97,7 +97,7 @@ OrganizationRegisterActions.getOrganizations = () => dispatch => {
     .get(url, getConfig())
     .then(response => {
       dispatch(
-        sendData(sortBy(response.data, 'id'), types.RECEIVED_ORGANIZATIONS)
+        sendData(sortBy(response.data, 'name'), types.RECEIVED_ORGANIZATIONS)
       );
     })
     .catch(error => {
@@ -642,7 +642,7 @@ OrganizationRegisterActions.updateUserNotification = username => (dispatch, getS
 }
 
 const sortBy = (list, key) => {
-  return list.sort((a, b) => a[key] > b[key]);
+  return list.sort((a, b) => a[key].localeCompare(b[key]));
 };
 
 export default OrganizationRegisterActions;
