@@ -99,17 +99,17 @@ class OrganizationView extends React.Component {
     return (
       <div className="organization-row">
         <div className="organization-header">
+        <div className="col-1-6"><span
+          className="sortable"
+          onClick={() => this.handleSortOrder('name')}
+        >
+            name
+          </span></div>
           <div className="col-1-6"><span
             className="sortable"
             onClick={() => this.handleSortOrder('id')}
           >
               id
-            </span></div>
-          <div className="col-1-6"><span
-            className="sortable"
-            onClick={() => this.handleSortOrder('name')}
-          >
-              name
             </span></div>
           <div className="col-1-6"><span
             className="sortable"
@@ -136,8 +136,8 @@ class OrganizationView extends React.Component {
               key={'organization-' + organization.id}
               className="organization-row-item"
             >
-              <div className="col-1-6">{organization.id}</div>
               <div className="col-1-6">{organization.name}</div>
+              <div className="col-1-6">{organization.id}</div>
               <div className="col-1-6">{organization.organisationType}</div>
               <div className="col-1-6">{organization.privateCode}</div>
               <div className="col-1-6">{organization.codeSpace}</div>

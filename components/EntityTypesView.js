@@ -95,19 +95,19 @@ class EntityTypesView extends React.Component {
       <div className="et-row">
         <div className="et-header">
           <div className="col-1-5">
-           <span
-              className="sortable"
-              onClick={() => this.handleSortOrder('id')}
-            >
-              id
-            </span>
-          </div>
-          <div className="col-1-5">
             <span
               className="sortable"
               onClick={() => this.handleSortOrder('name')}
             >
               name
+            </span>
+          </div>
+          <div className="col-1-5">
+           <span
+              className="sortable"
+              onClick={() => this.handleSortOrder('id')}
+            >
+              id
             </span>
           </div>
           <div className="col-1-5">
@@ -130,8 +130,8 @@ class EntityTypesView extends React.Component {
         {sortedEntityTypes.map(et => {
           return (
             <div key={'et-' + et.id} className="et-row-item">
-              <div className="col-1-5">{et.id}</div>
               <div className="col-1-5">{et.name}</div>
+              <div className="col-1-5">{et.id}</div>
               <div className="col-1-5">{et.privateCode}</div>
               <div className="col-1-5">{et.codeSpace}</div>
               <div className="col-icon" style={{ cursor: 'pointer' }}>

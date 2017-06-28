@@ -111,17 +111,17 @@ class ResponsibilitiesView extends React.Component {
           <div className="col-1-5">
             <span
               className="sortable"
-              onClick={() => this.handleSortOrder('id')}
+              onClick={() => this.handleSortOrder('name')}
             >
-              id
+              name
             </span>
           </div>
           <div className="col-1-5">
             <span
               className="sortable"
-              onClick={() => this.handleSortOrder('name')}
+              onClick={() => this.handleSortOrder('id')}
             >
-              name
+              id
             </span>
           </div>
           <div className="col-1-5">
@@ -148,8 +148,8 @@ class ResponsibilitiesView extends React.Component {
               key={'responsibility-' + responsibility.id}
               className="resp-row-item"
             >
-              <div className="col-1-5">{responsibility.id}</div>
               <div className="col-1-5">{responsibility.name}</div>
+              <div className="col-1-5">{responsibility.id}</div>
               <div className="col-1-5">{responsibility.codeSpace}</div>
               <div className="col-1-5">{responsibility.privateCode}</div>
               <div
