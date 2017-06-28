@@ -47,9 +47,13 @@ class ModalCreateResponsibilitySet extends React.Component {
   }
 
   getRoleString(role) {
-    return `ORG=${role.responsibleOrganisationRef}, type=${role.typeOfResponsibilityRoleRef}, entities=${role.entityClassificationRefs.join(
-      ','
-    )}`;
+    const responsibleAreaRefString = role.responsibleAreaRef
+      ? 'responsibleAreaRef=' + role.responsibleAreaRef
+      : '';
+
+    return `ORG=${role.responsibleOrganisationRef}, type=${role.typeOfResponsibilityRoleRef}, ${responsibleAreaRefString}, entities=${role.entityClassificationRefs
+      ? role.entityClassificationRefs.join(',')
+      : ''}`;
   }
 
   handleAddRole() {
@@ -248,7 +252,12 @@ class ModalCreateResponsibilitySet extends React.Component {
                 </div>
                 <select
                   multiple="multiple"
-                  style={{ overflowX: 'scroll', fontSize: 10, maxWidth: '45vw', minWidth: '45vw' }}
+                  style={{
+                    overflowX: 'scroll',
+                    fontSize: 10,
+                    maxWidth: '45vw',
+                    minWidth: '45vw'
+                  }}
                   ref="roles"
                 >
                   {responsibilitySet.roles.map((role, i) =>
@@ -328,16 +337,16 @@ class ModalCreateResponsibilitySet extends React.Component {
                           />
                         )}
                       </SelectField>
-                    <AdminZoneSearchWrapper
-                      handleNewRequest={this.handleNewAdminZoneRequest.bind(
-                        this
-                      )}
-                      administrativeZones={this.props.administrativeZones}
-                      chip={this.state.resultChip}
-                      handleDeleteChip={this.handleDeleteResultChip.bind(
-                        this
-                      )}
-                    />
+                      <AdminZoneSearchWrapper
+                        handleNewRequest={this.handleNewAdminZoneRequest.bind(
+                          this
+                        )}
+                        administrativeZones={this.props.administrativeZones}
+                        chip={this.state.resultChip}
+                        handleDeleteChip={this.handleDeleteResultChip.bind(
+                          this
+                        )}
+                      />
                       <div style={{ width: '100%', fontSize: 12 }}>
                         Entity classification
                       </div>

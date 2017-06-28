@@ -8,7 +8,7 @@ import ModalCreateEntityType from '../modals/ModalCreateEntityType';
 import ModalEditEntiyType from '../modals/ModalEditEntityType';
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
 import MdDelete from 'material-ui/svg-icons/action/delete';
-import { sortByColumns } from '../modals/utils';
+import { sortByColumns } from '../utils/utils';
 
 
 class EntityTypesView extends React.Component {

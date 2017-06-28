@@ -8,7 +8,7 @@ import ModalEditRole from '../modals/ModalEditRole';
 import ModalCreateRole from '../modals/ModalCreateRole';
 import { connect } from 'react-redux';
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
-import { sortByColumns } from '../modals/utils';
+import { sortByColumns } from '../utils/utils';
 
 class RoleView extends React.Component {
   constructor(props) {

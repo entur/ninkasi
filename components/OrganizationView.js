@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import ModalCreateOrganization from '../modals/ModalCreateOrganization';
 import ModalEditOrganization from '../modals/ModalEditOrganization';
 import MdDelete from 'material-ui/svg-icons/action/delete';
-import { sortByColumns } from '../modals/utils';
+import { sortByColumns } from '../utils/utils';
 
 class OrganizationView extends React.Component {
   constructor(props) {

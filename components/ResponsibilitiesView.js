@@ -9,7 +9,7 @@ import OrganizationRegisterActions from '../actions/OrganizationRegisterActions'
 import ModalResponsibilityRolesView from '../modals/ModalResponsibilityRolesView';
 import ModalCreateResponsibilitySet from '../modals/ModalCreateResponsibilitySet';
 import ModalEditResponsibilitySet from '../modals/ModalEditResponsibilitySet';
-import { sortByColumns } from '../modals/utils';
+import { sortByColumns } from '../utils/utils';
 
 const initialState = {
   rolesView: {
