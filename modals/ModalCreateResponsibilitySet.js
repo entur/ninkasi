@@ -3,15 +3,13 @@ import Modal from './Modal';
 import TextField from 'material-ui/TextField';
 import MdClose from 'material-ui/svg-icons/navigation/close';
 import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
 import MdRemove from 'material-ui/svg-icons/content/remove';
 import MdAdd from 'material-ui/svg-icons/content/add';
 import IconButton from 'material-ui/IconButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
-import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
-import AdminZoneSearchWrapper from './AdminZoneSearchWrapper';
+import NewRoleAssignment from './NewRoleAssignment';
 
 class ModalCreateResponsibilitySet extends React.Component {
   constructor(props) {
@@ -27,7 +25,7 @@ class ModalCreateResponsibilitySet extends React.Component {
       newRole: {
         typeOfResponsibilityRoleRef: '',
         responsibleOrganisationRef: '',
-        entityClassificationRefs: []
+        entityClassificationAssignments: []
       },
       tempEntityClassification: '',
       tempEntityType: '',
@@ -35,36 +33,33 @@ class ModalCreateResponsibilitySet extends React.Component {
     };
   }
 
-  getEntityClassificationsForType(entityType) {
-    OrganizationRegisterActions.getEntityByClassification(
-      entityType
-    ).then(response => {
-      this.setState({
-        tempEntityClassification: entityType,
-        tempEntityTypes: response.data
-      });
-    });
-  }
-
   getRoleString(role) {
     const responsibleAreaRefString = role.responsibleAreaRef
       ? 'responsibleAreaRef=' + role.responsibleAreaRef
       : '';
 
-    return `ORG=${role.responsibleOrganisationRef}, type=${role.typeOfResponsibilityRoleRef}, ${responsibleAreaRefString}, entities=${role.entityClassificationRefs
-      ? role.entityClassificationRefs.join(',')
-      : ''}`;
+    return `ORG=${role.responsibleOrganisationRef}, type=${role.typeOfResponsibilityRoleRef}, zone=${responsibleAreaRefString}, entities=${this.getEntityClassAssignmentString(role.entityClassificationAssignments)}`;
+  }
+
+
+  getEntityClassAssignmentString(assignments) {
+    if (!assignments || !assignments.length) return '';
+    return assignments
+      .map(({ allow, entityClassificationRef }) => {
+        return (allow ? '' : '!') + entityClassificationRef;
+      })
+      .join(', ');
   }
 
   handleAddRole() {
     const { newRole } = this.state;
     this.setState({
       ...this.state,
-      searchChip: null,
+      resultChip: null,
       newRole: {
         typeOfResponsibilityRoleRef: '',
         responsibleOrganisationRef: '',
-        entityClassificationRefs: [],
+        entityClassificationAssignments: [],
         responsibleAreaRef: null
       },
       tempEntityClassification: '',
@@ -75,31 +70,6 @@ class ModalCreateResponsibilitySet extends React.Component {
         roles: [...this.state.responsibilitySet.roles, newRole]
       },
       isCreatingNewRole: false
-    });
-  }
-
-  handleNewAdminZoneRequest({ value, text }) {
-    if (value && text) {
-      this.setState({
-        resultChip: {
-          value,
-          name: text
-        },
-        newRole: {
-          ...this.state.newRole,
-          responsibleAreaRef: value
-        }
-      });
-    }
-  }
-
-  handleDeleteResultChip() {
-    this.setState({
-      resultChip: null,
-      newRole: {
-        ...this.state.newRole,
-        responsibleAreaRef: null
-      }
     });
   }
 
@@ -148,13 +118,7 @@ class ModalCreateResponsibilitySet extends React.Component {
       handleSubmit,
       entityTypes
     } = this.props;
-    const {
-      isCreatingNewRole,
-      responsibilitySet,
-      newRole,
-      tempEntityClassification,
-      tempEntityType
-    } = this.state;
+    const { isCreatingNewRole, responsibilitySet, newRole } = this.state;
     const isLegalPrivateCode =
       takenPrivateCodes.indexOf(responsibilitySet.privateCode) == -1;
 
@@ -277,158 +241,45 @@ class ModalCreateResponsibilitySet extends React.Component {
                   </IconButton>
                 </div>
                 {isCreatingNewRole
-                  ? <div style={{ border: '1px dotted' }}>
-                      <div
-                        style={{
-                          fontSize: 12,
-                          textAlign: 'center',
-                          fontWeight: 600
-                        }}
-                      >
-                        New role
-                      </div>
-                      <SelectField
-                        hintText="Role type"
-                        floatingLabelText="Role type"
-                        value={newRole.typeOfResponsibilityRoleRef}
-                        style={{ marginTop: -15 }}
-                        onChange={(e, index, value) =>
-                          this.setState({
-                            ...this.state,
-                            newRole: {
-                              ...newRole,
-                              typeOfResponsibilityRoleRef: value
-                            }
-                          })}
-                        fullWidth={true}
-                      >
-                        {roles.map(role =>
-                          <MenuItem
-                            key={role.id}
-                            id={role.id}
-                            value={role.id}
-                            label={role.id}
-                            primaryText={role.name}
-                          />
-                        )}
-                      </SelectField>
-                      <SelectField
-                        hintText="Organization"
-                        style={{ marginTop: -15 }}
-                        floatingLabelText="Organization"
-                        value={newRole.responsibleOrganisationRef}
-                        onChange={(e, index, value) =>
-                          this.setState({
-                            ...this.state,
-                            newRole: {
-                              ...newRole,
-                              responsibleOrganisationRef: value
-                            }
-                          })}
-                        fullWidth={true}
-                      >
-                        {organizations.map(org =>
-                          <MenuItem
-                            key={org.id}
-                            id={org.id}
-                            value={org.id}
-                            label={org.id}
-                            primaryText={org.name}
-                          />
-                        )}
-                      </SelectField>
-                      <AdminZoneSearchWrapper
-                        handleNewRequest={this.handleNewAdminZoneRequest.bind(
-                          this
-                        )}
-                        administrativeZones={this.props.administrativeZones}
-                        chip={this.state.resultChip}
-                        handleDeleteChip={this.handleDeleteResultChip.bind(
-                          this
-                        )}
-                      />
-                      <div style={{ width: '100%', fontSize: 12 }}>
-                        Entity classification
-                      </div>
-                      <select
-                        multiple="multiple"
-                        style={{ width: '100%', fontSize: 12 }}
-                      >
-                        {newRole.entityClassificationRefs.map((ref, index) =>
-                          <option key={'entity-' + index}>{ref} </option>
-                        )}
-                      </select>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-around'
-                        }}
-                      >
-                        <SelectField
-                          hintText="Classification"
-                          floatingLabelText="Classification"
-                          value={tempEntityClassification}
-                          onChange={(e, i, v) =>
-                            this.getEntityClassificationsForType(v)}
-                          fullWidth={true}
-                        >
-                          {entityTypes.map(entity =>
-                            <MenuItem
-                              key={entity.id}
-                              id={entity.id}
-                              value={entity.id}
-                              label={entity.name}
-                              primaryText={entity.name}
-                            />
-                          )}
-                        </SelectField>
-                        <SelectField
-                          hintText="Type"
-                          floatingLabelText="Type"
-                          value={tempEntityType}
-                          onChange={(e, i, v) =>
-                            this.setState({ tempEntityType: v })}
-                          fullWidth={true}
-                        >
-                          {this.state.tempEntityTypes.map(type =>
-                            <MenuItem
-                              key={type.id}
-                              id={type.id}
-                              value={type.id}
-                              label={type.name}
-                              primaryText={type.name}
-                            />
-                          )}
-                        </SelectField>
-                        <FlatButton
-                          label="Add"
-                          disabled={!tempEntityClassification.length}
-                          onClick={() =>
-                            this.setState({
-                              newRole: {
-                                ...newRole,
-                                entityClassificationRefs: [
-                                  ...newRole.entityClassificationRefs,
-                                  tempEntityType
-                                ]
-                              },
-                              tempEntityClassification: '',
-                              tempEntityType: ''
-                            })}
-                        />
-                      </div>
-                      <RaisedButton
-                        label="Add role"
-                        primary={true}
-                        disabled={
-                          !newRole.typeOfResponsibilityRoleRef.length ||
-                          !newRole.responsibleOrganisationRef.length
-                        }
-                        style={{ display: 'block' }}
-                        onClick={this.handleAddRole.bind(this)}
-                      />
-                    </div>
+                  ? <NewRoleAssignment
+                      newRole={newRole}
+                      roles={roles}
+                      entityTypes={entityTypes}
+                      organizations={organizations}
+                      handleAddRole={this.handleAddRole.bind(this)}
+                      administrativeZones={this.props.administrativeZones}
+                      addNewRoleAssignment={(entityClassificationRef, allow) =>
+                        this.setState({
+                          newRole: {
+                            ...newRole,
+                            entityClassificationAssignments: [
+                              ...newRole.entityClassificationAssignments,
+                              {
+                                entityClassificationRef,
+                                allow
+                              }
+                            ]
+                          },
+                          tempEntityClassification: '',
+                          tempEntityType: ''
+                        })}
+                      organisationChange={(e, index, value) =>
+                        this.setState({
+                          ...this.state,
+                          newRole: {
+                            ...newRole,
+                            responsibleOrganisationRef: value
+                          }
+                        })}
+                      entityTypeChange={(e, index, value) =>
+                        this.setState({
+                          ...this.state,
+                          newRole: {
+                            ...newRole,
+                            typeOfResponsibilityRoleRef: value
+                          }
+                        })}
+                    />
                   : null}
               </div>
             </div>

@@ -18,7 +18,7 @@ class OrganizationView extends React.Component {
       isEditModalOpen: false,
       activeOrganization: null,
       sortOrder: {
-        column: null,
+        column: 'name',
         asc: true
       }
     };
@@ -26,13 +26,10 @@ class OrganizationView extends React.Component {
 
   handleSortOrder(column) {
     const { sortOrder } = this.state;
-
     let asc = true;
 
     if (sortOrder.column == column) {
-      if (sortOrder.asc) {
-        asc = false;
-      }
+      asc = !sortOrder.asc;
     }
 
     this.setState({

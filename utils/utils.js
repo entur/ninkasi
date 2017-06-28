@@ -38,10 +38,10 @@ export const sortByColumns = (items, sortOrder) => {
     );
 };
 
-const sortDesc = (a, b) => {
+const sortAsc = (a, b) => {
   return a.localeCompare(b);
 };
 
-const sortAsc = (a, b) => {
+const sortDesc = (a, b) => {
   return b.localeCompare(a);
 };
