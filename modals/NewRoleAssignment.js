@@ -7,9 +7,10 @@ import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
 import AdminZoneSearchWrapper from './AdminZoneSearchWrapper';
 import OrganizationRegisterActions, { sortBy } from '../actions/OrganizationRegisterActions';
+import MdRemove from 'material-ui/svg-icons/content/remove';
+import IconButton from 'material-ui/IconButton';
 
 class NewRoleAssignment extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -17,8 +18,8 @@ class NewRoleAssignment extends React.Component {
       tempEntityType: '',
       tempEntityTypes: [],
       resultChip: null,
-      negate: false,
-    }
+      negate: false
+    };
   }
 
   getEntityClassificationsForType(entityType) {
@@ -32,18 +33,25 @@ class NewRoleAssignment extends React.Component {
     });
   }
 
+  handleRemoveEntity() {
+    const { entityClassRefs } = this.refs;
+    const index = entityClassRefs.options.selectedIndex;
+
+    if (index > -1) {
+       this.props.handleRemoveEntity(index);
+    }
+  }
+
   handleNewAdminZoneRequest({ value, text }) {
     if (value && text) {
       this.setState({
         resultChip: {
           value,
           name: text
-        },
-        newRole: {
-          ...this.state.newRole,
-          responsibleAreaRef: value
         }
       });
+
+      this.props.addNewAdminZoneRef(value);
     }
   }
 
@@ -58,10 +66,25 @@ class NewRoleAssignment extends React.Component {
   }
 
   render() {
-
-    const { newRole, roles, organizations, entityTypes, handleAddRole, administrativeZones } = this.props;
-    const { entityTypeChange, organisationChange, addNewRoleAssignment } = this.props;
-    const { tempEntityType, tempEntityTypes, tempEntityClassification, negate } = this.state;
+    const {
+      newRole,
+      roles,
+      organizations,
+      entityTypes,
+      handleAddRole,
+      administrativeZones
+    } = this.props;
+    const {
+      entityTypeChange,
+      organisationChange,
+      addNewRoleAssignment
+    } = this.props;
+    const {
+      tempEntityType,
+      tempEntityTypes,
+      tempEntityClassification,
+      negate
+    } = this.state;
 
     return (
       <div style={{ border: '1px dotted' }}>
@@ -111,28 +134,26 @@ class NewRoleAssignment extends React.Component {
           )}
         </SelectField>
         <AdminZoneSearchWrapper
-          handleNewRequest={this.handleNewAdminZoneRequest.bind(
-            this
-          )}
+          handleNewRequest={this.handleNewAdminZoneRequest.bind(this)}
           administrativeZones={administrativeZones}
           chip={this.state.resultChip}
-          handleDeleteChip={this.handleDeleteResultChip.bind(
-            this
-          )}
+          handleDeleteChip={this.handleDeleteResultChip.bind(this)}
         />
         <div style={{ width: '100%', fontSize: 12 }}>
           Entity classification
         </div>
-        <select
-          multiple="multiple"
-          style={{ width: '100%', fontSize: 12 }}
-        >
-          {newRole.entityClassificationAssignments.map((ref, index) =>
-            <option key={'entity-' + index}>
-              {ref.allow ? '' : '!'}{ref.entityClassificationRef}
-            </option>
-          )}
-        </select>
+        <div style={{ display: 'flex' }}>
+          <select ref="entityClassRefs" multiple="multiple" style={{ width: '100%', fontSize: 12 }}>
+            {newRole.entityClassificationAssignments.map((ref, index) =>
+              <option key={'entity-' + index}>
+                {ref.allow ? '' : '!'}{ref.entityClassificationRef}
+              </option>
+            )}
+          </select>
+          <IconButton onClick={this.handleRemoveEntity.bind(this)}>
+            <MdRemove color="#cc0000" />
+          </IconButton>
+        </div>
         <div
           style={{
             display: 'flex',
@@ -142,20 +163,27 @@ class NewRoleAssignment extends React.Component {
         >
           <Checkbox
             label="Negate"
-            style={{flex: 1, width: 'auto', marginTop: 30, marginRight: 5, marginLeft: 5}}
-            labelStyle={{fontSize: 12, marginTop: 5, marginLeft: -10}}
+            style={{
+              flex: 1,
+              width: 'auto',
+              marginTop: 30,
+              marginRight: 5,
+              marginLeft: 5
+            }}
+            labelStyle={{ fontSize: 12, marginTop: 5, marginLeft: -10 }}
             checked={negate}
-            onCheck={(e,v) =>{ this.setState({
-              negate: v
-            })}}
+            onCheck={(e, v) => {
+              this.setState({
+                negate: v
+              });
+            }}
           />
           <SelectField
             hintText="Classification"
             floatingLabelText="Classification"
-            style={{flex: 2.5}}
+            style={{ flex: 2.5 }}
             value={tempEntityClassification}
-            onChange={(e, i, v) =>
-              this.getEntityClassificationsForType(v)}
+            onChange={(e, i, v) => this.getEntityClassificationsForType(v)}
             fullWidth={true}
           >
             {entityTypes.map(entity =>
@@ -170,11 +198,10 @@ class NewRoleAssignment extends React.Component {
           </SelectField>
           <SelectField
             hintText="Type"
-            style={{flex: 2.5}}
+            style={{ flex: 2.5 }}
             floatingLabelText="Type"
             value={tempEntityType}
-            onChange={(e, i, v) =>
-              this.setState({ tempEntityType: v })}
+            onChange={(e, i, v) => this.setState({ tempEntityType: v })}
             fullWidth={true}
           >
             {tempEntityTypes.map(type =>
@@ -189,9 +216,9 @@ class NewRoleAssignment extends React.Component {
           </SelectField>
           <FlatButton
             label="Add"
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             disabled={!tempEntityClassification.length}
-            onClick={ () => addNewRoleAssignment(tempEntityType, !negate) }
+            onClick={() => addNewRoleAssignment(tempEntityType, !negate)}
           />
         </div>
         <RaisedButton
@@ -205,7 +232,7 @@ class NewRoleAssignment extends React.Component {
           onClick={handleAddRole}
         />
       </div>
-    )
+    );
   }
 }
 

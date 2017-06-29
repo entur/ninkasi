@@ -34,13 +34,9 @@ class ModalCreateResponsibilitySet extends React.Component {
   }
 
   getRoleString(role) {
-    const responsibleAreaRefString = role.responsibleAreaRef
-      ? 'responsibleAreaRef=' + role.responsibleAreaRef
-      : '';
-
-    return `ORG=${role.responsibleOrganisationRef}, type=${role.typeOfResponsibilityRoleRef}, zone=${responsibleAreaRefString}, entities=${this.getEntityClassAssignmentString(role.entityClassificationAssignments)}`;
+    const responsibleAreaRefString = `responsibleAreaRef=${role.responsibleAreaRef || ''}`
+    return `ORG=${role.responsibleOrganisationRef}, type=${role.typeOfResponsibilityRoleRef}, ${responsibleAreaRefString}, entities=${this.getEntityClassAssignmentString(role.entityClassificationAssignments)}`;
   }
-
 
   getEntityClassAssignmentString(assignments) {
     if (!assignments || !assignments.length) return '';
@@ -49,6 +45,18 @@ class ModalCreateResponsibilitySet extends React.Component {
         return (allow ? '' : '!') + entityClassificationRef;
       })
       .join(', ');
+  }
+
+  handleRemoveEntity(index) {
+    this.setState({
+      newRole: {
+        ...this.state.newRole,
+        entityClassificationAssignments: [
+          ...this.state.newRole.entityClassificationAssignments.slice(0, index),
+          ...this.state.newRole.entityClassificationAssignments.slice(index + 1)
+        ]
+      }
+    });
   }
 
   handleAddRole() {
@@ -248,6 +256,15 @@ class ModalCreateResponsibilitySet extends React.Component {
                       organizations={organizations}
                       handleAddRole={this.handleAddRole.bind(this)}
                       administrativeZones={this.props.administrativeZones}
+                      handleRemoveEntity={this.handleRemoveEntity.bind(this)}
+                      addNewAdminZoneRef={ responsibleAreaRef => {
+                        this.setState({
+                          newRole: {
+                            ...this.state.newRole,
+                            responsibleAreaRef
+                          }
+                        })
+                      }}
                       addNewRoleAssignment={(entityClassificationRef, allow) =>
                         this.setState({
                           newRole: {

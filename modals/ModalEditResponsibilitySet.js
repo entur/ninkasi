@@ -23,7 +23,7 @@ class ModalEditResponsibilitySet extends React.Component {
         typeOfResponsibilityRoleRef: '',
         responsibleOrganisationRef: '',
         entityClassificationAssignments: []
-      },
+      }
     };
   }
 
@@ -34,18 +34,20 @@ class ModalEditResponsibilitySet extends React.Component {
   }
 
   getRoleString(role) {
-    const responsibleAreaRefString = role.responsibleAreaRef
-      ? 'responsibleAreaRef=' + role.responsibleAreaRef
-      : '';
-
-    return `ORG=${role.responsibleOrganisationRef}, type=${role.typeOfResponsibilityRoleRef}, zone=${responsibleAreaRefString}, entities=${this.getEntityClassAssignmentString(role.entityClassificationAssignments)}`;
+    const responsibleAreaRefString = `responsibleAreaRef=${role.responsibleAreaRef ||
+      ''}`;
+    return `ORG=${role.responsibleOrganisationRef}, type=${role.typeOfResponsibilityRoleRef}, ${responsibleAreaRefString}, entities=${this.getEntityClassAssignmentString(
+      role.entityClassificationAssignments
+    )}`;
   }
 
   getEntityClassAssignmentString(assignments) {
     if (!assignments || !assignments.length) return '';
-    return assignments.map( ({allow, entityClassificationRef}) => {
-      return (allow ? '' : '!') + entityClassificationRef
-    }).join(', ');
+    return assignments
+      .map(({ allow, entityClassificationRef }) => {
+        return (allow ? '' : '!') + entityClassificationRef;
+      })
+      .join(', ');
   }
 
   handleAddRole() {
@@ -70,7 +72,6 @@ class ModalEditResponsibilitySet extends React.Component {
     });
   }
 
-
   handleRemoveRole() {
     const { roles } = this.refs;
     const index = roles.options.selectedIndex;
@@ -86,6 +87,18 @@ class ModalEditResponsibilitySet extends React.Component {
         }
       });
     }
+  }
+
+  handleRemoveEntity(index) {
+    this.setState({
+      newRole: {
+        ...this.state.newRole,
+        entityClassificationAssignments: [
+          ...this.state.newRole.entityClassificationAssignments.slice(0, index),
+          ...this.state.newRole.entityClassificationAssignments.slice(index + 1)
+        ]
+      }
+    });
   }
 
   isSavable() {
@@ -116,11 +129,7 @@ class ModalEditResponsibilitySet extends React.Component {
       handleSubmit,
       entityTypes
     } = this.props;
-    const {
-      isCreatingNewRole,
-      responsibilitySet,
-      newRole
-    } = this.state;
+    const { isCreatingNewRole, responsibilitySet, newRole } = this.state;
 
     const isLegalPrivateCode =
       responsibilitySet.privateCode ===
@@ -223,7 +232,12 @@ class ModalEditResponsibilitySet extends React.Component {
                 </div>
                 <select
                   multiple="multiple"
-                  style={{ overflowX: 'scroll', fontSize: 10, maxWidth: '45vw', minWidth: '45vw' }}
+                  style={{
+                    overflowX: 'scroll',
+                    fontSize: 10,
+                    maxWidth: '45vw',
+                    minWidth: '45vw'
+                  }}
                   ref="roles"
                 >
                   {responsibilitySet.roles.map((role, i) =>
@@ -250,6 +264,15 @@ class ModalEditResponsibilitySet extends React.Component {
                       organizations={organizations}
                       handleAddRole={this.handleAddRole.bind(this)}
                       administrativeZones={this.props.administrativeZones}
+                      handleRemoveEntity={this.handleRemoveEntity.bind(this)}
+                      addNewAdminZoneRef={responsibleAreaRef => {
+                        this.setState({
+                          newRole: {
+                            ...this.state.newRole,
+                            responsibleAreaRef
+                          }
+                        });
+                      }}
                       addNewRoleAssignment={(entityClassificationRef, allow) =>
                         this.setState({
                           newRole: {
@@ -274,14 +297,14 @@ class ModalEditResponsibilitySet extends React.Component {
                           }
                         })}
                       entityTypeChange={(e, index, value) =>
-                    this.setState({
-                      ...this.state,
-                      newRole: {
-                        ...newRole,
-                        typeOfResponsibilityRoleRef: value
-                      }
-                    })}
-                  />
+                        this.setState({
+                          ...this.state,
+                          newRole: {
+                            ...newRole,
+                            typeOfResponsibilityRoleRef: value
+                          }
+                        })}
+                    />
                   : null}
               </div>
             </div>
