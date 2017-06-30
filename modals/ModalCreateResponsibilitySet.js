@@ -10,6 +10,8 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
 import NewRoleAssignment from './NewRoleAssignment';
+import { getEntityClassificationRefString } from '../utils/';
+
 
 class ModalCreateResponsibilitySet extends React.Component {
   constructor(props) {
@@ -41,10 +43,8 @@ class ModalCreateResponsibilitySet extends React.Component {
   getEntityClassAssignmentString(assignments) {
     if (!assignments || !assignments.length) return '';
     return assignments
-      .map(({ allow, entityClassificationRef }) => {
-        return (allow ? '' : '!') + entityClassificationRef;
-      })
-      .join(', ');
+    .map(({ allow, entityClassificationRef }) => getEntityClassificationRefString(entityClassificationRef, allow))
+    .join(', ');
   }
 
   handleRemoveEntity(index) {

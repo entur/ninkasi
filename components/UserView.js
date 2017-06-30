@@ -10,7 +10,7 @@ import ModalCreateUser from '../modals/ModalCreateUser';
 import ModalEditUser from '../modals/ModalEditUser';
 import ModalEditNotifications from '../modals/ModalEditNotifications';
 import { connect } from 'react-redux';
-import { sortUsersby } from '../utils/utils';
+import { sortUsersby } from '../utils/index';
 
 class UserView extends React.Component {
   constructor(props) {

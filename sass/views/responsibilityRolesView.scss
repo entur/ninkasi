@@ -13,6 +13,13 @@
     display: inline-block;
   }
 
+  .col-1-7 {
+    width: 12%;
+    max-width: 12%;
+    min-width: 12%  ;
+    display: inline-block;
+  }
+
   .col-icon {
     width: 8%;
     display: inline-block;
@@ -33,3 +40,4 @@
 .resp-row-item:nth-child(2n) {
   background: hsla(0, 0%, 50%, 0.07);
 }
+

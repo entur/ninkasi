@@ -10,6 +10,8 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
 import NewRole from './NewRoleAssignment';
+import { getEntityClassificationRefString } from '../utils/';
+
 
 class ModalEditResponsibilitySet extends React.Component {
   constructor(props) {
@@ -44,9 +46,7 @@ class ModalEditResponsibilitySet extends React.Component {
   getEntityClassAssignmentString(assignments) {
     if (!assignments || !assignments.length) return '';
     return assignments
-      .map(({ allow, entityClassificationRef }) => {
-        return (allow ? '' : '!') + entityClassificationRef;
-      })
+      .map(({ allow, entityClassificationRef }) => getEntityClassificationRefString(entityClassificationRef, allow))
       .join(', ');
   }
 
@@ -219,11 +219,11 @@ class ModalEditResponsibilitySet extends React.Component {
                   this.setState({
                     responsibilitySet: {
                       ...this.state.responsibilitySet,
-                      privateCode: value
+                      privateCode: value.trim()
                     }
                   });
                 }}
-                errorStyle={{ float: 'right' }}
+                errorStyle={{ float: 'right' }} 
                 style={{ marginBottom: 10, marginTop: -15 }}
               />
               <div style={{ minWidth: '100%', fontSize: 10, marginTop: -10 }}>

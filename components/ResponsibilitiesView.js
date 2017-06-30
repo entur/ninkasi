@@ -6,17 +6,12 @@ import MdDelete from 'material-ui/svg-icons/action/delete';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
-import ModalResponsibilityRolesView from '../modals/ModalResponsibilityRolesView';
+import ResponsbilityRoleAssignments from '../modals/ResponsbilityRoleAssignments';
 import ModalCreateResponsibilitySet from '../modals/ModalCreateResponsibilitySet';
 import ModalEditResponsibilitySet from '../modals/ModalEditResponsibilitySet';
-import { sortByColumns } from '../utils/utils';
+import { sortByColumns } from '../utils/index';
 
 const initialState = {
-  rolesView: {
-    roles: [],
-    open: false,
-    name: ''
-  },
   isCreatingResponsibilitySet: false,
   isEditingResponsibilitySet: false,
   activeResponsibilitySet: null,
@@ -93,10 +88,10 @@ class ResponsibilitiesView extends React.Component {
       codeSpaces,
       roles,
       organizations,
+      administrativeZones,
       entityTypes
     } = this.props;
     const {
-      rolesView,
       isCreatingResponsibilitySet,
       isEditingResponsibilitySet,
       activeResponsibilitySet,
@@ -108,7 +103,7 @@ class ResponsibilitiesView extends React.Component {
     return (
       <div className="responsibility-row">
         <div className="responsibility-header">
-          <div className="col-1-5">
+          <div className="col-1-6">
             <span
               className="sortable"
               onClick={() => this.handleSortOrder('name')}
@@ -116,7 +111,7 @@ class ResponsibilitiesView extends React.Component {
               name
             </span>
           </div>
-          <div className="col-1-5">
+          <div className="col-1-6">
             <span
               className="sortable"
               onClick={() => this.handleSortOrder('id')}
@@ -124,15 +119,7 @@ class ResponsibilitiesView extends React.Component {
               id
             </span>
           </div>
-          <div className="col-1-5">
-            <span
-              className="sortable"
-              onClick={() => this.handleSortOrder('codeSpace')}
-            >
-              code space
-            </span>
-          </div>
-          <div className="col-1-5">
+          <div className="col-1-7">
             <span
               className="sortable"
               onClick={() => this.handleSortOrder('privateCode')}
@@ -140,7 +127,7 @@ class ResponsibilitiesView extends React.Component {
               private code
             </span>
           </div>
-          <div className="col-1-6">Roles</div>
+          <div className="col-1-6">Roles assignments</div>
         </div>
         {sortedResponsibilities.map(responsibility => {
           return (
@@ -148,22 +135,15 @@ class ResponsibilitiesView extends React.Component {
               key={'responsibility-' + responsibility.id}
               className="resp-row-item"
             >
-              <div className="col-1-5">{responsibility.name}</div>
-              <div className="col-1-5">{responsibility.id}</div>
-              <div className="col-1-5">{responsibility.codeSpace}</div>
-              <div className="col-1-5">{responsibility.privateCode}</div>
-              <div
-                className="col-1-6 expandable"
-                onClick={() =>
-                  this.setState({
-                    rolesView: {
-                      roles: responsibility.roles,
-                      open: true,
-                      name: responsibility.name
-                    }
-                  })}
-              >
-                {responsibility.roles.length}
+              <div className="col-1-6">{responsibility.name}</div>
+              <div className="col-1-6">{responsibility.id}</div>
+              <div className="col-1-7">{responsibility.privateCode}</div>
+              <div className="col-1-3">
+                  <ResponsbilityRoleAssignments
+                    roleAssignments={responsibility.roles}
+                    organizations={organizations}
+                    adminZones={administrativeZones}
+                  />
               </div>
               <div className="col-icon" style={{ cursor: 'pointer' }}>
                 <MdDelete
@@ -203,14 +183,6 @@ class ResponsibilitiesView extends React.Component {
         >
           <ContentAdd />
         </FloatingActionButton>
-        {rolesView.open
-          ? <ModalResponsibilityRolesView
-              name={rolesView.name}
-              roles={rolesView.roles}
-              isModalOpen={rolesView.open}
-              handleCloseModal={() => this.setState(initialState)}
-            />
-          : null}
         {isCreatingResponsibilitySet
           ? <ModalCreateResponsibilitySet
               modalOpen={isCreatingResponsibilitySet}

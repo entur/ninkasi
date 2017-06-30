@@ -9,6 +9,7 @@ import AdminZoneSearchWrapper from './AdminZoneSearchWrapper';
 import OrganizationRegisterActions, { sortBy } from '../actions/OrganizationRegisterActions';
 import MdRemove from 'material-ui/svg-icons/content/remove';
 import IconButton from 'material-ui/IconButton';
+import { getEntityClassificationRefString } from '../utils/';
 
 class NewRoleAssignment extends React.Component {
   constructor(props) {
@@ -146,7 +147,7 @@ class NewRoleAssignment extends React.Component {
           <select ref="entityClassRefs" multiple="multiple" style={{ width: '100%', fontSize: 12 }}>
             {newRole.entityClassificationAssignments.map((ref, index) =>
               <option key={'entity-' + index}>
-                {ref.allow ? '' : '!'}{ref.entityClassificationRef}
+                { getEntityClassificationRefString(ref.entityClassificationRef, ref.allow) }
               </option>
             )}
           </select>

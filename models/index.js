@@ -24,4 +24,5 @@ export const getPaginationMap = (chouetteJobStatus, sortProperty, sortOrder, fil
   }
 
   return paginationMap
-}
+};
+

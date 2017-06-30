@@ -45,3 +45,33 @@ const sortAsc = (a, b) => {
 const sortDesc = (a, b) => {
   return b.localeCompare(a);
 };
+
+export const getEntityClassificationRefString = (entityType, allow) => {
+  if (!allow) {
+    const lastIndex = entityType.lastIndexOf(':');
+    if (lastIndex > -1) {
+      return entityType.substr(0, lastIndex+1) + '!' + entityType.substr(lastIndex+1);
+    }
+  }
+  return entityType;
+}
+
+export const getOrganizationNameByRef = (organizations, ref) => {
+  if (!organizations) return ref;
+
+  for (let i = 0; i < organizations.length; i++) {
+    let org = organizations[i];
+    if (org.id === ref) return org.name;
+  }
+  return ref;
+}
+
+export const getAdminZoneNameByRef = (adminZones, ref) => {
+  if (!adminZones) return ref;
+
+  for (let i = 0; i < adminZones.length; i++) {
+    let zone = adminZones[i];
+    if (zone.id === ref) return zone.name;
+  }
+  return ref;
+}
