@@ -20,6 +20,7 @@ class UserView extends React.Component {
       isCreateModalOpen: false,
       isEditModalOpen: false,
       isNotificationsOpen: false,
+      isConfirmationOpen: false,
       activeUser: null,
       sortOrder: {
         column: 'username',
@@ -43,7 +44,28 @@ class UserView extends React.Component {
   }
 
   handleDeleteUser(user) {
+    this.handleCloseConfirmation();
     this.props.dispatch(OrganizationRegisterActions.deleteUser(user.id));
+  }
+
+  handleCloseConfirmation() {
+    this.setState({
+      activeuser: null,
+      isConfirmationOpen: false
+    })
+  }
+
+  handleOpenConfirmationDialog(activeUser) {
+    this.setState({
+      activeUser,
+      isConfirmationOpen: true,
+    })
+  }
+
+  getConfirmationTitle() {
+    const { activeUser } = this.state;
+    let username = activeUser ? activeUser.username : 'N/A';
+    return `Delete user ${username}`;
   }
 
   handleSortOrder(column) {
@@ -94,6 +116,7 @@ class UserView extends React.Component {
     } = this.state;
 
     const sortedUsers = sortUsersby(users, sortOrder);
+    const confirmationTitle = this.getConfirmationTitle();
 
     return (
       <div className="user-row">
@@ -173,7 +196,7 @@ class UserView extends React.Component {
                     verticalAlign: 'middle',
                     cursor: 'pointer'
                   }}
-                  onClick={() => this.handleDeleteUser(user)}
+                  onClick={() => this.handleOpenConfirmationDialog(user)}
                 />
                 <MdEdit
                   color="rgba(25, 118, 210, 0.59)"
@@ -235,6 +258,17 @@ class UserView extends React.Component {
             isModalOpen={isNotificationsOpen}
             user={this.state.activeUser}
           />}
+          <ModalConfirmation
+            open={this.state.isConfirmationOpen}
+            title={confirmationTitle}
+            body="You are about to delete current user. Are you sure?"
+            handleSubmit={() => {
+              this.handleDeleteUser(this.state.activeUser)
+            }}
+            handleClose={() => {
+              this.handleCloseConfirmation();
+            }}
+          />
       </div>
     );
   }
