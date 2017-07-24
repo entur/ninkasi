@@ -11,6 +11,7 @@ import ModalEditUser from '../modals/ModalEditUser';
 import ModalEditNotifications from '../modals/ModalEditNotifications';
 import { connect } from 'react-redux';
 import { sortUsersby } from '../utils/index';
+import ModalConfirmation from '../modals/ModalConfirmation'
 
 class UserView extends React.Component {
   constructor(props) {
@@ -205,7 +206,7 @@ class UserView extends React.Component {
           style={{ float: 'right', marginRight: 10 }}
         >
           <ContentAdd
-            onClick={() => this.setState({ isCreateModalOpen: true })}
+            onClick={() => this.openModalWindow(null, 'isCreateModalOpen')}
           />
         </FloatingActionButton>
         {isCreateModalOpen &&
