@@ -103,7 +103,6 @@ class ModalEditEntityType extends React.Component {
             <div style={titleStyle}>Editing entity type</div>
             <MdClose style={{marginRight: 10, cursor: 'pointer'}} onClick={() => this.handleOnClose()}/>
           </div>
-          <div style={{fontSize: '1.1em', textAlign: 'center'}}> { this.props.entityType.privateCode } </div>
           <div style={{display: 'flex', justifyContent: 'space-around'}}>
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '80%', marginTop: '20px'}}>
               <TextField

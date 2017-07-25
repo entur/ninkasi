@@ -103,14 +103,6 @@ class EntityTypesView extends React.Component {
             </span>
           </div>
           <div className="col-1-5">
-           <span
-              className="sortable"
-              onClick={() => this.handleSortOrder('id')}
-            >
-              id
-            </span>
-          </div>
-          <div className="col-1-5">
             <span
               className="sortable"
               onClick={() => this.handleSortOrder('privateCode')}
@@ -126,14 +118,34 @@ class EntityTypesView extends React.Component {
               code space
             </span>
           </div>
+          <div className="col-1-5">
+            <span
+            >
+              Classifications
+            </span>
+          </div>
         </div>
         {sortedEntityTypes.map(et => {
           return (
             <div key={'et-' + et.id} className="et-row-item">
               <div className="col-1-5">{et.name}</div>
-              <div className="col-1-5">{et.id}</div>
               <div className="col-1-5">{et.privateCode}</div>
               <div className="col-1-5">{et.codeSpace}</div>
+              <div className="col-1-5">
+                <ul
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    listStyleType: 'circle'
+                  }}
+                >
+                  {et.classifications
+                    ? et.classifications.sort( (a,b) => a.name.localeCompare(b.name)).map((ec, i) =>
+                      <li key={ec.id}>{ec.name} </li>
+                    )
+                    : null}
+                </ul>
+              </div>
               <div className="col-icon" style={{ cursor: 'pointer' }}>
                 <MdDelete
                   color="#fa7b81"
