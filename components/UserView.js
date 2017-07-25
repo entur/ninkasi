@@ -112,7 +112,7 @@ class UserView extends React.Component {
     });
   }
 
-  openModalWindow(activeUser, attribute) {
+  openModal(activeUser, attribute) {
     this.setState({
       activeUser,
       [attribute]: true
@@ -225,7 +225,7 @@ class UserView extends React.Component {
                     verticalAlign: 'middle',
                     cursor: 'pointer'
                   }}
-                  onClick={() => this.openModalWindow(user, 'isEditModalOpen')}
+                  onClick={() => this.openModal(user, 'isEditModalOpen')}
                 />
                 <MdNotification
                   color="rgba(25, 118, 210, 0.59)"
@@ -238,7 +238,7 @@ class UserView extends React.Component {
                     cursor: 'pointer'
                   }}
                   onClick={() =>
-                    this.openModalWindow(user, 'isNotificationsOpen')}
+                    this.openModal(user, 'isNotificationsOpen')}
                 />
                 <ForgotPassword
                   style={{
@@ -275,7 +275,7 @@ class UserView extends React.Component {
           style={{ float: 'right', marginRight: 10 }}
         >
           <ContentAdd
-            onClick={() => this.openModalWindow(null, 'isCreateModalOpen')}
+            onClick={() => this.openModal(null, 'isCreateModalOpen')}
           />
         </FloatingActionButton>
         {isCreateModalOpen &&

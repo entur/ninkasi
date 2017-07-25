@@ -9,7 +9,7 @@ import ModalEditEntiyType from '../modals/ModalEditEntityType';
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import { sortByColumns } from '../utils/index';
-
+import ModalConfirmation from '../modals/ModalConfirmation';
 
 class EntityTypesView extends React.Component {
   constructor(props) {
@@ -17,12 +17,27 @@ class EntityTypesView extends React.Component {
     this.state = {
       isCreateModalOpen: false,
       isEditModalOpen: false,
+      isDeleteConfirmationOpen: false,
       activeEntityType: null,
       sortOrder: {
         column: 'name',
         asc: true
       }
     };
+  }
+
+  handleOpenDeleteConfirmationDialog(activeEntityType) {
+    this.setState({
+      activeEntityType,
+      isDeleteConfirmationOpen: true,
+    })
+  }
+
+  handleCloseDeleteConfirmation() {
+    this.setState({
+      activeEntityType: null,
+      isDeleteConfirmationOpen: false
+    })
   }
 
   handleEditEntityType(entityType) {
@@ -66,9 +81,16 @@ class EntityTypesView extends React.Component {
   }
 
   handleDeleteEntityType(entityType) {
+    this.handleCloseDeleteConfirmation();
     this.props.dispatch(
       OrganizationRegisterActions.deleteEntityType(entityType.id)
     );
+  }
+
+  getDeleteConfirmationTitle() {
+    const { activeEntityType } = this.state;
+    let entityType = activeEntityType ? activeEntityType.name : 'N/A';
+    return `Delete entity type ${entityType}`;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -90,6 +112,7 @@ class EntityTypesView extends React.Component {
     const { sortOrder } = this.state;
 
     const sortedEntityTypes = sortByColumns(entityTypes, sortOrder);
+    const confirmDeleteTitle = this.getDeleteConfirmationTitle();
 
     return (
       <div className="et-row">
@@ -156,7 +179,7 @@ class EntityTypesView extends React.Component {
                     verticalAlign: 'middle',
                     cursor: 'pointer'
                   }}
-                  onClick={() => this.handleDeleteEntityType(et)}
+                  onClick={() => this.handleOpenDeleteConfirmationDialog(et)}
                 />
                 <MdEdit
                   color="rgba(25, 118, 210, 0.59)"
@@ -199,6 +222,18 @@ class EntityTypesView extends React.Component {
               handleSubmit={this.handleUpdateEntity.bind(this)}
             />
           : null}
+        <ModalConfirmation
+          open={this.state.isDeleteConfirmationOpen}
+          title={confirmDeleteTitle}
+          actionBtnTitle="Delete"
+          body="You are about to delete current entity type. Are you sure?"
+          handleSubmit={() => {
+            this.handleDeleteEntityType(this.state.activeEntityType)
+          }}
+          handleClose={() => {
+            this.handleCloseDeleteConfirmation();
+          }}
+        />
       </div>
     );
   }

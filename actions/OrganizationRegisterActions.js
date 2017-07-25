@@ -195,9 +195,21 @@ OrganizationRegisterActions.deleteOrganization = organizationId => dispatch => {
   return axios
     .delete(url, getConfig())
     .then(response => {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Deleted organization',
+          'success'
+        )
+      );
       dispatch(OrganizationRegisterActions.getOrganizations());
     })
     .catch(error => {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Failed to delete organization',
+          'error'
+        )
+      );
       console.log(
         'Error deleting organization with id ' + organizationId,
         error
@@ -210,9 +222,21 @@ OrganizationRegisterActions.deleteEntityType = entityTypeId => dispatch => {
   return axios
     .delete(url, getConfig())
     .then(response => {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Deleted entity type',
+          'success'
+        )
+      );
       dispatch(OrganizationRegisterActions.getEntityTypes());
     })
     .catch(error => {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Unable to delete entity type',
+          'error'
+        )
+      );
       console.log('Error deleting entity_type with id ' + entityTypeId, error);
     });
 };
@@ -223,9 +247,21 @@ OrganizationRegisterActions.deleteResponsibilitySet = responsibilitySetId => dis
   return axios
     .delete(url, getConfig())
     .then(response => {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Responsibility set deleted',
+          'success'
+        )
+      );
       dispatch(OrganizationRegisterActions.getResponbilitySets());
     })
     .catch(error => {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Failed to delete responsibility set',
+          'error'
+        )
+      );
       console.log(
         'Error deleting responsibility_set with id ' + responsibilitySetId,
         error
@@ -238,9 +274,21 @@ OrganizationRegisterActions.deleteRole = roleId => dispatch => {
   return axios
     .delete(url, getConfig())
     .then(response => {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Role deleted',
+          'success'
+        )
+      );
       dispatch(OrganizationRegisterActions.getRoles());
     })
     .catch(error => {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Failed to delete role',
+          'error'
+        )
+      );
       console.log('Error deleting role with id ' + roleId, error);
     });
 };

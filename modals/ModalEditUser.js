@@ -7,6 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import ResponsiblitySetList from './ResponsiblitySetList';
+import ModalConfirmation from '../modals/ModalConfirmation';
 
 const initialState = {
   user: {

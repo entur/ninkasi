@@ -9,6 +9,8 @@ import ModalCreateRole from '../modals/ModalCreateRole';
 import { connect } from 'react-redux';
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
 import { sortByColumns } from '../utils/index';
+import ModalConfirmation from '../modals/ModalConfirmation';
+
 
 class RoleView extends React.Component {
   constructor(props) {
@@ -16,6 +18,7 @@ class RoleView extends React.Component {
     this.state = {
       isCreateModalOpen: false,
       isEditModalOpen: false,
+      isDeleteConfirmationOpen: false,
       activeRole: null,
       sortOrder: {
         column: 'name',
@@ -31,7 +34,27 @@ class RoleView extends React.Component {
     });
   }
 
-  handleSortOrder(column) {
+  getDeleteConfirmationTitle() {
+    const { activeRole } = this.state;
+    let role = activeRole ? activeRole.name : 'N/A';
+    return `Delete role ${role}`;
+  }
+
+  handleOpenDeleteConfirmationDialog(activeRole) {
+    this.setState({
+      activeRole,
+      isDeleteConfirmationOpen: true,
+    })
+  }
+
+  handleCloseDeleteConfirmation() {
+    this.setState({
+      activeRole: null,
+      isDeleteConfirmationOpen: false
+    })
+  }
+
+  handleSortOrder(column){
     const { sortOrder } = this.state;
     let asc = true;
 
@@ -60,6 +83,7 @@ class RoleView extends React.Component {
   }
 
   handleDeleteRole(role) {
+    this.handleCloseDeleteConfirmation();
     this.props.dispatch(OrganizationRegisterActions.deleteRole(role.id));
   }
 
@@ -82,6 +106,7 @@ class RoleView extends React.Component {
     const { sortOrder } = this.state;
 
     const sortedRoles = sortByColumns(roles, sortOrder);
+    const confirmDeleteTitle = this.getDeleteConfirmationTitle();
 
     return (
       <div className="role-row">
@@ -118,7 +143,7 @@ class RoleView extends React.Component {
                     verticalAlign: 'middle',
                     cursor: 'pointer'
                   }}
-                  onClick={() => this.handleDeleteRole(role)}
+                  onClick={() => this.handleOpenDeleteConfirmationDialog(role)}
                 />
                 <MdEdit
                   color="rgba(25, 118, 210, 0.59)"
@@ -159,6 +184,18 @@ class RoleView extends React.Component {
               handleSubmit={this.handleUpdateRole.bind(this)}
             />
           : null}
+        <ModalConfirmation
+          open={this.state.isDeleteConfirmationOpen}
+          title={confirmDeleteTitle}
+          actionBtnTitle="Delete"
+          body="You are about to delete current user. Are you sure?"
+          handleSubmit={() => {
+            this.handleDeleteRole(this.state.activeRole)
+          }}
+          handleClose={() => {
+            this.handleCloseDeleteConfirmation();
+          }}
+        />
       </div>
     );
   }

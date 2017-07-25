@@ -9,12 +9,15 @@ import ModalCreateOrganization from '../modals/ModalCreateOrganization';
 import ModalEditOrganization from '../modals/ModalEditOrganization';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import { sortByColumns } from '../utils/index';
+import ModalConfirmation from '../modals/ModalConfirmation';
+
 
 class OrganizationView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isCreateModalOpen: false,
+      isDeleteConfirmationOpen: false,
       isEditModalOpen: false,
       activeOrganization: null,
       sortOrder: {
@@ -22,6 +25,26 @@ class OrganizationView extends React.Component {
         asc: true
       }
     };
+  }
+
+  getDeleteConfirmationTitle() {
+    const { activeOrganization } = this.state;
+    let organization = activeOrganization ? activeOrganization .name : 'N/A';
+    return `Delete organization ${organization}`;
+  }
+
+  openModalWindow() {
+    this.setState({
+      isCreateModalOpen: true
+    });
+    window.scrollTo(window.scrollX, 0);
+  }
+
+  handleCloseDeleteConfirmation() {
+    this.setState({
+      activeOrganization: null,
+      isDeleteConfirmationOpen: false
+    })
   }
 
   handleSortOrder(column) {
@@ -65,9 +88,17 @@ class OrganizationView extends React.Component {
   }
 
   handleDeleteOrganization(organization) {
+    this.handleCloseDeleteConfirmation();
     this.props.dispatch(
       OrganizationRegisterActions.deleteOrganization(organization.id)
     );
+  }
+
+  handleOpenDeleteConfirmationDialog(activeOrganization) {
+    this.setState({
+      activeOrganization,
+      isDeleteConfirmationOpen: true,
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -95,6 +126,7 @@ class OrganizationView extends React.Component {
 
 
     const sortedOrganizations = sortByColumns(organizations, sortOrder);
+    const confirmDeleteTitle = this.getDeleteConfirmationTitle();
 
     return (
       <div className="organization-row">
@@ -151,7 +183,7 @@ class OrganizationView extends React.Component {
                     verticalAlign: 'middle',
                     cursor: 'pointer'
                   }}
-                  onClick={() => this.handleDeleteOrganization(organization)}
+                  onClick={() => this.handleOpenDeleteConfirmationDialog(organization)}
                 />
                 <MdEdit
                   color="rgba(25, 118, 210, 0.59)"
@@ -167,7 +199,7 @@ class OrganizationView extends React.Component {
           style={{ float: 'right', marginRight: 10, cursor: 'pointer' }}
         >
           <ContentAdd
-            onClick={() => this.setState({ isCreateModalOpen: true })}
+            onClick={() => this.openModalWindow()}
           />
         </FloatingActionButton>
         {isCreateModalOpen
@@ -198,7 +230,18 @@ class OrganizationView extends React.Component {
               handleSubmit={this.handleUpdateOrganization.bind(this)}
             />
           : null}
-
+        <ModalConfirmation
+          open={this.state.isDeleteConfirmationOpen}
+          title={confirmDeleteTitle}
+          actionBtnTitle="Delete"
+          body="You are about to delete current organization. Are you sure?"
+          handleSubmit={() => {
+            this.handleDeleteOrganization(this.state.activeOrganization)
+          }}
+          handleClose={() => {
+            this.handleCloseDeleteConfirmation();
+          }}
+        />
       </div>
     );
   }

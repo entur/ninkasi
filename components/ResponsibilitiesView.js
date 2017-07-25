@@ -10,11 +10,13 @@ import ResponsbilityRoleAssignments from '../modals/ResponsbilityRoleAssignments
 import ModalCreateResponsibilitySet from '../modals/ModalCreateResponsibilitySet';
 import ModalEditResponsibilitySet from '../modals/ModalEditResponsibilitySet';
 import { sortByColumns } from '../utils/index';
+import ModalConfirmation from '../modals/ModalConfirmation';
 
 const initialState = {
   isCreatingResponsibilitySet: false,
   isEditingResponsibilitySet: false,
   activeResponsibilitySet: null,
+  isDeleteConfirmationOpen: false,
   sortOrder: {
     column: 'name',
     asc: true
@@ -34,6 +36,33 @@ class ResponsibilitiesView extends React.Component {
         isEditingResponsibilitySet: false
       });
     }
+  }
+
+  openModalWindow() {
+    this.setState({
+      isCreatingResponsibilitySet: true,
+    });
+    window.scrollTo(window.scrollX, 0);
+  }
+
+  handleOpenDeleteConfirmationDialog(activeResponsibilitySet) {
+    this.setState({
+      activeResponsibilitySet,
+      isDeleteConfirmationOpen: true,
+    })
+  }
+
+  handleCloseDeleteConfirmation() {
+    this.setState({
+      activeResponsibilitySet: null,
+      isDeleteConfirmationOpen: false
+    })
+  }
+
+  getDeleteConfirmationTitle() {
+    const { activeResponsibilitySet } = this.state;
+    let responsbilitySet = activeResponsibilitySet ? activeResponsibilitySet.name : 'N/A';
+    return `Delete responsiblity set ${responsbilitySet}`;
   }
 
   handleSortOrder(column) {
@@ -77,6 +106,7 @@ class ResponsibilitiesView extends React.Component {
   }
 
   handleDeleteResponsibility(responsibility) {
+    this.handleCloseDeleteConfirmation();
     this.props.dispatch(
       OrganizationRegisterActions.deleteResponsibilitySet(responsibility.id)
     );
@@ -99,6 +129,7 @@ class ResponsibilitiesView extends React.Component {
     } = this.state;
 
     const sortedResponsibilities = sortByColumns(responsibilities, sortOrder);
+    const confirmDeleteTitle = this.getDeleteConfirmationTitle();
 
     return (
       <div className="responsibility-row">
@@ -156,7 +187,7 @@ class ResponsibilitiesView extends React.Component {
                     cursor: 'pointer'
                   }}
                   onClick={() =>
-                    this.handleDeleteResponsibility(responsibility)}
+                    this.handleOpenDeleteConfirmationDialog(responsibility)}
                 />
                 <MdEdit
                   color="rgba(25, 118, 210, 0.59)"
@@ -179,7 +210,7 @@ class ResponsibilitiesView extends React.Component {
         <FloatingActionButton
           mini={true}
           style={{ float: 'right', marginRight: 10 }}
-          onClick={() => this.setState({ isCreatingResponsibilitySet: true })}
+          onClick={this.openModalWindow.bind(this)}
         >
           <ContentAdd />
         </FloatingActionButton>
@@ -212,6 +243,18 @@ class ResponsibilitiesView extends React.Component {
               administrativeZones={this.props.administrativeZones}
             />
           : null}
+        <ModalConfirmation
+          open={this.state.isDeleteConfirmationOpen}
+          title={confirmDeleteTitle}
+          actionBtnTitle="Delete"
+          body="You are about to delete current responsibility set. Are you sure?"
+          handleSubmit={() => {
+            this.handleDeleteResponsibility(activeResponsibilitySet)
+          }}
+          handleClose={() => {
+            this.handleCloseDeleteConfirmation();
+          }}
+        />
       </div>
     );
   }
