@@ -278,6 +278,13 @@ OrganizationRegisterActions.createUser = user => dispatch => {
     .post(url, user, getConfig())
     .then(response => {
       dispatch(sendData(null, types.CREATED_USER));
+      dispatch(sendData({
+        userId: 'N/A',
+        error: false,
+        username: user.username,
+        isNewUser: true,
+        password: response.data
+      }, types.OPENED_NEW_PASSWORD_DIALOG));
       dispatch(OrganizationRegisterActions.getUsers());
     })
     .catch(error => {
