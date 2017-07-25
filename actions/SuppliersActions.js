@@ -695,14 +695,13 @@ SuppliersActions.getGraphStatus = () => dispatch => {
         otherStatus: []
       };
       response.data
-        .filter(type => type.jobDomain === 'GEOCODER')
         .forEach(type => {
           if (type.jobType === 'BUILD_GRAPH') {
             status.graphStatus = {
               status: type.currentState,
               started: type.currentStateDate
             };
-          } else {
+          } else if (type.jobDomain === 'GEOCODER'){
             status.otherStatus.push({
               type: type.jobType,
               status: type.currentState,
