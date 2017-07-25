@@ -166,7 +166,7 @@ class ModalCreateUser extends React.Component {
                 style={{marginTop: -10}}
               >
                 { organizations.map( org => (
-                  <MenuItem key={org.id} id={org.id} value={org.id} label={org.id} primaryText={org.name} />
+                  <MenuItem key={org.id} id={org.id} value={org.id} label={org.name} primaryText={org.name} />
                 ))}
               </SelectField>
               <div style={{width: '100%', fontSize: 12}}>Responsibility sets</div>
@@ -201,7 +201,7 @@ class ModalCreateUser extends React.Component {
                     style={{marginTop: -10}}
                   >
                     { responsibilities.filter(r => r.id).map( r => (
-                      <MenuItem key={r.id} id={r.id} value={r.id} label={r.id} primaryText={r.name} />
+                      <MenuItem key={r.id} id={r.id} value={r.id} label={r.name} primaryText={r.name} />
                     ))}
                   </SelectField>
                   <FlatButton
