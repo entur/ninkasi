@@ -24,7 +24,14 @@ const initialState = {
   jobDomainActions: {},
   administrativeZones: [],
   notificationTypes: [],
-  userNotificationsLoading: false
+  userNotificationsLoading: false,
+  passwordDialog: {
+    open: false,
+    password: null,
+    userId: null,
+    error: false,
+    isNewUser: false,
+  },
 };
 
 const removeByIndex = (list, index) =>
@@ -44,6 +51,30 @@ const OrganizationReducer = (state = initialState, action) => {
           error: null,
           code: 'ROLE_CREATED'
         }
+      });
+
+    case types.OPENED_NEW_PASSWORD_DIALOG:
+      return Object.assign({}, state, {
+        passwordDialog: {
+          open: true,
+          password: action.payLoad.password,
+          userId: action.payLoad.userId,
+          username: action.payLoad.username,
+          isNewUser: action.payLoad.isNewUser,
+          error: action.payLoad.error
+        },
+      });
+
+    case types.CLOSED_NEW_PASSWORD_DIALOG:
+      return Object.assign({}, state, {
+        passwordDialog: {
+          open: false,
+          password: null,
+          userId: null,
+          error: false,
+          username: null,
+          isNewUser: false,
+        },
       });
 
     case types.FAILED_CREATING_ROLE:

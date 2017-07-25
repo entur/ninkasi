@@ -9,7 +9,8 @@ class ConfirmationDialog extends React.Component {
     title: PropTypes.string.isRequired,
     body: PropTypes.string.isRequired,
     handleClose: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired
+    handleSubmit: PropTypes.func.isRequired,
+    actionBtnTitle: PropTypes.func.isRequired,
   }
 
   render() {
@@ -20,7 +21,7 @@ class ConfirmationDialog extends React.Component {
         onTouchTap={this.props.handleClose}
       />,
       <FlatButton
-        label="Delete"
+        label={this.props.actionBtnTitle}
         primary={true}
         onTouchTap={this.props.handleSubmit}
       />

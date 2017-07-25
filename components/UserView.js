@@ -11,7 +11,9 @@ import ModalEditUser from '../modals/ModalEditUser';
 import ModalEditNotifications from '../modals/ModalEditNotifications';
 import { connect } from 'react-redux';
 import { sortUsersby } from '../utils/index';
-import ModalConfirmation from '../modals/ModalConfirmation'
+import ModalConfirmation from '../modals/ModalConfirmation';
+import ForgotPassword from '../static/icons/ForgotPassword';
+import ModalNewPassword from '../modals/ModalNewPassword';
 
 class UserView extends React.Component {
   constructor(props) {
@@ -20,7 +22,8 @@ class UserView extends React.Component {
       isCreateModalOpen: false,
       isEditModalOpen: false,
       isNotificationsOpen: false,
-      isConfirmationOpen: false,
+      isDeleteConfirmationOpen: false,
+      isResetConfirmationOpen: false,
       activeUser: null,
       sortOrder: {
         column: 'username',
@@ -44,28 +47,53 @@ class UserView extends React.Component {
   }
 
   handleDeleteUser(user) {
-    this.handleCloseConfirmation();
+    this.handleCloseDeleteConfirmation();
     this.props.dispatch(OrganizationRegisterActions.deleteUser(user.id));
   }
 
-  handleCloseConfirmation() {
+  handleResetPassword(user) {
+    this.props.dispatch(OrganizationRegisterActions.resetPassword(user.id, user.username));
+    this.handleCloseResetConfirmation();
+  }
+
+  handleCloseDeleteConfirmation() {
     this.setState({
       activeuser: null,
-      isConfirmationOpen: false
+      isDeleteConfirmationOpen: false
     })
   }
 
-  handleOpenConfirmationDialog(activeUser) {
+  handleCloseResetConfirmation() {
+    this.setState({
+      activeuser: null,
+      isResetConfirmationOpen: false
+    })
+  }
+
+  handleOpenDeleteConfirmationDialog(activeUser) {
     this.setState({
       activeUser,
-      isConfirmationOpen: true,
+      isDeleteConfirmationOpen: true,
     })
   }
 
-  getConfirmationTitle() {
+  handleOpenResetConfirmationDialog(activeUser) {
+    this.setState({
+      activeUser,
+      isResetConfirmationOpen: true,
+    })
+  }
+
+  getDeleteConfirmationTitle() {
     const { activeUser } = this.state;
     let username = activeUser ? activeUser.username : 'N/A';
     return `Delete user ${username}`;
+  }
+
+  getResetPasswordConfirmationTitle() {
+    const { activeUser } = this.state;
+    let username = activeUser ? activeUser.username : 'N/A';
+    return `Reset password for ${username}`;
   }
 
   handleSortOrder(column) {
@@ -107,7 +135,7 @@ class UserView extends React.Component {
   }
 
   render() {
-    const { users, organizations, responsibilities } = this.props;
+    const { users, organizations, responsibilities, passwordDialogState } = this.props;
     const {
       isCreateModalOpen,
       isEditModalOpen,
@@ -116,7 +144,8 @@ class UserView extends React.Component {
     } = this.state;
 
     const sortedUsers = sortUsersby(users, sortOrder);
-    const confirmationTitle = this.getConfirmationTitle();
+    const confirmDeleteTitle = this.getDeleteConfirmationTitle();
+    const confirmResetTitle = this.getResetPasswordConfirmationTitle();
 
     return (
       <div className="user-row">
@@ -187,21 +216,11 @@ class UserView extends React.Component {
                 </ul>
               </div>
               <div className="col-icon">
-                <MdDelete
-                  color="#fa7b81"
-                  style={{
-                    height: 20,
-                    width: 20,
-                    marginRight: 10,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer'
-                  }}
-                  onClick={() => this.handleOpenConfirmationDialog(user)}
-                />
                 <MdEdit
                   color="rgba(25, 118, 210, 0.59)"
                   style={{
                     height: 20,
+                    marginRight: 4,
                     width: 20,
                     verticalAlign: 'middle',
                     cursor: 'pointer'
@@ -214,11 +233,38 @@ class UserView extends React.Component {
                     marginLeft: 4,
                     height: 20,
                     width: 20,
+                    marginRight: 4,
                     verticalAlign: 'middle',
                     cursor: 'pointer'
                   }}
                   onClick={() =>
                     this.openModalWindow(user, 'isNotificationsOpen')}
+                />
+                <ForgotPassword
+                  style={{
+                    height: 20,
+                    width: 20,
+                    marginRight: 4,
+                    verticalAlign: 'middle',
+                    cursor: 'pointer',
+                    marginTop: 4,
+                    color: 'orange'
+                  }}
+                  onClick={() =>
+                    this.handleOpenResetConfirmationDialog(user)
+                  }
+                />
+                <MdDelete
+                  color="#fa7b81"
+                  style={{
+                    height: 20,
+                    width: 20,
+                    marginRight: 4,
+                    marginRight: 10,
+                    verticalAlign: 'middle',
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => this.handleOpenDeleteConfirmationDialog(user)}
                 />
               </div>
             </div>
@@ -259,16 +305,30 @@ class UserView extends React.Component {
             user={this.state.activeUser}
           />}
           <ModalConfirmation
-            open={this.state.isConfirmationOpen}
-            title={confirmationTitle}
+            open={this.state.isDeleteConfirmationOpen}
+            title={confirmDeleteTitle}
+            actionBtnTitle="Delete"
             body="You are about to delete current user. Are you sure?"
             handleSubmit={() => {
               this.handleDeleteUser(this.state.activeUser)
             }}
             handleClose={() => {
-              this.handleCloseConfirmation();
+              this.handleCloseDeleteConfirmation();
             }}
           />
+          <ModalConfirmation
+            open={this.state.isResetConfirmationOpen}
+            title={confirmResetTitle}
+            body="You are about to reset password for current user. Are you sure?"
+            actionBtnTitle="Reset"
+            handleSubmit={() => {
+              this.handleResetPassword(this.state.activeUser)
+            }}
+            handleClose={() => {
+              this.handleCloseResetConfirmation();
+            }}
+          />
+        <ModalNewPassword passwordDialogState={passwordDialogState}/>
       </div>
     );
   }
@@ -278,7 +338,8 @@ const mapStateToProps = state => ({
   users: state.OrganizationReducer.users,
   organizations: state.OrganizationReducer.organizations,
   responsibilities: state.OrganizationReducer.responsibilities,
-  status: state.OrganizationReducer.userStatus
+  status: state.OrganizationReducer.userStatus,
+  passwordDialogState: state.OrganizationReducer.passwordDialog,
 });
 
 export default connect(mapStateToProps)(UserView);

@@ -28,6 +28,7 @@
     "chai": "^3.5.0",
     "chart.js": "1.1.1",
     "classnames": "^2.2.5",
+    "clipboard-js": "^0.3.5",
     "convict": "^1.4.0",
     "css-loader": "^0.26.1",
     "expect": "^1.20.2",

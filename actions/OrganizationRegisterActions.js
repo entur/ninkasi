@@ -36,7 +36,10 @@ OrganizationRegisterActions.getRoles = () => dispatch => {
     });
 };
 
-OrganizationRegisterActions.addEntityRefToNotification = (index, entityClassRef) => dispatch => {
+OrganizationRegisterActions.addEntityRefToNotification = (
+  index,
+  entityClassRef
+) => dispatch => {
   dispatch(
     sendData(
       {
@@ -50,9 +53,12 @@ OrganizationRegisterActions.addEntityRefToNotification = (index, entityClassRef)
 
 OrganizationRegisterActions.deleteUserNotification = index => dispatch => {
   dispatch(sendData(index, types.DELETED_USER_NOTIFICATION));
-}
+};
 
-OrganizationRegisterActions.removeEntityClassRefNotification = (index, entityClassRef) => dispatch => {
+OrganizationRegisterActions.removeEntityClassRefNotification = (
+  index,
+  entityClassRef
+) => dispatch => {
   dispatch(
     sendData(
       {
@@ -62,7 +68,7 @@ OrganizationRegisterActions.removeEntityClassRefNotification = (index, entityCla
       types.REMOVED_ENTITY_CLASS_REF
     )
   );
-}
+};
 
 OrganizationRegisterActions.createRole = role => dispatch => {
   const url = `${window.config.nabuBaseUrl}jersey/roles`;
@@ -334,9 +340,40 @@ OrganizationRegisterActions.getEntityTypes = () => dispatch => {
     });
 };
 
+OrganizationRegisterActions.resetPassword = (userId, username) => dispatch => {
+  const url = `${window.config.nabuBaseUrl}jersey/users/${userId}/resetPassword`;
+  return axios
+    .post(url, null, getConfig())
+    .then(response => {
+      dispatch(sendData({
+        userId,
+        error: false,
+        username: username,
+        isNewUser: false,
+        password: response.data
+      }, types.OPENED_NEW_PASSWORD_DIALOG));
+    })
+    .catch(err => {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Unable to reset password for user',
+          'error'
+        )
+      );
+    });
+};
+
+OrganizationRegisterActions.closePasswordDialog = () => dispatch => {
+  dispatch(sendData({
+    userId: null,
+    error: false,
+    password: null
+  }, types.CLOSED_NEW_PASSWORD_DIALOG));
+};
+
 OrganizationRegisterActions.addNewUserNotification = () => dispatch => {
   dispatch(sendData(null, types.ADDED_NEW_USER_NOTIFICATION));
-}
+};
 
 OrganizationRegisterActions.getEntityByClassification = entityType => {
   const url = `${window.config
@@ -619,27 +656,39 @@ OrganizationRegisterActions.removeAdminZoneRefToNotification = (
   );
 };
 
-OrganizationRegisterActions.updateUserNotification = username => (dispatch, getState) => {
+OrganizationRegisterActions.updateUserNotification = username => (
+  dispatch,
+  getState
+) => {
   let state = getState();
-  let jobDomainActions = state.OrganizationReducer.jobDomainActions
-  let notificationConfiguration = formatUserNotifications(state.OrganizationReducer.userNotifications, jobDomainActions);
+  let jobDomainActions = state.OrganizationReducer.jobDomainActions;
+  let notificationConfiguration = formatUserNotifications(
+    state.OrganizationReducer.userNotifications,
+    jobDomainActions
+  );
 
-  const url = `${window.config.nabuBaseUrl}jersey/users/${username}/notification_configurations`;
+  const url = `${window.config
+    .nabuBaseUrl}jersey/users/${username}/notification_configurations`;
   return axios
-  .put(url, notificationConfiguration, getConfig())
-  .then(response => {
-    dispatch(sendData(null, types.UPDATED_NOTIFICATION_CONFIGURATION));
-    dispatch(
-      SuppliersActions.addNotification('Notification configuration updated', 'success')
-    );
-  })
-  .catch(error => {
-    dispatch(
-      SuppliersActions.addNotification('Unable to save notification configuration', 'error')
-    );
-  });
-
-}
+    .put(url, notificationConfiguration, getConfig())
+    .then(response => {
+      dispatch(sendData(null, types.UPDATED_NOTIFICATION_CONFIGURATION));
+      dispatch(
+        SuppliersActions.addNotification(
+          'Notification configuration updated',
+          'success'
+        )
+      );
+    })
+    .catch(error => {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Unable to save notification configuration',
+          'error'
+        )
+      );
+    });
+};
 
 export const sortBy = (list, key) => {
   return list.sort((a, b) => a[key].localeCompare(b[key]));
