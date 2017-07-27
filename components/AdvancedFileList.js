@@ -129,8 +129,8 @@ class AdvancedFileList extends React.Component {
           <div style={headerStyle} onClick={() => isSource && this.props.handleSortByExt()}>
             <span style={{borderBottom: isSource ? '1px dotted black' : 'none'}}>Ext</span>
           </div>
-          <div style={{...headerStyle, width: '75%'}} onClick={() => isSource && this.props.handleSortByDate()}>
-            <span style={{borderBottom: isSource ? '1px dotted black' : 'none'}}>Updated</span>
+          <div style={{...headerStyle, width: '75%'}} onClick={() => this.props.handleSortByDate()}>
+            <span style={{borderBottom: '1px dotted black'}}>Updated</span>
           </div>
           <div style={{...headerStyle, width: '99%'}}>
             <span></span>

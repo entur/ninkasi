@@ -7,8 +7,8 @@ const FaArrowUp = require('react-icons/lib/fa/arrow-up');
 const FaRemove = require('react-icons/lib/fa/arrow-left');
 const FaAdd = require('react-icons/lib/fa/arrow-right');
 import AdvancedFileList from '../components/AdvancedFileList';
-import _ from 'underscore';
 import TextField from 'material-ui/TextField';
+import { sortFiles } from '../utils/'
 
 class DataMigrationDetails extends React.Component {
   constructor(props) {
@@ -17,6 +17,9 @@ class DataMigrationDetails extends React.Component {
       outboundFiles: [],
       selectedIndicesOutbound: new Set(),
       selectedIndicesSource: new Set(),
+      outboundFileSortOrder: {
+        date: 2
+      },
       sortOrder: {
         ext: 0,
         name: 0,
@@ -52,12 +55,24 @@ class DataMigrationDetails extends React.Component {
     });
   }
 
+  handleSortOutboundFiles() {
+    const { outboundFileSortOrder, outboundFiles } = this.state;
+    const newSortOrder = {
+      date: outboundFileSortOrder.date === 1 ? 2 : 1
+    };
+
+    this.setState({
+      outboundFileSortOrder: newSortOrder,
+      outboundFiles: sortFiles(outboundFiles, newSortOrder, '')
+    });
+  }
+
   handleSelectAllShowingIndices(source) {
-    const { outboundFiles, filterText } = this.state;
+    const { outboundFiles, filterText, sortOrder } = this.state;
     const { files } = this.props;
 
     if (source) {
-      const sortedFiles = this.sortFiles(files)
+      const sortedFiles = sortFiles(files, sortOrder, filterText)
         .filter(file => {
           if (file.name.indexOf(filterText) > -1) return file;
         })
@@ -199,53 +214,19 @@ class DataMigrationDetails extends React.Component {
     });
   }
 
-  sortFiles() {
-    const { sortOrder, filterText } = this.state;
-    const unsortedFile = this.props.files;
-
-    let files = unsortedFile.slice();
-
-    let sortedFiles = !sortOrder.ext
-      ? _.sortBy(files, file => new Date(file.updated))
-      : sortOrder.ext == 1
-        ? _.sortBy(files, file => file.ext)
-        : _.sortBy(files, file => file.ext).reverse();
-
-    sortedFiles = !sortOrder.name
-      ? sortedFiles
-      : sortOrder.name == 1
-        ? _.sortBy(files, file => file.name)
-        : _.sortBy(files, file => file.name).reverse();
-
-    sortedFiles = !sortOrder.size
-      ? sortedFiles
-      : sortOrder.size == 1
-        ? _.sortBy(files, file => file.fileSize)
-        : _.sortBy(files, file => file.fileSize).reverse();
-
-    sortedFiles = !sortOrder.date
-      ? sortedFiles
-      : sortOrder.date == 1
-        ? _.sortBy(files, file => new Date(file.updated))
-        : _.sortBy(files, file => new Date(file.updated)).reverse();
-
-    return sortedFiles.filter(file => {
-      if (file.name.indexOf(filterText) > -1) return file;
-    });
-  }
-
   render() {
     const { files, chouetteInfo } = this.props;
     const {
       outboundFiles,
       selectedIndicesOutbound,
       selectedIndicesSource,
+      sortOrder,
       filterText
     } = this.state;
 
     const isLevel1Provider = !!chouetteInfo.migrateDataToProvider;
 
-    const sortedFiles = this.sortFiles(files);
+    const sortedFiles = sortFiles(files, sortOrder, filterText);
 
     const toolTips = {
       import:
@@ -364,7 +345,7 @@ class DataMigrationDetails extends React.Component {
                         marginLeft: 20,
                         marginRight: 20
                       }}
-                      onClick={this.appendSelectedFiles}
+                      onClick={this.appendSelectedFiles.bind(this)}
                     />
                     <FaRemove
                       style={{
@@ -373,7 +354,7 @@ class DataMigrationDetails extends React.Component {
                         marginLeft: 20,
                         marginRight: 20
                       }}
-                      onClick={this.removeSelectedFiles}
+                      onClick={this.removeSelectedFiles.bind(this)}
                     />
                   </div>
                 : <div style={{ margin: 20, fontWeight: 600 }}>
@@ -385,6 +366,7 @@ class DataMigrationDetails extends React.Component {
                 updateIndices={this.handleUpdateIndicesOutbound.bind(this)}
                 handleKeyDown={this.handleKeyDown.bind(this)}
                 handleKeyUp={this.handleKeyUp.bind(this)}
+                handleSortByDate={this.handleSortOutboundFiles.bind(this)}
                 handleSelectAllShowingIndices={this.handleSelectAllShowingIndices.bind(
                   this
                 )}
@@ -515,13 +497,14 @@ class DataMigrationDetails extends React.Component {
   };
 
   appendSelectedFiles = () => {
-    let { selectedIndicesSource, outboundFiles } = this.state;
+
+    let { selectedIndicesSource, sortOrder, filterText, outboundFiles } = this.state;
 
     if (!selectedIndicesSource.size) return;
 
     const { files } = this.props;
 
-    const sortedFiles = this.sortFiles(files.slice(0));
+    const sortedFiles = sortFiles(files, sortOrder, filterText);
 
     const filestoAppend = Array.from(selectedIndicesSource).map(
       i => sortedFiles[i]

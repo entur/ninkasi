@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 export const sortUsersby = (users, sortOrder) => {
   if (!sortOrder || sortOrder.column === null) return users;
 
@@ -74,4 +76,39 @@ export const getAdminZoneNameByRef = (adminZones, ref) => {
     if (zone.id === ref) return zone.name;
   }
   return ref;
+}
+
+export const sortFiles = (unsortedFiles, sortOrder, filterText) => {
+
+  let files = unsortedFiles.slice().filter(file => {
+    if (!file.name) return;
+
+    if (file.name.toLowerCase().indexOf(filterText.toLowerCase()) > -1) return file;
+  });
+
+  let sortedFiles = !sortOrder.ext
+    ? _.sortBy(files, file => new Date(file.updated))
+    : sortOrder.ext == 1
+      ? _.sortBy(files, file => file.ext)
+      : _.sortBy(files, file => file.ext).reverse();
+
+  sortedFiles = !sortOrder.name
+    ? sortedFiles
+    : sortOrder.name == 1
+      ? _.sortBy(files, file => file.name)
+      : _.sortBy(files, file => file.name).reverse();
+
+  sortedFiles = !sortOrder.size
+    ? sortedFiles
+    : sortOrder.size == 1
+      ? _.sortBy(files, file => file.fileSize)
+      : _.sortBy(files, file => file.fileSize).reverse();
+
+  sortedFiles = !sortOrder.date
+    ? sortedFiles
+    : sortOrder.date == 1
+      ? _.sortBy(files, file => new Date(file.updated))
+      : _.sortBy(files, file => new Date(file.updated)).reverse();
+
+  return sortedFiles;
 }
