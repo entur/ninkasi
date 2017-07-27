@@ -398,7 +398,7 @@ class SuppliersContainer extends React.Component {
           </Button>
         </div>
         <Select
-          style={{ display: 'inline-block', margin: 15 }}
+          style={{ display: 'inline-block', margin: 15, zIndex: 9999 }}
           className="select-supplier"
           value={selectedValue}
           id="select-supplier"
