@@ -5,7 +5,6 @@ import { EventDetails } from 'bogu';
 import ChouetteJobDetails from './ChouetteJobDetails';
 import ChouetteAllJobs from './ChouetteAllJobs';
 import DataMigrationDetails from './DataMigrationDetails';
-import cfgreader from '../config/readConfig';
 import Loader from 'halogen/PulseLoader';
 import '../sass/main.scss';
 import Tabs from 'muicss/lib/react/tabs';
