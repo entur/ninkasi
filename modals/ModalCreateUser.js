@@ -8,7 +8,6 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import ResponsiblitySetList from './ResponsiblitySetList';
 
-
 const initialState = {
   user: {
     username: '',
@@ -56,6 +55,22 @@ class ModalCreateUser extends React.Component {
     });
   }
 
+  isUserRequiredFieldsProvided() {
+    const { user } = this.state;
+    if (user) {
+      const { contactDetails } = user;
+      return (
+        user.username &&
+        user.organisationRef &&
+        contactDetails &&
+        contactDetails.email &&
+        contactDetails.firstName &&
+        contactDetails.lastName
+      );
+    }
+    return false;
+  }
+
   removeResponsibilitySet(index) {
     if (index > -1) {
       this.setState({
@@ -93,6 +108,8 @@ class ModalCreateUser extends React.Component {
     };
 
     const invalidPrivateCode = takenUsernames.indexOf(user.username) > -1;
+    const disableCreate =
+      invalidPrivateCode || !this.isUserRequiredFieldsProvided();
 
     return (
       <Modal
@@ -222,7 +239,8 @@ class ModalCreateUser extends React.Component {
               <ResponsiblitySetList
                 user={user}
                 responsiblities={responsibilities}
-                handleAdd={() => this.setState({ isAddingResponsibilitySet: true })}
+                handleAdd={() =>
+                  this.setState({ isAddingResponsibilitySet: true })}
                 handleRemove={this.removeResponsibilitySet.bind(this)}
               />
               {isAddingResponsibilitySet
@@ -277,7 +295,7 @@ class ModalCreateUser extends React.Component {
           >
             <div style={{ fontSize: 12, marginLeft: 15 }} />
             <RaisedButton
-              disabled={invalidPrivateCode}
+              disabled={disableCreate}
               label="Create"
               primary={true}
               onClick={() => handleSubmit(user)}
