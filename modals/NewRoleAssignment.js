@@ -111,7 +111,7 @@ class NewRoleAssignment extends React.Component {
               key={role.id}
               id={role.id}
               value={role.id}
-              label={role.id}
+              label={role.name}
               primaryText={role.name}
             />
           )}
@@ -129,7 +129,7 @@ class NewRoleAssignment extends React.Component {
               key={org.id}
               id={org.id}
               value={org.id}
-              label={org.id}
+              label={org.name}
               primaryText={org.name}
             />
           )}
@@ -204,6 +204,7 @@ class NewRoleAssignment extends React.Component {
             value={tempEntityType}
             onChange={(e, i, v) => this.setState({ tempEntityType: v })}
             fullWidth={true}
+            disabled={!this.state.tempEntityClassification}
           >
             {tempEntityTypes.map(type =>
               <MenuItem
