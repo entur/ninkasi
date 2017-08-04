@@ -11,7 +11,6 @@ import OrganizationRegisterActions from '../actions/OrganizationRegisterActions'
 import { sortByColumns } from '../utils/index';
 import ModalConfirmation from '../modals/ModalConfirmation';
 
-
 class RoleView extends React.Component {
   constructor(props) {
     super(props);
@@ -43,18 +42,18 @@ class RoleView extends React.Component {
   handleOpenDeleteConfirmationDialog(activeRole) {
     this.setState({
       activeRole,
-      isDeleteConfirmationOpen: true,
-    })
+      isDeleteConfirmationOpen: true
+    });
   }
 
   handleCloseDeleteConfirmation() {
     this.setState({
       activeRole: null,
       isDeleteConfirmationOpen: false
-    })
+    });
   }
 
-  handleSortOrder(column){
+  handleSortOrder(column) {
     const { sortOrder } = this.state;
     let asc = true;
 
@@ -109,93 +108,99 @@ class RoleView extends React.Component {
     const confirmDeleteTitle = this.getDeleteConfirmationTitle();
 
     return (
-      <div className="role-row">
-        <div className="role-header">
-          <div className="col-1-3">
-            <span
-              className="sortable"
-              onClick={() => this.handleSortOrder('name')}
-            >
-              name
-            </span>
-          </div>
-          <div className="col-1-3">
-            <span
-              className="sortable"
-              onClick={() => this.handleSortOrder('privateCode')}
-            >
-              private code
-            </span>
-          </div>
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <FloatingActionButton
+            mini={true}
+            style={{ float: 'right', marginRight: 10 }}
+          >
+            <ContentAdd
+              onClick={() => this.setState({ isCreateModalOpen: true })}
+            />
+          </FloatingActionButton>
         </div>
-        {sortedRoles.map(role => {
-          return (
-            <div key={'role-' + role.id} className="role-row-item">
-              <div className="col-1-3">{role.name}</div>
-              <div className="col-1-3">{role.privateCode}</div>
-              <div className="col-icon" style={{ cursor: 'pointer' }}>
-                <MdDelete
-                  color="#fa7b81"
-                  style={{
-                    height: 20,
-                    width: 20,
-                    marginRight: 10,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer'
-                  }}
-                  onClick={() => this.handleOpenDeleteConfirmationDialog(role)}
-                />
-                <MdEdit
-                  color="rgba(25, 118, 210, 0.59)"
-                  onClick={() => this.handleEditRole(role)}
-                  style={{
-                    height: 20,
-                    width: 20,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer'
-                  }}
-                />
-              </div>
+        <div className="role-row">
+          <div className="role-header">
+            <div className="col-1-3">
+              <span
+                className="sortable"
+                onClick={() => this.handleSortOrder('name')}
+              >
+                name
+              </span>
             </div>
-          );
-        })}
-        <FloatingActionButton
-          mini={true}
-          style={{ float: 'right', marginRight: 10 }}
-        >
-          <ContentAdd
-            onClick={() => this.setState({ isCreateModalOpen: true })}
+            <div className="col-1-3">
+              <span
+                className="sortable"
+                onClick={() => this.handleSortOrder('privateCode')}
+              >
+                private code
+              </span>
+            </div>
+          </div>
+          {sortedRoles.map(role => {
+            return (
+              <div key={'role-' + role.id} className="role-row-item">
+                <div className="col-1-3">{role.name}</div>
+                <div className="col-1-3">{role.privateCode}</div>
+                <div className="col-icon" style={{ cursor: 'pointer' }}>
+                  <MdDelete
+                    color="#fa7b81"
+                    style={{
+                      height: 20,
+                      width: 20,
+                      marginRight: 10,
+                      verticalAlign: 'middle',
+                      cursor: 'pointer'
+                    }}
+                    onClick={() =>
+                      this.handleOpenDeleteConfirmationDialog(role)}
+                  />
+                  <MdEdit
+                    color="rgba(25, 118, 210, 0.59)"
+                    onClick={() => this.handleEditRole(role)}
+                    style={{
+                      height: 20,
+                      width: 20,
+                      verticalAlign: 'middle',
+                      cursor: 'pointer'
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+          {this.state.isCreateModalOpen
+            ? <ModalCreateRole
+                isModalOpen={this.state.isCreateModalOpen}
+                handleCloseModal={() =>
+                  this.setState({ isCreateModalOpen: false })}
+                takenPrivateCodes={roles.map(role => role.privateCode)}
+                handleSubmit={this.handleCreateRole.bind(this)}
+              />
+            : null}
+          {this.state.isEditModalOpen
+            ? <ModalEditRole
+                isModalOpen={this.state.isEditModalOpen}
+                role={this.state.activeRole}
+                handleCloseModal={() =>
+                  this.setState({ isEditModalOpen: false })}
+                handleSubmit={this.handleUpdateRole.bind(this)}
+              />
+            : null}
+          <ModalConfirmation
+            open={this.state.isDeleteConfirmationOpen}
+            title={confirmDeleteTitle}
+            actionBtnTitle="Delete"
+            body="You are about to delete current user. Are you sure?"
+            handleSubmit={() => {
+              this.handleDeleteRole(this.state.activeRole);
+            }}
+            handleClose={() => {
+              this.handleCloseDeleteConfirmation();
+            }}
           />
-        </FloatingActionButton>
-        {this.state.isCreateModalOpen
-          ? <ModalCreateRole
-              isModalOpen={this.state.isCreateModalOpen}
-              handleCloseModal={() =>
-                this.setState({ isCreateModalOpen: false })}
-              takenPrivateCodes={roles.map(role => role.privateCode)}
-              handleSubmit={this.handleCreateRole.bind(this)}
-            />
-          : null}
-        {this.state.isEditModalOpen
-          ? <ModalEditRole
-              isModalOpen={this.state.isEditModalOpen}
-              role={this.state.activeRole}
-              handleCloseModal={() => this.setState({ isEditModalOpen: false })}
-              handleSubmit={this.handleUpdateRole.bind(this)}
-            />
-          : null}
-        <ModalConfirmation
-          open={this.state.isDeleteConfirmationOpen}
-          title={confirmDeleteTitle}
-          actionBtnTitle="Delete"
-          body="You are about to delete current user. Are you sure?"
-          handleSubmit={() => {
-            this.handleDeleteRole(this.state.activeRole)
-          }}
-          handleClose={() => {
-            this.handleCloseDeleteConfirmation();
-          }}
-        />
+        </div>
       </div>
     );
   }

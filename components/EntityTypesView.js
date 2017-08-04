@@ -29,15 +29,15 @@ class EntityTypesView extends React.Component {
   handleOpenDeleteConfirmationDialog(activeEntityType) {
     this.setState({
       activeEntityType,
-      isDeleteConfirmationOpen: true,
-    })
+      isDeleteConfirmationOpen: true
+    });
   }
 
   handleCloseDeleteConfirmation() {
     this.setState({
       activeEntityType: null,
       isDeleteConfirmationOpen: false
-    })
+    });
   }
 
   handleEditEntityType(entityType) {
@@ -115,125 +115,129 @@ class EntityTypesView extends React.Component {
     const confirmDeleteTitle = this.getDeleteConfirmationTitle();
 
     return (
-      <div className="et-row">
-        <div className="et-header">
-          <div className="col-1-5">
-            <span
-              className="sortable"
-              onClick={() => this.handleSortOrder('name')}
-            >
-              name
-            </span>
-          </div>
-          <div className="col-1-5">
-            <span
-              className="sortable"
-              onClick={() => this.handleSortOrder('privateCode')}
-            >
-              private code
-            </span>
-          </div>
-          <div className="col-1-5">
-            <span
-              className="sortable"
-              onClick={() => this.handleSortOrder('codeSpace')}
-            >
-              code space
-            </span>
-          </div>
-          <div className="col-1-5">
-            <span
-            >
-              Classifications
-            </span>
-          </div>
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <FloatingActionButton
+            mini={true}
+            style={{ float: 'right', marginRight: 10 }}
+          >
+            <ContentAdd
+              onClick={() => this.setState({ isCreateModalOpen: true })}
+            />
+          </FloatingActionButton>
         </div>
-        {sortedEntityTypes.map(et => {
-          return (
-            <div key={'et-' + et.id} className="et-row-item">
-              <div className="col-1-5">{et.name}</div>
-              <div className="col-1-5">{et.privateCode}</div>
-              <div className="col-1-5">{et.codeSpace}</div>
-              <div className="col-1-5">
-                <ul
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    listStyleType: 'circle'
-                  }}
-                >
-                  {et.classifications
-                    ? et.classifications.sort( (a,b) => a.name.localeCompare(b.name)).map((ec, i) =>
-                      <li key={ec.id}>{ec.name} </li>
-                    )
-                    : null}
-                </ul>
-              </div>
-              <div className="col-icon" style={{ cursor: 'pointer' }}>
-                <MdDelete
-                  color="#fa7b81"
-                  style={{
-                    height: 20,
-                    width: 20,
-                    marginRight: 10,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer'
-                  }}
-                  onClick={() => this.handleOpenDeleteConfirmationDialog(et)}
-                />
-                <MdEdit
-                  color="rgba(25, 118, 210, 0.59)"
-                  style={{
-                    height: 20,
-                    width: 20,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer'
-                  }}
-                  onClick={() => this.handleEditEntityType(et)}
-                />
-              </div>
+        <div className="et-row">
+          <div className="et-header">
+            <div className="col-1-5">
+              <span
+                className="sortable"
+                onClick={() => this.handleSortOrder('name')}
+              >
+                name
+              </span>
             </div>
-          );
-        })}
-        <FloatingActionButton
-          mini={true}
-          style={{ float: 'right', marginRight: 10 }}
-        >
-          <ContentAdd
-            onClick={() => this.setState({ isCreateModalOpen: true })}
+            <div className="col-1-5">
+              <span
+                className="sortable"
+                onClick={() => this.handleSortOrder('privateCode')}
+              >
+                private code
+              </span>
+            </div>
+            <div className="col-1-5">
+              <span
+                className="sortable"
+                onClick={() => this.handleSortOrder('codeSpace')}
+              >
+                code space
+              </span>
+            </div>
+            <div className="col-1-5">
+              <span>
+                Classifications
+              </span>
+            </div>
+          </div>
+          {sortedEntityTypes.map(et => {
+            return (
+              <div key={'et-' + et.id} className="et-row-item">
+                <div className="col-1-5">{et.name}</div>
+                <div className="col-1-5">{et.privateCode}</div>
+                <div className="col-1-5">{et.codeSpace}</div>
+                <div className="col-1-5">
+                  <ul
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      listStyleType: 'circle'
+                    }}
+                  >
+                    {et.classifications
+                      ? et.classifications
+                          .sort((a, b) => a.name.localeCompare(b.name))
+                          .map((ec, i) => <li key={ec.id}>{ec.name} </li>)
+                      : null}
+                  </ul>
+                </div>
+                <div className="col-icon" style={{ cursor: 'pointer' }}>
+                  <MdDelete
+                    color="#fa7b81"
+                    style={{
+                      height: 20,
+                      width: 20,
+                      marginRight: 10,
+                      verticalAlign: 'middle',
+                      cursor: 'pointer'
+                    }}
+                    onClick={() => this.handleOpenDeleteConfirmationDialog(et)}
+                  />
+                  <MdEdit
+                    color="rgba(25, 118, 210, 0.59)"
+                    style={{
+                      height: 20,
+                      width: 20,
+                      verticalAlign: 'middle',
+                      cursor: 'pointer'
+                    }}
+                    onClick={() => this.handleEditEntityType(et)}
+                  />
+                </div>
+              </div>
+            );
+          })}
+          {this.state.isCreateModalOpen
+            ? <ModalCreateEntityType
+                isModalOpen={this.state.isCreateModalOpen}
+                codeSpaces={this.props.codeSpaces}
+                handleCloseModal={() =>
+                  this.setState({ isCreateModalOpen: false })}
+                takenPrivateCodes={entityTypes.map(et => et.privateCode)}
+                handleSubmit={this.handleCreateEntity.bind(this)}
+              />
+            : null}
+          {this.state.isEditModalOpen
+            ? <ModalEditEntiyType
+                isModalOpen={this.state.isEditModalOpen}
+                entityType={this.state.activeEntityType}
+                handleCloseModal={() =>
+                  this.setState({ isEditModalOpen: false })}
+                codeSpaces={this.props.codeSpaces}
+                handleSubmit={this.handleUpdateEntity.bind(this)}
+              />
+            : null}
+          <ModalConfirmation
+            open={this.state.isDeleteConfirmationOpen}
+            title={confirmDeleteTitle}
+            actionBtnTitle="Delete"
+            body="You are about to delete current entity type. Are you sure?"
+            handleSubmit={() => {
+              this.handleDeleteEntityType(this.state.activeEntityType);
+            }}
+            handleClose={() => {
+              this.handleCloseDeleteConfirmation();
+            }}
           />
-        </FloatingActionButton>
-        {this.state.isCreateModalOpen
-          ? <ModalCreateEntityType
-              isModalOpen={this.state.isCreateModalOpen}
-              codeSpaces={this.props.codeSpaces}
-              handleCloseModal={() =>
-                this.setState({ isCreateModalOpen: false })}
-              takenPrivateCodes={entityTypes.map(et => et.privateCode)}
-              handleSubmit={this.handleCreateEntity.bind(this)}
-            />
-          : null}
-        {this.state.isEditModalOpen
-          ? <ModalEditEntiyType
-              isModalOpen={this.state.isEditModalOpen}
-              entityType={this.state.activeEntityType}
-              handleCloseModal={() => this.setState({ isEditModalOpen: false })}
-              codeSpaces={this.props.codeSpaces}
-              handleSubmit={this.handleUpdateEntity.bind(this)}
-            />
-          : null}
-        <ModalConfirmation
-          open={this.state.isDeleteConfirmationOpen}
-          title={confirmDeleteTitle}
-          actionBtnTitle="Delete"
-          body="You are about to delete current entity type. Are you sure?"
-          handleSubmit={() => {
-            this.handleDeleteEntityType(this.state.activeEntityType)
-          }}
-          handleClose={() => {
-            this.handleCloseDeleteConfirmation();
-          }}
-        />
+        </div>
       </div>
     );
   }

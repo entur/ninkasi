@@ -40,7 +40,15 @@ class ResponsibilitiesView extends React.Component {
 
   openModalWindow() {
     this.setState({
-      isCreatingResponsibilitySet: true,
+      isCreatingResponsibilitySet: true
+    });
+    window.scrollTo(window.scrollX, 0);
+  }
+
+  handleOpenEditResp(responsibility) {
+    this.setState({
+      isEditingResponsibilitySet: true,
+      activeResponsibilitySet: responsibility
     });
     window.scrollTo(window.scrollX, 0);
   }
@@ -48,20 +56,22 @@ class ResponsibilitiesView extends React.Component {
   handleOpenDeleteConfirmationDialog(activeResponsibilitySet) {
     this.setState({
       activeResponsibilitySet,
-      isDeleteConfirmationOpen: true,
-    })
+      isDeleteConfirmationOpen: true
+    });
   }
 
   handleCloseDeleteConfirmation() {
     this.setState({
       activeResponsibilitySet: null,
       isDeleteConfirmationOpen: false
-    })
+    });
   }
 
   getDeleteConfirmationTitle() {
     const { activeResponsibilitySet } = this.state;
-    let responsbilitySet = activeResponsibilitySet ? activeResponsibilitySet.name : 'N/A';
+    let responsbilitySet = activeResponsibilitySet
+      ? activeResponsibilitySet.name
+      : 'N/A';
     return `Delete responsiblity set ${responsbilitySet}`;
   }
 
@@ -132,129 +142,129 @@ class ResponsibilitiesView extends React.Component {
     const confirmDeleteTitle = this.getDeleteConfirmationTitle();
 
     return (
-      <div className="responsibility-row">
-        <div className="responsibility-header">
-          <div className="col-1-6">
-            <span
-              className="sortable"
-              onClick={() => this.handleSortOrder('name')}
-            >
-              name
-            </span>
-          </div>
-          <div className="col-1-6">
-            <span
-              className="sortable"
-              onClick={() => this.handleSortOrder('id')}
-            >
-              id
-            </span>
-          </div>
-          <div className="col-1-7">
-            <span
-              className="sortable"
-              onClick={() => this.handleSortOrder('privateCode')}
-            >
-              private code
-            </span>
-          </div>
-          <div className="col-1-6">Roles assignments</div>
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <FloatingActionButton
+            mini={true}
+            style={{  marginRight: 10 }}
+            onClick={this.openModalWindow.bind(this)}
+          >
+            <ContentAdd />
+          </FloatingActionButton>
         </div>
-        {sortedResponsibilities.map(responsibility => {
-          return (
-            <div
-              key={'responsibility-' + responsibility.id}
-              className="resp-row-item"
-            >
-              <div className="col-1-6">{responsibility.name}</div>
-              <div className="col-1-6">{responsibility.id}</div>
-              <div className="col-1-7">{responsibility.privateCode}</div>
-              <div className="col-1-3">
+        <div className="responsibility-row">
+          <div className="responsibility-header">
+            <div className="col-1-6">
+              <span
+                className="sortable"
+                onClick={() => this.handleSortOrder('name')}
+              >
+                name
+              </span>
+            </div>
+            <div className="col-1-6">
+              <span
+                className="sortable"
+                onClick={() => this.handleSortOrder('id')}
+              >
+                id
+              </span>
+            </div>
+            <div className="col-1-7">
+              <span
+                className="sortable"
+                onClick={() => this.handleSortOrder('privateCode')}
+              >
+                private code
+              </span>
+            </div>
+            <div className="col-1-6">Roles assignments</div>
+          </div>
+          {sortedResponsibilities.map(responsibility => {
+            return (
+              <div
+                key={'responsibility-' + responsibility.id}
+                className="resp-row-item"
+              >
+                <div className="col-1-6">{responsibility.name}</div>
+                <div className="col-1-6">{responsibility.id}</div>
+                <div className="col-1-7">{responsibility.privateCode}</div>
+                <div className="col-1-3">
                   <ResponsbilityRoleAssignments
                     roleAssignments={responsibility.roles}
                     organizations={organizations}
                     adminZones={administrativeZones}
                   />
+                </div>
+                <div className="col-icon" style={{ cursor: 'pointer' }}>
+                  <MdDelete
+                    color="#fa7b81"
+                    style={{
+                      height: 20,
+                      width: 20,
+                      marginRight: 10,
+                      verticalAlign: 'middle',
+                      cursor: 'pointer'
+                    }}
+                    onClick={() =>
+                      this.handleOpenDeleteConfirmationDialog(responsibility)}
+                  />
+                  <MdEdit
+                    color="rgba(25, 118, 210, 0.59)"
+                    style={{
+                      height: 20,
+                      width: 20,
+                      verticalAlign: 'middle',
+                      cursor: 'pointer'
+                    }}
+                    onClick={() => { this.handleOpenEditResp(responsibility) }}
+                  />
+                </div>
               </div>
-              <div className="col-icon" style={{ cursor: 'pointer' }}>
-                <MdDelete
-                  color="#fa7b81"
-                  style={{
-                    height: 20,
-                    width: 20,
-                    marginRight: 10,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer'
-                  }}
-                  onClick={() =>
-                    this.handleOpenDeleteConfirmationDialog(responsibility)}
-                />
-                <MdEdit
-                  color="rgba(25, 118, 210, 0.59)"
-                  style={{
-                    height: 20,
-                    width: 20,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer'
-                  }}
-                  onClick={() =>
-                    this.setState({
-                      isEditingResponsibilitySet: true,
-                      activeResponsibilitySet: responsibility
-                    })}
-                />
-              </div>
-            </div>
-          );
-        })}
-        <FloatingActionButton
-          mini={true}
-          style={{ float: 'right', marginRight: 10 }}
-          onClick={this.openModalWindow.bind(this)}
-        >
-          <ContentAdd />
-        </FloatingActionButton>
-        {isCreatingResponsibilitySet
-          ? <ModalCreateResponsibilitySet
-              modalOpen={isCreatingResponsibilitySet}
-              codeSpaces={codeSpaces}
-              handleOnClose={() =>
-                this.setState({ isCreatingResponsibilitySet: false })}
-              takenPrivateCodes={responsibilities.map(r => r.privateCode)}
-              roles={roles}
-              organizations={organizations}
-              handleSubmit={this.handleCreateResponsibilitySet.bind(this)}
-              entityTypes={entityTypes}
-              administrativeZones={this.props.administrativeZones}
-            />
-          : null}
-        {isEditingResponsibilitySet
-          ? <ModalEditResponsibilitySet
-              modalOpen={isEditingResponsibilitySet}
-              responsibilitySet={activeResponsibilitySet}
-              codeSpaces={codeSpaces}
-              handleOnClose={() =>
-                this.setState({ isEditingResponsibilitySet: false })}
-              takenPrivateCodes={responsibilities.map(r => r.privateCode)}
-              roles={roles}
-              organizations={organizations}
-              handleSubmit={this.handleUpdateResponsibilitySet.bind(this)}
-              entityTypes={entityTypes}
-              administrativeZones={this.props.administrativeZones}
-            />
-          : null}
-        <ModalConfirmation
-          open={this.state.isDeleteConfirmationOpen}
-          title={confirmDeleteTitle}
-          actionBtnTitle="Delete"
-          body="You are about to delete current responsibility set. Are you sure?"
-          handleSubmit={() => {
-            this.handleDeleteResponsibility(activeResponsibilitySet)
-          }}
-          handleClose={() => {
-            this.handleCloseDeleteConfirmation();
-          }}
-        />
+            );
+          })}
+          {isCreatingResponsibilitySet
+            ? <ModalCreateResponsibilitySet
+                modalOpen={isCreatingResponsibilitySet}
+                codeSpaces={codeSpaces}
+                handleOnClose={() =>
+                  this.setState({ isCreatingResponsibilitySet: false })}
+                takenPrivateCodes={responsibilities.map(r => r.privateCode)}
+                roles={roles}
+                organizations={organizations}
+                handleSubmit={this.handleCreateResponsibilitySet.bind(this)}
+                entityTypes={entityTypes}
+                administrativeZones={this.props.administrativeZones}
+              />
+            : null}
+          {isEditingResponsibilitySet
+            ? <ModalEditResponsibilitySet
+                modalOpen={isEditingResponsibilitySet}
+                responsibilitySet={activeResponsibilitySet}
+                codeSpaces={codeSpaces}
+                handleOnClose={() =>
+                  this.setState({ isEditingResponsibilitySet: false })}
+                takenPrivateCodes={responsibilities.map(r => r.privateCode)}
+                roles={roles}
+                organizations={organizations}
+                handleSubmit={this.handleUpdateResponsibilitySet.bind(this)}
+                entityTypes={entityTypes}
+                administrativeZones={this.props.administrativeZones}
+              />
+            : null}
+          <ModalConfirmation
+            open={this.state.isDeleteConfirmationOpen}
+            title={confirmDeleteTitle}
+            actionBtnTitle="Delete"
+            body="You are about to delete current responsibility set. Are you sure?"
+            handleSubmit={() => {
+              this.handleDeleteResponsibility(activeResponsibilitySet);
+            }}
+            handleClose={() => {
+              this.handleCloseDeleteConfirmation();
+            }}
+          />
+        </div>
       </div>
     );
   }

@@ -11,7 +11,6 @@ import MdDelete from 'material-ui/svg-icons/action/delete';
 import { sortByColumns } from '../utils/index';
 import ModalConfirmation from '../modals/ModalConfirmation';
 
-
 class OrganizationView extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +28,7 @@ class OrganizationView extends React.Component {
 
   getDeleteConfirmationTitle() {
     const { activeOrganization } = this.state;
-    let organization = activeOrganization ? activeOrganization .name : 'N/A';
+    let organization = activeOrganization ? activeOrganization.name : 'N/A';
     return `Delete organization ${organization}`;
   }
 
@@ -44,7 +43,7 @@ class OrganizationView extends React.Component {
     this.setState({
       activeOrganization: null,
       isDeleteConfirmationOpen: false
-    })
+    });
   }
 
   handleSortOrder(column) {
@@ -97,8 +96,8 @@ class OrganizationView extends React.Component {
   handleOpenDeleteConfirmationDialog(activeOrganization) {
     this.setState({
       activeOrganization,
-      isDeleteConfirmationOpen: true,
-    })
+      isDeleteConfirmationOpen: true
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -124,124 +123,137 @@ class OrganizationView extends React.Component {
       sortOrder
     } = this.state;
 
-
     const sortedOrganizations = sortByColumns(organizations, sortOrder);
     const confirmDeleteTitle = this.getDeleteConfirmationTitle();
 
     return (
-      <div className="organization-row">
-        <div className="organization-header">
-        <div className="col-1-6"><span
-          className="sortable"
-          onClick={() => this.handleSortOrder('name')}
-        >
-            name
-          </span></div>
-          <div className="col-1-6"><span
-            className="sortable"
-            onClick={() => this.handleSortOrder('id')}
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <FloatingActionButton
+            mini={true}
+            style={{ float: 'right', marginRight: 10, cursor: 'pointer' }}
           >
-              id
-            </span></div>
-          <div className="col-1-6"><span
-            className="sortable"
-            onClick={() => this.handleSortOrder('organisationType')}
-          >
-              organisation type
-            </span></div>
-          <div className="col-1-6"><span
-            className="sortable"
-            onClick={() => this.handleSortOrder('privateCode')}
-          >
-              private code
-            </span></div>
-          <div className="col-1-6"><span
-            className="sortable"
-            onClick={() => this.handleSortOrder('codeSpace')}
-          >
-              code space
-            </span></div>
+            <ContentAdd onClick={() => this.openModalWindow()} />
+          </FloatingActionButton>
         </div>
-        {sortedOrganizations.map(organization => {
-          return (
-            <div
-              key={'organization-' + organization.id}
-              className="organization-row-item"
-            >
-              <div className="col-1-6">{organization.name}</div>
-              <div className="col-1-6">{organization.id}</div>
-              <div className="col-1-6">{organization.organisationType}</div>
-              <div className="col-1-6">{organization.privateCode}</div>
-              <div className="col-1-6">{organization.codeSpace}</div>
-              <div className="col-icon" style={{ cursor: 'pointer' }}>
-                <MdDelete
-                  color="#fa7b81"
-                  style={{
-                    height: 20,
-                    width: 20,
-                    marginRight: 10,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer'
-                  }}
-                  onClick={() => this.handleOpenDeleteConfirmationDialog(organization)}
-                />
-                <MdEdit
-                  color="rgba(25, 118, 210, 0.59)"
-                  onClick={() => this.handleEditOrganization(organization)}
-                  style={{ height: 20, width: 20, verticalAlign: 'middle' }}
-                />
-              </div>
+        <div className="organization-row">
+          <div className="organization-header">
+            <div className="col-1-6">
+              <span
+                className="sortable"
+                onClick={() => this.handleSortOrder('name')}
+              >
+                name
+              </span>
             </div>
-          );
-        })}
-        <FloatingActionButton
-          mini={true}
-          style={{ float: 'right', marginRight: 10, cursor: 'pointer' }}
-        >
-          <ContentAdd
-            onClick={() => this.openModalWindow()}
-          />
-        </FloatingActionButton>
-        {isCreateModalOpen
-          ? <ModalCreateOrganization
-              isModalOpen={isCreateModalOpen}
-              handleCloseModal={() =>
-                this.setState({ isCreateModalOpen: false })}
-              takenOrganizationNames={organizations.map(org => org.name)}
-              takenOrganizationPrivateCodes={organizations.map(
-                org => org.privateCode
-              )}
-              codeSpaces={codeSpaces}
-              organization={activeOrganization}
-              handleSubmit={this.handleCreateOrganization.bind(this)}
-            />
-          : null}
+            <div className="col-1-6">
+              <span
+                className="sortable"
+                onClick={() => this.handleSortOrder('id')}
+              >
+                id
+              </span>
+            </div>
+            <div className="col-1-6">
+              <span
+                className="sortable"
+                onClick={() => this.handleSortOrder('organisationType')}
+              >
+                organisation type
+              </span>
+            </div>
+            <div className="col-1-6">
+              <span
+                className="sortable"
+                onClick={() => this.handleSortOrder('privateCode')}
+              >
+                private code
+              </span>
+            </div>
+            <div className="col-1-6">
+              <span
+                className="sortable"
+                onClick={() => this.handleSortOrder('codeSpace')}
+              >
+                code space
+              </span>
+            </div>
+          </div>
+          {sortedOrganizations.map(organization => {
+            return (
+              <div
+                key={'organization-' + organization.id}
+                className="organization-row-item"
+              >
+                <div className="col-1-6">{organization.name}</div>
+                <div className="col-1-6">{organization.id}</div>
+                <div className="col-1-6">{organization.organisationType}</div>
+                <div className="col-1-6">{organization.privateCode}</div>
+                <div className="col-1-6">{organization.codeSpace}</div>
+                <div className="col-icon" style={{ cursor: 'pointer' }}>
+                  <MdDelete
+                    color="#fa7b81"
+                    style={{
+                      height: 20,
+                      width: 20,
+                      marginRight: 10,
+                      verticalAlign: 'middle',
+                      cursor: 'pointer'
+                    }}
+                    onClick={() =>
+                      this.handleOpenDeleteConfirmationDialog(organization)}
+                  />
+                  <MdEdit
+                    color="rgba(25, 118, 210, 0.59)"
+                    onClick={() => this.handleEditOrganization(organization)}
+                    style={{ height: 20, width: 20, verticalAlign: 'middle' }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+          {isCreateModalOpen
+            ? <ModalCreateOrganization
+                isModalOpen={isCreateModalOpen}
+                handleCloseModal={() =>
+                  this.setState({ isCreateModalOpen: false })}
+                takenOrganizationNames={organizations.map(org => org.name)}
+                takenOrganizationPrivateCodes={organizations.map(
+                  org => org.privateCode
+                )}
+                codeSpaces={codeSpaces}
+                organization={activeOrganization}
+                handleSubmit={this.handleCreateOrganization.bind(this)}
+              />
+            : null}
 
-        {isEditModalOpen
-          ? <ModalEditOrganization
-              isModalOpen={isEditModalOpen}
-              handleCloseModal={() => this.setState({ isEditModalOpen: false })}
-              takenOrganizationNames={organizations.map(org => org.name)}
-              takenOrganizationPrivateCodes={organizations.map(
-                org => org.privateCode
-              )}
-              organization={this.state.activeOrganization}
-              codeSpaces={codeSpaces}
-              handleSubmit={this.handleUpdateOrganization.bind(this)}
-            />
-          : null}
-        <ModalConfirmation
-          open={this.state.isDeleteConfirmationOpen}
-          title={confirmDeleteTitle}
-          actionBtnTitle="Delete"
-          body="You are about to delete current organization. Are you sure?"
-          handleSubmit={() => {
-            this.handleDeleteOrganization(this.state.activeOrganization)
-          }}
-          handleClose={() => {
-            this.handleCloseDeleteConfirmation();
-          }}
-        />
+          {isEditModalOpen
+            ? <ModalEditOrganization
+                isModalOpen={isEditModalOpen}
+                handleCloseModal={() =>
+                  this.setState({ isEditModalOpen: false })}
+                takenOrganizationNames={organizations.map(org => org.name)}
+                takenOrganizationPrivateCodes={organizations.map(
+                  org => org.privateCode
+                )}
+                organization={this.state.activeOrganization}
+                codeSpaces={codeSpaces}
+                handleSubmit={this.handleUpdateOrganization.bind(this)}
+              />
+            : null}
+          <ModalConfirmation
+            open={this.state.isDeleteConfirmationOpen}
+            title={confirmDeleteTitle}
+            actionBtnTitle="Delete"
+            body="You are about to delete current organization. Are you sure?"
+            handleSubmit={() => {
+              this.handleDeleteOrganization(this.state.activeOrganization);
+            }}
+            handleClose={() => {
+              this.handleCloseDeleteConfirmation();
+            }}
+          />
+        </div>
       </div>
     );
   }
