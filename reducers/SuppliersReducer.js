@@ -54,9 +54,7 @@ const SuppliersReducer = (state = initialState, action) => {
 
     case types.RECEIVED_ALL_SUPPLIERS_STATUS:
       return Object.assign({}, state, {
-        statusListAllProviders: state.statusListAllProviders.concat(
-          action.payLoad
-        )
+        statusListAllProviders: action.payLoad
       });
 
     case types.UPDATED_FILE_UPLOAD_PROGRESS:

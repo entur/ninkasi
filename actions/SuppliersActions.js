@@ -169,31 +169,36 @@ SuppliersActions.uploadFiles = (files, providerId) => dispatch => {
 };
 
 SuppliersActions.getAllProviderStatus = () => (dispatch, getState) => {
-  const providerList = getState().SuppliersReducer.data;
 
   dispatch(sendData(null, types.REQUESTED_ALL_SUPPLIERS_STATUS));
+  const state = getState();
+  const providers = state.SuppliersReducer.data;
 
-  providerList.forEach(provider => {
-    const url = `${window.config.nabuBaseUrl}jersey/jobs/${provider.id}`;
 
-    return axios({
-      url: url,
-      timeout: 20000,
-      method: 'get',
-      responseType: 'json',
-      ...getConfig()
-    })
-      .then(function(response) {
-        let providerStatus = SuppliersActions.formatProviderStatusDate(
-          response.data.reverse(),
-          provider
-        );
-
-        dispatch(sendData(providerStatus, types.RECEIVED_ALL_SUPPLIERS_STATUS));
-      })
-      .catch(function(response) {
-        dispatch(sendData(response.data, types.ERROR_SUPPLIER_STATUS));
-      });
+  const url = `${window.config.nabuBaseUrl}jersey/jobs`;
+  return axios({
+    url: url,
+    timeout: 20000,
+    method: 'get',
+    responseType: 'json',
+    ...getConfig()
+  })
+  .then(response => {
+    const providerStatus = response.data.map( status => {
+      let provider = null;
+      for (let i = 0; i < providers.length; i++) {
+        if (providers[i].id == status.providerId) {
+          provider = providers[i];
+          break;
+        }
+      }
+      return SuppliersActions.formatProviderStatusDate([status], provider);
+    });
+    const eventList = [].concat.apply([], providerStatus);
+    dispatch(sendData(sortEventlistByNewestFirst(eventList), types.RECEIVED_ALL_SUPPLIERS_STATUS));
+  })
+  .catch(response => {
+    dispatch(sendData(response.data, types.ERROR_SUPPLIER_STATUS));
   });
 };
 
@@ -225,6 +230,7 @@ function sendData(payLoad, type) {
     type: type
   };
 }
+
 
 SuppliersActions.getAllProviders = () => (dispatch, getState) => {
   const url = window.config.nabuBaseUrl + 'jersey/providers/all';
@@ -1064,6 +1070,10 @@ SuppliersActions.sortChouetteByColumn = columnName => {
   };
 };
 
+function sortEventlistByNewestFirst(list) {
+  return list.sort((a, b) => new Date(b.firstEvent) - new Date(a.firstEvent));
+}
+
 function requestBuildGraph() {
   return { type: types.REQUEST_BUILD_GRAPH };
 }
@@ -1119,34 +1129,38 @@ SuppliersActions.toggleChouetteInfoCheckboxAllFilter = (
 };
 
 SuppliersActions.formatProviderStatusDate = (list, provider) => {
-  return list.map(listItem => {
-    listItem.duration = moment(
-      moment(listItem.lastEvent).diff(moment(listItem.firstEvent))
-    )
+  try {
+    return list.map(listItem => {
+      listItem.duration = moment(
+        moment(listItem.lastEvent).diff(moment(listItem.firstEvent))
+      )
       .locale('nb')
       .utc()
       .format('HH:mm:ss');
-    listItem.firstEvent = moment(listItem.firstEvent)
+      listItem.firstEvent = moment(listItem.firstEvent)
       .locale('nb')
       .format('YYYY-MM-DD HH:mm:ss');
-    listItem.lastEvent = moment(listItem.lastEvent)
+      listItem.lastEvent = moment(listItem.lastEvent)
       .locale('nb')
       .format('YYYY-MM-DD HH:mm:ss');
-    listItem.started = moment(listItem.firstEvent).locale('en').fromNow();
+      listItem.started = moment(listItem.firstEvent).locale('en').fromNow();
 
-    if (provider) {
-      listItem.provider = provider;
-    }
+      if (provider) {
+        listItem.provider = provider;
+      }
 
-    if (listItem.events) {
-      listItem.events.forEach(function(event) {
-        event.date = moment(event.date)
+      if (listItem.events) {
+        listItem.events.forEach(function(event) {
+          event.date = moment(event.date)
           .locale('nb')
           .format('YYYY-MM-DD HH:mm:ss');
-      });
-    }
-    return listItem;
-  });
+        });
+      }
+      return listItem;
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 SuppliersActions.restoreFilesToOutbound = () => {
