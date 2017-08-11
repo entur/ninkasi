@@ -14,6 +14,7 @@ import { sortUsersby } from '../utils/index';
 import ModalConfirmation from '../modals/ModalConfirmation';
 import ForgotPassword from '../static/icons/ForgotPassword';
 import ModalNewPassword from '../modals/ModalNewPassword';
+import NotificationStatus from './NotificationStatus';
 
 class UserView extends React.Component {
   constructor(props) {
@@ -206,8 +207,10 @@ class UserView extends React.Component {
               </span>
             </div>
             <div className="col-1-7">Responsiblity set</div>
+            <div className="col-1-9">Notifications</div>
           </div>
           {sortedUsers.map(user => {
+            console.log(user.notifications);
             return (
               <div key={'user-' + user.id} className="user-row-item">
                 <div className="col-1-9">{user.username}</div>
@@ -229,6 +232,11 @@ class UserView extends React.Component {
                         )
                       : null}
                   </ul>
+                </div>
+                <div className="col-1-11">
+                  {user.notifications.map( (notification, i) => (
+                    <NotificationStatus notification={notification}/>
+                  ))}
                 </div>
                 <div className="col-icon">
                   <MdEdit

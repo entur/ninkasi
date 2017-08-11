@@ -4,6 +4,8 @@
     margin: 2px;
     margin-bottom: 5px;
     font-size: 0.9em;
+    display: flex;
+    align-items: center;
   }
 
   .col-1-7 {
@@ -26,6 +28,14 @@
     width: 12%;
     max-width: 12%;
     min-width: 12%;
+    display: inline-block;
+    word-break: break-all;
+  }
+
+  .col-1-11 {
+    width: 9%;
+    max-width: 9%;
+    min-width: 9%;
     display: inline-block;
     word-break: break-all;
   }

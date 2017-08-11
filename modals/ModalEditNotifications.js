@@ -81,7 +81,7 @@ class ModalEditNotifications extends React.Component {
       width: '100%'
     };
 
-    const noUserConfigStyle = {
+    const messageStyle = {
       fontSize: 13,
       width: '100%',
       paddingBottom: 10,
@@ -119,10 +119,10 @@ class ModalEditNotifications extends React.Component {
                 expanded={this.state.indexExpanded === i}
               />
             )}
-          {isLoading && <div style={{ fontSize: 12 }}>Loading ...</div>}
+          {isLoading && <div style={messageStyle}>Loading ...</div>}
           {!isLoading &&
             !userNotifications.length &&
-            <div style={noUserConfigStyle}>
+            <div style={messageStyle}>
               No notification configuration found for this user
             </div>}
         </div>
