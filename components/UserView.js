@@ -212,7 +212,7 @@ class UserView extends React.Component {
           {sortedUsers.map(user => {
             console.log(user.notifications);
             return (
-              <div key={'user-' + user.id} className="user-row-item">
+              <div key={'user-' + user.id} className="user-row-item" style={{display: 'flex', alignItems: 'center'}}>
                 <div className="col-1-9">{user.username}</div>
                 <div className="col-1-9">{user.contactDetails.firstName}</div>
                 <div className="col-1-9">{user.contactDetails.lastName}</div>
