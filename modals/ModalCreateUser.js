@@ -21,7 +21,10 @@ const initialState = {
     }
   },
   isAddingResponsibilitySet: false,
-  temptResponsibilitySet: ''
+  temptResponsibilitySet: '',
+  usernamevalid: false,
+  emailValid: false,
+  emailIsTaken: false,
 };
 
 class ModalCreateUser extends React.Component {
@@ -39,6 +42,33 @@ class ModalCreateUser extends React.Component {
     this.props.handleCloseModal();
   }
 
+  handleChangeUsername(e, value) {
+    const isValid = this.validateBy('USERNAME', value);
+    this.setState(prevState => (
+      { user: { ...prevState.user, username: value },
+        usernameValid: isValid
+      }
+    ));
+  }
+
+  handleChangeEmail(e, value) {
+    const { takenEmails } = this.props;
+    const { user } = this.state;
+    const emailIsTaken = takenEmails.indexOf(value.toLowerCase()) > -1;
+    const isValid = this.validateBy('EMAIL', value);
+    this.setState({
+      emailValid: isValid,
+      emailIsTaken,
+      user: {
+        ...user,
+        contactDetails: {
+          ...user.contactDetails,
+          email: value
+        }
+      }
+    });
+  }
+
   handleAddResponsibilitySet() {
     const { user, temptResponsibilitySet } = this.state;
     this.setState({
@@ -53,6 +83,19 @@ class ModalCreateUser extends React.Component {
       },
       temptResponsibilitySet: ''
     });
+  }
+
+  validateBy(type, value) {
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const usernameRe = /^[a-zA-Z-. ]*$/;
+
+    if (type === 'EMAIL') {
+      return emailRe.test(value);
+    }
+
+    if (type === 'USERNAME') {
+      return usernameRe.test(value);
+    }
   }
 
   isUserRequiredFieldsProvided() {
@@ -97,7 +140,10 @@ class ModalCreateUser extends React.Component {
     const {
       user,
       isAddingResponsibilitySet,
-      temptResponsibilitySet
+      temptResponsibilitySet,
+      usernameValid,
+      emailValid,
+      emailIsTaken
     } = this.state;
 
     const titleStyle = {
@@ -109,7 +155,9 @@ class ModalCreateUser extends React.Component {
 
     const invalidPrivateCode = takenUsernames.indexOf(user.username) > -1;
     const disableCreate =
-      invalidPrivateCode || !this.isUserRequiredFieldsProvided();
+      invalidPrivateCode || !this.isUserRequiredFieldsProvided() || !usernameValid || !emailValid || emailIsTaken;
+
+    console.log("emailIsTaken", emailIsTaken);
 
     return (
       <Modal
@@ -140,12 +188,10 @@ class ModalCreateUser extends React.Component {
                 hintText="Username"
                 floatingLabelText="Username"
                 value={user.username}
-                onChange={(e, value) =>
-                  this.setState({
-                    user: { ...user, username: value }
-                  })}
+                errorText={!usernameValid && 'Username can only include alphanumerics, hyphens and dot'}
+                onChange={this.handleChangeUsername.bind(this)}
                 fullWidth={true}
-                style={{ marginTop: -25 }}
+                style={{ marginTop: -30 }}
               />
               <TextField
                 hintText="First name"
@@ -162,7 +208,7 @@ class ModalCreateUser extends React.Component {
                     }
                   })}
                 fullWidth={true}
-                style={{ marginTop: -25 }}
+                style={{ marginTop: 0 }}
               />
               <TextField
                 hintText="Last name"
@@ -184,19 +230,11 @@ class ModalCreateUser extends React.Component {
               <TextField
                 hintText="E-mail"
                 floatingLabelText="E-mail"
+                errorText={emailIsTaken ? 'E-mail already taken' : !emailValid ? 'Must be a valid e-mail' : ''}
                 value={user.contactDetails.email}
-                onChange={(e, value) =>
-                  this.setState({
-                    user: {
-                      ...user,
-                      contactDetails: {
-                        ...user.contactDetails,
-                        email: value
-                      }
-                    }
-                  })}
+                onChange={this.handleChangeEmail.bind(this)}
                 fullWidth={true}
-                style={{ marginTop: -25 }}
+                style={{ marginTop: -10 }}
               />
               <TextField
                 hintText="Phonenumber"
@@ -213,7 +251,7 @@ class ModalCreateUser extends React.Component {
                     }
                   })}
                 fullWidth={true}
-                style={{ marginTop: -25 }}
+                style={{ marginTop: 0 }}
               />
               <SelectField
                 hintText="Organization"

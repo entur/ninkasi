@@ -210,7 +210,6 @@ class UserView extends React.Component {
             <div className="col-1-9">Notifications</div>
           </div>
           {sortedUsers.map(user => {
-            console.log(user.notifications);
             return (
               <div key={'user-' + user.id} className="user-row-item" style={{display: 'flex', alignItems: 'center'}}>
                 <div className="col-1-9">{user.username}</div>
@@ -297,6 +296,7 @@ class UserView extends React.Component {
               handleCloseModal={() =>
                 this.setState({ isCreateModalOpen: false })}
               takenUsernames={users.map(user => user.username)}
+              takenEmails={users.map(user => user.contactDetails.email)}
               organizations={organizations}
               responsibilities={responsibilities}
               handleSubmit={this.handleCreateUser.bind(this)}
