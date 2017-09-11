@@ -25,7 +25,7 @@ const getConfig = () => {
 };
 
 OrganizationRegisterActions.getRoles = () => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/roles`;
+  const url = `${window.config.organisationsBaseUrl}roles`;
   return axios
     .get(url, getConfig())
     .then(response => {
@@ -71,7 +71,7 @@ OrganizationRegisterActions.removeEntityClassRefNotification = (
 };
 
 OrganizationRegisterActions.createRole = role => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/roles`;
+  const url = `${window.config.organisationsBaseUrl}roles`;
   return axios
     .post(url, role, getConfig())
     .then(response => {
@@ -86,7 +86,7 @@ OrganizationRegisterActions.createRole = role => dispatch => {
 OrganizationRegisterActions.updateRole = role => dispatch => {
   const payLoad = { name: role.name };
 
-  const url = `${window.config.nabuBaseUrl}jersey/roles/${role.id}`;
+  const url = `${window.config.organisationsBaseUrl}roles/${role.id}`;
   return axios
     .put(url, payLoad, getConfig())
     .then(response => {
@@ -98,7 +98,7 @@ OrganizationRegisterActions.updateRole = role => dispatch => {
 };
 
 OrganizationRegisterActions.getOrganizations = () => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/organisations`;
+  const url = `${window.config.organisationsBaseUrl}`;
   return axios
     .get(url, getConfig())
     .then(response => {
@@ -112,7 +112,7 @@ OrganizationRegisterActions.getOrganizations = () => dispatch => {
 };
 
 OrganizationRegisterActions.createOrganization = organization => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/organisations`;
+  const url = `${window.config.organisationsBaseUrl}`;
   return axios
     .post(url, organization, getConfig())
     .then(response => {
@@ -126,7 +126,7 @@ OrganizationRegisterActions.createOrganization = organization => dispatch => {
 
 OrganizationRegisterActions.updateOrganization = organization => dispatch => {
   const url = `${window.config
-    .nabuBaseUrl}jersey/organisations/${organization.id}`;
+    .organisationsBaseUrl}${organization.id}`;
   return axios
     .put(url, organization, getConfig())
     .then(response => {
@@ -139,7 +139,7 @@ OrganizationRegisterActions.updateOrganization = organization => dispatch => {
 };
 
 OrganizationRegisterActions.updateUser = user => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/users/${user.id}`;
+  const url = `${window.config.organisationsBaseUrl}users/${user.id}`;
   return axios
     .put(url, user, getConfig())
     .then(response => {
@@ -152,7 +152,7 @@ OrganizationRegisterActions.updateUser = user => dispatch => {
 };
 
 OrganizationRegisterActions.getCodeSpaces = () => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/code_spaces`;
+  const url = `${window.config.organisationsBaseUrl}code_spaces`;
   return axios
     .get(url, getConfig())
     .then(response => {
@@ -164,7 +164,7 @@ OrganizationRegisterActions.getCodeSpaces = () => dispatch => {
 };
 
 OrganizationRegisterActions.getUsers = () => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/users?full=true`;
+  const url = `${window.config.organisationsBaseUrl}users?full=true`;
   return axios
     .get(url, getConfig())
     .then(response => {
@@ -178,7 +178,7 @@ OrganizationRegisterActions.getUsers = () => dispatch => {
 };
 
 OrganizationRegisterActions.deleteUser = userId => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/users/${userId}`;
+  const url = `${window.config.organisationsBaseUrl}users/${userId}`;
   return axios
     .delete(url, getConfig())
     .then(response => {
@@ -191,7 +191,7 @@ OrganizationRegisterActions.deleteUser = userId => dispatch => {
 
 OrganizationRegisterActions.deleteOrganization = organizationId => dispatch => {
   const url = `${window.config
-    .nabuBaseUrl}jersey/organisations/${organizationId}`;
+    .organisationsBaseUrl}${organizationId}`;
   return axios
     .delete(url, getConfig())
     .then(response => {
@@ -218,7 +218,7 @@ OrganizationRegisterActions.deleteOrganization = organizationId => dispatch => {
 };
 
 OrganizationRegisterActions.deleteEntityType = entityTypeId => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/entity_types/${entityTypeId}`;
+  const url = `${window.config.organisationsBaseUrl}entity_types/${entityTypeId}`;
   return axios
     .delete(url, getConfig())
     .then(response => {
@@ -243,7 +243,7 @@ OrganizationRegisterActions.deleteEntityType = entityTypeId => dispatch => {
 
 OrganizationRegisterActions.deleteResponsibilitySet = responsibilitySetId => dispatch => {
   const url = `${window.config
-    .nabuBaseUrl}jersey/responsibility_sets/${responsibilitySetId}`;
+    .organisationsBaseUrl}responsibility_sets/${responsibilitySetId}`;
   return axios
     .delete(url, getConfig())
     .then(response => {
@@ -270,7 +270,7 @@ OrganizationRegisterActions.deleteResponsibilitySet = responsibilitySetId => dis
 };
 
 OrganizationRegisterActions.deleteRole = roleId => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/roles/${roleId}`;
+  const url = `${window.config.organisationsBaseUrl}roles/${roleId}`;
   return axios
     .delete(url, getConfig())
     .then(response => {
@@ -294,7 +294,7 @@ OrganizationRegisterActions.deleteRole = roleId => dispatch => {
 };
 
 OrganizationRegisterActions.getResponbilitySets = () => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/responsibility_sets`;
+  const url = `${window.config.organisationsBaseUrl}responsibility_sets`;
   return axios
     .get(url, getConfig())
     .then(response => {
@@ -308,7 +308,7 @@ OrganizationRegisterActions.getResponbilitySets = () => dispatch => {
 };
 
 OrganizationRegisterActions.createResponsibilitySet = responsibilitySet => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/responsibility_sets`;
+  const url = `${window.config.organisationsBaseUrl}responsibility_sets`;
   return axios
     .post(url, responsibilitySet, getConfig())
     .then(response => {
@@ -321,7 +321,7 @@ OrganizationRegisterActions.createResponsibilitySet = responsibilitySet => dispa
 };
 
 OrganizationRegisterActions.createUser = user => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/users`;
+  const url = `${window.config.organisationsBaseUrl}users`;
   return axios
     .post(url, user, getConfig())
     .then(response => {
@@ -341,7 +341,7 @@ OrganizationRegisterActions.createUser = user => dispatch => {
 };
 
 OrganizationRegisterActions.createEntityType = entityType => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/entity_types`;
+  const url = `${window.config.organisationsBaseUrl}entity_types`;
   return axios
     .post(url, entityType, getConfig())
     .then(response => {
@@ -355,7 +355,7 @@ OrganizationRegisterActions.createEntityType = entityType => dispatch => {
 
 OrganizationRegisterActions.updateEntityType = entityType => dispatch => {
   const url = `${window.config
-    .nabuBaseUrl}jersey/entity_types/${entityType.id}`;
+    .organisationsBaseUrl}entity_types/${entityType.id}`;
   return axios
     .put(url, entityType, getConfig())
     .then(response => {
@@ -369,7 +369,7 @@ OrganizationRegisterActions.updateEntityType = entityType => dispatch => {
 
 OrganizationRegisterActions.updateResponsibilitySet = responsibilitySet => dispatch => {
   const url = `${window.config
-    .nabuBaseUrl}jersey/responsibility_sets/${responsibilitySet.id}`;
+    .organisationsBaseUrl}responsibility_sets/${responsibilitySet.id}`;
   return axios
     .put(url, responsibilitySet, getConfig())
     .then(response => {
@@ -382,7 +382,7 @@ OrganizationRegisterActions.updateResponsibilitySet = responsibilitySet => dispa
 };
 
 OrganizationRegisterActions.getEntityTypes = () => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/entity_types`;
+  const url = `${window.config.organisationsBaseUrl}entity_types`;
   return axios
     .get(url, getConfig())
     .then(response => {
@@ -396,7 +396,7 @@ OrganizationRegisterActions.getEntityTypes = () => dispatch => {
 };
 
 OrganizationRegisterActions.resetPassword = (userId, username) => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/users/${userId}/resetPassword`;
+  const url = `${window.config.organisationsBaseUrl}users/${userId}/resetPassword`;
   return axios
     .post(url, null, getConfig())
     .then(response => {
@@ -432,7 +432,7 @@ OrganizationRegisterActions.addNewUserNotification = () => dispatch => {
 
 OrganizationRegisterActions.getEntityByClassification = entityType => {
   const url = `${window.config
-    .nabuBaseUrl}jersey/entity_types/${entityType}/entity_classifications`;
+    .organisationsBaseUrl}entity_types/${entityType}/entity_classifications`;
   return axios.get(url, getConfig());
 };
 
@@ -441,7 +441,7 @@ OrganizationRegisterActions.getUserNotifications = username => (
   getState
 ) => {
   const url = `${window.config
-    .nabuBaseUrl}jersey/users/${username}/notification_configurations`;
+    .organisationsBaseUrl}users/${username}/notification_configurations`;
 
   dispatch(sendData(null, types.REQUESTED_USER_NOTIFICATION));
 
@@ -670,7 +670,7 @@ OrganizationRegisterActions.getNotificationTypes = () => dispatch => {
 };
 
 OrganizationRegisterActions.getAdministrativeZones = () => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/administrative_zones`;
+  const url = `${window.config.organisationsBaseUrl}administrative_zones`;
   return axios
     .get(url, getConfig())
     .then(response => {
@@ -723,7 +723,7 @@ OrganizationRegisterActions.updateUserNotification = username => (
   );
 
   const url = `${window.config
-    .nabuBaseUrl}jersey/users/${username}/notification_configurations`;
+    .organisationsBaseUrl}users/${username}/notification_configurations`;
   return axios
     .put(url, notificationConfiguration, getConfig())
     .then(response => {

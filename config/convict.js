@@ -16,6 +16,18 @@ module.exports = new Promise(function(resolve, reject){
       default: "http://rutebanken.org/do_not_read",
       env: "CONFIG_URL"
     },
+    organisationsBaseUrl: {
+      doc: "Base URL for for Organisations API including slash",
+      format: "url",
+      default: "http://localhost:16001/services/organisations/",
+      env: "ORGANISATIONS_BASE_URL"
+    },
+    providersBaseUrl: {
+      doc: "Base URL for for Providers API including slash",
+      format: "url",
+      default: "http://localhost:16001/services/providers/",
+      env: "PROVIDERS_BASE_URL"
+    },
     nabuBaseUrl: {
       doc: "Base URL for for Nabu including slash",
       format: "url",

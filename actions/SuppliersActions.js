@@ -233,7 +233,7 @@ function sendData(payLoad, type) {
 
 
 SuppliersActions.getAllProviders = () => (dispatch, getState) => {
-  const url = window.config.nabuBaseUrl + 'jersey/providers/all';
+  const url = window.config.providersBaseUrl;
   dispatch(sendData(null, types.REQUESTED_SUPPLIERS));
   return axios({
     url: url,
@@ -273,7 +273,7 @@ SuppliersActions.refreshSupplierData = () => (dispatch, getState) => {
 };
 
 SuppliersActions.createProvider = () => (dispatch, getState) => {
-  const url = `${window.config.nabuBaseUrl}jersey/providers/create`;
+  const url = `${window.config.providersBaseUrl}`;
 
   const state = getState();
 
@@ -300,7 +300,7 @@ SuppliersActions.createProvider = () => (dispatch, getState) => {
 SuppliersActions.updateProvider = id => (dispatch, getState) => {
   if (id < 0) return;
 
-  const url = `${window.config.nabuBaseUrl}jersey/providers/update`;
+  const url = `${window.config.providersBaseUrl}${id}`;
 
   const state = getState();
   let provider = state.UtilsReducer.supplierForm;
@@ -337,7 +337,7 @@ SuppliersActions.updateProvider = id => (dispatch, getState) => {
 SuppliersActions.fetchProvider = id => dispatch => {
   if (id < 0) return;
 
-  const url = `${window.config.nabuBaseUrl}jersey/providers/${id}`;
+  const url = `${window.config.providersBaseUrl}${id}`;
 
   return axios
     .get(url, getConfig())

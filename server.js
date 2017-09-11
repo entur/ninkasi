@@ -63,6 +63,8 @@ convictConfig.then( (convict) => {
   app.get(ENDPOINTBASE + 'config.json', function(req, res) {
 
     var cfg = {
+      providersBaseUrl: convict.get('providersBaseUrl'),
+      organisationsBaseUrl: convict.get('organisationsBaseUrl'),
       nabuBaseUrl: convict.get('nabuBaseUrl'),
       mardukBaseUrl: convict.get('mardukBaseUrl'),
       endpointBase: convict.get('endpointBase'),
