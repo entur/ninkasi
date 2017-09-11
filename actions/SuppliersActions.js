@@ -133,7 +133,7 @@ SuppliersActions.executePeliasTask = tasks => dispatch => {
 SuppliersActions.uploadFiles = (files, providerId) => dispatch => {
   dispatch(sendData(0, types.UPDATED_FILE_UPLOAD_PROGRESS));
 
-  const url = `${window.config.nabuBaseUrl}jersey/files/${providerId}`;
+  const url = `${window.config.mardukBaseUrl}admin/services/chouette/${providerId}/files`;
 
   var data = new FormData();
 
