@@ -46,7 +46,7 @@ SuppliersActions.cleanStopPlacesInChouette = () => dispatch => {
 };
 
 SuppliersActions.deleteAllJobs = () => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/jobs/`;
+  const url = `${window.config.eventsBaseUrl}timetable/`;
   return axios.delete(url, getConfig()).then(response => {
     dispatch(
       SuppliersActions.addNotification('Deleted event history', 'success')
@@ -56,7 +56,7 @@ SuppliersActions.deleteAllJobs = () => dispatch => {
 };
 
 SuppliersActions.deleteJobsForProvider = id => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/jobs/${id}`;
+  const url = `${window.config.eventsBaseUrl}timetable/${id}`;
   return axios.delete(url, getConfig()).then(response => {
     dispatch(
       SuppliersActions.addNotification(
@@ -75,7 +75,7 @@ SuppliersActions.deleteJobsForProvider = id => dispatch => {
 SuppliersActions.getProviderStatus = id => dispatch => {
   if (id < 0) return;
 
-  const url = `${window.config.nabuBaseUrl}jersey/jobs/${id}`;
+  const url = `${window.config.eventsBaseUrl}timetable/${id}`;
 
   dispatch(sendData(null, types.REQUESTED_SUPPLIER_STATUS));
   return axios({
@@ -175,7 +175,7 @@ SuppliersActions.getAllProviderStatus = () => (dispatch, getState) => {
   const providers = state.SuppliersReducer.data;
 
 
-  const url = `${window.config.nabuBaseUrl}jersey/jobs`;
+  const url = `${window.config.eventsBaseUrl}timetable`;
   return axios({
     url: url,
     timeout: 20000,
@@ -692,7 +692,7 @@ SuppliersActions.exportData = id => dispatch => {
 
 SuppliersActions.getGraphStatus = () => dispatch => {
   const url =
-    window.config.nabuBaseUrl + `jersey/systemJobs/status/aggregation`;
+    window.config.eventsBaseUrl + `admin_summary/status/aggregation`;
 
   return axios
     .get(url, getConfig())

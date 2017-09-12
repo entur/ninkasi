@@ -65,7 +65,7 @@ convictConfig.then( (convict) => {
     var cfg = {
       providersBaseUrl: convict.get('providersBaseUrl'),
       organisationsBaseUrl: convict.get('organisationsBaseUrl'),
-      nabuBaseUrl: convict.get('nabuBaseUrl'),
+      eventsBaseUrl: convict.get('eventsBaseUrl'),
       mardukBaseUrl: convict.get('mardukBaseUrl'),
       endpointBase: convict.get('endpointBase'),
       chouetteBaseUrl: convict.get('chouetteBaseUrl')

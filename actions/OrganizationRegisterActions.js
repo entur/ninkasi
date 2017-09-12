@@ -503,7 +503,7 @@ OrganizationRegisterActions.setEnabledNotification = (
 
 OrganizationRegisterActions.getEventFilterTypes = () => dispatch => {
   const url = `${window.config
-    .nabuBaseUrl}jersey/notifications/event_filter_types`;
+    .eventsBaseUrl}notifications/event_filter_types`;
   return axios
     .get(url, getConfig())
     .then(response => {
@@ -515,7 +515,7 @@ OrganizationRegisterActions.getEventFilterTypes = () => dispatch => {
 };
 
 OrganizationRegisterActions.getJobDomains = () => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/notifications/job_domains`;
+  const url = `${window.config.eventsBaseUrl}notifications/job_domains`;
   return axios
     .get(url, getConfig())
     .then(response => {
@@ -576,7 +576,7 @@ OrganizationRegisterActions.changeEventFilterOrganizationRef = (
 
 OrganizationRegisterActions.getJobActionsByDomain = domain => dispatch => {
   const url = `${window.config
-    .nabuBaseUrl}jersey/notifications/job_actions/${domain}`;
+    .eventsBaseUrl}notifications/job_actions/${domain}`;
   return axios
     .get(url, getConfig())
     .then(response => {
@@ -630,7 +630,7 @@ OrganizationRegisterActions.changeEventFilterState = (
 };
 
 OrganizationRegisterActions.getEventFilterStates = () => dispatch => {
-  const url = `${window.config.nabuBaseUrl}jersey/notifications/job_states`;
+  const url = `${window.config.eventsBaseUrl}notifications/job_states`;
   return axios
     .get(url, getConfig())
     .then(response => {
@@ -658,7 +658,7 @@ OrganizationRegisterActions.changeNotificationType = (
 
 OrganizationRegisterActions.getNotificationTypes = () => dispatch => {
   const url = `${window.config
-    .nabuBaseUrl}jersey/notifications/notification_types`;
+    .eventsBaseUrl}notifications/notification_types`;
   return axios
     .get(url, getConfig())
     .then(response => {

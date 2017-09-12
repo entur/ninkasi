@@ -28,11 +28,11 @@ module.exports = new Promise(function(resolve, reject){
       default: "http://localhost:16001/services/providers/",
       env: "PROVIDERS_BASE_URL"
     },
-    nabuBaseUrl: {
-      doc: "Base URL for for Nabu including slash",
+    eventsBaseUrl: {
+      doc: "Base URL for for Events API including slash",
       format: "url",
-      default: "http://localhost:1888/jersey/",
-      env: "NABU_BASE_URL"
+      default: "http://localhost:1888/services/events/",
+      env: "EVENTS_BASE_URL"
     },
     mardukBaseUrl: {
       doc: "Base URL for for Marduk including slash",
