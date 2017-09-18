@@ -7,7 +7,7 @@
     "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.prod.config.js",
     "start": "node server.js",
     "test": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests",
-    "dev": "port=9000 PROVIDERS_BASE_URL=https://api-test.entur.org/providers/1.0/ ORGANISATIONS_BASE_URL=https://api-test.entur.org/organisations/1.0/ EVENTS_BASE_URL=https://api-test.entur.org/events/1.0/ MARDUK_BASE_URL=https://api-test.entur.org/marduk/1.0/ BABEL_ENV=development NODE_ENV=development node server.js",
+    "dev": "port=9000 PROVIDERS_BASE_URL=https://api-test.entur.org/providers/1.0/ ORGANISATIONS_BASE_URL=https://api-test.entur.org/organisations/1.0/ EVENTS_BASE_URL=https://api-test.entur.org/events/1.0/ TIMETABLE_ADMIN_BASE_URL=https://api-test.entur.org/timetable_admin/1.0/ MAP_ADMIN_BASE_URL=https://api-test.entur.org/map_admin/1.0/ GEOCODER_ADMIN_BASE_URL=https://api-test.entur.org/geocoder_admin/1.0/ BABEL_ENV=development NODE_ENV=development node server.js",
     "prod": "BABEL_ENV=production NODE_ENV=production node server.js"
   },
   "author": "Sean Erik Scully",

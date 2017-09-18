@@ -34,11 +34,23 @@ module.exports = new Promise(function(resolve, reject){
       default: "http://localhost:1888/services/events/",
       env: "EVENTS_BASE_URL"
     },
-    mardukBaseUrl: {
-      doc: "Base URL for for Marduk including slash",
+    timetableAdminBaseUrl: {
+      doc: "Base URL for for Timatable admin API including slash",
       format: "url",
-      default: "http://localhost:10011/",
-      env: "MARDUK_BASE_URL"
+      default: "http://localhost:10011/services/timetable_admin/",
+      env: "TIMETABLE_ADMIN_BASE_URL"
+    },
+    mapAdminBaseUrl: {
+      doc: "Base URL for for Map admin API including slash",
+      format: "url",
+      default: "http://localhost:10011/services/map_admin/",
+      env: "MAP_ADMIN_BASE_URL"
+    },
+    geocoderAdminBaseUrl: {
+      doc: "Base URL for for Geocoder admin API including slash",
+      format: "url",
+      default: "http://localhost:10011/services/geocoder_admin/",
+      env: "GEOCODER_ADMIN_BASE_URL"
     },
     endpointBase: {
       doc: "Namespace for client including slash, e.g. /admin/bel/",

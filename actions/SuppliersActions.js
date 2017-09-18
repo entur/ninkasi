@@ -21,7 +21,7 @@ const getConfig = () => {
 
 SuppliersActions.cleanStopPlacesInChouette = () => dispatch => {
   const url =
-    window.config.mardukBaseUrl + 'admin/services/chouette/stop_places/clean';
+    window.config.timetableAdminBaseUrl + 'stop_places/clean';
   return axios
     .post(url, null, getConfig())
     .then(response => {
@@ -102,7 +102,7 @@ SuppliersActions.executePeliasTask = tasks => dispatch => {
     .filter(entry => tasks[entry])
     .join('&task=');
   const url =
-    window.config.mardukBaseUrl + `admin/geocoder/start?task=${queryParams}`;
+    window.config.geocoderAdminBaseUrl + `build_pipeline?task=${queryParams}`;
 
   return axios
     .post(url, null, getConfig())
@@ -133,7 +133,7 @@ SuppliersActions.executePeliasTask = tasks => dispatch => {
 SuppliersActions.uploadFiles = (files, providerId) => dispatch => {
   dispatch(sendData(0, types.UPDATED_FILE_UPLOAD_PROGRESS));
 
-  const url = `${window.config.mardukBaseUrl}admin/services/chouette/${providerId}/files`;
+  const url = `${window.config.timetableAdminBaseUrl}${providerId}/files`;
 
   var data = new FormData();
 
@@ -403,8 +403,7 @@ SuppliersActions.cancelChouetteJobForProvider = (
   if (providerId < 0) return;
 
   const url =
-    window.config.mardukBaseUrl +
-    `admin/services/chouette/${providerId}/jobs/${chouetteId}`;
+    window.config.timetableAdminBaseUrl + `${providerId}/jobs/${chouetteId}`;
 
   return axios({
     url: url,
@@ -448,7 +447,7 @@ SuppliersActions.cancelChouetteJobForProvider = (
 
 SuppliersActions.cancelAllChouetteJobsforAllProviders = () => dispatch => {
   return axios({
-    url: window.config.mardukBaseUrl + `admin/services/chouette/jobs/`,
+    url: window.config.timetableAdminBaseUrl + `jobs/`,
     timeout: 20000,
     method: 'delete',
     ...getConfig()
@@ -485,7 +484,7 @@ SuppliersActions.cancelAllChouetteJobsforProvider = providerId => dispatch => {
   if (providerId < 0) return;
 
   const url =
-    window.config.mardukBaseUrl + `admin/services/chouette/${providerId}/jobs`;
+    window.config.timetableAdminBaseUrl + `${providerId}/jobs`;
 
   return axios({
     url: url,
@@ -571,7 +570,7 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => (
   }
 
   const url =
-    window.config.mardukBaseUrl + `admin/services/chouette/jobs?${queryString}`;
+    window.config.timetableAdminBaseUrl + `jobs?${queryString}`;
 
   var CancelToken = axios.CancelToken;
 
@@ -637,8 +636,8 @@ SuppliersActions.getChouetteJobStatus = () => (dispatch, getState) => {
   }
 
   const url =
-    window.config.mardukBaseUrl +
-    `admin/services/chouette/${activeId}/jobs?${queryString}`;
+    window.config.timetableAdminBaseUrl +
+    `${activeId}/jobs?${queryString}`;
 
   var CancelToken = axios.CancelToken;
 
@@ -661,7 +660,7 @@ SuppliersActions.getChouetteJobStatus = () => (dispatch, getState) => {
 
 SuppliersActions.exportData = id => dispatch => {
   const url =
-    window.config.mardukBaseUrl + `admin/services/chouette/${id}/export`;
+    window.config.timetableAdminBaseUrl + `${id}/export`;
 
   dispatch(requestExport());
   return axios({
@@ -725,7 +724,7 @@ SuppliersActions.getGraphStatus = () => dispatch => {
 
 SuppliersActions.transferData = id => dispatch => {
   const url =
-    window.config.mardukBaseUrl + `admin/services/chouette/${id}/transfer`;
+    window.config.timetableAdminBaseUrl + `${id}/transfer`;
 
   dispatch(requestTransfer());
   return axios({
@@ -764,7 +763,7 @@ SuppliersActions.getAllLineStats = () => (dispatch, getState) => {
   suppliers.forEach(supplier => {
     return axios({
       url: `${window.config
-        .mardukBaseUrl}admin/services/chouette/${supplier.id}/lineStats`,
+        .timetableAdminBaseUrl}${supplier.id}/line_statistics`,
       timeout: 10000,
       method: 'get',
       responseType: 'json',
@@ -790,7 +789,7 @@ SuppliersActions.getLineStatsForProvider = providerId => dispatch => {
   return axios
     .get(
       `${window.config
-        .mardukBaseUrl}admin/services/chouette/${providerId}/lineStats`,
+        .timetableAdminBaseUrl}${providerId}/line_statistics`,
       getConfig()
     )
     .then(response => {
@@ -808,7 +807,7 @@ SuppliersActions.getLineStatsForProvider = providerId => dispatch => {
 
 SuppliersActions.fetchFilenames = id => dispatch => {
   const url =
-    window.config.mardukBaseUrl + `admin/services/chouette/${id}/files`;
+    window.config.timetableAdminBaseUrl + `${id}/files`;
 
   dispatch(requestFilenames());
   return axios({
@@ -842,7 +841,7 @@ SuppliersActions.importData = (id, selectedFiles) => dispatch => {
   dispatch(requestImport());
 
   const url =
-    window.config.mardukBaseUrl + `admin/services/chouette/${id}/import`;
+    window.config.timetableAdminBaseUrl + `${id}/import`;
 
   const bodySelectedFiles = selectedFiles.map(file => {
     return {
@@ -875,7 +874,7 @@ SuppliersActions.importData = (id, selectedFiles) => dispatch => {
 
 SuppliersActions.cleanDataspace = id => dispatch => {
   const url =
-    window.config.mardukBaseUrl + `admin/services/chouette/${id}/clean`;
+    window.config.timetableAdminBaseUrl + `${id}/clean`;
 
   dispatch(requestCleanDataspace());
   return axios({
@@ -916,7 +915,7 @@ SuppliersActions.cleanDataspace = id => dispatch => {
 
 SuppliersActions.cleanAllDataspaces = filter => dispatch => {
   const url =
-    window.config.mardukBaseUrl + `admin/services/chouette/clean/${filter}`;
+    window.config.timetableAdminBaseUrl + `clean/${filter}`;
 
   return axios({
     url: url,
@@ -954,7 +953,7 @@ SuppliersActions.cleanAllDataspaces = filter => dispatch => {
 
 SuppliersActions.validateProvider = id => dispatch => {
   const url =
-    window.config.mardukBaseUrl + `admin/services/chouette/${id}/validate`;
+    window.config.timetableAdminBaseUrl + `${id}/validate`;
 
   dispatch(requestCleanDataspace());
   return axios({
@@ -986,7 +985,7 @@ SuppliersActions.validateProvider = id => dispatch => {
 };
 
 SuppliersActions.buildGraph = () => dispatch => {
-  const url = window.config.mardukBaseUrl + 'admin/services/graph/build';
+  const url = window.config.timetableAdminBaseUrl + 'routing_graph/build';
 
   dispatch(requestBuildGraph());
   return axios({
@@ -1011,7 +1010,7 @@ SuppliersActions.buildGraph = () => dispatch => {
 };
 
 SuppliersActions.fetchOSM = () => dispach => {
-  const url = window.config.mardukBaseUrl + 'admin/services/fetch/osm';
+  const url = window.config.mapAdminBaseUrl + 'download';
 
   dispatch(requestFetchOSM());
   return axios({
@@ -1257,7 +1256,7 @@ SuppliersActions.logEvent = event => {
 
 SuppliersActions.cleanFileFilter = () => dispatch => {
   return axios({
-    url: window.config.mardukBaseUrl + 'admin/application/filestores/clean',
+    url: window.config.timetableAdminBaseUrl + 'idempotentfilter/clean',
     timeout: 20000,
     method: 'post',
     ...getConfig()

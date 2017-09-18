@@ -19,7 +19,7 @@ class AdvancedFileList extends React.Component {
 
     e.stopPropagation()
 
-    const URL = window.config.mardukBaseUrl+`admin/services/chouette/${this.props.activeProviderId}/files/${filename}`
+    const URL = window.config.timetableAdminBaseUrl+`${this.props.activeProviderId}/files/${filename}`
     const token = localStorage.getItem('NINKASI::jwt')
     const params = `?access_token=${token}`
 
