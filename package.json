@@ -24,7 +24,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.7.2",
     "babel-runtime": "^6.6.1",
-    "bogu": "git@github.com:rutebanken/bogu.git#0.5.7",
+    "bogu": "git@github.com:rutebanken/bogu.git#0.5.8",
     "chai": "^3.5.0",
     "chart.js": "1.1.1",
     "classnames": "^2.2.5",
@@ -71,6 +71,5 @@
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "1.11.0",
     "webpack-hot-middleware": "2.18.2"
-  },
-  "devDependencies": {}
+  }
 }

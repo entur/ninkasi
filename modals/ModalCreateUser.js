@@ -156,9 +156,7 @@ class ModalCreateUser extends React.Component {
     const invalidPrivateCode = takenUsernames.indexOf(user.username) > -1;
     const disableCreate =
       invalidPrivateCode || !this.isUserRequiredFieldsProvided() || !usernameValid || !emailValid || emailIsTaken;
-
-    console.log("emailIsTaken", emailIsTaken);
-
+    
     return (
       <Modal
         isOpen={isModalOpen}
