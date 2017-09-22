@@ -297,14 +297,8 @@ SuppliersActions.createProvider = () => (dispatch, getState) => {
     });
 };
 
-SuppliersActions.updateProvider = id => (dispatch, getState) => {
-  if (id < 0) return;
-
+SuppliersActions.updateProvider = provider => dispatch => {
   const url = `${window.config.providersBaseUrl}${id}`;
-
-  const state = getState();
-  let provider = state.UtilsReducer.supplierForm;
-
   return axios
     .put(url, provider, getConfig())
     .then(function(response) {

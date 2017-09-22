@@ -2,11 +2,8 @@ import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import NotificationContainer from './NotificationContainer'
 import cfgreader from '../config/readConfig'
-import EditSupplierPage from  './EditSupplierPage'
-import Button from 'muicss/lib/react/button'
-import Modal from '../modals/Modal'
-
-import SuppliersActions from '../actions/SuppliersActions'
+import SuppliersActions from '../actions/SuppliersActions';
+import ModalEditProvider from '../modals/ModalEditProvider';
 
 class SupplierPage extends React.Component {
 
@@ -20,50 +17,33 @@ class SupplierPage extends React.Component {
     }).bind(this))
   }
 
-  handleOnSubmit(event) {
+  handleUpdateProvider(provider) {
+    console.log("provider", provider);
+    //dispatch(SuppliersActions.updateProvider(provider))
+  }
 
-    event.preventDefault()
-
-    const { dispatch, id, shouldUpdate } = this.props
-
-    if (shouldUpdate) {
-      dispatch(SuppliersActions.updateProvider(id))
-    } else {
-      dispatch(SuppliersActions.createProvider())
-    }
-
+  handleClose() {
+    this.props.dispatch(SuppliersActions.dismissEditProviderDialog())
   }
 
   render() {
 
-    const { provider, dispatch, isModalOpen, shouldUpdate, providers } = this.props
-
-    const closeStyle = {
-      float: "right",
-      marginRight: 5
-    }
+    const { provider, providers, isModalOpen, shouldUpdate } = this.props
 
     return (
-      <Modal isOpen={isModalOpen} onClose={() => this.closeModal()} minWidth="70%">
-        <Button style={closeStyle} onClick={() => this.closeModal()}>X</Button>
-        <div className="supplierPage">
-          <EditSupplierPage
-            dispatch={dispatch}
-            shouldUpdate={shouldUpdate}
-            provider={provider}
-            providers={providers}
-            handleOnSubmit={this.handleOnSubmit.bind(this)}
-          />
-          <NotificationContainer/>
-        </div>
-      </Modal>
+      <div>
+        <ModalEditProvider
+          open={isModalOpen}
+          provider={provider}
+          providers={providers}
+          handleSubmit={this.handleUpdateProvider.bind(this)}
+          handleClose={this.handleClose.bind(this)}
+        />
+        <NotificationContainer/>
+      </div>
     )
   }
 
-  closeModal() {
-    const {dispatch} = this.props
-    dispatch(SuppliersActions.dismissEditProviderDialog())
-  }
 }
 
 const mapStateToProps = (state, ownProps) => {
