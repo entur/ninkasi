@@ -410,7 +410,7 @@ class SuppliersContainer extends React.Component {
             <Option
               key={supplier.id}
               value={String(supplier.id)}
-              label={`${supplier.id} ${supplier.name}`}
+              label={supplier.name}
             />
           )}
         </Select>

@@ -21,7 +21,9 @@ const SuppliersReducer = (state = initialState, action) => {
     case types.RECEIVED_SUPPLIERS:
       return Object.assign({}, state, {
         isLoading: false,
-        data: action.payLoad,
+        data: action.payLoad.sort( (a,b) => {
+          return a.name.localeCompare(b.name, 'nb')
+        }),
         error: false
       });
     case types.REQUESTED_SUPPLIERS:
