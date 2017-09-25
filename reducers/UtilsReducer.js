@@ -2,22 +2,6 @@ import * as types from './../actions/actionTypes'
 
 import moment from 'moment'
 
-const supplierFormDefault = {
-  name: "",
-  sftpAccount: "",
-  chouetteInfo: {
-    prefix: "",
-    referential: "",
-    organisation: "",
-    user: "",
-    regtoppVersion: "",
-    regtoppCoordinateProjection: "",
-    regtoppCalendarStrategy: "",
-    dataFormat: "",
-    enableValidation: false,
-    migrateDataToProvider: null
-  }
-}
 
 const intialState = {
   shouldUpdateProvider: false,
@@ -42,7 +26,6 @@ const intialState = {
     property: "id",
     sortOrder: 0
   },
-  supplierForm: {...supplierFormDefault}
 }
 
 const filterHelper = (loggedEvents, loggedEventsFilter) => {
@@ -97,7 +80,7 @@ const UtilsReducer = (state = intialState, action) => {
       return Object.assign({}, state, {shouldUpdateProvider: true, editProviderModal: true})
 
     case types.OPENED_NEW_PROVIDER_DIALOG:
-      return Object.assign({}, state, {shouldUpdateProvider: false, supplierForm: supplierFormDefault, editProviderModal: true})
+      return Object.assign({}, state, {shouldUpdateProvider: false, editProviderModal: true})
 
     case types.LOG_EVENT:
       const event = eventHelper(action.payLoad, state.loggedEvents)
@@ -136,9 +119,6 @@ const UtilsReducer = (state = intialState, action) => {
 
       return Object.assign({}, state, {chouetteListSortOrder: {property: action.payLoad, sortOrder: chouetteSortOrder} })
 
-    case types.UPDATED_SUPPLIER_FORM:
-      return Object.assign({}, state, {supplierForm: createUpdatedSupplierFormObject(state.supplierForm, action.payLoad) } )
-
     case types.CONFIG_LOADED:
       return Object.assign({}, state, { isConfigLoaded: true })
 
@@ -153,18 +133,6 @@ const toggleExpandedEvents = (index, expanded) => {
     return expanded.concat(index)
 
   return expanded.filter( (item) => item != index)
-}
-
-const createUpdatedSupplierFormObject = (original, change) => {
-  let updatedObject = Object.assign({}, original)
-
-  if (change.key === "name" || change.key === 'sftpAccount') {
-    updatedObject[change.key] = change.value
-  } else {
-    updatedObject.chouetteInfo[change.key] = change.value
-  }
-
-   return updatedObject
 }
 
 

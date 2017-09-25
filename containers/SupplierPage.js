@@ -34,12 +34,13 @@ class SupplierPage extends React.Component {
 
   render() {
 
-    const { provider, providers, isModalOpen} = this.props
+    const { provider, providers, isModalOpen, shouldUpdate} = this.props
 
     return (
       <div>
         <ModalEditProvider
           open={isModalOpen}
+          shouldUpdate={shouldUpdate}
           provider={provider}
           providers={providers}
           handleSubmit={this.handleUpdateProvider.bind(this)}

@@ -8,7 +8,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 class ModalEditProvider extends Component {
   componentWillReceiveProps(nextProps) {
-    if (this.props.provider !== null) {
+    if (this.props.provider !== null && nextProps.shouldUpdate) {
       const { provider } = nextProps;
       const { name, sftpAccount } = provider;
       const {
@@ -73,8 +73,8 @@ class ModalEditProvider extends Component {
   }
 
   getTitle() {
-    const { provider } = this.props;
-    if (provider && provider.id) {
+    const { provider, shouldUpdate } = this.props;
+    if (provider && provider.id && shouldUpdate) {
       return `Edit ${provider.name} (${provider.id})`;
     }
     return 'Create new provider';

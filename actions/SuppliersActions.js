@@ -404,15 +404,6 @@ SuppliersActions.selectActiveSupplier = id => dispatch => {
   dispatch(SuppliersActions.unselectAllSuppliers());
 };
 
-SuppliersActions.updateSupplierForm = (key, value) => {
-  return {
-    type: types.UPDATED_SUPPLIER_FORM,
-    payLoad: {
-      key: key,
-      value: value
-    }
-  };
-};
 
 SuppliersActions.changeActiveSupplierId = id => {
   return {
