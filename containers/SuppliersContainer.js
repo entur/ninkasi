@@ -410,23 +410,26 @@ class SuppliersContainer extends React.Component {
           floatingLabelText={"Provider"}
           onChange={(e, k, v) => this.selectSupplier(v)}
           autoWidth={true}
-          value={activeProviderId || -1}
+          value={Number(activeProviderId) || -1}
           iconStyle={{fill: 'rgba(22, 82, 149, 0.69)'}}
         >
-          {supplierItems.map(supplier =>
-            <MenuItem
-              key={supplier.id}
-              value={supplier.id}
-              label={supplier.name}
-              primaryText={<div style={{display: 'flex', justifyContent: 'space-between'}}>
-                <span>{supplier.name}</span>
-                <span style={{marginLeft: 10, color: '#0b74ff', fontSize: '0.8em'}}>{
-                  supplier.id > 0
-                    ? supplier.chouetteInfo && supplier.chouetteInfo.migrateDataToProvider ? 'Level 2' : 'Level 1'
-                    : ''
-                }</span>
-              </div>}
-            />
+          {supplierItems.map(supplier => {
+            const isLevel1Provider = (supplier.chouetteInfo && supplier.chouetteInfo.migrateDataToProvider || supplier.id == -1);
+            return (
+              <MenuItem
+                key={supplier.id}
+                value={supplier.id}
+                label={supplier.name}
+                primaryText={
+                  <span style={{
+                    color: isLevel1Provider ? '#000' : '#4B4B4B',
+                  }}>
+                  {supplier.name}
+                  </span>
+                }
+              />
+            );
+          }
           )}
         </SelectField>
           <div style={{display: 'inline-block', marginTop: 25, marginLeft: 15}}>

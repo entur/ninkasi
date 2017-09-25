@@ -174,7 +174,6 @@ SuppliersActions.getAllProviderStatus = () => (dispatch, getState) => {
   const state = getState();
   const providers = state.SuppliersReducer.data;
 
-
   const url = `${window.config.eventsBaseUrl}timetable`;
   return axios({
     url: url,

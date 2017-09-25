@@ -59,7 +59,7 @@ class ModalEditProvider extends Component {
         _referential: '',
         _organisation: '',
         _user: '',
-        _regtoppVersion: '',
+        _regtoppVersion: null,
         _regtoppCoordinateProjection: '',
         _regtoppCalendarStrategy: '',
         _dataFormat: '',
@@ -97,7 +97,7 @@ class ModalEditProvider extends Component {
   }
   getVersions() {
     const versions = [
-      { value: '', text: 'None' },
+      { value: null, text: 'Auto-detect' },
       { value: 'R11D', text: '1.1D' },
       { value: 'R12', text: '1.2' },
       { value: 'R12N', text: '1.2 Novus' },
@@ -126,9 +126,9 @@ class ModalEditProvider extends Component {
   }
 
   render() {
-    const { open, provider, providers, handleClose, handleSubmit } = this.props;
+    const { open, providers, handleClose, handleSubmit } = this.props;
 
-    if (!provider || !this.state) return null;
+    if (!this.state) return null;
 
     const title = this.getTitle();
     const projections = this.getProjections();
