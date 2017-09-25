@@ -272,13 +272,9 @@ SuppliersActions.refreshSupplierData = () => (dispatch, getState) => {
   dispatch(SuppliersActions.getChouetteJobStatus());
 };
 
-SuppliersActions.createProvider = () => (dispatch, getState) => {
+SuppliersActions.createProvider = data => dispatch => {
   const url = `${window.config.providersBaseUrl}`;
-
-  const state = getState();
-
-  let provider = state.UtilsReducer.supplierForm;
-
+  const provider = getProviderPayload(data);
   return axios
     .post(url, provider, getConfig())
     .then(function(response) {
@@ -294,11 +290,48 @@ SuppliersActions.createProvider = () => (dispatch, getState) => {
       dispatch(
         SuppliersActions.logEvent({ title: 'Creating new provider failed' })
       );
+      dispatch(
+        SuppliersActions.getAllProviders()
+      );
     });
 };
 
-SuppliersActions.updateProvider = provider => dispatch => {
-  const url = `${window.config.providersBaseUrl}${id}`;
+const getProviderPayload = data => {
+  let payload = {
+    name: data._name,
+    sftpAccount: data._sftpAccount,
+    chouetteInfo: {
+      xmlns: data._xmlns,
+      xmlnsurl: data._xmlnsurl,
+      referential: data._referential,
+      organisation: data._organisation,
+      user: data._user,
+      regtoppVersion: data._regtoppVersion,
+      regtoppCoordinateProjection: data._regtoppCoordinateProjection,
+      regtoppCalendarStrategy: data._regtoppCalendarStrategy,
+      dataFormat: data._dataFormat,
+      enableValidation: data._enableValidation,
+      allowCreateMissingStopPlace: data._allowCreateMissingStopPlace,
+      enableStopPlaceIdMapping: data._enableStopPlaceIdMapping,
+      enableCleanImport: data._enableCleanImport,
+      migrateDataToProvider: data._migrateDataToProvider,
+    }
+  };
+
+  if (data._providerId) {
+    payload.id = data._providerId;
+  }
+
+  if (data._chouetteInfoId) {
+    payload.chouetteInfo.id = data._chouetteInfoId;
+  }
+
+  return payload;
+};
+
+SuppliersActions.updateProvider = data => dispatch => {
+  const provider = getProviderPayload(data);
+  const url = `${window.config.providersBaseUrl}${provider.id}`;
   return axios
     .put(url, provider, getConfig())
     .then(function(response) {

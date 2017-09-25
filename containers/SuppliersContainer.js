@@ -19,6 +19,8 @@ import Divider from 'material-ui/Divider';
 import peliasTasks from '../config/peliasTasks';
 import moment from 'moment';
 import roleParser from '../roles/rolesParser';
+import FaEdit from 'react-icons/lib/fa/pencil';
+
 
 class SuppliersContainer extends React.Component {
   constructor(props) {
@@ -149,6 +151,10 @@ class SuppliersContainer extends React.Component {
     }
   }
 
+  handleEditProvider() {
+    this.props.dispatch(SuppliersActions.openEditProviderDialog());
+  }
+
   handleLogout() {
     const { kc } = this.props;
     kc.logout();
@@ -198,7 +204,8 @@ class SuppliersContainer extends React.Component {
       canceAllJobs: 'Cancel all current chouette jobs',
       cleanAll: 'Clean all specificed by level',
       createNewProvider: 'Create new provider',
-      pelias: 'Execute pelias operations'
+      pelias: 'Execute pelias operations',
+      editProvider: 'Edit provider',
     };
 
     const peliasPopoverStyle = {
@@ -398,7 +405,7 @@ class SuppliersContainer extends React.Component {
           </Button>
         </div>
         <Select
-          style={{ display: 'inline-block', margin: 15, zIndex: 9999 }}
+          style={{ display: 'inline-block', margin: 15, zIndex: 998 }}
           className="select-supplier"
           value={selectedValue}
           id="select-supplier"
@@ -414,12 +421,29 @@ class SuppliersContainer extends React.Component {
             />
           )}
         </Select>
-        <div
-          title={toolTips.createNewProvider}
-          style={{ display: 'inline-block', cursor: 'pointer' }}
-          onClick={() => this.handleNewProvider()}
-        >
-          <FaAdd /> New
+        <div style={{display: 'inline-block'}}>
+          <div
+            title={toolTips.editProvider}
+            style={{ display: 'inline-block', cursor: 'pointer', marginRight: 10 }}
+            onClick={() => this.handleEditProvider()}
+          >
+            { !this.props.displayAllSuppliers &&
+              <div style={{display: 'flex', alignItems: 'center'}}>
+                <FaEdit />
+                <span style={{marginLeft: 2}}>Edit</span>
+              </div>
+            }
+          </div>
+          <div
+            title={toolTips.createNewProvider}
+            style={{ display: 'inline-block', cursor: 'pointer' }}
+            onClick={() => this.handleNewProvider()}
+          >
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <FaAdd />
+              <span style={{marginLeft: 2}}>New</span>
+            </div>
+          </div>
         </div>
         <GraphStatus />
       </div>
@@ -432,7 +456,8 @@ const mapStateToProps = state => {
     suppliers: state.SuppliersReducer.data,
     activeProviderId: state.SuppliersReducer.activeId,
     otherStatus: state.SuppliersReducer.otherStatus || [],
-    kc: state.UserReducer.kc
+    kc: state.UserReducer.kc,
+    displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
   };
 };
 

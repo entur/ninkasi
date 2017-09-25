@@ -9,7 +9,6 @@ import Loader from 'halogen/PulseLoader';
 import '../sass/main.scss';
 import Tabs from 'muicss/lib/react/tabs';
 import Tab from 'muicss/lib/react/tab';
-import FaEdit from 'react-icons/lib/fa/pencil';
 import { getQueryVariable } from './utils';
 import FileUpload from './FileUpload';
 import StatisticsDetails from './StatisticsDetails';
@@ -153,10 +152,6 @@ class SupplierTabWrapper extends React.Component {
     //console.log(tab)
   }
 
-  handleEditProvider = () => {
-    this.props.dispatch(SuppliersActions.openEditProviderDialog());
-  };
-
   render() {
     const {
       displayAllSuppliers,
@@ -272,19 +267,6 @@ class SupplierTabWrapper extends React.Component {
           <div style={{ marginLeft: 10, marginRight: 10 }}>
             {tabsToRender}
           </div>
-          {!displayAllSuppliers
-            ? <div
-                style={{
-                  display: 'flex',
-                  cursor: 'pointer',
-                  justifyContent: 'flex-end',
-                  marginRight: 20
-                }}
-                onClick={() => this.handleEditProvider()}
-              >
-                <FaEdit style={{ transform: 'scale(1.5)' }} />
-              </div>
-            : null}
         </div>
       );
     } else {

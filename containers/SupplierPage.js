@@ -17,9 +17,15 @@ class SupplierPage extends React.Component {
     }).bind(this))
   }
 
-  handleUpdateProvider(provider) {
-    console.log("provider", provider);
-    //dispatch(SuppliersActions.updateProvider(provider))
+  handleUpdateProvider(data) {
+    const { shouldUpdate, dispatch } = this.props;
+
+    if (shouldUpdate) {
+      dispatch(SuppliersActions.updateProvider(data));
+    } else {
+      dispatch(SuppliersActions.createProvider(data));
+    }
+    this.handleClose();
   }
 
   handleClose() {
@@ -28,7 +34,7 @@ class SupplierPage extends React.Component {
 
   render() {
 
-    const { provider, providers, isModalOpen, shouldUpdate } = this.props
+    const { provider, providers, isModalOpen} = this.props
 
     return (
       <div>
@@ -43,18 +49,15 @@ class SupplierPage extends React.Component {
       </div>
     )
   }
-
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    provider: state.UtilsReducer.supplierForm,
-    id: state.SuppliersReducer.activeId,
-    isModalOpen: state.UtilsReducer.editProviderModal,
-    shouldUpdate: state.UtilsReducer.shouldUpdateProvider,
-    providers: state.SuppliersReducer.data
-  }
-}
+const mapStateToProps = state => ({
+  provider: state.UtilsReducer.supplierForm,
+  id: state.SuppliersReducer.activeId,
+  isModalOpen: state.UtilsReducer.editProviderModal,
+  shouldUpdate: state.UtilsReducer.shouldUpdateProvider,
+  providers: state.SuppliersReducer.data
+});
 
 
 export default connect(mapStateToProps)(SupplierPage)
