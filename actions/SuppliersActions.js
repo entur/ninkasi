@@ -342,6 +342,7 @@ SuppliersActions.updateProvider = data => dispatch => {
           'success'
         )
       );
+      dispatch(SuppliersActions.fetchProvider(provider.id));
       dispatch(
         SuppliersActions.logEvent({
           title: `Updated provider ${provider.id} successfully`

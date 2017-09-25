@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
 import SuppliersActions from '../actions/SuppliersActions';
 import cfgreader from '../config/readConfig';
-import Option from 'muicss/lib/react/option';
-import Select from 'muicss/lib/react/select';
+import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField';
 import Button from 'muicss/lib/react/button';
 const FaAdd = require('react-icons/lib/fa/plus');
 const FaHistory = require('react-icons/lib/fa/history');
@@ -66,9 +66,8 @@ class SuppliersContainer extends React.Component {
     this.props.dispatch(SuppliersActions.openModalDialog());
   }
 
-  selectSupplier(event) {
+  selectSupplier(value) {
     const { dispatch } = this.props;
-    const { value } = event.target;
 
     if (value > 0) {
       dispatch(SuppliersActions.selectActiveSupplier(value));
@@ -182,11 +181,11 @@ class SuppliersContainer extends React.Component {
   render() {
     const { suppliers, activeProviderId, otherStatus, kc } = this.props;
 
-    let selectedValue = typeof activeProviderId !== 'undefined'
-      ? String(activeProviderId)
-      : '0';
-
     let isAdmin = roleParser.isAdmin(kc.tokenParsed);
+    const supplierItems = [{
+      id: -1,
+      name: 'All providers'
+    }].concat(suppliers);
 
     let innerContainerStyle = {
       display: 'flex',
@@ -404,44 +403,54 @@ class SuppliersContainer extends React.Component {
             Log out
           </Button>
         </div>
-        <Select
-          style={{ display: 'inline-block', margin: 15, zIndex: 998 }}
-          className="select-supplier"
-          value={selectedValue}
+        <div style={{display: 'flex', alignItems: 'center', margin: 'auto', width: '98%'}}>
+        <SelectField
           id="select-supplier"
-          label="Provider"
-          onChange={value => this.selectSupplier(value)}
+          floatingLabelFixed={true}
+          floatingLabelText={"Provider"}
+          onChange={(e, k, v) => this.selectSupplier(v)}
+          autoWidth={true}
+          value={activeProviderId || -1}
+          iconStyle={{fill: 'rgba(22, 82, 149, 0.69)'}}
         >
-          <Option key="supplier-all" value="-1" label={'All providers'} />
-          {suppliers.map(supplier =>
-            <Option
+          {supplierItems.map(supplier =>
+            <MenuItem
               key={supplier.id}
-              value={String(supplier.id)}
+              value={supplier.id}
               label={supplier.name}
+              primaryText={<div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <span>{supplier.name}</span>
+                <span style={{marginLeft: 10, color: '#0b74ff', fontSize: '0.8em'}}>{
+                  supplier.id > 0
+                    ? supplier.chouetteInfo && supplier.chouetteInfo.migrateDataToProvider ? 'Level 2' : 'Level 1'
+                    : ''
+                }</span>
+              </div>}
             />
           )}
-        </Select>
-        <div style={{display: 'inline-block'}}>
-          <div
-            title={toolTips.editProvider}
-            style={{ display: 'inline-block', cursor: 'pointer', marginRight: 10 }}
-            onClick={() => this.handleEditProvider()}
-          >
-            { !this.props.displayAllSuppliers &&
+        </SelectField>
+          <div style={{display: 'inline-block', marginTop: 25, marginLeft: 15}}>
+            <div
+              title={toolTips.editProvider}
+              style={{ display: 'inline-block', cursor: 'pointer', marginRight: 10 }}
+              onClick={() => this.handleEditProvider()}
+            >
+              { !this.props.displayAllSuppliers &&
               <div style={{display: 'flex', alignItems: 'center'}}>
                 <FaEdit />
                 <span style={{marginLeft: 2}}>Edit</span>
               </div>
-            }
-          </div>
-          <div
-            title={toolTips.createNewProvider}
-            style={{ display: 'inline-block', cursor: 'pointer' }}
-            onClick={() => this.handleNewProvider()}
-          >
-            <div style={{display: 'flex', alignItems: 'center'}}>
-              <FaAdd />
-              <span style={{marginLeft: 2}}>New</span>
+              }
+            </div>
+            <div
+              title={toolTips.createNewProvider}
+              style={{ display: 'inline-block', cursor: 'pointer' }}
+              onClick={() => this.handleNewProvider()}
+            >
+              <div style={{display: 'flex', alignItems: 'center'}}>
+                <FaAdd />
+                <span style={{marginLeft: 2}}>New</span>
+              </div>
             </div>
           </div>
         </div>

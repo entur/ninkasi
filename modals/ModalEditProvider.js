@@ -91,10 +91,37 @@ class ModalEditProvider extends Component {
     return projections.map( projection => (
         <MenuItem key={'projection-' + projection.value}
             value={projection.value}
-            innerDivStyle={{zIndex: 100000}}
-            style={{zIndex: 100000}}
             primaryText={projection.text}
         />
+    ));
+  }
+  getVersions() {
+    const versions = [
+      { value: '', text: 'None' },
+      { value: 'R11D', text: '1.1D' },
+      { value: 'R12', text: '1.2' },
+      { value: 'R12N', text: '1.2 Novus' },
+      { value: 'R13A', text: '1.3A' },
+    ];
+    return versions.map( version => (
+      <MenuItem key={'version-' + version.value}
+                value={version.value}
+                primaryText={version.text}
+      />
+    ));
+  }
+
+  getCalendarStrategies() {
+    const strategies = [
+      { value: '', text: 'None' },
+      { value: 'ADD', text: 'Add using DKO-file start-date' },
+      { value: 'UPDATE', text: 'Update/overwrite whole adminCode' },
+    ];
+    return strategies.map( strategy => (
+      <MenuItem key={'strategy-' + strategy.value}
+                value={strategy.value}
+                primaryText={strategy.text}
+      />
     ));
   }
 
@@ -105,6 +132,8 @@ class ModalEditProvider extends Component {
 
     const title = this.getTitle();
     const projections = this.getProjections();
+    const versions = this.getVersions();
+    const calendarStrategies = this.getCalendarStrategies();
 
     const rowStyle = {
       display: 'flex',
@@ -144,7 +173,7 @@ class ModalEditProvider extends Component {
             onChange={(e, v) => this.setState({ _name: v })}
           />
           <TextField
-            floatingLabelText={'Referential'}
+            floatingLabelText={'Chouette referential name'}
             floatingLabelFixed={true}
             value={this.state._referential}
             style={{ flex: 1, padding: '0 15px' }}
@@ -168,34 +197,47 @@ class ModalEditProvider extends Component {
           />
         </div>
         <div style={rowStyle}>
-          <TextField
-            floatingLabelText={'Regtopp version'}
-            floatingLabelFixed={true}
-            value={this.state._regtoppVersion}
-            style={{ flex: 1 }}
-            onChange={(e, v) => this.setState({ _regtoppVersion: v })}
-          />
-          <SelectField
-            value={this.state._regtoppCoordinateProjection}
-            floatingLabelText={'Regtopp Coordinate Projection'}
-            menuStyle={{zIndex: 100000}}
-            floatingLabelFixed={true}
-            style={{ flex: 1, padding: '0 15px', zIndex: 100000}}
-            onChange={(e, k, v) => {
-              this.setState({_regtoppCoordinateProjection: v})
-            }}
-          >
-            {projections}
-          </SelectField>
+          <div style={{flex: 1}}>
+            <SelectField
+              value={this.state._regtoppVersion}
+              floatingLabelText={'Regtopp version'}
+              floatingLabelFixed={true}
+              fullWidth={true}
+              onChange={(e, k, v) => {
+                this.setState({_regtoppVersion: v})
+              }}
+            >
+              {versions}
+            </SelectField>
+          </div>
+         <div style={{padding: '0 15px', flex: 1}}>
+           <SelectField
+             value={this.state._regtoppCoordinateProjection}
+             floatingLabelText={'Regtopp Coordinate Projection'}
+             floatingLabelFixed={true}
+             fullWidth={true}
+             onChange={(e, k, v) => {
+               this.setState({_regtoppCoordinateProjection: v})
+             }}
+           >
+             {projections}
+           </SelectField>
+         </div>
         </div>
         <div style={rowStyle}>
-          <TextField
-            floatingLabelText={'Regtopp calendar strategy'}
-            floatingLabelFixed={true}
-            value={this.state._regtoppCalendarStrategy}
-            style={{ flex: 1 }}
-            onChange={(e, v) => this.setState({ _regtoppCalendarStrategy: v })}
-          />
+          <div style={{flex: 1}}>
+            <SelectField
+              value={this.state._regtoppCalendarStrategy}
+              floatingLabelText={'Regtopp calendar strategy'}
+              floatingLabelFixed={true}
+              fullWidth={true}
+              onChange={(e, k, v) => {
+                this.setState({_regtoppCalendarStrategy: v})
+              }}
+            >
+              {calendarStrategies}
+            </SelectField>
+          </div>
           <TextField
             floatingLabelText={'Data format'}
             floatingLabelFixed={true}
