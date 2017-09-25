@@ -39,8 +39,10 @@ class GraphStatus extends React.Component {
 
     const statusStyle = {
       float: 'right',
-      marginRight: 15,
-      marginTop: 20
+      marginRight: 25,
+      marginTop: 10,
+      display: 'flex',
+      alignItems: 'center'
     }
 
     if (!graphStatus) {
@@ -52,7 +54,7 @@ class GraphStatus extends React.Component {
     return (
       <div style={statusStyle}>
         <span style={{display: 'block'}}>Graph status: <span style={{fontWeight: 600, color: this.getColorByStatus(status) }}>{status}</span></span>
-        <span style={{display: 'block', fontSize: '0.8em'}}>{moment(graphStatus.started).fromNow()}</span>
+        <span style={{display: 'block', fontSize: '0.8em', marginLeft: 5, marginBottom: 8}}>{moment(graphStatus.started).fromNow()}</span>
       </div>
     )
   }

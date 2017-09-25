@@ -420,13 +420,7 @@ class SuppliersContainer extends React.Component {
                 key={supplier.id}
                 value={supplier.id}
                 label={supplier.name}
-                primaryText={
-                  <span style={{
-                    color: isLevel1Provider ? '#000' : '#4B4B4B',
-                  }}>
-                  {supplier.name}
-                  </span>
-                }
+                primaryText={<span style={{color: isLevel1Provider ? 'intial' : '#d9a51b'}}>{supplier.name}</span>}
               />
             );
           }
