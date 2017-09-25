@@ -407,6 +407,7 @@ class SuppliersContainer extends React.Component {
         <SelectField
           id="select-supplier"
           floatingLabelFixed={true}
+          style={{minWidth: 350}}
           floatingLabelText={"Provider"}
           onChange={(e, k, v) => this.selectSupplier(v)}
           autoWidth={true}
