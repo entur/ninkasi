@@ -20,31 +20,37 @@ class SupplierTabWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTabForProvider: 'migrateData',
-      activeTabForAllProvider: 'chouetteJobs'
+      activeTabForProvider: getQueryVariable('tab') || 'migrateData',
+      activeTabForAllProvider: getQueryVariable('tab') || 'chouetteJobs'
     };
   }
 
   componentDidMount() {
-
     let queryTab = getQueryVariable('tab');
     let queryId = getQueryVariable('id');
 
     const { dispatch } = this.props;
-
-    if (!!queryId) {
-
-      if (queryTab == 1) {
+    if (queryTab == 'events') {
+      if (queryId) {
         dispatch(SuppliersActions.getProviderStatus(queryId));
-      } else if (queryTab == 2) {
-        dispatch(SuppliersActions.getChouetteJobStatus());
-      } else if (queryId == 3) {
-        dispatch(SuppliersActions.getLineStatsForProvider(queryId));
+      } else {
+        dispatch(SuppliersActions.getAllProviderStatus());
       }
-    } else {
-
-      if (queryTab == 0) {
+    } else if (queryTab == 'chouetteJobs') {
+      if (queryId) {
+        dispatch(SuppliersActions.getChouetteJobStatus());
+      } else {
         dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
+      }
+    } else if (queryTab == 'statistics') {
+      if (queryId) {
+        dispatch(SuppliersActions.getLineStatsForProvider(queryId));
+      } else {
+        dispatch(SuppliersActions.getAllLineStats());
+      }
+    } else if (queryTab == 'OrganisationRegister') {
+      if (queryId) {
+        this.onTabChangeForProvider(0, 'migrateData', null, null);
       }
     }
   }
@@ -71,12 +77,12 @@ class SupplierTabWrapper extends React.Component {
       dispatch(SuppliersActions.getChouetteJobStatus());
     }
 
-    if (
-      !displayAllSuppliers &&
-      activeTabForProvider === 'statistics' &&
-      activeId
-    ) {
-      dispatch(SuppliersActions.getLineStatsForProvider(activeId));
+    if (activeTabForProvider === 'statistics' && activeId) {
+      if (displayAllSuppliers) {
+        dispatch(SuppliersActions.getAllLineStats());
+      } else {
+        dispatch(SuppliersActions.getLineStatsForProvider(activeId));
+      }
     }
 
     if (displayAllSuppliers && activeTabForAllProvider === 'chouetteJobs') {
@@ -87,11 +93,11 @@ class SupplierTabWrapper extends React.Component {
   onTabChangeForProvider(i, value, tab, ev) {
     const { dispatch, activeId } = this.props;
 
-    if (!isNaN(i)) {
+    if (value) {
       window.history.pushState(
         window.config.endpointBase,
         'Title',
-        `?id=${activeId}&tab=${i}`
+        `?id=${activeId}&tab=${value}`
       );
     }
 
@@ -105,19 +111,19 @@ class SupplierTabWrapper extends React.Component {
       case 'statistics':
         dispatch(SuppliersActions.getLineStatsForProvider(activeId));
 
-      default: break;
+      default:
+        break;
     }
   }
 
   onTabChangeForAllProviders(i, value, tab, ev) {
-    if (!isNaN(i)) {
+    if (value) {
       window.history.pushState(
         window.config.endpointBase,
         'Title',
-        `?tab=${i}`
+        `?tab=${value}`
       );
     }
-
     switch (value) {
       case 'chouetteJobs':
         this.props.dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
@@ -131,6 +137,37 @@ class SupplierTabWrapper extends React.Component {
 
       default:
         break;
+    }
+  }
+
+  getTabIndexFromParams() {
+    const { displayAllSuppliers } = this.props;
+    let param = getQueryVariable('tab');
+    switch (param) {
+      case 'events':
+        return displayAllSuppliers ? 1 : 1;
+      case 'chouetteJobs':
+        return displayAllSuppliers ? 0 : 2;
+      case 'migrateData': {
+        if (displayAllSuppliers) {
+          this.onTabChangeForAllProviders(0, 'chouetteJobs', null, null);
+        }
+        return 0;
+      }
+      case 'statistics':
+        return displayAllSuppliers ? 2 : 3;
+      case 'organisationRegister':
+        return displayAllSuppliers ? 3 : 0;
+      case 'uploadFiles': {
+        if (displayAllSuppliers) {
+          this.onTabChangeForAllProviders(0, 'chouetteJobs', null, null);
+          return 0;
+        } else {
+          return 4;
+        }
+      }
+      default:
+        return 0;
     }
   }
 
@@ -148,8 +185,18 @@ class SupplierTabWrapper extends React.Component {
     dispatch(SuppliersActions.getProviderStatus(activeId));
   }
 
-  onActive(tab) {
-    //console.log(tab)
+  componentDidUpdate() {
+    const tabIndexFromParams = this.getTabIndexFromParams();
+    const { allProvidersTabs } = this.refs;
+    if (
+      allProvidersTabs &&
+      allProvidersTabs.state &&
+      allProvidersTabs.state.currentSelectedIndex !== tabIndexFromParams
+    ) {
+      allProvidersTabs.setState({
+        currentSelectedIndex: tabIndexFromParams
+      });
+    }
   }
 
   render() {
@@ -160,7 +207,7 @@ class SupplierTabWrapper extends React.Component {
       filelistIsLoading,
       fileUploadProgress,
       lineStats,
-      kc
+      canEditOrganisation
     } = this.props;
 
     if (filelistIsLoading) {
@@ -179,7 +226,7 @@ class SupplierTabWrapper extends React.Component {
       })[0];
     }
 
-    let canEditOrganisation = rolesParser.canEditOrganisation(kc.tokenParsed);
+    const defaultSelectedIndex = this.getTabIndexFromParams();
 
     if (displayAllSuppliers || provider) {
       let tabsToRender = null;
@@ -189,7 +236,8 @@ class SupplierTabWrapper extends React.Component {
           <Tabs
             justified={true}
             onChange={this.onTabChangeForAllProviders.bind(this)}
-            defaultSelectedIndex={Number(getQueryVariable('tab')) || 0}
+            defaultSelectedIndex={defaultSelectedIndex}
+            ref="allProvidersTabs"
           >
             <Tab value="chouetteJobs" label="Chouette jobs">
               <ChouetteAllJobs />
@@ -214,10 +262,7 @@ class SupplierTabWrapper extends React.Component {
                 />}
             </Tab>
             {canEditOrganisation
-              ? <Tab
-                  value="Organization register"
-                  label="Organization register"
-                >
+              ? <Tab value="organisationRegister" label="Organisation register">
                   <OrganizationRegister />
                 </Tab>
               : null}
@@ -228,13 +273,9 @@ class SupplierTabWrapper extends React.Component {
           <Tabs
             justified={true}
             onChange={this.onTabChangeForProvider.bind(this)}
-            defaultSelectedIndex={Number(getQueryVariable('tab')) || 0}
+            defaultSelectedIndex={defaultSelectedIndex}
           >
-            <Tab
-              value="migrateData"
-              label="Migrate data"
-              onActive={this.onActive}
-            >
+            <Tab value="migrateData" label="Migrate data">
               <DataMigrationDetails />
             </Tab>
             <Tab value="events" label="Events">
@@ -275,18 +316,19 @@ class SupplierTabWrapper extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    suppliers: state.SuppliersReducer.data,
-    activeId: state.SuppliersReducer.activeId,
-    filelistIsLoading: state.MardukReducer.filenames.isLoading,
-    displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
-    providerEvents: state.SuppliersReducer.statusList,
-    allProvidersEvents: state.SuppliersReducer.statusListAllProviders,
-    fileUploadProgress: state.SuppliersReducer.fileUploadProgress,
-    lineStats: state.SuppliersReducer.lineStats,
-    kc: state.UserReducer.kc
-  };
-};
+const mapStateToProps = state => ({
+  suppliers: state.SuppliersReducer.data,
+  activeId: state.SuppliersReducer.activeId,
+  filelistIsLoading: state.MardukReducer.filenames.isLoading,
+  displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
+  providerEvents: state.SuppliersReducer.statusList,
+  allProvidersEvents: state.SuppliersReducer.statusListAllProviders,
+  fileUploadProgress: state.SuppliersReducer.fileUploadProgress,
+  lineStats: state.SuppliersReducer.lineStats,
+  kc: state.UserReducer.kc,
+  canEditOrganisation: rolesParser.canEditOrganisation(
+    state.UserReducer.kc.tokenParsed
+  )
+});
 
 export default connect(mapStateToProps)(SupplierTabWrapper);

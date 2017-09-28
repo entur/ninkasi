@@ -10,7 +10,6 @@ const FaHistory = require('react-icons/lib/fa/history');
 const FaExclamation = require('react-icons/lib/fa/exclamation-triangle');
 import Dropdown from 'muicss/lib/react/dropdown';
 import DropdownItem from 'muicss/lib/react/dropdown-item';
-import GraphStatus from '../components/GraphStatus';
 import { getQueryVariable } from './utils';
 import Checkbox from 'material-ui/Checkbox';
 import Popover from 'material-ui/Popover';
@@ -20,6 +19,7 @@ import peliasTasks from '../config/peliasTasks';
 import moment from 'moment';
 import roleParser from '../roles/rolesParser';
 import FaEdit from 'react-icons/lib/fa/pencil';
+import GraphStatus from '../components/GraphStatus';
 
 
 class SuppliersContainer extends React.Component {
@@ -68,7 +68,6 @@ class SuppliersContainer extends React.Component {
 
   selectSupplier(value) {
     const { dispatch } = this.props;
-
     if (value > 0) {
       dispatch(SuppliersActions.selectActiveSupplier(value));
     } else {
@@ -403,56 +402,58 @@ class SuppliersContainer extends React.Component {
             Log out
           </Button>
         </div>
-        <div style={{display: 'flex', alignItems: 'center', margin: 'auto', width: '98%'}}>
-        <SelectField
-          id="select-supplier"
-          floatingLabelFixed={true}
-          style={{minWidth: 350}}
-          floatingLabelText={"Provider"}
-          onChange={(e, k, v) => this.selectSupplier(v)}
-          autoWidth={true}
-          value={Number(activeProviderId) || -1}
-          iconStyle={{fill: 'rgba(22, 82, 149, 0.69)'}}
-        >
-          {supplierItems.map(supplier => {
-            const isLevel1Provider = (supplier.chouetteInfo && supplier.chouetteInfo.migrateDataToProvider || supplier.id == -1);
-            return (
-              <MenuItem
-                key={supplier.id}
-                value={supplier.id}
-                label={supplier.name}
-                primaryText={<span style={{color: isLevel1Provider ? 'intial' : '#d9a51b'}}>{supplier.name}</span>}
-              />
-            );
-          }
-          )}
-        </SelectField>
-          <div style={{display: 'inline-block', marginTop: 25, marginLeft: 15}}>
-            <div
-              title={toolTips.editProvider}
-              style={{ display: 'inline-block', cursor: 'pointer', marginRight: 10 }}
-              onClick={() => this.handleEditProvider()}
+        <div style={{display: 'flex', justifyContent: 'space-between', margin: 'auto', width: '98%'}}>
+          <div style={{display: 'flex', alignItems: 'center'}}>
+            <SelectField
+              id="select-supplier"
+              floatingLabelFixed={true}
+              style={{minWidth: 350}}
+              floatingLabelText={"Provider"}
+              onChange={(e, k, v) => this.selectSupplier(v)}
+              autoWidth={true}
+              value={Number(activeProviderId) || -1}
+              iconStyle={{fill: 'rgba(22, 82, 149, 0.69)'}}
             >
-              { !this.props.displayAllSuppliers &&
-              <div style={{display: 'flex', alignItems: 'center'}}>
-                <FaEdit />
-                <span style={{marginLeft: 2}}>Edit</span>
+              {supplierItems.map(supplier => {
+                  const isLevel1Provider = (supplier.chouetteInfo && supplier.chouetteInfo.migrateDataToProvider || supplier.id == -1);
+                  return (
+                    <MenuItem
+                      key={supplier.id}
+                      value={supplier.id}
+                      label={supplier.name}
+                      primaryText={<span style={{color: isLevel1Provider ? 'intial' : '#d9a51b'}}>{supplier.name}</span>}
+                    />
+                  );
+                }
+              )}
+            </SelectField>
+            <div style={{display: 'inline-block', marginTop: 25, marginLeft: 15}}>
+              <div
+                title={toolTips.editProvider}
+                style={{ display: 'inline-block', cursor: 'pointer', marginRight: 10 }}
+                onClick={() => this.handleEditProvider()}
+              >
+                { !this.props.displayAllSuppliers &&
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                  <FaEdit />
+                  <span style={{marginLeft: 2}}>Edit</span>
+                </div>
+                }
               </div>
-              }
-            </div>
-            <div
-              title={toolTips.createNewProvider}
-              style={{ display: 'inline-block', cursor: 'pointer' }}
-              onClick={() => this.handleNewProvider()}
-            >
-              <div style={{display: 'flex', alignItems: 'center'}}>
-                <FaAdd />
-                <span style={{marginLeft: 2}}>New</span>
+              <div
+                title={toolTips.createNewProvider}
+                style={{ display: 'inline-block', cursor: 'pointer' }}
+                onClick={() => this.handleNewProvider()}
+              >
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                  <FaAdd />
+                  <span style={{marginLeft: 2}}>New</span>
+                </div>
               </div>
             </div>
           </div>
+          <GraphStatus/>
         </div>
-        <GraphStatus />
       </div>
     );
   }

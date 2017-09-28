@@ -16,7 +16,6 @@ import NoAccess from '../components/NoAccess'
 
   componentWillMount(){
     cfgreader.readConfig( (function(config) {
-      console.info("loaded config", config)
       window.config = config
       this.props.dispatch(UtilsActions.notifyConfigIsLoaded())
     }).bind(this))

@@ -1,70 +1,79 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import SupplierActions from '../actions/SuppliersActions'
-import cfgreader from '../config/readConfig'
-import moment from 'moment'
+import React from 'react';
+import { connect } from 'react-redux';
+import SupplierActions from '../actions/SuppliersActions';
+import cfgreader from '../config/readConfig';
+import moment from 'moment';
 
 class GraphStatus extends React.Component {
-
   componentDidMount() {
-    cfgreader.readConfig( (function(config) {
-      window.config = config
-      this.props.dispatch(SupplierActions.getGraphStatus())
-      this.startPolling()
-    }).bind(this))
+    cfgreader.readConfig(
+      function(config) {
+        window.config = config;
+        this.props.dispatch(SupplierActions.getGraphStatus());
+        this.startPolling();
+      }.bind(this)
+    );
   }
 
   startPolling = () => {
     setTimeout(() => {
-      setInterval(this.poll, 10000)
-    }, 1000)
-  }
+      setInterval(this.poll, 10000);
+    }, 1000);
+  };
 
   poll = () => {
-    this.props.dispatch(SupplierActions.getGraphStatus())
-  }
+    this.props.dispatch(SupplierActions.getGraphStatus());
+  };
 
   getColorByStatus(status) {
     switch (status) {
-      case 'STARTED': return '#08920e'
-      case 'OK': return '#08920e'
-      case 'FAILED': return '#990000'
-      default: return 'grey'
+      case 'STARTED':
+        return '#08920e';
+      case 'OK':
+        return '#08920e';
+      case 'FAILED':
+        return '#990000';
+      default:
+        return 'grey';
     }
   }
 
   render() {
-
-    const { graphStatus } = this.props
+    const { graphStatus } = this.props;
 
     const statusStyle = {
-      float: 'right',
-      marginRight: 25,
+      marginRight: 10,
       marginTop: 10,
       display: 'flex',
-      alignItems: 'center'
-    }
+      alignItems: 'center',
+      flexDirection: 'column'
+    };
 
     if (!graphStatus) {
-      return null
+      return null;
     }
 
-    const { status } = graphStatus
+    const { status } = graphStatus;
 
     return (
       <div style={statusStyle}>
-        <span style={{display: 'block'}}>Graph status: <span style={{fontWeight: 600, color: this.getColorByStatus(status) }}>{status}</span></span>
-        <span style={{display: 'block', fontSize: '0.8em', marginLeft: 5, marginBottom: 8}}>{moment(graphStatus.started).fromNow()}</span>
+        <span>
+          Graph status:
+          <span
+            style={{ fontWeight: 600, marginLeft: 5, color: this.getColorByStatus(status)}}>
+            {status}
+          </span>
+        </span>
+        <span style={{fontSize: '0.8em'}}>
+          {moment(graphStatus.started).fromNow()}
+        </span>
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    graphStatus: state.SuppliersReducer.graphStatus
-  }
-}
+const mapStateToProps = state => ({
+  graphStatus: state.SuppliersReducer.graphStatus
+});
 
-
-export default connect(mapStateToProps)(GraphStatus)
+export default connect(mapStateToProps)(GraphStatus);
