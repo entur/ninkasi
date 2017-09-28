@@ -202,7 +202,7 @@ SuppliersActions.getAllProviderStatus = () => (dispatch, getState) => {
 };
 
 SuppliersActions.selectAllSuppliers = () => {
-  let tabQueryParam = getQueryVariable('tab')
+  const tabQueryParam = getQueryVariable('tab')
     ? `?tab=${getQueryVariable('tab')}`
     : '';
 
@@ -375,9 +375,9 @@ SuppliersActions.fetchProvider = id => dispatch => {
         ? `&tab=${getQueryVariable('tab')}`
         : '';
 
-      if (getQueryVariable('tab') == 1) {
+      if (getQueryVariable('tab') == 'events') {
         dispatch(SuppliersActions.getProviderStatus(id));
-      } else if (getQueryVariable('tab') == 1) {
+      } else if (getQueryVariable('tab') == 'chouetteJobs') {
         dispatch(SuppliersActions.getChouetteJobStatus());
       }
 
@@ -771,34 +771,31 @@ SuppliersActions.transferData = id => dispatch => {
     });
 };
 
-SuppliersActions.getAllLineStats = () => (dispatch, getState) => {
+SuppliersActions.getAllLineStats = () => dispatch => {
   dispatch(sendData(null, types.REQUESTED_LINE_STATS));
 
-  const suppliers = getState().SuppliersReducer.data.filter(
-    supplier => supplier.chouetteInfo.migrateDataToProvider
-  );
-
-  suppliers.forEach(supplier => {
-    return axios({
-      url: `${window.config
-        .timetableAdminBaseUrl}${supplier.id}/line_statistics`,
-      timeout: 10000,
-      method: 'get',
-      responseType: 'json',
-      ...getConfig()
+  return axios({
+    url: `${window.config
+      .timetableAdminBaseUrl}line_statistics/level1`,
+    timeout: 10000,
+    method: 'get',
+    responseType: 'json',
+    ...getConfig()
+  })
+  .then(({data}) => {
+    Object.keys(data).forEach( providerId => {
+      dispatch(
+        sendData(
+          { id: providerId, data: formatLineStats(data[providerId]) },
+          types.RECEIVED_LINE_STATS
+        )
+      );
     })
-      .then(response => {
-        dispatch(
-          sendData(
-            { id: supplier.id, data: formatLineStats(response.data) },
-            types.RECEIVED_LINE_STATS
-          )
-        );
-      })
-      .catch(response => {
-        console.error(response);
-      });
+  })
+  .catch(response => {
+    console.error(response);
   });
+
 };
 
 SuppliersActions.getLineStatsForProvider = providerId => dispatch => {
