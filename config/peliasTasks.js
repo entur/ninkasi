@@ -6,6 +6,6 @@ const peliasTasks = [
   { label: "Sync Google Cloud with Kartverket's place names", task: "PLACE_NAMES_DOWNLOAD" },
   { label: "Export stop places, POI and administrative units from Tiamat", task: "TIAMAT_EXPORT" },
   { label: "Build and deploy Pelias", task: "PELIAS_UPDATE" }
-  ]
+  ];
 
-  export default peliasTasks
+  export default peliasTasks;

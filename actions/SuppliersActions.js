@@ -1226,9 +1226,9 @@ SuppliersActions.toggleExpandableEventsContent = id => {
   };
 };
 
-SuppliersActions.openModalDialog = () => {
+SuppliersActions.openHistoryModal = () => {
   return {
-    type: types.OPEN_MODAL_DIALOG
+    type: types.OPENED_HISTORY_MODAL
   };
 };
 

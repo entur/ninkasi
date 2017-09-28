@@ -6,7 +6,6 @@ import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 import Button from 'muicss/lib/react/button';
 const FaAdd = require('react-icons/lib/fa/plus');
-const FaHistory = require('react-icons/lib/fa/history');
 const FaExclamation = require('react-icons/lib/fa/exclamation-triangle');
 import Dropdown from 'muicss/lib/react/dropdown';
 import DropdownItem from 'muicss/lib/react/dropdown-item';
@@ -60,10 +59,6 @@ class SuppliersContainer extends React.Component {
 
   handleFetchOSM() {
     this.props.dispatch(SuppliersActions.fetchOSM());
-  }
-
-  openModal() {
-    this.props.dispatch(SuppliersActions.openModalDialog());
   }
 
   selectSupplier(value) {
@@ -151,11 +146,6 @@ class SuppliersContainer extends React.Component {
 
   handleEditProvider() {
     this.props.dispatch(SuppliersActions.openEditProviderDialog());
-  }
-
-  handleLogout() {
-    const { kc } = this.props;
-    kc.logout();
   }
 
   getColorByStatus(status) {
@@ -292,14 +282,6 @@ class SuppliersContainer extends React.Component {
       <div className="suppliers-container">
         <div style={innerContainerStyle}>
           <Button
-            title={toolTips.history}
-            style={{ fontSize: 12 }}
-            color="dark"
-            onClick={() => this.openModal()}
-          >
-            <FaHistory color="#fff" /> History
-          </Button>
-          <Button
             disabled={!isAdmin}
             title={toolTips.pelias}
             style={{ fontSize: 12 }}
@@ -307,7 +289,7 @@ class SuppliersContainer extends React.Component {
             onClick={event => this.handleTogglePeliasOpen(event, true)}
           >
             Pelias
-            <MdDropDown color="#fff" style={{ verticalAlign: 'middle' }} />
+            <MdDropDown color="#fff" style={{ verticalAlign: 'middle', marginTop: -3 }} />
           </Button>
           <Popover
             open={this.state.peliasOpen}
@@ -394,13 +376,6 @@ class SuppliersContainer extends React.Component {
               Level 2
             </DropdownItem>
           </Dropdown>
-          <Button
-            style={{ fontSize: 12 }}
-            color="dark"
-            onClick={this.handleLogout.bind(this)}
-          >
-            Log out
-          </Button>
         </div>
         <div style={{display: 'flex', justifyContent: 'space-between', margin: 'auto', width: '98%'}}>
           <div style={{display: 'flex', alignItems: 'center'}}>

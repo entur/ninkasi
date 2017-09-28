@@ -1,20 +1,21 @@
-import { connect } from 'react-redux'
-import React, { Component, PropTypes } from 'react'
-import NotificationContainer from './NotificationContainer'
-import cfgreader from '../config/readConfig'
+import { connect } from 'react-redux';
+import React, { Component, PropTypes } from 'react';
+import NotificationContainer from './NotificationContainer';
+import cfgreader from '../config/readConfig';
 import SuppliersActions from '../actions/SuppliersActions';
 import ModalEditProvider from '../modals/ModalEditProvider';
 
 class SupplierPage extends React.Component {
-
   componentWillMount() {
-    const { id, dispatch } = this.props
-    cfgreader.readConfig( (function(config) {
-      window.config = config
-      if (id) {
-        dispatch(SuppliersActions.fetchProvider(id))
-      }
-    }).bind(this))
+    const { id, dispatch } = this.props;
+    cfgreader.readConfig(
+      function(config) {
+        window.config = config;
+        if (id) {
+          dispatch(SuppliersActions.fetchProvider(id));
+        }
+      }.bind(this)
+    );
   }
 
   handleUpdateProvider(data) {
@@ -29,12 +30,11 @@ class SupplierPage extends React.Component {
   }
 
   handleClose() {
-    this.props.dispatch(SuppliersActions.dismissEditProviderDialog())
+    this.props.dispatch(SuppliersActions.dismissEditProviderDialog());
   }
 
   render() {
-
-    const { provider, providers, isModalOpen, shouldUpdate} = this.props
+    const { provider, providers, isModalOpen, shouldUpdate } = this.props;
 
     return (
       <div>
@@ -46,9 +46,9 @@ class SupplierPage extends React.Component {
           handleSubmit={this.handleUpdateProvider.bind(this)}
           handleClose={this.handleClose.bind(this)}
         />
-        <NotificationContainer/>
+        <NotificationContainer />
       </div>
-    )
+    );
   }
 }
 
@@ -60,5 +60,4 @@ const mapStateToProps = state => ({
   providers: state.SuppliersReducer.data
 });
 
-
-export default connect(mapStateToProps)(SupplierPage)
+export default connect(mapStateToProps)(SupplierPage);

@@ -29,7 +29,6 @@ import NoAccess from '../components/NoAccess'
       return (
         <MuiThemeProvider>
           <div className="app">
-            <div className="version">v{process.env.VERSION}</div>
             <Header/>
             { roleParser.isAdmin(kc.tokenParsed) ?
               <div>

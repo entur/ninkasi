@@ -67,7 +67,7 @@ const UtilsReducer = (state = intialState, action) => {
     case types.TOGGLE_EXPANDABLE_FOR_EVENT_WRAPPER:
       return Object.assign({}, state, {expandedEvents: toggleExpandedEvents(action.payLoad, state.expandedEvents)} )
 
-    case types.OPEN_MODAL_DIALOG:
+    case types.OPENED_HISTORY_MODAL:
       return Object.assign({}, state, { isModalOpen: true, filteredLoggedEvents: state.loggedEvents })
 
     case types.DISMISS_MODAL_DIALOG:
