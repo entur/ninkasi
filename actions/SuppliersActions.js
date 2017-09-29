@@ -1285,6 +1285,24 @@ SuppliersActions.getExportedFiles = () => dispatch => {
       const netex = [];
       const graph = [];
       const other = [];
+      const providerData = {};
+
+      const pushToProvider = (providerId, referential, format, file) => {
+        if (providerId === null) return;
+
+        if (providerData[providerId]) {
+          if (providerData[providerId][format]) {
+            providerData[providerId][format] = providerData[providerId][format].concat(file);
+          } else {
+            providerData[providerId][format] = [file];
+          }
+        } else {
+          providerData[providerId] = {
+            [format]: [file],
+            referential
+          }
+        }
+      };
 
       response.data.files.forEach( file => {
         if (file.format === 'NETEX') {
@@ -1296,13 +1314,15 @@ SuppliersActions.getExportedFiles = () => dispatch => {
         } else {
           other.push(file);
         }
+        pushToProvider(file.providerId, file.referential, file.format, file);
       });
 
       dispatch(sendData({
         gtfs,
         netex,
         graph,
-        other
+        other,
+        providerData,
       }, types.RECEIVED_EXPORTED_FILES));
     }
 

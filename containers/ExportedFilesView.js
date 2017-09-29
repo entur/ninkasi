@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import SuppliersActions from '../actions/SuppliersActions';
+import ExportedFilesRow from './ExportedFilesRow';
+import ExportedFilesHeader from './ExportedFilesHeader'
 
 class ExportedFilesView extends Component {
 
@@ -14,14 +16,18 @@ class ExportedFilesView extends Component {
 
     if (!files) return null;
 
-    const { gtfs, other, netex, graph } = files;
+    const { gtfs, other, netex, graph, providerData } = files;
 
     return (
       <div>
-        GTFS: { gtfs.length }
-        NETEX: { netex.length }
-        Graph: { graph.length }
-        Other: { other.length }
+        <ExportedFilesHeader/>
+        { Object.keys(providerData).map( p => (
+          <ExportedFilesRow
+            key={'files-row-' + p}
+            data={providerData[p]}
+            providerId={p}
+          />
+        )) }
       </div>
     );
   }

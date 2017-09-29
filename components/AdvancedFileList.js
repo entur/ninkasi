@@ -1,17 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 import MdDownload from 'material-ui/svg-icons/file/file-download';
+import { getSizeFromBytes } from '../utils/'
 
 class AdvancedFileList extends React.Component {
-  getSizeFromBytes(bytes) {
-    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
-    if (bytes == 0) return '0 Byte';
-
-    let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-
-    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-  }
 
   handleDownloadFile(e, filename) {
     e.stopPropagation();
@@ -225,7 +218,7 @@ class AdvancedFileList extends React.Component {
             >
               <div style={columnStyle}>{file.name}</div>
               <div style={columnStyle}>
-                {this.getSizeFromBytes(file.fileSize)}
+                {getSizeFromBytes(file.fileSize)}
               </div>
               <div style={columnStyle}> {file.ext}</div>
               <div style={columnStyle}>

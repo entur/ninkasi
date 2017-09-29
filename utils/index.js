@@ -52,11 +52,25 @@ export const getEntityClassificationRefString = (entityType, allow) => {
   if (!allow) {
     const lastIndex = entityType.lastIndexOf(':');
     if (lastIndex > -1) {
-      return entityType.substr(0, lastIndex+1) + '!' + entityType.substr(lastIndex+1);
+      return (
+        entityType.substr(0, lastIndex + 1) +
+        '!' +
+        entityType.substr(lastIndex + 1)
+      );
     }
   }
   return entityType;
-}
+};
+
+export const getSizeFromBytes = bytes => {
+  var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+
+  if (bytes == 0) return '0 Byte';
+
+  let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+
+  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+};
 
 export const getOrganizationNameByRef = (organizations, ref) => {
   if (!organizations) return ref;
@@ -66,7 +80,7 @@ export const getOrganizationNameByRef = (organizations, ref) => {
     if (org.id === ref) return org.name;
   }
   return ref;
-}
+};
 
 export const getAdminZoneNameByRef = (adminZones, ref) => {
   if (!adminZones) return ref;
@@ -76,14 +90,14 @@ export const getAdminZoneNameByRef = (adminZones, ref) => {
     if (zone.id === ref) return zone.name;
   }
   return ref;
-}
+};
 
 export const sortFiles = (unsortedFiles, sortOrder, filterText) => {
-
   let files = unsortedFiles.slice().filter(file => {
     if (!file.name) return;
 
-    if (file.name.toLowerCase().indexOf(filterText.toLowerCase()) > -1) return file;
+    if (file.name.toLowerCase().indexOf(filterText.toLowerCase()) > -1)
+      return file;
   });
 
   let sortedFiles = !sortOrder.ext
@@ -111,4 +125,4 @@ export const sortFiles = (unsortedFiles, sortOrder, filterText) => {
       : _.sortBy(files, file => new Date(file.updated)).reverse();
 
   return sortedFiles;
-}
+};
