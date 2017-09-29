@@ -101,7 +101,13 @@ class AdvancedFileList extends React.Component {
   }
 
   render() {
-    const { files, selectedIndices, downloadButton, isSource } = this.props;
+    const {
+      files,
+      selectedIndices,
+      downloadButton,
+      isSource,
+      warningMsg
+    } = this.props;
 
     const headerStyle = {
       marginRight: 5,
