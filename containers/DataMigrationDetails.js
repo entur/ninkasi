@@ -400,11 +400,16 @@ class DataMigrationDetails extends React.Component {
   }
 
   handleImportData = () => {
-    const { dispatch } = this.props;
+    const { dispatch, activeId, providers } = this.props;
     const { outboundFiles } = this.state;
+    const provider = providers.find( p => p.id == activeId);
 
-    if (outboundFiles.length) {
-      dispatch(SuppliersActions.importData(this.props.activeId, outboundFiles));
+    if (outboundFiles.length && provider) {
+      if (provider.chouetteInfo && provider.chouetteInfo.enableCleanImport && outboundFiles.length > 1) {
+        alert('Clean before import enabled, does not make sense to import multiple files');
+      } else {
+        dispatch(SuppliersActions.importData(this.props.activeId, outboundFiles));
+      }
     } else {
       alert('No files added to import');
     }
