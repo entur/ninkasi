@@ -73,7 +73,6 @@ class AdvancedFileList extends React.Component {
 
   handleMenuItemOnClick(e, index) {
     const { selectedIndices, updateIndices } = this.props;
-
     const controlled = e.ctrlKey || e.metaKey;
 
     if (e.shiftKey && selectedIndices.size) {
@@ -213,7 +212,7 @@ class AdvancedFileList extends React.Component {
                 lineHeight: 3,
                 overflowY: 'auto'
               }}
-              onClick={e => this.handleMenuItemOnClick(e, index)}
+              onTouchTap={e => this.handleMenuItemOnClick(e, index)}
               onDoubleClick={e => {
                 e.preventDefault();
               }}

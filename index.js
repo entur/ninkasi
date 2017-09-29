@@ -9,6 +9,7 @@ import './sass/main.scss';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import cfgreader from './config/readConfig';
 
+
 cfgreader.readConfig(
   function(config) {
     window.config = config;

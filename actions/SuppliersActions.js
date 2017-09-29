@@ -1024,9 +1024,8 @@ SuppliersActions.buildGraph = () => dispatch => {
     });
 };
 
-SuppliersActions.fetchOSM = () => dispach => {
+SuppliersActions.fetchOSM = () => dispatch => {
   const url = window.config.mapAdminBaseUrl + 'download';
-
   dispatch(requestFetchOSM());
   return axios({
     url: url,
@@ -1267,6 +1266,47 @@ SuppliersActions.logEvent = event => {
     type: types.LOG_EVENT,
     payLoad: event
   };
+};
+
+
+SuppliersActions.getExportedFiles = () => dispatch => {
+  dispatch(sendData(types.REQUESTED_EXPORTED_FILES, null));
+  const url = window.config.timetableAdminBaseUrl + 'export/files';
+  return axios({
+    url: url,
+    timeout: 20000,
+    method: 'get',
+    responseType: 'json',
+    ...getConfig()
+  }).then( response => {
+    if (response.data && response.data.files) {
+
+      const gtfs = [];
+      const netex = [];
+      const graph = [];
+      const other = [];
+
+      response.data.files.forEach( file => {
+        if (file.format === 'NETEX') {
+          netex.push(file);
+        } else if (file.format === 'GRAPH') {
+          graph.push(file);
+        } else if (file.format === 'GTFS') {
+          gtfs.push(file);
+        } else {
+          other.push(file);
+        }
+      });
+
+      dispatch(sendData({
+        gtfs,
+        netex,
+        graph,
+        other
+      }, types.RECEIVED_EXPORTED_FILES));
+    }
+
+  })
 };
 
 SuppliersActions.cleanFileFilter = () => dispatch => {

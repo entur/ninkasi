@@ -15,6 +15,7 @@ import StatisticsDetails from './StatisticsDetails';
 import StaticsForProvider from './StatisticsForProvider';
 import OrganizationRegister from './OrganizationRegister';
 import rolesParser from '../roles/rolesParser';
+import ExportedFilesView from '../containers/ExportedFilesView';
 
 class SupplierTabWrapper extends React.Component {
   constructor(props) {
@@ -260,6 +261,9 @@ class SupplierTabWrapper extends React.Component {
                     s => !!s.chouetteInfo.migrateDataToProvider
                   )}
                 />}
+            </Tab>
+            <Tab value="exportedFiles" label="Exported files">
+              <ExportedFilesView/>
             </Tab>
             {canEditOrganisation
               ? <Tab value="organisationRegister" label="Organisation register">

@@ -7,7 +7,8 @@ const initialState = {
   all_suppliers_selected: true,
   activeId: 0,
   fileUploadProgress: 0,
-  lineStats: {}
+  lineStats: {},
+  exportedFiles: null,
 };
 
 const SuppliersReducer = (state = initialState, action) => {
@@ -57,6 +58,11 @@ const SuppliersReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         activeId: -1,
         all_suppliers_selected: true
+      });
+
+    case types.RECEIVED_EXPORTED_FILES:
+      return Object.assign({}, state, {
+        exportedFiles: action.payLoad
       });
 
     case types.UNSELECTED_ALL_SUPPLIERS:
