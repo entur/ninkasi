@@ -1024,7 +1024,7 @@ SuppliersActions.buildGraph = () => dispatch => {
     });
 };
 
-SuppliersActions.fetchOSM = () => dispach => {
+SuppliersActions.fetchOSM = () => dispatch => {
   const url = window.config.mapAdminBaseUrl + 'download';
 
   dispatch(requestFetchOSM());
