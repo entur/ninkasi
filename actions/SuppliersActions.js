@@ -20,8 +20,7 @@ const getConfig = () => {
 };
 
 SuppliersActions.cleanStopPlacesInChouette = () => dispatch => {
-  const url =
-    window.config.timetableAdminBaseUrl + 'stop_places/clean';
+  const url = window.config.timetableAdminBaseUrl + 'stop_places/clean';
   return axios
     .post(url, null, getConfig())
     .then(response => {
@@ -169,7 +168,6 @@ SuppliersActions.uploadFiles = (files, providerId) => dispatch => {
 };
 
 SuppliersActions.getAllProviderStatus = () => (dispatch, getState) => {
-
   dispatch(sendData(null, types.REQUESTED_ALL_SUPPLIERS_STATUS));
   const state = getState();
   const providers = state.SuppliersReducer.data;
@@ -182,23 +180,28 @@ SuppliersActions.getAllProviderStatus = () => (dispatch, getState) => {
     responseType: 'json',
     ...getConfig()
   })
-  .then(response => {
-    const providerStatus = response.data.map( status => {
-      let provider = null;
-      for (let i = 0; i < providers.length; i++) {
-        if (providers[i].id == status.providerId) {
-          provider = providers[i];
-          break;
+    .then(response => {
+      const providerStatus = response.data.map(status => {
+        let provider = null;
+        for (let i = 0; i < providers.length; i++) {
+          if (providers[i].id == status.providerId) {
+            provider = providers[i];
+            break;
+          }
         }
-      }
-      return SuppliersActions.formatProviderStatusDate([status], provider);
+        return SuppliersActions.formatProviderStatusDate([status], provider);
+      });
+      const eventList = [].concat.apply([], providerStatus);
+      dispatch(
+        sendData(
+          sortEventlistByNewestFirst(eventList),
+          types.RECEIVED_ALL_SUPPLIERS_STATUS
+        )
+      );
+    })
+    .catch(response => {
+      dispatch(sendData(response.data, types.ERROR_SUPPLIER_STATUS));
     });
-    const eventList = [].concat.apply([], providerStatus);
-    dispatch(sendData(sortEventlistByNewestFirst(eventList), types.RECEIVED_ALL_SUPPLIERS_STATUS));
-  })
-  .catch(response => {
-    dispatch(sendData(response.data, types.ERROR_SUPPLIER_STATUS));
-  });
 };
 
 SuppliersActions.selectAllSuppliers = () => {
@@ -229,7 +232,6 @@ function sendData(payLoad, type) {
     type: type
   };
 }
-
 
 SuppliersActions.getAllProviders = () => (dispatch, getState) => {
   const url = window.config.providersBaseUrl;
@@ -289,9 +291,7 @@ SuppliersActions.createProvider = data => dispatch => {
       dispatch(
         SuppliersActions.logEvent({ title: 'Creating new provider failed' })
       );
-      dispatch(
-        SuppliersActions.getAllProviders()
-      );
+      dispatch(SuppliersActions.getAllProviders());
     });
 };
 
@@ -313,7 +313,7 @@ const getProviderPayload = data => {
       allowCreateMissingStopPlace: data._allowCreateMissingStopPlace,
       enableStopPlaceIdMapping: data._enableStopPlaceIdMapping,
       enableCleanImport: data._enableCleanImport,
-      migrateDataToProvider: data._migrateDataToProvider,
+      migrateDataToProvider: data._migrateDataToProvider
     }
   };
 
@@ -403,7 +403,6 @@ SuppliersActions.selectActiveSupplier = id => dispatch => {
   dispatch(SuppliersActions.setActiveActionFilter(''));
   dispatch(SuppliersActions.unselectAllSuppliers());
 };
-
 
 SuppliersActions.changeActiveSupplierId = id => {
   return {
@@ -501,8 +500,7 @@ SuppliersActions.cancelAllChouetteJobsforAllProviders = () => dispatch => {
 SuppliersActions.cancelAllChouetteJobsforProvider = providerId => dispatch => {
   if (providerId < 0) return;
 
-  const url =
-    window.config.timetableAdminBaseUrl + `${providerId}/jobs`;
+  const url = window.config.timetableAdminBaseUrl + `${providerId}/jobs`;
 
   return axios({
     url: url,
@@ -587,8 +585,7 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => (
     queryString += `&action=${actionAllFilter}`;
   }
 
-  const url =
-    window.config.timetableAdminBaseUrl + `jobs?${queryString}`;
+  const url = window.config.timetableAdminBaseUrl + `jobs?${queryString}`;
 
   var CancelToken = axios.CancelToken;
 
@@ -654,8 +651,7 @@ SuppliersActions.getChouetteJobStatus = () => (dispatch, getState) => {
   }
 
   const url =
-    window.config.timetableAdminBaseUrl +
-    `${activeId}/jobs?${queryString}`;
+    window.config.timetableAdminBaseUrl + `${activeId}/jobs?${queryString}`;
 
   var CancelToken = axios.CancelToken;
 
@@ -677,8 +673,7 @@ SuppliersActions.getChouetteJobStatus = () => (dispatch, getState) => {
 };
 
 SuppliersActions.exportData = id => dispatch => {
-  const url =
-    window.config.timetableAdminBaseUrl + `${id}/export`;
+  const url = window.config.timetableAdminBaseUrl + `${id}/export`;
 
   dispatch(requestExport());
   return axios({
@@ -708,8 +703,7 @@ SuppliersActions.exportData = id => dispatch => {
 };
 
 SuppliersActions.getGraphStatus = () => dispatch => {
-  const url =
-    window.config.eventsBaseUrl + `admin_summary/status/aggregation`;
+  const url = window.config.eventsBaseUrl + `admin_summary/status/aggregation`;
 
   return axios
     .get(url, getConfig())
@@ -717,21 +711,20 @@ SuppliersActions.getGraphStatus = () => dispatch => {
       let status = {
         otherStatus: []
       };
-      response.data
-        .forEach(type => {
-          if (type.jobType === 'BUILD_GRAPH') {
-            status.graphStatus = {
-              status: type.currentState,
-              started: type.currentStateDate
-            };
-          } else if (type.jobDomain === 'GEOCODER'){
-            status.otherStatus.push({
-              type: type.jobType,
-              status: type.currentState,
-              started: type.currentStateDate
-            });
-          }
-        });
+      response.data.forEach(type => {
+        if (type.jobType === 'BUILD_GRAPH') {
+          status.graphStatus = {
+            status: type.currentState,
+            started: type.currentStateDate
+          };
+        } else if (type.jobDomain === 'GEOCODER') {
+          status.otherStatus.push({
+            type: type.jobType,
+            status: type.currentState,
+            started: type.currentStateDate
+          });
+        }
+      });
 
       dispatch(sendData(status, types.RECEIVED_GRAPH_STATUS));
     })
@@ -741,8 +734,7 @@ SuppliersActions.getGraphStatus = () => dispatch => {
 };
 
 SuppliersActions.transferData = id => dispatch => {
-  const url =
-    window.config.timetableAdminBaseUrl + `${id}/transfer`;
+  const url = window.config.timetableAdminBaseUrl + `${id}/transfer`;
 
   dispatch(requestTransfer());
   return axios({
@@ -775,27 +767,25 @@ SuppliersActions.getAllLineStats = () => dispatch => {
   dispatch(sendData(null, types.REQUESTED_LINE_STATS));
 
   return axios({
-    url: `${window.config
-      .timetableAdminBaseUrl}line_statistics/level1`,
+    url: `${window.config.timetableAdminBaseUrl}line_statistics/level1`,
     timeout: 10000,
     method: 'get',
     responseType: 'json',
     ...getConfig()
   })
-  .then(({data}) => {
-    Object.keys(data).forEach( providerId => {
-      dispatch(
-        sendData(
-          { id: providerId, data: formatLineStats(data[providerId]) },
-          types.RECEIVED_LINE_STATS
-        )
-      );
+    .then(({ data }) => {
+      Object.keys(data).forEach(providerId => {
+        dispatch(
+          sendData(
+            { id: providerId, data: formatLineStats(data[providerId]) },
+            types.RECEIVED_LINE_STATS
+          )
+        );
+      });
     })
-  })
-  .catch(response => {
-    console.error(response);
-  });
-
+    .catch(response => {
+      console.error(response);
+    });
 };
 
 SuppliersActions.getLineStatsForProvider = providerId => dispatch => {
@@ -803,8 +793,7 @@ SuppliersActions.getLineStatsForProvider = providerId => dispatch => {
 
   return axios
     .get(
-      `${window.config
-        .timetableAdminBaseUrl}${providerId}/line_statistics`,
+      `${window.config.timetableAdminBaseUrl}${providerId}/line_statistics`,
       getConfig()
     )
     .then(response => {
@@ -821,8 +810,7 @@ SuppliersActions.getLineStatsForProvider = providerId => dispatch => {
 };
 
 SuppliersActions.fetchFilenames = id => dispatch => {
-  const url =
-    window.config.timetableAdminBaseUrl + `${id}/files`;
+  const url = window.config.timetableAdminBaseUrl + `${id}/files`;
 
   dispatch(requestFilenames());
   return axios({
@@ -855,8 +843,7 @@ export const addFileExtensions = (files = []) => {
 SuppliersActions.importData = (id, selectedFiles) => dispatch => {
   dispatch(requestImport());
 
-  const url =
-    window.config.timetableAdminBaseUrl + `${id}/import`;
+  const url = window.config.timetableAdminBaseUrl + `${id}/import`;
 
   const bodySelectedFiles = selectedFiles.map(file => {
     return {
@@ -888,8 +875,7 @@ SuppliersActions.importData = (id, selectedFiles) => dispatch => {
 };
 
 SuppliersActions.cleanDataspace = id => dispatch => {
-  const url =
-    window.config.timetableAdminBaseUrl + `${id}/clean`;
+  const url = window.config.timetableAdminBaseUrl + `${id}/clean`;
 
   dispatch(requestCleanDataspace());
   return axios({
@@ -929,8 +915,7 @@ SuppliersActions.cleanDataspace = id => dispatch => {
 };
 
 SuppliersActions.cleanAllDataspaces = filter => dispatch => {
-  const url =
-    window.config.timetableAdminBaseUrl + `clean/${filter}`;
+  const url = window.config.timetableAdminBaseUrl + `clean/${filter}`;
 
   return axios({
     url: url,
@@ -967,8 +952,7 @@ SuppliersActions.cleanAllDataspaces = filter => dispatch => {
 };
 
 SuppliersActions.validateProvider = id => dispatch => {
-  const url =
-    window.config.timetableAdminBaseUrl + `${id}/validate`;
+  const url = window.config.timetableAdminBaseUrl + `${id}/validate`;
 
   dispatch(requestCleanDataspace());
   return axios({
@@ -1147,15 +1131,15 @@ SuppliersActions.formatProviderStatusDate = (list, provider) => {
       listItem.duration = moment(
         moment(listItem.lastEvent).diff(moment(listItem.firstEvent))
       )
-      .locale('nb')
-      .utc()
-      .format('HH:mm:ss');
+        .locale('nb')
+        .utc()
+        .format('HH:mm:ss');
       listItem.firstEvent = moment(listItem.firstEvent)
-      .locale('nb')
-      .format('YYYY-MM-DD HH:mm:ss');
+        .locale('nb')
+        .format('YYYY-MM-DD HH:mm:ss');
       listItem.lastEvent = moment(listItem.lastEvent)
-      .locale('nb')
-      .format('YYYY-MM-DD HH:mm:ss');
+        .locale('nb')
+        .format('YYYY-MM-DD HH:mm:ss');
       listItem.started = moment(listItem.firstEvent).locale('en').fromNow();
 
       if (provider) {
@@ -1165,8 +1149,8 @@ SuppliersActions.formatProviderStatusDate = (list, provider) => {
       if (listItem.events) {
         listItem.events.forEach(function(event) {
           event.date = moment(event.date)
-          .locale('nb')
-          .format('YYYY-MM-DD HH:mm:ss');
+            .locale('nb')
+            .format('YYYY-MM-DD HH:mm:ss');
         });
       }
       return listItem;
@@ -1268,7 +1252,6 @@ SuppliersActions.logEvent = event => {
   };
 };
 
-
 SuppliersActions.getExportedFiles = () => dispatch => {
   dispatch(sendData(types.REQUESTED_EXPORTED_FILES, null));
   const url = window.config.timetableAdminBaseUrl + 'export/files';
@@ -1278,21 +1261,32 @@ SuppliersActions.getExportedFiles = () => dispatch => {
     method: 'get',
     responseType: 'json',
     ...getConfig()
-  }).then( response => {
-    if (response.data && response.data.files) {
+  }).then(response => {
 
+    if (response.data && response.data.files) {
       const gtfs = [];
       const netex = [];
       const graph = [];
       const other = [];
-      const providerData = {};
+      let providerData = {};
+      const norwayGTFS = [];
+      const norwayNetex = [];
 
       const pushToProvider = (providerId, referential, format, file) => {
-        if (providerId === null) return;
+        if (providerId === null) {
+          if (format === 'NETEX') {
+            norwayNetex.push(file);
+          } else if (format === 'GTFS') {
+            norwayGTFS.push(file);
+          }
+          return;
+        }
 
         if (providerData[providerId]) {
           if (providerData[providerId][format]) {
-            providerData[providerId][format] = providerData[providerId][format].concat(file);
+            providerData[providerId][format] = providerData[providerId][
+              format
+            ].concat(file);
           } else {
             providerData[providerId][format] = [file];
           }
@@ -1300,11 +1294,11 @@ SuppliersActions.getExportedFiles = () => dispatch => {
           providerData[providerId] = {
             [format]: [file],
             referential
-          }
+          };
         }
       };
 
-      response.data.files.forEach( file => {
+      response.data.files.forEach(file => {
         if (file.format === 'NETEX') {
           netex.push(file);
         } else if (file.format === 'GRAPH') {
@@ -1317,16 +1311,22 @@ SuppliersActions.getExportedFiles = () => dispatch => {
         pushToProvider(file.providerId, file.referential, file.format, file);
       });
 
-      dispatch(sendData({
-        gtfs,
-        netex,
-        graph,
-        other,
-        providerData,
-      }, types.RECEIVED_EXPORTED_FILES));
+      dispatch(
+        sendData(
+          {
+            gtfs,
+            netex,
+            graph,
+            other,
+            providerData,
+            norwayGTFS: norwayGTFS.sort((a, b) => b.updated - a.updated),
+            norwayNetex: norwayNetex.sort((a, b) => b.updated - a.updated)
+          },
+          types.RECEIVED_EXPORTED_FILES
+        )
+      );
     }
-
-  })
+  });
 };
 
 SuppliersActions.cleanFileFilter = () => dispatch => {

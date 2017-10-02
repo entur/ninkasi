@@ -10,7 +10,7 @@ class ExportedFilesHeader extends Component {
       alignItems: 'center',
       fontWeight: 600,
       background: 'rgb(47, 47, 47)',
-      color: '#fff'
+      color: '#fff',
     };
 
     return (
@@ -19,17 +19,20 @@ class ExportedFilesHeader extends Component {
         <div style={{flex: 3}}>
           Netex delivered
         </div>
-        <div style={{flex: 2}}>
-          Netex file size
+        <div style={{flex: 1}}>
+          Netex file
         </div>
         <div style={{flex: 3}}>
           GTFS delivered
         </div>
-        <div style={{flex: 2}}>
-          GTFS file size
+        <div style={{flex: 1}}>
+          GTFS file
         </div>
         <div style={{flex: 1}}>
           Difference
+        </div>
+        <div style={{flex: 4}}>
+          Summary
         </div>
       </div>
     );

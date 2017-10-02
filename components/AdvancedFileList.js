@@ -5,7 +5,6 @@ import { getSizeFromBytes } from '../utils/'
 
 class AdvancedFileList extends React.Component {
 
-
   handleDownloadFile(e, filename) {
     e.stopPropagation();
 

@@ -53,6 +53,10 @@ class SupplierTabWrapper extends React.Component {
       if (queryId) {
         this.onTabChangeForProvider(0, 'migrateData', null, null);
       }
+    } else if (queryId === 'exportedFiles') {
+      if (queryId) {
+        this.onTabChangeForProvider(0, 'migrateData', null, null);
+      }
     }
   }
 
@@ -69,6 +73,7 @@ class SupplierTabWrapper extends React.Component {
   poll = () => {
     const { dispatch, activeId, displayAllSuppliers } = this.props;
     const { activeTabForProvider, activeTabForAllProvider } = this.state;
+    const queryTab = getQueryVariable('tab');
 
     if (
       !displayAllSuppliers &&
@@ -76,6 +81,10 @@ class SupplierTabWrapper extends React.Component {
       activeId
     ) {
       dispatch(SuppliersActions.getChouetteJobStatus());
+    }
+
+    if (displayAllSuppliers && queryTab === 'exportedFiles') {
+      dispatch(SuppliersActions.getExportedFiles());
     }
 
     if (activeTabForProvider === 'statistics' && activeId) {
@@ -157,8 +166,20 @@ class SupplierTabWrapper extends React.Component {
       }
       case 'statistics':
         return displayAllSuppliers ? 2 : 3;
+      case 'exportedFiles':
+        if (displayAllSuppliers) {
+          return 3;
+        } else {
+          this.onTabChangeForAllProviders(0, 'migrateData', null, null);
+          return 0;
+        }
       case 'organisationRegister':
-        return displayAllSuppliers ? 3 : 0;
+        if (displayAllSuppliers) {
+          return 4;
+        } else {
+          this.onTabChangeForAllProviders(0, 'migrateData', null, null);
+          return 0;
+        }
       case 'uploadFiles': {
         if (displayAllSuppliers) {
           this.onTabChangeForAllProviders(0, 'chouetteJobs', null, null);
