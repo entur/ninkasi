@@ -101,6 +101,7 @@ class SupplierTabWrapper extends React.Component {
   };
 
   onTabChangeForProvider(i, value, tab, ev) {
+    if (typeof value === 'object') return;
     const { dispatch, activeId } = this.props;
 
     if (value) {
@@ -127,6 +128,8 @@ class SupplierTabWrapper extends React.Component {
   }
 
   onTabChangeForAllProviders(i, value, tab, ev) {
+    if (typeof value === 'object') return;
+
     if (value) {
       window.history.pushState(
         window.config.endpointBase,
@@ -269,6 +272,7 @@ class SupplierTabWrapper extends React.Component {
                 handleRefresh={this.handleRefreshAllProviders.bind(this)}
                 dataSource={this.props.allProvidersEvents}
                 key="statusList"
+                showDateFilter={true}
                 locale="en"
                 includeLevel2={true}
               />
@@ -310,6 +314,7 @@ class SupplierTabWrapper extends React.Component {
                 locale="en"
                 key="statusList"
                 includeLevel2={true}
+                showDateFilter={true}
               />
             </Tab>
             <Tab value="chouetteJobs" label="Chouette jobs">
