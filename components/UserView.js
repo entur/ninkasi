@@ -234,7 +234,10 @@ class UserView extends React.Component {
                 </div>
                 <div className="col-1-11">
                   {user.notifications.map( (notification, i) => (
-                    <NotificationStatus notification={notification}/>
+                    <NotificationStatus
+                      key={'notification-'+i}
+                      notification={notification}
+                    />
                   ))}
                 </div>
                 <div className="col-icon">
