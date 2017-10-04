@@ -296,33 +296,34 @@ SuppliersActions.createProvider = data => dispatch => {
 };
 
 const getProviderPayload = data => {
+  const trimmedData = JSON.parse(JSON.stringify(data).replace(/"\s+|\s+"/g,'"'));
   let payload = {
-    name: data._name,
-    sftpAccount: data._sftpAccount,
+    name: trimmedData._name,
+    sftpAccount: trimmedData._sftpAccount,
     chouetteInfo: {
-      xmlns: data._xmlns,
-      xmlnsurl: data._xmlnsurl,
-      referential: data._referential,
-      organisation: data._organisation,
-      user: data._user,
-      regtoppVersion: data._regtoppVersion,
-      regtoppCoordinateProjection: data._regtoppCoordinateProjection,
-      regtoppCalendarStrategy: data._regtoppCalendarStrategy,
-      dataFormat: data._dataFormat,
-      enableValidation: data._enableValidation,
-      allowCreateMissingStopPlace: data._allowCreateMissingStopPlace,
-      enableStopPlaceIdMapping: data._enableStopPlaceIdMapping,
-      enableCleanImport: data._enableCleanImport,
-      migrateDataToProvider: data._migrateDataToProvider
+      xmlns: trimmedData._xmlns,
+      xmlnsurl: trimmedData._xmlnsurl,
+      referential: trimmedData._referential,
+      organisation: trimmedData._organisation,
+      user: trimmedData._user,
+      regtoppVersion: trimmedData._regtoppVersion,
+      regtoppCoordinateProjection: trimmedData._regtoppCoordinateProjection,
+      regtoppCalendarStrategy: trimmedData._regtoppCalendarStrategy,
+      dataFormat: trimmedData._dataFormat,
+      enableValidation: trimmedData._enableValidation,
+      allowCreateMissingStopPlace: trimmedData._allowCreateMissingStopPlace,
+      enableStopPlaceIdMapping: trimmedData._enableStopPlaceIdMapping,
+      enableCleanImport: trimmedData._enableCleanImport,
+      migrateDataToProvider: trimmedData._migrateDataToProvider
     }
   };
 
-  if (data._providerId) {
-    payload.id = data._providerId;
+  if (trimmedData._providerId) {
+    payload.id = trimmedData._providerId;
   }
 
-  if (data._chouetteInfoId) {
-    payload.chouetteInfo.id = data._chouetteInfoId;
+  if (trimmedData._chouetteInfoId) {
+    payload.chouetteInfo.id = trimmedData._chouetteInfoId;
   }
 
   return payload;

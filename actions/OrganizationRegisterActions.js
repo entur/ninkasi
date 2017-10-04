@@ -71,9 +71,10 @@ OrganizationRegisterActions.removeEntityClassRefNotification = (
 };
 
 OrganizationRegisterActions.createRole = role => dispatch => {
+  const trimmedData = JSON.parse(JSON.stringify(role).replace(/"\s+|\s+"/g,'"'));
   const url = `${window.config.organisationsBaseUrl}roles`;
   return axios
-    .post(url, role, getConfig())
+    .post(url, trimmedData, getConfig())
     .then(response => {
       dispatch(sendData(null, types.CREATED_ROLE));
       dispatch(OrganizationRegisterActions.getRoles());
@@ -84,9 +85,10 @@ OrganizationRegisterActions.createRole = role => dispatch => {
 };
 
 OrganizationRegisterActions.updateRole = role => dispatch => {
-  const payLoad = { name: role.name };
+  const trimmedData = JSON.parse(JSON.stringify(role).replace(/"\s+|\s+"/g,'"'));
+  const payLoad = { name: trimmedData.name };
 
-  const url = `${window.config.organisationsBaseUrl}roles/${role.id}`;
+  const url = `${window.config.organisationsBaseUrl}roles/${trimmedData.id}`;
   return axios
     .put(url, payLoad, getConfig())
     .then(response => {
@@ -113,8 +115,9 @@ OrganizationRegisterActions.getOrganizations = () => dispatch => {
 
 OrganizationRegisterActions.createOrganization = organization => dispatch => {
   const url = `${window.config.organisationsBaseUrl}`;
+  const trimmedData = JSON.parse(JSON.stringify(organization).replace(/"\s+|\s+"/g,'"'));
   return axios
-    .post(url, organization, getConfig())
+    .post(url, trimmedData, getConfig())
     .then(response => {
       dispatch(sendData(null, types.CREATED_ORGANIZATION));
       dispatch(OrganizationRegisterActions.getOrganizations());
@@ -125,10 +128,11 @@ OrganizationRegisterActions.createOrganization = organization => dispatch => {
 };
 
 OrganizationRegisterActions.updateOrganization = organization => dispatch => {
+  const trimmedData = JSON.parse(JSON.stringify(organization).replace(/"\s+|\s+"/g,'"'));
   const url = `${window.config
-    .organisationsBaseUrl}${organization.id}`;
+    .organisationsBaseUrl}${trimmedData.id}`;
   return axios
-    .put(url, organization, getConfig())
+    .put(url, trimmedData, getConfig())
     .then(response => {
       dispatch(sendData(null, types.UPDATED_ORGANIZATION));
       dispatch(OrganizationRegisterActions.getOrganizations());
@@ -139,9 +143,11 @@ OrganizationRegisterActions.updateOrganization = organization => dispatch => {
 };
 
 OrganizationRegisterActions.updateUser = user => dispatch => {
-  const url = `${window.config.organisationsBaseUrl}users/${user.id}`;
+  const trimmedData = JSON.parse(JSON.stringify(user).replace(/"\s+|\s+"/g,'"'));
+  const url = `${window.config.organisationsBaseUrl}users/${trimmedData.id}`;
+
   return axios
-    .put(url, user, getConfig())
+    .put(url, trimmedData, getConfig())
     .then(response => {
       dispatch(sendData(null, types.UPDATED_USER));
       dispatch(OrganizationRegisterActions.getUsers());
@@ -309,8 +315,10 @@ OrganizationRegisterActions.getResponbilitySets = () => dispatch => {
 
 OrganizationRegisterActions.createResponsibilitySet = responsibilitySet => dispatch => {
   const url = `${window.config.organisationsBaseUrl}responsibility_sets`;
+  const trimmedData = JSON.parse(JSON.stringify(responsibilitySet).replace(/"\s+|\s+"/g,'"'));
+
   return axios
-    .post(url, responsibilitySet, getConfig())
+    .post(url, trimmedData, getConfig())
     .then(response => {
       dispatch(sendData(null, types.CREATED_RESPONSIBILITY_SET));
       dispatch(OrganizationRegisterActions.getResponbilitySets());
@@ -322,8 +330,10 @@ OrganizationRegisterActions.createResponsibilitySet = responsibilitySet => dispa
 
 OrganizationRegisterActions.createUser = user => dispatch => {
   const url = `${window.config.organisationsBaseUrl}users`;
+  const trimmedData = JSON.parse(JSON.stringify(user).replace(/"\s+|\s+"/g,'"'));
+
   return axios
-    .post(url, user, getConfig())
+    .post(url, trimmedData, getConfig())
     .then(response => {
       dispatch(sendData(null, types.CREATED_USER));
       dispatch(sendData({
@@ -342,8 +352,10 @@ OrganizationRegisterActions.createUser = user => dispatch => {
 
 OrganizationRegisterActions.createEntityType = entityType => dispatch => {
   const url = `${window.config.organisationsBaseUrl}entity_types`;
+  const trimmedData = JSON.parse(JSON.stringify(entityType).replace(/"\s+|\s+"/g,'"'));
+
   return axios
-    .post(url, entityType, getConfig())
+    .post(url, trimmedData, getConfig())
     .then(response => {
       dispatch(sendData(null, types.CREATED_ENTITY_TYPE));
       dispatch(OrganizationRegisterActions.getEntityTypes());
@@ -354,10 +366,11 @@ OrganizationRegisterActions.createEntityType = entityType => dispatch => {
 };
 
 OrganizationRegisterActions.updateEntityType = entityType => dispatch => {
+  const trimmedData = JSON.parse(JSON.stringify(entityType).replace(/"\s+|\s+"/g,'"'));
   const url = `${window.config
-    .organisationsBaseUrl}entity_types/${entityType.id}`;
+    .organisationsBaseUrl}entity_types/${trimmedData.id}`;
   return axios
-    .put(url, entityType, getConfig())
+    .put(url, trimmedData, getConfig())
     .then(response => {
       dispatch(sendData(null, types.UPDATED_ENTITY_TYPE));
       dispatch(OrganizationRegisterActions.getEntityTypes());
@@ -368,10 +381,12 @@ OrganizationRegisterActions.updateEntityType = entityType => dispatch => {
 };
 
 OrganizationRegisterActions.updateResponsibilitySet = responsibilitySet => dispatch => {
+  const trimmedData = JSON.parse(JSON.stringify(responsibilitySet).replace(/"\s+|\s+"/g,'"'));
+
   const url = `${window.config
-    .organisationsBaseUrl}responsibility_sets/${responsibilitySet.id}`;
+    .organisationsBaseUrl}responsibility_sets/${trimmedData.id}`;
   return axios
-    .put(url, responsibilitySet, getConfig())
+    .put(url, trimmedData, getConfig())
     .then(response => {
       dispatch(sendData(null, types.UPDATED_RESPONSIBILITY_SET));
       dispatch(OrganizationRegisterActions.getResponbilitySets());
@@ -396,7 +411,7 @@ OrganizationRegisterActions.getEntityTypes = () => dispatch => {
 };
 
 OrganizationRegisterActions.resetPassword = (userId, username) => dispatch => {
-  const url = `${window.config.organisationsBaseUrl}users/${userId}/resetPassword`;
+  const url = `${window.config.organisationsBaseUrl}users/${userId.trim()}/resetPassword`;
   return axios
     .post(url, null, getConfig())
     .then(response => {
@@ -723,7 +738,7 @@ OrganizationRegisterActions.updateUserNotification = username => (
   );
 
   const url = `${window.config
-    .organisationsBaseUrl}users/${username}/notification_configurations`;
+    .organisationsBaseUrl}users/${username.trim()}/notification_configurations`;
   return axios
     .put(url, notificationConfiguration, getConfig())
     .then(response => {
