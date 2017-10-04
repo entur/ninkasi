@@ -4,11 +4,8 @@ import SuppliersActions from '../actions/SuppliersActions';
 import cfgreader from '../config/readConfig';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
-import Button from 'muicss/lib/react/button';
-const FaAdd = require('react-icons/lib/fa/plus');
-const FaExclamation = require('react-icons/lib/fa/exclamation-triangle');
-import Dropdown from 'muicss/lib/react/dropdown';
-import DropdownItem from 'muicss/lib/react/dropdown-item';
+import MdNew from 'material-ui/svg-icons/content/add';
+import MdWarning from 'material-ui/svg-icons/alert/warning';
 import { getQueryVariable } from './utils';
 import Checkbox from 'material-ui/Checkbox';
 import Popover from 'material-ui/Popover';
@@ -17,8 +14,11 @@ import Divider from 'material-ui/Divider';
 import peliasTasks from '../config/peliasTasks';
 import moment from 'moment';
 import roleParser from '../roles/rolesParser';
-import FaEdit from 'react-icons/lib/fa/pencil';
+import MdEdit from 'material-ui/svg-icons/image/edit';
 import GraphStatus from '../components/GraphStatus';
+import FlatButton from 'material-ui/FlatButton';
+import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
+import ConfirmDialog from '../modals/ConfirmDialog';
 
 
 class SuppliersContainer extends React.Component {
@@ -33,7 +33,12 @@ class SuppliersContainer extends React.Component {
       anchorEl: null,
       peliasOptions: {
         ...tasks
-      }
+      },
+      confirmDialogOpen: false,
+      confirmAction: null,
+      confirmTitle: '',
+      confirmInfo: '',
+      cleanPopoverOpen: false
     };
   }
 
@@ -54,11 +59,27 @@ class SuppliersContainer extends React.Component {
   }
 
   handleBuildGraph() {
-    this.props.dispatch(SuppliersActions.buildGraph());
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Build graph',
+      confirmInfo: "Are you sure you want to build graph?",
+      confirmAction: () => {
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.buildGraph());
+      },
+    });
   }
 
   handleFetchOSM() {
-    this.props.dispatch(SuppliersActions.fetchOSM());
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Fetch Open Street Map Data',
+      confirmInfo: "Are you sure you want to fetch Open Street Map data?",
+      confirmAction: () => {
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.fetchOSM());
+      },
+    });
   }
 
   selectSupplier(value) {
@@ -75,35 +96,49 @@ class SuppliersContainer extends React.Component {
   }
 
   handleCancelAllJobs() {
-    const confirmedByUser = confirm(
-      'Are you want to cancel all chouette jobs for all providers?'
-    );
-
-    if (confirmedByUser) {
-      this.props.dispatch(
-        SuppliersActions.cancelAllChouetteJobsforAllProviders()
-      );
-    }
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Cancel all chouette jobs',
+      confirmInfo: "Are you want to cancel all chouette jobs for all providers?",
+      confirmAction: () => {
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.cancelAllChouetteJobsforAllProviders());
+      },
+    });
   }
 
   handleCleanAllDataSpaces(filter) {
-    const confirmedByUser = confirm(
-      `Are you sure you want to clean all dataspaces with filter ${filter}?`
-    );
+    let filterText = '';
 
-    if (confirmedByUser) {
-      this.props.dispatch(SuppliersActions.cleanAllDataspaces(filter));
+    switch (filter) {
+      case 'level1': filterText = ' in level 1 space'; break;
+      case 'level2': filterText = ' in level 2 space'; break;
+      default: break;
     }
+
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Clean Data Spaces',
+      confirmInfo: `Are you sure you want to clean all dataspaces for all providers${filterText}?`,
+      confirmAction: () => {
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.cleanAllDataspaces(filter));
+      },
+      cleanPopoverOpen: false,
+    });
   }
 
   handleCleanFileFilter() {
-    const confirmedByUser = confirm(
-      'Are you sure you want to clean file filter?'
-    );
-
-    if (confirmedByUser) {
-      this.props.dispatch(SuppliersActions.cleanFileFilter());
-    }
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Clean File Filter',
+      confirmInfo: 'Are you sure you want to clean file filter?',
+      confirmAction: () => {
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.cleanFileFilter());
+      },
+      cleanPopoverOpen: false,
+    });
   }
 
   handleTogglePeliasOpen(event, open) {
@@ -122,30 +157,55 @@ class SuppliersContainer extends React.Component {
   }
 
   handleExecutePelias() {
-    const { dispatch } = this.props;
-    dispatch(SuppliersActions.executePeliasTask(this.state.peliasOptions));
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Execute Pelias tasks',
+      confirmInfo: "Are you sure you want to execute selected pelias tasks?",
+      confirmAction: () => {
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.executePeliasTask(this.state.peliasOptions));
+      },
+      peliasOpen: false
+    });
   }
 
   handleClearEventHistory() {
-    const { dispatch } = this.props;
-    const confirmedByUser = confirm('Are you want to clean all event history?');
-    if (confirmedByUser) {
-      dispatch(SuppliersActions.deleteAllJobs());
-    }
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Clean All Event History',
+      confirmInfo: 'Are you want to clean all event history?',
+      confirmAction: () => {
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.deleteAllJobs());
+      },
+      cleanPopoverOpen: false,
+    });
   }
 
   handleClearStopPlaces() {
-    const { dispatch } = this.props;
-    const confirmedByUser = confirm(
-      'Are you want to clean Stop Place Register in Chouette?'
-    );
-    if (confirmedByUser) {
-      dispatch(SuppliersActions.cleanStopPlacesInChouette());
-    }
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Clean Stop Placee Register in Chouette',
+      confirmInfo: 'Are you want to clean Stop Place Register in Chouette?',
+      confirmAction: () => {
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.cleanStopPlacesInChouette());
+      },
+      cleanPopoverOpen: false,
+    });
   }
 
   handleEditProvider() {
     this.props.dispatch(SuppliersActions.openEditProviderDialog());
+  }
+
+  handleCleanOpen(event) {
+    event.preventDefault();
+
+    this.setState({
+      cleanPopoverOpen: true,
+      anchorEl: event.currentTarget,
+    });
   }
 
   getColorByStatus(status) {
@@ -168,6 +228,7 @@ class SuppliersContainer extends React.Component {
   }
 
   render() {
+
     const { suppliers, activeProviderId, otherStatus, kc } = this.props;
 
     let isAdmin = roleParser.isAdmin(kc.tokenParsed);
@@ -180,7 +241,7 @@ class SuppliersContainer extends React.Component {
       display: 'flex',
       background: '#2f2f2f',
       color: '#fff',
-      justifyContent: 'flex-end',
+      justifyContent: 'center',
       borderTop: '1px solid rgba(158, 158, 158, 0.15)'
     };
 
@@ -207,7 +268,7 @@ class SuppliersContainer extends React.Component {
         label={option.label}
         onCheck={e => this.handlePeliasOptionChecked(e, option.task)}
         defaultChecked={true}
-        labelPosition="left"
+        labelPosition="right"
         style={{ marginTop: 5, marginBottom: 5 }}
       />
     );
@@ -215,14 +276,14 @@ class SuppliersContainer extends React.Component {
     peliasOptions.push(
       <Divider
         key={'pelias-divider1'}
-        style={{ marginTop: 10, marginBottom: 10 }}
+        style={{ marginTop: 10, marginBottom: 5 }}
       />
     );
 
     peliasOptions.push(
       <div
         key={'pelias-options-status-wrapper'}
-        style={{ display: 'flex', flexDirection: 'column' }}
+        style={{ display: 'flex', flexDirection: 'column', padding: 5 }}
       >
         <span style={{ fontWeight: 600 }}>Status</span>
         {otherStatus.map((status, index) =>
@@ -231,22 +292,24 @@ class SuppliersContainer extends React.Component {
             style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between'
+              padding: 2,
+              background: index % 2 ? '#F8F8F8' : '#fff'
             }}
           >
-            <div style={{ marginLeft: 5, flex: '1 1' }}>
+            <div style={{ marginLeft: 5, flex: 9, fontSize: '0.9em' }}>
               {this.getLabelByJobType(status.type)}
+            </div>
+            <div style={{fontSize: '0.9em', flex: 6 }}>
+              {moment(status.started).format('LLLL')}
             </div>
             <div
               style={{
                 marginLeft: 5,
+                flex: 2,
                 color: this.getColorByStatus(status.status)
               }}
             >
               {status.status}
-            </div>
-            <div style={{ marginLeft: 5, fontSize: '0.9em' }}>
-              {moment(status.started).format('HH:mm:ss DD-MM')}
             </div>
           </div>
         )}
@@ -263,119 +326,130 @@ class SuppliersContainer extends React.Component {
     peliasOptions.push(
       <div
         key={'pelias-buttons'}
-        style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+        style={{ width: '100%', textAlign: 'center'}}
       >
-        <Button
-          color="primary"
-          style={{ fontSize: 12, textAlign: 'middle', marginTop: -2 }}
+        <FlatButton
+          primary={true}
+          labelStyle={{fontSize: 12}}
           onClick={() => this.handleExecutePelias()}
           disabled={Object.values(this.state.peliasOptions).every(
             value => !value
           )}
-        >
-          Execute
-        </Button>
+          label={"Execute"}
+        />
       </div>
     );
 
     return (
       <div className="suppliers-container">
         <div style={innerContainerStyle}>
-          <Button
-            disabled={!isAdmin}
-            title={toolTips.pelias}
-            style={{ fontSize: 12 }}
-            color="dark"
-            onClick={event => this.handleTogglePeliasOpen(event, true)}
-          >
-            Pelias
-            <MdDropDown color="#fff" style={{ verticalAlign: 'middle', marginTop: -3 }} />
-          </Button>
+          <div>
+            <FlatButton
+              disabled={!isAdmin}
+              title={toolTips.pelias}
+              labelStyle={{fontSize: 12, color: '#fff'}}
+              label={"Pelias"}
+              labelPosition="before"
+              onClick={event => this.handleTogglePeliasOpen(event, true)}
+              icon={<MdDropDown color="#fff" style={{ verticalAlign: 'middle', marginTop: -3 }} />}
+            />
+            <Popover
+              open={this.state.peliasOpen}
+              anchorEl={this.state.anchorEl}
+              anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+              targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+              onRequestClose={event => this.handleTogglePeliasOpen(event, false)}
+              style={peliasPopoverStyle}
+            >
+              {peliasOptions}
+            </Popover>
+            <FlatButton
+              disabled={!isAdmin}
+              title={toolTips.buildGraph}
+              labelStyle={{fontSize: 12, color: '#fff'}}
+              label={"Build Graph"}
+              onClick={this.handleBuildGraph.bind(this)}
+            />
+            <FlatButton
+              disabled={!isAdmin}
+              title={toolTips.fetchOSM}
+              labelStyle={{fontSize: 12, color: '#fff'}}
+              label={"Fetch OSM"}
+              onClick={this.handleFetchOSM.bind(this)}
+            />
+          </div>
+          <div style={{borderLeft: '1px solid #4c4c4c', height: 15, margin: '10px 0'}}></div>
+          <div>
+            <FlatButton
+              disabled={!isAdmin}
+              labelStyle={{fontSize: 12, color: '#fff'}}
+              label={"Clean"}
+              labelPosition={"before"}
+              icon={<MdDropDown color="#fff" style={{ verticalAlign: 'middle', marginTop: -3 }} />}
+              onClick={this.handleCleanOpen.bind(this)}
+            />
+            <FlatButton
+              disabled={!isAdmin}
+              title={toolTips.canceAllJobs}
+              labelStyle={{fontSize: 12, color: '#fff'}}
+              label={"Cancel all jobs"}
+              icon={<MdWarning color="#FBB829" style={{height: '1.1em', width: '1.1em'}}/>}
+              onClick={() => this.handleCancelAllJobs()}
+            />
+          </div>
           <Popover
-            open={this.state.peliasOpen}
+            open={this.state.cleanPopoverOpen}
             anchorEl={this.state.anchorEl}
             anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
             targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-            onRequestClose={event => this.handleTogglePeliasOpen(event, false)}
-            style={peliasPopoverStyle}
+            onRequestClose={() => this.setState({cleanPopoverOpen: false})}
           >
-            {peliasOptions}
-          </Popover>
-          <Button
-            disabled={!isAdmin}
-            title={toolTips.buildGraph}
-            style={{ fontSize: 12 }}
-            color="dark"
-            onClick={this.handleBuildGraph.bind(this)}
-          >
-            Build Graph
-          </Button>
-          <Button
-            disabled={!isAdmin}
-            title={toolTips.fetchOSM}
-            style={{ fontSize: 12 }}
-            color="dark"
-            onClick={this.handleFetchOSM.bind(this)}
-          >
-            Fetch OSM
-          </Button>
-          <Button
-            disabled={!isAdmin}
-            title={toolTips.cleanFileFilter}
-            style={{ fontSize: 12 }}
-            color="dark"
-            onClick={() => this.handleCleanFileFilter()}
-          >
-            <FaExclamation color="#b8c500" /> Clean file filter
-          </Button>
-          <Button
-            disabled={!isAdmin}
-            title={toolTips.canceAllJobs}
-            style={{ fontSize: 12 }}
-            color="dark"
-            onClick={() => this.handleCancelAllJobs()}
-          >
-            <FaExclamation color="#b8c500" /> Cancel all jobs
-          </Button>
-          <Button
-            disabled={!isAdmin}
-            title={toolTips.clearEventHistory}
-            style={{ fontSize: 12 }}
-            color="dark"
-            onClick={() => this.handleClearEventHistory()}
-          >
-            <FaExclamation color="#b8c500" /> Clean event history
-          </Button>
-          <Button
-            disabled={!isAdmin}
-            title={toolTips.cleanStopPlacesChouette}
-            style={{ fontSize: 12 }}
-            color="dark"
-            onClick={() => this.handleClearStopPlaces()}
-          >
-            <FaExclamation color="#b8c500" /> Clean Stop Places
-          </Button>
-          <Dropdown
-            disabled={!isAdmin}
-            title={toolTips.cleanAll}
-            id="dropdown-clean-all"
-            color="dark"
-            label="Clean all"
-          >
-            <DropdownItem
-              onClick={() => this.handleCleanAllDataSpaces('all')}
+            <MenuItem
+              primaryText={"Clean file filter"}
+              style={{fontSize: '1.1em'}}
+              onClick={() => this.handleCleanFileFilter()}
+              disabled={!isAdmin}
+              title={toolTips.cleanFileFilter}
             />
-            <DropdownItem
-              onClick={() => this.handleCleanAllDataSpaces('level1')}
-            >
-              Level 1
-            </DropdownItem>
-            <DropdownItem
-              onClick={() => this.handleCleanAllDataSpaces('level2')}
-            >
-              Level 2
-            </DropdownItem>
-          </Dropdown>
+            <MenuItem
+              primaryText={"Clean event history"}
+              style={{fontSize: '1em'}}
+              onClick={() => this.handleClearEventHistory()}
+              disabled={!isAdmin}
+              title={toolTips.cleanEventHistory}
+            />
+            <MenuItem
+              primaryText={"Clean Stop Places"}
+              style={{fontSize: '1em'}}
+              onClick={() => this.handleClearStopPlaces()}
+              disabled={!isAdmin}
+              title={toolTips.cleanStopPlacesChouette}
+            />
+            <MenuItem
+              disabled={!isAdmin}
+              id="dropdown-clean-all"
+              primaryText={"Clean all"}
+              style={{fontSize: '1em'}}
+              rightIcon={<ArrowDropRight />}
+              menuItems={[
+                <MenuItem
+                  primaryText={"All"}
+                  onClick={() => this.handleCleanAllDataSpaces('all')}
+                  style={{fontSize: '1em'}}
+                />,
+                <MenuItem
+                  primaryText={"Level 1"}
+                  onClick={() => this.handleCleanAllDataSpaces('level1')}
+                  style={{fontSize: '1em'}}
+                />,
+                <MenuItem
+                  primaryText={"Level 2"}
+                  onClick={() => this.handleCleanAllDataSpaces('level2')}
+                  style={{fontSize: '1em'}}
+                />
+                ]}
+            />
+          </Popover>
         </div>
         <div style={{display: 'flex', justifyContent: 'space-between', margin: 'auto', width: '98%'}}>
           <div style={{display: 'flex', alignItems: 'center'}}>
@@ -410,7 +484,7 @@ class SuppliersContainer extends React.Component {
               >
                 { !this.props.displayAllSuppliers &&
                 <div style={{display: 'flex', alignItems: 'center'}}>
-                  <FaEdit />
+                  <MdEdit style={{width: '1.1em', height: '1.1em'}}/>
                   <span style={{marginLeft: 2}}>Edit</span>
                 </div>
                 }
@@ -421,27 +495,37 @@ class SuppliersContainer extends React.Component {
                 onClick={() => this.handleNewProvider()}
               >
                 <div style={{display: 'flex', alignItems: 'center'}}>
-                  <FaAdd />
+                  <MdNew style={{width: '1.2em', height: '1.2em'}}/>
                   <span style={{marginLeft: 2}}>New</span>
                 </div>
               </div>
             </div>
           </div>
           <GraphStatus/>
+          <ConfirmDialog
+            open={this.state.confirmDialogOpen}
+            handleSubmit={this.state.confirmAction}
+            title={this.state.confirmTitle}
+            info={this.state.confirmInfo}
+            handleClose={() => {
+              this.setState({
+                confirmDialogOpen: false,
+                confirmAction: null
+              });
+            }}
+          />
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    suppliers: state.SuppliersReducer.data,
-    activeProviderId: state.SuppliersReducer.activeId,
-    otherStatus: state.SuppliersReducer.otherStatus || [],
-    kc: state.UserReducer.kc,
-    displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
-  };
-};
+const mapStateToProps = state => ({
+  suppliers: state.SuppliersReducer.data,
+  activeProviderId: state.SuppliersReducer.activeId,
+  otherStatus: state.SuppliersReducer.otherStatus || [],
+  kc: state.UserReducer.kc,
+  displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected
+});
 
 export default connect(mapStateToProps)(SuppliersContainer);
