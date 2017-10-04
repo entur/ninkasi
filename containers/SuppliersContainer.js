@@ -406,7 +406,7 @@ class SuppliersContainer extends React.Component {
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <MdWarning
                   color="#FBB829"
-                  style={{ height: '1.1em', width: '1.1em', paddingLeft: 4 }}
+                  style={{ height: '1.1em', width: '1.1em', paddingLeft: 10 }}
                 />
                 <div
                   style={{
