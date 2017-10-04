@@ -20,7 +20,6 @@ import FlatButton from 'material-ui/FlatButton';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 import ConfirmDialog from '../modals/ConfirmDialog';
 
-
 class SuppliersContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -62,11 +61,11 @@ class SuppliersContainer extends React.Component {
     this.setState({
       confirmDialogOpen: true,
       confirmTitle: 'Build graph',
-      confirmInfo: "Are you sure you want to build graph?",
+      confirmInfo: 'Are you sure you want to build graph?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.buildGraph());
-      },
+      }
     });
   }
 
@@ -74,11 +73,11 @@ class SuppliersContainer extends React.Component {
     this.setState({
       confirmDialogOpen: true,
       confirmTitle: 'Fetch Open Street Map Data',
-      confirmInfo: "Are you sure you want to fetch Open Street Map data?",
+      confirmInfo: 'Are you sure you want to fetch Open Street Map data?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.fetchOSM());
-      },
+      }
     });
   }
 
@@ -99,11 +98,12 @@ class SuppliersContainer extends React.Component {
     this.setState({
       confirmDialogOpen: true,
       confirmTitle: 'Cancel all chouette jobs',
-      confirmInfo: "Are you want to cancel all chouette jobs for all providers?",
+      confirmInfo:
+        'Are you want to cancel all chouette jobs for all providers?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.cancelAllChouetteJobsforAllProviders());
-      },
+      }
     });
   }
 
@@ -111,9 +111,14 @@ class SuppliersContainer extends React.Component {
     let filterText = '';
 
     switch (filter) {
-      case 'level1': filterText = ' in level 1 space'; break;
-      case 'level2': filterText = ' in level 2 space'; break;
-      default: break;
+      case 'level1':
+        filterText = ' in level 1 space';
+        break;
+      case 'level2':
+        filterText = ' in level 2 space';
+        break;
+      default:
+        break;
     }
 
     this.setState({
@@ -124,7 +129,7 @@ class SuppliersContainer extends React.Component {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.cleanAllDataspaces(filter));
       },
-      cleanPopoverOpen: false,
+      cleanPopoverOpen: false
     });
   }
 
@@ -137,7 +142,7 @@ class SuppliersContainer extends React.Component {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.cleanFileFilter());
       },
-      cleanPopoverOpen: false,
+      cleanPopoverOpen: false
     });
   }
 
@@ -160,7 +165,7 @@ class SuppliersContainer extends React.Component {
     this.setState({
       confirmDialogOpen: true,
       confirmTitle: 'Execute Pelias tasks',
-      confirmInfo: "Are you sure you want to execute selected pelias tasks?",
+      confirmInfo: 'Are you sure you want to execute selected pelias tasks?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.executePeliasTask(this.state.peliasOptions));
@@ -178,7 +183,7 @@ class SuppliersContainer extends React.Component {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.deleteAllJobs());
       },
-      cleanPopoverOpen: false,
+      cleanPopoverOpen: false
     });
   }
 
@@ -191,7 +196,7 @@ class SuppliersContainer extends React.Component {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.cleanStopPlacesInChouette());
       },
-      cleanPopoverOpen: false,
+      cleanPopoverOpen: false
     });
   }
 
@@ -204,7 +209,7 @@ class SuppliersContainer extends React.Component {
 
     this.setState({
       cleanPopoverOpen: true,
-      anchorEl: event.currentTarget,
+      anchorEl: event.currentTarget
     });
   }
 
@@ -228,14 +233,15 @@ class SuppliersContainer extends React.Component {
   }
 
   render() {
-
     const { suppliers, activeProviderId, otherStatus, kc } = this.props;
 
     let isAdmin = roleParser.isAdmin(kc.tokenParsed);
-    const supplierItems = [{
-      id: -1,
-      name: 'All providers'
-    }].concat(suppliers);
+    const supplierItems = [
+      {
+        id: -1,
+        name: 'All providers'
+      }
+    ].concat(suppliers);
 
     let innerContainerStyle = {
       display: 'flex',
@@ -255,6 +261,7 @@ class SuppliersContainer extends React.Component {
       createNewProvider: 'Create new provider',
       pelias: 'Execute pelias operations',
       editProvider: 'Edit provider',
+      cleanEventHistory: 'Clean event history'
     };
 
     const peliasPopoverStyle = {
@@ -299,7 +306,7 @@ class SuppliersContainer extends React.Component {
             <div style={{ marginLeft: 5, flex: 9, fontSize: '0.9em' }}>
               {this.getLabelByJobType(status.type)}
             </div>
-            <div style={{fontSize: '0.9em', flex: 6 }}>
+            <div style={{ fontSize: '0.9em', flex: 6 }}>
               {moment(status.started).format('LLLL')}
             </div>
             <div
@@ -326,16 +333,16 @@ class SuppliersContainer extends React.Component {
     peliasOptions.push(
       <div
         key={'pelias-buttons'}
-        style={{ width: '100%', textAlign: 'center'}}
+        style={{ width: '100%', textAlign: 'center' }}
       >
         <FlatButton
           primary={true}
-          labelStyle={{fontSize: 12}}
+          labelStyle={{ fontSize: 12 }}
           onClick={() => this.handleExecutePelias()}
           disabled={Object.values(this.state.peliasOptions).every(
             value => !value
           )}
-          label={"Execute"}
+          label={'Execute'}
         />
       </div>
     );
@@ -347,18 +354,24 @@ class SuppliersContainer extends React.Component {
             <FlatButton
               disabled={!isAdmin}
               title={toolTips.pelias}
-              labelStyle={{fontSize: 12, color: '#fff'}}
-              label={"Pelias"}
+              labelStyle={{ fontSize: 12, color: '#fff' }}
+              label={'Pelias'}
               labelPosition="before"
               onClick={event => this.handleTogglePeliasOpen(event, true)}
-              icon={<MdDropDown color="#fff" style={{ verticalAlign: 'middle', marginTop: -3 }} />}
+              icon={
+                <MdDropDown
+                  color="#fff"
+                  style={{ verticalAlign: 'middle', marginTop: -3 }}
+                />
+              }
             />
             <Popover
               open={this.state.peliasOpen}
               anchorEl={this.state.anchorEl}
               anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
               targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-              onRequestClose={event => this.handleTogglePeliasOpen(event, false)}
+              onRequestClose={event =>
+                this.handleTogglePeliasOpen(event, false)}
               style={peliasPopoverStyle}
             >
               {peliasOptions}
@@ -366,34 +379,62 @@ class SuppliersContainer extends React.Component {
             <FlatButton
               disabled={!isAdmin}
               title={toolTips.buildGraph}
-              labelStyle={{fontSize: 12, color: '#fff'}}
-              label={"Build Graph"}
+              labelStyle={{ fontSize: 12, color: '#fff' }}
+              label={'Build Graph'}
               onClick={this.handleBuildGraph.bind(this)}
             />
             <FlatButton
               disabled={!isAdmin}
               title={toolTips.fetchOSM}
-              labelStyle={{fontSize: 12, color: '#fff'}}
-              label={"Fetch OSM"}
+              labelStyle={{ fontSize: 12, color: '#fff' }}
+              label={'Fetch OSM'}
               onClick={this.handleFetchOSM.bind(this)}
             />
           </div>
-          <div style={{borderLeft: '1px solid #4c4c4c', height: 15, margin: '10px 0'}}></div>
+          <div
+            style={{
+              borderLeft: '1px solid #4c4c4c',
+              height: 15,
+              margin: '10px 0'
+            }}
+          />
           <div>
             <FlatButton
               disabled={!isAdmin}
-              labelStyle={{fontSize: 12, color: '#fff'}}
-              label={"Clean"}
-              labelPosition={"before"}
-              icon={<MdDropDown color="#fff" style={{ verticalAlign: 'middle', marginTop: -3 }} />}
               onClick={this.handleCleanOpen.bind(this)}
-            />
+            >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <MdWarning
+                  color="#FBB829"
+                  style={{ height: '1.1em', width: '1.1em', paddingLeft: 4 }}
+                />
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: '#fff',
+                    paddingLeft: 8,
+                    paddingRight: 8,
+                    paddingTop: 2,
+                    textTransform: 'uppercase'
+                  }}
+                >
+                  Clean
+                </div>
+                <MdDropDown color="#fff"/>
+              </div>
+            </FlatButton>
             <FlatButton
               disabled={!isAdmin}
               title={toolTips.canceAllJobs}
-              labelStyle={{fontSize: 12, color: '#fff'}}
-              label={"Cancel all jobs"}
-              icon={<MdWarning color="#FBB829" style={{height: '1.1em', width: '1.1em'}}/>}
+              style={{transform: 'translateY(-3px)'}}
+              labelStyle={{ fontSize: 12, color: '#fff' }}
+              label={'Cancel all jobs'}
+              icon={
+                <MdWarning
+                  color="#FBB829"
+                  style={{ height: '1.1em', width: '1.1em' }}
+                />
+              }
               onClick={() => this.handleCancelAllJobs()}
             />
           </div>
@@ -402,25 +443,25 @@ class SuppliersContainer extends React.Component {
             anchorEl={this.state.anchorEl}
             anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
             targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-            onRequestClose={() => this.setState({cleanPopoverOpen: false})}
+            onRequestClose={() => this.setState({ cleanPopoverOpen: false })}
           >
             <MenuItem
-              primaryText={"Clean file filter"}
-              style={{fontSize: '1.1em'}}
+              primaryText={'Clean file filter'}
+              style={{ fontSize: '1.1em' }}
               onClick={() => this.handleCleanFileFilter()}
               disabled={!isAdmin}
               title={toolTips.cleanFileFilter}
             />
             <MenuItem
-              primaryText={"Clean event history"}
-              style={{fontSize: '1em'}}
+              primaryText={'Clean event history'}
+              style={{ fontSize: '1em' }}
               onClick={() => this.handleClearEventHistory()}
               disabled={!isAdmin}
               title={toolTips.cleanEventHistory}
             />
             <MenuItem
-              primaryText={"Clean Stop Places"}
-              style={{fontSize: '1em'}}
+              primaryText={'Clean Stop Places'}
+              style={{ fontSize: '1em' }}
               onClick={() => this.handleClearStopPlaces()}
               disabled={!isAdmin}
               title={toolTips.cleanStopPlacesChouette}
@@ -428,80 +469,102 @@ class SuppliersContainer extends React.Component {
             <MenuItem
               disabled={!isAdmin}
               id="dropdown-clean-all"
-              primaryText={"Clean all"}
-              style={{fontSize: '1em'}}
+              primaryText={'Clean all'}
+              style={{ fontSize: '1em' }}
               rightIcon={<ArrowDropRight />}
               menuItems={[
                 <MenuItem
-                  primaryText={"All"}
+                  primaryText={'All'}
                   onClick={() => this.handleCleanAllDataSpaces('all')}
-                  style={{fontSize: '1em'}}
+                  style={{ fontSize: '1em' }}
                 />,
                 <MenuItem
-                  primaryText={"Level 1"}
+                  primaryText={'Level 1'}
                   onClick={() => this.handleCleanAllDataSpaces('level1')}
-                  style={{fontSize: '1em'}}
+                  style={{ fontSize: '1em' }}
                 />,
                 <MenuItem
-                  primaryText={"Level 2"}
+                  primaryText={'Level 2'}
                   onClick={() => this.handleCleanAllDataSpaces('level2')}
-                  style={{fontSize: '1em'}}
+                  style={{ fontSize: '1em' }}
                 />
-                ]}
+              ]}
             />
           </Popover>
         </div>
-        <div style={{display: 'flex', justifyContent: 'space-between', margin: 'auto', width: '98%'}}>
-          <div style={{display: 'flex', alignItems: 'center'}}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            margin: 'auto',
+            width: '98%'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <SelectField
               id="select-supplier"
               floatingLabelFixed={true}
-              style={{minWidth: 350}}
-              floatingLabelText={"Provider"}
+              style={{ minWidth: 350 }}
+              floatingLabelText={'Provider'}
               onChange={(e, k, v) => this.selectSupplier(v)}
               autoWidth={true}
               value={Number(activeProviderId) || -1}
-              iconStyle={{fill: 'rgba(22, 82, 149, 0.69)'}}
+              iconStyle={{ fill: 'rgba(22, 82, 149, 0.69)' }}
             >
               {supplierItems.map(supplier => {
-                  const isLevel1Provider = (supplier.chouetteInfo && supplier.chouetteInfo.migrateDataToProvider || supplier.id == -1);
-                  return (
-                    <MenuItem
-                      key={supplier.id}
-                      value={supplier.id}
-                      label={supplier.name}
-                      primaryText={<span style={{color: isLevel1Provider ? 'intial' : '#d9a51b'}}>{supplier.name}</span>}
-                    />
-                  );
-                }
-              )}
+                const isLevel1Provider =
+                  (supplier.chouetteInfo &&
+                    supplier.chouetteInfo.migrateDataToProvider) ||
+                  supplier.id == -1;
+                return (
+                  <MenuItem
+                    key={supplier.id}
+                    value={supplier.id}
+                    label={supplier.name}
+                    primaryText={
+                      <span
+                        style={{
+                          color: isLevel1Provider ? 'intial' : '#d9a51b'
+                        }}
+                      >
+                        {supplier.name}
+                      </span>
+                    }
+                  />
+                );
+              })}
             </SelectField>
-            <div style={{display: 'inline-block', marginTop: 25, marginLeft: 15}}>
+            <div
+              style={{ display: 'inline-block', marginTop: 25, marginLeft: 15 }}
+            >
               <div
                 title={toolTips.editProvider}
-                style={{ display: 'inline-block', cursor: 'pointer', marginRight: 10 }}
+                style={{
+                  display: 'inline-block',
+                  cursor: 'pointer',
+                  marginRight: 10
+                }}
                 onClick={() => this.handleEditProvider()}
               >
-                { !this.props.displayAllSuppliers &&
-                <div style={{display: 'flex', alignItems: 'center'}}>
-                  <MdEdit style={{width: '1.1em', height: '1.1em'}}/>
-                  <span style={{marginLeft: 2}}>Edit</span>
-                </div>
-                }
+                {!this.props.displayAllSuppliers &&
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <MdEdit style={{ width: '1.1em', height: '1.1em' }} />
+                    <span style={{ marginLeft: 2 }}>Edit</span>
+                  </div>}
               </div>
               <div
                 title={toolTips.createNewProvider}
                 style={{ display: 'inline-block', cursor: 'pointer' }}
                 onClick={() => this.handleNewProvider()}
               >
-                <div style={{display: 'flex', alignItems: 'center'}}>
-                  <MdNew style={{width: '1.2em', height: '1.2em'}}/>
-                  <span style={{marginLeft: 2}}>New</span>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <MdNew style={{ width: '1.2em', height: '1.2em' }} />
+                  <span style={{ marginLeft: 2 }}>New</span>
                 </div>
               </div>
             </div>
           </div>
-          <GraphStatus/>
+          <GraphStatus />
           <ConfirmDialog
             open={this.state.confirmDialogOpen}
             handleSubmit={this.state.confirmAction}

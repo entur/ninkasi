@@ -1262,7 +1262,6 @@ SuppliersActions.getExportedFiles = () => dispatch => {
     responseType: 'json',
     ...getConfig()
   }).then(response => {
-
     if (response.data && response.data.files) {
       const gtfs = [];
       const netex = [];
