@@ -17,7 +17,6 @@ class ExportedFilesView extends Component {
     if (!files) return null;
 
     const { providerData, norwayGTFS, norwayNetex } = files;
-    console.log("providers", providers)
 
     return (
       <div>
