@@ -74,7 +74,7 @@ class ExportedFilesRow extends Component {
   }
 
   render() {
-    const { data, index, referential } = this.props;
+    const { data, index, referential, providerName } = this.props;
 
     const { NETEX, GTFS } = data;
 
@@ -108,7 +108,6 @@ class ExportedFilesRow extends Component {
 
     const diffHumanized = diff ? diff.humanize() : null;
 
-    const errorColor = 'red';
     const { background, label } = this.getStatusLabel(
       netexDate,
       gtfsDate,
@@ -129,7 +128,8 @@ class ExportedFilesRow extends Component {
 
     return (
       <div style={style}>
-        <div style={{ flex: 1.5 }}>{data.referential || referential}</div>
+        <div style={{ flex: 2.5 }}>{providerName}</div>
+        <div style={{ flex: 1 }}>{data.referential || referential}</div>
         <div
           style={{
             flex: 3,

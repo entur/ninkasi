@@ -12,11 +12,12 @@ class ExportedFilesView extends Component {
 
   render() {
 
-    const { files } = this.props;
+    const { files, providers } = this.props;
 
     if (!files) return null;
 
     const { providerData, norwayGTFS, norwayNetex } = files;
+    console.log("providers", providers)
 
     return (
       <div>
@@ -25,6 +26,7 @@ class ExportedFilesView extends Component {
             key={'files-row-all'}
             index={-1}
             referential={'Norway'}
+            providerName={'Norway (aggregated)'}
             data={{
               GTFS: norwayGTFS.slice(0,1),
               NETEX: norwayNetex.slice(0,1)
@@ -35,6 +37,7 @@ class ExportedFilesView extends Component {
           <ExportedFilesRow
             key={'files-row-' + p}
             index={i}
+            providerName={providers[providerData[p].referential] || 'N/A'}
             referential={providerData[p].referential}
             data={providerData[p]}
             providerId={p}
@@ -45,8 +48,24 @@ class ExportedFilesView extends Component {
   }
 }
 
+const mapProviderIdToKeys = data => {
+  if (data && data.length) {
+    let providerIdKeys = {};
+    data.forEach( provider => {
+      if (provider.chouetteInfo && provider.chouetteInfo.referential) {
+        providerIdKeys[provider.chouetteInfo.referential] = provider.name;
+      }
+    });
+    return providerIdKeys;
+  }
+  return null;
+};
+
 const mapStateToProps = ({SuppliersReducer}) => ({
-  files: SuppliersReducer.exportedFiles
+  files: SuppliersReducer.exportedFiles,
+  providers: mapProviderIdToKeys(SuppliersReducer.data),
 });
+
+
 
 export default connect(mapStateToProps)(ExportedFilesView);

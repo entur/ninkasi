@@ -15,7 +15,8 @@ class ExportedFilesHeader extends Component {
 
     return (
       <div style={style}>
-        <div style={{flex: 1.5}}>Referential</div>
+        <div style={{flex: 2.5}}>Name</div>
+        <div style={{flex: 1}}>Referential</div>
         <div style={{flex: 3}}>
           Netex delivered
         </div>
