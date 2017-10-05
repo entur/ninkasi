@@ -19,6 +19,7 @@ import GraphStatus from '../components/GraphStatus';
 import FlatButton from 'material-ui/FlatButton';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 import ConfirmDialog from '../modals/ConfirmDialog';
+import { getProvidersEnv, getTheme, getIconColor } from '../config/themes';
 
 class SuppliersContainer extends React.Component {
   constructor(props) {
@@ -233,9 +234,12 @@ class SuppliersContainer extends React.Component {
   }
 
   render() {
-    const { suppliers, activeProviderId, otherStatus, kc } = this.props;
 
-    let isAdmin = roleParser.isAdmin(kc.tokenParsed);
+    const { suppliers, activeProviderId, otherStatus, kc } = this.props;
+    const isAdmin = roleParser.isAdmin(kc.tokenParsed);
+    const providersEnv = getProvidersEnv(window.config.providersBaseUrl);
+    const iconColor = getIconColor(providersEnv);
+
     const supplierItems = [
       {
         id: -1,
@@ -245,10 +249,9 @@ class SuppliersContainer extends React.Component {
 
     let innerContainerStyle = {
       display: 'flex',
-      background: '#2f2f2f',
-      color: '#fff',
       justifyContent: 'center',
-      borderTop: '1px solid rgba(158, 158, 158, 0.15)'
+      borderTop: '1px solid rgba(158, 158, 158, 0.15)',
+      ...getTheme(providersEnv)
     };
 
     const toolTips = {
@@ -405,7 +408,7 @@ class SuppliersContainer extends React.Component {
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <MdWarning
-                  color="#FBB829"
+                  color={iconColor}
                   style={{ height: '1.1em', width: '1.1em', paddingLeft: 10 }}
                 />
                 <div
@@ -431,7 +434,7 @@ class SuppliersContainer extends React.Component {
               label={'Cancel all jobs'}
               icon={
                 <MdWarning
-                  color="#FBB829"
+                  color={iconColor}
                   style={{ height: '1.1em', width: '1.1em' }}
                 />
               }

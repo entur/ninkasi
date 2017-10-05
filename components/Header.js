@@ -8,6 +8,7 @@ import MdAccount from 'material-ui/svg-icons/action/account-circle';
 import { connect } from 'react-redux';
 import MdHistory from 'material-ui/svg-icons/action/history';
 import SuppliersActions from '../actions/SuppliersActions';
+import { getProvidersEnv, getTheme } from '../config/themes';
 
 class Header extends React.Component {
   handleLogout() {
@@ -29,10 +30,11 @@ class Header extends React.Component {
   }
 
   render() {
+    const providersEnv = getProvidersEnv(window.config.providersBaseUrl);
+
     const backgroundStyle = {
-      backgroundColor: '#2f2f2f',
-      color: '#fff',
-      height: 60
+      height: 60,
+      ...getTheme(providersEnv)
     };
 
     const username = this.getUsername();
@@ -41,8 +43,27 @@ class Header extends React.Component {
         style={backgroundStyle}
         title={
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <div>Ninkasi</div>
-            <div style={{ marginLeft: 5, fontSize: '0.4em', marginTop: 5, fontWeight: 400}}>
+            <div style={{ display: 'flex' }}>
+              <div style={{ fontSize: '1em' }}>Ninkasi</div>
+              {providersEnv !== 'PROD' &&
+                <div
+                  style={{
+                    marginLeft: 5,
+                    fontSize: '0.4em',
+                    lineHeight: '5em'
+                  }}
+                >
+                  {providersEnv}
+                </div>}
+            </div>
+            <div
+              style={{
+                marginLeft: 5,
+                fontSize: '0.4em',
+                marginTop: 5,
+                fontWeight: 400
+              }}
+            >
               v{process.env.VERSION}
             </div>
           </div>
