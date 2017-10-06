@@ -64,7 +64,7 @@ class FileUpload extends React.Component {
           accept="application/zip,application/octet-stream,application/x-zip,application/x-rar,application/x-zip-compressed,application/x-rar-compressed,compressed/rar,application/rar"
           onDrop={(files, rejected) => {
             this.handleOnDrop(files);
-            console.log("rejected", rejected)
+            console.warn("rejected", rejected)
           }}
         >
           <div style={{ textAlign: 'center' }}>

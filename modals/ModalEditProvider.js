@@ -25,7 +25,8 @@ class ModalEditProvider extends Component {
         allowCreateMissingStopPlace,
         enableStopPlaceIdMapping,
         enableCleanImport,
-        migrateDataToProvider
+        migrateDataToProvider,
+        enableAutoImport
       } = provider.chouetteInfo;
 
       this.setState({
@@ -46,7 +47,8 @@ class ModalEditProvider extends Component {
         _allowCreateMissingStopPlace: allowCreateMissingStopPlace,
         _enableStopPlaceIdMapping: enableStopPlaceIdMapping,
         _enableCleanImport: enableCleanImport,
-        _migrateDataToProvider: migrateDataToProvider
+        _migrateDataToProvider: migrateDataToProvider,
+        _enableAutoImport: enableAutoImport,
       });
     } else {
       this.setState({
@@ -67,7 +69,8 @@ class ModalEditProvider extends Component {
         _allowCreateMissingStopPlace: false,
         _enableStopPlaceIdMapping: false,
         _enableCleanImport: false,
-        _migrateDataToProvider: null
+        _migrateDataToProvider: null,
+        _enableAutoImport: false
       });
     }
   }
@@ -327,6 +330,15 @@ class ModalEditProvider extends Component {
             style={{ flex: 1 }}
             labelStyle={{ fontSize: '0.9em' }}
             onCheck={(e, v) => this.setState({ _enableValidation: v })}
+          />
+        </div>
+        <div style={{ ...rowStyle, marginTop: 10 }}>
+          <Checkbox
+            label="Enable auto import"
+            checked={this.state._enableAutoImport}
+            style={{ flex: 1, maxWidth: 360 }}
+            labelStyle={{ fontSize: '0.9em' }}
+            onCheck={(e, v) => this.setState({ _enableAutoImport: v })}
           />
         </div>
       </Dialog>
