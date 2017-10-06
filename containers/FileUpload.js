@@ -61,9 +61,10 @@ class FileUpload extends React.Component {
       >
         <Dropzone
           style={dropStyle}
-          accept="application/zip,application/octet-stream,application/x-zip,application/x-zip-compressed"
-          onDrop={files => {
+          accept="application/zip,application/octet-stream,application/x-zip,application/x-rar,application/x-zip-compressed,application/x-rar-compressed,compressed/rar,application/rar"
+          onDrop={(files, rejected) => {
             this.handleOnDrop(files);
+            console.log("rejected", rejected)
           }}
         >
           <div style={{ textAlign: 'center' }}>
