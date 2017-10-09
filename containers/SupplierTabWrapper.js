@@ -87,14 +87,6 @@ class SupplierTabWrapper extends React.Component {
       dispatch(SuppliersActions.getExportedFiles());
     }
 
-    if (activeTabForProvider === 'statistics' && activeId) {
-      if (displayAllSuppliers) {
-        dispatch(SuppliersActions.getAllLineStats());
-      } else {
-        dispatch(SuppliersActions.getLineStatsForProvider(activeId));
-      }
-    }
-
     if (displayAllSuppliers && activeTabForAllProvider === 'chouetteJobs') {
       dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
     }
