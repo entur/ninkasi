@@ -117,7 +117,7 @@ const getProviderRowStatus = (netexDate, gtfsDate) => {
 
   return ({
     status: ExportStatus.OK,
-    message: ''
+    message: 'OK'
   });
 };
 
