@@ -18,13 +18,13 @@ class ExportedFilesHeader extends Component {
         <div style={{flex: 2.5}}>Name</div>
         <div style={{flex: 1}}>Referential</div>
         <div style={{flex: 3}}>
-          Netex delivered
+          Netex exported
         </div>
         <div style={{flex: 1}}>
           Netex file
         </div>
         <div style={{flex: 3}}>
-          GTFS delivered
+          GTFS exported
         </div>
         <div style={{flex: 1}}>
           GTFS file
@@ -33,7 +33,7 @@ class ExportedFilesHeader extends Component {
           Difference
         </div>
         <div style={{flex: 4}}>
-          Summary
+          Status
         </div>
       </div>
     );

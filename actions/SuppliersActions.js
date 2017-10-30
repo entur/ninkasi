@@ -4,6 +4,7 @@ import moment from 'moment';
 import { getQueryVariable } from '../containers/utils';
 import { formatLineStats } from 'bogu/utils';
 import roleParser from '../roles/rolesParser';
+import { addExportedFileMetadata, formatProviderData, addExportedNorwayMetadata } from './formatUtils';
 
 var SuppliersActions = {};
 
@@ -1264,65 +1265,22 @@ SuppliersActions.getExportedFiles = () => dispatch => {
     responseType: 'json',
     ...getConfig()
   }).then(response => {
+
     if (response.data && response.data.files) {
-      const gtfs = [];
-      const netex = [];
-      const graph = [];
-      const other = [];
       let providerData = {};
-      const norwayGTFS = [];
-      const norwayNetex = [];
-
-      const pushToProvider = (providerId, referential, format, file) => {
-        if (providerId === null) {
-          if (format === 'NETEX') {
-            norwayNetex.push(file);
-          } else if (format === 'GTFS') {
-            norwayGTFS.push(file);
-          }
-          return;
-        }
-
-        if (providerData[providerId]) {
-          if (providerData[providerId][format]) {
-            providerData[providerId][format] = providerData[providerId][
-              format
-            ].concat(file);
-          } else {
-            providerData[providerId][format] = [file];
-          }
-        } else {
-          providerData[providerId] = {
-            [format]: [file],
-            referential
-          };
-        }
-      };
+      let norwayGTFS = [];
+      let norwayNetex = [];
 
       response.data.files.forEach(file => {
-        if (file.format === 'NETEX') {
-          netex.push(file);
-        } else if (file.format === 'GRAPH') {
-          graph.push(file);
-        } else if (file.format === 'GTFS') {
-          gtfs.push(file);
-        } else {
-          other.push(file);
-        }
-        pushToProvider(file.providerId, file.referential, file.format, file);
+        addExportedFileMetadata(file.providerId, file.referential, file.format, file, norwayNetex, norwayGTFS, providerData);
       });
 
+      addExportedNorwayMetadata(norwayNetex, norwayGTFS, providerData);
+
+      const formattedProviderData = formatProviderData(providerData);
+
       dispatch(
-        sendData(
-          {
-            gtfs,
-            netex,
-            graph,
-            other,
-            providerData,
-            norwayGTFS: norwayGTFS.sort((a, b) => b.updated - a.updated),
-            norwayNetex: norwayNetex.sort((a, b) => b.updated - a.updated)
-          },
+        sendData({providerData: formattedProviderData},
           types.RECEIVED_EXPORTED_FILES
         )
       );

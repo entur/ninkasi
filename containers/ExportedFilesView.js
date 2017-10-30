@@ -1,38 +1,25 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SuppliersActions from '../actions/SuppliersActions';
 import ExportedFilesRow from '../components/ExportedFilesRow';
-import ExportedFilesHeader from '../components/ExportedFilesHeader'
+import ExportedFilesHeader from '../components/ExportedFilesHeader';
 
 class ExportedFilesView extends Component {
-
   componentDidMount() {
     this.props.dispatch(SuppliersActions.getExportedFiles());
   }
 
   render() {
-
     const { files, providers } = this.props;
 
     if (!files) return null;
 
-    const { providerData, norwayGTFS, norwayNetex } = files;
+    const { providerData } = files;
 
     return (
       <div>
-        <ExportedFilesHeader/>
-          <ExportedFilesRow
-            key={'files-row-all'}
-            index={-1}
-            referential={'Norway'}
-            providerName={'Norway (aggregated)'}
-            data={{
-              GTFS: norwayGTFS.slice(0,1),
-              NETEX: norwayNetex.slice(0,1)
-            }}
-            providerId={-1}
-          />
-        { Object.keys(providerData).map( (p, i) => (
+        <ExportedFilesHeader />
+        {Object.keys(providerData).map((p, i) =>
           <ExportedFilesRow
             key={'files-row-' + p}
             index={i}
@@ -41,7 +28,7 @@ class ExportedFilesView extends Component {
             data={providerData[p]}
             providerId={p}
           />
-        )) }
+        )}
       </div>
     );
   }
@@ -50,7 +37,7 @@ class ExportedFilesView extends Component {
 const mapProviderIdToKeys = data => {
   if (data && data.length) {
     let providerIdKeys = {};
-    data.forEach( provider => {
+    data.forEach(provider => {
       if (provider.chouetteInfo && provider.chouetteInfo.referential) {
         providerIdKeys[provider.chouetteInfo.referential] = provider.name;
       }
@@ -60,11 +47,9 @@ const mapProviderIdToKeys = data => {
   return null;
 };
 
-const mapStateToProps = ({SuppliersReducer}) => ({
+const mapStateToProps = ({ SuppliersReducer }) => ({
   files: SuppliersReducer.exportedFiles,
-  providers: mapProviderIdToKeys(SuppliersReducer.data),
+  providers: mapProviderIdToKeys(SuppliersReducer.data)
 });
-
-
 
 export default connect(mapStateToProps)(ExportedFilesView);
