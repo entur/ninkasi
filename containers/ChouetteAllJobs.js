@@ -94,6 +94,9 @@ class ChouetteAllJobs extends React.Component {
                   <Checkbox onChange={(event) => this.handleStatusFilterAllChange(event)} defaultChecked={chouetteJobAllFilter.SCHEDULED} name="SCHEDULED" label="Scheduled" />
                 </Col>
                 <Col md="2">
+                  <Checkbox onChange={(event) => this.handleStatusFilterAllChange(event)} defaultChecked={chouetteJobAllFilter.RESCHEDULED} name="RESCHEDULED" label="Rescheduled" />
+                </Col>
+                <Col md="2">
                   <Checkbox onChange={(event) => this.handleStatusFilterAllChange(event)} defaultChecked={chouetteJobAllFilter.STARTED} name="STARTED" label="Started" />
                 </Col>
                 <Col md="2">
