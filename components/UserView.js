@@ -129,7 +129,6 @@ class UserView extends React.Component {
       activeUser,
       [attribute]: true
     });
-    window.scrollTo(window.scrollX, 0);
   }
 
   componentWillReceiveProps(nextProps) {

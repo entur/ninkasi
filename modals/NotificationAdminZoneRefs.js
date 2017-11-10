@@ -41,7 +41,8 @@ class NotificationAdminZoneRefs extends React.Component {
           display: visible ? 'none' : 'flex',
           flexDirection: 'column',
           flex: 2,
-          border: '1px solid #777'
+          border: '1px solid #eee',
+          padding: 5
         }}
       >
         <div style={{ width: '100%', fontSize: 12, fontWeight: 600 }}>

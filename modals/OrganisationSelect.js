@@ -21,18 +21,18 @@ class OrganisationSelect extends React.Component {
       <SelectField
         hintText="Organization only"
         floatingLabelText="Organization only"
+        style={{marginLeft: 10, flex: 1}}
         value={notification.eventFilter.organisationRef}
         onChange={(e, index, value) => {
           handleChangeOrganization(value);
         }}
-        fullWidth={true}
       >
         {organizations.map(org =>
           <MenuItem
             key={org.id}
             id={org.id}
             value={org.id}
-            label={org.id}
+            label={org.name}
             primaryText={org.name}
           />
         )}

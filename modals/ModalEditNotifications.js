@@ -1,8 +1,8 @@
 import React from 'react';
-import Modal from './Modal';
+import ModalDialog from 'material-ui/Dialog';
 import { connect } from 'react-redux';
-import MdClose from 'material-ui/svg-icons/navigation/close';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
 import NotificationTypeBox from './NotificationTypeBox';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -74,13 +74,6 @@ class ModalEditNotifications extends React.Component {
       isLoading
     } = this.props;
 
-    const titleStyle = {
-      fontSize: '1.8em',
-      fontWeight: 600,
-      margin: '10px 5px',
-      width: '100%'
-    };
-
     const messageStyle = {
       fontSize: 13,
       width: '100%',
@@ -91,23 +84,28 @@ class ModalEditNotifications extends React.Component {
 
     const updateDisabled = this.shouldUpdateBtnBeDisabled();
 
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        style={{ marginLeft: 10 }}
+        onClick={handleCloseModal}
+      />,
+      <FlatButton
+        label="Update"
+        disabled={updateDisabled}
+        style={{ marginLeft: 10 }}
+        onClick={this.handleUpdate.bind(this)}
+      />
+    ];
+
     return (
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => handleCloseModal()}
-        minWidth="35vw"
-        minHeight="auto"
+      <ModalDialog
+        open={isModalOpen}
+        actions={actions}
+        requestOnClose={handleCloseModal}
+        title={'Notification configurations for ' + user.username}
       >
         <div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={titleStyle}>
-              Notification configurations for {user.username}
-            </div>
-            <MdClose
-              style={{ marginRight: 10, cursor: 'pointer' }}
-              onClick={() => handleCloseModal()}
-            />
-          </div>
           {!isLoading &&
             !!userNotifications.length &&
             userNotifications.map((un, i) =>
@@ -126,35 +124,15 @@ class ModalEditNotifications extends React.Component {
               No notification configuration found for this user
             </div>}
         </div>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginRight: 15,
-            fontSize: 12
-          }}
+        <FloatingActionButton
+          mini={true}
+          style={{ margin: 10 }}
         >
-          <div>
-            <RaisedButton
-              label="Update"
-              primary={true}
-              disabled={updateDisabled}
-              style={{ marginLeft: 10 }}
-              onClick={this.handleUpdate.bind(this)}
-            />
-          </div>
-          <div>
-            <FloatingActionButton
-              mini={true}
-              style={{ float: 'right', marginRight: 10 }}
-            >
-              <ContentAdd
-                onClick={this.handleAddNewUserNotification.bind(this)}
-              />
-            </FloatingActionButton>
-          </div>
-        </div>
-      </Modal>
+          <ContentAdd
+            onClick={this.handleAddNewUserNotification.bind(this)}
+          />
+        </FloatingActionButton>
+      </ModalDialog>
     );
   }
 }

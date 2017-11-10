@@ -79,6 +79,7 @@ class NotificationAddEntityClassRef extends React.Component {
           onChange={(e, i, v) => {
             this.setState({ entityClasRefSelected: v });
           }}
+          style={{marginLeft: 5}}
           fullWidth={true}
         >
           {entityClassificationRefs.map(type =>

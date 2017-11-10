@@ -90,7 +90,7 @@ class NotificationEventFilter extends React.Component {
 
     return (
       <div style={{ display: 'block', padding: 10 }}>
-        <div style={{display: 'flex', marginTop: -20}}>
+        <div style={{display: 'flex', marginTop: -10}}>
           <NotificationTypeSelect
             notification={notification}
             notificationTypes={notificationTypes}
@@ -102,10 +102,11 @@ class NotificationEventFilter extends React.Component {
             handleChangeOrganization={this.handleChangeOrganization.bind(this)}
           />
         </div>
-        <div style={{display: 'flex', marginTop: -20}}>
+        <div style={{display: 'flex', marginTop: -10}}>
           <SelectField
             floatingLabelText="Type"
             onChange={this.handleChangeEventFilterType.bind(this)}
+            style={{flex: 1}}
             value={notification.eventFilter.type}
           >
             {eventFilterTypes.map((eft, i) =>
@@ -116,6 +117,7 @@ class NotificationEventFilter extends React.Component {
             floatingLabelText="JobDomain"
             onChange={this.handleChangeJobDomain.bind(this)}
             disabled={!enableJobSpecific}
+            style={{marginLeft: 10, flex: 1}}
             value={notification.eventFilter.jobDomain}
           >
             {jobDomains.map((domain, i) =>
@@ -142,36 +144,39 @@ class NotificationEventFilter extends React.Component {
               visible={enableJobSpecific}
             />
           </div>
-          <div style={{ display: enableJobSpecific ? 'flex' : 'none'}}>
-            <EventFilterActionsPopover
-              index={index}
-              eventFilter={notification.eventFilter}
-              enabled={enableJobSpecific}
-              allActions={jobDomainActions}
-            />
-            <EventFilterStatesPopover
-              enabled={enableJobSpecific}
-              allStates={eventFilterStates}
-              eventFilter={notification.eventFilter}
-              index={index}
-            />
+          <div style={{ display: enableJobSpecific ? 'flex' : 'none', marginTop: 10, alignItems: 'center'}}>
+            <div style={{display: 'flex'}}>
+              <EventFilterActionsPopover
+                index={index}
+                eventFilter={notification.eventFilter}
+                enabled={enableJobSpecific}
+                allActions={jobDomainActions}
+              />
+              <EventFilterStatesPopover
+                enabled={enableJobSpecific}
+                allStates={eventFilterStates}
+                eventFilter={notification.eventFilter}
+                index={index}
+              />
+            </div>
+            <div style={{color: 'red', fontSize: '0.8em', marginLeft: 10}}>
+              { this.getErrorMessage() }
+            </div>
           </div>
         </div>
-        <div style={{width: '100%', textAlign: 'right', fontSize: 12, color: 'red'}}>{ this.getErrorMessage() }</div>
-        <div style={{display: 'flex', alignItems: 'center'}}>
+        <div style={{display: 'flex', marginTop: 10, alignItems: 'center'}}>
           <Checkbox
-            labelStyle={{ fontSize: 12, marginTop: 4, fontWeight: 600 }}
             label="Enabled"
             style={{width: 'auto'}}
             checked={notification.enabled}
             onCheck={(e, v) => this.handleEnabled(v)}
           />
-          <IconButton style={{marginTop: -10}}
+          <IconButton
             onClick={this.deleteUserNotification.bind(this)}
           >
             <MdDelete/>
           </IconButton>
-          <span style={{fontSize: 12, fontWeight: 600, marginTop: -5}}>Delete</span>
+          <span>Delete</span>
         </div>
       </div>
     );

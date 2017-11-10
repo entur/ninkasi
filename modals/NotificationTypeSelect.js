@@ -21,10 +21,10 @@ class NotificationTypeSelect extends React.Component {
         hintText="Notification type"
         floatingLabelText="Notification type"
         value={notification.notificationType}
+        style={{flex: 1}}
         onChange={(e, index, value) => {
           handleChangeNotificationType(value);
         }}
-        fullWidth={true}
       >
         {notificationTypes.map( type =>
           <MenuItem

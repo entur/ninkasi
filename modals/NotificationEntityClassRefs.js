@@ -42,7 +42,9 @@ class NotificationEntityClassRef extends React.Component {
           display: visible ? 'none' : 'flex',
           flexDirection: 'column',
           flex: 2,
-          border: '1px solid #777'
+          border: '1px solid #eee',
+          marginTop: 10,
+          padding: 5
         }}
       >
         <div style={{ width: '100%', fontSize: 12, fontWeight: 600 }}>
@@ -69,11 +71,10 @@ class NotificationEntityClassRef extends React.Component {
             style={{
               fontSize: 12,
               color: 'red',
-              textAlign: 'right',
-              marginRight: 10
+              textAlign: 'left',
             }}
           >
-            Required* entity classification missing
+            Required set of entity classifications can not be empty
           </span>}
         <NotificationAddEntityClassRef index={this.props.index} />
       </div>

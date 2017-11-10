@@ -21,7 +21,8 @@ class NotificationTypeBox extends React.Component {
 
     return (
       <div style={{
-        border: '1px solid #2196f3',
+        border: '1px solid #eee',
+        margin: 5,
       }}>
         <div
           style={{
