@@ -26,8 +26,8 @@ class ResponsiblitySetList extends React.Component {
     const { user, handleAdd } = this.props;
 
     return (
-      <div style={{ width: '100%', fontSize: 12 }}>
-        <div style={{ width: '100%', fontSize: 12 }}>
+      <div>
+        <div style={{ fontSize: '0.8em', marginBottom: 2}}>
           Responsibility sets
         </div>
         <select
@@ -41,7 +41,9 @@ class ResponsiblitySetList extends React.Component {
         </select>
         <div style={{ textAlign: 'left', width: '100%' }}>
           <IconButton
-            onClick={handleAdd}
+            onClick={e => {
+              handleAdd(e)
+            }}
           >
             <MdAdd color="#228B22" />
           </IconButton>
