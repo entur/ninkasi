@@ -79,6 +79,9 @@ class RoleView extends React.Component {
 
   handleUpdateRole(role) {
     this.props.dispatch(OrganizationRegisterActions.updateRole(role));
+    this.setState({
+      isEditModalOpen: false
+    });
   }
 
   handleDeleteRole(role) {
