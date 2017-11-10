@@ -15,12 +15,14 @@ import ModalConfirmation from '../modals/ModalConfirmation';
 import ForgotPassword from '../static/icons/ForgotPassword';
 import ModalNewPassword from '../modals/ModalNewPassword';
 import NotificationStatus from './NotificationStatus';
+import OrganizationFilter from './OrganizationFilter'
 
 class UserView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isCreateModalOpen: false,
+      organisationFilterId: -1,
       isEditModalOpen: false,
       isNotificationsOpen: false,
       isDeleteConfirmationOpen: false,
@@ -99,6 +101,13 @@ class UserView extends React.Component {
     return `Reset password for ${username}`;
   }
 
+  filterUserByOrg(user) {
+    const { organisationFilterId } = this.state;
+    if (organisationFilterId == -1) return true;
+    const organizationId = user.organisation ? user.organisation.id : null;
+    return organisationFilterId === organizationId;
+  }
+
   handleSortOrder(column) {
     const { sortOrder } = this.state;
     let asc = true;
@@ -148,7 +157,8 @@ class UserView extends React.Component {
       isCreateModalOpen,
       isEditModalOpen,
       isNotificationsOpen,
-      sortOrder
+      sortOrder,
+      organisationFilterId
     } = this.state;
 
     const sortedUsers = sortUsersby(users, sortOrder);
@@ -157,7 +167,12 @@ class UserView extends React.Component {
 
     return (
       <div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <OrganizationFilter
+            organizations={organizations}
+            handleOnChange={id => { this.setState({organisationFilterId: id})}}
+            organisationFilterId={organisationFilterId}
+          />
           <FloatingActionButton mini={true} style={{ marginRight: 10 }}>
             <ContentAdd
               onClick={() => this.openModal(null, 'isCreateModalOpen')}
@@ -209,7 +224,7 @@ class UserView extends React.Component {
             <div className="col-1-7">Responsiblity set</div>
             <div className="col-1-9">Notifications</div>
           </div>
-          {sortedUsers.map(user => {
+          {sortedUsers.filter(this.filterUserByOrg.bind(this)).map(user => {
             return (
               <div key={'user-' + user.id} className="user-row-item" style={{display: 'flex', alignItems: 'center'}}>
                 <div className="col-1-9">{user.username}</div>
