@@ -139,7 +139,7 @@ class LineStatsCard extends React.Component {
                 <div
                   style={{
                     height: 'calc(100vh - 435px)',
-                    overflowY: 'scroll',
+                    overflowY: 'auto',
                     overflowX: 'hidden',
                     margin: 'auto',
                     width: '100%'

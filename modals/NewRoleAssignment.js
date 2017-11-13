@@ -100,11 +100,11 @@ class NewRoleAssignment extends React.Component {
         </div>
         <SelectField
           hintText="Role type"
-          style={{ marginTop: -12 }}
           floatingLabelText="Role type"
           value={newRole.typeOfResponsibilityRoleRef}
           onChange={entityTypeChange}
           fullWidth={true}
+          style={{ marginTop: -15 }}
         >
           {roles.map(role =>
             <MenuItem
@@ -165,13 +165,13 @@ class NewRoleAssignment extends React.Component {
           <Checkbox
             label="Negate"
             style={{
-              flex: 1,
+              flex: 0.8,
               width: 'auto',
               marginTop: 30,
               marginRight: 5,
               marginLeft: 5
             }}
-            labelStyle={{ fontSize: 12, marginTop: 5, marginLeft: -10 }}
+            labelStyle={{ fontSize: 12 }}
             checked={negate}
             onCheck={(e, v) => {
               this.setState({
@@ -182,7 +182,7 @@ class NewRoleAssignment extends React.Component {
           <SelectField
             hintText="Classification"
             floatingLabelText="Classification"
-            style={{ flex: 2.5 }}
+            style={{ flex: 2.5, marginLeft: 5, marginRight: 5 }}
             value={tempEntityClassification}
             onChange={(e, i, v) => this.getEntityClassificationsForType(v)}
             fullWidth={true}

@@ -37,7 +37,7 @@ class AdminZoneSearchWrapper extends React.Component {
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <AutoComplete
-          style={{ marginTop: -12, flex: 2 }}
+          style={{ marginTop: -5, flex: 2 }}
           hintText="Restrict to administrative zone"
           ref="adminSearch"
           onNewRequest={this.handleNewRequest.bind(this)}

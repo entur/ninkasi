@@ -1,8 +1,7 @@
 import React from 'react';
-import Modal from './Modal';
+import Modal from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
-import MdClose from 'material-ui/svg-icons/navigation/close';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import MdRemove from 'material-ui/svg-icons/content/remove';
 import MdAdd from 'material-ui/svg-icons/content/add';
 import IconButton from 'material-ui/IconButton';
@@ -112,15 +111,9 @@ class ModalEditResponsibilitySet extends React.Component {
   }
 
   render() {
-    const titleStyle = {
-      fontSize: '2em',
-      fontWeight: 600,
-      margin: '10px auto',
-      width: '80%'
-    };
 
     const {
-      isModalOpen,
+      modalOpen,
       handleOnClose,
       codeSpaces,
       takenPrivateCodes,
@@ -138,28 +131,31 @@ class ModalEditResponsibilitySet extends React.Component {
 
     const isSavable = this.isSavable() && isLegalPrivateCode;
 
+    const actions = [
+      <FlatButton
+        label="Close"
+        onClick={handleOnClose}
+      />,
+      <FlatButton
+        disabled={!isSavable}
+        label="Update"
+        onClick={() => handleSubmit(this.state.responsibilitySet)}
+      />
+    ];
+
     return (
       <Modal
-        isOpen={isModalOpen}
-        onClose={() => handleOnClose()}
-        minWidth="50vw"
-        minHeight="auto"
+        open={modalOpen}
+        onRequestClose={() => handleOnClose()}
+        title="Editing responsibility set"
+        actions={actions}
       >
         <div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={titleStyle}>Editing responsibility set</div>
-            <MdClose
-              style={{ marginRight: 10, cursor: 'pointer' }}
-              onClick={() => handleOnClose()}
-            />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-around' }}>
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                width: '90%',
                 marginTop: 5
               }}
             >
@@ -233,10 +229,10 @@ class ModalEditResponsibilitySet extends React.Component {
                 <select
                   multiple="multiple"
                   style={{
-                    overflowX: 'scroll',
+                    overflowX: 'auto',
                     fontSize: 10,
-                    maxWidth: '45vw',
-                    minWidth: '45vw'
+                    maxWidth: '43vw',
+                    minWidth: '43vw'
                   }}
                   ref="roles"
                 >
@@ -307,22 +303,6 @@ class ModalEditResponsibilitySet extends React.Component {
                     />
                   : null}
               </div>
-            </div>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginRight: 15
-            }}
-          >
-            <div style={{ fontSize: 12, marginLeft: 15 }} />
-            <RaisedButton
-              disabled={!isSavable}
-              label="Update"
-              primary={true}
-              onClick={() => handleSubmit(this.state.responsibilitySet)}
-            />
           </div>
         </div>
       </Modal>

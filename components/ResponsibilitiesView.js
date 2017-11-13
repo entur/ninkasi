@@ -42,7 +42,6 @@ class ResponsibilitiesView extends React.Component {
     this.setState({
       isCreatingResponsibilitySet: true
     });
-    window.scrollTo(window.scrollX, 0);
   }
 
   handleOpenEditResp(responsibility) {
@@ -50,7 +49,6 @@ class ResponsibilitiesView extends React.Component {
       isEditingResponsibilitySet: true,
       activeResponsibilitySet: responsibility
     });
-    window.scrollTo(window.scrollX, 0);
   }
 
   handleOpenDeleteConfirmationDialog(activeResponsibilitySet) {

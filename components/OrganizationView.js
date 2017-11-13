@@ -36,7 +36,6 @@ class OrganizationView extends React.Component {
     this.setState({
       isCreateModalOpen: true
     });
-    window.scrollTo(window.scrollX, 0);
   }
 
   handleCloseDeleteConfirmation() {
