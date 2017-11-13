@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import Modal from './Modal'
+import Modal from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
-import MdClose from 'material-ui/svg-icons/navigation/close'
 import FlatButton from 'material-ui/FlatButton'
-import RaisedButton from 'material-ui/RaisedButton'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import MdRemove from 'material-ui/svg-icons/content/remove'
@@ -86,25 +84,32 @@ class ModalEditEntityType extends React.Component {
 
     const { entityType, isCreatingNewClassification, tempClassification } = this.state
 
-    const titleStyle = {
-      fontSize: '2em',
-      fontWeight: 600,
-      margin: '10px auto',
-      width: '80%',
-    }
-
     const isClassificationPrivateCodeTaken = entityType.classifications.map( c => c.privateCode ).indexOf(tempClassification.privateCode) > -1
     const isSavable = (entityType.name.length && entityType.codeSpace.length && entityType.privateCode.length)
 
+    const actions = [
+      <FlatButton
+        disabled={!isSavable}
+        label="Close"
+        onClick={this.handleOnClose.bind(this)}
+      />,
+      <FlatButton
+        disabled={!isSavable}
+        label="Update"
+        onClick={ () => handleSubmit(entityType)}
+      />
+    ];
+
     return (
-      <Modal isOpen={isModalOpen} onClose={() => this.handleOnClose()} minWidth="35vw" minHeight="auto">
+      <Modal
+        open={isModalOpen}
+        onRequestClose={() => this.handleOnClose()}
+        contentStyle={{ width: '40%'}}
+        title="Editing entity type"
+        actions={actions}
+      >
         <div>
-          <div style={{display: 'flex', alignItems: 'center'}}>
-            <div style={titleStyle}>Editing entity type</div>
-            <MdClose style={{marginRight: 10, cursor: 'pointer'}} onClick={() => this.handleOnClose()}/>
-          </div>
-          <div style={{display: 'flex', justifyContent: 'space-around'}}>
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '80%', marginTop: '20px'}}>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
               <TextField
                 hintText="Name"
                 floatingLabelText="Name"
@@ -113,7 +118,6 @@ class ModalEditEntityType extends React.Component {
                   entityType: { ...entityType, name: value }
                 })}
                 fullWidth={true}
-                style={{marginTop: -25}}
               />
               <TextField
                 hintText="private code"
@@ -125,7 +129,6 @@ class ModalEditEntityType extends React.Component {
                 })}
                 fullWidth={true}
                 errorStyle={{float: 'right'}}
-                style={{marginTop: -15}}
               />
               <SelectField
                 hintText="Code space"
@@ -136,7 +139,6 @@ class ModalEditEntityType extends React.Component {
                   entityType: { ...entityType, codeSpace: value }
                 })}
                 fullWidth={true}
-                style={{marginTop: -10}}
               >
                 { codeSpaces.map( codeSpace => (
                   <MenuItem key={codeSpace.id} id={codeSpace.id} value={codeSpace.id} label={codeSpace.id} primaryText={codeSpace.xmlns} />
@@ -171,7 +173,6 @@ class ModalEditEntityType extends React.Component {
                       tempClassification: { ...tempClassification, name: value }
                     })}
                     fullWidth={true}
-                    style={{marginTop: -15, width: '98%'}}
                   />
                   <TextField
                     hintText="Private code"
@@ -183,7 +184,6 @@ class ModalEditEntityType extends React.Component {
                     })}
                     value={tempClassification.privateCode}
                     fullWidth={true}
-                    style={{marginTop: -15, width: '98%'}}
                   />
                   <FlatButton
                     label="Add"
@@ -196,15 +196,6 @@ class ModalEditEntityType extends React.Component {
               }
             </div>
           </div>
-          <div style={{display: 'flex', justifyContent: 'space-between', marginRight: 15}}>
-            <div style={{fontSize: 12, marginLeft: 15}}></div>
-            <RaisedButton
-              disabled={!isSavable}
-              label="Update" primary={true}
-              onClick={ () => handleSubmit(entityType)}
-            />
-          </div>
-        </div>
       </Modal>
     )
   }
