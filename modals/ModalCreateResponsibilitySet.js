@@ -150,7 +150,6 @@ class ModalCreateResponsibilitySet extends React.Component {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
             marginTop: 5
           }}
         >
@@ -217,22 +216,22 @@ class ModalCreateResponsibilitySet extends React.Component {
             <div style={{ fontSize: 10 }}>
               Responsibility roles *
             </div>
-            <select
-              multiple="multiple"
-              style={{
-                overflowX: 'auto',
-                fontSize: 10,
-                maxWidth: '67vw',
-                minWidth: '67vw'
-              }}
-              ref="roles"
-            >
-              {responsibilitySet.roles.map((role, i) =>
-                <option key={'role-' + i}>
-                  {this.getRoleString(role)}
-                </option>
-              )}
-            </select>
+           <div style={{width: '100%', overflowX: 'auto'}}>
+             <select
+               multiple="multiple"
+               style={{
+                 fontSize: 10,
+                 minWidth: '100%'
+               }}
+               ref="roles"
+             >
+               {responsibilitySet.roles.map((role, i) =>
+                 <option style={{overflowX: 'auto'}} key={'role-' + i}>
+                   {this.getRoleString(role)}
+                 </option>
+               )}
+             </select>
+           </div>
             <div>
               <IconButton
                 onClick={() => this.setState({ isCreatingNewRole: true })}
