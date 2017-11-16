@@ -88,7 +88,7 @@ class NewRoleAssignment extends React.Component {
     } = this.state;
 
     return (
-      <div style={{ border: '1px dotted' }}>
+      <div style={{ border: '1px dotted', height: '100%'}}>
         <div
           style={{
             fontSize: 12,

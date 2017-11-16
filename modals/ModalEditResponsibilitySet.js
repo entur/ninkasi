@@ -231,7 +231,7 @@ class ModalEditResponsibilitySet extends React.Component {
                   style={{
                     overflowX: 'auto',
                     fontSize: 10,
-                    maxWidth: '43vw',
+                    maxWidth: '67vw',
                     minWidth: '43vw'
                   }}
                   ref="roles"

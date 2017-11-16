@@ -32,7 +32,7 @@ class OrganizationRegister extends React.Component {
     return (
       <div style={style}>
         <SideBarTabs activeTab={activeTab} setActiveTab={this.setActiveTab.bind(this)}/>
-        <div style={{border: '1px solid rgb(229, 229, 229)', flex: 2}}>
+        <div style={{border: '1px solid rgb(229, 229, 229)', flex: 2, overflow: 'hidden'}}>
           { activeTab == 0  ? <UserView/> : null }
           { activeTab == 1  ? <RoleView/> : null }
           { activeTab == 2  ? <OrganizationView/> : null }
