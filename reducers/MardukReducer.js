@@ -10,6 +10,7 @@ const cleanSlate = {
   chouetteAllJobStatus: [],
   chouetteJobFilter: {
     SCHEDULED: true,
+    RESCHEDULED: true,
     STARTED: true,
     TERMINATED: false,
     ABORTED: false,
@@ -17,6 +18,7 @@ const cleanSlate = {
   },
   chouetteJobAllFilter: {
     SCHEDULED: true,
+    RESCHEDULED: true,
     STARTED: true,
     TERMINATED: false,
     ABORTED: false,
