@@ -363,7 +363,7 @@ class ChouetteJobDetails extends React.Component {
                         </span>
                       </p>
                     </Col>
-                    {job.status === 'STARTED' || job.status === 'SCHEDULED'
+                    {job.status === 'STARTED' || job.status === 'SCHEDULED' || job.status === 'RESCHEDULED'
                       ? <Col md="1">
                           <Button
                             key={'btn-delete-' + index}
