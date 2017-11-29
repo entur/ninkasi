@@ -555,22 +555,6 @@ SuppliersActions.setActiveActionAllFilter = value => dispatch => {
   dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
 };
 
-SuppliersActions.formatChouetteJobsWithDate = jobs => {
-  return jobs.map(job => {
-    job.created = moment(job.created)
-      .locale('nb')
-      .format('YYYY-MM-DD HH:mm:ss');
-    job.started = moment(job.started)
-      .locale('nb')
-      .format('YYYY-MM-DD HH:mm:ss');
-    job.updated = moment(job.updated)
-      .locale('nb')
-      .format('YYYY-MM-DD HH:mm:ss');
-    return job;
-  });
-  return jobs;
-};
-
 SuppliersActions.getChouetteJobsForAllSuppliers = () => (
   dispatch,
   getState
@@ -608,15 +592,6 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => (
           if (job.pendingJobs) {
             job.pendingJobs.forEach(pendingJob => {
               pendingJob.providerId = job.providerId;
-              pendingJob.created = moment(pendingJob.created)
-                .locale('nb')
-                .format('Do MMMM YYYY, HH:mm:ss');
-              pendingJob.started = moment(pendingJob.started)
-                .locale('nb')
-                .format('Do MMMM YYYY, HH:mm:ss');
-              pendingJob.updated = moment(pendingJob.updated)
-                .locale('nb')
-                .format('Do MMMM YYYY, HH:mm:ss');
               allJobs.push(pendingJob);
             });
           }
@@ -665,10 +640,7 @@ SuppliersActions.getChouetteJobStatus = () => (dispatch, getState) => {
       })
     })
     .then(function(response) {
-      const jobs = SuppliersActions.formatChouetteJobsWithDate(
-        response.data.reverse()
-      );
-      dispatch(sendData(jobs, types.SUCCESS_CHOUETTE_JOB_STATUS));
+      dispatch(sendData(response.data.reverse(), types.SUCCESS_CHOUETTE_JOB_STATUS));
     })
     .catch(function(response) {
       dispatch(sendData(response.data, types.ERROR_CHOUETTE_JOB_STATUS));

@@ -15,6 +15,7 @@ import ChouetteLink from '../components/ChouetteLink';
 import DatePicker from 'material-ui/DatePicker';
 import MdClear from 'material-ui/svg-icons/content/clear';
 import { getPaginationMap } from '../models/';
+import moment from 'moment';
 
 class ChouetteJobDetails extends React.Component {
   constructor(props) {
@@ -82,6 +83,11 @@ class ChouetteJobDetails extends React.Component {
     this.setState({
       filterFromDate: date
     });
+  }
+
+  formatDate(date) {
+    if (!date) return '';
+    return moment(date).format('YYYY-MM-DD HH:mm:ss');
   }
 
   render() {
@@ -342,13 +348,13 @@ class ChouetteJobDetails extends React.Component {
                       <p>{job.action}</p>
                     </Col>
                     <Col md="2">
-                      <p>{job.created}</p>
+                      <p>{this.formatDate(job.created)}</p>
                     </Col>
                     <Col md="2">
-                      <p>{job.started}</p>
+                      <p>{this.formatDate(job.started)}</p>
                     </Col>
                     <Col md="2">
-                      <p>{job.updated}</p>
+                      <p>{this.formatDate(job.updated)}</p>
                     </Col>
                     <Col md="1">
                       <p>
