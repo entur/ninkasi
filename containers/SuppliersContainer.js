@@ -70,6 +70,18 @@ class SuppliersContainer extends React.Component {
     });
   }
 
+  handleUpdateMapbox() {
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Update Mapbox',
+      confirmInfo: 'Are you sure you want to update Mapbox?',
+      confirmAction: () => {
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.updateMapbox());
+      }
+    });
+  }
+
   handleFetchOSM() {
     this.setState({
       confirmDialogOpen: true,
@@ -258,6 +270,7 @@ class SuppliersContainer extends React.Component {
       history: 'Browse the history of your activites in Ninkasi',
       buildGraph: 'Build graph for all providers',
       fetchOSM: 'Fetch Open Street Map data',
+      updateMapbox: 'Update mapbox data from NSR',
       cleanFileFilter: 'Clean file filter',
       canceAllJobs: 'Cancel all current chouette jobs',
       cleanAll: 'Clean all specificed by level',
@@ -392,6 +405,13 @@ class SuppliersContainer extends React.Component {
               labelStyle={{ fontSize: 12, color: '#fff' }}
               label={'Fetch OSM'}
               onClick={this.handleFetchOSM.bind(this)}
+            />
+            <FlatButton
+              disabled={!isAdmin}
+              title={toolTips.updateMapbox}
+              labelStyle={{ fontSize: 12, color: '#fff' }}
+              label={'Update Mapbox'}
+              onClick={this.handleUpdateMapbox.bind(this)}
             />
           </div>
           <div

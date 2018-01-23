@@ -1006,6 +1006,30 @@ SuppliersActions.fetchOSM = () => dispatch => {
     });
 };
 
+SuppliersActions.updateMapbox = () => dispatch => {
+  const url = window.config.mapBoxAdminBaseUrl + 'update';
+
+  return axios({
+    url: url,
+    timeout: 20000,
+    method: 'post',
+    ...getConfig()
+  })
+    .then(function(response) {
+
+      dispatch(
+        SuppliersActions.addNotification('Mapbox update started', 'success')
+      );
+      dispatch(SuppliersActions.logEvent({ title: 'Mapbox update started' }));
+    })
+    .catch(function(response) {
+
+      const errorMessage = 'Mapbox update failed';
+      dispatch(SuppliersActions.addNotification(errorMessage, 'error'));
+      dispatch(SuppliersActions.logEvent({ title: errorMessage}));
+    });
+};
+
 SuppliersActions.sortListByColumn = (listName, columnName) => dispatch => {
   switch (listName) {
     case 'events':

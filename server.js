@@ -68,6 +68,7 @@ convictConfig.then( (convict) => {
       eventsBaseUrl: convict.get('eventsBaseUrl'),
       timetableAdminBaseUrl: convict.get('timetableAdminBaseUrl'),
       mapAdminBaseUrl: convict.get('mapAdminBaseUrl'),
+      mapBoxAdminBaseUrl: convict.get('mapBoxAdminBaseUrl'),
       geocoderAdminBaseUrl: convict.get('geocoderAdminBaseUrl'),
       endpointBase: convict.get('endpointBase'),
       chouetteBaseUrl: convict.get('chouetteBaseUrl')
