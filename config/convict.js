@@ -46,7 +46,7 @@ module.exports = new Promise(function(resolve, reject){
       default: "http://localhost:10011/services/map_admin/",
       env: "MAP_ADMIN_BASE_URL"
     },
-    mapBoxAdminBaseUrl: {
+    mapboxAdminBaseUrl: {
       doc: "Base URL for for Mapbox admin API including slash",
       format: "url",
       default: "http://localhost:10011/services/mapbox_admin/",

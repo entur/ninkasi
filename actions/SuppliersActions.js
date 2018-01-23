@@ -1007,7 +1007,7 @@ SuppliersActions.fetchOSM = () => dispatch => {
 };
 
 SuppliersActions.updateMapbox = () => dispatch => {
-  const url = window.config.mapBoxAdminBaseUrl + 'update';
+  const url = window.config.mapboxAdminBaseUrl + 'update';
 
   return axios({
     url: url,
