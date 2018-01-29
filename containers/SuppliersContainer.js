@@ -406,13 +406,13 @@ class SuppliersContainer extends React.Component {
               label={'Fetch OSM'}
               onClick={this.handleFetchOSM.bind(this)}
             />
-            {<FlatButton
+            {/*<FlatButton
               disabled={!isAdmin}
               title={toolTips.updateMapbox}
               labelStyle={{ fontSize: 12, color: '#fff' }}
               label={'Update Mapbox'}
               onClick={this.handleUpdateMapbox.bind(this)}
-            />}
+            />*/}
           </div>
           <div
             style={{
