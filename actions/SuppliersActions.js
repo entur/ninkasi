@@ -1263,6 +1263,7 @@ SuppliersActions.getExportedFiles = () => dispatch => {
   }).then(response => {
 
     if (response.data && response.data.files) {
+
       let providerData = {};
       let norwayGTFS = [];
       let norwayNetex = [];
@@ -1270,6 +1271,7 @@ SuppliersActions.getExportedFiles = () => dispatch => {
       response.data.files.forEach(file => {
         addExportedFileMetadata(file.providerId, file.referential, file.format, file, norwayNetex, norwayGTFS, providerData);
       });
+
 
       addExportedNorwayMetadata(norwayNetex, norwayGTFS, providerData);
 

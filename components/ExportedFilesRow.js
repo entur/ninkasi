@@ -50,7 +50,7 @@ class ExportedFilesRow extends Component {
 
     const norwayDisplayName = "Norway";
     const isAggregatedSet = (referential === norwayDisplayName);
-
+    
     const style = {
       padding: 2,
       border: '1px solid #eee',

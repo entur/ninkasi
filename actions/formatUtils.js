@@ -6,6 +6,11 @@ export const ExportStatus = Object.freeze({
   ERROR: 'ERROR'
 });
 
+
+const isOfficialNorwegianGTFS = (name = '') => (
+  name.indexOf('rb_norway-aggregated-gtfs.zip') > -1
+);
+
 export const addExportedFileMetadata = (
   providerId,
   referential,
@@ -19,7 +24,7 @@ export const addExportedFileMetadata = (
   if (providerId === null) {
     if (format === 'NETEX') {
       norwayNetex.push(file);
-    } else if (format === 'GTFS') {
+    } else if (format === 'GTFS' && isOfficialNorwegianGTFS(file.name)) {
       norwayGTFS.push(file);
     }
     return;
@@ -42,7 +47,7 @@ export const addExportedFileMetadata = (
 };
 
 export const addExportedNorwayMetadata = (norwayNetex, norwayGTFS, providerData) => {
-  const GTFS = norwayGTFS.sort((a, b) => b.updated - a.updated);
+  const GTFS = norwayGTFS.sort((a, b) => b.updated - a.updated).filter(file => isOfficialNorwegianGTFS(file.name));
   const NETEX = norwayNetex.sort((a, b) => b.updated - a.updated);
   providerData['ALL'] = {
     NETEX,
@@ -60,7 +65,7 @@ export const formatProviderData = providerData => {
       [ExportStatus.OK]: 0,
       [ExportStatus.WARNING]: 1,
       [ExportStatus.ERROR]: 2,
-    }
+    };
 
     if (a.referential === 'Norway') return -1;
 
@@ -75,12 +80,12 @@ export const formatProviderData = providerData => {
 const formatProviderRow = providerRow => {
   const { NETEX, GTFS } = providerRow;
 
-  const netexDate = getFieldFromArray(NETEX, 'updated');
-  const gtfsDate = getFieldFromArray(GTFS, 'updated');
-  const netexFileSize = getFieldFromArray(NETEX, 'fileSize');
-  const gtfsFileSize = getFieldFromArray(GTFS, 'fileSize');
-  const gtfsUrl = getFieldFromArray(GTFS, 'url');
-  const netexUrl = getFieldFromArray(NETEX, 'url');
+  const netexDate = getFirstFromArray(NETEX, 'updated');
+  const gtfsDate = getFirstFromArray(GTFS, 'updated');
+  const netexFileSize = getFirstFromArray(NETEX, 'fileSize');
+  const gtfsFileSize = getFirstFromArray(GTFS, 'fileSize');
+  const gtfsUrl = getFirstFromArray(GTFS, 'url');
+  const netexUrl = getFirstFromArray(NETEX, 'url');
   const diff = netexDate && gtfsDate
     ? moment.duration(moment(netexDate).diff(moment(gtfsDate)))
     : null;
@@ -121,7 +126,7 @@ const getProviderRowStatus = (netexDate, gtfsDate) => {
   });
 };
 
-const getFieldFromArray = (arr, field) => {
+const getFirstFromArray = (arr, field) => {
   return Array.isArray(arr) && arr[0] && arr[0][field] ? arr[0][field] : null;
 };
 
