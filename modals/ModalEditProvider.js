@@ -25,6 +25,7 @@ class ModalEditProvider extends Component {
         allowCreateMissingStopPlace,
         enableStopPlaceIdMapping,
         enableCleanImport,
+        generateMissingServiceLinks,
         migrateDataToProvider,
         enableAutoImport
       } = provider.chouetteInfo;
@@ -47,6 +48,7 @@ class ModalEditProvider extends Component {
         _allowCreateMissingStopPlace: allowCreateMissingStopPlace,
         _enableStopPlaceIdMapping: enableStopPlaceIdMapping,
         _enableCleanImport: enableCleanImport,
+        _generateMissingServiceLinks: generateMissingServiceLinks,
         _migrateDataToProvider: migrateDataToProvider,
         _enableAutoImport: enableAutoImport,
       });
@@ -69,6 +71,7 @@ class ModalEditProvider extends Component {
         _allowCreateMissingStopPlace: false,
         _enableStopPlaceIdMapping: false,
         _enableCleanImport: false,
+        _generateMissingServiceLinks: false,
         _migrateDataToProvider: null,
         _enableAutoImport: false
       });
@@ -339,6 +342,13 @@ class ModalEditProvider extends Component {
             style={{ flex: 1, maxWidth: 360 }}
             labelStyle={{ fontSize: '0.9em' }}
             onCheck={(e, v) => this.setState({ _enableAutoImport: v })}
+          />
+          <Checkbox
+              label="Generate missing service links"
+              checked={this.state._generateMissingServiceLinks}
+              style={{ flex: 1, maxWidth: 360 }}
+              labelStyle={{ fontSize: '0.9em' }}
+              onCheck={(e, v) => this.setState({ _generateMissingServiceLinks: v })}
           />
         </div>
       </Dialog>
