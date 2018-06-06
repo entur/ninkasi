@@ -11,7 +11,8 @@ class TransportModesPopover extends React.Component {
 
     static propTypes = {
         transportModes: PropTypes.array.isRequired,
-        allTransportModes: PropTypes.array.isRequired
+        allTransportModes: PropTypes.array.isRequired,
+        handleCheckTransportMode: PropTypes.func.isRequired
     }
 
     constructor(props) {
@@ -27,17 +28,6 @@ class TransportModesPopover extends React.Component {
             open: true,
             anchorEl: event.currentTarget
         })
-    }
-
-    handleCheckTransportMode(transportMode, isChecked) {
-        const { transportModes } = this.props;
-        var idx = transportModes.indexOf(transportMode);
-        if (isChecked && idx === -1) {
-            transportModes.push(transportMode);
-        } else if (!isChecked && idx >= 0) {
-            transportModes.splice(idx, 1);
-        }
-        this.setState({transportModes: transportModes});
     }
 
     render() {
@@ -72,7 +62,7 @@ class TransportModesPopover extends React.Component {
                                         <Checkbox
                                             label={transportMode}
                                             checked={checked}
-                                            onCheck={(e, isChecked) => { this.handleCheckTransportMode(transportMode, isChecked);}}
+                                            onCheck={(e, isChecked) => { this.props.handleCheckTransportMode(transportMode, isChecked);}}
                                         />
                                     </MenuItem>
                                 </Menu>

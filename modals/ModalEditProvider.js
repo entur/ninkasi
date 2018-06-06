@@ -138,6 +138,21 @@ class ModalEditProvider extends Component {
     ));
   }
 
+  handleCheckTransportMode(transportMode, isChecked) {
+    let transportModes = this.state._generateMissingServiceLinksForModes;
+    var idx = transportModes.indexOf(transportMode);
+    if (isChecked && idx === -1) {
+        transportModes = transportModes.concat(transportMode);
+    } else if (!isChecked && idx >= 0) {
+        transportModes = [
+            ...transportModes.slice(0, idx),
+            ...transportModes.slice(idx+1)
+        ];
+    }
+    this.setState({_generateMissingServiceLinksForModes: transportModes});
+  }
+
+
   render() {
     const { open, providers, handleClose, handleSubmit, allTransportModes } = this.props;
 
@@ -313,6 +328,7 @@ class ModalEditProvider extends Component {
           <TransportModesPopover
               allTransportModes={allTransportModes}
               transportModes={this.state._generateMissingServiceLinksForModes}
+              handleCheckTransportMode={this.handleCheckTransportMode.bind(this)}
           />
         </div>
         <div style={{ ...rowStyle, marginTop: 10 }}>
