@@ -5,6 +5,9 @@ import Checkbox from 'material-ui/Checkbox';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
+import {connect} from 'react-redux';
+import SuppliersActions from '../actions/SuppliersActions';
+import TransportModesPopover from './TransportModesPopover';
 
 class ModalEditProvider extends Component {
   componentWillReceiveProps(nextProps) {
@@ -25,7 +28,7 @@ class ModalEditProvider extends Component {
         allowCreateMissingStopPlace,
         enableStopPlaceIdMapping,
         enableCleanImport,
-        generateMissingServiceLinks,
+        generateMissingServiceLinksForModes,
         migrateDataToProvider,
         enableAutoImport
       } = provider.chouetteInfo;
@@ -48,7 +51,7 @@ class ModalEditProvider extends Component {
         _allowCreateMissingStopPlace: allowCreateMissingStopPlace,
         _enableStopPlaceIdMapping: enableStopPlaceIdMapping,
         _enableCleanImport: enableCleanImport,
-        _generateMissingServiceLinks: generateMissingServiceLinks,
+        _generateMissingServiceLinksForModes: generateMissingServiceLinksForModes,
         _migrateDataToProvider: migrateDataToProvider,
         _enableAutoImport: enableAutoImport,
       });
@@ -71,11 +74,15 @@ class ModalEditProvider extends Component {
         _allowCreateMissingStopPlace: false,
         _enableStopPlaceIdMapping: false,
         _enableCleanImport: false,
-        _generateMissingServiceLinks: false,
+        _generateMissingServiceLinksForModes: [],
         _migrateDataToProvider: null,
         _enableAutoImport: false
       });
     }
+  }
+  componentDidMount() {
+    const {dispatch} = this.props;
+    dispatch(SuppliersActions.getTransportModes());
   }
 
   getTitle() {
@@ -132,7 +139,7 @@ class ModalEditProvider extends Component {
   }
 
   render() {
-    const { open, providers, handleClose, handleSubmit } = this.props;
+    const { open, providers, handleClose, handleSubmit, allTransportModes } = this.props;
 
     if (!this.state) return null;
 
@@ -302,6 +309,12 @@ class ModalEditProvider extends Component {
             onChange={(e, v) => this.setState({ _sftpAccount: v })}
           />
         </div>
+        <div style={{...rowStyle, marginTop: 10}}>
+          <TransportModesPopover
+              allTransportModes={allTransportModes}
+              transportModes={this.state._generateMissingServiceLinksForModes}
+          />
+        </div>
         <div style={{ ...rowStyle, marginTop: 10 }}>
           <Checkbox
             label="Allow create missing stop place"
@@ -343,17 +356,13 @@ class ModalEditProvider extends Component {
             labelStyle={{ fontSize: '0.9em' }}
             onCheck={(e, v) => this.setState({ _enableAutoImport: v })}
           />
-          <Checkbox
-              label="Generate missing service links"
-              checked={this.state._generateMissingServiceLinks}
-              style={{ flex: 1, maxWidth: 360 }}
-              labelStyle={{ fontSize: '0.9em' }}
-              onCheck={(e, v) => this.setState({ _generateMissingServiceLinks: v })}
-          />
         </div>
       </Dialog>
     );
   }
 }
+const mapStateToProps = state => ({
+    allTransportModes: state.SuppliersReducer.allTransportModes
+});
 
-export default ModalEditProvider;
+export default connect(mapStateToProps)(ModalEditProvider);

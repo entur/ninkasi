@@ -315,7 +315,7 @@ const getProviderPayload = data => {
       allowCreateMissingStopPlace: trimmedData._allowCreateMissingStopPlace,
       enableStopPlaceIdMapping: trimmedData._enableStopPlaceIdMapping,
       enableCleanImport: trimmedData._enableCleanImport,
-      generateMissingServiceLinks: trimmedData._generateMissingServiceLinks,
+      generateMissingServiceLinksForModes: trimmedData._generateMissingServiceLinksForModes,
       migrateDataToProvider: trimmedData._migrateDataToProvider,
       enableAutoImport: trimmedData._enableAutoImport
     }
@@ -1308,6 +1308,19 @@ SuppliersActions.cleanFileFilter = () => dispatch => {
         SuppliersActions.logEvent({ title: 'Cleaning file filter failed' })
       );
     });
+};
+
+SuppliersActions.getTransportModes = () => dispatch => {
+    const url = `${window.config
+        .providersBaseUrl}transport_modes`;
+    return axios
+        .get(url, getConfig())
+        .then(response => {
+            dispatch(sendData(response.data, types.RECEIVED_TRANSPORT_MODES));
+        })
+        .catch(error => {
+            console.log('Error receiving transport modes', error);
+        });
 };
 
 export default SuppliersActions;
