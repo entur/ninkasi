@@ -267,6 +267,7 @@ class SupplierTabWrapper extends React.Component {
                 showDateFilter={true}
                 locale="en"
                 includeLevel2={true}
+                showNewDeliveriesFilter={true}
               />
             </Tab>
             <Tab value="statistics" label="Statistics">
