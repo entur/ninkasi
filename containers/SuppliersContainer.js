@@ -38,7 +38,8 @@ class SuppliersContainer extends React.Component {
       confirmAction: null,
       confirmTitle: '',
       confirmInfo: '',
-      cleanPopoverOpen: false
+      cleanPopoverOpen: false,
+      googlePopoverOpen: false,
     };
   }
 
@@ -90,6 +91,30 @@ class SuppliersContainer extends React.Component {
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.fetchOSM());
+      }
+    });
+  }
+
+  handleUploadGoogleProduction() {
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Upload GTFS data to Google (production)',
+      confirmInfo: 'Are you sure you want to upload latest GTFS export to Google (production)?',
+      confirmAction: () => {
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.uploadGoogleProduction());
+      }
+    });
+  }
+
+    handleUploadGoogleQA() {
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Upload GTFS data to Google (QA)',
+      confirmInfo: 'Are you sure you want to upload latest GTFS export to Google (QA)?',
+      confirmAction: () => {
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.uploadGoogleQA());
       }
     });
   }
@@ -215,6 +240,15 @@ class SuppliersContainer extends React.Component {
 
   handleEditProvider() {
     this.props.dispatch(SuppliersActions.openEditProviderDialog());
+  }
+
+  handleGoogleOpen(event) {
+    event.preventDefault();
+
+    this.setState({
+      googlePopoverOpen: true,
+      anchorEl: event.currentTarget
+    });
   }
 
   handleCleanOpen(event) {
@@ -406,6 +440,48 @@ class SuppliersContainer extends React.Component {
               label={'Fetch OSM'}
               onClick={this.handleFetchOSM.bind(this)}
             />
+            <FlatButton
+                disabled={!isAdmin}
+                onClick={this.handleGoogleOpen.bind(this)}
+            >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div
+                    style={{
+                        fontSize: 12,
+                        color: '#fff',
+                        paddingLeft: 8,
+                        paddingRight: 8,
+                        paddingTop: 2,
+                        textTransform: 'uppercase'
+                    }}
+                >
+                  Google
+                </div>
+                <MdDropDown color="#fff"/>
+              </div>
+            </FlatButton>
+          <Popover
+            open={this.state.googlePopoverOpen}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+            onRequestClose={() => this.setState({ googlePopoverOpen: false })}
+          >
+            <MenuItem
+              primaryText={'Upload GTFS (production)'}
+              style={{ fontSize: '1.1em' }}
+              onClick={() => this.handleUploadGoogleProduction()}
+              disabled={!isAdmin}
+              title={toolTips.uploadGoogleProduction}
+            />
+            <MenuItem
+              primaryText={'Upload GTFS (QA)'}
+              style={{ fontSize: '1em' }}
+              onClick={() => this.handleUploadGoogleQA()}
+              disabled={!isAdmin}
+              title={toolTips.uploadGoogleQA}
+            />
+          </Popover>
             {/*<FlatButton
               disabled={!isAdmin}
               title={toolTips.updateMapbox}

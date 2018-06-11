@@ -89,6 +89,24 @@ const MardukReducer = (state = cleanSlate, action) => {
     case types.REQUEST_FETCH_OSM:
       return Object.assign({}, state, {isLoading: true, error: false})
 
+    case types.ERROR_UPLOAD_GOOGLE_PRODUCTION:
+      return Object.assign({}, state, {isLoading: false, upload_google_production: action.payLoad, error: true})
+
+    case types.SUCCESS_UPLOAD_GOOGLE_PRODUCTION:
+      return Object.assign({}, state, {isLoading: false, upload_google_production: action.payLoad, error: false})
+
+    case types.REQUEST_UPLOAD_GOOGLE_PRODUCTION:
+      return Object.assign({}, state, {isLoading: true, error: false})
+
+    case types.ERROR_UPLOAD_GOOGLE_QA:
+      return Object.assign({}, state, {isLoading: false, upload_google_qa: action.payLoad, error: true})
+
+    case types.SUCCESS_UPLOAD_GOOGLE_QA:
+      return Object.assign({}, state, {isLoading: false, upload_google_qa: action.payLoad, error: false})
+
+    case types.REQUEST_UPLOAD_GOOGLE_QA:
+      return Object.assign({}, state, {isLoading: true, error: false})
+
     case types.ERROR_VALIDATE_PROVIDER:
       return Object.assign({}, state, {isLoading: false, validate_provider: action.payLoad, error: true})
 
