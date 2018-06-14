@@ -315,6 +315,7 @@ const getProviderPayload = data => {
       allowCreateMissingStopPlace: trimmedData._allowCreateMissingStopPlace,
       enableStopPlaceIdMapping: trimmedData._enableStopPlaceIdMapping,
       enableCleanImport: trimmedData._enableCleanImport,
+      generateDatedServiceJourneyIds: trimmedData._generateDatedServiceJourneyIds,
       generateMissingServiceLinksForModes: trimmedData._generateMissingServiceLinksForModes,
       migrateDataToProvider: trimmedData._migrateDataToProvider,
       enableAutoImport: trimmedData._enableAutoImport

@@ -28,6 +28,7 @@ class ModalEditProvider extends Component {
         allowCreateMissingStopPlace,
         enableStopPlaceIdMapping,
         enableCleanImport,
+        generateDatedServiceJourneyIds,
         generateMissingServiceLinksForModes,
         migrateDataToProvider,
         enableAutoImport
@@ -51,6 +52,7 @@ class ModalEditProvider extends Component {
         _allowCreateMissingStopPlace: allowCreateMissingStopPlace,
         _enableStopPlaceIdMapping: enableStopPlaceIdMapping,
         _enableCleanImport: enableCleanImport,
+        _generateDatedServiceJourneyIds: generateDatedServiceJourneyIds,
         _generateMissingServiceLinksForModes: generateMissingServiceLinksForModes,
         _migrateDataToProvider: migrateDataToProvider,
         _enableAutoImport: enableAutoImport,
@@ -74,6 +76,7 @@ class ModalEditProvider extends Component {
         _allowCreateMissingStopPlace: false,
         _enableStopPlaceIdMapping: false,
         _enableCleanImport: false,
+        _generateDatedServiceJourneyIds: false,
         _generateMissingServiceLinksForModes: [],
         _migrateDataToProvider: null,
         _enableAutoImport: false
@@ -371,6 +374,13 @@ class ModalEditProvider extends Component {
             style={{ flex: 1, maxWidth: 360 }}
             labelStyle={{ fontSize: '0.9em' }}
             onCheck={(e, v) => this.setState({ _enableAutoImport: v })}
+          />
+          <Checkbox
+              label="Generate DatedServiceJourneyIds"
+              checked={this.state._generateDatedServiceJourneyIds}
+              style={{ flex: 1 }}
+              labelStyle={{ fontSize: '0.9em' }}
+              onCheck={(e, v) => this.setState({ _generateDatedServiceJourneyIds: v })}
           />
         </div>
       </Dialog>
