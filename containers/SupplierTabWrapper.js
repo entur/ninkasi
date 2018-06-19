@@ -27,8 +27,8 @@ class SupplierTabWrapper extends React.Component {
   }
 
   componentDidMount() {
-    let queryTab = getQueryVariable('tab');
-    let queryId = getQueryVariable('id');
+    const queryTab = getQueryVariable('tab');
+    const queryId = getQueryVariable('id');
 
     const { dispatch } = this.props;
     if (queryTab == 'events') {
@@ -237,12 +237,10 @@ class SupplierTabWrapper extends React.Component {
       );
     }
 
-    if (!displayAllSuppliers && suppliers.length) {
-      var provider = suppliers.filter(p => {
-        return p.id == activeId;
-      })[0];
-    }
-
+    const provider =
+      !displayAllSuppliers && suppliers.length
+        ? suppliers.find(s => s.id === activeId)
+        : null;
     const defaultSelectedIndex = this.getTabIndexFromParams();
 
     if (displayAllSuppliers || provider) {
@@ -271,23 +269,24 @@ class SupplierTabWrapper extends React.Component {
               />
             </Tab>
             <Tab value="statistics" label="Statistics">
-              {suppliers.length &&
+              {suppliers.length && (
                 <StatisticsDetails
                   dispatch={this.props.dispatch}
                   lineStats={lineStats}
                   suppliers={suppliers.filter(
                     s => !!s.chouetteInfo.migrateDataToProvider
                   )}
-                />}
+                />
+              )}
             </Tab>
             <Tab value="exportedFiles" label="Exported files">
-              <ExportedFilesView/>
+              <ExportedFilesView />
             </Tab>
-            {canEditOrganisation
-              ? <Tab value="organisationRegister" label="Organisation register">
-                  <OrganizationRegister />
-                </Tab>
-              : null}
+            {canEditOrganisation ? (
+              <Tab value="organisationRegister" label="Organisation register">
+                <OrganizationRegister />
+              </Tab>
+            ) : null}
           </Tabs>
         );
       } else {
@@ -308,6 +307,7 @@ class SupplierTabWrapper extends React.Component {
                 key="statusList"
                 includeLevel2={true}
                 showDateFilter={true}
+                showNewDeliveriesFilter={true}
               />
             </Tab>
             <Tab value="chouetteJobs" label="Chouette jobs">
@@ -328,9 +328,7 @@ class SupplierTabWrapper extends React.Component {
 
       return (
         <div className="supplier-info">
-          <div style={{ marginLeft: 10, marginRight: 10 }}>
-            {tabsToRender}
-          </div>
+          <div style={{ marginLeft: 10, marginRight: 10 }}>{tabsToRender}</div>
         </div>
       );
     } else {
