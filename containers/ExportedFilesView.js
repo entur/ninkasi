@@ -14,6 +14,8 @@ class ExportedFilesView extends Component {
 
     if (!files) return null;
 
+    if (!providers) return null;
+
     const { providerData } = files;
 
     return (
