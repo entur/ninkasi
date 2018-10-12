@@ -1,4 +1,4 @@
-# Ninkasi
+# Ninkasi [![CircleCI](https://circleci.com/gh/entur/ninkasi/tree/master.svg?style=svg)](https://circleci.com/gh/entur/ninkasi/tree/master)
 
 This is the private admin GUI for managing the data pipeline and inspection of data status
 
