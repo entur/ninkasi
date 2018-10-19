@@ -46,6 +46,8 @@ class ModalEditProvider extends Component {
         enableCleanImport,
         generateDatedServiceJourneyIds,
         generateMissingServiceLinksForModes,
+        googleUpload,
+        googleQAUpload,
         migrateDataToProvider,
         enableAutoImport
       } = provider.chouetteInfo;
@@ -70,6 +72,8 @@ class ModalEditProvider extends Component {
         _enableCleanImport: enableCleanImport,
         _generateDatedServiceJourneyIds: generateDatedServiceJourneyIds,
         _generateMissingServiceLinksForModes: generateMissingServiceLinksForModes,
+        _googleUpload: googleUpload,
+        _googleQAUpload: googleQAUpload,
         _migrateDataToProvider: migrateDataToProvider,
         _enableAutoImport: enableAutoImport,
       });
@@ -94,6 +98,8 @@ class ModalEditProvider extends Component {
         _enableCleanImport: false,
         _generateDatedServiceJourneyIds: false,
         _generateMissingServiceLinksForModes: [],
+        _googleUpload: false,
+        _googleQAUpload: false,
         _migrateDataToProvider: null,
         _enableAutoImport: false
       });
@@ -397,6 +403,22 @@ class ModalEditProvider extends Component {
               style={{ flex: 1 }}
               labelStyle={{ fontSize: '0.9em' }}
               onCheck={(e, v) => this.setState({ _generateDatedServiceJourneyIds: v })}
+          />
+        </div>
+        <div style={{ ...rowStyle, marginTop: 10 }}>
+          <Checkbox
+              label="Upload to Google (production)"
+              checked={this.state._googleUpload}
+              style={{ flex: 1, maxWidth: 360 }}
+              labelStyle={{ fontSize: '0.9em' }}
+              onCheck={(e, v) => this.setState({ _googleUpload: v })}
+          />
+          <Checkbox
+              label="Upload to Google (QA)"
+              checked={this.state._uploadQAGoogle}
+              style={{ flex: 1 }}
+              labelStyle={{ fontSize: '0.9em' }}
+              onCheck={(e, v) => this.setState({ _uploadQAGoogle: v })}
           />
         </div>
       </Dialog>

@@ -333,6 +333,7 @@ const getProviderPayload = data => {
       enableCleanImport: trimmedData._enableCleanImport,
       generateDatedServiceJourneyIds: trimmedData._generateDatedServiceJourneyIds,
       generateMissingServiceLinksForModes: trimmedData._generateMissingServiceLinksForModes,
+      googleUpload: trimmedData._googleUpload,
       migrateDataToProvider: trimmedData._migrateDataToProvider,
       enableAutoImport: trimmedData._enableAutoImport
     }
