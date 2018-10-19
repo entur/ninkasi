@@ -415,10 +415,10 @@ class ModalEditProvider extends Component {
           />
           <Checkbox
               label="Upload to Google (QA)"
-              checked={this.state._uploadQAGoogle}
+              checked={this.state._googleQAUpload}
               style={{ flex: 1 }}
               labelStyle={{ fontSize: '0.9em' }}
-              onCheck={(e, v) => this.setState({ _uploadQAGoogle: v })}
+              onCheck={(e, v) => this.setState({ _googleQAUpload: v })}
           />
         </div>
       </Dialog>

@@ -334,6 +334,7 @@ const getProviderPayload = data => {
       generateDatedServiceJourneyIds: trimmedData._generateDatedServiceJourneyIds,
       generateMissingServiceLinksForModes: trimmedData._generateMissingServiceLinksForModes,
       googleUpload: trimmedData._googleUpload,
+      googleQAUpload: trimmedData._googleQAUpload,
       migrateDataToProvider: trimmedData._migrateDataToProvider,
       enableAutoImport: trimmedData._enableAutoImport
     }
