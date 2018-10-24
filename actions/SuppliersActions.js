@@ -336,7 +336,8 @@ const getProviderPayload = data => {
       googleUpload: trimmedData._googleUpload,
       googleQAUpload: trimmedData._googleQAUpload,
       migrateDataToProvider: trimmedData._migrateDataToProvider,
-      enableAutoImport: trimmedData._enableAutoImport
+      enableAutoImport: trimmedData._enableAutoImport,
+      enableAutoValidation: trimmedData._enableAutoValidation
     }
   };
 

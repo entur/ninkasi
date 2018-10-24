@@ -49,7 +49,8 @@ class ModalEditProvider extends Component {
         googleUpload,
         googleQAUpload,
         migrateDataToProvider,
-        enableAutoImport
+        enableAutoImport,
+        enableAutoValidation
       } = provider.chouetteInfo;
 
       this.setState({
@@ -76,6 +77,7 @@ class ModalEditProvider extends Component {
         _googleQAUpload: googleQAUpload,
         _migrateDataToProvider: migrateDataToProvider,
         _enableAutoImport: enableAutoImport,
+        _enableAutoValidation: enableAutoValidation
       });
     } else {
       this.setState({
@@ -101,7 +103,8 @@ class ModalEditProvider extends Component {
         _googleUpload: false,
         _googleQAUpload: false,
         _migrateDataToProvider: null,
-        _enableAutoImport: false
+        _enableAutoImport: false,
+        _enableAutoValidation: false
       });
     }
   }
@@ -398,11 +401,11 @@ class ModalEditProvider extends Component {
             onCheck={(e, v) => this.setState({ _enableAutoImport: v })}
           />
           <Checkbox
-              label="Generate DatedServiceJourneyIds"
-              checked={this.state._generateDatedServiceJourneyIds}
-              style={{ flex: 1 }}
+              label="Enable auto validation"
+              checked={this.state._enableAutoValidation}
+              style={{ flex: 1, maxWidth: 360 }}
               labelStyle={{ fontSize: '0.9em' }}
-              onCheck={(e, v) => this.setState({ _generateDatedServiceJourneyIds: v })}
+              onCheck={(e, v) => this.setState({ _enableAutoValidation: v })}
           />
         </div>
         <div style={{ ...rowStyle, marginTop: 10 }}>
@@ -419,6 +422,15 @@ class ModalEditProvider extends Component {
               style={{ flex: 1 }}
               labelStyle={{ fontSize: '0.9em' }}
               onCheck={(e, v) => this.setState({ _googleQAUpload: v })}
+          />
+        </div>
+        <div style={{ ...rowStyle, marginTop: 10 }}>
+          <Checkbox
+              label="Generate DatedServiceJourneyIds"
+              checked={this.state._generateDatedServiceJourneyIds}
+              style={{ flex: 1 }}
+              labelStyle={{ fontSize: '0.9em' }}
+              onCheck={(e, v) => this.setState({ _generateDatedServiceJourneyIds: v })}
           />
         </div>
       </Dialog>
