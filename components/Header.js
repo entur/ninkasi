@@ -21,6 +21,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MdAccount from 'material-ui/svg-icons/action/account-circle';
+import MdHelp from 'material-ui/svg-icons/action/help';
 import { connect } from 'react-redux';
 import MdHistory from 'material-ui/svg-icons/action/history';
 import SuppliersActions from '../actions/SuppliersActions';
@@ -97,6 +98,13 @@ class Header extends React.Component {
               onClick={() => {
                 this.handleShowHistory();
               }}
+            />
+            <MenuItem
+                leftIcon={<MdHelp color="#41c0c4" />}
+                href="https://enturas.atlassian.net/wiki/spaces/ROR/pages/682623320/Brukerveiledning+-+Ninkasi"
+                target="_blank"
+                primaryText='User guide (Norwegian)'
+                style={{ fontSize: 12, padding: 0 }}
             />
             <MenuItem
               leftIcon={<MdAccount color="#41c0c4" />}
