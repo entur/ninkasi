@@ -100,18 +100,32 @@ module.exports = new Promise(function(resolve, reject){
 
   console.log("configUrl", configUrl);
 
-  if ( configUrl.indexOf("do_not_read") == -1 ) {
-    // Read contents from configUrl if it is given
-    request( configUrl, function( error, response, body ) {
-      if ( !error && response.statusCode == 200 ) {
-        body = JSON.parse(body)
-        conf.load(body);
-        conf.validate();
-        resolve(conf)
-      } else {
-        reject("Could not load data from " + configUrl, error)
-      }
-    });
+    if (configUrl.indexOf("do_not_read") == -1) {
+        // Read contents from configUrl if it is given
+
+        if (configUrl.indexOf("http") == -1) {
+            fs.readFile(configUrl, (error, data) => {
+                if (!error) {
+                    data = JSON.parse(data)
+                    conf.load(data);
+                    conf.validate();
+                    resolve(conf)
+                } else {
+                    reject("Could not load data from " + configUrl, error)
+                }
+            });
+        } else {
+            request(configUrl, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    body = JSON.parse(body)
+                    conf.load(body);
+                    conf.validate();
+                    resolve(conf)
+                } else {
+                    reject("Could not load data from " + configUrl, error)
+                }
+            });
+        }
   } else {
     console.log("The CONFIG_URL element has not been set, so you use the default dev-mode configuration")
     conf.validate();
