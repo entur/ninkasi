@@ -56,6 +56,7 @@ class SuppliersContainer extends React.Component {
       confirmInfo: '',
       cleanPopoverOpen: false,
       googlePopoverOpen: false,
+      graphPopoverOpen: false,
     };
   }
 
@@ -83,6 +84,18 @@ class SuppliersContainer extends React.Component {
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.buildGraph());
+      }
+    });
+  }
+
+  handleBuildBaseGraph() {
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Build base graph',
+      confirmInfo: 'Are you sure you want to build base graph?',
+      confirmAction: () => {
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.buildBaseGraph());
       }
     });
   }
@@ -258,6 +271,16 @@ class SuppliersContainer extends React.Component {
     this.props.dispatch(SuppliersActions.openEditProviderDialog());
   }
 
+  handleGraphOpen(event) {
+    event.preventDefault();
+
+    this.setState({
+      graphPopoverOpen: true,
+      anchorEl: event.currentTarget
+    });
+  }
+
+
   handleGoogleOpen(event) {
     event.preventDefault();
 
@@ -317,8 +340,9 @@ class SuppliersContainer extends React.Component {
     };
 
     const toolTips = {
-      history: 'Browse the history of your activites in Ninkasi',
+      history: 'Browse the history of your activities in Ninkasi',
       buildGraph: 'Build graph for all providers',
+      buildBaseGraph: 'Build new base graph with OSM and elevation data',
       fetchOSM: 'Fetch Open Street Map data',
       updateMapbox: 'Update mapbox data from NSR',
       cleanFileFilter: 'Clean file filter',
@@ -443,12 +467,47 @@ class SuppliersContainer extends React.Component {
               {peliasOptions}
             </Popover>
             <FlatButton
+                disabled={!isAdmin}
+                onClick={this.handleGraphOpen.bind(this)}
+            >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div
+                    style={{
+                        fontSize: 12,
+                        color: '#fff',
+                        paddingLeft: 8,
+                        paddingRight: 8,
+                        paddingTop: 2,
+                        textTransform: 'uppercase'
+                    }}
+                >
+                  Graph
+                </div>
+                <MdDropDown color="#fff"/>
+              </div>
+            </FlatButton>
+          <Popover
+            open={this.state.graphPopoverOpen}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+            onRequestClose={() => this.setState({ graphPopoverOpen: false })}
+          >
+            <MenuItem
+              primaryText={'Build graph'}
+              style={{ fontSize: '1.1em' }}
+              onClick={() => this.handleBuildGraph()}
               disabled={!isAdmin}
               title={toolTips.buildGraph}
-              labelStyle={{ fontSize: 12, color: '#fff' }}
-              label={'Build Graph'}
-              onClick={this.handleBuildGraph.bind(this)}
             />
+            <MenuItem
+              primaryText={'Build base graph'}
+              style={{ fontSize: '1em' }}
+              onClick={() => this.handleBuildBaseGraph()}
+              disabled={!isAdmin}
+              title={toolTips.buildBaseGraph}
+            />
+          </Popover>
             <FlatButton
               disabled={!isAdmin}
               title={toolTips.fetchOSM}

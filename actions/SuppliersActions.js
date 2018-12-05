@@ -1004,6 +1004,31 @@ SuppliersActions.buildGraph = () => dispatch => {
     });
 };
 
+SuppliersActions.buildBaseGraph = () => dispatch => {
+    const url = window.config.timetableAdminBaseUrl + 'routing_graph/build_base';
+
+    dispatch(requestBuildBaseGraph());
+    return axios({
+        url: url,
+        timeout: 20000,
+        method: 'post',
+        ...getConfig()
+    })
+        .then(function(response) {
+            dispatch(sendData(response.data, types.SUCCESS_BUILD_BASE_GRAPH));
+            dispatch(
+                SuppliersActions.addNotification('Base graph build started', 'success')
+            );
+            dispatch(SuppliersActions.logEvent({ title: 'Base graph build started' }));
+        })
+        .catch(function(response) {
+            console.log('ERROR BUILDING BASE_GRAPH', response);
+            dispatch(sendData(response.data, types.ERROR_BUILD_BASE_GRAPH));
+            dispatch(SuppliersActions.addNotification('Base graph build failed', 'error'));
+            dispatch(SuppliersActions.logEvent({ title: 'Base graph build failed' }));
+        });
+};
+
 SuppliersActions.fetchOSM = () => dispatch => {
   const url = window.config.mapAdminBaseUrl + 'download';
   dispatch(requestFetchOSM());
@@ -1139,6 +1164,10 @@ function sortEventlistByNewestFirst(list) {
 
 function requestBuildGraph() {
   return { type: types.REQUEST_BUILD_GRAPH };
+}
+
+function requestBuildBaseGraph() {
+    return { type: types.REQUEST_BUILD_BASE_GRAPH };
 }
 
 function requestFetchOSM() {
