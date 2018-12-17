@@ -16,9 +16,9 @@
 
 export const getProvidersEnv = providersBaseUrl => {
   if (providersBaseUrl) {
-    if (providersBaseUrl.indexOf('api-test.entur.org') > -1) {
+    if (providersBaseUrl.indexOf('api.dev.entur.io') > -1) {
       return 'TEST';
-    } else if (providersBaseUrl.indexOf('api.entur.org') > -1) {
+    } else if (providersBaseUrl.indexOf('api.entur.io') > -1) {
       return 'PROD';
     } else {
       return 'DEV';
