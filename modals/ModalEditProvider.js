@@ -121,6 +121,11 @@ class ModalEditProvider extends Component {
     return 'Create new provider';
   }
 
+  isEdit() {
+    const { provider, shouldUpdate } = this.props;
+    return provider && provider.id && shouldUpdate
+  }
+
   getProjections() {
     const projections = [
       { value: 'EPSG:32632', text: 'UTM zone 32N' },
@@ -166,6 +171,22 @@ class ModalEditProvider extends Component {
     ));
   }
 
+  getDataFormats() {
+    const formats = [
+      { value: '', text: 'None' },
+      { value: 'netexprofile', text: 'NeTEx Profile' },
+      { value: 'regtopp', text: 'Regtopp' },
+      { value: 'gtfs', text: 'GTFS' },
+      { value: 'neptune', text: 'Neptune' },
+    ];
+    return formats.map( format => (
+        <MenuItem key={'strategy-' + format.value}
+                  value={format.value}
+                  primaryText={format.text}
+        />
+    ));
+  }
+
   handleCheckTransportMode(transportMode, isChecked) {
     let transportModes = this.state._generateMissingServiceLinksForModes;
     var idx = transportModes.indexOf(transportMode);
@@ -190,6 +211,8 @@ class ModalEditProvider extends Component {
     const projections = this.getProjections();
     const versions = this.getVersions();
     const calendarStrategies = this.getCalendarStrategies();
+    const dataFormats = this.getDataFormats();
+    const isEdit = this.isEdit();
 
     const rowStyle = {
       display: 'flex',
@@ -222,6 +245,8 @@ class ModalEditProvider extends Component {
       >
         <div style={rowStyle}>
           <TextField
+            required={true}
+            disabled={isEdit}
             floatingLabelText={'Name'}
             floatingLabelFixed={true}
             value={this.state._name}
@@ -229,6 +254,8 @@ class ModalEditProvider extends Component {
             onChange={(e, v) => this.setState({ _name: v })}
           />
           <TextField
+            required={true}
+            disabled={isEdit}
             floatingLabelText={'Chouette referential name'}
             floatingLabelFixed={true}
             value={this.state._referential}
@@ -238,6 +265,8 @@ class ModalEditProvider extends Component {
         </div>
         <div style={rowStyle}>
           <TextField
+            required={true}
+            disabled={isEdit}
             floatingLabelText={'Organisation'}
             floatingLabelFixed={true}
             value={this.state._organisation}
@@ -245,6 +274,8 @@ class ModalEditProvider extends Component {
             onChange={(e, v) => this.setState({ _organisation: v })}
           />
           <TextField
+            required={true}
+            disabled={isEdit}
             floatingLabelText={'User'}
             floatingLabelFixed={true}
             value={this.state._user}
@@ -294,16 +325,23 @@ class ModalEditProvider extends Component {
               {calendarStrategies}
             </SelectField>
           </div>
-          <TextField
-            floatingLabelText={'Data format'}
-            floatingLabelFixed={true}
-            value={this.state._dataFormat}
-            style={{ flex: 1, padding: '0 15px' }}
-            onChange={(e, v) => this.setState({ _dataFormat: v })}
-          />
+          <div style={{padding: '0 15px', flex: 1}}>
+            <SelectField
+              value={this.state._dataFormat}
+              floatingLabelText={'Data format'}
+              floatingLabelFixed={true}
+              fullWidth={true}
+              onChange={(e, k, v) => {
+                this.setState({ _dataFormat: v })
+              }}
+          >
+            {dataFormats}
+          </SelectField>
+          </div>
         </div>
         <div style={rowStyle}>
           <TextField
+            disabled={isEdit}
             floatingLabelText={'xmlns'}
             floatingLabelFixed={true}
             value={this.state._xmlns}
@@ -311,6 +349,7 @@ class ModalEditProvider extends Component {
             onChange={(e, v) => this.setState({ _xmlns: v })}
           />
           <TextField
+            disabled={isEdit}
             floatingLabelText={'xmlns URL'}
             floatingLabelFixed={true}
             value={this.state._xmlnsurl}
