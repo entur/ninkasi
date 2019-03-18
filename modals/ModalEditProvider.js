@@ -245,8 +245,6 @@ class ModalEditProvider extends Component {
       >
         <div style={rowStyle}>
           <TextField
-            required={true}
-            disabled={isEdit}
             floatingLabelText={'Name'}
             floatingLabelFixed={true}
             value={this.state._name}
@@ -254,7 +252,6 @@ class ModalEditProvider extends Component {
             onChange={(e, v) => this.setState({ _name: v })}
           />
           <TextField
-            required={true}
             disabled={isEdit}
             floatingLabelText={'Chouette referential name'}
             floatingLabelFixed={true}
@@ -265,7 +262,6 @@ class ModalEditProvider extends Component {
         </div>
         <div style={rowStyle}>
           <TextField
-            required={true}
             disabled={isEdit}
             floatingLabelText={'Organisation'}
             floatingLabelFixed={true}
@@ -274,7 +270,6 @@ class ModalEditProvider extends Component {
             onChange={(e, v) => this.setState({ _organisation: v })}
           />
           <TextField
-            required={true}
             disabled={isEdit}
             floatingLabelText={'User'}
             floatingLabelFixed={true}
