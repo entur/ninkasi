@@ -25,7 +25,57 @@ import {connect} from 'react-redux';
 import SuppliersActions from '../actions/SuppliersActions';
 import TransportModesPopover from './TransportModesPopover';
 
+const getEmptyForm = () => ({
+  _providerId: null,
+  _name: '',
+  _sftpAccount: '',
+  _chouetteInfoId: null,
+  _xmlns: '',
+  _xmlnsurl: '',
+  _referential: '',
+  _organisation: '',
+  _user: '',
+  _regtoppVersion: null,
+  _regtoppCoordinateProjection: '',
+  _regtoppCalendarStrategy: '',
+  _dataFormat: '',
+  _enableValidation: false,
+  _allowCreateMissingStopPlace: false,
+  _enableStopPlaceIdMapping: false,
+  _enableCleanImport: false,
+  _generateDatedServiceJourneyIds: false,
+  _generateMissingServiceLinksForModes: [],
+  _googleUpload: false,
+  _googleQAUpload: false,
+  _migrateDataToProvider: null,
+  _enableAutoImport: false,
+  _enableAutoValidation: false
+});
+
+const validate = (values) => {
+  const errors = {};
+  if (!values._name.length) {
+    errors._name = 'Required';
+  } else if (!values._referential.length) {
+    errors._referential = 'Required';
+  } else if (!/^(rb_)?[a-z]{3}$/.test(values._referential)) {
+    errors._referential = 'Invalid format';
+  } else if (!values._organisation.length) {
+    errors._organisation = 'Required';
+  } else if (!values._user.length) {
+    errors._user = 'Required';
+  } else if (values._referential.indexOf('rb_') !== 0) {
+    errors._migrateDataToProvider = 'Required';
+  }
+  return errors;
+};
+
 class ModalEditProvider extends Component {
+  state = {
+    form: getEmptyForm(),
+    errors: {}
+  };
+
   componentWillReceiveProps(nextProps) {
     if (this.props.provider !== null && nextProps.shouldUpdate) {
       const { provider } = nextProps;
@@ -52,8 +102,7 @@ class ModalEditProvider extends Component {
         enableAutoImport,
         enableAutoValidation
       } = provider.chouetteInfo;
-
-      this.setState({
+      const form = {
         _providerId: provider.id,
         _name: name,
         _sftpAccount: sftpAccount,
@@ -78,34 +127,10 @@ class ModalEditProvider extends Component {
         _migrateDataToProvider: migrateDataToProvider,
         _enableAutoImport: enableAutoImport,
         _enableAutoValidation: enableAutoValidation
-      });
+      };
+      this.setState({ form, errors: {} });
     } else {
-      this.setState({
-        _providerId: null,
-        _name: '',
-        _sftpAccount: '',
-        _chouetteInfoId: null,
-        _xmlns: '',
-        _xmlnsurl: '',
-        _referential: '',
-        _organisation: '',
-        _user: '',
-        _regtoppVersion: null,
-        _regtoppCoordinateProjection: '',
-        _regtoppCalendarStrategy: '',
-        _dataFormat: '',
-        _enableValidation: false,
-        _allowCreateMissingStopPlace: false,
-        _enableStopPlaceIdMapping: false,
-        _enableCleanImport: false,
-        _generateDatedServiceJourneyIds: false,
-        _generateMissingServiceLinksForModes: [],
-        _googleUpload: false,
-        _googleQAUpload: false,
-        _migrateDataToProvider: null,
-        _enableAutoImport: false,
-        _enableAutoValidation: false
-      });
+      this.setState({ form: getEmptyForm(), errors: {} });
     }
   }
   componentDidMount() {
@@ -188,7 +213,7 @@ class ModalEditProvider extends Component {
   }
 
   handleCheckTransportMode(transportMode, isChecked) {
-    let transportModes = this.state._generateMissingServiceLinksForModes;
+    let transportModes = this.state.form._generateMissingServiceLinksForModes;
     var idx = transportModes.indexOf(transportMode);
     if (isChecked && idx === -1) {
         transportModes = transportModes.concat(transportMode);
@@ -201,11 +226,39 @@ class ModalEditProvider extends Component {
     this.setState({_generateMissingServiceLinksForModes: transportModes});
   }
 
+  handleChange(field, value) {
+    const updatedForm = Object.assign({}, this.state.form);
+    updatedForm[field] = value;
+
+    let errors = {};
+    if (!this.isEdit()) {
+      if (field === '_referential') {
+        updatedForm._xmlns = value.toUpperCase();
+        updatedForm._xmlnsurl = `http://www.rutebanken.org/ns/${value}`;
+        updatedForm._sftpAccount = value;
+      }
+      errors = validate(updatedForm);
+    }
+    this.setState({ form: updatedForm, errors });
+  }
+
+  handleSubmit() {
+    const { form } = this.state;
+    const errors = validate(form);
+    if (!Object.keys(errors).length) {
+      this.props.handleSubmit(form);
+    } else {
+      console.error(errors);
+      // display error msg?
+    }
+  }
 
   render() {
-    const { open, providers, handleClose, handleSubmit, allTransportModes } = this.props;
+    const { open, providers, handleClose, allTransportModes } = this.props;
 
     if (!this.state) return null;
+
+    const { errors } = this.state;
 
     const title = this.getTitle();
     const projections = this.getProjections();
@@ -232,7 +285,7 @@ class ModalEditProvider extends Component {
         label="Update"
         primary={true}
         onTouchTap={() => {
-          handleSubmit(this.state);
+          this.handleSubmit();
         }}
       />
     ];
@@ -242,22 +295,25 @@ class ModalEditProvider extends Component {
         title={title}
         open={open}
         actions={actions}
+        onRequestClose={handleClose}
       >
         <div style={rowStyle}>
           <TextField
             floatingLabelText={'Name'}
             floatingLabelFixed={true}
-            value={this.state._name}
+            value={this.state.form._name}
             style={{ flex: 1 }}
-            onChange={(e, v) => this.setState({ _name: v })}
+            onChange={(e, v) => this.handleChange('_name', v)}
+            errorText={errors._name && errors._name}
           />
           <TextField
             disabled={isEdit}
             floatingLabelText={'Chouette referential name'}
             floatingLabelFixed={true}
-            value={this.state._referential}
+            value={this.state.form._referential}
             style={{ flex: 1, padding: '0 15px' }}
-            onChange={(e, v) => this.setState({ _referential: v })}
+            onChange={(e, v) => this.handleChange('_referential', v)}
+            errorText={errors._referential && errors._referential}
           />
         </div>
         <div style={rowStyle}>
@@ -265,28 +321,30 @@ class ModalEditProvider extends Component {
             disabled={isEdit}
             floatingLabelText={'Organisation'}
             floatingLabelFixed={true}
-            value={this.state._organisation}
+            value={this.state.form._organisation}
             style={{ flex: 1 }}
-            onChange={(e, v) => this.setState({ _organisation: v })}
+            onChange={(e, v) => this.handleChange('_organisation', v)}
+            errorText={errors._organisation && errors._organisation}
           />
           <TextField
             disabled={isEdit}
             floatingLabelText={'User'}
             floatingLabelFixed={true}
-            value={this.state._user}
+            value={this.state.form._user}
             style={{ flex: 1, padding: '0 15px' }}
-            onChange={(e, v) => this.setState({ _user: v })}
+            onChange={(e, v) => this.handleChange('_user', v)}
+            errorText={errors._user && errors._user}
           />
         </div>
         <div style={rowStyle}>
           <div style={{flex: 1}}>
             <SelectField
-              value={this.state._regtoppVersion}
+              value={this.state.form._regtoppVersion}
               floatingLabelText={'Regtopp version'}
               floatingLabelFixed={true}
               fullWidth={true}
               onChange={(e, k, v) => {
-                this.setState({_regtoppVersion: v})
+                this.handleChange('_regtoppVersion', v);
               }}
             >
               {versions}
@@ -294,12 +352,12 @@ class ModalEditProvider extends Component {
           </div>
          <div style={{padding: '0 15px', flex: 1}}>
            <SelectField
-             value={this.state._regtoppCoordinateProjection}
+             value={this.state.form._regtoppCoordinateProjection}
              floatingLabelText={'Regtopp Coordinate Projection'}
              floatingLabelFixed={true}
              fullWidth={true}
              onChange={(e, k, v) => {
-               this.setState({_regtoppCoordinateProjection: v})
+               this.handleChange('_regtoppCoordinateProjection', v);
              }}
            >
              {projections}
@@ -309,12 +367,12 @@ class ModalEditProvider extends Component {
         <div style={rowStyle}>
           <div style={{flex: 1}}>
             <SelectField
-              value={this.state._regtoppCalendarStrategy}
+              value={this.state.form._regtoppCalendarStrategy}
               floatingLabelText={'Regtopp calendar strategy'}
               floatingLabelFixed={true}
               fullWidth={true}
               onChange={(e, k, v) => {
-                this.setState({_regtoppCalendarStrategy: v})
+                this.handleChange('_regtoppCalendarStrategy', v);
               }}
             >
               {calendarStrategies}
@@ -322,12 +380,12 @@ class ModalEditProvider extends Component {
           </div>
           <div style={{padding: '0 15px', flex: 1}}>
             <SelectField
-              value={this.state._dataFormat}
+              value={this.state.form._dataFormat}
               floatingLabelText={'Data format'}
               floatingLabelFixed={true}
               fullWidth={true}
               onChange={(e, k, v) => {
-                this.setState({ _dataFormat: v })
+                this.handleChange('_dataFormat', v);
               }}
           >
             {dataFormats}
@@ -339,17 +397,17 @@ class ModalEditProvider extends Component {
             disabled={isEdit}
             floatingLabelText={'xmlns'}
             floatingLabelFixed={true}
-            value={this.state._xmlns}
+            value={this.state.form._xmlns}
             style={{ flex: 1 }}
-            onChange={(e, v) => this.setState({ _xmlns: v })}
+            onChange={(e, v) => this.handleChange('_xmlns', v)}
           />
           <TextField
             disabled={isEdit}
             floatingLabelText={'xmlns URL'}
             floatingLabelFixed={true}
-            value={this.state._xmlnsurl}
+            value={this.state.form._xmlnsurl}
             style={{ flex: 1, padding: '0 15px' }}
-            onChange={(e, v) => this.setState({ _xmlnsurl: v })}
+            onChange={(e, v) => this.handleChange('_xmlnsurl', v)}
           />
         </div>
         <div style={rowStyle}>
@@ -357,9 +415,10 @@ class ModalEditProvider extends Component {
             floatingLabelText="Migrate data to provider"
             floatingLabelFixed={true}
             style={{ flex: 1 }}
-            value={this.state._migrateDataToProvider}
-            onChange={(e, i, v) => this.setState({ _migrateDataToProvider: v })}
+            value={this.state.form._migrateDataToProvider}
+            onChange={(e, i, v) => this.handleChange('_migrateDataToProvider', v)}
             autoWidth={true}
+            errorText={errors._migrateDataToProvider && errors._migrateDataToProvider}
           >
             <MenuItem
               value={null}
@@ -381,90 +440,90 @@ class ModalEditProvider extends Component {
           <TextField
             floatingLabelText={'sFtp account'}
             floatingLabelFixed={true}
-            value={this.state._sftpAccount}
+            value={this.state.form._sftpAccount}
             style={{ flex: 1, padding: '0 15px' }}
-            onChange={(e, v) => this.setState({ _sftpAccount: v })}
+            onChange={(e, v) => this.handleChange('_sftpAccount', v)}
           />
         </div>
         <div style={{...rowStyle, marginTop: 10}}>
           <TransportModesPopover
               allTransportModes={allTransportModes}
-              transportModes={this.state._generateMissingServiceLinksForModes}
+              transportModes={this.state.form._generateMissingServiceLinksForModes}
               handleCheckTransportMode={this.handleCheckTransportMode.bind(this)}
           />
         </div>
         <div style={{ ...rowStyle, marginTop: 10 }}>
           <Checkbox
             label="Allow create missing stop place"
-            checked={this.state._allowCreateMissingStopPlace}
+            checked={this.state.form._allowCreateMissingStopPlace}
             style={{ flex: 1, maxWidth: 360 }}
             labelStyle={{ fontSize: '0.9em' }}
             onCheck={(e, v) =>
-              this.setState({ _allowCreateMissingStopPlace: v })}
+              this.handleChange('_allowCreateMissingStopPlace', v)}
           />
           <Checkbox
             label="Enable stop place Id mapping"
-            checked={this.state._enableStopPlaceIdMapping}
+            checked={this.state.form._enableStopPlaceIdMapping}
             style={{ flex: 1 }}
             labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.setState({ _enableStopPlaceIdMapping: v })}
+            onCheck={(e, v) => this.handleChange('_enableStopPlaceIdMapping', v)}
           />
         </div>
         <div style={{ ...rowStyle, marginTop: 10 }}>
           <Checkbox
             label="Enable clean import"
-            checked={this.state._enableCleanImport}
+            checked={this.state.form._enableCleanImport}
             style={{ flex: 1, maxWidth: 360 }}
             labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.setState({ _enableCleanImport: v })}
+            onCheck={(e, v) => this.handleChange('_enableCleanImport', v)}
           />
           <Checkbox
             label="Enable validation"
-            checked={this.state._enableValidation}
+            checked={this.state.form._enableValidation}
             style={{ flex: 1 }}
             labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.setState({ _enableValidation: v })}
+            onCheck={(e, v) => this.handleChange('_enableValidation', v)}
           />
         </div>
         <div style={{ ...rowStyle, marginTop: 10 }}>
           <Checkbox
             label="Enable auto import"
-            checked={this.state._enableAutoImport}
+            checked={this.state.form._enableAutoImport}
             style={{ flex: 1, maxWidth: 360 }}
             labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.setState({ _enableAutoImport: v })}
+            onCheck={(e, v) => this.handleChange('_enableAutoImport', v)}
           />
           <Checkbox
               label="Enable auto validation"
-              checked={this.state._enableAutoValidation}
+              checked={this.state.form._enableAutoValidation}
               style={{ flex: 1, maxWidth: 360 }}
               labelStyle={{ fontSize: '0.9em' }}
-              onCheck={(e, v) => this.setState({ _enableAutoValidation: v })}
+              onCheck={(e, v) => this.handleChange('_enableAutoValidation', v)}
           />
         </div>
         <div style={{ ...rowStyle, marginTop: 10 }}>
           <Checkbox
               label="Upload to Google (production)"
-              checked={this.state._googleUpload}
+              checked={this.state.form._googleUpload}
               style={{ flex: 1, maxWidth: 360 }}
               labelStyle={{ fontSize: '0.9em' }}
-              onCheck={(e, v) => this.setState({ _googleUpload: v })}
+              onCheck={(e, v) => this.handleChange('_googleUpload', v)}
           />
           <Checkbox
               label="Upload to Google (QA)"
-              checked={this.state._googleQAUpload}
+              checked={this.state.form._googleQAUpload}
               style={{ flex: 1 }}
               labelStyle={{ fontSize: '0.9em' }}
-              onCheck={(e, v) => this.setState({ _googleQAUpload: v })}
+              onCheck={(e, v) => this.handleChange('_googleQAUpload', v)}
           />
         </div>
         <div style={{ ...rowStyle, marginTop: 10 }}>
           <Checkbox
               label="Generate DatedServiceJourneyIds"
-              checked={this.state._generateDatedServiceJourneyIds}
+              checked={this.state.form._generateDatedServiceJourneyIds}
               style={{ flex: 1 }}
               labelStyle={{ fontSize: '0.9em' }}
-              onCheck={(e, v) => this.setState({ _generateDatedServiceJourneyIds: v })}
+              onCheck={(e, v) => this.handleChange('_generateDatedServiceJourneyIds', v)}
           />
         </div>
       </Dialog>
