@@ -31,6 +31,7 @@ import peliasTasks from '../config/peliasTasks';
 import moment from 'moment';
 import roleParser from '../roles/rolesParser';
 import MdEdit from 'material-ui/svg-icons/image/edit';
+import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import GraphStatus from '../components/GraphStatus';
 import FlatButton from 'material-ui/FlatButton';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
@@ -58,22 +59,22 @@ class SuppliersContainer extends React.Component {
       googlePopoverOpen: false,
       graphPopoverOpen: false,
     };
-  }
 
-  componentWillMount() {
-    const { dispatch } = this.props;
     cfgreader.readConfig(
       function(config) {
         window.config = config;
-        dispatch(SuppliersActions.getAllProviders());
-
-        if (!!getQueryVariable('id')) {
-          dispatch(
-            SuppliersActions.selectActiveSupplier(getQueryVariable('id'))
-          );
-        }
       }.bind(this)
     );
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    const id = getQueryVariable('id');
+    dispatch(SuppliersActions.getAllProviders()).then(() => {
+      if (id != null) {
+        dispatch(SuppliersActions.selectActiveSupplier(Number(id)));
+      }
+    });
   }
 
   handleBuildGraph() {
@@ -318,6 +319,27 @@ class SuppliersContainer extends React.Component {
     }
   }
 
+  handleOpenConfirmDeleteProviderDialog(open = true) {
+    if (open) {
+      const { dispatch, activeProviderId } = this.props;
+      this.setState({
+        confirmDialogOpen: true,
+        confirmTitle: 'Delete provider',
+        confirmInfo: 'Are you sure you want delete the provider?',
+        confirmAction: () => {
+          dispatch(SuppliersActions.deleteProvider(activeProviderId));
+        }
+      });
+    } else {
+      this.setState({
+        confirmDialogOpen: false,
+        confirmTitle: '',
+        confirmInfo: '',
+        confirmAction: null
+      });
+    }
+  }
+
   render() {
 
     const { suppliers, activeProviderId, otherStatus, kc } = this.props;
@@ -349,6 +371,7 @@ class SuppliersContainer extends React.Component {
       canceAllJobs: 'Cancel all current chouette jobs',
       cleanAll: 'Clean all specificed by level',
       createNewProvider: 'Create new provider',
+      deleteProvider: 'Delete provider',
       pelias: 'Execute pelias operations',
       editProvider: 'Edit provider',
       cleanEventHistory: 'Clean event history'
@@ -728,12 +751,27 @@ class SuppliersContainer extends React.Component {
               </div>
               <div
                 title={toolTips.createNewProvider}
-                style={{ display: 'inline-block', cursor: 'pointer' }}
+                style={{
+                  display: 'inline-block',
+                  cursor: 'pointer',
+                  marginRight: 10
+                }}
                 onClick={() => this.handleNewProvider()}
               >
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <MdNew style={{ width: '1.2em', height: '1.2em' }} />
                   <span style={{ marginLeft: 2 }}>New</span>
+                </div>
+              </div>
+
+              <div
+                title={toolTips.deleteProvider}
+                style={{ display: 'inline-block', cursor: 'pointer' }}
+                onClick={() => this.handleOpenConfirmDeleteProviderDialog()}
+              >
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <MdDelete style={{ width: '1.2em', height: '1.2em' }} />
+                  <span style={{ marginLeft: 2 }}>Delete</span>
                 </div>
               </div>
             </div>
