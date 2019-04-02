@@ -232,12 +232,13 @@ class ModalEditProvider extends Component {
 
     let errors = {};
     if (!this.isEdit()) {
-      if (field === '_referential') {
-        updatedForm._xmlns = value.toUpperCase();
-        updatedForm._xmlnsurl = `http://www.rutebanken.org/ns/${value}`;
+      errors = validate(updatedForm);
+
+      if (!errors._referential && field === '_referential') {
+        updatedForm._xmlns = value.toUpperCase().replace('RB_', '');
+        updatedForm._xmlnsurl = `http://www.rutebanken.org/ns/${value.replace('RB_', '')}`;
         updatedForm._sftpAccount = value;
       }
-      errors = validate(updatedForm);
     }
     this.setState({ form: updatedForm, errors });
   }
