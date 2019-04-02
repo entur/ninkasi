@@ -7,7 +7,7 @@
     "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.prod.config.js",
     "start": "node server.js",
     "test": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests",
-    "dev": "port=9000 PROVIDERS_BASE_URL=https://api.dev.entur.io/timetable_admin/1.0/providers/ ORGANISATIONS_BASE_URL=https://api.dev.entur.io/timetable_admin/1.0/organisations/ EVENTS_BASE_URL=https://api.dev.entur.io/timetable_admin/1.0/events/ TIMETABLE_ADMIN_BASE_URL=https://api.dev.entur.io/timetable_admin/1.0/timetable/ MAP_ADMIN_BASE_URL=https://api.dev.entur.io/timetable_admin/1.0/map/ GEOCODER_ADMIN_BASE_URL=https://api.dev.entur.io/geocoder_admin/1.0/ BABEL_ENV=development NODE_ENV=development node server.js",
+    "dev": "port=9000 PROVIDERS_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/providers/ ORGANISATIONS_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/organisations/ EVENTS_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/events/ TIMETABLE_ADMIN_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/timetable/ MAP_ADMIN_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/map/ GEOCODER_ADMIN_BASE_URL=https://api.dev.entur.io/geocoder_admin/v1/ BABEL_ENV=development NODE_ENV=development node server.js",
     "prod": "BABEL_ENV=production NODE_ENV=production node server.js"
   },
   "author": "Sean Erik Scully",
@@ -40,7 +40,7 @@
     "jsdom-global": "^2.1.0",
     "json-loader": "^0.5.4",
     "keycloak-js": "3.1.0",
-    "material-ui": "0.18.7",
+    "material-ui": "^0.18.7",
     "mocha": "^4.0.0",
     "moment": "^2.14.1",
     "muicss": "^0.9.36",
@@ -58,6 +58,7 @@
     "react-notification-system": "^0.2.17",
     "react-progressbar": "^1.4.3",
     "react-redux": "5.0.5",
+    "react-select": "^2.4.2",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "3.7.2",
     "redux-logger": "3.0.6",
@@ -71,5 +72,8 @@
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "1.11.0",
     "webpack-hot-middleware": "2.18.2"
+  },
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.8"
   }
 }
