@@ -297,6 +297,19 @@ SuppliersActions.createProvider = data => dispatch => {
     .post(url, provider, getConfig())
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_CREATE_PROVIDER));
+
+      console.log('response.data: ', response.data);
+      const id = response.data.id;
+      console.log('id: ', id);
+      window.history.pushState(
+        window.config.endpointBase,
+        'Title',
+        `${window.config.endpointBase}?id=${id}`
+      );
+      dispatch(SuppliersActions.getAllProviders()).then(() => {
+        dispatch(SuppliersActions.selectActiveSupplier(id));
+      });
+
       dispatch(SuppliersActions.addNotification('Provider created', 'success'));
       dispatch(SuppliersActions.logEvent({ title: 'New provider created' }));
     })
@@ -365,7 +378,7 @@ SuppliersActions.updateProvider = data => dispatch => {
           'success'
         )
       );
-      dispatch(SuppliersActions.fetchProvider(provider.id));
+      dispatch(SuppliersActions.getAllProviders());
       dispatch(
         SuppliersActions.logEvent({
           title: `Updated provider ${provider.id} successfully`
@@ -417,6 +430,33 @@ SuppliersActions.fetchProvider = id => dispatch => {
         SuppliersActions.addNotification('Unable to fetch provider', 'error')
       );
     });
+};
+
+SuppliersActions.deleteProvider = (providerId) => dispatch => {
+  const url = `${window.config.providersBaseUrl}${providerId}`;
+
+  return axios.delete(url, getConfig()).then(response => {
+    SuppliersActions.selectActiveSupplier(-1);
+    dispatch(sendData(response.data, types.SUCCESS_DELETE_PROVIDER));
+
+    dispatch(SuppliersActions.addNotification('Provider deleted', 'success'));
+    dispatch(SuppliersActions.logEvent({ title: 'Provider deleted' }));
+
+    dispatch(SuppliersActions.getAllProviders()).then(() => {
+      window.history.pushState(
+        window.config.endpointBase,
+        'Title',
+        `${window.config.endpointBase}`
+      );
+      dispatch(SuppliersActions.selectAllSuppliers());
+    });
+  })
+    .catch(error => {
+      dispatch(sendData(error.data, types.ERROR_DELETE_PROVIDER));
+      dispatch(
+        SuppliersActions.addNotification('Unable to delete provider', 'error')
+      );
+  });
 };
 
 SuppliersActions.selectActiveSupplier = id => dispatch => {

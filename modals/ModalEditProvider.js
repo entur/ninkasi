@@ -64,7 +64,7 @@ const validate = (values) => {
     errors._organisation = 'Required';
   } else if (!values._user.length) {
     errors._user = 'Required';
-  } else if (values._referential.indexOf('rb_') !== 0) {
+  } else if (values._referential.indexOf('rb_') !== 0 && !values._migrateDataToProvider) {
     errors._migrateDataToProvider = 'Required';
   }
   return errors;
@@ -234,9 +234,9 @@ class ModalEditProvider extends Component {
     if (!this.isEdit()) {
       errors = validate(updatedForm);
 
-      if (!errors._referential && field === '_referential') {
+      if (field === '_referential') {
         updatedForm._xmlns = value.toUpperCase().replace('RB_', '');
-        updatedForm._xmlnsurl = `http://www.rutebanken.org/ns/${value.replace('RB_', '')}`;
+        updatedForm._xmlnsurl = `http://www.rutebanken.org/ns/${value.toLowerCase().replace('rb_', '')}`;
         updatedForm._sftpAccount = value;
       }
     }

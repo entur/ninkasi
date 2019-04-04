@@ -29,8 +29,9 @@ import MdDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down';
 import Divider from 'material-ui/Divider';
 import peliasTasks from '../config/peliasTasks';
 import moment from 'moment';
-import roleParser from '../roles/rolesParser';
+import rolesParser from '../roles/rolesParser';
 import MdEdit from 'material-ui/svg-icons/image/edit';
+import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import GraphStatus from '../components/GraphStatus';
 import FlatButton from 'material-ui/FlatButton';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
@@ -58,22 +59,22 @@ class SuppliersContainer extends React.Component {
       googlePopoverOpen: false,
       graphPopoverOpen: false,
     };
-  }
 
-  componentWillMount() {
-    const { dispatch } = this.props;
     cfgreader.readConfig(
       function(config) {
         window.config = config;
-        dispatch(SuppliersActions.getAllProviders());
-
-        if (!!getQueryVariable('id')) {
-          dispatch(
-            SuppliersActions.selectActiveSupplier(getQueryVariable('id'))
-          );
-        }
       }.bind(this)
     );
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    const id = getQueryVariable('id');
+    dispatch(SuppliersActions.getAllProviders()).then(() => {
+      if (id != null) {
+        dispatch(SuppliersActions.selectActiveSupplier(Number(id)));
+      }
+    });
   }
 
   handleBuildGraph() {
@@ -318,10 +319,31 @@ class SuppliersContainer extends React.Component {
     }
   }
 
+  handleOpenConfirmDeleteProviderDialog(open = true) {
+    if (open) {
+      const { dispatch, activeProviderId } = this.props;
+      this.setState({
+        confirmDialogOpen: true,
+        confirmTitle: 'Delete provider',
+        confirmInfo: 'Are you sure you want delete the provider?',
+        confirmAction: () => {
+          dispatch(SuppliersActions.deleteProvider(activeProviderId));
+        }
+      });
+    } else {
+      this.setState({
+        confirmDialogOpen: false,
+        confirmTitle: '',
+        confirmInfo: '',
+        confirmAction: null
+      });
+    }
+  }
+
   render() {
 
-    const { suppliers, activeProviderId, otherStatus, kc } = this.props;
-    const isAdmin = roleParser.isAdmin(kc.tokenParsed);
+    const { suppliers, activeProviderId, otherStatus, kc, canEditOrganisation } = this.props;
+    const isAdmin = rolesParser.isAdmin(kc.tokenParsed);
     const providersEnv = getProvidersEnv(window.config.providersBaseUrl);
     const iconColor = getIconColor(providersEnv);
 
@@ -349,6 +371,7 @@ class SuppliersContainer extends React.Component {
       canceAllJobs: 'Cancel all current chouette jobs',
       cleanAll: 'Clean all specificed by level',
       createNewProvider: 'Create new provider',
+      deleteProvider: 'Delete provider',
       pelias: 'Execute pelias operations',
       editProvider: 'Edit provider',
       cleanEventHistory: 'Clean event history'
@@ -708,35 +731,53 @@ class SuppliersContainer extends React.Component {
                 );
               })}
             </SelectField>
-            <div
-              style={{ display: 'inline-block', marginTop: 25, marginLeft: 15 }}
-            >
+            {canEditOrganisation && (
               <div
-                title={toolTips.editProvider}
-                style={{
-                  display: 'inline-block',
-                  cursor: 'pointer',
-                  marginRight: 10
-                }}
-                onClick={() => this.handleEditProvider()}
+                style={{ display: 'inline-block', marginTop: 25, marginLeft: 15 }}
               >
-                {!this.props.displayAllSuppliers &&
+                <div
+                  title={toolTips.editProvider}
+                  style={{
+                    display: 'inline-block',
+                    cursor: 'pointer',
+                    marginRight: 10
+                  }}
+                  onClick={() => this.handleEditProvider()}
+                >
+                  {!this.props.displayAllSuppliers &&
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <MdEdit style={{ width: '1.1em', height: '1.1em' }} />
                     <span style={{ marginLeft: 2 }}>Edit</span>
                   </div>}
-              </div>
-              <div
-                title={toolTips.createNewProvider}
-                style={{ display: 'inline-block', cursor: 'pointer' }}
-                onClick={() => this.handleNewProvider()}
-              >
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <MdNew style={{ width: '1.2em', height: '1.2em' }} />
-                  <span style={{ marginLeft: 2 }}>New</span>
+                </div>
+                <div
+                  title={toolTips.createNewProvider}
+                  style={{
+                    display: 'inline-block',
+                    cursor: 'pointer',
+                    marginRight: 10
+                  }}
+                  onClick={() => this.handleNewProvider()}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <MdNew style={{ width: '1.2em', height: '1.2em' }} />
+                    <span style={{ marginLeft: 2 }}>New</span>
+                  </div>
+                </div>
+
+                <div
+                  title={toolTips.deleteProvider}
+                  style={{ display: 'inline-block', cursor: 'pointer' }}
+                  onClick={() => this.handleOpenConfirmDeleteProviderDialog()}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <MdDelete style={{ width: '1.2em', height: '1.2em' }} />
+                    <span style={{ marginLeft: 2 }}>Delete</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
+
           </div>
           <GraphStatus />
           <ConfirmDialog
@@ -762,7 +803,10 @@ const mapStateToProps = state => ({
   activeProviderId: state.SuppliersReducer.activeId,
   otherStatus: state.SuppliersReducer.otherStatus || [],
   kc: state.UserReducer.kc,
-  displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected
+  displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
+  canEditOrganisation: rolesParser.canEditOrganisation(
+    state.UserReducer.kc.tokenParsed
+  )
 });
 
 export default connect(mapStateToProps)(SuppliersContainer);
