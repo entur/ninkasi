@@ -439,6 +439,9 @@ SuppliersActions.deleteProvider = (providerId) => dispatch => {
     SuppliersActions.selectActiveSupplier(-1);
     dispatch(sendData(response.data, types.SUCCESS_DELETE_PROVIDER));
 
+    dispatch(SuppliersActions.addNotification('Provider deleted', 'success'));
+    dispatch(SuppliersActions.logEvent({ title: 'Provider deleted' }));
+
     dispatch(SuppliersActions.getAllProviders()).then(() => {
       window.history.pushState(
         window.config.endpointBase,

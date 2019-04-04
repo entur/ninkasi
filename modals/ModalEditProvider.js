@@ -234,9 +234,9 @@ class ModalEditProvider extends Component {
     if (!this.isEdit()) {
       errors = validate(updatedForm);
 
-      if (!errors._referential && field === '_referential') {
+      if (field === '_referential') {
         updatedForm._xmlns = value.toUpperCase().replace('RB_', '');
-        updatedForm._xmlnsurl = `http://www.rutebanken.org/ns/${value.replace('RB_', '')}`;
+        updatedForm._xmlnsurl = `http://www.rutebanken.org/ns/${value.toLowerCase().replace('rb_', '')}`;
         updatedForm._sftpAccount = value;
       }
     }
