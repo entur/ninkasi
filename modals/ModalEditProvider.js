@@ -64,7 +64,7 @@ const validate = (values) => {
     errors._organisation = 'Required';
   } else if (!values._user.length) {
     errors._user = 'Required';
-  } else if (values._referential.indexOf('rb_') !== 0) {
+  } else if (values._referential.indexOf('rb_') !== 0 && !values._migrateDataToProvider) {
     errors._migrateDataToProvider = 'Required';
   }
   return errors;
