@@ -29,7 +29,7 @@ import MdDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down';
 import Divider from 'material-ui/Divider';
 import peliasTasks from '../config/peliasTasks';
 import moment from 'moment';
-import roleParser from '../roles/rolesParser';
+import rolesParser from '../roles/rolesParser';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import GraphStatus from '../components/GraphStatus';
@@ -342,8 +342,8 @@ class SuppliersContainer extends React.Component {
 
   render() {
 
-    const { suppliers, activeProviderId, otherStatus, kc } = this.props;
-    const isAdmin = roleParser.isAdmin(kc.tokenParsed);
+    const { suppliers, activeProviderId, otherStatus, kc, canEditOrganisation } = this.props;
+    const isAdmin = rolesParser.isAdmin(kc.tokenParsed);
     const providersEnv = getProvidersEnv(window.config.providersBaseUrl);
     const iconColor = getIconColor(providersEnv);
 
@@ -731,50 +731,53 @@ class SuppliersContainer extends React.Component {
                 );
               })}
             </SelectField>
-            <div
-              style={{ display: 'inline-block', marginTop: 25, marginLeft: 15 }}
-            >
+            {canEditOrganisation && (
               <div
-                title={toolTips.editProvider}
-                style={{
-                  display: 'inline-block',
-                  cursor: 'pointer',
-                  marginRight: 10
-                }}
-                onClick={() => this.handleEditProvider()}
+                style={{ display: 'inline-block', marginTop: 25, marginLeft: 15 }}
               >
-                {!this.props.displayAllSuppliers &&
+                <div
+                  title={toolTips.editProvider}
+                  style={{
+                    display: 'inline-block',
+                    cursor: 'pointer',
+                    marginRight: 10
+                  }}
+                  onClick={() => this.handleEditProvider()}
+                >
+                  {!this.props.displayAllSuppliers &&
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <MdEdit style={{ width: '1.1em', height: '1.1em' }} />
                     <span style={{ marginLeft: 2 }}>Edit</span>
                   </div>}
-              </div>
-              <div
-                title={toolTips.createNewProvider}
-                style={{
-                  display: 'inline-block',
-                  cursor: 'pointer',
-                  marginRight: 10
-                }}
-                onClick={() => this.handleNewProvider()}
-              >
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <MdNew style={{ width: '1.2em', height: '1.2em' }} />
-                  <span style={{ marginLeft: 2 }}>New</span>
                 </div>
-              </div>
+                <div
+                  title={toolTips.createNewProvider}
+                  style={{
+                    display: 'inline-block',
+                    cursor: 'pointer',
+                    marginRight: 10
+                  }}
+                  onClick={() => this.handleNewProvider()}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <MdNew style={{ width: '1.2em', height: '1.2em' }} />
+                    <span style={{ marginLeft: 2 }}>New</span>
+                  </div>
+                </div>
 
-              <div
-                title={toolTips.deleteProvider}
-                style={{ display: 'inline-block', cursor: 'pointer' }}
-                onClick={() => this.handleOpenConfirmDeleteProviderDialog()}
-              >
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <MdDelete style={{ width: '1.2em', height: '1.2em' }} />
-                  <span style={{ marginLeft: 2 }}>Delete</span>
+                <div
+                  title={toolTips.deleteProvider}
+                  style={{ display: 'inline-block', cursor: 'pointer' }}
+                  onClick={() => this.handleOpenConfirmDeleteProviderDialog()}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <MdDelete style={{ width: '1.2em', height: '1.2em' }} />
+                    <span style={{ marginLeft: 2 }}>Delete</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
+
           </div>
           <GraphStatus />
           <ConfirmDialog
@@ -800,7 +803,10 @@ const mapStateToProps = state => ({
   activeProviderId: state.SuppliersReducer.activeId,
   otherStatus: state.SuppliersReducer.otherStatus || [],
   kc: state.UserReducer.kc,
-  displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected
+  displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
+  canEditOrganisation: rolesParser.canEditOrganisation(
+    state.UserReducer.kc.tokenParsed
+  )
 });
 
 export default connect(mapStateToProps)(SuppliersContainer);
