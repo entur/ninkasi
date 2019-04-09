@@ -40,7 +40,8 @@ class ModalCreatePoiFilter extends Component {
     }
 
     componentDidMount() {
-        fetch('http://localhost:28080/services/custom_configurations/poiFilter')
+        const url = window.config.poiFilterBaseUrl;
+        fetch(url)
             .then(results => {
                 return results.json();
             }).then(data => {
@@ -56,17 +57,26 @@ class ModalCreatePoiFilter extends Component {
         this.props.handleCloseModal();
     }
 
+    handleSubmit() {
+        const endpoint = window.config.poiFilterBaseUrl;
+        fetch(endpoint, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({key:'poiFilter', value: this.state.poi_value})
+        })
+            .then(() => {
+                //TODO
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
     render() {
-        const { isModalOpen, handleSubmit} = this.props;
-
-        const { poiFilter } = this.state;
-
-        const titleStyle = {
-            fontSize: '2em',
-            fontWeight: 600,
-            margin: '10px auto',
-            width: '80%'
-        };
+        const { isModalOpen} = this.props;
 
 
         const actions = [
@@ -75,8 +85,8 @@ class ModalCreatePoiFilter extends Component {
                 onClick={this.handleOnClose.bind(this)}
             />,
             <FlatButton
-                label="Create"
-                onClick={() => handleSubmit(poiFilter)}
+                label="Update"
+                onClick={this.handleSubmit.bind(this)}
             />
         ];
 
@@ -97,25 +107,13 @@ class ModalCreatePoiFilter extends Component {
                 >
 
 
-            {/*        <TextField
-                        hintText="POI Filter"
-                        floatingLabelText="POI Filter value"
-                        value={this.state.poi_value}
-                        //value={poiFilter.filter_value}
-
-                        fullWidth={true}
-                    />
-*/}
                     <TextField
                         hintText="Name"
                         floatingLabelText="Name"
                         value={this.state.poi_value}
                         onChange={(e, value) =>
                             this.setState({
-                                poiFilter: {
-                                    ...poiFilter,
-                                    filter_value: value
-                                }
+                                poi_value: value
                             })}
                         fullWidth={true}
                         style={{ marginTop: -20 }}
