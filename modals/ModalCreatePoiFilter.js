@@ -26,6 +26,7 @@ const initialState = {
 };
 
 class ModalCreatePoiFilter extends Component {
+    token =localStorage.getItem('NINKASI::jwt');
 
     constructor(props) {
         super(props);
@@ -64,6 +65,7 @@ class ModalCreatePoiFilter extends Component {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + this.token,
             },
             body: JSON.stringify({key:'poiFilter', value: this.state.poi_value})
         })
