@@ -18,7 +18,6 @@ import React, {Component} from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from "material-ui/TextField";
 import Modal from 'material-ui/Dialog';
-import SuppliersActions from "../actions/SuppliersActions";
 
 const initialState = {
     poiFilter: {
@@ -69,27 +68,11 @@ class ModalCreatePoiFilter extends Component {
             body: JSON.stringify({key:'poiFilter', value: this.state.poi_value})
         })
             .then(() => {
-                dispatch(
-                    SuppliersActions.addNotification('POI filter updated', 'success')
-                );
-                dispatch(
-                    SuppliersActions.logEvent({
-                        title: 'POI filter updated successfully'
-                    })
-                );
+                //TODO
             })
             .catch(error => {
-                dispatch(
-                    SuppliersActions.addNotification(
-                        'Unable to updated poi filter',
-                        'error'
-                    )
-                );
-                dispatch(
-                    SuppliersActions.logEvent({ title: 'Updating poi filter failed' })
-                );
                 console.log(error);
-            });
+            })
     }
 
     render() {
