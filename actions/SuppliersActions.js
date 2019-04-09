@@ -1376,6 +1376,12 @@ SuppliersActions.openEditProviderDialog = () => (dispatch, getState) => {
   dispatch(SuppliersActions.openEditModalDialog());
 };
 
+SuppliersActions.openPoiFilterDialog = () => {
+    return {
+        type: types.OPENED_POI_FILTER_DIALOG
+    };
+};
+
 SuppliersActions.openNewProviderDialog = () => {
   return {
     type: types.OPENED_NEW_PROVIDER_DIALOG

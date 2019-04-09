@@ -122,6 +122,11 @@ const UtilsReducer = (state = intialState, action) => {
         editProviderModal: true
       });
 
+    case types.OPENED_POI_FILTER_DIALOG:
+      return Object.assign({}, state, {
+        shouldUpdatePoiFilter: true
+    });
+
     case types.LOG_EVENT:
       const event = eventHelper(action.payLoad, state.loggedEvents);
       return Object.assign({}, state, {
