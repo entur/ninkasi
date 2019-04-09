@@ -86,6 +86,7 @@ convictConfig.then( (convict) => {
       mapAdminBaseUrl: convict.get('mapAdminBaseUrl'),
       mapboxAdminBaseUrl: convict.get('mapboxAdminBaseUrl'),
       geocoderAdminBaseUrl: convict.get('geocoderAdminBaseUrl'),
+      poiFilterBaseUrl: convict.get('poiFilterBaseUrl'),
       endpointBase: convict.get('endpointBase'),
       chouetteBaseUrl: convict.get('chouetteBaseUrl')
     }
