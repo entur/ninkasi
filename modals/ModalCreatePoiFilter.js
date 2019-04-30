@@ -14,117 +14,159 @@
  *
  */
 
-import React, {Component} from 'react';
-import FlatButton from 'material-ui/FlatButton';
+import React, { Component } from "react";
+import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
-import Modal from 'material-ui/Dialog';
+import Modal from "material-ui/Dialog";
+
+import "./ModalCreatePoiFilter.scss";
+
+const getPoiFilterArray = poiFilterString => {
+  const keyValues = poiFilterString.split(",");
+  return keyValues.map(str => {
+    const arr = str.split("=");
+    return { key: arr[0], value: arr[1] };
+  });
+};
+
+const getPoiFilterString = poiFilterArray => {
+  const keyValues = poiFilterArray.map(({key, value}) => `${key.trim()}=${value.trim()}`);
+  return keyValues.join(',');
+};
 
 const initialState = {
-    poiFilter: {
-        filter_value: ''
-    }
+  poiFilterArray: [{ key: "", value: "" }]
 };
 
 class ModalCreatePoiFilter extends Component {
-    token =localStorage.getItem('NINKASI::jwt');
+  token = localStorage.getItem("NINKASI::jwt");
 
-    constructor(props) {
-        super(props);
-        this.state = initialState;
-    }
+  constructor(props) {
+    super(props);
+    this.state = initialState;
+  }
 
-    componentWillUnmount() {
-        this.state = {
-            initialState,
-            poi_value: '',
-        };
-    }
+  componentDidMount() {
+    const url = window.config.poiFilterBaseUrl;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const poiFilterArray = getPoiFilterArray(data.value);
+        this.setState({ poiFilterArray });
+      });
+  }
 
-    componentDidMount() {
+  handleOnClose() {
+    this.setState(initialState);
+    this.props.handleCloseModal();
+  }
+
+  handleSubmit() {
+    const { poiFilterArray } = this.state;
+    const poiFilterString = getPoiFilterString(poiFilterArray);
+
+    const endpoint = window.config.poiFilterBaseUrl;
+    fetch(endpoint, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.token
+      },
+      body: JSON.stringify({ key: "poiFilter", value: poiFilterString })
+    })
+      .then(() => {
         const url = window.config.poiFilterBaseUrl;
         fetch(url)
-            .then(results => {
-                return results.json();
-            }).then(data => {
-                let poi_value = data.value
-            this.setState({poi_value: poi_value})
-            console.log("state", this.state.poi_value)
+          .then(response => response.json())
+          .then(data => {
+            const poiFilterArray = getPoiFilterArray(data.value);
+            this.setState({ poiFilterArray });
+          });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
-        })
-    }
+  handleAddFilter = () => {
+    const { poiFilterArray } = this.state;
+    poiFilterArray.push({ key: "", value: "" });
+    this.setState({ poiFilterArray });
+  };
 
-    handleOnClose() {
-        this.setState(initialState);
-        this.props.handleCloseModal();
-    }
+  handleDeleteFilter = index => {
+    const { poiFilterArray } = this.state;
+    poiFilterArray.splice(index, 1);
+    this.setState({ poiFilterArray });
+  };
 
-    handleSubmit() {
-        const endpoint = window.config.poiFilterBaseUrl;
-        fetch(endpoint, {
-            method: 'PUT',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + this.token,
-            },
-            body: JSON.stringify({key:'poiFilter', value: this.state.poi_value})
-        })
-            .then(() => {
-                //TODO
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    }
+  handleChange = (index, field, value) => {
+    const { poiFilterArray } = this.state;
+    poiFilterArray[index][field] = value;
+    this.setState({ poiFilterArray });
+  };
 
-    render() {
-        const { isModalOpen} = this.props;
+  render() {
+    const { isModalOpen } = this.props;
+    const { poiFilterArray } = this.state;
 
+    const actions = [
+      <FlatButton label="Close" onClick={this.handleOnClose.bind(this)} />,
+      <FlatButton label="Update" onClick={this.handleSubmit.bind(this)} />
+    ];
 
-        const actions = [
-            <FlatButton
-                label="Close"
-                onClick={this.handleOnClose.bind(this)}
-            />,
-            <FlatButton
-                label="Update"
-                onClick={this.handleSubmit.bind(this)}
-            />
-        ];
+    console.log("poi: ", poiFilterArray);
 
-        return (
-            <Modal
-                open={isModalOpen}
-                actions={actions}
-                contentStyle={{ width: '30%' }}
-                title="Create a new poi filter"
-                onRequestClose={() => this.handleOnClose()}
-            >
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center'
-                    }}
-                >
+    return (
+      <Modal
+        open={isModalOpen}
+        actions={actions}
+        contentStyle={{ width: "50%" }}
+        title="Create a new poi filter"
+        onRequestClose={() => this.handleOnClose()}
+        autoScrollBodyContent
+      >
+        <div className="poi-filter-editor">
+          {poiFilterArray &&
+            poiFilterArray.map(({ key, value }, index) => (
+              <div
+                className="poi-filter-editor-row"
+                key={`poi-filter-row_${index}`}
+                // key={`poi-filter-row_${key}_${value}_${index}`}
+              >
+                <TextField
+                  hintText="Key"
+                  floatingLabelText="Key"
+                  value={key}
+                  onChange={e =>
+                    this.handleChange(index, "key", e.target.value)
+                  }
+                />
 
+                <TextField
+                  hintText="Value"
+                  floatingLabelText="Value"
+                  value={value}
+                  onChange={e =>
+                    this.handleChange(index, "value", e.target.value)
+                  }
+                />
 
-                    <TextField
-                        hintText="Name"
-                        floatingLabelText="Name"
-                        value={this.state.poi_value}
-                        onChange={(e, value) =>
-                            this.setState({
-                                poi_value: value
-                            })}
-                        fullWidth={true}
-                        style={{ marginTop: -20 }}
-                    />
+                <FlatButton onClick={() => this.handleDeleteFilter(index)}>
+                  Delete
+                </FlatButton>
+              </div>
+            ))}
 
-                </div>
-            </Modal>
-        );
-    }
+          <div className="poi-filter-editor-row">
+            <div />
+            <FlatButton onClick={this.handleAddFilter}>Add filter</FlatButton>
+          </div>
+        </div>
+      </Modal>
+    );
+  }
 }
-export default ModalCreatePoiFilter;
 
+export default ModalCreatePoiFilter;

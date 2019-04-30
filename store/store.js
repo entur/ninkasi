@@ -14,50 +14,45 @@
  *
  */
 
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
-import React from 'react'
-import thunkMiddleware from 'redux-thunk'
-import { createLogger } from 'redux-logger'
-import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
-import * as reducers from '../reducers'
+import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import React from "react";
+import thunkMiddleware from "redux-thunk";
+import { createLogger } from "redux-logger";
+import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
+import * as reducers from "../reducers";
 
 export default function configureStore(kc) {
+  let enchancer = {};
 
-  const loggerMiddleware = createLogger()
-
-  var enchancer = {}
-
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
+    const loggerMiddleware = createLogger({ collapsed: true });
     const composeEnhancers = composeWithDevTools({});
     enchancer = composeEnhancers(
-      applyMiddleware(thunkMiddleware, loggerMiddleware),
-    )
-
+      applyMiddleware(thunkMiddleware, loggerMiddleware)
+    );
   } else {
-    enchancer = compose(
-      applyMiddleware(thunkMiddleware)
-    )
+    enchancer = compose(applyMiddleware(thunkMiddleware));
   }
 
   const initialState = {
     UserReducer: {
       kc: kc
     }
-  }
+  };
 
   const combinedReducer = combineReducers({
     ...reducers
-  })
+  });
 
-  let store = createStore(combinedReducer, initialState, enchancer)
+  let store = createStore(combinedReducer, initialState, enchancer);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
-    module.hot.accept('../reducers', () => {
-      const nextRootReducer = require('../reducers/')
-      store.replaceReducer(nextRootReducer)
-    })
+    module.hot.accept("../reducers", () => {
+      const nextRootReducer = require("../reducers/");
+      store.replaceReducer(nextRootReducer);
+    });
   }
 
-  return store
+  return store;
 }
