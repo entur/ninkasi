@@ -21,6 +21,8 @@ import Modal from "material-ui/Dialog";
 
 import "./ModalCreatePoiFilter.scss";
 
+import uuid from 'uuid/v4';
+
 const getPoiFilterArray = poiFilterString => {
   const keyValues = poiFilterString.split(",");
   return keyValues.map(str => {
@@ -71,7 +73,8 @@ class ModalCreatePoiFilter extends Component {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "Bearer " + this.token
+        Authorization: "Bearer " + this.token,
+        'X-Correlation-Id': uuid()
       },
       body: JSON.stringify({ key: "poiFilter", value: poiFilterString })
     })

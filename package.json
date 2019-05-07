@@ -7,7 +7,7 @@
     "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.prod.config.js",
     "start": "node server.js",
     "test": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests",
-    "dev": "port=9000 POI_FILTER_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/poi-filter PROVIDERS_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/providers/ ORGANISATIONS_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/organisations/ EVENTS_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/events/ TIMETABLE_ADMIN_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/timetable/ MAP_ADMIN_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/map/ GEOCODER_ADMIN_BASE_URL=https://api.dev.entur.io/geocoder_admin/v1/ BABEL_ENV=development NODE_ENV=development node server.js",
+    "dev": "port=9000 POI_FILTER_BASE_URL=http://localhost:28080/services/custom_configurations/poiFilter PROVIDERS_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/providers/ ORGANISATIONS_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/organisations/ EVENTS_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/events/ TIMETABLE_ADMIN_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/timetable/ MAP_ADMIN_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/map/ GEOCODER_ADMIN_BASE_URL=https://api.dev.entur.io/geocoder_admin/v1/ BABEL_ENV=development NODE_ENV=development node server.js",
     "prod": "BABEL_ENV=production NODE_ENV=production node server.js"
   },
   "author": "Sean Erik Scully",
@@ -71,7 +71,8 @@
     "underscore": "^1.8.3",
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "1.11.0",
-    "webpack-hot-middleware": "2.18.2"
+    "webpack-hot-middleware": "2.18.2",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "prettier": "^1.17.0",
