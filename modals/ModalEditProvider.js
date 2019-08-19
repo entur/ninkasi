@@ -223,7 +223,11 @@ class ModalEditProvider extends Component {
             ...transportModes.slice(idx+1)
         ];
     }
-    this.setState({_generateMissingServiceLinksForModes: transportModes});
+    this.setState((state) => {
+      const newState = Object.assign({}, state);
+      newState.form._generateMissingServiceLinksForModes = transportModes;
+      return newState;
+    });
   }
 
   handleChange(field, value) {
