@@ -13,7 +13,7 @@
   "author": "Sean Erik Scully",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.15.3",
+    "axios": "^0.18.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-runtime": "^6.7.5",
@@ -29,8 +29,8 @@
     "chart.js": "1.1.1",
     "classnames": "^2.2.5",
     "clipboard-js": "^0.3.5",
-    "convict": "^1.4.0",
-    "css-loader": "^0.26.1",
+    "convict": "^2.0.0",
+    "css-loader": "^1.0.1",
     "expect": "^1.20.2",
     "express": "^4.13.4",
     "halogen": "^0.2.0",
@@ -69,10 +69,10 @@
     "style-loader": "^0.13.1",
     "supervisor": "^0.12.0",
     "underscore": "^1.8.3",
+    "uuid": "^3.3.2",
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "1.11.0",
-    "webpack-hot-middleware": "2.18.2",
-    "uuid": "^3.3.2"
+    "webpack-hot-middleware": "2.18.2"
   },
   "devDependencies": {
     "prettier": "^1.17.0",
