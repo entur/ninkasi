@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.3
+version: v1.13.5
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -18,3 +18,8 @@ patch:
   'npm:ms:20170412':
     - nightwatch > mocha-nightwatch > debug > ms:
         patched: '2019-02-25T13:25:58.069Z'
+  SNYK-JS-HTTPSPROXYAGENT-469131:
+    - nightwatch > proxy-agent > https-proxy-agent:
+        patched: '2019-10-04T05:28:13.662Z'
+    - nightwatch > proxy-agent > pac-proxy-agent > https-proxy-agent:
+        patched: '2019-10-04T05:28:13.662Z'
