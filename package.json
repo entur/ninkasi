@@ -46,7 +46,7 @@
     "muicss": "^0.9.36",
     "nightwatch": "^1.0.1",
     "nock": "^9.0.2",
-    "node-sass": "^3.8.0",
+    "node-sass": "^4.11.0",
     "notie": "^3.2.0",
     "prop-types": "^15.6.1",
     "react": "15.6.1",
