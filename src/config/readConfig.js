@@ -14,24 +14,33 @@
  *
  */
 
+import axios from 'axios';
 
-const express = require('express')
-const convictConfig = require('./src/config/convict.js')
-const configureApp = require('./server-config').configureApp;
-const port = process.env.port || 8988;
+/*
+Reading config json as served out of the node application.
+*/
 
-convictConfig.then( (convict) => {
-  const endpointBase = convict.get('endpointBase');
-  const authServerUrl = convict.get('authServerUrl');
-  const app = configureApp(express(), endpointBase, authServerUrl);
+const configreader = {};
+let config;
 
-  app.listen(port, function(error) {
-    if (error) {
-      console.error(error)
-    } else {
-      console.info("==> Listening on port %s. Open up http://localhost:%s%s in your browser.", port, port, ENDPOINTBASE)
-    }
+configreader.readConfig = (callback) => {
+  if ( config && typeof config !== 'undefined' ) {
+    callback ( config )
+    return
+  }
+  axios({
+    url: "config.json",
+    timeout: 2000,
+    method: 'get',
+    responseType: 'json'
   })
+    .then(function(response) {
+      config = response.data;
+      callback ( config )
+    })
+    .catch(function(response){
+      throw new Error("Could not read config: "+response)
+    })
+  }
 
-
-})
+export default configreader;

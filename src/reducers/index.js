@@ -14,24 +14,16 @@
  *
  */
 
+import SuppliersReducer from './SuppliersReducer'
+import MardukReducer from './MardukReducer'
+import UtilsReducer from './UtilsReducer'
+import OrganizationReducer from './OrganizationReducer'
+import UserReducer from './UserReducer'
 
-const express = require('express')
-const convictConfig = require('./src/config/convict.js')
-const configureApp = require('./server-config').configureApp;
-const port = process.env.port || 8988;
-
-convictConfig.then( (convict) => {
-  const endpointBase = convict.get('endpointBase');
-  const authServerUrl = convict.get('authServerUrl');
-  const app = configureApp(express(), endpointBase, authServerUrl);
-
-  app.listen(port, function(error) {
-    if (error) {
-      console.error(error)
-    } else {
-      console.info("==> Listening on port %s. Open up http://localhost:%s%s in your browser.", port, port, ENDPOINTBASE)
-    }
-  })
-
-
-})
+export {
+  SuppliersReducer,
+  MardukReducer,
+  UtilsReducer,
+  OrganizationReducer,
+  UserReducer
+};
