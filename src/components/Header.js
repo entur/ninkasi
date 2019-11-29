@@ -73,16 +73,6 @@ class Header extends React.Component {
                   {providersEnv}
                 </div>}
             </div>
-            <div
-              style={{
-                marginLeft: 5,
-                fontSize: '0.4em',
-                marginTop: 5,
-                fontWeight: 400
-              }}
-            >
-              v{process.env.VERSION}
-            </div>
           </div>
         }
         iconElementRight={
