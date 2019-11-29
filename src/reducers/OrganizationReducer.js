@@ -14,7 +14,7 @@
  *
  */
 
-import * as types from './../actions/actionTypes';
+import * as types from "./../actions/actionTypes";
 import {
   changeFilterValue,
   changeJobDomainValue,
@@ -24,7 +24,7 @@ import {
   removeAdminRef,
   addEntityClassRef,
   removeEntityClassRef
-} from './OrganizationReducerUtils';
+} from "./OrganizationReducerUtils";
 
 const initialState = {
   roles: [],
@@ -46,15 +46,14 @@ const initialState = {
     password: null,
     userId: null,
     error: false,
-    isNewUser: false,
-  },
+    isNewUser: false
+  }
 };
 
-const removeByIndex = (list, index) =>
-  [
-    ...list.slice(0, index),
-    ...list.slice(index + 1)
-  ];
+const removeByIndex = (list, index) => [
+  ...list.slice(0, index),
+  ...list.slice(index + 1)
+];
 
 const OrganizationReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -65,7 +64,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         roleStatus: {
           error: null,
-          code: 'ROLE_CREATED'
+          code: "ROLE_CREATED"
         }
       });
 
@@ -78,7 +77,7 @@ const OrganizationReducer = (state = initialState, action) => {
           username: action.payLoad.username,
           isNewUser: action.payLoad.isNewUser,
           error: action.payLoad.error
-        },
+        }
       });
 
     case types.CLOSED_NEW_PASSWORD_DIALOG:
@@ -89,15 +88,15 @@ const OrganizationReducer = (state = initialState, action) => {
           userId: null,
           error: false,
           username: null,
-          isNewUser: false,
-        },
+          isNewUser: false
+        }
       });
 
     case types.FAILED_CREATING_ROLE:
       return Object.assign({}, state, {
         roleStatus: {
           error: action.payLoad,
-          code: 'ROLE_CREATED_FAILED'
+          code: "ROLE_CREATED_FAILED"
         }
       });
 
@@ -108,7 +107,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         organizationStatus: {
           error: null,
-          code: 'ORGANIZATION_CREATED'
+          code: "ORGANIZATION_CREATED"
         }
       });
 
@@ -116,7 +115,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         organizationStatus: {
           error: null,
-          code: 'ORGANIZATION_UPDATED'
+          code: "ORGANIZATION_UPDATED"
         }
       });
 
@@ -124,7 +123,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         organizationStatus: {
           error: action.payLoad,
-          code: 'ORGANIZATION_CREATED_FAILED'
+          code: "ORGANIZATION_CREATED_FAILED"
         }
       });
 
@@ -132,7 +131,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         responsibilitySetStatus: {
           error: null,
-          code: 'RESPONSIBILITY_SET_CREATED'
+          code: "RESPONSIBILITY_SET_CREATED"
         }
       });
 
@@ -140,7 +139,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         userStatus: {
           error: null,
-          code: 'USER_CREATED'
+          code: "USER_CREATED"
         }
       });
 
@@ -148,7 +147,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         userStatus: {
           error: null,
-          code: 'USER_UPDATED'
+          code: "USER_UPDATED"
         }
       });
 
@@ -156,7 +155,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         entityTypeStatus: {
           error: null,
-          code: 'ENTITY_TYPE_CREATED'
+          code: "ENTITY_TYPE_CREATED"
         }
       });
 
@@ -164,7 +163,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         entityTypeStatus: {
           error: action.payLoad,
-          code: 'ENTITY_TYPE_CREATED_FAILED'
+          code: "ENTITY_TYPE_CREATED_FAILED"
         }
       });
 
@@ -172,7 +171,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         responsibilitySetStatus: {
           error: null,
-          code: 'RESPONSIBILITY_SET_UPDATED'
+          code: "RESPONSIBILITY_SET_UPDATED"
         }
       });
 
@@ -180,7 +179,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         entityTypeStatus: {
           error: null,
-          code: 'ENTITY_TYPE_UPDATED'
+          code: "ENTITY_TYPE_UPDATED"
         }
       });
 
@@ -188,7 +187,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         userNotifications: changeFilterValue(
           state.userNotifications,
-          'type',
+          "type",
           action.payLoad.index,
           action.payLoad.value
         )
@@ -217,7 +216,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         userNotifications: changeFilterValue(
           state.userNotifications,
-          'organisationRef',
+          "organisationRef",
           action.payLoad.index,
           action.payLoad.organisationRef
         )
@@ -225,11 +224,11 @@ const OrganizationReducer = (state = initialState, action) => {
 
     case types.UPDATED_NOTIFICATION_CONFIGURATION:
       return Object.assign({}, state, {
-      userNotifications: state.userNotifications.map( un => {
-        delete un.isNew;
-        return un;
-      })
-    });
+        userNotifications: state.userNotifications.map(un => {
+          delete un.isNew;
+          return un;
+        })
+      });
 
     case types.CHANGED_NOTIFICATION_TYPE:
       return Object.assign({}, state, {
@@ -324,13 +323,13 @@ const OrganizationReducer = (state = initialState, action) => {
       });
 
     case types.ADDED_ENTITY_CLASS_REF:
-    return Object.assign({}, state, {
-      userNotifications: addEntityClassRef(
-        state.userNotifications,
-        action.payLoad.index,
-        action.payLoad.entityClassRef
-      )
-    });
+      return Object.assign({}, state, {
+        userNotifications: addEntityClassRef(
+          state.userNotifications,
+          action.payLoad.index,
+          action.payLoad.entityClassRef
+        )
+      });
 
     case types.REMOVED_ENTITY_CLASS_REF:
       return Object.assign({}, state, {
@@ -343,7 +342,10 @@ const OrganizationReducer = (state = initialState, action) => {
 
     case types.DELETED_USER_NOTIFICATION:
       return Object.assign({}, state, {
-        userNotifications: removeByIndex(state.userNotifications, action.payLoad)
+        userNotifications: removeByIndex(
+          state.userNotifications,
+          action.payLoad
+        )
       });
 
     case types.REQUESTED_USER_NOTIFICATION:
@@ -356,12 +358,12 @@ const OrganizationReducer = (state = initialState, action) => {
         userNotifications: state.userNotifications.concat({
           enabled: false,
           isNew: true,
-          notificationType: 'EMAIL',
+          notificationType: "EMAIL",
           eventFilter: {
-            type: 'JOB',
-            jobDomain: 'TIMETABLE',
+            type: "JOB",
+            jobDomain: "TIMETABLE",
             actions: [],
-            states: [],
+            states: []
           }
         })
       });

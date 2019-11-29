@@ -14,11 +14,11 @@
  *
  */
 
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import SuppliersActions from '../actions/SuppliersActions';
-import ExportedFilesRow from '../components/ExportedFilesRow';
-import ExportedFilesHeader from '../components/ExportedFilesHeader';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import SuppliersActions from "../actions/SuppliersActions";
+import ExportedFilesRow from "../components/ExportedFilesRow";
+import ExportedFilesHeader from "../components/ExportedFilesHeader";
 
 class ExportedFilesView extends Component {
   componentDidMount() {
@@ -37,16 +37,16 @@ class ExportedFilesView extends Component {
     return (
       <div>
         <ExportedFilesHeader />
-        {Object.keys(providerData).map((p, i) =>
+        {Object.keys(providerData).map((p, i) => (
           <ExportedFilesRow
-            key={'files-row-' + p}
+            key={"files-row-" + p}
             index={i}
-            providerName={providers[providerData[p].referential] || 'N/A'}
+            providerName={providers[providerData[p].referential] || "N/A"}
             referential={providerData[p].referential}
             data={providerData[p]}
             providerId={p}
           />
-        )}
+        ))}
       </div>
     );
   }

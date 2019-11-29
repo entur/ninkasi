@@ -14,18 +14,18 @@
  *
  */
 
-import React from 'react';
-import Modal from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import MdRemove from 'material-ui/svg-icons/content/remove';
-import MdAdd from 'material-ui/svg-icons/content/add';
-import IconButton from 'material-ui/IconButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import { connect } from 'react-redux';
-import NewRoleAssignment from './NewRoleAssignment';
-import { getEntityClassificationRefString } from '../utils/';
+import React from "react";
+import Modal from "material-ui/Dialog";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
+import MdRemove from "material-ui/svg-icons/content/remove";
+import MdAdd from "material-ui/svg-icons/content/add";
+import IconButton from "material-ui/IconButton";
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
+import { connect } from "react-redux";
+import NewRoleAssignment from "./NewRoleAssignment";
+import { getEntityClassificationRefString } from "../utils/";
 
 class ModalCreateResponsibilitySet extends React.Component {
   constructor(props) {
@@ -33,37 +33,39 @@ class ModalCreateResponsibilitySet extends React.Component {
     this.state = {
       isCreatingNewRole: false,
       responsibilitySet: {
-        name: '',
-        codeSpace: '',
-        privateCode: '',
+        name: "",
+        codeSpace: "",
+        privateCode: "",
         roles: []
       },
       newRole: {
-        typeOfResponsibilityRoleRef: '',
-        responsibleOrganisationRef: '',
+        typeOfResponsibilityRoleRef: "",
+        responsibleOrganisationRef: "",
         entityClassificationAssignments: []
       },
-      tempEntityClassification: '',
-      tempEntityType: '',
+      tempEntityClassification: "",
+      tempEntityType: "",
       tempEntityTypes: []
     };
   }
 
   getRoleString(role) {
     const responsibleAreaRefString = `responsibleAreaRef=${role.responsibleAreaRef ||
-      ''}`;
-    return `ORG=${role.responsibleOrganisationRef}, type=${role.typeOfResponsibilityRoleRef}, ${responsibleAreaRefString}, entities=${this.getEntityClassAssignmentString(
+      ""}`;
+    return `ORG=${role.responsibleOrganisationRef}, type=${
+      role.typeOfResponsibilityRoleRef
+    }, ${responsibleAreaRefString}, entities=${this.getEntityClassAssignmentString(
       role.entityClassificationAssignments
     )}`;
   }
 
   getEntityClassAssignmentString(assignments) {
-    if (!assignments || !assignments.length) return '';
+    if (!assignments || !assignments.length) return "";
     return assignments
       .map(({ allow, entityClassificationRef }) =>
         getEntityClassificationRefString(entityClassificationRef, allow)
       )
-      .join(', ');
+      .join(", ");
   }
 
   handleRemoveEntity(index) {
@@ -84,13 +86,13 @@ class ModalCreateResponsibilitySet extends React.Component {
       ...this.state,
       resultChip: null,
       newRole: {
-        typeOfResponsibilityRoleRef: '',
-        responsibleOrganisationRef: '',
+        typeOfResponsibilityRoleRef: "",
+        responsibleOrganisationRef: "",
         entityClassificationAssignments: [],
         responsibleAreaRef: null
       },
-      tempEntityClassification: '',
-      tempEntityType: '',
+      tempEntityClassification: "",
+      tempEntityType: "",
       tempEntityTypes: [],
       responsibilitySet: {
         ...this.state.responsibilitySet,
@@ -160,12 +162,12 @@ class ModalCreateResponsibilitySet extends React.Component {
         onRequestClose={() => handleOnClose()}
         actions={actions}
         title="Creating a new responsibility set"
-        bodyStyle={{height: '100%'}}
+        bodyStyle={{ height: "100%" }}
       >
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             marginTop: 5
           }}
         >
@@ -199,7 +201,7 @@ class ModalCreateResponsibilitySet extends React.Component {
             }}
             fullWidth={true}
           >
-            {codeSpaces.map(codeSpace =>
+            {codeSpaces.map(codeSpace => (
               <MenuItem
                 key={codeSpace.id}
                 id={codeSpace.id}
@@ -207,14 +209,14 @@ class ModalCreateResponsibilitySet extends React.Component {
                 label={codeSpace.id}
                 primaryText={codeSpace.xmlns}
               />
-            )}
+            ))}
           </SelectField>
           <TextField
             hintText="Private code"
             floatingLabelText="Private code"
             value={responsibilitySet.privateCode}
             errorText={
-              isLegalPrivateCode ? '' : 'This private code is already taken!'
+              isLegalPrivateCode ? "" : "This private code is already taken!"
             }
             fullWidth={true}
             onChange={(e, value) => {
@@ -225,29 +227,27 @@ class ModalCreateResponsibilitySet extends React.Component {
                 }
               });
             }}
-            errorStyle={{ float: 'right' }}
+            errorStyle={{ float: "right" }}
             style={{ marginBottom: 10, marginTop: -20 }}
           />
-          <div style={{width: '100%'}}>
-            <div style={{ fontSize: 10 }}>
-              Responsibility roles *
+          <div style={{ width: "100%" }}>
+            <div style={{ fontSize: 10 }}>Responsibility roles *</div>
+            <div style={{ width: "100%", overflowX: "auto" }}>
+              <select
+                multiple="multiple"
+                style={{
+                  fontSize: 10,
+                  minWidth: "100%"
+                }}
+                ref="roles"
+              >
+                {responsibilitySet.roles.map((role, i) => (
+                  <option style={{ overflowX: "auto" }} key={"role-" + i}>
+                    {this.getRoleString(role)}
+                  </option>
+                ))}
+              </select>
             </div>
-           <div style={{width: '100%', overflowX: 'auto'}}>
-             <select
-               multiple="multiple"
-               style={{
-                 fontSize: 10,
-                 minWidth: '100%'
-               }}
-               ref="roles"
-             >
-               {responsibilitySet.roles.map((role, i) =>
-                 <option style={{overflowX: 'auto'}} key={'role-' + i}>
-                   {this.getRoleString(role)}
-                 </option>
-               )}
-             </select>
-           </div>
             <div>
               <IconButton
                 onClick={() => this.setState({ isCreatingNewRole: true })}
@@ -258,56 +258,59 @@ class ModalCreateResponsibilitySet extends React.Component {
                 <MdRemove color="#cc0000" />
               </IconButton>
             </div>
-            {isCreatingNewRole
-              ? <NewRoleAssignment
-                  newRole={newRole}
-                  roles={roles}
-                  entityTypes={entityTypes}
-                  organizations={organizations}
-                  handleAddRole={this.handleAddRole.bind(this)}
-                  administrativeZones={this.props.administrativeZones}
-                  handleRemoveEntity={this.handleRemoveEntity.bind(this)}
-                  addNewAdminZoneRef={responsibleAreaRef => {
-                    this.setState({
-                      newRole: {
-                        ...this.state.newRole,
-                        responsibleAreaRef
-                      }
-                    });
-                  }}
-                  addNewRoleAssignment={(entityClassificationRef, allow) =>
-                    this.setState({
-                      newRole: {
-                        ...newRole,
-                        entityClassificationAssignments: [
-                          ...newRole.entityClassificationAssignments,
-                          {
-                            entityClassificationRef,
-                            allow
-                          }
-                        ]
-                      },
-                      tempEntityClassification: '',
-                      tempEntityType: ''
-                    })}
-                  organisationChange={(e, index, value) =>
-                    this.setState({
-                      ...this.state,
-                      newRole: {
-                        ...newRole,
-                        responsibleOrganisationRef: value
-                      }
-                    })}
-                  entityTypeChange={(e, index, value) =>
-                    this.setState({
-                      ...this.state,
-                      newRole: {
-                        ...newRole,
-                        typeOfResponsibilityRoleRef: value
-                      }
-                    })}
-                />
-              : null}
+            {isCreatingNewRole ? (
+              <NewRoleAssignment
+                newRole={newRole}
+                roles={roles}
+                entityTypes={entityTypes}
+                organizations={organizations}
+                handleAddRole={this.handleAddRole.bind(this)}
+                administrativeZones={this.props.administrativeZones}
+                handleRemoveEntity={this.handleRemoveEntity.bind(this)}
+                addNewAdminZoneRef={responsibleAreaRef => {
+                  this.setState({
+                    newRole: {
+                      ...this.state.newRole,
+                      responsibleAreaRef
+                    }
+                  });
+                }}
+                addNewRoleAssignment={(entityClassificationRef, allow) =>
+                  this.setState({
+                    newRole: {
+                      ...newRole,
+                      entityClassificationAssignments: [
+                        ...newRole.entityClassificationAssignments,
+                        {
+                          entityClassificationRef,
+                          allow
+                        }
+                      ]
+                    },
+                    tempEntityClassification: "",
+                    tempEntityType: ""
+                  })
+                }
+                organisationChange={(e, index, value) =>
+                  this.setState({
+                    ...this.state,
+                    newRole: {
+                      ...newRole,
+                      responsibleOrganisationRef: value
+                    }
+                  })
+                }
+                entityTypeChange={(e, index, value) =>
+                  this.setState({
+                    ...this.state,
+                    newRole: {
+                      ...newRole,
+                      typeOfResponsibilityRoleRef: value
+                    }
+                  })
+                }
+              />
+            ) : null}
           </div>
         </div>
       </Modal>

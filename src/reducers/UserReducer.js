@@ -14,15 +14,13 @@
  *
  */
 
-import * as types from './../actions/actionTypes'
+import * as types from "./../actions/actionTypes";
 
 const UserReducer = (state = {}, action) => {
-
   switch (action.type) {
-
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default UserReducer
+export default UserReducer;

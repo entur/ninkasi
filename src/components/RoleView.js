@@ -14,18 +14,18 @@
  *
  */
 
-import React from 'react';
-import '../sass/views/roleView.scss';
-import MdEdit from 'material-ui/svg-icons/image/edit';
-import MdDelete from 'material-ui/svg-icons/action/delete';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import ModalEditRole from '../modals/ModalEditRole';
-import ModalCreateRole from '../modals/ModalCreateRole';
-import { connect } from 'react-redux';
-import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
-import { sortByColumns } from '../utils/index';
-import ModalConfirmation from '../modals/ModalConfirmation';
+import React from "react";
+import "../sass/views/roleView.scss";
+import MdEdit from "material-ui/svg-icons/image/edit";
+import MdDelete from "material-ui/svg-icons/action/delete";
+import FloatingActionButton from "material-ui/FloatingActionButton";
+import ContentAdd from "material-ui/svg-icons/content/add";
+import ModalEditRole from "../modals/ModalEditRole";
+import ModalCreateRole from "../modals/ModalCreateRole";
+import { connect } from "react-redux";
+import OrganizationRegisterActions from "../actions/OrganizationRegisterActions";
+import { sortByColumns } from "../utils/index";
+import ModalConfirmation from "../modals/ModalConfirmation";
 
 class RoleView extends React.Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class RoleView extends React.Component {
       isDeleteConfirmationOpen: false,
       activeRole: null,
       sortOrder: {
-        column: 'name',
+        column: "name",
         asc: true
       }
     };
@@ -51,7 +51,7 @@ class RoleView extends React.Component {
 
   getDeleteConfirmationTitle() {
     const { activeRole } = this.state;
-    let role = activeRole ? activeRole.name : 'N/A';
+    let role = activeRole ? activeRole.name : "N/A";
     return `Delete role ${role}`;
   }
 
@@ -128,10 +128,10 @@ class RoleView extends React.Component {
 
     return (
       <div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <FloatingActionButton
             mini={true}
-            style={{ float: 'right', marginRight: 10 }}
+            style={{ float: "right", marginRight: 10 }}
           >
             <ContentAdd
               onClick={() => this.setState({ isCreateModalOpen: true })}
@@ -143,7 +143,7 @@ class RoleView extends React.Component {
             <div className="col-1-3">
               <span
                 className="sortable"
-                onClick={() => this.handleSortOrder('name')}
+                onClick={() => this.handleSortOrder("name")}
               >
                 name
               </span>
@@ -151,7 +151,7 @@ class RoleView extends React.Component {
             <div className="col-1-3">
               <span
                 className="sortable"
-                onClick={() => this.handleSortOrder('privateCode')}
+                onClick={() => this.handleSortOrder("privateCode")}
               >
                 private code
               </span>
@@ -159,21 +159,22 @@ class RoleView extends React.Component {
           </div>
           {sortedRoles.map(role => {
             return (
-              <div key={'role-' + role.id} className="role-row-item">
+              <div key={"role-" + role.id} className="role-row-item">
                 <div className="col-1-3">{role.name}</div>
                 <div className="col-1-3">{role.privateCode}</div>
-                <div className="col-icon" style={{ cursor: 'pointer' }}>
+                <div className="col-icon" style={{ cursor: "pointer" }}>
                   <MdDelete
                     color="#fa7b81"
                     style={{
                       height: 20,
                       width: 20,
                       marginRight: 10,
-                      verticalAlign: 'middle',
-                      cursor: 'pointer'
+                      verticalAlign: "middle",
+                      cursor: "pointer"
                     }}
                     onClick={() =>
-                      this.handleOpenDeleteConfirmationDialog(role)}
+                      this.handleOpenDeleteConfirmationDialog(role)
+                    }
                   />
                   <MdEdit
                     color="rgba(25, 118, 210, 0.59)"
@@ -181,32 +182,32 @@ class RoleView extends React.Component {
                     style={{
                       height: 20,
                       width: 20,
-                      verticalAlign: 'middle',
-                      cursor: 'pointer'
+                      verticalAlign: "middle",
+                      cursor: "pointer"
                     }}
                   />
                 </div>
               </div>
             );
           })}
-          {this.state.isCreateModalOpen
-            ? <ModalCreateRole
-                isModalOpen={this.state.isCreateModalOpen}
-                handleCloseModal={() =>
-                  this.setState({ isCreateModalOpen: false })}
-                takenPrivateCodes={roles.map(role => role.privateCode)}
-                handleSubmit={this.handleCreateRole.bind(this)}
-              />
-            : null}
-          {this.state.isEditModalOpen
-            ? <ModalEditRole
-                isModalOpen={this.state.isEditModalOpen}
-                role={this.state.activeRole}
-                handleCloseModal={() =>
-                  this.setState({ isEditModalOpen: false })}
-                handleSubmit={this.handleUpdateRole.bind(this)}
-              />
-            : null}
+          {this.state.isCreateModalOpen ? (
+            <ModalCreateRole
+              isModalOpen={this.state.isCreateModalOpen}
+              handleCloseModal={() =>
+                this.setState({ isCreateModalOpen: false })
+              }
+              takenPrivateCodes={roles.map(role => role.privateCode)}
+              handleSubmit={this.handleCreateRole.bind(this)}
+            />
+          ) : null}
+          {this.state.isEditModalOpen ? (
+            <ModalEditRole
+              isModalOpen={this.state.isEditModalOpen}
+              role={this.state.activeRole}
+              handleCloseModal={() => this.setState({ isEditModalOpen: false })}
+              handleSubmit={this.handleUpdateRole.bind(this)}
+            />
+          ) : null}
           <ModalConfirmation
             open={this.state.isDeleteConfirmationOpen}
             title={confirmDeleteTitle}

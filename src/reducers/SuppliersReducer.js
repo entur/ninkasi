@@ -14,7 +14,7 @@
  *
  */
 
-import * as types from './../actions/actionTypes';
+import * as types from "./../actions/actionTypes";
 
 const initialState = {
   data: [],
@@ -25,7 +25,7 @@ const initialState = {
   fileUploadProgress: 0,
   lineStats: {},
   allTransportModes: [],
-  exportedFiles: null,
+  exportedFiles: null
 };
 
 const SuppliersReducer = (state = initialState, action) => {
@@ -37,18 +37,17 @@ const SuppliersReducer = (state = initialState, action) => {
         error: true
       });
     case types.RECEIVED_SUPPLIERS:
-
       const level1Providers = action.payLoad
         .filter(p => p.chouetteInfo && p.chouetteInfo.migrateDataToProvider)
-        .sort( (a,b) => {
-          return a.name.localeCompare(b.name, 'nb')
+        .sort((a, b) => {
+          return a.name.localeCompare(b.name, "nb");
         });
 
       const level2Providers = action.payLoad
-      .filter(p => !(p.chouetteInfo && p.chouetteInfo.migrateDataToProvider))
-      .sort( (a,b) => {
-        return a.name.localeCompare(b.name, 'nb')
-      });
+        .filter(p => !(p.chouetteInfo && p.chouetteInfo.migrateDataToProvider))
+        .sort((a, b) => {
+          return a.name.localeCompare(b.name, "nb");
+        });
 
       return Object.assign({}, state, {
         isLoading: false,
@@ -109,15 +108,14 @@ const SuppliersReducer = (state = initialState, action) => {
     case types.RECEIVED_GRAPH_STATUS:
       return Object.assign({}, state, { ...action.payLoad });
 
-     case types.RECEIVED_TRANSPORT_MODES:
-       return Object.assign({}, state, {
-           allTransportModes: action.payLoad
-       });
+    case types.RECEIVED_TRANSPORT_MODES:
+      return Object.assign({}, state, {
+        allTransportModes: action.payLoad
+      });
 
     default:
       return state;
   }
-
 };
 
 export default SuppliersReducer;

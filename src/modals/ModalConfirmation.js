@@ -14,20 +14,19 @@
  *
  */
 
-import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
+import React from "react";
+import Dialog from "material-ui/Dialog";
+import PropTypes from "prop-types";
+import FlatButton from "material-ui/FlatButton";
 
 class ConfirmationDialog extends React.Component {
-
   static propTypes = {
     title: PropTypes.string.isRequired,
     body: PropTypes.string.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    actionBtnTitle: PropTypes.func.isRequired,
-  }
+    actionBtnTitle: PropTypes.func.isRequired
+  };
 
   render() {
     const actions = [

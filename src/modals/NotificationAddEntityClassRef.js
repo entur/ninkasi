@@ -14,12 +14,12 @@
  *
  */
 
-import React from 'react';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-import { connect } from 'react-redux';
-import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import React from "react";
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
+import FlatButton from "material-ui/FlatButton";
+import { connect } from "react-redux";
+import OrganizationRegisterActions from "../actions/OrganizationRegisterActions";
 
 class NotificationAddEntityClassRef extends React.Component {
   constructor(props) {
@@ -32,14 +32,14 @@ class NotificationAddEntityClassRef extends React.Component {
   }
 
   getEntityClassificationsForType(entityType) {
-    OrganizationRegisterActions.getEntityByClassification(
-      entityType
-    ).then(response => {
-      this.setState({
-        entityClassificationRefs: response.data,
-        entityType
-      });
-    });
+    OrganizationRegisterActions.getEntityByClassification(entityType).then(
+      response => {
+        this.setState({
+          entityClassificationRefs: response.data,
+          entityType
+        });
+      }
+    );
   }
 
   handleAdd() {
@@ -66,9 +66,9 @@ class NotificationAddEntityClassRef extends React.Component {
     return (
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-around'
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-around"
         }}
       >
         <SelectField
@@ -78,7 +78,7 @@ class NotificationAddEntityClassRef extends React.Component {
           onChange={(e, i, v) => this.getEntityClassificationsForType(v)}
           fullWidth={true}
         >
-          {entityTypes.map(entity =>
+          {entityTypes.map(entity => (
             <MenuItem
               key={entity.id}
               id={entity.id}
@@ -86,7 +86,7 @@ class NotificationAddEntityClassRef extends React.Component {
               label={entity.name}
               primaryText={entity.name}
             />
-          )}
+          ))}
         </SelectField>
         <SelectField
           hintText="Type"
@@ -95,10 +95,10 @@ class NotificationAddEntityClassRef extends React.Component {
           onChange={(e, i, v) => {
             this.setState({ entityClasRefSelected: v });
           }}
-          style={{marginLeft: 5}}
+          style={{ marginLeft: 5 }}
           fullWidth={true}
         >
-          {entityClassificationRefs.map(type =>
+          {entityClassificationRefs.map(type => (
             <MenuItem
               key={type.id}
               id={type.id}
@@ -106,7 +106,7 @@ class NotificationAddEntityClassRef extends React.Component {
               label={type.name}
               primaryText={type.name}
             />
-          )}
+          ))}
         </SelectField>
         <FlatButton
           label="Add"

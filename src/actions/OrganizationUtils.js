@@ -14,18 +14,22 @@
  *
  */
 
-export const removeRedundantActions = (actions, jobDomain, jobDomainActions) => {
+export const removeRedundantActions = (
+  actions,
+  jobDomain,
+  jobDomainActions
+) => {
   if (!actions || !actions.length) return [];
 
-  let asteriskFound = actions.indexOf('*') > -1;
+  let asteriskFound = actions.indexOf("*") > -1;
 
   if (asteriskFound) {
-    return ['*'];
+    return ["*"];
   }
 
   // -1 because * is included in allActions
   if (actions.length >= jobDomainActions[jobDomain].length - 1) {
-    return ['*'];
+    return ["*"];
   }
 
   return actions;
@@ -40,7 +44,7 @@ export const formatUserNotifications = (
       delete userNotification.isNew;
     }
 
-    if (userNotification.eventFilter.type === 'JOB') {
+    if (userNotification.eventFilter.type === "JOB") {
       if (userNotification.eventFilter.administrativeZoneRefs) {
         delete userNotification.eventFilter.administrativeZoneRefs;
       }
@@ -53,7 +57,7 @@ export const formatUserNotifications = (
         userNotification.eventFilter.jobDomain,
         jobDomainActions
       );
-    } else if (userNotification.eventFilter.type === 'CRUD') {
+    } else if (userNotification.eventFilter.type === "CRUD") {
       if (!userNotification.eventFilter.administrativeZoneRefs) {
         userNotification.eventFilter.administrativeZoneRefs = [];
       }

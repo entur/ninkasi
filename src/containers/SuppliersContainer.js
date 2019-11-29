@@ -816,7 +816,9 @@ class SuppliersContainer extends React.Component {
           {this.state.isCreateModalOpen && (
             <ModalCreatePoiFilter
               isModalOpen={this.state.isCreateModalOpen}
-              handleCloseModal={() => this.setState({ isCreateModalOpen: false })}
+              handleCloseModal={() =>
+                this.setState({ isCreateModalOpen: false })
+              }
             />
           )}
         </div>

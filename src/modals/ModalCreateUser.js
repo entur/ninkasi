@@ -14,29 +14,29 @@
  *
  */
 
-import React, { Component, PropTypes } from 'react';
-import ModalDialog from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import ResponsiblitySetList from './ResponsiblitySetList';
-import UserRespSetPopover from './UserRespSetPopover';
+import React, { Component, PropTypes } from "react";
+import ModalDialog from "material-ui/Dialog";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
+import ResponsiblitySetList from "./ResponsiblitySetList";
+import UserRespSetPopover from "./UserRespSetPopover";
 
 const initialState = {
   user: {
-    username: '',
-    organisationRef: '',
+    username: "",
+    organisationRef: "",
     responsibilitySetRefs: [],
     contactDetails: {
-      email: '',
-      phone: '',
-      firstName: '',
-      lastName: ''
+      email: "",
+      phone: "",
+      firstName: "",
+      lastName: ""
     }
   },
   isAddingResponsibilitySet: false,
-  temptResponsibilitySet: '',
+  temptResponsibilitySet: "",
   usernamevalid: false,
   emailValid: false,
   emailIsTaken: false,
@@ -59,7 +59,7 @@ class ModalCreateUser extends React.Component {
   }
 
   handleChangeUsername(e, value) {
-    const isValid = this.validateBy('USERNAME', value);
+    const isValid = this.validateBy("USERNAME", value);
     this.setState(prevState => ({
       user: { ...prevState.user, username: value },
       usernameValid: isValid
@@ -70,7 +70,7 @@ class ModalCreateUser extends React.Component {
     const { takenEmails } = this.props;
     const { user } = this.state;
     const emailIsTaken = takenEmails.indexOf(value.toLowerCase()) > -1;
-    const isValid = this.validateBy('EMAIL', value);
+    const isValid = this.validateBy("EMAIL", value);
     this.setState({
       emailValid: isValid,
       emailIsTaken,
@@ -96,7 +96,7 @@ class ModalCreateUser extends React.Component {
           temptResponsibilitySet
         ]
       },
-      temptResponsibilitySet: ''
+      temptResponsibilitySet: ""
     });
   }
 
@@ -104,11 +104,11 @@ class ModalCreateUser extends React.Component {
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const usernameRe = /^[a-zA-Z-. ]*$/;
 
-    if (type === 'EMAIL') {
+    if (type === "EMAIL") {
       return emailRe.test(value);
     }
 
-    if (type === 'USERNAME') {
+    if (type === "USERNAME") {
       return usernameRe.test(value);
     }
   }
@@ -184,12 +184,12 @@ class ModalCreateUser extends React.Component {
         actions={actions}
         onRequestClose={() => this.handleOnClose()}
         title="Creating a new user"
-        contentStyle={{width: '40%'}}
+        contentStyle={{ width: "40%" }}
       >
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column'
+            display: "flex",
+            flexDirection: "column"
           }}
         >
           <TextField
@@ -198,7 +198,7 @@ class ModalCreateUser extends React.Component {
             value={user.username}
             errorText={
               !usernameValid &&
-              'Username can only include alphanumerics, hyphens and dot'
+              "Username can only include alphanumerics, hyphens and dot"
             }
             onChange={this.handleChangeUsername.bind(this)}
             fullWidth={true}
@@ -216,7 +216,8 @@ class ModalCreateUser extends React.Component {
                     firstName: value
                   }
                 }
-              })}
+              })
+            }
             fullWidth={true}
           />
           <TextField
@@ -232,7 +233,8 @@ class ModalCreateUser extends React.Component {
                     lastName: value
                   }
                 }
-              })}
+              })
+            }
             fullWidth={true}
           />
           <TextField
@@ -240,8 +242,10 @@ class ModalCreateUser extends React.Component {
             floatingLabelText="E-mail"
             errorText={
               emailIsTaken
-                ? 'E-mail already taken'
-                : !emailValid ? 'Must be a valid e-mail' : ''
+                ? "E-mail already taken"
+                : !emailValid
+                ? "Must be a valid e-mail"
+                : ""
             }
             value={user.contactDetails.email}
             onChange={this.handleChangeEmail.bind(this)}
@@ -260,7 +264,8 @@ class ModalCreateUser extends React.Component {
                     phone: value
                   }
                 }
-              })}
+              })
+            }
             fullWidth={true}
           />
           <SelectField
@@ -270,10 +275,11 @@ class ModalCreateUser extends React.Component {
             onChange={(e, index, value) =>
               this.setState({
                 user: { ...user, organisationRef: value }
-              })}
+              })
+            }
             fullWidth={true}
           >
-            {organizations.map(org =>
+            {organizations.map(org => (
               <MenuItem
                 key={org.id}
                 id={org.id}
@@ -281,7 +287,7 @@ class ModalCreateUser extends React.Component {
                 label={org.name}
                 primaryText={org.name}
               />
-            )}
+            ))}
           </SelectField>
           <UserRespSetPopover
             responsibilities={responsibilities}
@@ -289,7 +295,8 @@ class ModalCreateUser extends React.Component {
             anchorEl={this.state.addRespAnchorEl}
             handleAdd={this.handleAddResponsibilitySet.bind(this)}
             handleClose={() =>
-              this.setState({ isAddingResponsibilitySet: false })}
+              this.setState({ isAddingResponsibilitySet: false })
+            }
             open={isAddingResponsibilitySet}
           />
           <ResponsiblitySetList
@@ -299,7 +306,8 @@ class ModalCreateUser extends React.Component {
               this.setState({
                 isAddingResponsibilitySet: true,
                 addRespAnchorEl: e.currentTarget
-              })}
+              })
+            }
             handleRemove={this.removeResponsibilitySet.bind(this)}
           />
         </div>

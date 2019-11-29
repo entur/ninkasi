@@ -14,19 +14,19 @@
  *
  */
 
-import React from 'react';
-import AutoComplete from 'material-ui/AutoComplete';
-import Chip from 'material-ui/Chip';
+import React from "react";
+import AutoComplete from "material-ui/AutoComplete";
+import Chip from "material-ui/Chip";
 
 class AdminZoneSearchWrapper extends React.Component {
   getZoneType(type) {
     let typeMap = {
-      COUNTRY: 'Country',
-      COUNTY: 'County',
-      LOCALITY: 'Muncipality',
-      CUSTOM: 'Custom'
+      COUNTRY: "Country",
+      COUNTY: "County",
+      LOCALITY: "Muncipality",
+      CUSTOM: "Custom"
     };
-    return typeMap[type] || 'Uknown';
+    return typeMap[type] || "Uknown";
   }
 
   handleNewRequest({ value, text }, index) {
@@ -38,7 +38,7 @@ class AdminZoneSearchWrapper extends React.Component {
     }
 
     this.refs.adminSearch.setState({
-      searchText: ''
+      searchText: ""
     });
   }
 
@@ -51,7 +51,7 @@ class AdminZoneSearchWrapper extends React.Component {
     }));
 
     return (
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
         <AutoComplete
           style={{ marginTop: -5, flex: 2 }}
           hintText="Restrict to administrative zone"
@@ -67,17 +67,19 @@ class AdminZoneSearchWrapper extends React.Component {
           filter={AutoComplete.caseInsensitiveFilter}
           dataSource={formattedZones}
         />
-        <div style={{ flex: 1, width: '100%', textAlign: 'center' }}>
-          {chip
-            ? <Chip
-                style={{ marginTop: -12, marginLeft: 20 }}
-                onRequestDelete={handleDeleteChip}
-              >
-                {chip.name}
-              </Chip>
-            : <div style={{ fontSize: 12, fontStyle: 'italic' }}>
-                No restrictions ...
-              </div>}
+        <div style={{ flex: 1, width: "100%", textAlign: "center" }}>
+          {chip ? (
+            <Chip
+              style={{ marginTop: -12, marginLeft: 20 }}
+              onRequestDelete={handleDeleteChip}
+            >
+              {chip.name}
+            </Chip>
+          ) : (
+            <div style={{ fontSize: 12, fontStyle: "italic" }}>
+              No restrictions ...
+            </div>
+          )}
         </div>
       </div>
     );

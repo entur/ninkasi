@@ -6,7 +6,8 @@
     "start": "PORT=9000 POI_FILTER_BASE_URL=http://localhost:28080/services/custom_configurations/poiFilter PROVIDERS_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/providers/ ORGANISATIONS_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/organisations/ EVENTS_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/events/ TIMETABLE_ADMIN_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/timetable/ MAP_ADMIN_BASE_URL=https://api.dev.entur.io/timetable-admin/v1/map/ GEOCODER_ADMIN_BASE_URL=https://api.dev.entur.io/geocoder_admin/v1/ BABEL_ENV=development NODE_ENV=development react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "prod": "BABEL_ENV=production NODE_ENV=production node server.js"
+    "prod": "BABEL_ENV=production NODE_ENV=production node server.js",
+    "format": "prettier --write src/**/*.{js,jsx,ts,tsx,json,css,scss,md}"
   },
   "license": "EUPL",
   "dependencies": {
@@ -21,12 +22,15 @@
     "express-history-api-fallback": "^2.2.1",
     "halogenium": "^2.3.0",
     "history": "^4.10.1",
+    "husky": "^3.1.0",
     "keycloak-js": "3.1.0",
+    "lint-staged": "^9.5.0",
     "lodash": "^4.17.15",
     "material-ui": "^0.19.4",
     "moment": "^2.14.1",
     "muicss": "^0.9.36",
     "node-sass": "^4.13.0",
+    "prettier": "^1.19.1",
     "prop-types": "^15.7.2",
     "rc-progress": "^2.5.2",
     "react": "^16.12.0",
@@ -57,6 +61,17 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write",
+      "git add"
     ]
   }
 }

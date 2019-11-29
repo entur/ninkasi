@@ -14,18 +14,18 @@
  *
  */
 
-import React from 'react';
-import '../sass/views/organizationView.scss';
-import MdEdit from 'material-ui/svg-icons/image/edit';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import { connect } from 'react-redux';
-import ModalCreateOrganization from '../modals/ModalCreateOrganization';
-import ModalEditOrganization from '../modals/ModalEditOrganization';
-import MdDelete from 'material-ui/svg-icons/action/delete';
-import { sortByColumns } from '../utils/index';
-import ModalConfirmation from '../modals/ModalConfirmation';
+import React from "react";
+import "../sass/views/organizationView.scss";
+import MdEdit from "material-ui/svg-icons/image/edit";
+import FloatingActionButton from "material-ui/FloatingActionButton";
+import OrganizationRegisterActions from "../actions/OrganizationRegisterActions";
+import ContentAdd from "material-ui/svg-icons/content/add";
+import { connect } from "react-redux";
+import ModalCreateOrganization from "../modals/ModalCreateOrganization";
+import ModalEditOrganization from "../modals/ModalEditOrganization";
+import MdDelete from "material-ui/svg-icons/action/delete";
+import { sortByColumns } from "../utils/index";
+import ModalConfirmation from "../modals/ModalConfirmation";
 
 class OrganizationView extends React.Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class OrganizationView extends React.Component {
       isEditModalOpen: false,
       activeOrganization: null,
       sortOrder: {
-        column: 'name',
+        column: "name",
         asc: true
       }
     };
@@ -44,7 +44,7 @@ class OrganizationView extends React.Component {
 
   getDeleteConfirmationTitle() {
     const { activeOrganization } = this.state;
-    let organization = activeOrganization ? activeOrganization.name : 'N/A';
+    let organization = activeOrganization ? activeOrganization.name : "N/A";
     return `Delete organization ${organization}`;
   }
 
@@ -143,10 +143,10 @@ class OrganizationView extends React.Component {
 
     return (
       <div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <FloatingActionButton
             mini={true}
-            style={{ float: 'right', marginRight: 10, cursor: 'pointer' }}
+            style={{ float: "right", marginRight: 10, cursor: "pointer" }}
           >
             <ContentAdd onClick={() => this.openModalWindow()} />
           </FloatingActionButton>
@@ -156,7 +156,7 @@ class OrganizationView extends React.Component {
             <div className="col-1-6">
               <span
                 className="sortable"
-                onClick={() => this.handleSortOrder('name')}
+                onClick={() => this.handleSortOrder("name")}
               >
                 name
               </span>
@@ -164,7 +164,7 @@ class OrganizationView extends React.Component {
             <div className="col-1-6">
               <span
                 className="sortable"
-                onClick={() => this.handleSortOrder('id')}
+                onClick={() => this.handleSortOrder("id")}
               >
                 id
               </span>
@@ -172,7 +172,7 @@ class OrganizationView extends React.Component {
             <div className="col-1-6">
               <span
                 className="sortable"
-                onClick={() => this.handleSortOrder('organisationType')}
+                onClick={() => this.handleSortOrder("organisationType")}
               >
                 organisation type
               </span>
@@ -180,7 +180,7 @@ class OrganizationView extends React.Component {
             <div className="col-1-6">
               <span
                 className="sortable"
-                onClick={() => this.handleSortOrder('privateCode')}
+                onClick={() => this.handleSortOrder("privateCode")}
               >
                 private code
               </span>
@@ -188,7 +188,7 @@ class OrganizationView extends React.Component {
             <div className="col-1-6">
               <span
                 className="sortable"
-                onClick={() => this.handleSortOrder('codeSpace')}
+                onClick={() => this.handleSortOrder("codeSpace")}
               >
                 code space
               </span>
@@ -197,7 +197,7 @@ class OrganizationView extends React.Component {
           {sortedOrganizations.map(organization => {
             return (
               <div
-                key={'organization-' + organization.id}
+                key={"organization-" + organization.id}
                 className="organization-row-item"
               >
                 <div className="col-1-6">{organization.name}</div>
@@ -205,57 +205,58 @@ class OrganizationView extends React.Component {
                 <div className="col-1-6">{organization.organisationType}</div>
                 <div className="col-1-6">{organization.privateCode}</div>
                 <div className="col-1-6">{organization.codeSpace}</div>
-                <div className="col-icon" style={{ cursor: 'pointer' }}>
+                <div className="col-icon" style={{ cursor: "pointer" }}>
                   <MdDelete
                     color="#fa7b81"
                     style={{
                       height: 20,
                       width: 20,
                       marginRight: 10,
-                      verticalAlign: 'middle',
-                      cursor: 'pointer'
+                      verticalAlign: "middle",
+                      cursor: "pointer"
                     }}
                     onClick={() =>
-                      this.handleOpenDeleteConfirmationDialog(organization)}
+                      this.handleOpenDeleteConfirmationDialog(organization)
+                    }
                   />
                   <MdEdit
                     color="rgba(25, 118, 210, 0.59)"
                     onClick={() => this.handleEditOrganization(organization)}
-                    style={{ height: 20, width: 20, verticalAlign: 'middle' }}
+                    style={{ height: 20, width: 20, verticalAlign: "middle" }}
                   />
                 </div>
               </div>
             );
           })}
-          {isCreateModalOpen
-            ? <ModalCreateOrganization
-                isModalOpen={isCreateModalOpen}
-                handleCloseModal={() =>
-                  this.setState({ isCreateModalOpen: false })}
-                takenOrganizationNames={organizations.map(org => org.name)}
-                takenOrganizationPrivateCodes={organizations.map(
-                  org => org.privateCode
-                )}
-                codeSpaces={codeSpaces}
-                organization={activeOrganization}
-                handleSubmit={this.handleCreateOrganization.bind(this)}
-              />
-            : null}
+          {isCreateModalOpen ? (
+            <ModalCreateOrganization
+              isModalOpen={isCreateModalOpen}
+              handleCloseModal={() =>
+                this.setState({ isCreateModalOpen: false })
+              }
+              takenOrganizationNames={organizations.map(org => org.name)}
+              takenOrganizationPrivateCodes={organizations.map(
+                org => org.privateCode
+              )}
+              codeSpaces={codeSpaces}
+              organization={activeOrganization}
+              handleSubmit={this.handleCreateOrganization.bind(this)}
+            />
+          ) : null}
 
-          {isEditModalOpen
-            ? <ModalEditOrganization
-                isModalOpen={isEditModalOpen}
-                handleCloseModal={() =>
-                  this.setState({ isEditModalOpen: false })}
-                takenOrganizationNames={organizations.map(org => org.name)}
-                takenOrganizationPrivateCodes={organizations.map(
-                  org => org.privateCode
-                )}
-                organization={this.state.activeOrganization}
-                codeSpaces={codeSpaces}
-                handleSubmit={this.handleUpdateOrganization.bind(this)}
-              />
-            : null}
+          {isEditModalOpen ? (
+            <ModalEditOrganization
+              isModalOpen={isEditModalOpen}
+              handleCloseModal={() => this.setState({ isEditModalOpen: false })}
+              takenOrganizationNames={organizations.map(org => org.name)}
+              takenOrganizationPrivateCodes={organizations.map(
+                org => org.privateCode
+              )}
+              organization={this.state.activeOrganization}
+              codeSpaces={codeSpaces}
+              handleSubmit={this.handleUpdateOrganization.bind(this)}
+            />
+          ) : null}
           <ModalConfirmation
             open={this.state.isDeleteConfirmationOpen}
             title={confirmDeleteTitle}

@@ -14,24 +14,22 @@
  *
  */
 
-import React from 'react'
-import SideBarTabsElement from './SideBarTabsElement'
+import React from "react";
+import SideBarTabsElement from "./SideBarTabsElement";
 
 class SideBarTabs extends React.Component {
-
   setActiveTab(value) {
-    this.props.setActiveTab(value)
+    this.props.setActiveTab(value);
   }
 
-  render () {
-
+  render() {
     const style = {
       maxWidth: 120,
-      fontSize: '0.9em',
-      marginRight: 10,
-    }
+      fontSize: "0.9em",
+      marginRight: 10
+    };
 
-    const { activeTab } = this.props
+    const { activeTab } = this.props;
 
     return (
       <div style={style}>
@@ -61,9 +59,8 @@ class SideBarTabs extends React.Component {
           onClick={() => this.setActiveTab(4)}
         />
       </div>
-    )
+    );
   }
-
 }
 
-export default SideBarTabs
+export default SideBarTabs;

@@ -14,12 +14,12 @@
  *
  */
 
-import React from 'react';
-import { connect } from 'react-redux';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import Actions from '../actions/OrganizationRegisterActions';
-import Clipboard from 'clipboard-js';
+import React from "react";
+import { connect } from "react-redux";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import Actions from "../actions/OrganizationRegisterActions";
+import Clipboard from "clipboard-js";
 
 class ModalNewPassword extends React.Component {
   handleClose() {
@@ -31,7 +31,12 @@ class ModalNewPassword extends React.Component {
   }
 
   render() {
-    const { open, password, username, isNewUser } = this.props.passwordDialogState;
+    const {
+      open,
+      password,
+      username,
+      isNewUser
+    } = this.props.passwordDialogState;
 
     const actions = [
       <FlatButton
@@ -43,7 +48,7 @@ class ModalNewPassword extends React.Component {
 
     return (
       <Dialog
-        title={isNewUser ? 'User created' : 'Password reset'}
+        title={isNewUser ? "User created" : "Password reset"}
         actions={actions}
         modal={true}
         open={open}
@@ -53,25 +58,28 @@ class ModalNewPassword extends React.Component {
         </div>
         <div
           style={{
-            background: 'orange',
-            display: 'flex',
-            textAlign: 'center',
+            background: "orange",
+            display: "flex",
+            textAlign: "center",
             padding: 2,
-            color: '#fff',
-            alignItems: 'center',
-            border: '1px solid black'
+            color: "#fff",
+            alignItems: "center",
+            border: "1px solid black"
           }}
         >
-          <div id="new-password" style={{ flex: 10, fontSize: 18 }}>{password}</div>
+          <div id="new-password" style={{ flex: 10, fontSize: 18 }}>
+            {password}
+          </div>
           <FlatButton
             style={{ marginRight: 5, flex: 1 }}
             label="Copy"
-            labelStyle={{ color: '#fff' }}
+            labelStyle={{ color: "#fff" }}
             onClick={() => this.handleCopyToClipBoard(password)}
           />
         </div>
         <div style={{ fontSize: 12, marginTop: 5 }}>
-          NB. This is only a temporary password, and the user must create its own password upon initial login.
+          NB. This is only a temporary password, and the user must create its
+          own password upon initial login.
         </div>
         <div style={{ fontSize: 12, marginTop: 10 }}>
           An e-mail notificating this user about the change is sent.

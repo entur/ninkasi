@@ -14,19 +14,19 @@
  *
  */
 
-import React, { Component, PropTypes } from 'react';
-import Modal from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import React, { Component, PropTypes } from "react";
+import Modal from "material-ui/Dialog";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
 
 const initialState = {
   organization: {
-    name: '',
-    organisationType: 'AUTHORITY',
-    privateCode: '',
-    codeSpace: ''
+    name: "",
+    organisationType: "AUTHORITY",
+    privateCode: "",
+    codeSpace: ""
   }
 };
 
@@ -63,43 +63,41 @@ class ModalCreateOrganization extends React.Component {
       takenOrganizationPrivateCodes.indexOf(organization.privateCode) > -1;
 
     const actions = [
-      <FlatButton
-        label="Cancel"
-        onClick={handleCloseModal}
-      />,
+      <FlatButton label="Cancel" onClick={handleCloseModal} />,
       <FlatButton
         disabled={isOrganizationNameTaken || isOrganizationPrivateCodeTaken}
         label="Create"
-        onClick={ () => handleSubmit(organization)}
+        onClick={() => handleSubmit(organization)}
       />
-    ]
+    ];
 
     return (
       <Modal
         open={isModalOpen}
-        contentStyle={{ width: '30%' }}
+        contentStyle={{ width: "30%" }}
         title="Create a new organisation"
         actions={actions}
         requestClose={() => this.handleOnClose()}
       >
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
           }}
         >
           <TextField
             hintText="Name"
             floatingLabelText="Name"
             errorText={
-              isOrganizationNameTaken ? 'Organization name already exists' : ''
+              isOrganizationNameTaken ? "Organization name already exists" : ""
             }
             value={organization.name}
             onChange={(e, value) =>
               this.setState({
                 organization: { ...organization, name: value }
-              })}
+              })
+            }
             fullWidth={true}
           />
           <TextField
@@ -107,14 +105,15 @@ class ModalCreateOrganization extends React.Component {
             floatingLabelText="Private code"
             errorText={
               isOrganizationPrivateCodeTaken
-                ? 'Organization private code already exists'
-                : ''
+                ? "Organization private code already exists"
+                : ""
             }
             value={organization.privateCode}
             onChange={(e, value) =>
               this.setState({
                 organization: { ...organization, privateCode: value }
-              })}
+              })
+            }
             fullWidth={true}
           />
           <SelectField
@@ -124,7 +123,8 @@ class ModalCreateOrganization extends React.Component {
             onChange={(e, index, value) =>
               this.setState({
                 organization: { ...organization, organisationType: value }
-              })}
+              })
+            }
             fullWidth={true}
           >
             <MenuItem
@@ -141,10 +141,11 @@ class ModalCreateOrganization extends React.Component {
             onChange={(e, index, value) =>
               this.setState({
                 organization: { ...organization, codeSpace: value }
-              })}
+              })
+            }
             fullWidth={true}
           >
-            {codeSpaces.map(codeSpace =>
+            {codeSpaces.map(codeSpace => (
               <MenuItem
                 key={codeSpace.id}
                 id={codeSpace.id}
@@ -152,7 +153,7 @@ class ModalCreateOrganization extends React.Component {
                 label={codeSpace.id}
                 primaryText={codeSpace.xmlns}
               />
-            )}
+            ))}
           </SelectField>
         </div>
       </Modal>

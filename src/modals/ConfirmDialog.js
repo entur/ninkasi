@@ -14,13 +14,12 @@
  *
  */
 
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
 
 class ConfirmDialog extends Component {
-
   handleSubmit() {
     const { handleSubmit, handleClose } = this.props;
     handleClose();
@@ -28,26 +27,20 @@ class ConfirmDialog extends Component {
   }
 
   render() {
-
     const { handleClose, open, title, info } = this.props;
 
     const actions = [
       <FlatButton
         label={"Close"}
-        onClick={() => { handleClose() }}
+        onClick={() => {
+          handleClose();
+        }}
       />,
-      <FlatButton
-        label={"Confirm"}
-        onClick={this.handleSubmit.bind(this)}
-      />,
+      <FlatButton label={"Confirm"} onClick={this.handleSubmit.bind(this)} />
     ];
 
     return (
-      <Dialog
-        actions={actions}
-        title={title}
-        open={open}
-      >
+      <Dialog actions={actions} title={title} open={open}>
         <p>{info}</p>
       </Dialog>
     );
@@ -62,4 +55,3 @@ ConfirmDialog.propTypes = {
 };
 
 export default ConfirmDialog;
-

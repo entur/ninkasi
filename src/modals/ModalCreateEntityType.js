@@ -14,27 +14,27 @@
  *
  */
 
-import React, { Component, PropTypes } from 'react';
-import Modal from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import MdRemove from 'material-ui/svg-icons/content/remove';
-import MdAdd from 'material-ui/svg-icons/content/add';
-import IconButton from 'material-ui/IconButton';
+import React, { Component, PropTypes } from "react";
+import Modal from "material-ui/Dialog";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
+import MdRemove from "material-ui/svg-icons/content/remove";
+import MdAdd from "material-ui/svg-icons/content/add";
+import IconButton from "material-ui/IconButton";
 
 const initialState = {
   entityType: {
-    name: '',
-    privateCode: '',
-    codeSpace: '',
+    name: "",
+    privateCode: "",
+    codeSpace: "",
     classifications: []
   },
   isCreatingNewClassification: false,
   tempClassification: {
-    name: '',
-    privateCode: ''
+    name: "",
+    privateCode: ""
   }
 };
 
@@ -67,8 +67,8 @@ class ModalCreateEntityType extends React.Component {
         classifications: [...entityType.classifications, tempClassification]
       },
       tempClassification: {
-        name: '',
-        privateCode: ''
+        name: "",
+        privateCode: ""
       }
     });
   }
@@ -112,9 +112,9 @@ class ModalCreateEntityType extends React.Component {
         .indexOf(tempClassification.privateCode) > -1;
     const isSavable =
       !invalidPrivateCode &&
-      (entityType.name.length &&
-        entityType.codeSpace.length &&
-        entityType.privateCode.length);
+      entityType.name.length &&
+      entityType.codeSpace.length &&
+      entityType.privateCode.length;
 
     const actions = [
       <FlatButton label="Close" onClick={this.handleOnClose.bind(this)} />,
@@ -131,14 +131,14 @@ class ModalCreateEntityType extends React.Component {
         open={isModalOpen}
         onRequestClose={this.handleOnClose.bind(this)}
         title="Create a new entity type"
-        contentStyle={{ width: '40%' }}
+        contentStyle={{ width: "40%" }}
       >
         <div>
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center"
             }}
           >
             <TextField
@@ -148,22 +148,24 @@ class ModalCreateEntityType extends React.Component {
               onChange={(e, value) =>
                 this.setState({
                   entityType: { ...entityType, name: value }
-                })}
+                })
+              }
               fullWidth={true}
             />
             <TextField
               hintText="private code"
               floatingLabelText="Private code"
               errorText={
-                invalidPrivateCode ? 'Private code already exists' : ''
+                invalidPrivateCode ? "Private code already exists" : ""
               }
               value={entityType.privateCode}
               onChange={(e, value) =>
                 this.setState({
                   entityType: { ...entityType, privateCode: value }
-                })}
+                })
+              }
               fullWidth={true}
-              errorStyle={{ float: 'right' }}
+              errorStyle={{ float: "right" }}
             />
             <SelectField
               hintText="Code space"
@@ -172,10 +174,11 @@ class ModalCreateEntityType extends React.Component {
               onChange={(e, index, value) =>
                 this.setState({
                   entityType: { ...entityType, codeSpace: value }
-                })}
+                })
+              }
               fullWidth={true}
             >
-              {codeSpaces.map(codeSpace =>
+              {codeSpaces.map(codeSpace => (
                 <MenuItem
                   key={codeSpace.id}
                   id={codeSpace.id}
@@ -183,27 +186,27 @@ class ModalCreateEntityType extends React.Component {
                   label={codeSpace.id}
                   primaryText={codeSpace.xmlns}
                 />
-              )}
+              ))}
             </SelectField>
-            <div style={{ width: '100%', fontSize: 12 }}>
+            <div style={{ width: "100%", fontSize: 12 }}>
               Entity classifications
             </div>
             <select
               multiple="multiple"
-              style={{ width: '100%', fontSize: 12 }}
+              style={{ width: "100%", fontSize: 12 }}
               ref="classifications"
             >
-              {entityType.classifications.map((et, index) =>
-                <option key={'ec-' + index}>
-                  {this.getClassificationTitle(et)}
-                  {' '}
+              {entityType.classifications.map((et, index) => (
+                <option key={"ec-" + index}>
+                  {this.getClassificationTitle(et)}{" "}
                 </option>
-              )}
+              ))}
             </select>
-            <div style={{ textAlign: 'left', width: '100%' }}>
+            <div style={{ textAlign: "left", width: "100%" }}>
               <IconButton
                 onClick={() =>
-                  this.setState({ isCreatingNewClassification: true })}
+                  this.setState({ isCreatingNewClassification: true })
+                }
               >
                 <MdAdd color="#228B22" />
               </IconButton>
@@ -211,61 +214,63 @@ class ModalCreateEntityType extends React.Component {
                 <MdRemove color="#cc0000" />
               </IconButton>
             </div>
-            {isCreatingNewClassification
-              ? <div style={{ border: '1px dotted', width: '100%' }}>
-                  <div
-                    style={{
-                      fontSize: 12,
-                      textAlign: 'center',
-                      fontWeight: 600
-                    }}
-                  >
-                    New classification
-                  </div>
-                  <TextField
-                    hintText="Name"
-                    floatingLabelText="Name"
-                    value={tempClassification.name}
-                    onChange={(e, value) =>
-                      this.setState({
-                        tempClassification: {
-                          ...tempClassification,
-                          name: value
-                        }
-                      })}
-                    fullWidth={true}
-                  />
-                  <TextField
-                    hintText="Private code"
-                    floatingLabelText="Private code"
-                    errorStyle={{ float: 'right' }}
-                    errorText={
-                      isClassificationPrivateCodeTaken
-                        ? 'Private code is already taken'
-                        : ''
-                    }
-                    onChange={(e, value) =>
-                      this.setState({
-                        tempClassification: {
-                          ...tempClassification,
-                          privateCode: value
-                        }
-                      })}
-                    value={tempClassification.privateCode}
-                    fullWidth={true}
-                  />
-                  <FlatButton
-                    label="Add"
-                    style={{ width: '100%' }}
-                    disabled={
-                      isClassificationPrivateCodeTaken ||
-                      (!tempClassification.name.length ||
-                        !tempClassification.privateCode.length)
-                    }
-                    onClick={this.handleAddClassification.bind(this)}
-                  />
+            {isCreatingNewClassification ? (
+              <div style={{ border: "1px dotted", width: "100%" }}>
+                <div
+                  style={{
+                    fontSize: 12,
+                    textAlign: "center",
+                    fontWeight: 600
+                  }}
+                >
+                  New classification
                 </div>
-              : null}
+                <TextField
+                  hintText="Name"
+                  floatingLabelText="Name"
+                  value={tempClassification.name}
+                  onChange={(e, value) =>
+                    this.setState({
+                      tempClassification: {
+                        ...tempClassification,
+                        name: value
+                      }
+                    })
+                  }
+                  fullWidth={true}
+                />
+                <TextField
+                  hintText="Private code"
+                  floatingLabelText="Private code"
+                  errorStyle={{ float: "right" }}
+                  errorText={
+                    isClassificationPrivateCodeTaken
+                      ? "Private code is already taken"
+                      : ""
+                  }
+                  onChange={(e, value) =>
+                    this.setState({
+                      tempClassification: {
+                        ...tempClassification,
+                        privateCode: value
+                      }
+                    })
+                  }
+                  value={tempClassification.privateCode}
+                  fullWidth={true}
+                />
+                <FlatButton
+                  label="Add"
+                  style={{ width: "100%" }}
+                  disabled={
+                    isClassificationPrivateCodeTaken ||
+                    !tempClassification.name.length ||
+                    !tempClassification.privateCode.length
+                  }
+                  onClick={this.handleAddClassification.bind(this)}
+                />
+              </div>
+            ) : null}
           </div>
         </div>
       </Modal>

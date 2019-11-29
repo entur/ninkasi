@@ -14,18 +14,18 @@
  *
  */
 
-import React from 'react';
-import Modal from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import MdRemove from 'material-ui/svg-icons/content/remove';
-import MdAdd from 'material-ui/svg-icons/content/add';
-import IconButton from 'material-ui/IconButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import { connect } from 'react-redux';
-import NewRole from './NewRoleAssignment';
-import { getEntityClassificationRefString } from '../utils/';
+import React from "react";
+import Modal from "material-ui/Dialog";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
+import MdRemove from "material-ui/svg-icons/content/remove";
+import MdAdd from "material-ui/svg-icons/content/add";
+import IconButton from "material-ui/IconButton";
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
+import { connect } from "react-redux";
+import NewRole from "./NewRoleAssignment";
+import { getEntityClassificationRefString } from "../utils/";
 
 class ModalEditResponsibilitySet extends React.Component {
   constructor(props) {
@@ -36,8 +36,8 @@ class ModalEditResponsibilitySet extends React.Component {
         ...props.responsibilitySet
       },
       newRole: {
-        typeOfResponsibilityRoleRef: '',
-        responsibleOrganisationRef: '',
+        typeOfResponsibilityRoleRef: "",
+        responsibleOrganisationRef: "",
         entityClassificationAssignments: []
       }
     };
@@ -51,19 +51,21 @@ class ModalEditResponsibilitySet extends React.Component {
 
   getRoleString(role) {
     const responsibleAreaRefString = `responsibleAreaRef=${role.responsibleAreaRef ||
-      ''}`;
-    return `ORG=${role.responsibleOrganisationRef}, type=${role.typeOfResponsibilityRoleRef}, ${responsibleAreaRefString}, entities=${this.getEntityClassAssignmentString(
+      ""}`;
+    return `ORG=${role.responsibleOrganisationRef}, type=${
+      role.typeOfResponsibilityRoleRef
+    }, ${responsibleAreaRefString}, entities=${this.getEntityClassAssignmentString(
       role.entityClassificationAssignments
     )}`;
   }
 
   getEntityClassAssignmentString(assignments) {
-    if (!assignments || !assignments.length) return '';
+    if (!assignments || !assignments.length) return "";
     return assignments
       .map(({ allow, entityClassificationRef }) =>
         getEntityClassificationRefString(entityClassificationRef, allow)
       )
-      .join(', ');
+      .join(", ");
   }
 
   handleAddRole() {
@@ -72,13 +74,13 @@ class ModalEditResponsibilitySet extends React.Component {
       ...this.state,
       resultChip: null,
       newRole: {
-        typeOfResponsibilityRoleRef: '',
-        responsibleOrganisationRef: '',
+        typeOfResponsibilityRoleRef: "",
+        responsibleOrganisationRef: "",
         entityClassificationAssignments: [],
         responsibleAreaRef: null
       },
-      tempEntityClassification: '',
-      tempEntityType: '',
+      tempEntityClassification: "",
+      tempEntityType: "",
       tempEntityTypes: [],
       responsibilitySet: {
         ...this.state.responsibilitySet,
@@ -165,8 +167,8 @@ class ModalEditResponsibilitySet extends React.Component {
       >
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             marginTop: 5
           }}
         >
@@ -201,7 +203,7 @@ class ModalEditResponsibilitySet extends React.Component {
             fullWidth={true}
             style={{ marginTop: -15 }}
           >
-            {codeSpaces.map(codeSpace =>
+            {codeSpaces.map(codeSpace => (
               <MenuItem
                 key={codeSpace.id}
                 id={codeSpace.id}
@@ -209,7 +211,7 @@ class ModalEditResponsibilitySet extends React.Component {
                 label={codeSpace.id}
                 primaryText={codeSpace.xmlns}
               />
-            )}
+            ))}
           </SelectField>
           <TextField
             hintText="Private code"
@@ -217,7 +219,7 @@ class ModalEditResponsibilitySet extends React.Component {
             disabled={true}
             value={responsibilitySet.privateCode}
             errorText={
-              isLegalPrivateCode ? '' : 'This private code is already taken!'
+              isLegalPrivateCode ? "" : "This private code is already taken!"
             }
             fullWidth={true}
             onChange={(e, value) => {
@@ -228,27 +230,27 @@ class ModalEditResponsibilitySet extends React.Component {
                 }
               });
             }}
-            errorStyle={{ float: 'right' }}
+            errorStyle={{ float: "right" }}
             style={{ marginBottom: 10, marginTop: -15 }}
           />
-          <div style={{ minWidth: '100%', fontSize: 10, marginTop: -10 }}>
-            <div style={{ width: '100%', fontSize: 10 }}>
+          <div style={{ minWidth: "100%", fontSize: 10, marginTop: -10 }}>
+            <div style={{ width: "100%", fontSize: 10 }}>
               Responsibility roles *
             </div>
-            <div style={{ width: '100%', overflowX: 'auto' }}>
+            <div style={{ width: "100%", overflowX: "auto" }}>
               <select
                 multiple="multiple"
                 style={{
                   fontSize: 10,
-                  minWidth: '100%'
+                  minWidth: "100%"
                 }}
                 ref="roles"
               >
-                {responsibilitySet.roles.map((role, i) =>
-                  <option style={{ overflowX: 'auto' }} key={'role-' + i}>
+                {responsibilitySet.roles.map((role, i) => (
+                  <option style={{ overflowX: "auto" }} key={"role-" + i}>
                     {this.getRoleString(role)}
                   </option>
-                )}
+                ))}
               </select>
             </div>
             <div>
@@ -261,56 +263,59 @@ class ModalEditResponsibilitySet extends React.Component {
                 <MdRemove color="#cc0000" />
               </IconButton>
             </div>
-            {isCreatingNewRole
-              ? <NewRole
-                  newRole={newRole}
-                  roles={roles}
-                  entityTypes={entityTypes}
-                  organizations={organizations}
-                  handleAddRole={this.handleAddRole.bind(this)}
-                  administrativeZones={this.props.administrativeZones}
-                  handleRemoveEntity={this.handleRemoveEntity.bind(this)}
-                  addNewAdminZoneRef={responsibleAreaRef => {
-                    this.setState({
-                      newRole: {
-                        ...this.state.newRole,
-                        responsibleAreaRef
-                      }
-                    });
-                  }}
-                  addNewRoleAssignment={(entityClassificationRef, allow) =>
-                    this.setState({
-                      newRole: {
-                        ...newRole,
-                        entityClassificationAssignments: [
-                          ...newRole.entityClassificationAssignments,
-                          {
-                            entityClassificationRef,
-                            allow
-                          }
-                        ]
-                      },
-                      tempEntityClassification: '',
-                      tempEntityType: ''
-                    })}
-                  organisationChange={(e, index, value) =>
-                    this.setState({
-                      ...this.state,
-                      newRole: {
-                        ...newRole,
-                        responsibleOrganisationRef: value
-                      }
-                    })}
-                  entityTypeChange={(e, index, value) =>
-                    this.setState({
-                      ...this.state,
-                      newRole: {
-                        ...newRole,
-                        typeOfResponsibilityRoleRef: value
-                      }
-                    })}
-                />
-              : null}
+            {isCreatingNewRole ? (
+              <NewRole
+                newRole={newRole}
+                roles={roles}
+                entityTypes={entityTypes}
+                organizations={organizations}
+                handleAddRole={this.handleAddRole.bind(this)}
+                administrativeZones={this.props.administrativeZones}
+                handleRemoveEntity={this.handleRemoveEntity.bind(this)}
+                addNewAdminZoneRef={responsibleAreaRef => {
+                  this.setState({
+                    newRole: {
+                      ...this.state.newRole,
+                      responsibleAreaRef
+                    }
+                  });
+                }}
+                addNewRoleAssignment={(entityClassificationRef, allow) =>
+                  this.setState({
+                    newRole: {
+                      ...newRole,
+                      entityClassificationAssignments: [
+                        ...newRole.entityClassificationAssignments,
+                        {
+                          entityClassificationRef,
+                          allow
+                        }
+                      ]
+                    },
+                    tempEntityClassification: "",
+                    tempEntityType: ""
+                  })
+                }
+                organisationChange={(e, index, value) =>
+                  this.setState({
+                    ...this.state,
+                    newRole: {
+                      ...newRole,
+                      responsibleOrganisationRef: value
+                    }
+                  })
+                }
+                entityTypeChange={(e, index, value) =>
+                  this.setState({
+                    ...this.state,
+                    newRole: {
+                      ...newRole,
+                      typeOfResponsibilityRoleRef: value
+                    }
+                  })
+                }
+              />
+            ) : null}
           </div>
         </div>
       </Modal>

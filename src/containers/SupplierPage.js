@@ -14,12 +14,12 @@
  *
  */
 
-import { connect } from 'react-redux';
-import React, { Component, PropTypes } from 'react';
-import NotificationContainer from './NotificationContainer';
-import cfgreader from '../config/readConfig';
-import SuppliersActions from '../actions/SuppliersActions';
-import ModalEditProvider from '../modals/ModalEditProvider';
+import { connect } from "react-redux";
+import React, { Component, PropTypes } from "react";
+import NotificationContainer from "./NotificationContainer";
+import cfgreader from "../config/readConfig";
+import SuppliersActions from "../actions/SuppliersActions";
+import ModalEditProvider from "../modals/ModalEditProvider";
 
 class SupplierPage extends React.Component {
   componentWillMount() {

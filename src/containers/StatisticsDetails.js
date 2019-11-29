@@ -14,11 +14,11 @@
  *
  */
 
-import React from 'react';
-import PieCard from '../components/PieCard';
-import SuppliersActions from '../actions/SuppliersActions';
-import LineStatsCard from './LineStatsCard';
-import { segmentName, segmentName2Key } from 'bogu/utils';
+import React from "react";
+import PieCard from "../components/PieCard";
+import SuppliersActions from "../actions/SuppliersActions";
+import LineStatsCard from "./LineStatsCard";
+import { segmentName, segmentName2Key } from "bogu/utils";
 
 class StatisticsDetails extends React.Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class StatisticsDetails extends React.Component {
 
   handleShowAll(value, provider) {
     this.setState({
-      selectedSegment: 'all',
+      selectedSegment: "all",
       daysValid: 180,
       selectedProvider: provider
     });
@@ -56,7 +56,7 @@ class StatisticsDetails extends React.Component {
   }
 
   componentDidMount() {
-    if (window.location.search.indexOf('?tab=2') > -1) {
+    if (window.location.search.indexOf("?tab=2") > -1) {
       this.props.dispatch(SuppliersActions.getAllLineStats());
     }
   }
@@ -82,23 +82,23 @@ class StatisticsDetails extends React.Component {
         />
       );
     } else {
-      const providerPies = suppliers.map((supplier, index) =>
-          <PieCard
-            provider={supplier}
-            key={'supplier-pie' + index}
-            providerName={supplier.name}
-            handleShowAllClick={this.handleShowAll.bind(this)}
-            handlePieOnClick={this.handlePieOnClick.bind(this)}
-            stats={lineStats[supplier.id]}
-          />
-        );
+      const providerPies = suppliers.map((supplier, index) => (
+        <PieCard
+          provider={supplier}
+          key={"supplier-pie" + index}
+          providerName={supplier.name}
+          handleShowAllClick={this.handleShowAll.bind(this)}
+          handlePieOnClick={this.handlePieOnClick.bind(this)}
+          stats={lineStats[supplier.id]}
+        />
+      ));
 
       return (
         <div
           style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-around'
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-around"
           }}
         >
           {providerPies}

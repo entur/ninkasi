@@ -14,17 +14,17 @@
  *
  */
 
-import React, { Component, PropTypes } from 'react';
-import Modal from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import React, { Component, PropTypes } from "react";
+import Modal from "material-ui/Dialog";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
 
 class ModalEditRole extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       role: null,
-      originalRoleName: ''
+      originalRoleName: ""
     };
   }
 
@@ -51,14 +51,14 @@ class ModalEditRole extends React.Component {
         actions={actions}
         open={isModalOpen}
         onRequestClose={() => this.props.handleCloseModal()}
-        contentStyle={{ width: '30%' }}
-        title={'Editing role ' + originalRoleName}
+        contentStyle={{ width: "30%" }}
+        title={"Editing role " + originalRoleName}
       >
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
           }}
         >
           <TextField
@@ -71,7 +71,8 @@ class ModalEditRole extends React.Component {
                   ...role,
                   name: value
                 }
-              })}
+              })
+            }
             fullWidth={true}
             style={{ marginTop: -20 }}
           />

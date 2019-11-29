@@ -14,7 +14,7 @@
  *
  */
 
-@import url(https://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400italic,700italic,400,700);
+@import url("https://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400italic,700italic,400,700");
 
 @import "../../node_modules/muicss/lib/sass/mui.scss";
 @import "components/forms";
@@ -24,8 +24,8 @@
 @import "components/buttons";
 @import "helpers";
 
-$roboto-slab: 'Roboto Slab', serif;
-$open-sans: 'Open Sans', sans-serif;
+$roboto-slab: "Roboto Slab", serif;
+$open-sans: "Open Sans", sans-serif;
 
 body {
   font-family: $open-sans;
@@ -72,7 +72,7 @@ body {
 
   #select-supplier > select {
     background-color: #fff;
-    text-indent:5px;
+    text-indent: 5px;
     background-size: 13px;
     background-position-x: 99%;
     max-width: 440px;
@@ -86,7 +86,6 @@ body {
 }
 
 .filter-wrapper {
-
   &:first-child {
     border-bottom: 1px dotted #eee;
     padding-bottom: 10px;
@@ -114,10 +113,10 @@ body {
 }
 
 .visible-wrapper {
-   background: whitesmoke;
-   padding: 10px;
-   border: 1px solid silver;
-   margin: 10px;
+  background: whitesmoke;
+  padding: 10px;
+  border: 1px solid silver;
+  margin: 10px;
 }
 
 .jobstatus-wrapper {

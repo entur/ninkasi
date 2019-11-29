@@ -14,24 +14,24 @@
  *
  */
 
-import { connect } from 'react-redux';
-import React, { Component, PropTypes } from 'react';
-import cfgreader from '../config/readConfig';
-import Container from 'muicss/lib/react/container';
-import Row from 'muicss/lib/react/row';
-import Col from 'muicss/lib/react/col';
-import Button from 'muicss/lib/react/button';
-import Checkbox from 'muicss/lib/react/checkbox';
-import Radio from 'muicss/lib/react/radio';
-import Form from 'muicss/lib/react/form';
-import Panel from 'muicss/lib/react/panel';
-import SuppliersActions from '../actions/SuppliersActions';
-import {DotLoader as Loader} from 'halogenium';
-import ChouetteLink from '../components/ChouetteLink';
-import DatePicker from 'material-ui/DatePicker';
-import MdClear from 'material-ui/svg-icons/content/clear';
-import { getPaginationMap } from '../models/';
-import moment from 'moment';
+import { connect } from "react-redux";
+import React, { Component, PropTypes } from "react";
+import cfgreader from "../config/readConfig";
+import Container from "muicss/lib/react/container";
+import Row from "muicss/lib/react/row";
+import Col from "muicss/lib/react/col";
+import Button from "muicss/lib/react/button";
+import Checkbox from "muicss/lib/react/checkbox";
+import Radio from "muicss/lib/react/radio";
+import Form from "muicss/lib/react/form";
+import Panel from "muicss/lib/react/panel";
+import SuppliersActions from "../actions/SuppliersActions";
+import { DotLoader as Loader } from "halogenium";
+import ChouetteLink from "../components/ChouetteLink";
+import DatePicker from "material-ui/DatePicker";
+import MdClear from "material-ui/svg-icons/content/clear";
+import { getPaginationMap } from "../models/";
+import moment from "moment";
 
 class ChouetteJobDetails extends React.Component {
   constructor(props) {
@@ -51,7 +51,7 @@ class ChouetteJobDetails extends React.Component {
   }
 
   getJobStatus(status) {
-    if (status == 'TERMINATED') return 'COMPLETED';
+    if (status == "TERMINATED") return "COMPLETED";
     return status;
   }
 
@@ -84,7 +84,7 @@ class ChouetteJobDetails extends React.Component {
   }
 
   setActiveActionFilter(event) {
-    if (event.target.name === 'action-filter') {
+    if (event.target.name === "action-filter") {
       const { dispatch } = this.props;
       dispatch(SuppliersActions.setActiveActionFilter(event.target.value));
     }
@@ -92,7 +92,7 @@ class ChouetteJobDetails extends React.Component {
 
   handleSortForColumn(columnName) {
     const { dispatch } = this.props;
-    dispatch(SuppliersActions.sortListByColumn('chouette', columnName));
+    dispatch(SuppliersActions.sortListByColumn("chouette", columnName));
   }
 
   handleOnDatePickerChange(event, date) {
@@ -102,8 +102,8 @@ class ChouetteJobDetails extends React.Component {
   }
 
   formatDate(date) {
-    if (!date) return '';
-    return moment(date).format('YYYY-MM-DD HH:mm:ss');
+    if (!date) return "";
+    return moment(date).format("YYYY-MM-DD HH:mm:ss");
   }
 
   render() {
@@ -131,7 +131,9 @@ class ChouetteJobDetails extends React.Component {
             <div className="filter-wrapper">
               <Row>
                 <Col md="1">
-                  <p><b>Status</b></p>
+                  <p>
+                    <b>Status</b>
+                  </p>
                 </Col>
                 <Col md="2">
                   <Checkbox
@@ -186,7 +188,9 @@ class ChouetteJobDetails extends React.Component {
             <div className="filter-wrapper">
               <Row>
                 <Col md="1">
-                  <p><b>Action</b></p>
+                  <p>
+                    <b>Action</b>
+                  </p>
                 </Col>
                 <Form>
                   <Col md="2">
@@ -223,7 +227,7 @@ class ChouetteJobDetails extends React.Component {
                     />
                   </Col>
                   <Col md="4">
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ display: "flex", alignItems: "center" }}>
                       <MdClear
                         onClick={() => this.setState({ filterFromDate: null })}
                         style={{ marginRight: 5 }}
@@ -232,14 +236,14 @@ class ChouetteJobDetails extends React.Component {
                         hintText="Filter from date"
                         autoOk
                         onChange={this.handleOnDatePickerChange.bind(this)}
-                        style={{ display: 'inline-block' }}
+                        style={{ display: "inline-block" }}
                         value={this.state.filterFromDate}
                       />
                     </div>
                   </Col>
-                  <div style={{ float: 'right', marginRight: 10 }}>
+                  <div style={{ float: "right", marginRight: 10 }}>
                     <Button
-                      key={'btn-delete-all'}
+                      key={"btn-delete-all"}
                       onClick={this.handleCancelAllChouetteJobs}
                       size="small"
                       color="danger"
@@ -253,151 +257,157 @@ class ChouetteJobDetails extends React.Component {
           </Panel>
           <Row>
             <Col md="10">
-
-              {paginationMap.length > 0
-                ? <div className="page-link-parent lm-17">
-                    <span>Pages: </span>
-                    {paginationMap.map((page, index) => {
-                      const isActive = index == activeChouettePageIndex
-                        ? 'page-link active-link'
-                        : 'page-link inactive-link';
-                      return (
-                        <span
-                          className={isActive}
-                          onClick={e => this.handlePageClick(e, index)}
-                          key={'link-' + index}
-                        >
-                          {index}
-                        </span>
-                      );
-                    })}
-                  </div>
-                : <div />}
-            </Col>
-            {requestingJobs
-              ? <div
-                  style={{ float: 'right', position: 'absolute', right: 40 }}
-                >
-                  <Loader color="#26A65B" size="23px" />
-                </div>
-              : null}
-          </Row>
-          {page && page.length
-            ? <Row>
-                <Col md="1">
-                  <div
-                    className="table-header"
-                    onClick={() => this.handleSortForColumn('id')}
-                  >
-                    Id
-                  </div>
-                </Col>
-                <Col md="2">
-                  <div
-                    className="table-header"
-                    onClick={() => this.handleSortForColumn('action')}
-                  >
-                    Action
-                  </div>
-                </Col>
-                <Col md="2">
-                  <div
-                    className="table-header"
-                    onClick={() => this.handleSortForColumn('created')}
-                  >
-                    Created
-                  </div>
-                </Col>
-                <Col md="2">
-                  <div
-                    className="table-header"
-                    onClick={() => this.handleSortForColumn('started')}
-                  >
-                    Started
-                  </div>
-                </Col>
-                <Col md="2">
-                  <div
-                    className="table-header"
-                    onClick={() => this.handleSortForColumn('updated')}
-                  >
-                    Updated
-                  </div>
-                </Col>
-                <Col md="1">
-                  <div
-                    className="table-header"
-                    onClick={() => this.handleSortForColumn('status')}
-                  >
-                    Status
-                  </div>
-                </Col>
-              </Row>
-            : <Row>
-                <p>No chouette jobs found for your search criterias.</p>
-              </Row>}
-
-        </Container>
-        {page && page.length
-          ? <Container fluid={true}>
-              {' '}{page.map((job, index) => {
-                const statusClass = job.status === 'ABORTED' ||
-                  job.status === 'CANCELED'
-                  ? 'error'
-                  : 'success';
-
-                return (
-                  <Row
-                    key={'ch-job-' + index}
-                    style={{ display: 'flex', alignItems: 'center' }}
-                  >
-                    <Col md="1">
-                      <ChouetteLink
-                        id={job.id}
-                        action={job.action}
-                        referential={job.referential}
+              {paginationMap.length > 0 ? (
+                <div className="page-link-parent lm-17">
+                  <span>Pages: </span>
+                  {paginationMap.map((page, index) => {
+                    const isActive =
+                      index == activeChouettePageIndex
+                        ? "page-link active-link"
+                        : "page-link inactive-link";
+                    return (
+                      <span
+                        className={isActive}
+                        onClick={e => this.handlePageClick(e, index)}
+                        key={"link-" + index}
                       >
-                        {job.id}
-                      </ChouetteLink>
-                    </Col>
-                    <Col md="2">
-                      <p>{job.action}</p>
-                    </Col>
-                    <Col md="2">
-                      <p>{this.formatDate(job.created)}</p>
-                    </Col>
-                    <Col md="2">
-                      <p>{this.formatDate(job.started)}</p>
-                    </Col>
-                    <Col md="2">
-                      <p>{this.formatDate(job.updated)}</p>
-                    </Col>
+                        {index}
+                      </span>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div />
+              )}
+            </Col>
+            {requestingJobs ? (
+              <div style={{ float: "right", position: "absolute", right: 40 }}>
+                <Loader color="#26A65B" size="23px" />
+              </div>
+            ) : null}
+          </Row>
+          {page && page.length ? (
+            <Row>
+              <Col md="1">
+                <div
+                  className="table-header"
+                  onClick={() => this.handleSortForColumn("id")}
+                >
+                  Id
+                </div>
+              </Col>
+              <Col md="2">
+                <div
+                  className="table-header"
+                  onClick={() => this.handleSortForColumn("action")}
+                >
+                  Action
+                </div>
+              </Col>
+              <Col md="2">
+                <div
+                  className="table-header"
+                  onClick={() => this.handleSortForColumn("created")}
+                >
+                  Created
+                </div>
+              </Col>
+              <Col md="2">
+                <div
+                  className="table-header"
+                  onClick={() => this.handleSortForColumn("started")}
+                >
+                  Started
+                </div>
+              </Col>
+              <Col md="2">
+                <div
+                  className="table-header"
+                  onClick={() => this.handleSortForColumn("updated")}
+                >
+                  Updated
+                </div>
+              </Col>
+              <Col md="1">
+                <div
+                  className="table-header"
+                  onClick={() => this.handleSortForColumn("status")}
+                >
+                  Status
+                </div>
+              </Col>
+            </Row>
+          ) : (
+            <Row>
+              <p>No chouette jobs found for your search criterias.</p>
+            </Row>
+          )}
+        </Container>
+        {page && page.length ? (
+          <Container fluid={true}>
+            {" "}
+            {page.map((job, index) => {
+              const statusClass =
+                job.status === "ABORTED" || job.status === "CANCELED"
+                  ? "error"
+                  : "success";
+
+              return (
+                <Row
+                  key={"ch-job-" + index}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <Col md="1">
+                    <ChouetteLink
+                      id={job.id}
+                      action={job.action}
+                      referential={job.referential}
+                    >
+                      {job.id}
+                    </ChouetteLink>
+                  </Col>
+                  <Col md="2">
+                    <p>{job.action}</p>
+                  </Col>
+                  <Col md="2">
+                    <p>{this.formatDate(job.created)}</p>
+                  </Col>
+                  <Col md="2">
+                    <p>{this.formatDate(job.started)}</p>
+                  </Col>
+                  <Col md="2">
+                    <p>{this.formatDate(job.updated)}</p>
+                  </Col>
+                  <Col md="1">
+                    <p>
+                      <span className={statusClass}>
+                        {this.getJobStatus(job.status)}
+                      </span>
+                    </p>
+                  </Col>
+                  {job.status === "STARTED" ||
+                  job.status === "SCHEDULED" ||
+                  job.status === "RESCHEDULED" ? (
                     <Col md="1">
-                      <p>
-                        <span className={statusClass}>
-                          {this.getJobStatus(job.status)}
-                        </span>
-                      </p>
+                      <Button
+                        key={"btn-delete-" + index}
+                        onClick={() => this.handleCancelChouetteJob(job.id)}
+                        size="small"
+                        color="danger"
+                      >
+                        Cancel
+                      </Button>
                     </Col>
-                    {job.status === 'STARTED' || job.status === 'SCHEDULED' || job.status === 'RESCHEDULED'
-                      ? <Col md="1">
-                          <Button
-                            key={'btn-delete-' + index}
-                            onClick={() => this.handleCancelChouetteJob(job.id)}
-                            size="small"
-                            color="danger"
-                          >
-                            Cancel
-                          </Button>
-                        </Col>
-                      : <div />}
-
-                  </Row>
-                );
-              })}
-            </Container>
-          : <div />}
-
+                  ) : (
+                    <div />
+                  )}
+                </Row>
+              );
+            })}
+          </Container>
+        ) : (
+          <div />
+        )}
       </div>
     );
   }

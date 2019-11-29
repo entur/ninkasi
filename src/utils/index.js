@@ -14,7 +14,7 @@
  *
  */
 
- import sortBy from 'lodash/sortBy';
+import sortBy from "lodash/sortBy";
 
 export const sortUsersby = (users, sortOrder) => {
   if (!sortOrder || sortOrder.column === null) return users;
@@ -50,9 +50,8 @@ export const sortByColumns = (items, sortOrder) => {
   const { column, asc } = sortOrder;
   return items
     .slice(0)
-    .sort(
-      (a, b) =>
-        asc ? sortAsc(a[column], b[column]) : sortDesc(a[column], b[column])
+    .sort((a, b) =>
+      asc ? sortAsc(a[column], b[column]) : sortDesc(a[column], b[column])
     );
 };
 
@@ -66,11 +65,11 @@ const sortDesc = (a, b) => {
 
 export const getEntityClassificationRefString = (entityType, allow) => {
   if (!allow) {
-    const lastIndex = entityType.lastIndexOf(':');
+    const lastIndex = entityType.lastIndexOf(":");
     if (lastIndex > -1) {
       return (
         entityType.substr(0, lastIndex + 1) +
-        '!' +
+        "!" +
         entityType.substr(lastIndex + 1)
       );
     }
@@ -79,13 +78,13 @@ export const getEntityClassificationRefString = (entityType, allow) => {
 };
 
 export const getSizeFromBytes = bytes => {
-  var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  var sizes = ["Bytes", "KB", "MB", "GB", "TB"];
 
-  if (bytes == 0) return '0 Byte';
+  if (bytes == 0) return "0 Byte";
 
   let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
 
-  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+  return Math.round(bytes / Math.pow(1024, i), 2) + " " + sizes[i];
 };
 
 export const getOrganizationNameByRef = (organizations, ref) => {
@@ -119,26 +118,26 @@ export const sortFiles = (unsortedFiles, sortOrder, filterText) => {
   let sortedFiles = !sortOrder.ext
     ? sortBy(files, file => new Date(file.updated))
     : sortOrder.ext == 1
-      ? sortBy(files, file => file.ext)
-      : sortBy(files, file => file.ext).reverse();
+    ? sortBy(files, file => file.ext)
+    : sortBy(files, file => file.ext).reverse();
 
   sortedFiles = !sortOrder.name
     ? sortedFiles
     : sortOrder.name == 1
-      ? sortBy(files, file => file.name)
-      : sortBy(files, file => file.name).reverse();
+    ? sortBy(files, file => file.name)
+    : sortBy(files, file => file.name).reverse();
 
   sortedFiles = !sortOrder.size
     ? sortedFiles
     : sortOrder.size == 1
-      ? sortBy(files, file => file.fileSize)
-      : sortBy(files, file => file.fileSize).reverse();
+    ? sortBy(files, file => file.fileSize)
+    : sortBy(files, file => file.fileSize).reverse();
 
   sortedFiles = !sortOrder.date
     ? sortedFiles
     : sortOrder.date == 1
-      ? sortBy(files, file => new Date(file.updated))
-      : sortBy(files, file => new Date(file.updated)).reverse();
+    ? sortBy(files, file => new Date(file.updated))
+    : sortBy(files, file => new Date(file.updated)).reverse();
 
   return sortedFiles;
 };

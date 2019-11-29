@@ -14,48 +14,48 @@
  *
  */
 
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import SuppliersActions from '../actions/SuppliersActions'
-import NotificationSystem from 'react-notification-system'
+import React, { Component, PropTypes } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import SuppliersActions from "../actions/SuppliersActions";
+import NotificationSystem from "react-notification-system";
 
 class NotificationContainer extends Component {
-
   componentDidMount() {
-    this.notificationSystem = this.refs.notificationSystem
+    this.notificationSystem = this.refs.notificationSystem;
   }
 
   componentWillReceiveProps(newProps) {
-    const { message, level } = newProps.notification
+    const { message, level } = newProps.notification;
     this.notificationSystem.addNotification({
       message,
       level
-    })
+    });
   }
 
   render() {
-    return (
-      <NotificationSystem ref="notificationSystem" />
-    )
+    return <NotificationSystem ref="notificationSystem" />;
   }
 }
 
 function mapStateToProps(state) {
   return {
     notification: state.UtilsReducer.notification
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({
-      addNotification: SuppliersActions.addNotification
-    }, dispatch)
-  }
+    actions: bindActionCreators(
+      {
+        addNotification: SuppliersActions.addNotification
+      },
+      dispatch
+    )
+  };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NotificationContainer)
+)(NotificationContainer);

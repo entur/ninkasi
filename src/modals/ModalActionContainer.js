@@ -14,11 +14,11 @@
  *
  */
 
-import { connect } from 'react-redux';
-import React, { Component, PropTypes } from 'react';
-import Dialog from 'material-ui/Dialog';
-import SuppliersActions from '../actions/SuppliersActions';
-import FlatButton from 'material-ui/FlatButton';
+import { connect } from "react-redux";
+import React, { Component, PropTypes } from "react";
+import Dialog from "material-ui/Dialog";
+import SuppliersActions from "../actions/SuppliersActions";
+import FlatButton from "material-ui/FlatButton";
 
 class ModalActionContainer extends React.Component {
   handleFilterChange = event => {
@@ -31,25 +31,26 @@ class ModalActionContainer extends React.Component {
   }
 
   render() {
-
     const { isModalOpen, filteredLoggedEvents } = this.props;
 
     const actions = [
       <FlatButton
         label={"Close"}
-        onClick={ () => { this.closeModal()}}
+        onClick={() => {
+          this.closeModal();
+        }}
       />
     ];
 
     const selectStyle = {
-      height: '100%',
-      minHeight: '50vh',
-      width: '96%',
+      height: "100%",
+      minHeight: "50vh",
+      width: "96%",
       margin: 10
     };
 
     const inputStyle = {
-      width: '95%',
+      width: "95%",
       margin: 10
     };
 
@@ -58,7 +59,7 @@ class ModalActionContainer extends React.Component {
         actions={actions}
         open={isModalOpen}
         onRequestClose={() => this.closeModal()}
-        title={'Logged events'}
+        title={"Logged events"}
       >
         <input
           onChange={this.handleFilterChange.bind(this)}
@@ -72,11 +73,11 @@ class ModalActionContainer extends React.Component {
               let options = [];
               options.push(<option key={event.id}>{event.title}</option>);
               options.push(
-                <option key={event.id + '-files'}>{'Files imported:'}</option>
+                <option key={event.id + "-files"}>{"Files imported:"}</option>
               );
-              let fileOptions = event.files.map((file, index) =>
-                <option key={event.id + '-files' + index}>{file}</option>
-              );
+              let fileOptions = event.files.map((file, index) => (
+                <option key={event.id + "-files" + index}>{file}</option>
+              ));
               options.push(fileOptions);
 
               return options;
@@ -90,9 +91,9 @@ class ModalActionContainer extends React.Component {
   }
 }
 
-const mapStateToProps = ({UtilsReducer}) => ({
+const mapStateToProps = ({ UtilsReducer }) => ({
   isModalOpen: UtilsReducer.isModalOpen,
   filteredLoggedEvents: UtilsReducer.filteredLoggedEvents
-})
+});
 
 export default connect(mapStateToProps)(ModalActionContainer);

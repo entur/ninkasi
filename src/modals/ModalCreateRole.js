@@ -14,15 +14,15 @@
  *
  */
 
-import React, { Component, PropTypes } from 'react';
-import Modal from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import React, { Component, PropTypes } from "react";
+import Modal from "material-ui/Dialog";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
 
 const initialState = {
   role: {
-    name: '',
-    privateCode: ''
+    name: "",
+    privateCode: ""
   }
 };
 
@@ -47,10 +47,10 @@ class ModalCreateRole extends React.Component {
     const { role } = this.state;
 
     const titleStyle = {
-      fontSize: '2em',
+      fontSize: "2em",
       fontWeight: 600,
-      margin: '10px auto',
-      width: '80%'
+      margin: "10px auto",
+      width: "80%"
     };
 
     const invalidPrivateCode = takenPrivateCodes.indexOf(role.privateCode) > -1;
@@ -72,15 +72,15 @@ class ModalCreateRole extends React.Component {
       <Modal
         open={isModalOpen}
         actions={actions}
-        contentStyle={{ width: '30%' }}
+        contentStyle={{ width: "30%" }}
         title="Create a new role"
         onRequestClose={() => this.handleOnClose()}
       >
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
           }}
         >
           <TextField
@@ -90,18 +90,20 @@ class ModalCreateRole extends React.Component {
             onChange={(e, value) =>
               this.setState({
                 role: { ...role, name: value }
-              })}
+              })
+            }
             fullWidth={true}
           />
           <TextField
             hintText="private code"
             floatingLabelText="Private code"
-            errorText={invalidPrivateCode ? 'Private code already exists' : ''}
+            errorText={invalidPrivateCode ? "Private code already exists" : ""}
             value={role.privateCode}
             onChange={(e, value) =>
               this.setState({
                 role: { ...role, privateCode: value }
-              })}
+              })
+            }
             fullWidth={true}
           />
         </div>

@@ -14,9 +14,9 @@
  *
  */
 
-import * as types from './../actions/actionTypes';
+import * as types from "./../actions/actionTypes";
 
-import moment from 'moment';
+import moment from "moment";
 
 const intialState = {
   shouldUpdateProvider: false,
@@ -25,20 +25,20 @@ const intialState = {
   expandedEvents: [],
   isModalOpen: false,
   loggedEvents: [],
-  loggedEventsFilter: '',
+  loggedEventsFilter: "",
   filteredLoggedEvents: [],
   isConfigLoaded: false,
-  activeTab: 'migrateData',
+  activeTab: "migrateData",
   eventListSortOrder: {
-    property: 'firstEvent',
+    property: "firstEvent",
     sortOrder: 0 // 0 = asc, 1 = desc
   },
   chouetteListAllSortOrder: {
-    property: 'id',
+    property: "id",
     sortOrder: 0
   },
   chouetteListSortOrder: {
-    property: 'id',
+    property: "id",
     sortOrder: 0
   }
 };
@@ -53,7 +53,9 @@ const filterHelper = (loggedEvents, loggedEventsFilter) => {
 
 const eventHelper = (event, loggedEvents) => {
   event.id = loggedEvents.length + 1;
-  const nowDate = moment().locale('nb').format('Do MMMM HH:mm:ss');
+  const nowDate = moment()
+    .locale("nb")
+    .format("Do MMMM HH:mm:ss");
   event.date = nowDate;
   event.title = `${nowDate}: ${event.title}`;
   return event;
@@ -125,7 +127,7 @@ const UtilsReducer = (state = intialState, action) => {
     case types.OPENED_POI_FILTER_DIALOG:
       return Object.assign({}, state, {
         shouldUpdatePoiFilter: true
-    });
+      });
 
     case types.LOG_EVENT:
       const event = eventHelper(action.payLoad, state.loggedEvents);
@@ -160,9 +162,8 @@ const UtilsReducer = (state = intialState, action) => {
       let chouetteAllSortOrder = 0;
 
       if (state.chouetteListAllSortOrder.property == action.payLoad) {
-        chouetteAllSortOrder = state.chouetteListAllSortOrder.sortOrder >= 1
-          ? 0
-          : 1;
+        chouetteAllSortOrder =
+          state.chouetteListAllSortOrder.sortOrder >= 1 ? 0 : 1;
       }
 
       return Object.assign({}, state, {
