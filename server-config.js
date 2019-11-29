@@ -53,6 +53,8 @@ const configureApp = async (app) => {
       message: 'Ooops. Something broke back here. Sorry!'
     });
   });
+
+  return app;
 }
 
 module.exports = { configureApp };

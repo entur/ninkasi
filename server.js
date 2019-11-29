@@ -15,23 +15,20 @@
  */
 
 
-const express = require('express')
-const convictConfig = require('./src/config/convict.js')
+const express = require('express');
 const configureApp = require('./server-config').configureApp;
 const port = process.env.port || 8988;
 
-convictConfig.then( (convict) => {
-  const endpointBase = convict.get('endpointBase');
-  const authServerUrl = convict.get('authServerUrl');
-  const app = configureApp(express(), endpointBase, authServerUrl);
+const init = async () => {
+  const app = await configureApp(express());
 
   app.listen(port, function(error) {
     if (error) {
-      console.error(error)
+      console.error(error);
     } else {
-      console.info("==> Listening on port %s. Open up http://localhost:%s%s in your browser.", port, port, ENDPOINTBASE)
+      console.info("==> Listening on port %s.", port);
     }
-  })
+  });
+}
 
-
-})
+init();
