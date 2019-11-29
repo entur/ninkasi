@@ -7,14 +7,13 @@ This is the private admin GUI for managing the data pipeline and inspection of d
 ### Dev
 
 ```
-
 npm install
-npm run dev
+npm run start
 ```
 
 ### Production
-```
 
+```
 npm install
 npm run build
 npm start
