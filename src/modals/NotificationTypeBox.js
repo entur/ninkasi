@@ -14,14 +14,14 @@
  *
  */
 
-import React from "react";
-import PropTypes from "prop-types";
-import MdMore from "material-ui/svg-icons/navigation/expand-more";
-import MdLess from "material-ui/svg-icons/navigation/expand-less";
-import MdActive from "material-ui/svg-icons/social/notifications-active";
-import MdInactive from "material-ui/svg-icons/social/notifications-off";
-import IconButton from "material-ui/IconButton";
-import NotificationEventFilter from "./NotificationEventFilter";
+import React from 'react';
+import PropTypes from 'prop-types';
+import MdMore from 'material-ui/svg-icons/navigation/expand-more';
+import MdLess from 'material-ui/svg-icons/navigation/expand-less';
+import MdActive from 'material-ui/svg-icons/social/notifications-active';
+import MdInactive from 'material-ui/svg-icons/social/notifications-off';
+import IconButton from 'material-ui/IconButton';
+import NotificationEventFilter from './NotificationEventFilter';
 
 class NotificationTypeBox extends React.Component {
   static propTypes = {
@@ -38,20 +38,20 @@ class NotificationTypeBox extends React.Component {
     return (
       <div
         style={{
-          border: "1px solid #eee",
+          border: '1px solid #eee',
           margin: 5
         }}
       >
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            verticalAlign: "middle",
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            verticalAlign: 'middle',
             height: 40
           }}
         >
-          <div style={{ display: "flex" }}>
+          <div style={{ display: 'flex' }}>
             {notification.enabled ? (
               <MdActive color="#1d9439" />
             ) : (
@@ -62,9 +62,9 @@ class NotificationTypeBox extends React.Component {
               {notification.isNew && (
                 <span
                   style={{
-                    color: "orange",
+                    color: 'orange',
                     fontSize: 8,
-                    verticalAlign: "super"
+                    verticalAlign: 'super'
                   }}
                 >
                   New

@@ -14,11 +14,11 @@
  *
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import Dialog from "material-ui/Dialog";
-import SuppliersActions from "../actions/SuppliersActions";
-import FlatButton from "material-ui/FlatButton";
+import React from 'react';
+import { connect } from 'react-redux';
+import Dialog from 'material-ui/Dialog';
+import SuppliersActions from '../actions/SuppliersActions';
+import FlatButton from 'material-ui/FlatButton';
 
 class ModalActionContainer extends React.Component {
   handleFilterChange = event => {
@@ -35,7 +35,7 @@ class ModalActionContainer extends React.Component {
 
     const actions = [
       <FlatButton
-        label={"Close"}
+        label={'Close'}
         onClick={() => {
           this.closeModal();
         }}
@@ -43,14 +43,14 @@ class ModalActionContainer extends React.Component {
     ];
 
     const selectStyle = {
-      height: "100%",
-      minHeight: "50vh",
-      width: "96%",
+      height: '100%',
+      minHeight: '50vh',
+      width: '96%',
       margin: 10
     };
 
     const inputStyle = {
-      width: "95%",
+      width: '95%',
       margin: 10
     };
 
@@ -59,7 +59,7 @@ class ModalActionContainer extends React.Component {
         actions={actions}
         open={isModalOpen}
         onRequestClose={() => this.closeModal()}
-        title={"Logged events"}
+        title={'Logged events'}
       >
         <input
           onChange={this.handleFilterChange.bind(this)}
@@ -73,10 +73,10 @@ class ModalActionContainer extends React.Component {
               let options = [];
               options.push(<option key={event.id}>{event.title}</option>);
               options.push(
-                <option key={event.id + "-files"}>{"Files imported:"}</option>
+                <option key={event.id + '-files'}>{'Files imported:'}</option>
               );
               let fileOptions = event.files.map((file, index) => (
-                <option key={event.id + "-files" + index}>{file}</option>
+                <option key={event.id + '-files' + index}>{file}</option>
               ));
               options.push(fileOptions);
 

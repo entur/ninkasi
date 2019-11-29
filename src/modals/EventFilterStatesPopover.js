@@ -14,15 +14,15 @@
  *
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import Menu from "material-ui/Menu";
-import MenuItem from "material-ui/MenuItem";
-import RaisedButton from "material-ui/RaisedButton";
-import Popover, { PopoverAnimationVertical } from "material-ui/Popover";
-import Checkbox from "material-ui/Checkbox";
-import OrganizationRegisterActions from "../actions/OrganizationRegisterActions";
-import PropTypes from "prop-types";
+import React from 'react';
+import { connect } from 'react-redux';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
+import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
+import Checkbox from 'material-ui/Checkbox';
+import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import PropTypes from 'prop-types';
 
 class EventFilterStatesPopover extends React.Component {
   static propTypes = {
@@ -69,7 +69,7 @@ class EventFilterStatesPopover extends React.Component {
           disabled={!enabled}
           label={
             <span>
-              States<span style={{ color: "red" }}>*</span>
+              States<span style={{ color: 'red' }}>*</span>
             </span>
           }
           onClick={this.handleOpen.bind(this)}
@@ -81,8 +81,8 @@ class EventFilterStatesPopover extends React.Component {
           onRequestClose={() => {
             this.setState({ open: false });
           }}
-          anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-          targetOrigin={{ horizontal: "left", vertical: "top" }}
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
           animation={PopoverAnimationVertical}
         >
           {allStates.map((state, i) => {
@@ -90,7 +90,7 @@ class EventFilterStatesPopover extends React.Component {
 
             return (
               <Menu
-                key={"action-" + i}
+                key={'action-' + i}
                 menuItemStyle={{ fontSize: 12, minHeight: 18 }}
               >
                 <MenuItem>

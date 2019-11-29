@@ -14,27 +14,27 @@
  *
  */
 
-import React from "react";
-import Modal from "material-ui/Dialog";
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/FlatButton";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
-import MdRemove from "material-ui/svg-icons/content/remove";
-import MdAdd from "material-ui/svg-icons/content/add";
-import IconButton from "material-ui/IconButton";
+import React from 'react';
+import Modal from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import MdRemove from 'material-ui/svg-icons/content/remove';
+import MdAdd from 'material-ui/svg-icons/content/add';
+import IconButton from 'material-ui/IconButton';
 
 const initialState = {
   entityType: {
-    name: "",
-    privateCode: "",
-    codeSpace: "",
+    name: '',
+    privateCode: '',
+    codeSpace: '',
     classifications: []
   },
   isCreatingNewClassification: false,
   tempClassification: {
-    name: "",
-    privateCode: ""
+    name: '',
+    privateCode: ''
   }
 };
 
@@ -69,8 +69,8 @@ class ModalEditEntityType extends React.Component {
         classifications: [...entityType.classifications, tempClassification]
       },
       tempClassification: {
-        name: "",
-        privateCode: ""
+        name: '',
+        privateCode: ''
       }
     });
   }
@@ -127,16 +127,16 @@ class ModalEditEntityType extends React.Component {
       <Modal
         open={isModalOpen}
         onRequestClose={() => this.handleOnClose()}
-        contentStyle={{ width: "40%" }}
+        contentStyle={{ width: '40%' }}
         title="Editing entity type"
         actions={actions}
       >
         <div>
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center"
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
             }}
           >
             <TextField
@@ -161,7 +161,7 @@ class ModalEditEntityType extends React.Component {
                 })
               }
               fullWidth={true}
-              errorStyle={{ float: "right" }}
+              errorStyle={{ float: 'right' }}
             />
             <SelectField
               hintText="Code space"
@@ -185,21 +185,21 @@ class ModalEditEntityType extends React.Component {
                 />
               ))}
             </SelectField>
-            <div style={{ width: "100%", fontSize: 12 }}>
+            <div style={{ width: '100%', fontSize: 12 }}>
               Entity classifications
             </div>
             <select
               multiple="multiple"
-              style={{ width: "100%", fontSize: 12 }}
+              style={{ width: '100%', fontSize: 12 }}
               ref="classifications"
             >
               {entityType.classifications.map((et, index) => (
-                <option key={"ec-" + index}>
-                  {this.getClassificationTitle(et)}{" "}
+                <option key={'ec-' + index}>
+                  {this.getClassificationTitle(et)}{' '}
                 </option>
               ))}
             </select>
-            <div style={{ textAlign: "left", width: "100%" }}>
+            <div style={{ textAlign: 'left', width: '100%' }}>
               <IconButton
                 onClick={() =>
                   this.setState({ isCreatingNewClassification: true })
@@ -212,9 +212,9 @@ class ModalEditEntityType extends React.Component {
               </IconButton>
             </div>
             {isCreatingNewClassification ? (
-              <div style={{ border: "1px dotted", width: "100%" }}>
+              <div style={{ border: '1px dotted', width: '100%' }}>
                 <div
-                  style={{ fontSize: 12, textAlign: "center", fontWeight: 600 }}
+                  style={{ fontSize: 12, textAlign: 'center', fontWeight: 600 }}
                 >
                   New classification
                 </div>
@@ -232,11 +232,11 @@ class ModalEditEntityType extends React.Component {
                 <TextField
                   hintText="Private code"
                   floatingLabelText="Private code"
-                  errorStyle={{ float: "right" }}
+                  errorStyle={{ float: 'right' }}
                   errorText={
                     isClassificationPrivateCodeTaken
-                      ? "Private code is already taken"
-                      : ""
+                      ? 'Private code is already taken'
+                      : ''
                   }
                   onChange={(e, value) =>
                     this.setState({
@@ -251,7 +251,7 @@ class ModalEditEntityType extends React.Component {
                 />
                 <FlatButton
                   label="Add"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   disabled={
                     isClassificationPrivateCodeTaken ||
                     !tempClassification.name.length ||

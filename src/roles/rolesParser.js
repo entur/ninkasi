@@ -23,7 +23,7 @@ rolesParser.canEditOrganisation = tokenParsed => {
 
   tokenParsed.roles.forEach(roleString => {
     let roleJSON = JSON.parse(roleString);
-    if (roleJSON.r === "editOrganisation") {
+    if (roleJSON.r === 'editOrganisation') {
       canEditOrganisation = true;
     }
   });
@@ -38,9 +38,9 @@ rolesParser.getUserProviders = (tokenParsed, providers) => {
 
   tokenParsed.roles.forEach(roleString => {
     let roleJSON = JSON.parse(roleString);
-    if (roleJSON.r === "editRouteData") {
+    if (roleJSON.r === 'editRouteData') {
       allowedOrganisations.push(roleJSON.o);
-    } else if (roleJSON.r === "adminEditRouteData") {
+    } else if (roleJSON.r === 'adminEditRouteData') {
       isAdmin = true;
     }
   });
@@ -65,7 +65,7 @@ rolesParser.isAdmin = tokenParsed => {
 
   for (let i = 0; i < tokenParsed.roles.length; i++) {
     let role = JSON.parse(tokenParsed.roles[i]);
-    if (role.r === "adminEditRouteData") return true;
+    if (role.r === 'adminEditRouteData') return true;
   }
 
   return false;

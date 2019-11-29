@@ -14,7 +14,7 @@
  *
  */
 
-import * as types from "./../actions/actionTypes";
+import * as types from './../actions/actionTypes';
 
 const initialState = {
   data: [],
@@ -40,13 +40,13 @@ const SuppliersReducer = (state = initialState, action) => {
       const level1Providers = action.payLoad
         .filter(p => p.chouetteInfo && p.chouetteInfo.migrateDataToProvider)
         .sort((a, b) => {
-          return a.name.localeCompare(b.name, "nb");
+          return a.name.localeCompare(b.name, 'nb');
         });
 
       const level2Providers = action.payLoad
         .filter(p => !(p.chouetteInfo && p.chouetteInfo.migrateDataToProvider))
         .sort((a, b) => {
-          return a.name.localeCompare(b.name, "nb");
+          return a.name.localeCompare(b.name, 'nb');
         });
 
       return Object.assign({}, state, {

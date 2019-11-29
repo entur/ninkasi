@@ -14,19 +14,19 @@
  *
  */
 
-import React, { Component } from "react";
-import moment from "moment";
-import { getSizeFromBytes } from "../utils/";
-import StatusLabel from "./StatusLabel";
-import MdFileDownload from "material-ui/svg-icons/file/file-download";
-import { ExportStatus } from "../actions/formatUtils";
+import React, { Component } from 'react';
+import moment from 'moment';
+import { getSizeFromBytes } from '../utils/';
+import StatusLabel from './StatusLabel';
+import MdFileDownload from 'material-ui/svg-icons/file/file-download';
+import { ExportStatus } from '../actions/formatUtils';
 
 class ExportedFilesRow extends Component {
   getStatusLabel(rowStatus, index) {
     const backgrounds = {
-      [ExportStatus.ERROR]: "rgba(255, 0, 0, 0.2)",
-      [ExportStatus.WARNING]: "hsla(39, 100%, 50%, 0.21)",
-      [ExportStatus.OK]: index % 2 ? "#fff" : "rgba(238, 238, 238, 0.36)"
+      [ExportStatus.ERROR]: 'rgba(255, 0, 0, 0.2)',
+      [ExportStatus.WARNING]: 'hsla(39, 100%, 50%, 0.21)',
+      [ExportStatus.OK]: index % 2 ? '#fff' : 'rgba(238, 238, 238, 0.36)'
     };
 
     if (!rowStatus)
@@ -59,19 +59,19 @@ class ExportedFilesRow extends Component {
 
     const { background, label } = this.getStatusLabel(status, index);
 
-    const norwayDisplayName = "Norway";
+    const norwayDisplayName = 'Norway';
     const isAggregatedSet = referential === norwayDisplayName;
 
     const style = {
       padding: 2,
-      border: "1px solid #eee",
-      display: "flex",
-      alignItems: "center",
+      border: '1px solid #eee',
+      display: 'flex',
+      alignItems: 'center',
       background
     };
 
     const missingStyle = {
-      fontStyle: "italic"
+      fontStyle: 'italic'
     };
 
     return (
@@ -83,19 +83,19 @@ class ExportedFilesRow extends Component {
         <div
           style={{
             flex: 3,
-            fontStyle: !netexDate ? missingStyle.fontStyle : "initial"
+            fontStyle: !netexDate ? missingStyle.fontStyle : 'initial'
           }}
         >
-          {netexDate ? moment(netexDate).format("LLLL") : "NO EXPORT"}
+          {netexDate ? moment(netexDate).format('LLLL') : 'NO EXPORT'}
         </div>
         <div style={{ flex: 1 }}>
           {netexFileSize && (
             <a
-              style={{ display: "flex", alignItems: "center" }}
+              style={{ display: 'flex', alignItems: 'center' }}
               href={netexUrl}
               download={true}
             >
-              <MdFileDownload color={"#2196F3"} />
+              <MdFileDownload color={'#2196F3'} />
               <span style={{ marginLeft: 2 }}>{`[${getSizeFromBytes(
                 netexFileSize
               )}]`}</span>
@@ -105,19 +105,19 @@ class ExportedFilesRow extends Component {
         <div
           style={{
             flex: 3,
-            fontStyle: !gtfsDate ? missingStyle.fontStyle : "initial"
+            fontStyle: !gtfsDate ? missingStyle.fontStyle : 'initial'
           }}
         >
-          {gtfsDate ? moment(gtfsDate).format("LLLL") : "NO EXPORT"}
+          {gtfsDate ? moment(gtfsDate).format('LLLL') : 'NO EXPORT'}
         </div>
         <div style={{ flex: 1 }}>
           {gtfsFileSize && (
             <a
-              style={{ display: "flex", alignItems: "center" }}
+              style={{ display: 'flex', alignItems: 'center' }}
               href={gtfsUrl}
               download={true}
             >
-              <MdFileDownload color={"#2196F3"} />
+              <MdFileDownload color={'#2196F3'} />
               <span style={{ marginLeft: 2 }}>{`[${getSizeFromBytes(
                 gtfsFileSize
               )}]`}</span>

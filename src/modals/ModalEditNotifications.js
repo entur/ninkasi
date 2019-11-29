@@ -14,14 +14,14 @@
  *
  */
 
-import React from "react";
-import ModalDialog from "material-ui/Dialog";
-import { connect } from "react-redux";
-import FlatButton from "material-ui/FlatButton";
-import OrganizationRegisterActions from "../actions/OrganizationRegisterActions";
-import NotificationTypeBox from "./NotificationTypeBox";
-import FloatingActionButton from "material-ui/FloatingActionButton";
-import ContentAdd from "material-ui/svg-icons/content/add";
+import React from 'react';
+import ModalDialog from 'material-ui/Dialog';
+import { connect } from 'react-redux';
+import FlatButton from 'material-ui/FlatButton';
+import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import NotificationTypeBox from './NotificationTypeBox';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 class ModalEditNotifications extends React.Component {
   constructor(props) {
@@ -60,7 +60,7 @@ class ModalEditNotifications extends React.Component {
     if (userNotifications === null) return true;
 
     return userNotifications.some(un => {
-      if (un.eventFilter.type === "JOB") {
+      if (un.eventFilter.type === 'JOB') {
         if (!un.eventFilter.actions || !un.eventFilter.states) {
           return true;
         }
@@ -68,7 +68,7 @@ class ModalEditNotifications extends React.Component {
         return !(un.eventFilter.actions.length && un.eventFilter.states.length);
       }
 
-      if (un.eventFilter.type === "CRUD") {
+      if (un.eventFilter.type === 'CRUD') {
         if (!un.eventFilter.entityClassificationRefs) {
           return true;
         }
@@ -91,10 +91,10 @@ class ModalEditNotifications extends React.Component {
 
     const messageStyle = {
       fontSize: 13,
-      width: "100%",
+      width: '100%',
       paddingBottom: 10,
       marginLeft: 10,
-      fontStyle: "italic"
+      fontStyle: 'italic'
     };
 
     const updateDisabled = this.shouldUpdateBtnBeDisabled();
@@ -118,7 +118,7 @@ class ModalEditNotifications extends React.Component {
         open={isModalOpen}
         actions={actions}
         requestOnClose={handleCloseModal}
-        title={"Notification configurations for " + user.username}
+        title={'Notification configurations for ' + user.username}
       >
         <div>
           {!isLoading &&
@@ -126,7 +126,7 @@ class ModalEditNotifications extends React.Component {
             userNotifications.map((un, i) => (
               <NotificationTypeBox
                 index={i}
-                key={"notificationTypeBox-" + i}
+                key={'notificationTypeBox-' + i}
                 notification={un}
                 handleExpand={this.handleExpandItem.bind(this)}
                 expanded={this.state.indexExpanded === i}

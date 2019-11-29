@@ -14,12 +14,12 @@
  *
  */
 
-import React from "react";
-import PropTypes from "prop-types";
-import { Pie as PieChart } from "react-chartjs-2";
-import { DotLoader as Loader } from "halogenium";
-import { segmentName, segmentColor } from "bogu/utils";
-import { color } from "bogu/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Pie as PieChart } from 'react-chartjs-2';
+import { DotLoader as Loader } from 'halogenium';
+import { segmentName, segmentColor } from 'bogu/utils';
+import { color } from 'bogu/styles';
 
 class PieCard extends React.Component {
   static propTypes = {
@@ -36,9 +36,9 @@ class PieCard extends React.Component {
     const sumStyle = {
       color: color.font.info2,
       fontWeight: 400,
-      textAlign: "center",
-      cursor: "pointer",
-      userSelect: "none"
+      textAlign: 'center',
+      cursor: 'pointer',
+      userSelect: 'none'
     };
 
     const detail = (color, text) => (
@@ -65,32 +65,32 @@ class PieCard extends React.Component {
 
   render() {
     const showAllStyle = {
-      color: "rgb(17, 105, 167)",
+      color: 'rgb(17, 105, 167)',
       fontWeight: 600,
-      textDecoration: "underline",
-      cursor: "pointer",
+      textDecoration: 'underline',
+      cursor: 'pointer',
       marginTop: 10,
-      textAlign: "center"
+      textAlign: 'center'
     };
 
     const pieOptions = {
       animation: false,
       showTooltips: true,
       responsive: true,
-      tooltipTemplate: "<%= label %> - <%= value %>",
-      cursor: "pointer"
+      tooltipTemplate: '<%= label %> - <%= value %>',
+      cursor: 'pointer'
     };
 
     const { stats, provider } = this.props;
 
-    if (typeof stats === "undefined")
+    if (typeof stats === 'undefined')
       return (
         <div
           style={{
             width: 200,
             height: 300,
-            display: "flex",
-            alignItems: "center",
+            display: 'flex',
+            alignItems: 'center',
             margin: 20
           }}
         >
@@ -105,7 +105,7 @@ class PieCard extends React.Component {
     const dynamic = [];
 
     const pieData = {
-      labels: [segmentName("valid"), segmentName("expiring")],
+      labels: [segmentName('valid'), segmentName('expiring')],
       datasets: [
         {
           data: [valid, expiring],
@@ -120,13 +120,13 @@ class PieCard extends React.Component {
       let numDays = category.numDaysAtLeastValid;
       let length = category.lineNumbers.length;
 
-      pieData.labels.push(segmentName("dynamic", numDays));
+      pieData.labels.push(segmentName('dynamic', numDays));
       pieData.datasets[0].data.push(length);
       pieData.datasets[0].backgroundColor.push(segmentColor(numDays));
       pieData.datasets[0].hoverBackgroundColor.push(segmentColor(numDays, 20));
     }
 
-    pieData.labels.push(segmentName("invalid"));
+    pieData.labels.push(segmentName('invalid'));
     pieData.datasets[0].data.push(invalid);
     pieData.datasets[0].backgroundColor.push(color.highlight.invalid);
     pieData.datasets[0].hoverBackgroundColor.push(color.invalid);
@@ -136,8 +136,8 @@ class PieCard extends React.Component {
         style={{
           width: 200,
           height: 300,
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
           margin: 10
         }}
       >
@@ -146,10 +146,10 @@ class PieCard extends React.Component {
             <div
               style={{
                 fontWeight: 600,
-                textAlign: "center",
+                textAlign: 'center',
                 marginBottom: 5,
-                textOverflow: "ellipses",
-                whiteSpace: "nowrap"
+                textOverflow: 'ellipses',
+                whiteSpace: 'nowrap'
               }}
             >
               {provider.name}

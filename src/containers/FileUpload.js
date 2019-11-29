@@ -14,10 +14,10 @@
  *
  */
 
-import React from "react";
-import Dropzone from "react-dropzone";
-import Button from "muicss/lib/react/button";
-import { Line as Progress } from "rc-progress";
+import React from 'react';
+import Dropzone from 'react-dropzone';
+import Button from 'muicss/lib/react/button';
+import { Line as Progress } from 'rc-progress';
 
 class FileUpload extends React.Component {
   constructor(props) {
@@ -38,27 +38,27 @@ class FileUpload extends React.Component {
 
   render() {
     const dropStyle = {
-      height: "150px",
+      height: '150px',
       borderWidth: 1,
-      borderColor: "#666",
-      borderStyle: "dashed",
+      borderColor: '#666',
+      borderStyle: 'dashed',
       borderRadius: 2,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center"
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
     };
 
     const filesStyle = {
-      marginTop: "5%",
-      minHeight: "300px",
-      maxHeight: "300px"
+      marginTop: '5%',
+      minHeight: '300px',
+      maxHeight: '300px'
     };
 
     const uploadButtonStyle = {
       width: 100,
-      fontSize: "0.8em",
-      textAlign: "center",
-      marginLeft: "auto",
+      fontSize: '0.8em',
+      textAlign: 'center',
+      marginLeft: 'auto',
       marginTop: 10
     };
 
@@ -68,11 +68,11 @@ class FileUpload extends React.Component {
     return (
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          width: "80%",
-          margin: "auto",
-          marginTop: "5%"
+          display: 'flex',
+          flexDirection: 'column',
+          width: '80%',
+          margin: 'auto',
+          marginTop: '5%'
         }}
       >
         <Dropzone
@@ -80,21 +80,21 @@ class FileUpload extends React.Component {
           accept="application/zip,application/octet-stream,application/x-zip,application/x-rar,application/x-zip-compressed,application/x-rar-compressed,compressed/rar,application/rar"
           onDrop={(files, rejected) => {
             this.handleOnDrop(files);
-            console.warn("rejected", rejected);
+            console.warn('rejected', rejected);
           }}
         >
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: 'center' }}>
             Try dropping some files here, or click to select files to upload.
           </div>
         </Dropzone>
         {files.length ? (
           <select style={filesStyle} multiple>
             {files.map((file, index) => {
-              return <option key={"file-" + index}>{file.name}</option>;
+              return <option key={'file-' + index}>{file.name}</option>;
             })}
           </select>
         ) : (
-          <div style={{ marginTop: "5%" }}>No files added</div>
+          <div style={{ marginTop: '5%' }}>No files added</div>
         )}
         <Progress strokeColor="#8dcc91" percent={fileUploadProgress} />
         <Button

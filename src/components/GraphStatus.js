@@ -14,11 +14,11 @@
  *
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import SupplierActions from "../actions/SuppliersActions";
-import cfgreader from "../config/readConfig";
-import moment from "moment";
+import React from 'react';
+import { connect } from 'react-redux';
+import SupplierActions from '../actions/SuppliersActions';
+import cfgreader from '../config/readConfig';
+import moment from 'moment';
 
 class GraphStatus extends React.Component {
   componentDidMount() {
@@ -43,14 +43,14 @@ class GraphStatus extends React.Component {
 
   getColorByStatus(status) {
     switch (status) {
-      case "STARTED":
-        return "#08920e";
-      case "OK":
-        return "#08920e";
-      case "FAILED":
-        return "#990000";
+      case 'STARTED':
+        return '#08920e';
+      case 'OK':
+        return '#08920e';
+      case 'FAILED':
+        return '#990000';
       default:
-        return "grey";
+        return 'grey';
     }
   }
 
@@ -60,9 +60,9 @@ class GraphStatus extends React.Component {
     const statusStyle = {
       marginRight: 10,
       marginTop: 10,
-      display: "flex",
-      alignItems: "center",
-      flexDirection: "column"
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column'
     };
 
     if (!graphStatus) {
@@ -85,7 +85,7 @@ class GraphStatus extends React.Component {
             {status}
           </span>
         </span>
-        <span style={{ fontSize: "0.8em" }}>
+        <span style={{ fontSize: '0.8em' }}>
           {moment(graphStatus.started).fromNow()}
         </span>
       </div>

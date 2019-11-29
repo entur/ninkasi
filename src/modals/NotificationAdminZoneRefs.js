@@ -14,13 +14,13 @@
  *
  */
 
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import NotificationAddZoneRef from "./NotificationAddZoneRef";
-import OrganizationRegisterActions from "../actions/OrganizationRegisterActions";
-import IconButton from "material-ui/IconButton";
-import MdRemove from "material-ui/svg-icons/content/remove";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import NotificationAddZoneRef from './NotificationAddZoneRef';
+import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import IconButton from 'material-ui/IconButton';
+import MdRemove from 'material-ui/svg-icons/content/remove';
 
 class NotificationAdminZoneRefs extends React.Component {
   static propTypes = {
@@ -61,25 +61,25 @@ class NotificationAdminZoneRefs extends React.Component {
     return (
       <div
         style={{
-          display: visible ? "none" : "flex",
-          flexDirection: "column",
+          display: visible ? 'none' : 'flex',
+          flexDirection: 'column',
           flex: 2,
-          border: "1px solid #eee",
+          border: '1px solid #eee',
           padding: 5
         }}
       >
-        <div style={{ width: "100%", fontSize: 12, fontWeight: 600 }}>
+        <div style={{ width: '100%', fontSize: 12, fontWeight: 600 }}>
           Administrative zones
         </div>
-        <div style={{ display: "flex" }}>
-          <div style={{ display: "flex", flexDirection: "column", flex: 2 }}>
+        <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 2 }}>
             <select
               multiple="multiple"
               ref="adminRefs"
-              style={{ width: "100%", fontSize: 12 }}
+              style={{ width: '100%', fontSize: 12 }}
             >
               {administrativeZoneRefs.map((ref, index) => (
-                <option key={"entity-" + index}>{ref} </option>
+                <option key={'entity-' + index}>{ref} </option>
               ))}
             </select>
             <NotificationAddZoneRef

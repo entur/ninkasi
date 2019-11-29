@@ -14,7 +14,7 @@
  *
  */
 
-import React from "react";
+import React from 'react';
 
 const ChouetteLink = ({ action, id, referential, children }) => {
   const baseURL = `${window.config.chouetteBaseUrl}/referentials/`;

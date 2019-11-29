@@ -14,18 +14,18 @@
  *
  */
 
-import React from "react";
-import AppBar from "material-ui/AppBar";
-import IconButton from "material-ui/IconButton";
-import IconMenu from "material-ui/IconMenu";
-import MenuItem from "material-ui/MenuItem";
-import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
-import MdAccount from "material-ui/svg-icons/action/account-circle";
-import MdHelp from "material-ui/svg-icons/action/help";
-import { connect } from "react-redux";
-import MdHistory from "material-ui/svg-icons/action/history";
-import SuppliersActions from "../actions/SuppliersActions";
-import { getProvidersEnv, getTheme } from "../config/themes";
+import React from 'react';
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import MdAccount from 'material-ui/svg-icons/action/account-circle';
+import MdHelp from 'material-ui/svg-icons/action/help';
+import { connect } from 'react-redux';
+import MdHistory from 'material-ui/svg-icons/action/history';
+import SuppliersActions from '../actions/SuppliersActions';
+import { getProvidersEnv, getTheme } from '../config/themes';
 
 class Header extends React.Component {
   handleLogout() {
@@ -42,7 +42,7 @@ class Header extends React.Component {
   getUsername() {
     const { kc } = this.props;
     if (kc && kc.tokenParsed) {
-      return kc.tokenParsed.preferred_username || "N/A";
+      return kc.tokenParsed.preferred_username || 'N/A';
     }
   }
 
@@ -59,15 +59,15 @@ class Header extends React.Component {
       <AppBar
         style={backgroundStyle}
         title={
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div style={{ display: "flex" }}>
-              <div style={{ fontSize: "1em" }}>Ninkasi</div>
-              {providersEnv !== "PROD" && (
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex' }}>
+              <div style={{ fontSize: '1em' }}>Ninkasi</div>
+              {providersEnv !== 'PROD' && (
                 <div
                   style={{
                     marginLeft: 5,
-                    fontSize: "0.4em",
-                    lineHeight: "5em"
+                    fontSize: '0.4em',
+                    lineHeight: '5em'
                   }}
                 >
                   {providersEnv}
@@ -83,11 +83,11 @@ class Header extends React.Component {
                 <MoreVertIcon />
               </IconButton>
             }
-            targetOrigin={{ horizontal: "right", vertical: "top" }}
-            anchorOrigin={{ horizontal: "right", vertical: "top" }}
+            targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
           >
             <MenuItem
-              primaryText={"History"}
+              primaryText={'History'}
               leftIcon={<MdHistory color="#41c0c4" />}
               style={{ fontSize: 12, padding: 0 }}
               onClick={() => {

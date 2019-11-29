@@ -14,10 +14,10 @@
  *
  */
 
-import React, { Component } from "react";
-import Popover from "material-ui/Popover";
-import Menu from "material-ui/Menu";
-import MenuItem from "material-ui/MenuItem";
+import React, { Component } from 'react';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 
 class UserRespSetPopover extends Component {
   render() {
@@ -38,7 +38,7 @@ class UserRespSetPopover extends Component {
             .sort((a, b) => a.name.localeCompare(b.name))
             .map(r => (
               <MenuItem
-                style={{ fontSize: "0.9em" }}
+                style={{ fontSize: '0.9em' }}
                 key={r.id}
                 id={r.id}
                 value={r.id}

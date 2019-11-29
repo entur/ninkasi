@@ -14,12 +14,12 @@
  *
  */
 
-import React from "react";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
-import FlatButton from "material-ui/FlatButton";
-import { connect } from "react-redux";
-import OrganizationRegisterActions from "../actions/OrganizationRegisterActions";
+import React from 'react';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
+import { connect } from 'react-redux';
+import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
 
 class NotificationAddEntityClassRef extends React.Component {
   constructor(props) {
@@ -66,9 +66,9 @@ class NotificationAddEntityClassRef extends React.Component {
     return (
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-around"
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-around'
         }}
       >
         <SelectField

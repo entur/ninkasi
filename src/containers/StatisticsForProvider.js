@@ -14,19 +14,19 @@
  *
  */
 
-import React from "react";
-import PropTypes from "prop-types";
-import PieCard from "../components/PieCard";
-import SuppliersActions from "../actions/SuppliersActions";
-import LineStatsCard from "./LineStatsCard";
-import { segmentName, segmentName2Key } from "bogu/utils";
-import { connect } from "react-redux";
+import React from 'react';
+import PropTypes from 'prop-types';
+import PieCard from '../components/PieCard';
+import SuppliersActions from '../actions/SuppliersActions';
+import LineStatsCard from './LineStatsCard';
+import { segmentName, segmentName2Key } from 'bogu/utils';
+import { connect } from 'react-redux';
 
 class StatisticsForProvider extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedSegment: "all",
+      selectedSegment: 'all',
       daysValid: 180
     };
   }
@@ -50,7 +50,7 @@ class StatisticsForProvider extends React.Component {
 
   handleShowAll(value, provider) {
     this.setState({
-      selectedSegment: "all",
+      selectedSegment: 'all',
       daysValid: 180,
       selectedProvider: provider
     });
@@ -71,9 +71,9 @@ class StatisticsForProvider extends React.Component {
     return (
       <div
         style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-around"
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-around'
         }}
       >
         <LineStatsCard
@@ -84,7 +84,7 @@ class StatisticsForProvider extends React.Component {
         />
         <PieCard
           provider={provider}
-          key={"supplier-pie"}
+          key={'supplier-pie'}
           handleShowAllClick={this.handleShowAll.bind(this)}
           handlePieOnClick={this.handlePieOnClick.bind(this)}
           stats={lineStats}

@@ -14,15 +14,15 @@
  *
  */
 
-import React from "react";
-import Modal from "material-ui/Dialog";
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/FlatButton";
+import React from 'react';
+import Modal from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
 
 const initialState = {
   role: {
-    name: "",
-    privateCode: ""
+    name: '',
+    privateCode: ''
   }
 };
 
@@ -61,15 +61,15 @@ class ModalCreateRole extends React.Component {
       <Modal
         open={isModalOpen}
         actions={actions}
-        contentStyle={{ width: "30%" }}
+        contentStyle={{ width: '30%' }}
         title="Create a new role"
         onRequestClose={() => this.handleOnClose()}
       >
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center"
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
           }}
         >
           <TextField
@@ -86,7 +86,7 @@ class ModalCreateRole extends React.Component {
           <TextField
             hintText="private code"
             floatingLabelText="Private code"
-            errorText={invalidPrivateCode ? "Private code already exists" : ""}
+            errorText={invalidPrivateCode ? 'Private code already exists' : ''}
             value={role.privateCode}
             onChange={(e, value) =>
               this.setState({

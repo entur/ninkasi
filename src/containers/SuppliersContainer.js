@@ -14,30 +14,30 @@
  *
  */
 
-import { connect } from "react-redux";
-import React from "react";
-import SuppliersActions from "../actions/SuppliersActions";
-import cfgreader from "../config/readConfig";
-import MenuItem from "material-ui/MenuItem";
-import SelectField from "material-ui/SelectField";
-import MdNew from "material-ui/svg-icons/content/add";
-import MdWarning from "material-ui/svg-icons/alert/warning";
-import { getQueryVariable } from "./utils";
-import Checkbox from "material-ui/Checkbox";
-import Popover from "material-ui/Popover";
-import MdDropDown from "material-ui/svg-icons/navigation/arrow-drop-down";
-import Divider from "material-ui/Divider";
-import peliasTasks from "../config/peliasTasks";
-import moment from "moment";
-import rolesParser from "../roles/rolesParser";
-import MdEdit from "material-ui/svg-icons/image/edit";
-import MdDelete from "material-ui/svg-icons/action/delete-forever";
-import GraphStatus from "../components/GraphStatus";
-import FlatButton from "material-ui/FlatButton";
-import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right";
-import ConfirmDialog from "../modals/ConfirmDialog";
-import { getIconColor, getProvidersEnv, getTheme } from "../config/themes";
-import ModalCreatePoiFilter from "../modals/ModalCreatePoiFilter";
+import { connect } from 'react-redux';
+import React from 'react';
+import SuppliersActions from '../actions/SuppliersActions';
+import cfgreader from '../config/readConfig';
+import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField';
+import MdNew from 'material-ui/svg-icons/content/add';
+import MdWarning from 'material-ui/svg-icons/alert/warning';
+import { getQueryVariable } from './utils';
+import Checkbox from 'material-ui/Checkbox';
+import Popover from 'material-ui/Popover';
+import MdDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down';
+import Divider from 'material-ui/Divider';
+import peliasTasks from '../config/peliasTasks';
+import moment from 'moment';
+import rolesParser from '../roles/rolesParser';
+import MdEdit from 'material-ui/svg-icons/image/edit';
+import MdDelete from 'material-ui/svg-icons/action/delete-forever';
+import GraphStatus from '../components/GraphStatus';
+import FlatButton from 'material-ui/FlatButton';
+import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
+import ConfirmDialog from '../modals/ConfirmDialog';
+import { getIconColor, getProvidersEnv, getTheme } from '../config/themes';
+import ModalCreatePoiFilter from '../modals/ModalCreatePoiFilter';
 
 class SuppliersContainer extends React.Component {
   constructor(props) {
@@ -55,8 +55,8 @@ class SuppliersContainer extends React.Component {
       poiFilterOpen: false,
       confirmDialogOpen: false,
       confirmAction: null,
-      confirmTitle: "",
-      confirmInfo: "",
+      confirmTitle: '',
+      confirmInfo: '',
       cleanPopoverOpen: false,
       googlePopoverOpen: false,
       graphPopoverOpen: false
@@ -69,7 +69,7 @@ class SuppliersContainer extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    const id = getQueryVariable("id");
+    const id = getQueryVariable('id');
     dispatch(SuppliersActions.getAllProviders()).then(() => {
       if (id != null) {
         dispatch(SuppliersActions.selectActiveSupplier(Number(id)));
@@ -80,8 +80,8 @@ class SuppliersContainer extends React.Component {
   handleBuildGraph() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: "Build graph",
-      confirmInfo: "Are you sure you want to build graph?",
+      confirmTitle: 'Build graph',
+      confirmInfo: 'Are you sure you want to build graph?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.buildGraph());
@@ -92,8 +92,8 @@ class SuppliersContainer extends React.Component {
   handleBuildBaseGraph() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: "Build base graph",
-      confirmInfo: "Are you sure you want to build base graph?",
+      confirmTitle: 'Build base graph',
+      confirmInfo: 'Are you sure you want to build base graph?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.buildBaseGraph());
@@ -104,8 +104,8 @@ class SuppliersContainer extends React.Component {
   handleUpdateMapbox() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: "Update Mapbox",
-      confirmInfo: "Are you sure you want to update Mapbox?",
+      confirmTitle: 'Update Mapbox',
+      confirmInfo: 'Are you sure you want to update Mapbox?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.updateMapbox());
@@ -116,8 +116,8 @@ class SuppliersContainer extends React.Component {
   handleFetchOSM() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: "Fetch Open Street Map Data",
-      confirmInfo: "Are you sure you want to fetch Open Street Map data?",
+      confirmTitle: 'Fetch Open Street Map Data',
+      confirmInfo: 'Are you sure you want to fetch Open Street Map data?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.fetchOSM());
@@ -128,9 +128,9 @@ class SuppliersContainer extends React.Component {
   handleUploadGoogleProduction() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: "Upload GTFS data to Google (production)",
+      confirmTitle: 'Upload GTFS data to Google (production)',
       confirmInfo:
-        "Are you sure you want to upload latest GTFS export to Google (production)?",
+        'Are you sure you want to upload latest GTFS export to Google (production)?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.uploadGoogleProduction());
@@ -141,9 +141,9 @@ class SuppliersContainer extends React.Component {
   handleUploadGoogleQA() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: "Upload GTFS data to Google (QA)",
+      confirmTitle: 'Upload GTFS data to Google (QA)',
       confirmInfo:
-        "Are you sure you want to upload latest GTFS export to Google (QA)?",
+        'Are you sure you want to upload latest GTFS export to Google (QA)?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.uploadGoogleQA());
@@ -167,9 +167,9 @@ class SuppliersContainer extends React.Component {
   handleCancelAllJobs() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: "Cancel all chouette jobs",
+      confirmTitle: 'Cancel all chouette jobs',
       confirmInfo:
-        "Are you want to cancel all chouette jobs for all providers?",
+        'Are you want to cancel all chouette jobs for all providers?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.cancelAllChouetteJobsforAllProviders());
@@ -178,14 +178,14 @@ class SuppliersContainer extends React.Component {
   }
 
   handleCleanAllDataSpaces(filter) {
-    let filterText = "";
+    let filterText = '';
 
     switch (filter) {
-      case "level1":
-        filterText = " in level 1 space";
+      case 'level1':
+        filterText = ' in level 1 space';
         break;
-      case "level2":
-        filterText = " in level 2 space";
+      case 'level2':
+        filterText = ' in level 2 space';
         break;
       default:
         break;
@@ -193,7 +193,7 @@ class SuppliersContainer extends React.Component {
 
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: "Clean Data Spaces",
+      confirmTitle: 'Clean Data Spaces',
       confirmInfo: `Are you sure you want to clean all dataspaces for all providers${filterText}?`,
       confirmAction: () => {
         const { dispatch } = this.props;
@@ -206,8 +206,8 @@ class SuppliersContainer extends React.Component {
   handleCleanFileFilter() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: "Clean File Filter",
-      confirmInfo: "Are you sure you want to clean file filter?",
+      confirmTitle: 'Clean File Filter',
+      confirmInfo: 'Are you sure you want to clean file filter?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.cleanFileFilter());
@@ -234,8 +234,8 @@ class SuppliersContainer extends React.Component {
   handleExecutePelias() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: "Execute Pelias tasks",
-      confirmInfo: "Are you sure you want to execute selected pelias tasks?",
+      confirmTitle: 'Execute Pelias tasks',
+      confirmInfo: 'Are you sure you want to execute selected pelias tasks?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.executePeliasTask(this.state.peliasOptions));
@@ -247,8 +247,8 @@ class SuppliersContainer extends React.Component {
   handleClearEventHistory() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: "Clean All Event History",
-      confirmInfo: "Are you want to clean all event history?",
+      confirmTitle: 'Clean All Event History',
+      confirmInfo: 'Are you want to clean all event history?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.deleteAllJobs());
@@ -260,8 +260,8 @@ class SuppliersContainer extends React.Component {
   handleClearStopPlaces() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: "Clean Stop Placee Register in Chouette",
-      confirmInfo: "Are you want to clean Stop Place Register in Chouette?",
+      confirmTitle: 'Clean Stop Placee Register in Chouette',
+      confirmInfo: 'Are you want to clean Stop Place Register in Chouette?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.cleanStopPlacesInChouette());
@@ -303,14 +303,14 @@ class SuppliersContainer extends React.Component {
 
   getColorByStatus(status) {
     switch (status) {
-      case "STARTED":
-        return "#08920e";
-      case "OK":
-        return "#08920e";
-      case "FAILED":
-        return "#990000";
+      case 'STARTED':
+        return '#08920e';
+      case 'OK':
+        return '#08920e';
+      case 'FAILED':
+        return '#990000';
       default:
-        return "grey";
+        return 'grey';
     }
   }
 
@@ -325,8 +325,8 @@ class SuppliersContainer extends React.Component {
       const { dispatch, activeProviderId } = this.props;
       this.setState({
         confirmDialogOpen: true,
-        confirmTitle: "Delete provider",
-        confirmInfo: "Are you sure you want delete the provider?",
+        confirmTitle: 'Delete provider',
+        confirmInfo: 'Are you sure you want delete the provider?',
         confirmAction: () => {
           dispatch(SuppliersActions.deleteProvider(activeProviderId));
         }
@@ -334,8 +334,8 @@ class SuppliersContainer extends React.Component {
     } else {
       this.setState({
         confirmDialogOpen: false,
-        confirmTitle: "",
-        confirmInfo: "",
+        confirmTitle: '',
+        confirmInfo: '',
         confirmAction: null
       });
     }
@@ -356,41 +356,41 @@ class SuppliersContainer extends React.Component {
     const supplierItems = [
       {
         id: -1,
-        name: "All providers"
+        name: 'All providers'
       }
     ].concat(suppliers);
 
     let innerContainerStyle = {
-      display: "flex",
-      justifyContent: "center",
-      borderTop: "1px solid rgba(158, 158, 158, 0.15)",
+      display: 'flex',
+      justifyContent: 'center',
+      borderTop: '1px solid rgba(158, 158, 158, 0.15)',
       ...getTheme(providersEnv)
     };
 
     const toolTips = {
-      history: "Browse the history of your activities in Ninkasi",
-      buildGraph: "Build graph for all providers",
-      buildBaseGraph: "Build new base graph with OSM and elevation data",
-      fetchOSM: "Fetch Open Street Map data",
-      updateMapbox: "Update mapbox data from NSR",
-      cleanFileFilter: "Clean file filter",
-      canceAllJobs: "Cancel all current chouette jobs",
-      cleanAll: "Clean all specificed by level",
-      createNewProvider: "Create new provider",
-      deleteProvider: "Delete provider",
-      pelias: "Execute pelias operations",
-      editProvider: "Edit provider",
-      cleanEventHistory: "Clean event history"
+      history: 'Browse the history of your activities in Ninkasi',
+      buildGraph: 'Build graph for all providers',
+      buildBaseGraph: 'Build new base graph with OSM and elevation data',
+      fetchOSM: 'Fetch Open Street Map data',
+      updateMapbox: 'Update mapbox data from NSR',
+      cleanFileFilter: 'Clean file filter',
+      canceAllJobs: 'Cancel all current chouette jobs',
+      cleanAll: 'Clean all specificed by level',
+      createNewProvider: 'Create new provider',
+      deleteProvider: 'Delete provider',
+      pelias: 'Execute pelias operations',
+      editProvider: 'Edit provider',
+      cleanEventHistory: 'Clean event history'
     };
 
     const peliasPopoverStyle = {
-      overflowY: "hidden",
+      overflowY: 'hidden',
       padding: 10
     };
 
     let peliasOptions = peliasTasks.map(option => (
       <Checkbox
-        key={"pelias-checkbox-" + option.task}
+        key={'pelias-checkbox-' + option.task}
         label={option.label}
         onCheck={e => this.handlePeliasOptionChecked(e, option.task)}
         defaultChecked={true}
@@ -401,32 +401,32 @@ class SuppliersContainer extends React.Component {
 
     peliasOptions.push(
       <Divider
-        key={"pelias-divider1"}
+        key={'pelias-divider1'}
         style={{ marginTop: 10, marginBottom: 5 }}
       />
     );
 
     peliasOptions.push(
       <div
-        key={"pelias-options-status-wrapper"}
-        style={{ display: "flex", flexDirection: "column", padding: 5 }}
+        key={'pelias-options-status-wrapper'}
+        style={{ display: 'flex', flexDirection: 'column', padding: 5 }}
       >
         <span style={{ fontWeight: 600 }}>Status</span>
         {otherStatus.map((status, index) => (
           <div
-            key={"jobtype-status" + index}
+            key={'jobtype-status' + index}
             style={{
-              display: "flex",
-              alignItems: "center",
+              display: 'flex',
+              alignItems: 'center',
               padding: 2,
-              background: index % 2 ? "#F8F8F8" : "#fff"
+              background: index % 2 ? '#F8F8F8' : '#fff'
             }}
           >
-            <div style={{ marginLeft: 5, flex: 9, fontSize: "0.9em" }}>
+            <div style={{ marginLeft: 5, flex: 9, fontSize: '0.9em' }}>
               {this.getLabelByJobType(status.type)}
             </div>
-            <div style={{ fontSize: "0.9em", flex: 6 }}>
-              {moment(status.started).format("LLLL")}
+            <div style={{ fontSize: '0.9em', flex: 6 }}>
+              {moment(status.started).format('LLLL')}
             </div>
             <div
               style={{
@@ -444,15 +444,15 @@ class SuppliersContainer extends React.Component {
 
     peliasOptions.push(
       <Divider
-        key={"pelias-divider2"}
+        key={'pelias-divider2'}
         style={{ marginTop: 10, marginBottom: 10 }}
       />
     );
 
     peliasOptions.push(
       <div
-        key={"pelias-buttons"}
-        style={{ width: "100%", textAlign: "center" }}
+        key={'pelias-buttons'}
+        style={{ width: '100%', textAlign: 'center' }}
       >
         <FlatButton
           primary={true}
@@ -461,7 +461,7 @@ class SuppliersContainer extends React.Component {
           disabled={Object.values(this.state.peliasOptions).every(
             value => !value
           )}
-          label={"Execute"}
+          label={'Execute'}
         />
       </div>
     );
@@ -473,22 +473,22 @@ class SuppliersContainer extends React.Component {
             <FlatButton
               disabled={!isAdmin}
               title={toolTips.pelias}
-              labelStyle={{ fontSize: 12, color: "#fff" }}
-              label={"Pelias"}
+              labelStyle={{ fontSize: 12, color: '#fff' }}
+              label={'Pelias'}
               labelPosition="before"
               onClick={event => this.handleTogglePeliasOpen(event, true)}
               icon={
                 <MdDropDown
                   color="#fff"
-                  style={{ verticalAlign: "middle", marginTop: -3 }}
+                  style={{ verticalAlign: 'middle', marginTop: -3 }}
                 />
               }
             />
             <Popover
               open={this.state.peliasOpen}
               anchorEl={this.state.anchorEl}
-              anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-              targetOrigin={{ horizontal: "left", vertical: "top" }}
+              anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+              targetOrigin={{ horizontal: 'left', vertical: 'top' }}
               onRequestClose={event =>
                 this.handleTogglePeliasOpen(event, false)
               }
@@ -500,15 +500,15 @@ class SuppliersContainer extends React.Component {
               disabled={!isAdmin}
               onClick={this.handleGraphOpen.bind(this)}
             >
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div
                   style={{
                     fontSize: 12,
-                    color: "#fff",
+                    color: '#fff',
                     paddingLeft: 8,
                     paddingRight: 8,
                     paddingTop: 2,
-                    textTransform: "uppercase"
+                    textTransform: 'uppercase'
                   }}
                 >
                   Graph
@@ -519,20 +519,20 @@ class SuppliersContainer extends React.Component {
             <Popover
               open={this.state.graphPopoverOpen}
               anchorEl={this.state.anchorEl}
-              anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-              targetOrigin={{ horizontal: "left", vertical: "top" }}
+              anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+              targetOrigin={{ horizontal: 'left', vertical: 'top' }}
               onRequestClose={() => this.setState({ graphPopoverOpen: false })}
             >
               <MenuItem
-                primaryText={"Build graph"}
-                style={{ fontSize: "1.1em" }}
+                primaryText={'Build graph'}
+                style={{ fontSize: '1.1em' }}
                 onClick={() => this.handleBuildGraph()}
                 disabled={!isAdmin}
                 title={toolTips.buildGraph}
               />
               <MenuItem
-                primaryText={"Build base graph"}
-                style={{ fontSize: "1em" }}
+                primaryText={'Build base graph'}
+                style={{ fontSize: '1em' }}
                 onClick={() => this.handleBuildBaseGraph()}
                 disabled={!isAdmin}
                 title={toolTips.buildBaseGraph}
@@ -541,30 +541,30 @@ class SuppliersContainer extends React.Component {
             <FlatButton
               disabled={!isAdmin}
               title={toolTips.poiFilter}
-              labelStyle={{ fontSize: 12, color: "#fff" }}
-              label={"OSM POI Filter"}
+              labelStyle={{ fontSize: 12, color: '#fff' }}
+              label={'OSM POI Filter'}
               onClick={() => this.setState({ isCreateModalOpen: true })}
             />
             <FlatButton
               disabled={!isAdmin}
               title={toolTips.fetchOSM}
-              labelStyle={{ fontSize: 12, color: "#fff" }}
-              label={"Fetch OSM"}
+              labelStyle={{ fontSize: 12, color: '#fff' }}
+              label={'Fetch OSM'}
               onClick={this.handleFetchOSM.bind(this)}
             />
             <FlatButton
               disabled={!isAdmin}
               onClick={this.handleGoogleOpen.bind(this)}
             >
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div
                   style={{
                     fontSize: 12,
-                    color: "#fff",
+                    color: '#fff',
                     paddingLeft: 8,
                     paddingRight: 8,
                     paddingTop: 2,
-                    textTransform: "uppercase"
+                    textTransform: 'uppercase'
                   }}
                 >
                   Google
@@ -575,20 +575,20 @@ class SuppliersContainer extends React.Component {
             <Popover
               open={this.state.googlePopoverOpen}
               anchorEl={this.state.anchorEl}
-              anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-              targetOrigin={{ horizontal: "left", vertical: "top" }}
+              anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+              targetOrigin={{ horizontal: 'left', vertical: 'top' }}
               onRequestClose={() => this.setState({ googlePopoverOpen: false })}
             >
               <MenuItem
-                primaryText={"Upload GTFS (production)"}
-                style={{ fontSize: "1.1em" }}
+                primaryText={'Upload GTFS (production)'}
+                style={{ fontSize: '1.1em' }}
                 onClick={() => this.handleUploadGoogleProduction()}
                 disabled={!isAdmin}
                 title={toolTips.uploadGoogleProduction}
               />
               <MenuItem
-                primaryText={"Upload GTFS (QA)"}
-                style={{ fontSize: "1em" }}
+                primaryText={'Upload GTFS (QA)'}
+                style={{ fontSize: '1em' }}
                 onClick={() => this.handleUploadGoogleQA()}
                 disabled={!isAdmin}
                 title={toolTips.uploadGoogleQA}
@@ -604,9 +604,9 @@ class SuppliersContainer extends React.Component {
           </div>
           <div
             style={{
-              borderLeft: "1px solid #4c4c4c",
+              borderLeft: '1px solid #4c4c4c',
               height: 15,
-              margin: "10px 0"
+              margin: '10px 0'
             }}
           />
           <div>
@@ -614,19 +614,19 @@ class SuppliersContainer extends React.Component {
               disabled={!isAdmin}
               onClick={this.handleCleanOpen.bind(this)}
             >
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
                 <MdWarning
                   color={iconColor}
-                  style={{ height: "1.1em", width: "1.1em", paddingLeft: 10 }}
+                  style={{ height: '1.1em', width: '1.1em', paddingLeft: 10 }}
                 />
                 <div
                   style={{
                     fontSize: 12,
-                    color: "#fff",
+                    color: '#fff',
                     paddingLeft: 8,
                     paddingRight: 8,
                     paddingTop: 2,
-                    textTransform: "uppercase"
+                    textTransform: 'uppercase'
                   }}
                 >
                   Clean
@@ -637,13 +637,13 @@ class SuppliersContainer extends React.Component {
             <FlatButton
               disabled={!isAdmin}
               title={toolTips.canceAllJobs}
-              style={{ transform: "translateY(-3px)" }}
-              labelStyle={{ fontSize: 12, color: "#fff" }}
-              label={"Cancel all jobs"}
+              style={{ transform: 'translateY(-3px)' }}
+              labelStyle={{ fontSize: 12, color: '#fff' }}
+              label={'Cancel all jobs'}
               icon={
                 <MdWarning
                   color={iconColor}
-                  style={{ height: "1.1em", width: "1.1em" }}
+                  style={{ height: '1.1em', width: '1.1em' }}
                 />
               }
               onClick={() => this.handleCancelAllJobs()}
@@ -652,27 +652,27 @@ class SuppliersContainer extends React.Component {
           <Popover
             open={this.state.cleanPopoverOpen}
             anchorEl={this.state.anchorEl}
-            anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-            targetOrigin={{ horizontal: "left", vertical: "top" }}
+            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
             onRequestClose={() => this.setState({ cleanPopoverOpen: false })}
           >
             <MenuItem
-              primaryText={"Clean file filter"}
-              style={{ fontSize: "1.1em" }}
+              primaryText={'Clean file filter'}
+              style={{ fontSize: '1.1em' }}
               onClick={() => this.handleCleanFileFilter()}
               disabled={!isAdmin}
               title={toolTips.cleanFileFilter}
             />
             <MenuItem
-              primaryText={"Clean event history"}
-              style={{ fontSize: "1em" }}
+              primaryText={'Clean event history'}
+              style={{ fontSize: '1em' }}
               onClick={() => this.handleClearEventHistory()}
               disabled={!isAdmin}
               title={toolTips.cleanEventHistory}
             />
             <MenuItem
-              primaryText={"Clean Stop Places"}
-              style={{ fontSize: "1em" }}
+              primaryText={'Clean Stop Places'}
+              style={{ fontSize: '1em' }}
               onClick={() => this.handleClearStopPlaces()}
               disabled={!isAdmin}
               title={toolTips.cleanStopPlacesChouette}
@@ -680,24 +680,24 @@ class SuppliersContainer extends React.Component {
             <MenuItem
               disabled={!isAdmin}
               id="dropdown-clean-all"
-              primaryText={"Clean all"}
-              style={{ fontSize: "1em" }}
+              primaryText={'Clean all'}
+              style={{ fontSize: '1em' }}
               rightIcon={<ArrowDropRight />}
               menuItems={[
                 <MenuItem
-                  primaryText={"All"}
-                  onClick={() => this.handleCleanAllDataSpaces("all")}
-                  style={{ fontSize: "1em" }}
+                  primaryText={'All'}
+                  onClick={() => this.handleCleanAllDataSpaces('all')}
+                  style={{ fontSize: '1em' }}
                 />,
                 <MenuItem
-                  primaryText={"Level 1"}
-                  onClick={() => this.handleCleanAllDataSpaces("level1")}
-                  style={{ fontSize: "1em" }}
+                  primaryText={'Level 1'}
+                  onClick={() => this.handleCleanAllDataSpaces('level1')}
+                  style={{ fontSize: '1em' }}
                 />,
                 <MenuItem
-                  primaryText={"Level 2"}
-                  onClick={() => this.handleCleanAllDataSpaces("level2")}
-                  style={{ fontSize: "1em" }}
+                  primaryText={'Level 2'}
+                  onClick={() => this.handleCleanAllDataSpaces('level2')}
+                  style={{ fontSize: '1em' }}
                 />
               ]}
             />
@@ -705,22 +705,22 @@ class SuppliersContainer extends React.Component {
         </div>
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            margin: "auto",
-            width: "98%"
+            display: 'flex',
+            justifyContent: 'space-between',
+            margin: 'auto',
+            width: '98%'
           }}
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <SelectField
               id="select-supplier"
               floatingLabelFixed={true}
               style={{ minWidth: 350 }}
-              floatingLabelText={"Provider"}
+              floatingLabelText={'Provider'}
               onChange={(e, k, v) => this.selectSupplier(v)}
               autoWidth={true}
               value={Number(activeProviderId) || -1}
-              iconStyle={{ fill: "rgba(22, 82, 149, 0.69)" }}
+              iconStyle={{ fill: 'rgba(22, 82, 149, 0.69)' }}
             >
               {supplierItems.map(supplier => {
                 const isLevel1Provider =
@@ -735,7 +735,7 @@ class SuppliersContainer extends React.Component {
                     primaryText={
                       <span
                         style={{
-                          color: isLevel1Provider ? "intial" : "#d9a51b"
+                          color: isLevel1Provider ? 'intial' : '#d9a51b'
                         }}
                       >
                         {supplier.name}
@@ -748,7 +748,7 @@ class SuppliersContainer extends React.Component {
             {canEditOrganisation && (
               <div
                 style={{
-                  display: "inline-block",
+                  display: 'inline-block',
                   marginTop: 25,
                   marginLeft: 15
                 }}
@@ -756,15 +756,15 @@ class SuppliersContainer extends React.Component {
                 <div
                   title={toolTips.editProvider}
                   style={{
-                    display: "inline-block",
-                    cursor: "pointer",
+                    display: 'inline-block',
+                    cursor: 'pointer',
                     marginRight: 10
                   }}
                   onClick={() => this.handleEditProvider()}
                 >
                   {!this.props.displayAllSuppliers && (
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <MdEdit style={{ width: "1.1em", height: "1.1em" }} />
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <MdEdit style={{ width: '1.1em', height: '1.1em' }} />
                       <span style={{ marginLeft: 2 }}>Edit</span>
                     </div>
                   )}
@@ -772,25 +772,25 @@ class SuppliersContainer extends React.Component {
                 <div
                   title={toolTips.createNewProvider}
                   style={{
-                    display: "inline-block",
-                    cursor: "pointer",
+                    display: 'inline-block',
+                    cursor: 'pointer',
                     marginRight: 10
                   }}
                   onClick={() => this.handleNewProvider()}
                 >
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <MdNew style={{ width: "1.2em", height: "1.2em" }} />
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <MdNew style={{ width: '1.2em', height: '1.2em' }} />
                     <span style={{ marginLeft: 2 }}>New</span>
                   </div>
                 </div>
 
                 <div
                   title={toolTips.deleteProvider}
-                  style={{ display: "inline-block", cursor: "pointer" }}
+                  style={{ display: 'inline-block', cursor: 'pointer' }}
                   onClick={() => this.handleOpenConfirmDeleteProviderDialog()}
                 >
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <MdDelete style={{ width: "1.2em", height: "1.2em" }} />
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <MdDelete style={{ width: '1.2em', height: '1.2em' }} />
                     <span style={{ marginLeft: 2 }}>Delete</span>
                   </div>
                 </div>

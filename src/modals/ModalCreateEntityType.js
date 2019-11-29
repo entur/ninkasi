@@ -14,27 +14,27 @@
  *
  */
 
-import React from "react";
-import Modal from "material-ui/Dialog";
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/FlatButton";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
-import MdRemove from "material-ui/svg-icons/content/remove";
-import MdAdd from "material-ui/svg-icons/content/add";
-import IconButton from "material-ui/IconButton";
+import React from 'react';
+import Modal from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import MdRemove from 'material-ui/svg-icons/content/remove';
+import MdAdd from 'material-ui/svg-icons/content/add';
+import IconButton from 'material-ui/IconButton';
 
 const initialState = {
   entityType: {
-    name: "",
-    privateCode: "",
-    codeSpace: "",
+    name: '',
+    privateCode: '',
+    codeSpace: '',
     classifications: []
   },
   isCreatingNewClassification: false,
   tempClassification: {
-    name: "",
-    privateCode: ""
+    name: '',
+    privateCode: ''
   }
 };
 
@@ -63,8 +63,8 @@ class ModalCreateEntityType extends React.Component {
         classifications: [...entityType.classifications, tempClassification]
       },
       tempClassification: {
-        name: "",
-        privateCode: ""
+        name: '',
+        privateCode: ''
       }
     });
   }
@@ -127,14 +127,14 @@ class ModalCreateEntityType extends React.Component {
         open={isModalOpen}
         onRequestClose={this.handleOnClose.bind(this)}
         title="Create a new entity type"
-        contentStyle={{ width: "40%" }}
+        contentStyle={{ width: '40%' }}
       >
         <div>
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center"
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
             }}
           >
             <TextField
@@ -152,7 +152,7 @@ class ModalCreateEntityType extends React.Component {
               hintText="private code"
               floatingLabelText="Private code"
               errorText={
-                invalidPrivateCode ? "Private code already exists" : ""
+                invalidPrivateCode ? 'Private code already exists' : ''
               }
               value={entityType.privateCode}
               onChange={(e, value) =>
@@ -161,7 +161,7 @@ class ModalCreateEntityType extends React.Component {
                 })
               }
               fullWidth={true}
-              errorStyle={{ float: "right" }}
+              errorStyle={{ float: 'right' }}
             />
             <SelectField
               hintText="Code space"
@@ -184,21 +184,21 @@ class ModalCreateEntityType extends React.Component {
                 />
               ))}
             </SelectField>
-            <div style={{ width: "100%", fontSize: 12 }}>
+            <div style={{ width: '100%', fontSize: 12 }}>
               Entity classifications
             </div>
             <select
               multiple="multiple"
-              style={{ width: "100%", fontSize: 12 }}
+              style={{ width: '100%', fontSize: 12 }}
               ref="classifications"
             >
               {entityType.classifications.map((et, index) => (
-                <option key={"ec-" + index}>
-                  {this.getClassificationTitle(et)}{" "}
+                <option key={'ec-' + index}>
+                  {this.getClassificationTitle(et)}{' '}
                 </option>
               ))}
             </select>
-            <div style={{ textAlign: "left", width: "100%" }}>
+            <div style={{ textAlign: 'left', width: '100%' }}>
               <IconButton
                 onClick={() =>
                   this.setState({ isCreatingNewClassification: true })
@@ -211,11 +211,11 @@ class ModalCreateEntityType extends React.Component {
               </IconButton>
             </div>
             {isCreatingNewClassification ? (
-              <div style={{ border: "1px dotted", width: "100%" }}>
+              <div style={{ border: '1px dotted', width: '100%' }}>
                 <div
                   style={{
                     fontSize: 12,
-                    textAlign: "center",
+                    textAlign: 'center',
                     fontWeight: 600
                   }}
                 >
@@ -238,11 +238,11 @@ class ModalCreateEntityType extends React.Component {
                 <TextField
                   hintText="Private code"
                   floatingLabelText="Private code"
-                  errorStyle={{ float: "right" }}
+                  errorStyle={{ float: 'right' }}
                   errorText={
                     isClassificationPrivateCodeTaken
-                      ? "Private code is already taken"
-                      : ""
+                      ? 'Private code is already taken'
+                      : ''
                   }
                   onChange={(e, value) =>
                     this.setState({
@@ -257,7 +257,7 @@ class ModalCreateEntityType extends React.Component {
                 />
                 <FlatButton
                   label="Add"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   disabled={
                     isClassificationPrivateCodeTaken ||
                     !tempClassification.name.length ||

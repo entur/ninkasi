@@ -14,32 +14,32 @@
  *
  */
 
-import React from "react";
-import ModalDialog from "material-ui/Dialog";
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/FlatButton";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
-import ResponsiblitySetList from "./ResponsiblitySetList";
-import UserRespSetPopover from "./UserRespSetPopover";
+import React from 'react';
+import ModalDialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import ResponsiblitySetList from './ResponsiblitySetList';
+import UserRespSetPopover from './UserRespSetPopover';
 
 const initialState = {
   user: {
-    username: "",
-    organisationRef: "",
+    username: '',
+    organisationRef: '',
     responsibilitySetRefs: [],
     contactDetails: {
-      email: "",
-      phone: "",
-      firstName: "",
-      lastName: ""
+      email: '',
+      phone: '',
+      firstName: '',
+      lastName: ''
     }
   },
   isAddingResponsibilitySet: false,
-  temptResponsibilitySet: "",
+  temptResponsibilitySet: '',
   addRespAnchorEl: null,
   emailValid: true,
-  originalUsername: "",
+  originalUsername: '',
   usernameValid: true
 };
 
@@ -65,7 +65,7 @@ class ModalEditUser extends React.Component {
   }
 
   handleChangeUsername(e, value) {
-    const isValid = this.validateBy("USERNAME", value);
+    const isValid = this.validateBy('USERNAME', value);
     this.setState(prevState => ({
       user: { ...prevState.user, username: value },
       usernameValid: isValid
@@ -74,7 +74,7 @@ class ModalEditUser extends React.Component {
 
   handleChangeEmail(e, value) {
     const { user } = this.state;
-    const isValid = this.validateBy("EMAIL", value);
+    const isValid = this.validateBy('EMAIL', value);
     this.setState({
       emailValid: isValid,
       user: {
@@ -99,7 +99,7 @@ class ModalEditUser extends React.Component {
           temptResponsibilitySet
         ]
       },
-      temptResponsibilitySet: ""
+      temptResponsibilitySet: ''
     });
   }
 
@@ -107,11 +107,11 @@ class ModalEditUser extends React.Component {
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const usernameRe = /^[a-zA-Z-. ]*$/;
 
-    if (type === "EMAIL") {
+    if (type === 'EMAIL') {
       return emailRe.test(value);
     }
 
-    if (type === "USERNAME") {
+    if (type === 'USERNAME') {
       return usernameRe.test(value);
     }
   }
@@ -180,13 +180,13 @@ class ModalEditUser extends React.Component {
         open={isModalOpen}
         actions={actions}
         onRequestClose={() => this.handleOnClose()}
-        title={"Editing user " + originalUsername}
-        contentStyle={{ width: "40%" }}
+        title={'Editing user ' + originalUsername}
+        contentStyle={{ width: '40%' }}
       >
         <div
           style={{
-            display: "flex",
-            flexDirection: "column"
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
           <TextField
@@ -195,7 +195,7 @@ class ModalEditUser extends React.Component {
             value={user.username}
             errorText={
               !usernameValid &&
-              "Username can only include alphanumerics, hyphens and dot"
+              'Username can only include alphanumerics, hyphens and dot'
             }
             onChange={this.handleChangeUsername.bind(this)}
             fullWidth={true}
@@ -239,10 +239,10 @@ class ModalEditUser extends React.Component {
             floatingLabelText="E-mail"
             errorText={
               emailIsTaken
-                ? "E-mail already taken"
+                ? 'E-mail already taken'
                 : !emailValid
-                ? "Must be a valid e-mail"
-                : ""
+                ? 'Must be a valid e-mail'
+                : ''
             }
             value={user.contactDetails.email}
             onChange={this.handleChangeEmail.bind(this)}

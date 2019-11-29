@@ -14,12 +14,12 @@
  *
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import Actions from "../actions/OrganizationRegisterActions";
-import Clipboard from "clipboard-js";
+import React from 'react';
+import { connect } from 'react-redux';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import Actions from '../actions/OrganizationRegisterActions';
+import Clipboard from 'clipboard-js';
 
 class ModalNewPassword extends React.Component {
   handleClose() {
@@ -48,7 +48,7 @@ class ModalNewPassword extends React.Component {
 
     return (
       <Dialog
-        title={isNewUser ? "User created" : "Password reset"}
+        title={isNewUser ? 'User created' : 'Password reset'}
         actions={actions}
         modal={true}
         open={open}
@@ -58,13 +58,13 @@ class ModalNewPassword extends React.Component {
         </div>
         <div
           style={{
-            background: "orange",
-            display: "flex",
-            textAlign: "center",
+            background: 'orange',
+            display: 'flex',
+            textAlign: 'center',
             padding: 2,
-            color: "#fff",
-            alignItems: "center",
-            border: "1px solid black"
+            color: '#fff',
+            alignItems: 'center',
+            border: '1px solid black'
           }}
         >
           <div id="new-password" style={{ flex: 10, fontSize: 18 }}>
@@ -73,7 +73,7 @@ class ModalNewPassword extends React.Component {
           <FlatButton
             style={{ marginRight: 5, flex: 1 }}
             label="Copy"
-            labelStyle={{ color: "#fff" }}
+            labelStyle={{ color: '#fff' }}
             onClick={() => this.handleCopyToClipBoard(password)}
           />
         </div>

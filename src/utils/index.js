@@ -14,7 +14,7 @@
  *
  */
 
-import sortBy from "lodash/sortBy";
+import sortBy from 'lodash/sortBy';
 
 export const sortUsersby = (users, sortOrder) => {
   if (!sortOrder || sortOrder.column === null) return users;
@@ -65,11 +65,11 @@ const sortDesc = (a, b) => {
 
 export const getEntityClassificationRefString = (entityType, allow) => {
   if (!allow) {
-    const lastIndex = entityType.lastIndexOf(":");
+    const lastIndex = entityType.lastIndexOf(':');
     if (lastIndex > -1) {
       return (
         entityType.substr(0, lastIndex + 1) +
-        "!" +
+        '!' +
         entityType.substr(lastIndex + 1)
       );
     }
@@ -78,13 +78,13 @@ export const getEntityClassificationRefString = (entityType, allow) => {
 };
 
 export const getSizeFromBytes = bytes => {
-  var sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+  var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
-  if (bytes === 0) return "0 Byte";
+  if (bytes === 0) return '0 Byte';
 
   let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
 
-  return Math.round(bytes / Math.pow(1024, i), 2) + " " + sizes[i];
+  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 };
 
 export const getOrganizationNameByRef = (organizations, ref) => {

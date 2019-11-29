@@ -14,19 +14,19 @@
  *
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import "../sass/views/responsibilityView.scss";
-import MdEdit from "material-ui/svg-icons/image/edit";
-import MdDelete from "material-ui/svg-icons/action/delete";
-import FloatingActionButton from "material-ui/FloatingActionButton";
-import ContentAdd from "material-ui/svg-icons/content/add";
-import OrganizationRegisterActions from "../actions/OrganizationRegisterActions";
-import ResponsbilityRoleAssignments from "../modals/ResponsbilityRoleAssignments";
-import ModalCreateResponsibilitySet from "../modals/ModalCreateResponsibilitySet";
-import ModalEditResponsibilitySet from "../modals/ModalEditResponsibilitySet";
-import { sortByColumns } from "../utils/index";
-import ModalConfirmation from "../modals/ModalConfirmation";
+import React from 'react';
+import { connect } from 'react-redux';
+import '../sass/views/responsibilityView.scss';
+import MdEdit from 'material-ui/svg-icons/image/edit';
+import MdDelete from 'material-ui/svg-icons/action/delete';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import ResponsbilityRoleAssignments from '../modals/ResponsbilityRoleAssignments';
+import ModalCreateResponsibilitySet from '../modals/ModalCreateResponsibilitySet';
+import ModalEditResponsibilitySet from '../modals/ModalEditResponsibilitySet';
+import { sortByColumns } from '../utils/index';
+import ModalConfirmation from '../modals/ModalConfirmation';
 
 const initialState = {
   isCreatingResponsibilitySet: false,
@@ -34,7 +34,7 @@ const initialState = {
   activeResponsibilitySet: null,
   isDeleteConfirmationOpen: false,
   sortOrder: {
-    column: "name",
+    column: 'name',
     asc: true
   }
 };
@@ -85,7 +85,7 @@ class ResponsibilitiesView extends React.Component {
     const { activeResponsibilitySet } = this.state;
     let responsbilitySet = activeResponsibilitySet
       ? activeResponsibilitySet.name
-      : "N/A";
+      : 'N/A';
     return `Delete responsiblity set ${responsbilitySet}`;
   }
 
@@ -157,7 +157,7 @@ class ResponsibilitiesView extends React.Component {
 
     return (
       <div>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <FloatingActionButton
             mini={true}
             style={{ marginRight: 10 }}
@@ -171,7 +171,7 @@ class ResponsibilitiesView extends React.Component {
             <div className="col-1-6">
               <span
                 className="sortable"
-                onClick={() => this.handleSortOrder("name")}
+                onClick={() => this.handleSortOrder('name')}
               >
                 name
               </span>
@@ -179,7 +179,7 @@ class ResponsibilitiesView extends React.Component {
             <div className="col-1-6">
               <span
                 className="sortable"
-                onClick={() => this.handleSortOrder("id")}
+                onClick={() => this.handleSortOrder('id')}
               >
                 id
               </span>
@@ -187,7 +187,7 @@ class ResponsibilitiesView extends React.Component {
             <div className="col-1-7">
               <span
                 className="sortable"
-                onClick={() => this.handleSortOrder("privateCode")}
+                onClick={() => this.handleSortOrder('privateCode')}
               >
                 private code
               </span>
@@ -197,7 +197,7 @@ class ResponsibilitiesView extends React.Component {
           {sortedResponsibilities.map(responsibility => {
             return (
               <div
-                key={"responsibility-" + responsibility.id}
+                key={'responsibility-' + responsibility.id}
                 className="resp-row-item"
               >
                 <div className="col-1-6">{responsibility.name}</div>
@@ -210,15 +210,15 @@ class ResponsibilitiesView extends React.Component {
                     adminZones={administrativeZones}
                   />
                 </div>
-                <div className="col-icon" style={{ cursor: "pointer" }}>
+                <div className="col-icon" style={{ cursor: 'pointer' }}>
                   <MdDelete
                     color="#fa7b81"
                     style={{
                       height: 20,
                       width: 20,
                       marginRight: 10,
-                      verticalAlign: "middle",
-                      cursor: "pointer"
+                      verticalAlign: 'middle',
+                      cursor: 'pointer'
                     }}
                     onClick={() =>
                       this.handleOpenDeleteConfirmationDialog(responsibility)
@@ -229,8 +229,8 @@ class ResponsibilitiesView extends React.Component {
                     style={{
                       height: 20,
                       width: 20,
-                      verticalAlign: "middle",
-                      cursor: "pointer"
+                      verticalAlign: 'middle',
+                      cursor: 'pointer'
                     }}
                     onClick={() => {
                       this.handleOpenEditResp(responsibility);

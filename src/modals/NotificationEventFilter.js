@@ -14,20 +14,20 @@
  *
  */
 
-import React from "react";
-import Checkbox from "material-ui/Checkbox";
-import { connect } from "react-redux";
-import OrganizationRegisterActions from "../actions/OrganizationRegisterActions";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
-import EventFilterStatesPopover from "./EventFilterStatesPopover";
-import EventFilterActionsPopover from "./EventFilterActionsPopover";
-import OrganisationSelect from "./OrganisationSelect";
-import NotificationTypeSelect from "./NotificationTypeSelect";
-import NotificationAdminZoneRefs from "./NotificationAdminZoneRefs";
-import NotificationEntityClassRef from "./NotificationEntityClassRefs";
-import IconButton from "material-ui/IconButton";
-import MdDelete from "material-ui/svg-icons/action/delete";
+import React from 'react';
+import Checkbox from 'material-ui/Checkbox';
+import { connect } from 'react-redux';
+import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import EventFilterStatesPopover from './EventFilterStatesPopover';
+import EventFilterActionsPopover from './EventFilterActionsPopover';
+import OrganisationSelect from './OrganisationSelect';
+import NotificationTypeSelect from './NotificationTypeSelect';
+import NotificationAdminZoneRefs from './NotificationAdminZoneRefs';
+import NotificationEntityClassRef from './NotificationEntityClassRefs';
+import IconButton from 'material-ui/IconButton';
+import MdDelete from 'material-ui/svg-icons/action/delete';
 
 class NotificationEventFilter extends React.Component {
   handleEnabled(value) {
@@ -69,32 +69,32 @@ class NotificationEventFilter extends React.Component {
 
   getErrorMessage() {
     const { notification } = this.props;
-    if (notification.eventFilter.type === "JOB") {
+    if (notification.eventFilter.type === 'JOB') {
       let missingFields = [];
 
       if (
         notification.eventFilter.actions &&
         notification.eventFilter.actions.length === 0
       ) {
-        missingFields.push("actions");
+        missingFields.push('actions');
       }
 
       if (
         notification.eventFilter.states &&
         notification.eventFilter.states.length === 0
       ) {
-        missingFields.push("states");
+        missingFields.push('states');
       }
 
       if (missingFields.length) {
         let fieldIsOrAre =
-          missingFields.length === 1 ? "field is " : "fields are ";
+          missingFields.length === 1 ? 'field is ' : 'fields are ';
         return `Required* ${fieldIsOrAre} missing for ${missingFields.join(
-          " and "
+          ' and '
         )}`;
       }
     }
-    return "";
+    return '';
   }
 
   render() {
@@ -109,11 +109,11 @@ class NotificationEventFilter extends React.Component {
       notificationTypes
     } = this.props;
     const enableJobSpecific =
-      notification.eventFilter.type && notification.eventFilter.type === "JOB";
+      notification.eventFilter.type && notification.eventFilter.type === 'JOB';
 
     return (
-      <div style={{ display: "block", padding: 10 }}>
-        <div style={{ display: "flex", marginTop: -10 }}>
+      <div style={{ display: 'block', padding: 10 }}>
+        <div style={{ display: 'flex', marginTop: -10 }}>
           <NotificationTypeSelect
             notification={notification}
             notificationTypes={notificationTypes}
@@ -127,7 +127,7 @@ class NotificationEventFilter extends React.Component {
             handleChangeOrganization={this.handleChangeOrganization.bind(this)}
           />
         </div>
-        <div style={{ display: "flex", marginTop: -10 }}>
+        <div style={{ display: 'flex', marginTop: -10 }}>
           <SelectField
             floatingLabelText="Type"
             onChange={this.handleChangeEventFilterType.bind(this)}
@@ -135,7 +135,7 @@ class NotificationEventFilter extends React.Component {
             value={notification.eventFilter.type}
           >
             {eventFilterTypes.map((eft, i) => (
-              <MenuItem key={"filter-" + i} value={eft} primaryText={eft} />
+              <MenuItem key={'filter-' + i} value={eft} primaryText={eft} />
             ))}
           </SelectField>
           <SelectField
@@ -147,18 +147,18 @@ class NotificationEventFilter extends React.Component {
           >
             {jobDomains.map((domain, i) => (
               <MenuItem
-                key={"domain-" + i}
+                key={'domain-' + i}
                 value={domain}
                 primaryText={domain}
               />
             ))}
           </SelectField>
         </div>
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <div
             style={{
-              display: enableJobSpecific ? "none" : "flex",
-              flexDirection: "column",
+              display: enableJobSpecific ? 'none' : 'flex',
+              flexDirection: 'column',
               flex: 2
             }}
           >
@@ -175,12 +175,12 @@ class NotificationEventFilter extends React.Component {
           </div>
           <div
             style={{
-              display: enableJobSpecific ? "flex" : "none",
+              display: enableJobSpecific ? 'flex' : 'none',
               marginTop: 10,
-              alignItems: "center"
+              alignItems: 'center'
             }}
           >
-            <div style={{ display: "flex" }}>
+            <div style={{ display: 'flex' }}>
               <EventFilterActionsPopover
                 index={index}
                 eventFilter={notification.eventFilter}
@@ -194,15 +194,15 @@ class NotificationEventFilter extends React.Component {
                 index={index}
               />
             </div>
-            <div style={{ color: "red", fontSize: "0.8em", marginLeft: 10 }}>
+            <div style={{ color: 'red', fontSize: '0.8em', marginLeft: 10 }}>
               {this.getErrorMessage()}
             </div>
           </div>
         </div>
-        <div style={{ display: "flex", marginTop: 10, alignItems: "center" }}>
+        <div style={{ display: 'flex', marginTop: 10, alignItems: 'center' }}>
           <Checkbox
             label="Enabled"
-            style={{ width: "auto" }}
+            style={{ width: 'auto' }}
             checked={notification.enabled}
             onCheck={(e, v) => this.handleEnabled(v)}
           />

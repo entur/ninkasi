@@ -14,15 +14,15 @@
  *
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import Menu from "material-ui/Menu";
-import MenuItem from "material-ui/MenuItem";
-import RaisedButton from "material-ui/RaisedButton";
-import Popover, { PopoverAnimationVertical } from "material-ui/Popover";
-import OrganizationRegisterActions from "../actions/OrganizationRegisterActions";
-import Checkbox from "material-ui/Checkbox";
-import PropTypes from "prop-types";
+import React from 'react';
+import { connect } from 'react-redux';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
+import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
+import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import Checkbox from 'material-ui/Checkbox';
+import PropTypes from 'prop-types';
 
 class EventFilterActionsPopover extends React.Component {
   static propTypes = {
@@ -64,7 +64,7 @@ class EventFilterActionsPopover extends React.Component {
 
     const actions = eventFilter.actions || [];
 
-    const allActionsChecked = actions.indexOf("*") > -1;
+    const allActionsChecked = actions.indexOf('*') > -1;
 
     return (
       <div>
@@ -72,7 +72,7 @@ class EventFilterActionsPopover extends React.Component {
           disabled={!enabled && !eventFilter.jobDomain}
           label={
             <span>
-              Actions<span style={{ color: "red" }}>*</span>
+              Actions<span style={{ color: 'red' }}>*</span>
             </span>
           }
           onClick={this.handleOpen.bind(this)}
@@ -83,21 +83,21 @@ class EventFilterActionsPopover extends React.Component {
           onRequestClose={() => {
             this.setState({ open: false });
           }}
-          anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-          targetOrigin={{ horizontal: "left", vertical: "top" }}
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
           animation={PopoverAnimationVertical}
         >
           {eventFilter.jobDomain &&
             allActions[eventFilter.jobDomain].map((action, i) => {
               //TODO: Map all values to plain English
-              let actionLabel = action === "*" ? "ALL" : action;
+              let actionLabel = action === '*' ? 'ALL' : action;
               let checked = allActionsChecked
                 ? true
                 : actions.indexOf(action) > -1;
 
               return (
                 <Menu
-                  key={"action-" + i}
+                  key={'action-' + i}
                   menuItemStyle={{ fontSize: 12, minHeight: 18 }}
                 >
                   <MenuItem>

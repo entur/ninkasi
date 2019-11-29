@@ -14,18 +14,18 @@
  *
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import "../sass/views/entityTypesView.scss";
-import MdEdit from "material-ui/svg-icons/image/edit";
-import FloatingActionButton from "material-ui/FloatingActionButton";
-import ContentAdd from "material-ui/svg-icons/content/add";
-import ModalCreateEntityType from "../modals/ModalCreateEntityType";
-import ModalEditEntiyType from "../modals/ModalEditEntityType";
-import OrganizationRegisterActions from "../actions/OrganizationRegisterActions";
-import MdDelete from "material-ui/svg-icons/action/delete";
-import { sortByColumns } from "../utils/index";
-import ModalConfirmation from "../modals/ModalConfirmation";
+import React from 'react';
+import { connect } from 'react-redux';
+import '../sass/views/entityTypesView.scss';
+import MdEdit from 'material-ui/svg-icons/image/edit';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ModalCreateEntityType from '../modals/ModalCreateEntityType';
+import ModalEditEntiyType from '../modals/ModalEditEntityType';
+import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import MdDelete from 'material-ui/svg-icons/action/delete';
+import { sortByColumns } from '../utils/index';
+import ModalConfirmation from '../modals/ModalConfirmation';
 
 class EntityTypesView extends React.Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class EntityTypesView extends React.Component {
       isDeleteConfirmationOpen: false,
       activeEntityType: null,
       sortOrder: {
-        column: "name",
+        column: 'name',
         asc: true
       }
     };
@@ -105,7 +105,7 @@ class EntityTypesView extends React.Component {
 
   getDeleteConfirmationTitle() {
     const { activeEntityType } = this.state;
-    let entityType = activeEntityType ? activeEntityType.name : "N/A";
+    let entityType = activeEntityType ? activeEntityType.name : 'N/A';
     return `Delete entity type ${entityType}`;
   }
 
@@ -132,10 +132,10 @@ class EntityTypesView extends React.Component {
 
     return (
       <div>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <FloatingActionButton
             mini={true}
-            style={{ float: "right", marginRight: 10 }}
+            style={{ float: 'right', marginRight: 10 }}
           >
             <ContentAdd
               onClick={() => this.setState({ isCreateModalOpen: true })}
@@ -147,7 +147,7 @@ class EntityTypesView extends React.Component {
             <div className="col-1-5">
               <span
                 className="sortable"
-                onClick={() => this.handleSortOrder("name")}
+                onClick={() => this.handleSortOrder('name')}
               >
                 name
               </span>
@@ -155,7 +155,7 @@ class EntityTypesView extends React.Component {
             <div className="col-1-5">
               <span
                 className="sortable"
-                onClick={() => this.handleSortOrder("privateCode")}
+                onClick={() => this.handleSortOrder('privateCode')}
               >
                 private code
               </span>
@@ -163,7 +163,7 @@ class EntityTypesView extends React.Component {
             <div className="col-1-5">
               <span
                 className="sortable"
-                onClick={() => this.handleSortOrder("codeSpace")}
+                onClick={() => this.handleSortOrder('codeSpace')}
               >
                 code space
               </span>
@@ -174,16 +174,16 @@ class EntityTypesView extends React.Component {
           </div>
           {sortedEntityTypes.map(et => {
             return (
-              <div key={"et-" + et.id} className="et-row-item">
+              <div key={'et-' + et.id} className="et-row-item">
                 <div className="col-1-5">{et.name}</div>
                 <div className="col-1-5">{et.privateCode}</div>
                 <div className="col-1-5">{et.codeSpace}</div>
                 <div className="col-1-5">
                   <ul
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      listStyleType: "circle"
+                      display: 'flex',
+                      flexDirection: 'column',
+                      listStyleType: 'circle'
                     }}
                   >
                     {et.classifications
@@ -193,15 +193,15 @@ class EntityTypesView extends React.Component {
                       : null}
                   </ul>
                 </div>
-                <div className="col-icon" style={{ cursor: "pointer" }}>
+                <div className="col-icon" style={{ cursor: 'pointer' }}>
                   <MdDelete
                     color="#fa7b81"
                     style={{
                       height: 20,
                       width: 20,
                       marginRight: 10,
-                      verticalAlign: "middle",
-                      cursor: "pointer"
+                      verticalAlign: 'middle',
+                      cursor: 'pointer'
                     }}
                     onClick={() => this.handleOpenDeleteConfirmationDialog(et)}
                   />
@@ -210,8 +210,8 @@ class EntityTypesView extends React.Component {
                     style={{
                       height: 20,
                       width: 20,
-                      verticalAlign: "middle",
-                      cursor: "pointer"
+                      verticalAlign: 'middle',
+                      cursor: 'pointer'
                     }}
                     onClick={() => this.handleEditEntityType(et)}
                   />

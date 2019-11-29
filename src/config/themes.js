@@ -16,41 +16,41 @@
 
 export const getProvidersEnv = providersBaseUrl => {
   if (providersBaseUrl) {
-    if (providersBaseUrl.indexOf("api.dev.entur.io") > -1) {
-      return "TEST";
-    } else if (providersBaseUrl.indexOf("api.entur.io") > -1) {
-      return "PROD";
+    if (providersBaseUrl.indexOf('api.dev.entur.io') > -1) {
+      return 'TEST';
+    } else if (providersBaseUrl.indexOf('api.entur.io') > -1) {
+      return 'PROD';
     } else {
-      return "DEV";
+      return 'DEV';
     }
   }
 };
 
 export const getTheme = env => {
-  return themes[env || "DEV"];
+  return themes[env || 'DEV'];
 };
 
 export const getIconColor = env => {
-  return iconColor[env || "DEV"];
+  return iconColor[env || 'DEV'];
 };
 
 const themes = {
   PROD: {
-    backgroundColor: "#2f2f2f",
-    color: "#fff"
+    backgroundColor: '#2f2f2f',
+    color: '#fff'
   },
   TEST: {
-    backgroundColor: "green",
-    color: "#fff"
+    backgroundColor: 'green',
+    color: '#fff'
   },
   DEV: {
-    backgroundColor: "orange",
-    color: "#fff"
+    backgroundColor: 'orange',
+    color: '#fff'
   }
 };
 
 const iconColor = {
-  PROD: "#FBB829",
-  TEST: "#FBB829",
-  DEV: "#fff"
+  PROD: '#FBB829',
+  TEST: '#FBB829',
+  DEV: '#fff'
 };

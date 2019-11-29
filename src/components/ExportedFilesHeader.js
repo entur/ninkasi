@@ -14,18 +14,18 @@
  *
  */
 
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 class ExportedFilesHeader extends Component {
   render() {
     const style = {
       padding: 2,
-      border: "1px solid #eee",
-      display: "flex",
-      alignItems: "center",
+      border: '1px solid #eee',
+      display: 'flex',
+      alignItems: 'center',
       fontWeight: 600,
-      background: "rgb(47, 47, 47)",
-      color: "#fff"
+      background: 'rgb(47, 47, 47)',
+      color: '#fff'
     };
 
     return (

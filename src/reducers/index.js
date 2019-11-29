@@ -14,11 +14,11 @@
  *
  */
 
-import SuppliersReducer from "./SuppliersReducer";
-import MardukReducer from "./MardukReducer";
-import UtilsReducer from "./UtilsReducer";
-import OrganizationReducer from "./OrganizationReducer";
-import UserReducer from "./UserReducer";
+import SuppliersReducer from './SuppliersReducer';
+import MardukReducer from './MardukReducer';
+import UtilsReducer from './UtilsReducer';
+import OrganizationReducer from './OrganizationReducer';
+import UserReducer from './UserReducer';
 
 export {
   SuppliersReducer,

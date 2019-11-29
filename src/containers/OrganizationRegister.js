@@ -14,13 +14,13 @@
  *
  */
 
-import React from "react";
-import SideBarTabs from "../components/SideBarTabs";
-import UserView from "../components/UserView";
-import OrganizationView from "../components/OrganizationView";
-import RoleView from "../components/RoleView";
-import ResponsibilitiesView from "../components/ResponsibilitiesView";
-import EntityTypesView from "../components/EntityTypesView";
+import React from 'react';
+import SideBarTabs from '../components/SideBarTabs';
+import UserView from '../components/UserView';
+import OrganizationView from '../components/OrganizationView';
+import RoleView from '../components/RoleView';
+import ResponsibilitiesView from '../components/ResponsibilitiesView';
+import EntityTypesView from '../components/EntityTypesView';
 
 class OrganizationRegister extends React.Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class OrganizationRegister extends React.Component {
 
   render() {
     const style = {
-      display: "flex"
+      display: 'flex'
     };
 
     const { activeTab } = this.state;
@@ -51,9 +51,9 @@ class OrganizationRegister extends React.Component {
         />
         <div
           style={{
-            border: "1px solid rgb(229, 229, 229)",
+            border: '1px solid rgb(229, 229, 229)',
             flex: 2,
-            overflow: "hidden"
+            overflow: 'hidden'
           }}
         >
           {activeTab === 0 ? <UserView /> : null}

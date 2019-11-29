@@ -14,19 +14,19 @@
  *
  */
 
-import React from "react";
-import SuppliersContainer from "./SuppliersContainer";
-import SupplierTabWrapper from "./SupplierTabWrapper";
-import SupplierPage from "./SupplierPage";
-import NotificationContainer from "./NotificationContainer";
-import ModalViewContainer from "../modals/ModalActionContainer";
-import cfgreader from "../config/readConfig";
-import Header from "../components/Header";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import { connect } from "react-redux";
-import UtilsActions from "../actions/UtilsActions";
-import roleParser from "../roles/rolesParser";
-import NoAccess from "../components/NoAccess";
+import React from 'react';
+import SuppliersContainer from './SuppliersContainer';
+import SupplierTabWrapper from './SupplierTabWrapper';
+import SupplierPage from './SupplierPage';
+import NotificationContainer from './NotificationContainer';
+import ModalViewContainer from '../modals/ModalActionContainer';
+import cfgreader from '../config/readConfig';
+import Header from '../components/Header';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { connect } from 'react-redux';
+import UtilsActions from '../actions/UtilsActions';
+import roleParser from '../roles/rolesParser';
+import NoAccess from '../components/NoAccess';
 
 class MainPage extends React.Component {
   componentWillMount() {

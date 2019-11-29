@@ -14,10 +14,10 @@
  *
  */
 
-import React from "react";
-import MdRemove from "material-ui/svg-icons/content/remove";
-import MdAdd from "material-ui/svg-icons/content/add";
-import IconButton from "material-ui/IconButton";
+import React from 'react';
+import MdRemove from 'material-ui/svg-icons/content/remove';
+import MdAdd from 'material-ui/svg-icons/content/add';
+import IconButton from 'material-ui/IconButton';
 
 class ResponsiblitySetList extends React.Component {
   getResponbilityNameById(id) {
@@ -27,7 +27,7 @@ class ResponsiblitySetList extends React.Component {
         return responsiblities[i].name;
       }
     }
-    return "N/A";
+    return 'N/A';
   }
 
   handleRemoveResponsibilitySet() {
@@ -41,21 +41,21 @@ class ResponsiblitySetList extends React.Component {
 
     return (
       <div>
-        <div style={{ fontSize: "0.8em", marginBottom: 2 }}>
+        <div style={{ fontSize: '0.8em', marginBottom: 2 }}>
           Responsibility sets
         </div>
         <select
           multiple="multiple"
-          style={{ width: "100%", fontSize: 12 }}
+          style={{ width: '100%', fontSize: 12 }}
           ref="responsibilitySets"
         >
           {user.responsibilitySetRefs.map((rs, index) => (
-            <option key={"ec-" + index}>
-              {this.getResponbilityNameById(rs)}{" "}
+            <option key={'ec-' + index}>
+              {this.getResponbilityNameById(rs)}{' '}
             </option>
           ))}
         </select>
-        <div style={{ textAlign: "left", width: "100%" }}>
+        <div style={{ textAlign: 'left', width: '100%' }}>
           <IconButton
             onClick={e => {
               handleAdd(e);

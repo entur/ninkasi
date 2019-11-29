@@ -14,15 +14,15 @@
  *
  */
 
-import React from "react";
-import PropTypes from "prop-types";
-import { Card, CardText } from "material-ui/Card";
-import { List, ListItem } from "material-ui/List";
-import { HeaderTimeline, Timeline } from "bogu";
-import { sortLines, sortIcon } from "bogu/utils";
-import { color } from "bogu/styles";
-import IconButton from "material-ui/IconButton";
-import CloseButton from "material-ui/svg-icons/navigation/close";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Card, CardText } from 'material-ui/Card';
+import { List, ListItem } from 'material-ui/List';
+import { HeaderTimeline, Timeline } from 'bogu';
+import { sortLines, sortIcon } from 'bogu/utils';
+import { color } from 'bogu/styles';
+import IconButton from 'material-ui/IconButton';
+import CloseButton from 'material-ui/svg-icons/navigation/close';
 
 class LineStatsCard extends React.Component {
   static propTypes = {
@@ -41,18 +41,18 @@ class LineStatsCard extends React.Component {
   }
 
   handleToggleListItem(line) {
-    let isOpen = !this.state["open" + line];
+    let isOpen = !this.state['open' + line];
     this.saveNestedState(isOpen, line);
   }
 
   handleToggle(item, line) {
-    let isOpen = !this.state["open" + line] || item.state.open;
+    let isOpen = !this.state['open' + line] || item.state.open;
     this.saveNestedState(isOpen, line);
   }
 
   saveNestedState(isOpen, line) {
     let state = this.state;
-    state["open" + line] = isOpen;
+    state['open' + line] = isOpen;
     this.setState(state);
   }
 
@@ -69,28 +69,28 @@ class LineStatsCard extends React.Component {
 
     let validDateMiddleStyle = {
       fontWeight: 600,
-      marginLeft: 100 - 17 - stats.validDaysOffset + "%",
-      display: "inline-block"
+      marginLeft: 100 - 17 - stats.validDaysOffset + '%',
+      display: 'inline-block'
     };
 
     let validDateStartStyle = {
       fontWeight: 600,
-      display: "inline-block",
-      marginLeft: "3%",
-      float: "left"
+      display: 'inline-block',
+      marginLeft: '3%',
+      float: 'left'
     };
 
     let validDateEndStyle = {
       fontWeight: 600,
-      display: "inline-block",
-      float: "right",
-      marginRight: "3%"
+      display: 'inline-block',
+      float: 'right',
+      marginRight: '3%'
     };
 
     let sortIconStyle = {
-      display: "inline-block",
-      float: "left",
-      cursor: "pointer",
+      display: 'inline-block',
+      float: 'left',
+      cursor: 'pointer',
       width: 48
     };
 
@@ -102,18 +102,18 @@ class LineStatsCard extends React.Component {
     );
 
     return (
-      <Card expanded={true} style={{ flex: 4, boxShadow: "none" }}>
-        <CardText style={{ padding: "0vh 0" }}>
+      <Card expanded={true} style={{ flex: 4, boxShadow: 'none' }}>
+        <CardText style={{ padding: '0vh 0' }}>
           <div>
             <Card>
               <CardText>
                 <div
                   style={{
-                    textTransform: "uppercase",
+                    textTransform: 'uppercase',
                     fontWeight: 600,
                     marginLeft: 10,
-                    fontSize: "1.4em",
-                    display: "block",
+                    fontSize: '1.4em',
+                    display: 'block',
                     paddingTop: 10,
                     paddingBottom: 10
                   }}
@@ -121,7 +121,7 @@ class LineStatsCard extends React.Component {
                   {title}
                   {this.props.handleClose && (
                     <IconButton
-                      style={{ float: "right" }}
+                      style={{ float: 'right' }}
                       onClick={() => this.props.handleClose()}
                       touch={true}
                     >
@@ -131,13 +131,13 @@ class LineStatsCard extends React.Component {
                 </div>
                 <div
                   style={{
-                    display: "block",
+                    display: 'block',
                     marginTop: 10,
                     marginBottom: 10,
                     marginLeft: 4,
                     padding: 2,
                     background: color.tableHeader,
-                    opacity: "0.8",
+                    opacity: '0.8',
                     borderRadius: 7
                   }}
                 >
@@ -156,17 +156,17 @@ class LineStatsCard extends React.Component {
                 </div>
                 <div
                   style={{
-                    height: "calc(100vh - 435px)",
-                    overflowY: "auto",
-                    overflowX: "hidden",
-                    margin: "auto",
-                    width: "100%"
+                    height: 'calc(100vh - 435px)',
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                    margin: 'auto',
+                    width: '100%'
                   }}
                 >
-                  <List style={{ width: "100%", boxShadow: "none" }}>
+                  <List style={{ width: '100%', boxShadow: 'none' }}>
                     {order.map((line, index) => (
                       <ListItem
-                        key={"line" + index}
+                        key={'line' + index}
                         disabled
                         style={{
                           padding: 0,
@@ -176,8 +176,8 @@ class LineStatsCard extends React.Component {
                           lineHeight: 0
                         }}
                         open={
-                          this.state["open" + line]
-                            ? this.state["open" + line]
+                          this.state['open' + line]
+                            ? this.state['open' + line]
                             : false
                         }
                         onNestedListToggle={item =>
@@ -185,7 +185,7 @@ class LineStatsCard extends React.Component {
                         }
                         children={
                           <div
-                            key={"ht-wrapper" + index}
+                            key={'ht-wrapper' + index}
                             onClick={() => {
                               this.handleToggleListItem(line);
                             }}
@@ -193,10 +193,10 @@ class LineStatsCard extends React.Component {
                             <HeaderTimeline
                               line={line}
                               hoverText={stats.linesMap[line].lineNames.join(
-                                ", "
+                                ', '
                               )}
                               index={index}
-                              key={"HeaderTimeline" + index}
+                              key={'HeaderTimeline' + index}
                               validDaysOffset={stats.validDaysOffset}
                               validFromDate={stats.validFromDate}
                               effectivePeriods={
@@ -208,11 +208,11 @@ class LineStatsCard extends React.Component {
                         nestedItems={[
                           <ListItem
                             disabled
-                            key={"line-n" + index}
+                            key={'line-n' + index}
                             style={{ padding: 0, marginLeft: 0 }}
                             children={stats.linesMap[line].lines.map((l, i) => (
                               <Timeline
-                                key={"timelineItem" + index + "-" + i}
+                                key={'timelineItem' + index + '-' + i}
                                 timetables={l.timetables}
                                 isLast={
                                   i === stats.linesMap[line].lines.length - 1

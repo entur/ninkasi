@@ -14,13 +14,13 @@
  *
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import NotificationAddEntityClassRef from "./NotificationAddEntityClassRef";
-import IconButton from "material-ui/IconButton";
-import MdRemove from "material-ui/svg-icons/content/remove";
-import OrganizationRegisterActions from "../actions/OrganizationRegisterActions";
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import NotificationAddEntityClassRef from './NotificationAddEntityClassRef';
+import IconButton from 'material-ui/IconButton';
+import MdRemove from 'material-ui/svg-icons/content/remove';
+import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
 
 class NotificationEntityClassRef extends React.Component {
   static propTypes = {
@@ -55,26 +55,26 @@ class NotificationEntityClassRef extends React.Component {
     return (
       <div
         style={{
-          display: visible ? "none" : "flex",
-          flexDirection: "column",
+          display: visible ? 'none' : 'flex',
+          flexDirection: 'column',
           flex: 2,
-          border: "1px solid #eee",
+          border: '1px solid #eee',
           marginTop: 10,
           padding: 5
         }}
       >
-        <div style={{ width: "100%", fontSize: 12, fontWeight: 600 }}>
+        <div style={{ width: '100%', fontSize: 12, fontWeight: 600 }}>
           Entity classification
-          <span style={{ color: "red", fontSize: 10 }}>*</span>
+          <span style={{ color: 'red', fontSize: 10 }}>*</span>
         </div>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: 'flex' }}>
           <select
             multiple="multiple"
             ref="entityRefs"
-            style={{ width: "100%", fontSize: 12, flex: 2 }}
+            style={{ width: '100%', fontSize: 12, flex: 2 }}
           >
             {entityClassRefs.map((ref, index) => (
-              <option key={"entity-" + index}>{ref} </option>
+              <option key={'entity-' + index}>{ref} </option>
             ))}
           </select>
           <IconButton onClick={this.handleRemoveEntityClass.bind(this)}>
@@ -85,8 +85,8 @@ class NotificationEntityClassRef extends React.Component {
           <span
             style={{
               fontSize: 12,
-              color: "red",
-              textAlign: "left"
+              color: 'red',
+              textAlign: 'left'
             }}
           >
             Required set of entity classifications can not be empty

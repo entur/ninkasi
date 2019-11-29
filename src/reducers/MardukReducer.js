@@ -14,7 +14,7 @@
  *
  */
 
-import * as types from "./../actions/actionTypes";
+import * as types from './../actions/actionTypes';
 
 const cleanSlate = {
   filenames: {
@@ -40,8 +40,8 @@ const cleanSlate = {
     ABORTED: false,
     CANCELED: false
   },
-  actionFilter: "",
-  actionAllFilter: "",
+  actionFilter: '',
+  actionAllFilter: '',
   requesting_chouette_job: false,
   requesting_chouette_all_job: false
 };
@@ -263,7 +263,7 @@ const MardukReducer = (state = cleanSlate, action) => {
     case types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER:
       if (state.chouette_cancel_token) {
         let cancelToken = state.chouette_cancel_token;
-        cancelToken("Operation canceled by new request.");
+        cancelToken('Operation canceled by new request.');
       }
 
       return Object.assign({}, state, {
@@ -274,7 +274,7 @@ const MardukReducer = (state = cleanSlate, action) => {
     case types.REQUESTED_ALL_CHOUETTE_JOB_STATUS:
       if (state.chouette_cancel_all_token) {
         let cancelAllToken = state.chouette_cancel_all_token;
-        cancelAllToken("Operation canceled by new request");
+        cancelAllToken('Operation canceled by new request');
       }
 
       return Object.assign({}, state, {

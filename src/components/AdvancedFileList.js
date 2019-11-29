@@ -14,10 +14,10 @@
  *
  */
 
-import React from "react";
-import moment from "moment";
-import MdDownload from "material-ui/svg-icons/file/file-download";
-import { getSizeFromBytes } from "../utils/";
+import React from 'react';
+import moment from 'moment';
+import MdDownload from 'material-ui/svg-icons/file/file-download';
+import { getSizeFromBytes } from '../utils/';
 
 class AdvancedFileList extends React.Component {
   handleDownloadFile(e, filename) {
@@ -26,16 +26,16 @@ class AdvancedFileList extends React.Component {
     const URL =
       window.config.timetableAdminBaseUrl +
       `${this.props.activeProviderId}/files/${filename}`;
-    const token = localStorage.getItem("NINKASI::jwt");
+    const token = localStorage.getItem('NINKASI::jwt');
     const params = `?access_token=${token}`;
 
-    let link = document.createElement("a");
-    link.setAttribute("href", URL + params);
-    link.setAttribute("download", filename);
+    let link = document.createElement('a');
+    link.setAttribute('href', URL + params);
+    link.setAttribute('download', filename);
 
-    var event = document.createEvent("MouseEvents");
+    var event = document.createEvent('MouseEvents');
     event.initMouseEvent(
-      "click",
+      'click',
       true,
       false,
       window,
@@ -114,27 +114,27 @@ class AdvancedFileList extends React.Component {
       marginRight: 5,
       paddingTop: 10,
       paddingBottom: 10,
-      display: "table-cell",
-      cursor: "pointer",
-      borderBottom: "1px solid grey",
-      borderRight: "1px solid grey",
+      display: 'table-cell',
+      cursor: 'pointer',
+      borderBottom: '1px solid grey',
+      borderRight: '1px solid grey',
       paddingLeft: 10,
       paddingRight: 10,
-      maxWidth: "30%",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-      overflowX: "hidden"
+      maxWidth: '30%',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      overflowX: 'hidden'
     };
 
     const columnStyle = {
-      verticalAlign: "middle",
-      display: "table-cell",
+      verticalAlign: 'middle',
+      display: 'table-cell',
       paddingRight: 10,
       textIndent: 5,
-      maxWidth: "30%",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-      overflowX: "hidden"
+      maxWidth: '30%',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      overflowX: 'hidden'
     };
 
     return (
@@ -142,21 +142,21 @@ class AdvancedFileList extends React.Component {
         className="multiselect unselectable"
         tabIndex={isSource ? 1 : 2}
         style={{
-          border: "1px solid black",
-          lineHeight: "1.2",
-          tableLayout: "fixed",
-          height: "60vh",
-          minWidth: "42vw"
+          border: '1px solid black',
+          lineHeight: '1.2',
+          tableLayout: 'fixed',
+          height: '60vh',
+          minWidth: '42vw'
         }}
         onKeyDown={e => this.handleSelectAll(e)}
       >
         <div
           style={{
-            display: files.length ? "table-header-group" : "none",
-            minWidth: "100%",
-            color: "#191919",
+            display: files.length ? 'table-header-group' : 'none',
+            minWidth: '100%',
+            color: '#191919',
             fontWeight: 600,
-            background: "#F5F4F4"
+            background: '#F5F4F4'
           }}
         >
           <div
@@ -164,7 +164,7 @@ class AdvancedFileList extends React.Component {
             onClick={() => isSource && this.props.handleSortByName()}
           >
             <span
-              style={{ borderBottom: isSource ? "1px dotted black" : "none" }}
+              style={{ borderBottom: isSource ? '1px dotted black' : 'none' }}
             >
               Filename
             </span>
@@ -174,7 +174,7 @@ class AdvancedFileList extends React.Component {
             onClick={() => isSource && this.props.handleSortBySize()}
           >
             <span
-              style={{ borderBottom: isSource ? "1px dotted black" : "none" }}
+              style={{ borderBottom: isSource ? '1px dotted black' : 'none' }}
             >
               Size
             </span>
@@ -184,18 +184,18 @@ class AdvancedFileList extends React.Component {
             onClick={() => isSource && this.props.handleSortByExt()}
           >
             <span
-              style={{ borderBottom: isSource ? "1px dotted black" : "none" }}
+              style={{ borderBottom: isSource ? '1px dotted black' : 'none' }}
             >
               Ext
             </span>
           </div>
           <div
-            style={{ ...headerStyle, width: "75%" }}
+            style={{ ...headerStyle, width: '75%' }}
             onClick={() => this.props.handleSortByDate()}
           >
-            <span style={{ borderBottom: "1px dotted black" }}>Updated</span>
+            <span style={{ borderBottom: '1px dotted black' }}>Updated</span>
           </div>
-          <div style={{ ...headerStyle, width: "99%" }}>
+          <div style={{ ...headerStyle, width: '99%' }}>
             <span />
           </div>
         </div>
@@ -204,20 +204,20 @@ class AdvancedFileList extends React.Component {
 
           return (
             <div
-              key={"afl-item" + index}
+              key={'afl-item' + index}
               style={{
-                fontSize: "0.9em",
-                border: "1px solid #d8d8d8",
+                fontSize: '0.9em',
+                border: '1px solid #d8d8d8',
                 marginLeft: 10,
                 marginRight: 10,
-                display: "table-row",
-                cursor: "pointer",
-                background: selected ? "#4682b4" : "#fff",
-                color: selected ? "#fff" : "#000",
-                verticalAlign: "middle",
+                display: 'table-row',
+                cursor: 'pointer',
+                background: selected ? '#4682b4' : '#fff',
+                color: selected ? '#fff' : '#000',
+                verticalAlign: 'middle',
                 height: 20,
                 lineHeight: 3,
-                overflowY: "auto"
+                overflowY: 'auto'
               }}
               onClick={e => this.handleMenuItemOnClick(e, index)}
               onDoubleClick={e => {
@@ -229,24 +229,24 @@ class AdvancedFileList extends React.Component {
               <div style={columnStyle}> {file.ext}</div>
               <div style={columnStyle}>
                 {moment(file.updated)
-                  .format("YYYY-MM-DD HH:mm:ss")
+                  .format('YYYY-MM-DD HH:mm:ss')
                   .toString()}
               </div>
               {downloadButton ? (
                 <div
                   style={{
-                    verticalAlign: "middle",
-                    display: "table-cell",
+                    verticalAlign: 'middle',
+                    display: 'table-cell',
                     width: 50,
                     paddingLeft: 10,
-                    background: "#fff"
+                    background: '#fff'
                   }}
                 >
                   <MdDownload
                     style={{
                       marginTop: 1,
-                      fill: "#2196F3",
-                      verticalAlign: "middle"
+                      fill: '#2196F3',
+                      verticalAlign: 'middle'
                     }}
                     onClick={e => this.handleDownloadFile(e, file.name)}
                   />

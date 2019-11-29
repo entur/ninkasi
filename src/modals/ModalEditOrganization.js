@@ -14,21 +14,21 @@
  *
  */
 
-import React from "react";
-import Modal from "material-ui/Dialog";
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/FlatButton";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
+import React from 'react';
+import Modal from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 const initialState = {
   organization: {
-    name: "",
-    organisationType: "AUTHORITY",
-    privateCode: "",
-    codeSpace: ""
+    name: '',
+    organisationType: 'AUTHORITY',
+    privateCode: '',
+    codeSpace: ''
   },
-  originalName: ""
+  originalName: ''
 };
 
 class ModalEditOrganization extends React.Component {
@@ -77,22 +77,22 @@ class ModalEditOrganization extends React.Component {
       <Modal
         open={isModalOpen}
         actions={actions}
-        contentStyle={{ width: "30%" }}
+        contentStyle={{ width: '30%' }}
         onRequestClose={() => handleCloseModal()}
-        title={"Editing organisation " + originalName}
+        title={'Editing organisation ' + originalName}
       >
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center"
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
           }}
         >
           <TextField
             hintText="Name"
             floatingLabelText="Name"
             errorText={
-              isOrganizationNameTaken ? "Organization name already exists" : ""
+              isOrganizationNameTaken ? 'Organization name already exists' : ''
             }
             value={organization.name}
             onChange={(e, value) =>
@@ -107,8 +107,8 @@ class ModalEditOrganization extends React.Component {
             floatingLabelText="Private code"
             errorText={
               isOrganizationPrivateCodeTaken
-                ? "Organization private code already exists"
-                : ""
+                ? 'Organization private code already exists'
+                : ''
             }
             value={organization.privateCode}
             disabled={true}

@@ -14,8 +14,8 @@
  *
  */
 
-import React from "react";
-import SideBarTabsElement from "./SideBarTabsElement";
+import React from 'react';
+import SideBarTabsElement from './SideBarTabsElement';
 
 class SideBarTabs extends React.Component {
   setActiveTab(value) {
@@ -25,7 +25,7 @@ class SideBarTabs extends React.Component {
   render() {
     const style = {
       maxWidth: 120,
-      fontSize: "0.9em",
+      fontSize: '0.9em',
       marginRight: 10
     };
 

@@ -14,27 +14,27 @@
  *
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import RaisedButton from "material-ui/RaisedButton";
-import FlatButton from "material-ui/FlatButton";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
-import Checkbox from "material-ui/Checkbox";
-import AdminZoneSearchWrapper from "./AdminZoneSearchWrapper";
+import React from 'react';
+import { connect } from 'react-redux';
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import Checkbox from 'material-ui/Checkbox';
+import AdminZoneSearchWrapper from './AdminZoneSearchWrapper';
 import OrganizationRegisterActions, {
   sortBy
-} from "../actions/OrganizationRegisterActions";
-import MdRemove from "material-ui/svg-icons/content/remove";
-import IconButton from "material-ui/IconButton";
-import { getEntityClassificationRefString } from "../utils/";
+} from '../actions/OrganizationRegisterActions';
+import MdRemove from 'material-ui/svg-icons/content/remove';
+import IconButton from 'material-ui/IconButton';
+import { getEntityClassificationRefString } from '../utils/';
 
 class NewRoleAssignment extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tempEntityClassification: "",
-      tempEntityType: "",
+      tempEntityClassification: '',
+      tempEntityType: '',
       tempEntityTypes: [],
       resultChip: null,
       negate: false
@@ -46,7 +46,7 @@ class NewRoleAssignment extends React.Component {
       response => {
         this.setState({
           tempEntityClassification: entityType,
-          tempEntityTypes: sortBy(response.data, "name")
+          tempEntityTypes: sortBy(response.data, 'name')
         });
       }
     );
@@ -106,11 +106,11 @@ class NewRoleAssignment extends React.Component {
     } = this.state;
 
     return (
-      <div style={{ border: "1px dotted", height: "100%" }}>
+      <div style={{ border: '1px dotted', height: '100%' }}>
         <div
           style={{
             fontSize: 12,
-            textAlign: "center",
+            textAlign: 'center',
             fontWeight: 600
           }}
         >
@@ -158,15 +158,15 @@ class NewRoleAssignment extends React.Component {
           chip={this.state.resultChip}
           handleDeleteChip={this.handleDeleteResultChip.bind(this)}
         />
-        <div style={{ width: "100%", fontSize: 12 }}>Entity classification</div>
-        <div style={{ display: "flex" }}>
+        <div style={{ width: '100%', fontSize: 12 }}>Entity classification</div>
+        <div style={{ display: 'flex' }}>
           <select
             ref="entityClassRefs"
             multiple="multiple"
-            style={{ width: "100%", fontSize: 12 }}
+            style={{ width: '100%', fontSize: 12 }}
           >
             {newRole.entityClassificationAssignments.map((ref, index) => (
-              <option key={"entity-" + index}>
+              <option key={'entity-' + index}>
                 {getEntityClassificationRefString(
                   ref.entityClassificationRef,
                   ref.allow
@@ -180,16 +180,16 @@ class NewRoleAssignment extends React.Component {
         </div>
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between"
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
           }}
         >
           <Checkbox
             label="Negate"
             style={{
               flex: 0.8,
-              width: "auto",
+              width: 'auto',
               marginTop: 30,
               marginRight: 5,
               marginLeft: 5
@@ -253,7 +253,7 @@ class NewRoleAssignment extends React.Component {
             !newRole.typeOfResponsibilityRoleRef.length ||
             !newRole.responsibleOrganisationRef.length
           }
-          style={{ display: "block" }}
+          style={{ display: 'block' }}
           onClick={handleAddRole}
         />
       </div>

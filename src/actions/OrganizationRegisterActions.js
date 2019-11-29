@@ -14,11 +14,11 @@
  *
  */
 
-import axios from "axios";
-import * as types from "./actionTypes";
-import { formatUserNotifications } from "./OrganizationUtils";
-import SuppliersActions from "./SuppliersActions";
-import uuid from "uuid/v4";
+import axios from 'axios';
+import * as types from './actionTypes';
+import { formatUserNotifications } from './OrganizationUtils';
+import SuppliersActions from './SuppliersActions';
+import uuid from 'uuid/v4';
 
 function sendData(payLoad, type) {
   return {
@@ -31,13 +31,13 @@ var OrganizationRegisterActions = {};
 
 const getConfig = () => {
   let config = {};
-  let token = localStorage.getItem("NINKASI::jwt");
+  let token = localStorage.getItem('NINKASI::jwt');
 
   config.headers = {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    Authorization: "Bearer " + token,
-    "X-Correlation-Id": uuid()
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer ' + token,
+    'X-Correlation-Id': uuid()
   };
   return config;
 };
@@ -47,10 +47,10 @@ OrganizationRegisterActions.getRoles = () => dispatch => {
   return axios
     .get(url, getConfig())
     .then(response => {
-      dispatch(sendData(sortBy(response.data, "id"), types.RECEIVED_ROLES));
+      dispatch(sendData(sortBy(response.data, 'id'), types.RECEIVED_ROLES));
     })
     .catch(error => {
-      console.log("Error receiving roles", error);
+      console.log('Error receiving roles', error);
     });
 };
 
@@ -117,7 +117,7 @@ OrganizationRegisterActions.updateRole = role => dispatch => {
       dispatch(OrganizationRegisterActions.getRoles());
     })
     .catch(error => {
-      console.log("Error updating role", error);
+      console.log('Error updating role', error);
     });
 };
 
@@ -127,11 +127,11 @@ OrganizationRegisterActions.getOrganizations = () => dispatch => {
     .get(url, getConfig())
     .then(response => {
       dispatch(
-        sendData(sortBy(response.data, "name"), types.RECEIVED_ORGANIZATIONS)
+        sendData(sortBy(response.data, 'name'), types.RECEIVED_ORGANIZATIONS)
       );
     })
     .catch(error => {
-      console.log("Error receiving organizations", error);
+      console.log('Error receiving organizations', error);
     });
 };
 
@@ -163,7 +163,7 @@ OrganizationRegisterActions.updateOrganization = organization => dispatch => {
       dispatch(OrganizationRegisterActions.getOrganizations());
     })
     .catch(error => {
-      console.log("Error updating organization", error);
+      console.log('Error updating organization', error);
     });
 };
 
@@ -180,7 +180,7 @@ OrganizationRegisterActions.updateUser = user => dispatch => {
       dispatch(OrganizationRegisterActions.getUsers());
     })
     .catch(error => {
-      console.log("Error updating user", error);
+      console.log('Error updating user', error);
     });
 };
 
@@ -192,7 +192,7 @@ OrganizationRegisterActions.getCodeSpaces = () => dispatch => {
       dispatch(sendData(response.data, types.RECEIVED_CODESPACES));
     })
     .catch(error => {
-      console.log("Error receiving code spaces", error);
+      console.log('Error receiving code spaces', error);
     });
 };
 
@@ -202,11 +202,11 @@ OrganizationRegisterActions.getUsers = () => dispatch => {
     .get(url, getConfig())
     .then(response => {
       dispatch(
-        sendData(sortBy(response.data, "username"), types.RECEIVED_USERS)
+        sendData(sortBy(response.data, 'username'), types.RECEIVED_USERS)
       );
     })
     .catch(error => {
-      console.log("Error receiving users", error);
+      console.log('Error receiving users', error);
     });
 };
 
@@ -218,7 +218,7 @@ OrganizationRegisterActions.deleteUser = userId => dispatch => {
       dispatch(OrganizationRegisterActions.getUsers());
     })
     .catch(error => {
-      console.log("Error deleting user with id " + userId, error);
+      console.log('Error deleting user with id ' + userId, error);
     });
 };
 
@@ -228,19 +228,19 @@ OrganizationRegisterActions.deleteOrganization = organizationId => dispatch => {
     .delete(url, getConfig())
     .then(response => {
       dispatch(
-        SuppliersActions.addNotification("Deleted organization", "success")
+        SuppliersActions.addNotification('Deleted organization', 'success')
       );
       dispatch(OrganizationRegisterActions.getOrganizations());
     })
     .catch(error => {
       dispatch(
         SuppliersActions.addNotification(
-          "Failed to delete organization",
-          "error"
+          'Failed to delete organization',
+          'error'
         )
       );
       console.log(
-        "Error deleting organization with id " + organizationId,
+        'Error deleting organization with id ' + organizationId,
         error
       );
     });
@@ -252,18 +252,18 @@ OrganizationRegisterActions.deleteEntityType = entityTypeId => dispatch => {
     .delete(url, getConfig())
     .then(response => {
       dispatch(
-        SuppliersActions.addNotification("Deleted entity type", "success")
+        SuppliersActions.addNotification('Deleted entity type', 'success')
       );
       dispatch(OrganizationRegisterActions.getEntityTypes());
     })
     .catch(error => {
       dispatch(
         SuppliersActions.addNotification(
-          "Unable to delete entity type",
-          "error"
+          'Unable to delete entity type',
+          'error'
         )
       );
-      console.log("Error deleting entity_type with id " + entityTypeId, error);
+      console.log('Error deleting entity_type with id ' + entityTypeId, error);
     });
 };
 
@@ -274,8 +274,8 @@ OrganizationRegisterActions.deleteResponsibilitySet = responsibilitySetId => dis
     .then(response => {
       dispatch(
         SuppliersActions.addNotification(
-          "Responsibility set deleted",
-          "success"
+          'Responsibility set deleted',
+          'success'
         )
       );
       dispatch(OrganizationRegisterActions.getResponbilitySets());
@@ -283,12 +283,12 @@ OrganizationRegisterActions.deleteResponsibilitySet = responsibilitySetId => dis
     .catch(error => {
       dispatch(
         SuppliersActions.addNotification(
-          "Failed to delete responsibility set",
-          "error"
+          'Failed to delete responsibility set',
+          'error'
         )
       );
       console.log(
-        "Error deleting responsibility_set with id " + responsibilitySetId,
+        'Error deleting responsibility_set with id ' + responsibilitySetId,
         error
       );
     });
@@ -299,14 +299,14 @@ OrganizationRegisterActions.deleteRole = roleId => dispatch => {
   return axios
     .delete(url, getConfig())
     .then(response => {
-      dispatch(SuppliersActions.addNotification("Role deleted", "success"));
+      dispatch(SuppliersActions.addNotification('Role deleted', 'success'));
       dispatch(OrganizationRegisterActions.getRoles());
     })
     .catch(error => {
       dispatch(
-        SuppliersActions.addNotification("Failed to delete role", "error")
+        SuppliersActions.addNotification('Failed to delete role', 'error')
       );
-      console.log("Error deleting role with id " + roleId, error);
+      console.log('Error deleting role with id ' + roleId, error);
     });
 };
 
@@ -316,11 +316,11 @@ OrganizationRegisterActions.getResponbilitySets = () => dispatch => {
     .get(url, getConfig())
     .then(response => {
       dispatch(
-        sendData(sortBy(response.data, "name"), types.RECEIVED_RESPONSIBILITES)
+        sendData(sortBy(response.data, 'name'), types.RECEIVED_RESPONSIBILITES)
       );
     })
     .catch(error => {
-      console.log("Error responsibility_sets users", error);
+      console.log('Error responsibility_sets users', error);
     });
 };
 
@@ -354,7 +354,7 @@ OrganizationRegisterActions.createUser = user => dispatch => {
       dispatch(
         sendData(
           {
-            userId: "N/A",
+            userId: 'N/A',
             error: false,
             username: user.username,
             isNewUser: true,
@@ -399,7 +399,7 @@ OrganizationRegisterActions.updateEntityType = entityType => dispatch => {
       dispatch(OrganizationRegisterActions.getEntityTypes());
     })
     .catch(error => {
-      console.log("Error updating entity type set", error);
+      console.log('Error updating entity type set', error);
     });
 };
 
@@ -416,7 +416,7 @@ OrganizationRegisterActions.updateResponsibilitySet = responsibilitySet => dispa
       dispatch(OrganizationRegisterActions.getResponbilitySets());
     })
     .catch(error => {
-      console.log("Error updating responsibility set", error);
+      console.log('Error updating responsibility set', error);
     });
 };
 
@@ -426,11 +426,11 @@ OrganizationRegisterActions.getEntityTypes = () => dispatch => {
     .get(url, getConfig())
     .then(response => {
       dispatch(
-        sendData(sortBy(response.data, "name"), types.RECEIVED_ENTITY_TYPES)
+        sendData(sortBy(response.data, 'name'), types.RECEIVED_ENTITY_TYPES)
       );
     })
     .catch(error => {
-      console.log("Error receiving entity_types", error);
+      console.log('Error receiving entity_types', error);
     });
 };
 
@@ -457,8 +457,8 @@ OrganizationRegisterActions.resetPassword = (userId, username) => dispatch => {
     .catch(err => {
       dispatch(
         SuppliersActions.addNotification(
-          "Unable to reset password for user",
-          "error"
+          'Unable to reset password for user',
+          'error'
         )
       );
     });
@@ -539,7 +539,7 @@ OrganizationRegisterActions.getUserNotifications = username => (
       dispatch(sendData(response.data, types.RECEIVED_USER_NOTIFICATIONS));
     })
     .catch(error => {
-      console.log("Error receiving user notifications", error);
+      console.log('Error receiving user notifications', error);
     });
 };
 
@@ -558,7 +558,7 @@ OrganizationRegisterActions.getEventFilterTypes = () => dispatch => {
       dispatch(sendData(response.data, types.RECEIVED_EVENT_FILTER_TYPES));
     })
     .catch(error => {
-      console.log("Error receiving event filter types", error);
+      console.log('Error receiving event filter types', error);
     });
 };
 
@@ -573,7 +573,7 @@ OrganizationRegisterActions.getJobDomains = () => dispatch => {
       });
     })
     .catch(error => {
-      console.log("Error receiving job domains", error);
+      console.log('Error receiving job domains', error);
     });
 };
 
@@ -684,7 +684,7 @@ OrganizationRegisterActions.getEventFilterStates = () => dispatch => {
       dispatch(sendData(response.data, types.RECEIVED_EVENT_FILTER_STATES));
     })
     .catch(error => {
-      console.log("Error receiving event filter states", error);
+      console.log('Error receiving event filter states', error);
     });
 };
 
@@ -711,7 +711,7 @@ OrganizationRegisterActions.getNotificationTypes = () => dispatch => {
       dispatch(sendData(response.data, types.RECEIVED_NOTIFICATION_TYPES));
     })
     .catch(error => {
-      console.log("Error receiving notification types", error);
+      console.log('Error receiving notification types', error);
     });
 };
 
@@ -723,7 +723,7 @@ OrganizationRegisterActions.getAdministrativeZones = () => dispatch => {
       dispatch(sendData(response.data, types.RECEIVED_ADMINISTRATIVE_ZONES));
     })
     .catch(error => {
-      console.log("Error receiving administrative zones", error);
+      console.log('Error receiving administrative zones', error);
     });
 };
 
@@ -777,16 +777,16 @@ OrganizationRegisterActions.updateUserNotification = username => (
       dispatch(sendData(null, types.UPDATED_NOTIFICATION_CONFIGURATION));
       dispatch(
         SuppliersActions.addNotification(
-          "Notification configuration updated",
-          "success"
+          'Notification configuration updated',
+          'success'
         )
       );
     })
     .catch(error => {
       dispatch(
         SuppliersActions.addNotification(
-          "Unable to save notification configuration",
-          "error"
+          'Unable to save notification configuration',
+          'error'
         )
       );
     });

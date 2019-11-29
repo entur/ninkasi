@@ -14,19 +14,19 @@
  *
  */
 
-import React, { Component } from "react";
-import FlatButton from "material-ui/FlatButton";
-import TextField from "material-ui/TextField";
-import Modal from "material-ui/Dialog";
+import React, { Component } from 'react';
+import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
+import Modal from 'material-ui/Dialog';
 
-import "./ModalCreatePoiFilter.scss";
+import './ModalCreatePoiFilter.scss';
 
-import uuid from "uuid/v4";
+import uuid from 'uuid/v4';
 
 const getPoiFilterArray = poiFilterString => {
-  const keyValues = poiFilterString.split(",");
+  const keyValues = poiFilterString.split(',');
   return keyValues.map(str => {
-    const arr = str.split("=");
+    const arr = str.split('=');
     return { key: arr[0], value: arr[1] };
   });
 };
@@ -35,15 +35,15 @@ const getPoiFilterString = poiFilterArray => {
   const keyValues = poiFilterArray.map(
     ({ key, value }) => `${key.trim()}=${value.trim()}`
   );
-  return keyValues.join(",");
+  return keyValues.join(',');
 };
 
 const initialState = {
-  poiFilterArray: [{ key: "", value: "" }]
+  poiFilterArray: [{ key: '', value: '' }]
 };
 
 class ModalCreatePoiFilter extends Component {
-  token = localStorage.getItem("NINKASI::jwt");
+  token = localStorage.getItem('NINKASI::jwt');
 
   constructor(props) {
     super(props);
@@ -71,14 +71,14 @@ class ModalCreatePoiFilter extends Component {
 
     const endpoint = window.config.poiFilterBaseUrl;
     fetch(endpoint, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.token,
-        "X-Correlation-Id": uuid()
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.token,
+        'X-Correlation-Id': uuid()
       },
-      body: JSON.stringify({ key: "poiFilter", value: poiFilterString })
+      body: JSON.stringify({ key: 'poiFilter', value: poiFilterString })
     })
       .then(() => {
         const url = window.config.poiFilterBaseUrl;
@@ -96,7 +96,7 @@ class ModalCreatePoiFilter extends Component {
 
   handleAddFilter = () => {
     const { poiFilterArray } = this.state;
-    poiFilterArray.push({ key: "", value: "" });
+    poiFilterArray.push({ key: '', value: '' });
     this.setState({ poiFilterArray });
   };
 
@@ -121,13 +121,13 @@ class ModalCreatePoiFilter extends Component {
       <FlatButton label="Update" onClick={this.handleSubmit.bind(this)} />
     ];
 
-    console.log("poi: ", poiFilterArray);
+    console.log('poi: ', poiFilterArray);
 
     return (
       <Modal
         open={isModalOpen}
         actions={actions}
-        contentStyle={{ width: "50%" }}
+        contentStyle={{ width: '50%' }}
         title="Create a new poi filter"
         onRequestClose={() => this.handleOnClose()}
         autoScrollBodyContent
@@ -145,7 +145,7 @@ class ModalCreatePoiFilter extends Component {
                   floatingLabelText="Key"
                   value={key}
                   onChange={e =>
-                    this.handleChange(index, "key", e.target.value)
+                    this.handleChange(index, 'key', e.target.value)
                   }
                 />
 
@@ -154,7 +154,7 @@ class ModalCreatePoiFilter extends Component {
                   floatingLabelText="Value"
                   value={value}
                   onChange={e =>
-                    this.handleChange(index, "value", e.target.value)
+                    this.handleChange(index, 'value', e.target.value)
                   }
                 />
 

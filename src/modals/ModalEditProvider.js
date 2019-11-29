@@ -14,31 +14,31 @@
  *
  */
 
-import React, { Component } from "react";
-import Dialog from "material-ui/Dialog";
-import TextField from "material-ui/TextField";
-import Checkbox from "material-ui/Checkbox";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
-import FlatButton from "material-ui/FlatButton";
-import { connect } from "react-redux";
-import SuppliersActions from "../actions/SuppliersActions";
-import TransportModesPopover from "./TransportModesPopover";
+import React, { Component } from 'react';
+import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
+import Checkbox from 'material-ui/Checkbox';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
+import { connect } from 'react-redux';
+import SuppliersActions from '../actions/SuppliersActions';
+import TransportModesPopover from './TransportModesPopover';
 
 const getEmptyForm = () => ({
   _providerId: null,
-  _name: "",
-  _sftpAccount: "",
+  _name: '',
+  _sftpAccount: '',
   _chouetteInfoId: null,
-  _xmlns: "",
-  _xmlnsurl: "",
-  _referential: "",
-  _organisation: "",
-  _user: "",
+  _xmlns: '',
+  _xmlnsurl: '',
+  _referential: '',
+  _organisation: '',
+  _user: '',
   _regtoppVersion: null,
-  _regtoppCoordinateProjection: "",
-  _regtoppCalendarStrategy: "",
-  _dataFormat: "",
+  _regtoppCoordinateProjection: '',
+  _regtoppCalendarStrategy: '',
+  _dataFormat: '',
   _enableValidation: false,
   _allowCreateMissingStopPlace: false,
   _enableStopPlaceIdMapping: false,
@@ -55,20 +55,20 @@ const getEmptyForm = () => ({
 const validate = values => {
   const errors = {};
   if (!values._name.length) {
-    errors._name = "Required";
+    errors._name = 'Required';
   } else if (!values._referential.length) {
-    errors._referential = "Required";
+    errors._referential = 'Required';
   } else if (!/^(rb_)?[a-z]{3}$/.test(values._referential)) {
-    errors._referential = "Invalid format";
+    errors._referential = 'Invalid format';
   } else if (!values._organisation.length) {
-    errors._organisation = "Required";
+    errors._organisation = 'Required';
   } else if (!values._user.length) {
-    errors._user = "Required";
+    errors._user = 'Required';
   } else if (
-    values._referential.indexOf("rb_") !== 0 &&
+    values._referential.indexOf('rb_') !== 0 &&
     !values._migrateDataToProvider
   ) {
-    errors._migrateDataToProvider = "Required";
+    errors._migrateDataToProvider = 'Required';
   }
   return errors;
 };
@@ -146,7 +146,7 @@ class ModalEditProvider extends Component {
     if (provider && provider.id && shouldUpdate) {
       return `Edit ${provider.name} (${provider.id})`;
     }
-    return "Create new provider";
+    return 'Create new provider';
   }
 
   isEdit() {
@@ -156,15 +156,15 @@ class ModalEditProvider extends Component {
 
   getProjections() {
     const projections = [
-      { value: "EPSG:32632", text: "UTM zone 32N" },
-      { value: "EPSG:32633", text: "UTM zone 33N" },
-      { value: "EPSG:32634", text: "UTM zone 34N" },
-      { value: "EPSG:32635", text: "UTM zone 35N" },
-      { value: "EPSG:4326", text: "WGS 84 / Latlong" }
+      { value: 'EPSG:32632', text: 'UTM zone 32N' },
+      { value: 'EPSG:32633', text: 'UTM zone 33N' },
+      { value: 'EPSG:32634', text: 'UTM zone 34N' },
+      { value: 'EPSG:32635', text: 'UTM zone 35N' },
+      { value: 'EPSG:4326', text: 'WGS 84 / Latlong' }
     ];
     return projections.map(projection => (
       <MenuItem
-        key={"projection-" + projection.value}
+        key={'projection-' + projection.value}
         value={projection.value}
         primaryText={projection.text}
       />
@@ -172,15 +172,15 @@ class ModalEditProvider extends Component {
   }
   getVersions() {
     const versions = [
-      { value: null, text: "Auto-detect" },
-      { value: "R11D", text: "1.1D" },
-      { value: "R12", text: "1.2" },
-      { value: "R12N", text: "1.2 Novus" },
-      { value: "R13A", text: "1.3A" }
+      { value: null, text: 'Auto-detect' },
+      { value: 'R11D', text: '1.1D' },
+      { value: 'R12', text: '1.2' },
+      { value: 'R12N', text: '1.2 Novus' },
+      { value: 'R13A', text: '1.3A' }
     ];
     return versions.map(version => (
       <MenuItem
-        key={"version-" + version.value}
+        key={'version-' + version.value}
         value={version.value}
         primaryText={version.text}
       />
@@ -189,13 +189,13 @@ class ModalEditProvider extends Component {
 
   getCalendarStrategies() {
     const strategies = [
-      { value: "", text: "None" },
-      { value: "ADD", text: "Add using DKO-file start-date" },
-      { value: "UPDATE", text: "Update/overwrite whole adminCode" }
+      { value: '', text: 'None' },
+      { value: 'ADD', text: 'Add using DKO-file start-date' },
+      { value: 'UPDATE', text: 'Update/overwrite whole adminCode' }
     ];
     return strategies.map(strategy => (
       <MenuItem
-        key={"strategy-" + strategy.value}
+        key={'strategy-' + strategy.value}
         value={strategy.value}
         primaryText={strategy.text}
       />
@@ -204,15 +204,15 @@ class ModalEditProvider extends Component {
 
   getDataFormats() {
     const formats = [
-      { value: "", text: "None" },
-      { value: "netexprofile", text: "NeTEx Profile" },
-      { value: "regtopp", text: "Regtopp" },
-      { value: "gtfs", text: "GTFS" },
-      { value: "neptune", text: "Neptune" }
+      { value: '', text: 'None' },
+      { value: 'netexprofile', text: 'NeTEx Profile' },
+      { value: 'regtopp', text: 'Regtopp' },
+      { value: 'gtfs', text: 'GTFS' },
+      { value: 'neptune', text: 'Neptune' }
     ];
     return formats.map(format => (
       <MenuItem
-        key={"strategy-" + format.value}
+        key={'strategy-' + format.value}
         value={format.value}
         primaryText={format.text}
       />
@@ -245,11 +245,11 @@ class ModalEditProvider extends Component {
     if (!this.isEdit()) {
       errors = validate(updatedForm);
 
-      if (field === "_referential") {
-        updatedForm._xmlns = value.toUpperCase().replace("RB_", "");
+      if (field === '_referential') {
+        updatedForm._xmlns = value.toUpperCase().replace('RB_', '');
         updatedForm._xmlnsurl = `http://www.rutebanken.org/ns/${value
           .toLowerCase()
-          .replace("rb_", "")}`;
+          .replace('rb_', '')}`;
         updatedForm._sftpAccount = value;
       }
     }
@@ -282,9 +282,9 @@ class ModalEditProvider extends Component {
     const isEdit = this.isEdit();
 
     const rowStyle = {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center"
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center'
     };
 
     const actions = [
@@ -313,40 +313,40 @@ class ModalEditProvider extends Component {
       >
         <div style={rowStyle}>
           <TextField
-            floatingLabelText={"Name"}
+            floatingLabelText={'Name'}
             floatingLabelFixed={true}
             value={this.state.form._name}
             style={{ flex: 1 }}
-            onChange={(e, v) => this.handleChange("_name", v)}
+            onChange={(e, v) => this.handleChange('_name', v)}
             errorText={errors._name && errors._name}
           />
           <TextField
             disabled={isEdit}
-            floatingLabelText={"Chouette referential name"}
+            floatingLabelText={'Chouette referential name'}
             floatingLabelFixed={true}
             value={this.state.form._referential}
-            style={{ flex: 1, padding: "0 15px" }}
-            onChange={(e, v) => this.handleChange("_referential", v)}
+            style={{ flex: 1, padding: '0 15px' }}
+            onChange={(e, v) => this.handleChange('_referential', v)}
             errorText={errors._referential && errors._referential}
           />
         </div>
         <div style={rowStyle}>
           <TextField
             disabled={isEdit}
-            floatingLabelText={"Organisation"}
+            floatingLabelText={'Organisation'}
             floatingLabelFixed={true}
             value={this.state.form._organisation}
             style={{ flex: 1 }}
-            onChange={(e, v) => this.handleChange("_organisation", v)}
+            onChange={(e, v) => this.handleChange('_organisation', v)}
             errorText={errors._organisation && errors._organisation}
           />
           <TextField
             disabled={isEdit}
-            floatingLabelText={"User"}
+            floatingLabelText={'User'}
             floatingLabelFixed={true}
             value={this.state.form._user}
-            style={{ flex: 1, padding: "0 15px" }}
-            onChange={(e, v) => this.handleChange("_user", v)}
+            style={{ flex: 1, padding: '0 15px' }}
+            onChange={(e, v) => this.handleChange('_user', v)}
             errorText={errors._user && errors._user}
           />
         </div>
@@ -354,24 +354,24 @@ class ModalEditProvider extends Component {
           <div style={{ flex: 1 }}>
             <SelectField
               value={this.state.form._regtoppVersion}
-              floatingLabelText={"Regtopp version"}
+              floatingLabelText={'Regtopp version'}
               floatingLabelFixed={true}
               fullWidth={true}
               onChange={(e, k, v) => {
-                this.handleChange("_regtoppVersion", v);
+                this.handleChange('_regtoppVersion', v);
               }}
             >
               {versions}
             </SelectField>
           </div>
-          <div style={{ padding: "0 15px", flex: 1 }}>
+          <div style={{ padding: '0 15px', flex: 1 }}>
             <SelectField
               value={this.state.form._regtoppCoordinateProjection}
-              floatingLabelText={"Regtopp Coordinate Projection"}
+              floatingLabelText={'Regtopp Coordinate Projection'}
               floatingLabelFixed={true}
               fullWidth={true}
               onChange={(e, k, v) => {
-                this.handleChange("_regtoppCoordinateProjection", v);
+                this.handleChange('_regtoppCoordinateProjection', v);
               }}
             >
               {projections}
@@ -382,24 +382,24 @@ class ModalEditProvider extends Component {
           <div style={{ flex: 1 }}>
             <SelectField
               value={this.state.form._regtoppCalendarStrategy}
-              floatingLabelText={"Regtopp calendar strategy"}
+              floatingLabelText={'Regtopp calendar strategy'}
               floatingLabelFixed={true}
               fullWidth={true}
               onChange={(e, k, v) => {
-                this.handleChange("_regtoppCalendarStrategy", v);
+                this.handleChange('_regtoppCalendarStrategy', v);
               }}
             >
               {calendarStrategies}
             </SelectField>
           </div>
-          <div style={{ padding: "0 15px", flex: 1 }}>
+          <div style={{ padding: '0 15px', flex: 1 }}>
             <SelectField
               value={this.state.form._dataFormat}
-              floatingLabelText={"Data format"}
+              floatingLabelText={'Data format'}
               floatingLabelFixed={true}
               fullWidth={true}
               onChange={(e, k, v) => {
-                this.handleChange("_dataFormat", v);
+                this.handleChange('_dataFormat', v);
               }}
             >
               {dataFormats}
@@ -409,19 +409,19 @@ class ModalEditProvider extends Component {
         <div style={rowStyle}>
           <TextField
             disabled={isEdit}
-            floatingLabelText={"xmlns"}
+            floatingLabelText={'xmlns'}
             floatingLabelFixed={true}
             value={this.state.form._xmlns}
             style={{ flex: 1 }}
-            onChange={(e, v) => this.handleChange("_xmlns", v)}
+            onChange={(e, v) => this.handleChange('_xmlns', v)}
           />
           <TextField
             disabled={isEdit}
-            floatingLabelText={"xmlns URL"}
+            floatingLabelText={'xmlns URL'}
             floatingLabelFixed={true}
             value={this.state.form._xmlnsurl}
-            style={{ flex: 1, padding: "0 15px" }}
-            onChange={(e, v) => this.handleChange("_xmlnsurl", v)}
+            style={{ flex: 1, padding: '0 15px' }}
+            onChange={(e, v) => this.handleChange('_xmlnsurl', v)}
           />
         </div>
         <div style={rowStyle}>
@@ -431,7 +431,7 @@ class ModalEditProvider extends Component {
             style={{ flex: 1 }}
             value={this.state.form._migrateDataToProvider}
             onChange={(e, i, v) =>
-              this.handleChange("_migrateDataToProvider", v)
+              this.handleChange('_migrateDataToProvider', v)
             }
             autoWidth={true}
             errorText={
@@ -441,14 +441,14 @@ class ModalEditProvider extends Component {
             <MenuItem
               value={null}
               primaryText="None"
-              style={{ fontStyle: "italic" }}
+              style={{ fontStyle: 'italic' }}
             />
             {providers
               .filter(provider => !provider.chouetteInfo.migrateDataToProvider)
               .map(provider => {
                 return (
                   <MenuItem
-                    key={"provider-" + provider.id}
+                    key={'provider-' + provider.id}
                     value={provider.id}
                     primaryText={provider.name}
                   />
@@ -456,11 +456,11 @@ class ModalEditProvider extends Component {
               })}
           </SelectField>
           <TextField
-            floatingLabelText={"sFtp account"}
+            floatingLabelText={'sFtp account'}
             floatingLabelFixed={true}
             value={this.state.form._sftpAccount}
-            style={{ flex: 1, padding: "0 15px" }}
-            onChange={(e, v) => this.handleChange("_sftpAccount", v)}
+            style={{ flex: 1, padding: '0 15px' }}
+            onChange={(e, v) => this.handleChange('_sftpAccount', v)}
           />
         </div>
         <div style={{ ...rowStyle, marginTop: 10 }}>
@@ -477,18 +477,18 @@ class ModalEditProvider extends Component {
             label="Allow create missing stop place"
             checked={this.state.form._allowCreateMissingStopPlace}
             style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: "0.9em" }}
+            labelStyle={{ fontSize: '0.9em' }}
             onCheck={(e, v) =>
-              this.handleChange("_allowCreateMissingStopPlace", v)
+              this.handleChange('_allowCreateMissingStopPlace', v)
             }
           />
           <Checkbox
             label="Enable stop place Id mapping"
             checked={this.state.form._enableStopPlaceIdMapping}
             style={{ flex: 1 }}
-            labelStyle={{ fontSize: "0.9em" }}
+            labelStyle={{ fontSize: '0.9em' }}
             onCheck={(e, v) =>
-              this.handleChange("_enableStopPlaceIdMapping", v)
+              this.handleChange('_enableStopPlaceIdMapping', v)
             }
           />
         </div>
@@ -497,15 +497,15 @@ class ModalEditProvider extends Component {
             label="Enable clean import"
             checked={this.state.form._enableCleanImport}
             style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: "0.9em" }}
-            onCheck={(e, v) => this.handleChange("_enableCleanImport", v)}
+            labelStyle={{ fontSize: '0.9em' }}
+            onCheck={(e, v) => this.handleChange('_enableCleanImport', v)}
           />
           <Checkbox
             label="Enable validation"
             checked={this.state.form._enableValidation}
             style={{ flex: 1 }}
-            labelStyle={{ fontSize: "0.9em" }}
-            onCheck={(e, v) => this.handleChange("_enableValidation", v)}
+            labelStyle={{ fontSize: '0.9em' }}
+            onCheck={(e, v) => this.handleChange('_enableValidation', v)}
           />
         </div>
         <div style={{ ...rowStyle, marginTop: 10 }}>
@@ -513,15 +513,15 @@ class ModalEditProvider extends Component {
             label="Enable auto import"
             checked={this.state.form._enableAutoImport}
             style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: "0.9em" }}
-            onCheck={(e, v) => this.handleChange("_enableAutoImport", v)}
+            labelStyle={{ fontSize: '0.9em' }}
+            onCheck={(e, v) => this.handleChange('_enableAutoImport', v)}
           />
           <Checkbox
             label="Enable auto validation"
             checked={this.state.form._enableAutoValidation}
             style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: "0.9em" }}
-            onCheck={(e, v) => this.handleChange("_enableAutoValidation", v)}
+            labelStyle={{ fontSize: '0.9em' }}
+            onCheck={(e, v) => this.handleChange('_enableAutoValidation', v)}
           />
         </div>
         <div style={{ ...rowStyle, marginTop: 10 }}>
@@ -529,15 +529,15 @@ class ModalEditProvider extends Component {
             label="Upload to Google (production)"
             checked={this.state.form._googleUpload}
             style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: "0.9em" }}
-            onCheck={(e, v) => this.handleChange("_googleUpload", v)}
+            labelStyle={{ fontSize: '0.9em' }}
+            onCheck={(e, v) => this.handleChange('_googleUpload', v)}
           />
           <Checkbox
             label="Upload to Google (QA)"
             checked={this.state.form._googleQAUpload}
             style={{ flex: 1 }}
-            labelStyle={{ fontSize: "0.9em" }}
-            onCheck={(e, v) => this.handleChange("_googleQAUpload", v)}
+            labelStyle={{ fontSize: '0.9em' }}
+            onCheck={(e, v) => this.handleChange('_googleQAUpload', v)}
           />
         </div>
         <div style={{ ...rowStyle, marginTop: 10 }}>
@@ -545,9 +545,9 @@ class ModalEditProvider extends Component {
             label="Generate DatedServiceJourneyIds"
             checked={this.state.form._generateDatedServiceJourneyIds}
             style={{ flex: 1 }}
-            labelStyle={{ fontSize: "0.9em" }}
+            labelStyle={{ fontSize: '0.9em' }}
             onCheck={(e, v) =>
-              this.handleChange("_generateDatedServiceJourneyIds", v)
+              this.handleChange('_generateDatedServiceJourneyIds', v)
             }
           />
         </div>

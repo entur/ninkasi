@@ -14,10 +14,10 @@
  *
  */
 
-import React from "react";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
-import PropTypes from "prop-types";
+import React from 'react';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import PropTypes from 'prop-types';
 
 class NotificationTypeSelect extends React.Component {
   static propTypes = {
@@ -44,7 +44,7 @@ class NotificationTypeSelect extends React.Component {
       >
         {notificationTypes.map(type => (
           <MenuItem
-            key={"notification-type-" + type}
+            key={'notification-type-' + type}
             id={type}
             label={type}
             value={type}

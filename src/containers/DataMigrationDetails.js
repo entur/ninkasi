@@ -14,18 +14,18 @@
  *
  */
 
-import { connect } from "react-redux";
-import React from "react";
-import Button from "muicss/lib/react/button";
-import SuppliersActions from "../actions/SuppliersActions";
-import AdvancedFileList from "../components/AdvancedFileList";
-import TextField from "material-ui/TextField";
-import { sortFiles } from "../utils/";
+import { connect } from 'react-redux';
+import React from 'react';
+import Button from 'muicss/lib/react/button';
+import SuppliersActions from '../actions/SuppliersActions';
+import AdvancedFileList from '../components/AdvancedFileList';
+import TextField from 'material-ui/TextField';
+import { sortFiles } from '../utils/';
 
-const FaArrowDown = require("react-icons/lib/fa/arrow-down");
-const FaArrowUp = require("react-icons/lib/fa/arrow-up");
-const FaRemove = require("react-icons/lib/fa/arrow-left");
-const FaAdd = require("react-icons/lib/fa/arrow-right");
+const FaArrowDown = require('react-icons/lib/fa/arrow-down');
+const FaArrowUp = require('react-icons/lib/fa/arrow-up');
+const FaRemove = require('react-icons/lib/fa/arrow-left');
+const FaAdd = require('react-icons/lib/fa/arrow-right');
 
 class DataMigrationDetails extends React.Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class DataMigrationDetails extends React.Component {
         size: 0,
         date: 2
       },
-      filterText: ""
+      filterText: ''
     };
   }
 
@@ -80,7 +80,7 @@ class DataMigrationDetails extends React.Component {
 
     this.setState({
       outboundFileSortOrder: newSortOrder,
-      outboundFiles: sortFiles(outboundFiles, newSortOrder, "")
+      outboundFiles: sortFiles(outboundFiles, newSortOrder, '')
     });
   }
 
@@ -240,22 +240,22 @@ class DataMigrationDetails extends React.Component {
 
     const toolTips = {
       import:
-        "Import all files listed in the list on the right side below. Files will be imported in the given order. If success, VALIDATE will be called",
+        'Import all files listed in the list on the right side below. Files will be imported in the given order. If success, VALIDATE will be called',
       validate:
-        "Validate data in dataspace. If success, TRANSFER will be called if in level 1 space or EXPORT if in level 2 space",
+        'Validate data in dataspace. If success, TRANSFER will be called if in level 1 space or EXPORT if in level 2 space',
       transfer:
-        "Transfer data from this space to the next space (Rutebanken space with id " +
+        'Transfer data from this space to the next space (Rutebanken space with id ' +
         chouetteInfo.migrateDataToProvider +
-        "). If success, VALIDATE in level 2 space will be called",
-      export: "Export GTFS data and trigger bulding",
-      clearEventHistory: "Clean event history",
-      clean: "Clean data space (delete ALL transport data)",
-      cleanStopPlacesChouette: "Clean Stop place register in Chouette"
+        '). If success, VALIDATE in level 2 space will be called',
+      export: 'Export GTFS data and trigger bulding',
+      clearEventHistory: 'Clean event history',
+      clean: 'Clean data space (delete ALL transport data)',
+      cleanStopPlacesChouette: 'Clean Stop place register in Chouette'
     };
 
     return (
       <div>
-        <div style={{ display: "flex", justfiyContent: "flex-start" }}>
+        <div style={{ display: 'flex', justfiyContent: 'flex-start' }}>
           {isLevel1Provider ? (
             <Button
               title={toolTips.import}
@@ -315,15 +315,15 @@ class DataMigrationDetails extends React.Component {
             style={{
               fontWeight: 600,
               marginTop: 20,
-              width: "100%",
-              textAlign: "center"
+              width: '100%',
+              textAlign: 'center'
             }}
           >
             Level 2 provider
           </div>
         )}
         {isLevel1Provider ? (
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <AdvancedFileList
               selectedIndices={selectedIndicesSource}
               updateIndices={this.handleUpdateIndicesSource.bind(this)}
@@ -344,17 +344,17 @@ class DataMigrationDetails extends React.Component {
             {sortedFiles.length ? (
               <div
                 style={{
-                  display: "flex",
-                  alignItem: "center",
-                  flexDirection: "column",
+                  display: 'flex',
+                  alignItem: 'center',
+                  flexDirection: 'column',
                   flex: 0.1,
-                  cursor: "pointer"
+                  cursor: 'pointer'
                 }}
               >
                 <FaAdd
                   style={{
-                    transform: "scale(2)",
-                    color: "#2196f3",
+                    transform: 'scale(2)',
+                    color: '#2196f3',
                     marginBottom: 30,
                     marginLeft: 20,
                     marginRight: 20
@@ -363,8 +363,8 @@ class DataMigrationDetails extends React.Component {
                 />
                 <FaRemove
                   style={{
-                    transform: "scale(2)",
-                    color: outboundFiles.length ? "#b91c1c" : "#9e9e9e",
+                    transform: 'scale(2)',
+                    color: outboundFiles.length ? '#b91c1c' : '#9e9e9e',
                     marginLeft: 20,
                     marginRight: 20
                   }}
@@ -390,22 +390,22 @@ class DataMigrationDetails extends React.Component {
             <div
               style={{
                 flex: 0.2,
-                display: outboundFiles.length ? "flex" : "none",
-                alignItems: "center",
-                flexDirection: "column",
-                cursor: "pointer"
+                display: outboundFiles.length ? 'flex' : 'none',
+                alignItems: 'center',
+                flexDirection: 'column',
+                cursor: 'pointer'
               }}
             >
               <FaArrowDown
                 style={{
-                  transform: "scale(2)",
+                  transform: 'scale(2)',
                   marginBottom: 30,
                   marginLeft: 20
                 }}
                 onClick={this.moveDown}
               />
               <FaArrowUp
-                style={{ transform: "scale(2)", marginLeft: 20 }}
+                style={{ transform: 'scale(2)', marginLeft: 20 }}
                 onClick={this.moveUp}
               />
             </div>
@@ -427,7 +427,7 @@ class DataMigrationDetails extends React.Component {
         outboundFiles.length > 1
       ) {
         alert(
-          "Clean before import enabled, does not make sense to import multiple files"
+          'Clean before import enabled, does not make sense to import multiple files'
         );
       } else {
         dispatch(
@@ -435,7 +435,7 @@ class DataMigrationDetails extends React.Component {
         );
       }
     } else {
-      alert("No files added to import");
+      alert('No files added to import');
     }
   };
 
@@ -449,7 +449,7 @@ class DataMigrationDetails extends React.Component {
 
   handleCleanDataspace = () => {
     const response = window.confirm(
-      "Are you sure you want to clean up the dataspace current provider?"
+      'Are you sure you want to clean up the dataspace current provider?'
     );
     if (response === true) {
       const { dispatch } = this.props;
@@ -459,7 +459,7 @@ class DataMigrationDetails extends React.Component {
 
   handleClearHistory = () => {
     const response = window.confirm(
-      "Are you sure you want to clear event history for current provider?"
+      'Are you sure you want to clear event history for current provider?'
     );
     if (response === true) {
       const { dispatch } = this.props;

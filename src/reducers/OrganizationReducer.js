@@ -14,7 +14,7 @@
  *
  */
 
-import * as types from "./../actions/actionTypes";
+import * as types from './../actions/actionTypes';
 import {
   changeFilterValue,
   changeJobDomainValue,
@@ -24,7 +24,7 @@ import {
   removeAdminRef,
   addEntityClassRef,
   removeEntityClassRef
-} from "./OrganizationReducerUtils";
+} from './OrganizationReducerUtils';
 
 const initialState = {
   roles: [],
@@ -64,7 +64,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         roleStatus: {
           error: null,
-          code: "ROLE_CREATED"
+          code: 'ROLE_CREATED'
         }
       });
 
@@ -96,7 +96,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         roleStatus: {
           error: action.payLoad,
-          code: "ROLE_CREATED_FAILED"
+          code: 'ROLE_CREATED_FAILED'
         }
       });
 
@@ -107,7 +107,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         organizationStatus: {
           error: null,
-          code: "ORGANIZATION_CREATED"
+          code: 'ORGANIZATION_CREATED'
         }
       });
 
@@ -115,7 +115,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         organizationStatus: {
           error: null,
-          code: "ORGANIZATION_UPDATED"
+          code: 'ORGANIZATION_UPDATED'
         }
       });
 
@@ -123,7 +123,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         organizationStatus: {
           error: action.payLoad,
-          code: "ORGANIZATION_CREATED_FAILED"
+          code: 'ORGANIZATION_CREATED_FAILED'
         }
       });
 
@@ -131,7 +131,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         responsibilitySetStatus: {
           error: null,
-          code: "RESPONSIBILITY_SET_CREATED"
+          code: 'RESPONSIBILITY_SET_CREATED'
         }
       });
 
@@ -139,7 +139,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         userStatus: {
           error: null,
-          code: "USER_CREATED"
+          code: 'USER_CREATED'
         }
       });
 
@@ -147,7 +147,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         userStatus: {
           error: null,
-          code: "USER_UPDATED"
+          code: 'USER_UPDATED'
         }
       });
 
@@ -155,7 +155,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         entityTypeStatus: {
           error: null,
-          code: "ENTITY_TYPE_CREATED"
+          code: 'ENTITY_TYPE_CREATED'
         }
       });
 
@@ -163,7 +163,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         entityTypeStatus: {
           error: action.payLoad,
-          code: "ENTITY_TYPE_CREATED_FAILED"
+          code: 'ENTITY_TYPE_CREATED_FAILED'
         }
       });
 
@@ -171,7 +171,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         responsibilitySetStatus: {
           error: null,
-          code: "RESPONSIBILITY_SET_UPDATED"
+          code: 'RESPONSIBILITY_SET_UPDATED'
         }
       });
 
@@ -179,7 +179,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         entityTypeStatus: {
           error: null,
-          code: "ENTITY_TYPE_UPDATED"
+          code: 'ENTITY_TYPE_UPDATED'
         }
       });
 
@@ -187,7 +187,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         userNotifications: changeFilterValue(
           state.userNotifications,
-          "type",
+          'type',
           action.payLoad.index,
           action.payLoad.value
         )
@@ -216,7 +216,7 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         userNotifications: changeFilterValue(
           state.userNotifications,
-          "organisationRef",
+          'organisationRef',
           action.payLoad.index,
           action.payLoad.organisationRef
         )
@@ -358,10 +358,10 @@ const OrganizationReducer = (state = initialState, action) => {
         userNotifications: state.userNotifications.concat({
           enabled: false,
           isNew: true,
-          notificationType: "EMAIL",
+          notificationType: 'EMAIL',
           eventFilter: {
-            type: "JOB",
-            jobDomain: "TIMETABLE",
+            type: 'JOB',
+            jobDomain: 'TIMETABLE',
             actions: [],
             states: []
           }

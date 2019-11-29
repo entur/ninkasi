@@ -14,18 +14,18 @@
  *
  */
 
-@import url("https://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400italic,700italic,400,700");
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400italic,700italic,400,700');
 
-@import "../../node_modules/muicss/lib/sass/mui.scss";
-@import "components/forms";
-@import "components/links";
-@import "components/colors";
-@import "components/Footer";
-@import "components/buttons";
-@import "helpers";
+@import '../../node_modules/muicss/lib/sass/mui.scss';
+@import 'components/forms';
+@import 'components/links';
+@import 'components/colors';
+@import 'components/Footer';
+@import 'components/buttons';
+@import 'helpers';
 
-$roboto-slab: "Roboto Slab", serif;
-$open-sans: "Open Sans", sans-serif;
+$roboto-slab: 'Roboto Slab', serif;
+$open-sans: 'Open Sans', sans-serif;
 
 body {
   font-family: $open-sans;

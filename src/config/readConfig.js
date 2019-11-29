@@ -14,7 +14,7 @@
  *
  */
 
-import axios from "axios";
+import axios from 'axios';
 
 /*
 Reading config json as served out of the node application.
@@ -24,22 +24,22 @@ const configreader = {};
 let config;
 
 configreader.readConfig = callback => {
-  if (config && typeof config !== "undefined") {
+  if (config && typeof config !== 'undefined') {
     callback(config);
     return;
   }
   axios({
-    url: "config.json",
+    url: 'config.json',
     timeout: 2000,
-    method: "get",
-    responseType: "json"
+    method: 'get',
+    responseType: 'json'
   })
     .then(function(response) {
       config = response.data;
       callback(config);
     })
     .catch(function(response) {
-      throw new Error("Could not read config: " + response);
+      throw new Error('Could not read config: ' + response);
     });
 };
 

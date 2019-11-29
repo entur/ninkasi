@@ -14,64 +14,64 @@
  *
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import SuppliersActions from "../actions/SuppliersActions";
-import { EventDetails } from "bogu";
-import ChouetteJobDetails from "./ChouetteJobDetails";
-import ChouetteAllJobs from "./ChouetteAllJobs";
-import DataMigrationDetails from "./DataMigrationDetails";
-import { PulseLoader as Loader } from "halogenium";
-import "../sass/main.scss";
-import Tabs from "muicss/lib/react/tabs";
-import Tab from "muicss/lib/react/tab";
-import { getQueryVariable } from "./utils";
-import FileUpload from "./FileUpload";
-import StatisticsDetails from "./StatisticsDetails";
-import StaticsForProvider from "./StatisticsForProvider";
-import OrganizationRegister from "./OrganizationRegister";
-import rolesParser from "../roles/rolesParser";
-import ExportedFilesView from "../containers/ExportedFilesView";
+import React from 'react';
+import { connect } from 'react-redux';
+import SuppliersActions from '../actions/SuppliersActions';
+import { EventDetails } from 'bogu';
+import ChouetteJobDetails from './ChouetteJobDetails';
+import ChouetteAllJobs from './ChouetteAllJobs';
+import DataMigrationDetails from './DataMigrationDetails';
+import { PulseLoader as Loader } from 'halogenium';
+import '../sass/main.scss';
+import Tabs from 'muicss/lib/react/tabs';
+import Tab from 'muicss/lib/react/tab';
+import { getQueryVariable } from './utils';
+import FileUpload from './FileUpload';
+import StatisticsDetails from './StatisticsDetails';
+import StaticsForProvider from './StatisticsForProvider';
+import OrganizationRegister from './OrganizationRegister';
+import rolesParser from '../roles/rolesParser';
+import ExportedFilesView from '../containers/ExportedFilesView';
 
 class SupplierTabWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTabForProvider: getQueryVariable("tab") || "migrateData",
-      activeTabForAllProvider: getQueryVariable("tab") || "chouetteJobs"
+      activeTabForProvider: getQueryVariable('tab') || 'migrateData',
+      activeTabForAllProvider: getQueryVariable('tab') || 'chouetteJobs'
     };
   }
 
   componentDidMount() {
-    const queryTab = getQueryVariable("tab");
-    const queryId = getQueryVariable("id");
+    const queryTab = getQueryVariable('tab');
+    const queryId = getQueryVariable('id');
 
     const { dispatch } = this.props;
-    if (queryTab === "events") {
+    if (queryTab === 'events') {
       if (queryId) {
         dispatch(SuppliersActions.getProviderStatus(queryId));
       } else {
         dispatch(SuppliersActions.getAllProviderStatus());
       }
-    } else if (queryTab === "chouetteJobs") {
+    } else if (queryTab === 'chouetteJobs') {
       if (queryId) {
         dispatch(SuppliersActions.getChouetteJobStatus());
       } else {
         dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
       }
-    } else if (queryTab === "statistics") {
+    } else if (queryTab === 'statistics') {
       if (queryId) {
         dispatch(SuppliersActions.getLineStatsForProvider(queryId));
       } else {
         dispatch(SuppliersActions.getAllLineStats());
       }
-    } else if (queryTab === "OrganisationRegister") {
+    } else if (queryTab === 'OrganisationRegister') {
       if (queryId) {
-        this.onTabChangeForProvider(0, "migrateData", null, null);
+        this.onTabChangeForProvider(0, 'migrateData', null, null);
       }
-    } else if (queryId === "exportedFiles") {
+    } else if (queryId === 'exportedFiles') {
       if (queryId) {
-        this.onTabChangeForProvider(0, "migrateData", null, null);
+        this.onTabChangeForProvider(0, 'migrateData', null, null);
       }
     }
   }
@@ -89,45 +89,45 @@ class SupplierTabWrapper extends React.Component {
   poll = () => {
     const { dispatch, activeId, displayAllSuppliers } = this.props;
     const { activeTabForProvider, activeTabForAllProvider } = this.state;
-    const queryTab = getQueryVariable("tab");
+    const queryTab = getQueryVariable('tab');
 
     if (
       !displayAllSuppliers &&
-      activeTabForProvider === "chouetteJobs" &&
+      activeTabForProvider === 'chouetteJobs' &&
       activeId
     ) {
       dispatch(SuppliersActions.getChouetteJobStatus());
     }
 
-    if (displayAllSuppliers && queryTab === "exportedFiles") {
+    if (displayAllSuppliers && queryTab === 'exportedFiles') {
       dispatch(SuppliersActions.getExportedFiles());
     }
 
-    if (displayAllSuppliers && activeTabForAllProvider === "chouetteJobs") {
+    if (displayAllSuppliers && activeTabForAllProvider === 'chouetteJobs') {
       dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
     }
   };
 
   onTabChangeForProvider(i, value, tab, ev) {
-    if (typeof value === "object") return;
+    if (typeof value === 'object') return;
     const { dispatch, activeId } = this.props;
 
     if (value) {
       window.history.pushState(
         window.config.endpointBase,
-        "Title",
+        'Title',
         `?id=${activeId}&tab=${value}`
       );
     }
 
     switch (value) {
-      case "chouetteJobs":
+      case 'chouetteJobs':
         dispatch(SuppliersActions.getChouetteJobStatus());
         break;
-      case "events":
+      case 'events':
         dispatch(SuppliersActions.getProviderStatus(activeId));
         break;
-      case "statistics":
+      case 'statistics':
         dispatch(SuppliersActions.getLineStatsForProvider(activeId));
         break;
       default:
@@ -136,23 +136,23 @@ class SupplierTabWrapper extends React.Component {
   }
 
   onTabChangeForAllProviders(i, value, tab, ev) {
-    if (typeof value === "object") return;
+    if (typeof value === 'object') return;
 
     if (value) {
       window.history.pushState(
         window.config.endpointBase,
-        "Title",
+        'Title',
         `?tab=${value}`
       );
     }
     switch (value) {
-      case "chouetteJobs":
+      case 'chouetteJobs':
         this.props.dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
         break;
-      case "events":
+      case 'events':
         this.props.dispatch(SuppliersActions.getAllProviderStatus());
         break;
-      case "statistics":
+      case 'statistics':
         this.props.dispatch(SuppliersActions.getAllLineStats());
         break;
 
@@ -163,37 +163,37 @@ class SupplierTabWrapper extends React.Component {
 
   getTabIndexFromParams() {
     const { displayAllSuppliers } = this.props;
-    let param = getQueryVariable("tab");
+    let param = getQueryVariable('tab');
     switch (param) {
-      case "events":
+      case 'events':
         return displayAllSuppliers ? 1 : 1;
-      case "chouetteJobs":
+      case 'chouetteJobs':
         return displayAllSuppliers ? 0 : 2;
-      case "migrateData": {
+      case 'migrateData': {
         if (displayAllSuppliers) {
-          this.onTabChangeForAllProviders(0, "chouetteJobs", null, null);
+          this.onTabChangeForAllProviders(0, 'chouetteJobs', null, null);
         }
         return 0;
       }
-      case "statistics":
+      case 'statistics':
         return displayAllSuppliers ? 2 : 3;
-      case "exportedFiles":
+      case 'exportedFiles':
         if (displayAllSuppliers) {
           return 3;
         } else {
-          this.onTabChangeForAllProviders(0, "migrateData", null, null);
+          this.onTabChangeForAllProviders(0, 'migrateData', null, null);
           return 0;
         }
-      case "organisationRegister":
+      case 'organisationRegister':
         if (displayAllSuppliers) {
           return 4;
         } else {
-          this.onTabChangeForAllProviders(0, "migrateData", null, null);
+          this.onTabChangeForAllProviders(0, 'migrateData', null, null);
           return 0;
         }
-      case "uploadFiles": {
+      case 'uploadFiles': {
         if (displayAllSuppliers) {
-          this.onTabChangeForAllProviders(0, "chouetteJobs", null, null);
+          this.onTabChangeForAllProviders(0, 'chouetteJobs', null, null);
           return 0;
         } else {
           return 4;

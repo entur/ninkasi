@@ -14,27 +14,27 @@
  *
  */
 
-import React from "react";
-import AutoComplete from "material-ui/AutoComplete";
+import React from 'react';
+import AutoComplete from 'material-ui/AutoComplete';
 
 class NotificationAddZoneRef extends React.Component {
   handleNewRequest({ text, value }) {
     if (text && value) {
       this.props.handleAdd(value);
       this.refs.adminSearch.setState({
-        searchText: ""
+        searchText: ''
       });
     }
   }
 
   getZoneType(type) {
     let typeMap = {
-      COUNTRY: "Country",
-      COUNTY: "County",
-      LOCALITY: "Muncipality",
-      CUSTOM: "Custom"
+      COUNTRY: 'Country',
+      COUNTY: 'County',
+      LOCALITY: 'Muncipality',
+      CUSTOM: 'Custom'
     };
-    return typeMap[type] || "Uknown";
+    return typeMap[type] || 'Uknown';
   }
 
   render() {
@@ -48,15 +48,15 @@ class NotificationAddZoneRef extends React.Component {
     return (
       <div>
         <div
-          style={{ display: "flex", flexDirection: "column", marginLeft: 10 }}
+          style={{ display: 'flex', flexDirection: 'column', marginLeft: 10 }}
         >
           <AutoComplete
             maxSearchResults={7}
             ref="adminSearch"
-            floatingLabelText={"Add administrative zone"}
+            floatingLabelText={'Add administrative zone'}
             animated={true}
             filter={(searchText, key) =>
-              searchText !== "" &&
+              searchText !== '' &&
               key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
             }
             hintText="Administrative zone"

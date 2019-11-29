@@ -14,7 +14,7 @@
  *
  */
 
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 class OrganizationFilter extends Component {
   render() {
@@ -28,7 +28,7 @@ class OrganizationFilter extends Component {
       {
         id: -1,
         value: -1,
-        name: "All organisations"
+        name: 'All organisations'
       },
       ...organizations
     ];
