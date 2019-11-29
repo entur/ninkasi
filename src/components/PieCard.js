@@ -166,11 +166,9 @@ class PieCard extends React.Component {
               </div>}
           <PieChart
             style={{ marginTop: 0 }}
-            ref="chart"
-            onClick={e => {
+            getElementAtEvent={([element]) => {
               this.props.handlePieOnClick(
-                e,
-                this.refs.chart.getChart(),
+                element,
                 provider.id
               );
             }}

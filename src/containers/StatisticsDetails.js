@@ -28,17 +28,14 @@ class StatisticsDetails extends React.Component {
     };
   }
 
-  handlePieOnClick(e, chart, provider) {
-    if (chart.getSegmentsAtEvent(e)[0]) {
-      let clickedSegmentLabel = chart.getSegmentsAtEvent(e)[0].label;
-      let clickedSegmentValue = chart.getSegmentsAtEvent(e)[0].value;
-
+  handlePieOnClick(element, provider) {
+    if (element) {
+      let clickedSegmentLabel = element._model.label;
       let selected = segmentName2Key(clickedSegmentLabel);
 
       this.setState({
         selectedSegment: selected.segment,
         daysValid: selected.daysValid,
-        segmentValue: clickedSegmentValue,
         selectedProvider: provider
       });
     }
@@ -48,7 +45,6 @@ class StatisticsDetails extends React.Component {
     this.setState({
       selectedSegment: 'all',
       daysValid: 180,
-      segmentValue: value,
       selectedProvider: provider
     });
   }
