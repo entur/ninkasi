@@ -14,7 +14,7 @@
  *
  */
 
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import Modal from "material-ui/Dialog";
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
@@ -39,10 +39,6 @@ class ModalCreateOrganization extends React.Component {
   handleOnClose() {
     this.setState(initialState);
     this.props.handleCloseModal();
-  }
-
-  componentWillUnmount() {
-    this.state = initialState;
   }
 
   render() {

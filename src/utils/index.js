@@ -80,7 +80,7 @@ export const getEntityClassificationRefString = (entityType, allow) => {
 export const getSizeFromBytes = bytes => {
   var sizes = ["Bytes", "KB", "MB", "GB", "TB"];
 
-  if (bytes == 0) return "0 Byte";
+  if (bytes === 0) return "0 Byte";
 
   let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
 
@@ -109,33 +109,33 @@ export const getAdminZoneNameByRef = (adminZones, ref) => {
 
 export const sortFiles = (unsortedFiles, sortOrder, filterText) => {
   let files = unsortedFiles.slice().filter(file => {
-    if (!file.name) return;
-
-    if (file.name.toLowerCase().indexOf(filterText.toLowerCase()) > -1)
-      return file;
+    return (
+      file.name &&
+      file.name.toLowerCase().indexOf(filterText.toLowerCase()) > -1
+    );
   });
 
   let sortedFiles = !sortOrder.ext
     ? sortBy(files, file => new Date(file.updated))
-    : sortOrder.ext == 1
+    : sortOrder.ext === 1
     ? sortBy(files, file => file.ext)
     : sortBy(files, file => file.ext).reverse();
 
   sortedFiles = !sortOrder.name
     ? sortedFiles
-    : sortOrder.name == 1
+    : sortOrder.name === 1
     ? sortBy(files, file => file.name)
     : sortBy(files, file => file.name).reverse();
 
   sortedFiles = !sortOrder.size
     ? sortedFiles
-    : sortOrder.size == 1
+    : sortOrder.size === 1
     ? sortBy(files, file => file.fileSize)
     : sortBy(files, file => file.fileSize).reverse();
 
   sortedFiles = !sortOrder.date
     ? sortedFiles
-    : sortOrder.date == 1
+    : sortOrder.date === 1
     ? sortBy(files, file => new Date(file.updated))
     : sortBy(files, file => new Date(file.updated)).reverse();
 

@@ -106,10 +106,10 @@ module.exports = new Promise(function(resolve, reject) {
 
   console.log("configUrl", configUrl);
 
-  if (configUrl.indexOf("do_not_read") == -1) {
+  if (configUrl.indexOf("do_not_read") === -1) {
     // Read contents from configUrl if it is given
 
-    if (configUrl.indexOf("http") == -1) {
+    if (configUrl.indexOf("http") === -1) {
       fs.readFile(configUrl, (error, data) => {
         if (!error) {
           data = JSON.parse(data);
@@ -122,7 +122,7 @@ module.exports = new Promise(function(resolve, reject) {
       });
     } else {
       request(configUrl, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
+        if (!error && response.statusCode === 200) {
           body = JSON.parse(body);
           conf.load(body);
           conf.validate();

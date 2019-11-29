@@ -14,8 +14,8 @@
  *
  */
 
+import React from "react";
 import { connect } from "react-redux";
-import React, { Component, PropTypes } from "react";
 import SuppliersActions from "../actions/SuppliersActions";
 import { EventDetails } from "bogu";
 import ChouetteJobDetails from "./ChouetteJobDetails";
@@ -47,25 +47,25 @@ class SupplierTabWrapper extends React.Component {
     const queryId = getQueryVariable("id");
 
     const { dispatch } = this.props;
-    if (queryTab == "events") {
+    if (queryTab === "events") {
       if (queryId) {
         dispatch(SuppliersActions.getProviderStatus(queryId));
       } else {
         dispatch(SuppliersActions.getAllProviderStatus());
       }
-    } else if (queryTab == "chouetteJobs") {
+    } else if (queryTab === "chouetteJobs") {
       if (queryId) {
         dispatch(SuppliersActions.getChouetteJobStatus());
       } else {
         dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
       }
-    } else if (queryTab == "statistics") {
+    } else if (queryTab === "statistics") {
       if (queryId) {
         dispatch(SuppliersActions.getLineStatsForProvider(queryId));
       } else {
         dispatch(SuppliersActions.getAllLineStats());
       }
-    } else if (queryTab == "OrganisationRegister") {
+    } else if (queryTab === "OrganisationRegister") {
       if (queryId) {
         this.onTabChangeForProvider(0, "migrateData", null, null);
       }
@@ -129,7 +129,7 @@ class SupplierTabWrapper extends React.Component {
         break;
       case "statistics":
         dispatch(SuppliersActions.getLineStatsForProvider(activeId));
-
+        break;
       default:
         break;
     }

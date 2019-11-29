@@ -14,7 +14,7 @@
  *
  */
 
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import SuppliersActions from "../actions/SuppliersActions";

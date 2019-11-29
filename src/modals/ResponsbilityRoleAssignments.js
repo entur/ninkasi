@@ -14,7 +14,7 @@
  *
  */
 
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import {
   getEntityClassificationRefString,
   getOrganizationNameByRef,

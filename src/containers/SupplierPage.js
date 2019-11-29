@@ -14,8 +14,8 @@
  *
  */
 
+import React from "react";
 import { connect } from "react-redux";
-import React, { Component, PropTypes } from "react";
 import NotificationContainer from "./NotificationContainer";
 import cfgreader from "../config/readConfig";
 import SuppliersActions from "../actions/SuppliersActions";
@@ -24,14 +24,12 @@ import ModalEditProvider from "../modals/ModalEditProvider";
 class SupplierPage extends React.Component {
   componentWillMount() {
     const { id, dispatch } = this.props;
-    cfgreader.readConfig(
-      function(config) {
-        window.config = config;
-        if (id) {
-          dispatch(SuppliersActions.fetchProvider(id));
-        }
-      }.bind(this)
-    );
+    cfgreader.readConfig(function(config) {
+      window.config = config;
+      if (id) {
+        dispatch(SuppliersActions.fetchProvider(id));
+      }
+    });
   }
 
   handleUpdateProvider(data) {

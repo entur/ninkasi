@@ -119,7 +119,7 @@ class UserView extends React.Component {
 
   filterUserByOrg(user) {
     const { organisationFilterId } = this.state;
-    if (organisationFilterId == -1) return true;
+    if (organisationFilterId === -1) return true;
     const organizationId = user.organisation ? user.organisation.id : null;
     return organisationFilterId === organizationId;
   }
@@ -128,7 +128,7 @@ class UserView extends React.Component {
     const { sortOrder } = this.state;
     let asc = true;
 
-    if (sortOrder.column == column) {
+    if (sortOrder.column === column) {
       asc = !sortOrder.asc;
     }
 
@@ -151,7 +151,7 @@ class UserView extends React.Component {
     const { isCreateModalOpen, isEditModalOpen } = this.state;
     if (
       nextProps.status &&
-      nextProps.status.error == null &&
+      nextProps.status.error === null &&
       (isCreateModalOpen || isEditModalOpen)
     ) {
       this.setState({
@@ -323,7 +323,6 @@ class UserView extends React.Component {
                     style={{
                       height: 20,
                       width: 20,
-                      marginRight: 4,
                       marginRight: 10,
                       verticalAlign: "middle",
                       cursor: "pointer"

@@ -19,7 +19,7 @@ import PropTypes from "prop-types";
 import { Card, CardText } from "material-ui/Card";
 import { List, ListItem } from "material-ui/List";
 import { HeaderTimeline, Timeline } from "bogu";
-import { filterLines, sortLines, sortIcon } from "bogu/utils";
+import { sortLines, sortIcon } from "bogu/utils";
 import { color } from "bogu/styles";
 import IconButton from "material-ui/IconButton";
 import CloseButton from "material-ui/svg-icons/navigation/close";

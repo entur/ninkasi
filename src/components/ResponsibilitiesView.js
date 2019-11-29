@@ -46,7 +46,7 @@ class ResponsibilitiesView extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.status && nextProps.status.error == null) {
+    if (nextProps.status && nextProps.status.error === null) {
       this.setState({
         isCreatingResponsibilitySet: false,
         isEditingResponsibilitySet: false
@@ -93,7 +93,7 @@ class ResponsibilitiesView extends React.Component {
     const { sortOrder } = this.state;
     let asc = true;
 
-    if (sortOrder.column == column) {
+    if (sortOrder.column === column) {
       asc = !sortOrder.asc;
     }
 

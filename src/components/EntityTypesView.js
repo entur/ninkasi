@@ -67,7 +67,7 @@ class EntityTypesView extends React.Component {
     const { sortOrder } = this.state;
     let asc = true;
 
-    if (sortOrder.column == column) {
+    if (sortOrder.column === column) {
       asc = !sortOrder.asc;
     }
 
@@ -113,7 +113,7 @@ class EntityTypesView extends React.Component {
     const { isCreateModalOpen, isEditModalOpen } = this.state;
     if (
       nextProps.status &&
-      nextProps.status.error == null &&
+      nextProps.status.error === null &&
       (isCreateModalOpen || isEditModalOpen)
     ) {
       this.setState({

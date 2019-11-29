@@ -38,7 +38,6 @@ import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right";
 import ConfirmDialog from "../modals/ConfirmDialog";
 import { getIconColor, getProvidersEnv, getTheme } from "../config/themes";
 import ModalCreatePoiFilter from "../modals/ModalCreatePoiFilter";
-import ModalCreateRole from "../modals/ModalCreateRole";
 
 class SuppliersContainer extends React.Component {
   constructor(props) {
@@ -63,11 +62,9 @@ class SuppliersContainer extends React.Component {
       graphPopoverOpen: false
     };
 
-    cfgreader.readConfig(
-      function(config) {
-        window.config = config;
-      }.bind(this)
-    );
+    cfgreader.readConfig(function(config) {
+      window.config = config;
+    });
   }
 
   componentDidMount() {
@@ -729,7 +726,7 @@ class SuppliersContainer extends React.Component {
                 const isLevel1Provider =
                   (supplier.chouetteInfo &&
                     supplier.chouetteInfo.migrateDataToProvider) ||
-                  supplier.id == -1;
+                  supplier.id === -1;
                 return (
                   <MenuItem
                     key={supplier.id}

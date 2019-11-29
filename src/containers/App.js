@@ -14,7 +14,7 @@
  *
  */
 
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import SuppliersContainer from "./SuppliersContainer";
 import SupplierTabWrapper from "./SupplierTabWrapper";
 import SupplierPage from "./SupplierPage";

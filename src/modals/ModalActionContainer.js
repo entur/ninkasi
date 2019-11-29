@@ -14,8 +14,8 @@
  *
  */
 
+import React from "react";
 import { connect } from "react-redux";
-import React, { Component, PropTypes } from "react";
 import Dialog from "material-ui/Dialog";
 import SuppliersActions from "../actions/SuppliersActions";
 import FlatButton from "material-ui/FlatButton";

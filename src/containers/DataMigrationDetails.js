@@ -15,7 +15,7 @@
  */
 
 import { connect } from "react-redux";
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import Button from "muicss/lib/react/button";
 import SuppliersActions from "../actions/SuppliersActions";
 import AdvancedFileList from "../components/AdvancedFileList";
@@ -90,9 +90,7 @@ class DataMigrationDetails extends React.Component {
 
     if (source) {
       const sortedFiles = sortFiles(files, sortOrder, filterText)
-        .filter(file => {
-          if (file.name.indexOf(filterText) > -1) return file;
-        })
+        .filter(file => file.name.indexOf(filterText) > -1)
         .map((f, i) => i);
 
       this.setState({
@@ -116,11 +114,8 @@ class DataMigrationDetails extends React.Component {
         Array.from(selectedIndicesSource.values())
       );
       const isLastSelected =
-        highestIndex ==
-        files.filter(file => {
-          if (file.name.indexOf(filterText) > -1) return file;
-        }).length -
-          1;
+        highestIndex ===
+        files.filter(file => file.name.indexOf(filterText) > -1).length - 1;
 
       if (!isAllSelected && !isLastSelected) {
         this.handleUpdateIndicesSource(new Set([highestIndex + 1]));
@@ -130,12 +125,12 @@ class DataMigrationDetails extends React.Component {
       const { selectedIndicesOutbound, outboundFiles } = this.state;
 
       const isAllSelected =
-        outboundFiles.length == selectedIndicesOutbound.size;
+        outboundFiles.length === selectedIndicesOutbound.size;
       const highestIndex = Math.max.apply(
         Math,
         Array.from(selectedIndicesOutbound.values())
       );
-      const isLastSelected = highestIndex == outboundFiles.length - 1;
+      const isLastSelected = highestIndex === outboundFiles.length - 1;
 
       if (!isAllSelected && !isLastSelected) {
         this.handleUpdateIndicesOutbound(new Set([highestIndex + 1]));
@@ -151,14 +146,12 @@ class DataMigrationDetails extends React.Component {
 
       const isAllSelected =
         selectedIndicesSource.size ===
-        files.filter(file => {
-          if (file.name.indexOf(filterText) > -1) return file;
-        }).length;
+        files.filter(file => file.name.indexOf(filterText) > -1).length;
       const lowestIndex = Math.min.apply(
         Math,
         Array.from(selectedIndicesSource.values())
       );
-      const isFirstSelected = lowestIndex == 0;
+      const isFirstSelected = lowestIndex === 0;
 
       if (!isAllSelected && !isFirstSelected) {
         event.preventDefault();
@@ -168,13 +161,13 @@ class DataMigrationDetails extends React.Component {
       const { selectedIndicesOutbound, outboundFiles } = this.state;
 
       const isAllSelected =
-        outboundFiles.length == selectedIndicesOutbound.size;
+        outboundFiles.length === selectedIndicesOutbound.size;
 
       const lowestIndex = Math.max.apply(
         Math,
         Array.from(selectedIndicesOutbound.values())
       );
-      const isFirstSelected = lowestIndex == 0;
+      const isFirstSelected = lowestIndex === 0;
 
       if (!isAllSelected && !isFirstSelected) {
         event.preventDefault();
@@ -187,7 +180,7 @@ class DataMigrationDetails extends React.Component {
     const { sortOrder } = this.state;
     this.setState({
       sortOrder: {
-        ext: sortOrder.ext == 2 ? 0 : sortOrder.ext + 1,
+        ext: sortOrder.ext === 2 ? 0 : sortOrder.ext + 1,
         name: 0,
         date: 0,
         size: 0
@@ -199,7 +192,7 @@ class DataMigrationDetails extends React.Component {
     const { sortOrder } = this.state;
     this.setState({
       sortOrder: {
-        name: sortOrder.name == 2 ? 0 : sortOrder.name + 1,
+        name: sortOrder.name === 2 ? 0 : sortOrder.name + 1,
         ext: 0,
         date: 0,
         size: 0
@@ -211,7 +204,7 @@ class DataMigrationDetails extends React.Component {
     const { sortOrder } = this.state;
     this.setState({
       sortOrder: {
-        size: sortOrder.size == 2 ? 0 : sortOrder.size + 1,
+        size: sortOrder.size === 2 ? 0 : sortOrder.size + 1,
         ext: 0,
         date: 0,
         name: 0
@@ -223,7 +216,7 @@ class DataMigrationDetails extends React.Component {
     const { sortOrder } = this.state;
     this.setState({
       sortOrder: {
-        date: sortOrder.date == 2 ? 0 : sortOrder.date + 1,
+        date: sortOrder.date === 2 ? 0 : sortOrder.date + 1,
         ext: 0,
         name: 0,
         size: 0
@@ -425,7 +418,7 @@ class DataMigrationDetails extends React.Component {
   handleImportData = () => {
     const { dispatch, activeId, providers } = this.props;
     const { outboundFiles } = this.state;
-    const provider = providers.find(p => p.id == activeId);
+    const provider = providers.find(p => p.id === activeId);
 
     if (outboundFiles.length && provider) {
       if (
@@ -458,7 +451,7 @@ class DataMigrationDetails extends React.Component {
     const response = window.confirm(
       "Are you sure you want to clean up the dataspace current provider?"
     );
-    if (response == true) {
+    if (response === true) {
       const { dispatch } = this.props;
       dispatch(SuppliersActions.cleanDataspace(this.props.activeId));
     }
@@ -468,7 +461,7 @@ class DataMigrationDetails extends React.Component {
     const response = window.confirm(
       "Are you sure you want to clear event history for current provider?"
     );
-    if (response == true) {
+    if (response === true) {
       const { dispatch } = this.props;
       dispatch(SuppliersActions.deleteJobsForProvider(this.props.activeId));
     }
@@ -567,7 +560,7 @@ class DataMigrationDetails extends React.Component {
 
     outboundFiles.forEach((file, index) => {
       let indices = Array.from(selectedIndicesOutbound);
-      if (indices.indexOf(index) == -1) {
+      if (indices.indexOf(index) === -1) {
         filteredList.push(file);
       }
     });

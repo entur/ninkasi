@@ -75,14 +75,16 @@ const UtilsReducer = (state = intialState, action) => {
       return Object.assign({}, state, {
         outboundFilelist: [
           ...state.outboundFilelist,
-          ...action.payLoad.filter(x => state.outboundFilelist.indexOf(x) == -1)
+          ...action.payLoad.filter(
+            x => state.outboundFilelist.indexOf(x) === -1
+          )
         ]
       });
 
     case types.REMOVE_FILES_FROM_OUTBOUND:
       return Object.assign({}, state, {
         outboundFilelist: state.outboundFilelist.filter(
-          x => action.payLoad.indexOf(x) == -1
+          x => action.payLoad.indexOf(x) === -1
         )
       });
 
@@ -147,8 +149,8 @@ const UtilsReducer = (state = intialState, action) => {
     case types.SORT_EVENTLIST_BY_COLUMN:
       let eventsSortOrder = 0;
 
-      if (state.eventListSortOrder.property == action.payLoad) {
-        eventsSortOrder = state.eventListSortOrder.sortOrder == 1 ? 0 : 1;
+      if (state.eventListSortOrder.property === action.payLoad) {
+        eventsSortOrder = state.eventListSortOrder.sortOrder === 1 ? 0 : 1;
       }
 
       return Object.assign({}, state, {
@@ -161,7 +163,7 @@ const UtilsReducer = (state = intialState, action) => {
     case types.SORT_CHOUETTE_ALL_BY_COLUMN:
       let chouetteAllSortOrder = 0;
 
-      if (state.chouetteListAllSortOrder.property == action.payLoad) {
+      if (state.chouetteListAllSortOrder.property === action.payLoad) {
         chouetteAllSortOrder =
           state.chouetteListAllSortOrder.sortOrder >= 1 ? 0 : 1;
       }
@@ -176,7 +178,7 @@ const UtilsReducer = (state = intialState, action) => {
     case types.SORT_CHOUETTE_BY_COLUMN:
       let chouetteSortOrder = 0;
 
-      if (state.chouetteListSortOrder.property == action.payLoad) {
+      if (state.chouetteListSortOrder.property === action.payLoad) {
         chouetteSortOrder = state.chouetteListSortOrder.sortOrder >= 1 ? 0 : 1;
       }
 
@@ -198,7 +200,7 @@ const UtilsReducer = (state = intialState, action) => {
 const toggleExpandedEvents = (index, expanded) => {
   if (expanded.indexOf(index) === -1) return expanded.concat(index);
 
-  return expanded.filter(item => item != index);
+  return expanded.filter(item => item !== index);
 };
 
 export default UtilsReducer;

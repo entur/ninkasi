@@ -145,7 +145,7 @@ class ModalEditResponsibilitySet extends React.Component {
     const isLegalPrivateCode =
       responsibilitySet.privateCode ===
         this.props.responsibilitySet.privateCode ||
-      takenPrivateCodes.indexOf(responsibilitySet.privateCode) == -1;
+      takenPrivateCodes.indexOf(responsibilitySet.privateCode) === -1;
 
     const isSavable = this.isSavable() && isLegalPrivateCode;
 

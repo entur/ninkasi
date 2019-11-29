@@ -69,7 +69,7 @@ class StatisticsDetails extends React.Component {
 
     if (selectedProvider) {
       const provider = suppliers.filter(
-        provider => provider.id == selectedProvider
+        provider => provider.id === selectedProvider
       )[0];
 
       return (

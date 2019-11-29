@@ -14,7 +14,7 @@
  *
  */
 
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import ModalDialog from "material-ui/Dialog";
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
@@ -46,10 +46,6 @@ const initialState = {
 class ModalEditUser extends React.Component {
   constructor(props) {
     super(props);
-    this.state = initialState;
-  }
-
-  componentWillUnmount() {
     this.state = initialState;
   }
 
@@ -154,7 +150,6 @@ class ModalEditUser extends React.Component {
     const {
       isModalOpen,
       handleSubmit,
-      takenUsernames,
       organizations,
       responsibilities
     } = this.props;

@@ -14,8 +14,8 @@
  *
  */
 
+import React from "react";
 import { connect } from "react-redux";
-import React, { Component, PropTypes } from "react";
 import cfgreader from "../config/readConfig";
 import Container from "muicss/lib/react/container";
 import Row from "muicss/lib/react/row";
@@ -44,12 +44,10 @@ class ChouetteAllJobs extends React.Component {
 
   componentWillMount() {
     const { dispatch } = this.props;
-    cfgreader.readConfig(
-      function(config) {
-        window.config = config;
-        dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
-      }.bind(this)
-    );
+    cfgreader.readConfig(function(config) {
+      window.config = config;
+      dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
+    });
   }
 
   handleCancelChouetteJob = (id, providerId) => {
@@ -87,7 +85,7 @@ class ChouetteAllJobs extends React.Component {
   }
 
   getJobStatus(status) {
-    if (status == "TERMINATED") return "COMPLETED";
+    if (status === "TERMINATED") return "COMPLETED";
     return status;
   }
 
@@ -248,7 +246,7 @@ class ChouetteAllJobs extends React.Component {
                   <span>Pages: </span>
                   {paginationMap.map((page, index) => {
                     const isActive =
-                      index == activeChouettePageIndex
+                      index === activeChouettePageIndex
                         ? "page-link active-link"
                         : "page-link inactive-link";
                     return (
@@ -353,7 +351,12 @@ class ChouetteAllJobs extends React.Component {
                   style={{ display: "flex", alignItems: "center" }}
                 >
                   <Col md="1">
-                    <a title={chouetteURL} target="_blank" href={chouetteURL}>
+                    <a
+                      title={chouetteURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={chouetteURL}
+                    >
                       {job.referential}
                     </a>
                   </Col>

@@ -14,7 +14,7 @@
  *
  */
 
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import Modal from "material-ui/Dialog";
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
@@ -32,10 +32,6 @@ class ModalCreateRole extends React.Component {
     this.state = initialState;
   }
 
-  componentWillUnmount() {
-    this.state = initialState;
-  }
-
   handleOnClose() {
     this.setState(initialState);
     this.props.handleCloseModal();
@@ -45,13 +41,6 @@ class ModalCreateRole extends React.Component {
     const { isModalOpen, handleSubmit, takenPrivateCodes } = this.props;
 
     const { role } = this.state;
-
-    const titleStyle = {
-      fontSize: "2em",
-      fontWeight: 600,
-      margin: "10px auto",
-      width: "80%"
-    };
 
     const invalidPrivateCode = takenPrivateCodes.indexOf(role.privateCode) > -1;
 

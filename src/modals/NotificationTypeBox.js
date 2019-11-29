@@ -33,7 +33,7 @@ class NotificationTypeBox extends React.Component {
   render() {
     const { notification, index, handleExpand, expanded } = this.props;
 
-    if (notification == null) return null;
+    if (notification === null) return null;
 
     return (
       <div

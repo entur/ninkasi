@@ -207,7 +207,7 @@ SuppliersActions.getAllProviderStatus = () => (dispatch, getState) => {
       const providerStatus = response.data.map(status => {
         let provider = null;
         for (let i = 0; i < providers.length; i++) {
-          if (providers[i].id == status.providerId) {
+          if (providers[i].id === status.providerId) {
             provider = providers[i];
             break;
           }
@@ -278,7 +278,7 @@ SuppliersActions.getAllProviders = () => (dispatch, getState) => {
       /* TODO: This is a hack to ensure that all providers are loaded before
              before getting their respective job status
              */
-      if (!queryId && queryTab == 1) {
+      if (!queryId && queryTab === 1) {
         dispatch(SuppliersActions.getAllProviderStatus());
       }
     })
@@ -422,9 +422,9 @@ SuppliersActions.fetchProvider = id => dispatch => {
         ? `&tab=${getQueryVariable("tab")}`
         : "";
 
-      if (getQueryVariable("tab") == "events") {
+      if (getQueryVariable("tab") === "events") {
         dispatch(SuppliersActions.getProviderStatus(id));
-      } else if (getQueryVariable("tab") == "chouetteJobs") {
+      } else if (getQueryVariable("tab") === "chouetteJobs") {
         dispatch(SuppliersActions.getChouetteJobStatus());
       }
 

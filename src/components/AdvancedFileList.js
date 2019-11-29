@@ -63,16 +63,16 @@ class AdvancedFileList extends React.Component {
       handleSelectAllShowingIndices
     } = this.props;
 
-    if (e.keyCode == 40) {
+    if (e.keyCode === 40) {
       handleKeyDown(isSource, e);
     }
 
-    if (e.keyCode == 38) {
+    if (e.keyCode === 38) {
       handleKeyUp(isSource, e);
     }
 
     // handle select-all (cmd+a or ctrl+a)
-    if (files.length && e.keyCode == 65 && (e.ctrlKey || e.metaKey)) {
+    if (files.length && e.keyCode === 65 && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();
       handleSelectAllShowingIndices(isSource);
     }
@@ -108,13 +108,7 @@ class AdvancedFileList extends React.Component {
   }
 
   render() {
-    const {
-      files,
-      selectedIndices,
-      downloadButton,
-      isSource,
-      warningMsg
-    } = this.props;
+    const { files, selectedIndices, downloadButton, isSource } = this.props;
 
     const headerStyle = {
       marginRight: 5,

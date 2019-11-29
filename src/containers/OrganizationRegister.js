@@ -56,11 +56,11 @@ class OrganizationRegister extends React.Component {
             overflow: "hidden"
           }}
         >
-          {activeTab == 0 ? <UserView /> : null}
-          {activeTab == 1 ? <RoleView /> : null}
-          {activeTab == 2 ? <OrganizationView /> : null}
-          {activeTab == 3 ? <ResponsibilitiesView /> : null}
-          {activeTab == 4 ? <EntityTypesView /> : null}
+          {activeTab === 0 ? <UserView /> : null}
+          {activeTab === 1 ? <RoleView /> : null}
+          {activeTab === 2 ? <OrganizationView /> : null}
+          {activeTab === 3 ? <ResponsibilitiesView /> : null}
+          {activeTab === 4 ? <EntityTypesView /> : null}
         </div>
       </div>
     );

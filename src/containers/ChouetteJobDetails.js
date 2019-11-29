@@ -14,8 +14,8 @@
  *
  */
 
+import React from "react";
 import { connect } from "react-redux";
-import React, { Component, PropTypes } from "react";
 import cfgreader from "../config/readConfig";
 import Container from "muicss/lib/react/container";
 import Row from "muicss/lib/react/row";
@@ -43,15 +43,13 @@ class ChouetteJobDetails extends React.Component {
   }
 
   componentWillMount() {
-    cfgreader.readConfig(
-      function(config) {
-        window.config = config;
-      }.bind(this)
-    );
+    cfgreader.readConfig(function(config) {
+      window.config = config;
+    });
   }
 
   getJobStatus(status) {
-    if (status == "TERMINATED") return "COMPLETED";
+    if (status === "TERMINATED") return "COMPLETED";
     return status;
   }
 
@@ -262,7 +260,7 @@ class ChouetteJobDetails extends React.Component {
                   <span>Pages: </span>
                   {paginationMap.map((page, index) => {
                     const isActive =
-                      index == activeChouettePageIndex
+                      index === activeChouettePageIndex
                         ? "page-link active-link"
                         : "page-link inactive-link";
                     return (

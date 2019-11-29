@@ -28,13 +28,15 @@ export const getPaginationMap = (
         return new Date(job.created) > new Date(filterFromDate);
       })
       .sort((curr, prev) => {
-        if (sortOrder == 0) {
+        if (sortOrder === 0) {
           return curr[sortProperty] > prev[sortProperty] ? -1 : 1;
         }
 
-        if (sortOrder == 1) {
+        if (sortOrder === 1) {
           return curr[sortProperty] > prev[sortProperty] ? 1 : -1;
         }
+
+        return 0;
       }) || [];
 
   let paginationMap = [];

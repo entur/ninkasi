@@ -143,7 +143,7 @@ class ModalCreateResponsibilitySet extends React.Component {
 
     const { isCreatingNewRole, responsibilitySet, newRole } = this.state;
     const isLegalPrivateCode =
-      takenPrivateCodes.indexOf(responsibilitySet.privateCode) == -1;
+      takenPrivateCodes.indexOf(responsibilitySet.privateCode) === -1;
 
     const isSavable = this.isSavable() && isLegalPrivateCode;
 

@@ -14,41 +14,39 @@
  *
  */
 
-import React from 'react';
-import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import Keycloak from 'keycloak-js';
-import App from './containers/App';
-import configureStore from './store/store';
-import './sass/main.scss';
-import cfgreader from './config/readConfig';
+import React from "react";
+import { render } from "react-dom";
+import { Provider } from "react-redux";
+import Keycloak from "keycloak-js";
+import App from "./containers/App";
+import configureStore from "./store/store";
+import "./sass/main.scss";
+import cfgreader from "./config/readConfig";
 
-cfgreader.readConfig(
-  function(config) {
-    window.config = config;
-    authWithKeyCloak(config.endpointBase);
-  }.bind(this)
-);
+cfgreader.readConfig(function(config) {
+  window.config = config;
+  authWithKeyCloak(config.endpointBase);
+});
 
 function authWithKeyCloak(endpointBase) {
-  let kc = new Keycloak(endpointBase + 'config/keycloak.json');
+  let kc = new Keycloak(endpointBase + "config/keycloak.json");
 
-  kc
-    .init({ onLoad: 'login-required', checkLoginIframe: false })
-    .success(authenticated => {
+  kc.init({ onLoad: "login-required", checkLoginIframe: false }).success(
+    authenticated => {
       if (authenticated) {
-        localStorage.setItem('NINKASI::jwt', kc.token);
+        localStorage.setItem("NINKASI::jwt", kc.token);
 
         setInterval(() => {
           kc.updateToken(10).error(() => kc.logout());
-          localStorage.setItem('NINKASI::jwt', kc.token);
+          localStorage.setItem("NINKASI::jwt", kc.token);
         }, 10000);
 
         renderIndex(kc);
       } else {
         kc.login();
       }
-    });
+    }
+  );
 }
 
 function renderIndex(kc) {
@@ -58,6 +56,6 @@ function renderIndex(kc) {
     <Provider store={store}>
       <App />
     </Provider>,
-    document.getElementById('root')
+    document.getElementById("root")
   );
 }
