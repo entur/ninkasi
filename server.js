@@ -14,7 +14,6 @@
  *
  */
 
-
 const express = require('express');
 const configureApp = require('./server-config').configureApp;
 const port = process.env.port || 8988;
