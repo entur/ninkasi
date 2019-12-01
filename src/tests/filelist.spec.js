@@ -14,20 +14,18 @@
  *
  */
 
-const express = require('express');
-const configureApp = require('./server-config').configureApp;
-const port = process.env.port || 8988;
+import { assert } from 'chai';
+import { addFileExtensions } from '../actions/SuppliersActions';
 
-const init = async () => {
-  const app = await configureApp(express());
+describe('Array', () => {
+  it('should add file extensions', () => {
+    const zipFile =
+      'akt-20170215150837-1216_NRI_20160426.rar_part_0017_of_21.zip';
+    const rarFile = 'akt-20170215150910-1442_Båtruter_sommeren_2016.rar';
+    const files = [{ name: zipFile }, { name: rarFile }];
+    const filesWithExt = addFileExtensions(files);
 
-  app.listen(port, function(error) {
-    if (error) {
-      console.error(error);
-    } else {
-      console.info("==> Listening on port %s.", port);
-    }
+    assert.equal(filesWithExt[0].ext, 'zip');
+    assert.equal(filesWithExt[1].ext, 'rar');
   });
-}
-
-init();
+});

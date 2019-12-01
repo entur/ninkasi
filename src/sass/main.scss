@@ -1,0 +1,187 @@
+/*!
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
+ * the European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at:
+ *
+ *   https://joinup.ec.europa.eu/software/page/eupl
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and
+ * limitations under the Licence.
+ *
+ */
+
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400italic,700italic,400,700');
+
+@import '../../node_modules/muicss/lib/sass/mui.scss';
+@import 'components/forms';
+@import 'components/links';
+@import 'components/colors';
+@import 'components/Footer';
+@import 'components/buttons';
+@import 'helpers';
+
+$roboto-slab: 'Roboto Slab', serif;
+$open-sans: 'Open Sans', sans-serif;
+
+body {
+  font-family: $open-sans;
+  font-weight: 500;
+  background: #e5e5e5;
+  font-family: $open-sans;
+}
+
+.description-title {
+  margin-top: 20px;
+  margin-left: 20px;
+  font-weight: 600;
+}
+
+.supplier-info {
+  background: #fff;
+  padding-bottom: 20px;
+  margin: auto;
+  border: 1px solid #ccc;
+  width: 98%;
+
+  .supplier-details {
+    margin-top: 30px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+  }
+
+  .small-button {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 5px;
+    font-size: 0.8em;
+    color: #366dab;
+    vertical-align: bottom;
+  }
+}
+
+.suppliers-container {
+  margin: auto;
+  > h1 {
+    margin-bottom: 40px;
+    font-weight: 500;
+  }
+
+  #select-supplier > select {
+    background-color: #fff;
+    text-indent: 5px;
+    background-size: 13px;
+    background-position-x: 99%;
+    max-width: 440px;
+    display: inline-block;
+  }
+}
+
+.new-provider {
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.filter-wrapper {
+  &:first-child {
+    border-bottom: 1px dotted #eee;
+    padding-bottom: 10px;
+  }
+  &:last-child {
+    padding-top: 10px;
+  }
+}
+
+.multiselect {
+  margin-bottom: 20px;
+  resize: vertical;
+  min-height: 400px;
+  font-size: 0.9em;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+#choutte-jobs {
+  float: right;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible-wrapper {
+  background: whitesmoke;
+  padding: 10px;
+  border: 1px solid silver;
+  margin: 10px;
+}
+
+.jobstatus-wrapper {
+  margin-bottom: 20px;
+  border: 1px solid #eee;
+  padding: 10px;
+}
+
+.mui--is-active {
+  margin-top: 20px;
+}
+
+.mui-select > label {
+  overflow-x: initial;
+}
+
+.long-text {
+  word-break: break-all;
+}
+
+.table-header {
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.no-files {
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.unselectable {
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  align-items: center;
+  -o-user-select: none;
+  box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: initial;
+  border-image: initial;
+  user-select: none;
+  -webkit-appearance: listbox;
+}
+
+.version {
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  z-index: 2000;
+  color: white;
+  font-size: 0.5em;
+}
+
+#dropdown-clean-all > button > span {
+  color: #fff;
+}
+
+#dropdown-clean-all > button > span > span {
+  color: #fff;
+}
+
+.sortable {
+  border-bottom: 1px dotted;
+  cursor: pointer;
+}

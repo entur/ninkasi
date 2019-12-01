@@ -14,20 +14,22 @@
  *
  */
 
-const express = require('express');
-const configureApp = require('./server-config').configureApp;
-const port = process.env.port || 8988;
+import React from 'react';
 
-const init = async () => {
-  const app = await configureApp(express());
+const ChouetteLink = ({ action, id, referential, children }) => {
+  const baseURL = `${window.config.chouetteBaseUrl}/referentials/`;
+  const actionMap = {
+    importer: `imports/${id}/compliance_check`,
+    exporter: `exports/${id}/compliance_check`,
+    validator: `compliance_checks/${id}/report`
+  };
+  const URL = `${baseURL}${referential}/${actionMap[action]}`;
 
-  app.listen(port, function(error) {
-    if (error) {
-      console.error(error);
-    } else {
-      console.info("==> Listening on port %s.", port);
-    }
-  });
-}
+  return (
+    <a title={URL} target="_blank" rel="noopener noreferrer" href={URL}>
+      {children}
+    </a>
+  );
+};
 
-init();
+export default ChouetteLink;

@@ -14,20 +14,15 @@
  *
  */
 
-const express = require('express');
-const configureApp = require('./server-config').configureApp;
-const port = process.env.port || 8988;
+export const getQueryVariable = variable => {
+  let query = window.location.search.substring(1);
+  let vars = query.split('&');
 
-const init = async () => {
-  const app = await configureApp(express());
-
-  app.listen(port, function(error) {
-    if (error) {
-      console.error(error);
-    } else {
-      console.info("==> Listening on port %s.", port);
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=');
+    if (decodeURIComponent(pair[0]) === variable) {
+      return decodeURIComponent(pair[1]);
     }
-  });
-}
-
-init();
+  }
+  return null;
+};

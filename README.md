@@ -2,32 +2,21 @@
 
 This is the private admin GUI for managing the data pipeline and inspection of data status
 
-## Run the app 
+## Run the app
 
 ### Dev
 
 ```
-
 npm install
-npm run dev
+npm run start
 ```
 
 ### Production
-```
 
+```
 npm install
 npm run build
 npm start
-```
-
-## Testing
-
-Uses Nightwatch with Selenium for automated testing, cf. [documentation](http://nightwatchjs.org/)
-
-Running the tests locally can be achived by (note: this required a running selenium-hub)
-```
-  nightwatch --env local
-
 ```
 
 ## Configuration
@@ -57,4 +46,3 @@ AUTH_SERVER_URL=https://kc-dev.devstage.entur.io/auth port=9000 ENDPOINTBASE=/ad
 ```
 
 ***NB*** Use `PORT=8000` or `PORT=9000` for development against `https://kc-dev.devstage.entur.io/auth` since these are whitelisted.
-

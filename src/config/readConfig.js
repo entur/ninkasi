@@ -14,20 +14,33 @@
  *
  */
 
-const express = require('express');
-const configureApp = require('./server-config').configureApp;
-const port = process.env.port || 8988;
+import axios from 'axios';
 
-const init = async () => {
-  const app = await configureApp(express());
+/*
+Reading config json as served out of the node application.
+*/
 
-  app.listen(port, function(error) {
-    if (error) {
-      console.error(error);
-    } else {
-      console.info("==> Listening on port %s.", port);
-    }
-  });
-}
+const configreader = {};
+let config;
 
-init();
+configreader.readConfig = callback => {
+  if (config && typeof config !== 'undefined') {
+    callback(config);
+    return;
+  }
+  axios({
+    url: 'config.json',
+    timeout: 2000,
+    method: 'get',
+    responseType: 'json'
+  })
+    .then(function(response) {
+      config = response.data;
+      callback(config);
+    })
+    .catch(function(response) {
+      throw new Error('Could not read config: ' + response);
+    });
+};
+
+export default configreader;

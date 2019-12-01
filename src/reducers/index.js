@@ -14,20 +14,16 @@
  *
  */
 
-const express = require('express');
-const configureApp = require('./server-config').configureApp;
-const port = process.env.port || 8988;
+import SuppliersReducer from './SuppliersReducer';
+import MardukReducer from './MardukReducer';
+import UtilsReducer from './UtilsReducer';
+import OrganizationReducer from './OrganizationReducer';
+import UserReducer from './UserReducer';
 
-const init = async () => {
-  const app = await configureApp(express());
-
-  app.listen(port, function(error) {
-    if (error) {
-      console.error(error);
-    } else {
-      console.info("==> Listening on port %s.", port);
-    }
-  });
-}
-
-init();
+export {
+  SuppliersReducer,
+  MardukReducer,
+  UtilsReducer,
+  OrganizationReducer,
+  UserReducer
+};
