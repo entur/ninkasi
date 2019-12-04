@@ -79,6 +79,10 @@ class SupplierTabWrapper extends React.Component {
     this.startPolling();
   }
 
+  componentWillUnmount() {
+    clearInterval(this._timer);
+  }
+
   startPolling = () => {
     setTimeout(() => {
       this._timer = setInterval(this.poll, 10000);

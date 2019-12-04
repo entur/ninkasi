@@ -31,9 +31,13 @@ class GraphStatus extends React.Component {
     );
   }
 
+  componentWillUnmount() {
+    clearInterval(this._timer);
+  }
+
   startPolling = () => {
     setTimeout(() => {
-      setInterval(this.poll, 10000);
+      this._timer = setInterval(this.poll, 10000);
     }, 1000);
   };
 
