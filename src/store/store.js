@@ -20,7 +20,7 @@ import { createLogger } from 'redux-logger';
 import { routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
-import createRootReducer from '../reducers';
+import createRootReducer from 'reducers';
 
 export const history = createBrowserHistory();
 
@@ -54,7 +54,7 @@ export default function configureStore(kc) {
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('../reducers', () => {
-      const nextRootReducer = require('../reducers/');
+      const nextRootReducer = require('reducers/');
       store.replaceReducer(nextRootReducer(history));
     });
   }

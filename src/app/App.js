@@ -15,12 +15,12 @@
  */
 
 import React from 'react';
-import cfgreader from '../config/readConfig';
+import cfgreader from 'config/readConfig';
 import Header from './components/Header';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { connect } from 'react-redux';
-import UtilsActions from '../actions/UtilsActions';
-import roleParser from '../roles/rolesParser';
+import UtilsActions from 'actions/UtilsActions';
+import roleParser from 'roles/rolesParser';
 import NoAccess from './components/NoAccess';
 import Router from './Router';
 

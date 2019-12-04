@@ -17,7 +17,7 @@
 import React from 'react';
 import moment from 'moment';
 import MdDownload from 'material-ui/svg-icons/file/file-download';
-import { getSizeFromBytes } from '../../../utils/';
+import { getSizeFromBytes } from 'utils/';
 
 class AdvancedFileList extends React.Component {
   handleDownloadFile(e, filename) {

@@ -19,10 +19,10 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import Keycloak from 'keycloak-js';
-import App from './app';
-import configureStore, { history } from './store/store';
-import './sass/main.scss';
-import cfgreader from './config/readConfig';
+import App from 'app';
+import configureStore, { history } from 'store/store';
+import 'sass/main.scss';
+import cfgreader from 'config/readConfig';
 
 cfgreader.readConfig(function(config) {
   window.config = config;

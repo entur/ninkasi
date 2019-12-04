@@ -17,7 +17,7 @@
 import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import { connect } from 'react-redux';
-import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import EventFilterStatesPopover from './EventFilterStatesPopover';

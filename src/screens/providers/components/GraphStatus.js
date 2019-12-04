@@ -16,8 +16,8 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import SupplierActions from '../../../actions/SuppliersActions';
-import cfgreader from '../../../config/readConfig';
+import SupplierActions from 'actions/SuppliersActions';
+import cfgreader from 'config/readConfig';
 import moment from 'moment';
 
 class GraphStatus extends React.Component {

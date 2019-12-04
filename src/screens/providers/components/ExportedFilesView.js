@@ -16,7 +16,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SuppliersActions from '../../../actions/SuppliersActions';
+import SuppliersActions from 'actions/SuppliersActions';
 import ExportedFilesRow from './ExportedFilesRow';
 import ExportedFilesHeader from './ExportedFilesHeader';
 

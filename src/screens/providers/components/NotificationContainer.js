@@ -17,7 +17,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import SuppliersActions from '../../../actions/SuppliersActions';
+import SuppliersActions from 'actions/SuppliersActions';
 import NotificationSystem from 'react-notification-system';
 
 class NotificationContainer extends Component {

@@ -20,7 +20,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import Checkbox from 'material-ui/Checkbox';
 import PropTypes from 'prop-types';
 
