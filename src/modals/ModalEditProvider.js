@@ -22,7 +22,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import { connect } from 'react-redux';
-import SuppliersActions from '../actions/SuppliersActions';
+import SuppliersActions from 'actions/SuppliersActions';
 import TransportModesPopover from './TransportModesPopover';
 
 const getEmptyForm = () => ({

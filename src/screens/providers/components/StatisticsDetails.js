@@ -15,25 +15,18 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import PieCard from '../components/PieCard';
-import SuppliersActions from '../actions/SuppliersActions';
+import PieCard from './PieCard';
+import SuppliersActions from 'actions/SuppliersActions';
 import LineStatsCard from './LineStatsCard';
 import { segmentName, segmentName2Key } from 'bogu/utils';
-import { connect } from 'react-redux';
 
-class StatisticsForProvider extends React.Component {
+class StatisticsDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedSegment: 'all',
-      daysValid: 180
+      selectedProvider: false
     };
   }
-
-  static propTypes = {
-    provider: PropTypes.object.isRequired
-  };
 
   handlePieOnClick(element, provider) {
     if (element) {
@@ -56,47 +49,63 @@ class StatisticsForProvider extends React.Component {
     });
   }
 
+  handleClose() {
+    this.setState({
+      selectedProvider: false
+    });
+  }
+
   componentDidMount() {
-    this.props.dispatch(
-      SuppliersActions.getLineStatsForProvider(this.props.provider.id)
-    );
+    if (window.location.search.indexOf('?tab=2') > -1) {
+      this.props.dispatch(SuppliersActions.getAllLineStats());
+    }
   }
 
   render() {
-    const { lineStats, provider } = this.props;
-    const { selectedSegment, daysValid } = this.state;
+    const { suppliers, lineStats } = this.props;
+    const { selectedProvider, selectedSegment, daysValid } = this.state;
 
     const title = segmentName(selectedSegment, daysValid);
 
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-around'
-        }}
-      >
+    if (selectedProvider) {
+      const provider = suppliers.filter(
+        provider => provider.id === selectedProvider
+      )[0];
+
+      return (
         <LineStatsCard
+          handleClose={this.handleClose.bind(this)}
           daysValid={daysValid}
-          selectedSegment={selectedSegment}
+          selectedSegment={this.state.selectedSegment}
           title={`${provider.name} - ${title}`}
-          stats={lineStats}
+          stats={lineStats[selectedProvider]}
         />
+      );
+    } else {
+      const providerPies = suppliers.map((supplier, index) => (
         <PieCard
-          provider={provider}
-          key={'supplier-pie'}
+          provider={supplier}
+          key={'supplier-pie' + index}
+          providerName={supplier.name}
           handleShowAllClick={this.handleShowAll.bind(this)}
           handlePieOnClick={this.handlePieOnClick.bind(this)}
-          stats={lineStats}
-          hideHeader
+          stats={lineStats[supplier.id]}
         />
-      </div>
-    );
+      ));
+
+      return (
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-around'
+          }}
+        >
+          {providerPies}
+        </div>
+      );
+    }
   }
 }
 
-const mapStateToProps = ({ SuppliersReducer }, ownProps) => ({
-  lineStats: SuppliersReducer.lineStats[ownProps.provider.id]
-});
-
-export default connect(mapStateToProps)(StatisticsForProvider);
+export default StatisticsDetails;

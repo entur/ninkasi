@@ -18,7 +18,7 @@ import React from 'react';
 import ModalDialog from 'material-ui/Dialog';
 import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
-import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import NotificationTypeBox from './NotificationTypeBox';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';

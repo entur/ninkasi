@@ -17,9 +17,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import NotificationContainer from './NotificationContainer';
-import cfgreader from '../config/readConfig';
-import SuppliersActions from '../actions/SuppliersActions';
-import ModalEditProvider from '../modals/ModalEditProvider';
+import cfgreader from 'config/readConfig';
+import SuppliersActions from 'actions/SuppliersActions';
+import ModalEditProvider from 'modals/ModalEditProvider';
 
 class SupplierPage extends React.Component {
   componentWillMount() {

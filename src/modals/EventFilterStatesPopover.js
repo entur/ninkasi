@@ -21,7 +21,7 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Checkbox from 'material-ui/Checkbox';
-import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import PropTypes from 'prop-types';
 
 class EventFilterStatesPopover extends React.Component {

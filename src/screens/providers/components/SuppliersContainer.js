@@ -16,28 +16,28 @@
 
 import { connect } from 'react-redux';
 import React from 'react';
-import SuppliersActions from '../actions/SuppliersActions';
-import cfgreader from '../config/readConfig';
+import SuppliersActions from 'actions/SuppliersActions';
+import cfgreader from 'config/readConfig';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 import MdNew from 'material-ui/svg-icons/content/add';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
-import { getQueryVariable } from './utils';
+import { getQueryVariable } from 'utils';
 import Checkbox from 'material-ui/Checkbox';
 import Popover from 'material-ui/Popover';
 import MdDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down';
 import Divider from 'material-ui/Divider';
-import peliasTasks from '../config/peliasTasks';
+import peliasTasks from 'config/peliasTasks';
 import moment from 'moment';
-import rolesParser from '../roles/rolesParser';
+import rolesParser from 'roles/rolesParser';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
-import GraphStatus from '../components/GraphStatus';
+import GraphStatus from './GraphStatus';
 import FlatButton from 'material-ui/FlatButton';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
-import ConfirmDialog from '../modals/ConfirmDialog';
-import { getIconColor, getProvidersEnv, getTheme } from '../config/themes';
-import ModalCreatePoiFilter from '../modals/ModalCreatePoiFilter';
+import ConfirmDialog from 'modals/ConfirmDialog';
+import { getIconColor, getProvidersEnv, getTheme } from 'config/themes';
+import ModalCreatePoiFilter from 'modals/ModalCreatePoiFilter';
 
 class SuppliersContainer extends React.Component {
   constructor(props) {

@@ -16,7 +16,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import cfgreader from '../config/readConfig';
+import cfgreader from 'config/readConfig';
 import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
@@ -26,11 +26,11 @@ import Radio from 'muicss/lib/react/radio';
 import Form from 'muicss/lib/react/form';
 import Panel from 'muicss/lib/react/panel';
 import { DotLoader as Loader } from 'halogenium';
-import SuppliersActions from '../actions/SuppliersActions';
-import ChouetteLink from '../components/ChouetteLink';
+import SuppliersActions from 'actions/SuppliersActions';
+import ChouetteLink from './ChouetteLink';
 import DatePicker from 'material-ui/DatePicker';
 import MdClear from 'material-ui/svg-icons/content/clear';
-import { getPaginationMap } from '../models/';
+import { getPaginationMap } from 'models';
 import moment from 'moment';
 
 class ChouetteAllJobs extends React.Component {

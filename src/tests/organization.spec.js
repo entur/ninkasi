@@ -20,8 +20,8 @@ import {
   changeFilterStates,
   addAdminRef,
   removeAdminRef
-} from '../reducers/OrganizationReducerUtils';
-import { removeRedundantActions } from '../actions/OrganizationUtils';
+} from 'reducers/OrganizationReducerUtils';
+import { removeRedundantActions } from 'actions/OrganizationUtils';
 import { assert } from 'chai';
 
 describe('Organization reducer utils', () => {

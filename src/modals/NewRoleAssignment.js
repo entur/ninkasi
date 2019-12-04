@@ -24,10 +24,10 @@ import Checkbox from 'material-ui/Checkbox';
 import AdminZoneSearchWrapper from './AdminZoneSearchWrapper';
 import OrganizationRegisterActions, {
   sortBy
-} from '../actions/OrganizationRegisterActions';
+} from 'actions/OrganizationRegisterActions';
 import MdRemove from 'material-ui/svg-icons/content/remove';
 import IconButton from 'material-ui/IconButton';
-import { getEntityClassificationRefString } from '../utils/';
+import { getEntityClassificationRefString } from 'utils/';
 
 class NewRoleAssignment extends React.Component {
   constructor(props) {

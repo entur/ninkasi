@@ -15,18 +15,14 @@
  */
 
 import React from 'react';
-import SuppliersContainer from './SuppliersContainer';
-import SupplierTabWrapper from './SupplierTabWrapper';
-import SupplierPage from './SupplierPage';
-import NotificationContainer from './NotificationContainer';
-import ModalViewContainer from '../modals/ModalActionContainer';
-import cfgreader from '../config/readConfig';
-import Header from '../components/Header';
+import cfgreader from 'config/readConfig';
+import Header from './components/Header';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { connect } from 'react-redux';
-import UtilsActions from '../actions/UtilsActions';
-import roleParser from '../roles/rolesParser';
-import NoAccess from '../components/NoAccess';
+import UtilsActions from 'actions/UtilsActions';
+import roleParser from 'roles/rolesParser';
+import NoAccess from './components/NoAccess';
+import Router from './Router';
 
 class MainPage extends React.Component {
   componentWillMount() {
@@ -47,13 +43,7 @@ class MainPage extends React.Component {
           <div className="app">
             <Header />
             {roleParser.isAdmin(kc.tokenParsed) ? (
-              <div>
-                <SuppliersContainer />
-                <SupplierTabWrapper />
-                <NotificationContainer />
-                <ModalViewContainer />
-                <SupplierPage />
-              </div>
+              <Router />
             ) : (
               <NoAccess
                 username={kc.tokenParsed.preferred_username}

@@ -20,7 +20,7 @@ import PropTypes from 'prop-types';
 import NotificationAddEntityClassRef from './NotificationAddEntityClassRef';
 import IconButton from 'material-ui/IconButton';
 import MdRemove from 'material-ui/svg-icons/content/remove';
-import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
+import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 
 class NotificationEntityClassRef extends React.Component {
   static propTypes = {

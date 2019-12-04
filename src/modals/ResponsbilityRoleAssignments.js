@@ -19,7 +19,7 @@ import {
   getEntityClassificationRefString,
   getOrganizationNameByRef,
   getAdminZoneNameByRef
-} from '../utils/index';
+} from 'utils/index';
 
 class ResponsbilityRoleAssignments extends React.Component {
   render() {

@@ -16,10 +16,10 @@
 
 import React, { Component } from 'react';
 import moment from 'moment';
-import { getSizeFromBytes } from '../utils/';
+import { getSizeFromBytes } from 'utils/';
 import StatusLabel from './StatusLabel';
 import MdFileDownload from 'material-ui/svg-icons/file/file-download';
-import { ExportStatus } from '../actions/formatUtils';
+import { ExportStatus } from 'actions/formatUtils';
 
 class ExportedFilesRow extends Component {
   getStatusLabel(rowStatus, index) {

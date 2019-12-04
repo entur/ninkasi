@@ -25,7 +25,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
 import NewRole from './NewRoleAssignment';
-import { getEntityClassificationRefString } from '../utils/';
+import { getEntityClassificationRefString } from 'utils/';
 
 class ModalEditResponsibilitySet extends React.Component {
   constructor(props) {

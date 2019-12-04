@@ -14,16 +14,23 @@
  *
  */
 
+import { combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router';
+
 import SuppliersReducer from './SuppliersReducer';
 import MardukReducer from './MardukReducer';
 import UtilsReducer from './UtilsReducer';
 import OrganizationReducer from './OrganizationReducer';
 import UserReducer from './UserReducer';
 
-export {
-  SuppliersReducer,
-  MardukReducer,
-  UtilsReducer,
-  OrganizationReducer,
-  UserReducer
-};
+const createRootReducer = history =>
+  combineReducers({
+    router: connectRouter(history),
+    SuppliersReducer,
+    MardukReducer,
+    UtilsReducer,
+    OrganizationReducer,
+    UserReducer
+  });
+
+export default createRootReducer;

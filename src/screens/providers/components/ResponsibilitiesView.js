@@ -16,17 +16,17 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import '../sass/views/responsibilityView.scss';
+import 'sass/views/responsibilityView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import OrganizationRegisterActions from '../actions/OrganizationRegisterActions';
-import ResponsbilityRoleAssignments from '../modals/ResponsbilityRoleAssignments';
-import ModalCreateResponsibilitySet from '../modals/ModalCreateResponsibilitySet';
-import ModalEditResponsibilitySet from '../modals/ModalEditResponsibilitySet';
-import { sortByColumns } from '../utils/index';
-import ModalConfirmation from '../modals/ModalConfirmation';
+import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
+import ResponsbilityRoleAssignments from 'modals/ResponsbilityRoleAssignments';
+import ModalCreateResponsibilitySet from 'modals/ModalCreateResponsibilitySet';
+import ModalEditResponsibilitySet from 'modals/ModalEditResponsibilitySet';
+import { sortByColumns } from 'utils/index';
+import ModalConfirmation from 'modals/ModalConfirmation';
 
 const initialState = {
   isCreatingResponsibilitySet: false,

@@ -15,7 +15,7 @@
  */
 
 import { assert } from 'chai';
-import { addFileExtensions } from '../actions/SuppliersActions';
+import { addFileExtensions } from 'actions/SuppliersActions';
 
 describe('Array', () => {
   it('should add file extensions', () => {
