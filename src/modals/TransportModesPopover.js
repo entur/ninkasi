@@ -15,7 +15,6 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -23,7 +22,7 @@ import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Checkbox from 'material-ui/Checkbox';
 import PropTypes from 'prop-types';
 
-class TransportModesPopover extends React.Component {
+export default class TransportModesPopover extends React.Component {
   static propTypes = {
     transportModes: PropTypes.array.isRequired,
     allTransportModes: PropTypes.array.isRequired,
@@ -92,5 +91,3 @@ class TransportModesPopover extends React.Component {
     );
   }
 }
-
-export default connect(null)(TransportModesPopover);
