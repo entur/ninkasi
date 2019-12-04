@@ -18,7 +18,7 @@ import React, { Component } from 'react';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 import MdError from 'material-ui/svg-icons/alert/error';
 import MdOK from 'material-ui/svg-icons/action/check-circle';
-import { ExportStatus } from '../actions/formatUtils';
+import { ExportStatus } from '../../../actions/formatUtils';
 
 class StatusLabel extends Component {
   getIcon(type) {

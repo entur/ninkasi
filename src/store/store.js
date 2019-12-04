@@ -14,11 +14,15 @@
  *
  */
 
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
+import { routerMiddleware } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
-import * as reducers from '../reducers';
+import createRootReducer from '../reducers';
+
+export const history = createBrowserHistory();
 
 export default function configureStore(kc) {
   let enchancer = {};
@@ -27,10 +31,16 @@ export default function configureStore(kc) {
     const loggerMiddleware = createLogger({ collapsed: true });
     const composeEnhancers = composeWithDevTools({});
     enchancer = composeEnhancers(
-      applyMiddleware(thunkMiddleware, loggerMiddleware)
+      applyMiddleware(
+        routerMiddleware(history),
+        thunkMiddleware,
+        loggerMiddleware
+      )
     );
   } else {
-    enchancer = compose(applyMiddleware(thunkMiddleware));
+    enchancer = compose(
+      applyMiddleware(routerMiddleware(history), thunkMiddleware)
+    );
   }
 
   const initialState = {
@@ -39,17 +49,13 @@ export default function configureStore(kc) {
     }
   };
 
-  const combinedReducer = combineReducers({
-    ...reducers
-  });
-
-  let store = createStore(combinedReducer, initialState, enchancer);
+  let store = createStore(createRootReducer(history), initialState, enchancer);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('../reducers', () => {
       const nextRootReducer = require('../reducers/');
-      store.replaceReducer(nextRootReducer);
+      store.replaceReducer(nextRootReducer(history));
     });
   }
 

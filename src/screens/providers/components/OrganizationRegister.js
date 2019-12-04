@@ -15,12 +15,12 @@
  */
 
 import React from 'react';
-import SideBarTabs from '../components/SideBarTabs';
-import UserView from '../components/UserView';
-import OrganizationView from '../components/OrganizationView';
-import RoleView from '../components/RoleView';
-import ResponsibilitiesView from '../components/ResponsibilitiesView';
-import EntityTypesView from '../components/EntityTypesView';
+import SideBarTabs from './SideBarTabs';
+import UserView from './UserView';
+import OrganizationView from './OrganizationView';
+import RoleView from './RoleView';
+import ResponsibilitiesView from './ResponsibilitiesView';
+import EntityTypesView from './EntityTypesView';
 
 class OrganizationRegister extends React.Component {
   constructor(props) {

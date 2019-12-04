@@ -17,10 +17,10 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import Button from 'muicss/lib/react/button';
-import SuppliersActions from '../actions/SuppliersActions';
-import AdvancedFileList from '../components/AdvancedFileList';
+import SuppliersActions from '../../../actions/SuppliersActions';
+import AdvancedFileList from './AdvancedFileList';
 import TextField from 'material-ui/TextField';
-import { sortFiles } from '../utils/';
+import { sortFiles } from '../../../utils';
 
 const FaArrowDown = require('react-icons/lib/fa/arrow-down');
 const FaArrowUp = require('react-icons/lib/fa/arrow-up');

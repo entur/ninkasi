@@ -16,22 +16,21 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import SuppliersActions from '../actions/SuppliersActions';
+import SuppliersActions from '../../../actions/SuppliersActions';
 import { EventDetails } from 'bogu';
 import ChouetteJobDetails from './ChouetteJobDetails';
 import ChouetteAllJobs from './ChouetteAllJobs';
 import DataMigrationDetails from './DataMigrationDetails';
 import { PulseLoader as Loader } from 'halogenium';
-import '../sass/main.scss';
 import Tabs from 'muicss/lib/react/tabs';
 import Tab from 'muicss/lib/react/tab';
-import { getQueryVariable } from './utils';
+import { getQueryVariable } from '../../../utils';
 import FileUpload from './FileUpload';
 import StatisticsDetails from './StatisticsDetails';
 import StaticsForProvider from './StatisticsForProvider';
 import OrganizationRegister from './OrganizationRegister';
-import rolesParser from '../roles/rolesParser';
-import ExportedFilesView from '../containers/ExportedFilesView';
+import rolesParser from '../../../roles/rolesParser';
+import ExportedFilesView from './ExportedFilesView';
 
 class SupplierTabWrapper extends React.Component {
   constructor(props) {

@@ -24,8 +24,8 @@ import MdAccount from 'material-ui/svg-icons/action/account-circle';
 import MdHelp from 'material-ui/svg-icons/action/help';
 import { connect } from 'react-redux';
 import MdHistory from 'material-ui/svg-icons/action/history';
-import SuppliersActions from '../actions/SuppliersActions';
-import { getProvidersEnv, getTheme } from '../config/themes';
+import SuppliersActions from '../../actions/SuppliersActions';
+import { getProvidersEnv, getTheme } from '../../config/themes';
 
 class Header extends React.Component {
   handleLogout() {

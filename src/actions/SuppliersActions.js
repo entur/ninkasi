@@ -17,7 +17,7 @@
 import axios from 'axios';
 import * as types from './actionTypes';
 import moment from 'moment';
-import { getQueryVariable } from '../containers/utils';
+import { getQueryVariable } from '../utils';
 import { formatLineStats } from 'bogu/utils';
 import roleParser from '../roles/rolesParser';
 import {

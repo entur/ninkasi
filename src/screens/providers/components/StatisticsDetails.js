@@ -15,8 +15,8 @@
  */
 
 import React from 'react';
-import PieCard from '../components/PieCard';
-import SuppliersActions from '../actions/SuppliersActions';
+import PieCard from './PieCard';
+import SuppliersActions from '../../../actions/SuppliersActions';
 import LineStatsCard from './LineStatsCard';
 import { segmentName, segmentName2Key } from 'bogu/utils';
 

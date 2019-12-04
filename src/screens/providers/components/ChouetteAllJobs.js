@@ -16,7 +16,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import cfgreader from '../config/readConfig';
+import cfgreader from '../../../config/readConfig';
 import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
@@ -25,15 +25,15 @@ import Checkbox from 'muicss/lib/react/checkbox';
 import Radio from 'muicss/lib/react/radio';
 import Form from 'muicss/lib/react/form';
 import Panel from 'muicss/lib/react/panel';
-import SuppliersActions from '../actions/SuppliersActions';
 import { DotLoader as Loader } from 'halogenium';
-import ChouetteLink from '../components/ChouetteLink';
+import SuppliersActions from '../../../actions/SuppliersActions';
+import ChouetteLink from './ChouetteLink';
 import DatePicker from 'material-ui/DatePicker';
 import MdClear from 'material-ui/svg-icons/content/clear';
-import { getPaginationMap } from '../models/';
+import { getPaginationMap } from '../../../models';
 import moment from 'moment';
 
-class ChouetteJobDetails extends React.Component {
+class ChouetteAllJobs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,31 +43,22 @@ class ChouetteJobDetails extends React.Component {
   }
 
   componentWillMount() {
+    const { dispatch } = this.props;
     cfgreader.readConfig(function(config) {
       window.config = config;
+      dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
     });
   }
 
-  getJobStatus(status) {
-    if (status === 'TERMINATED') return 'COMPLETED';
-    return status;
-  }
-
-  handleCancelChouetteJob = index => {
-    const { dispatch, activeId } = this.props;
-    dispatch(SuppliersActions.cancelChouetteJobForProvider(activeId, index));
+  handleCancelChouetteJob = (id, providerId) => {
+    this.props.dispatch(
+      SuppliersActions.cancelChouetteJobForProvider(providerId, id)
+    );
   };
 
-  handleCancelAllChouetteJobs = event => {
-    event.preventDefault();
-    const { dispatch, activeId } = this.props;
-    dispatch(SuppliersActions.cancelAllChouetteJobsforProvider(activeId));
-  };
-
-  handleStatusFilterChange = event => {
-    const { dispatch } = this.props;
-    dispatch(
-      SuppliersActions.toggleChouetteInfoCheckboxFilter(
+  handleStatusFilterAllChange = event => {
+    this.props.dispatch(
+      SuppliersActions.toggleChouetteInfoCheckboxAllFilter(
         event.target.name,
         event.target.checked
       )
@@ -81,16 +72,21 @@ class ChouetteJobDetails extends React.Component {
     });
   }
 
-  setActiveActionFilter(event) {
+  setActiveActionAllFilter(event) {
     if (event.target.name === 'action-filter') {
       const { dispatch } = this.props;
-      dispatch(SuppliersActions.setActiveActionFilter(event.target.value));
+      dispatch(SuppliersActions.setActiveActionAllFilter(event.target.value));
     }
   }
 
   handleSortForColumn(columnName) {
     const { dispatch } = this.props;
-    dispatch(SuppliersActions.sortListByColumn('chouette', columnName));
+    dispatch(SuppliersActions.sortListByColumn('chouetteAll', columnName));
+  }
+
+  getJobStatus(status) {
+    if (status === 'TERMINATED') return 'COMPLETED';
+    return status;
   }
 
   handleOnDatePickerChange(event, date) {
@@ -106,20 +102,19 @@ class ChouetteJobDetails extends React.Component {
 
   render() {
     const {
-      chouetteJobFilter,
+      chouetteJobAllFilter,
       requestingJobs,
-      chouetteJobStatus,
+      chouetteAllJobStatus,
       sortProperty,
       sortOrder
     } = this.props;
     const { activeChouettePageIndex, filterFromDate } = this.state;
     const paginationMap = getPaginationMap(
-      chouetteJobStatus,
+      chouetteAllJobStatus,
       sortProperty,
       sortOrder,
       filterFromDate
     );
-
     const page = paginationMap ? paginationMap[activeChouettePageIndex] : null;
 
     return (
@@ -135,48 +130,48 @@ class ChouetteJobDetails extends React.Component {
                 </Col>
                 <Col md="2">
                   <Checkbox
-                    onChange={event => this.handleStatusFilterChange(event)}
-                    defaultChecked={chouetteJobFilter.SCHEDULED}
+                    onChange={event => this.handleStatusFilterAllChange(event)}
+                    defaultChecked={chouetteJobAllFilter.SCHEDULED}
                     name="SCHEDULED"
                     label="Scheduled"
                   />
                 </Col>
                 <Col md="2">
                   <Checkbox
-                    onChange={event => this.handleStatusFilterChange(event)}
-                    defaultChecked={chouetteJobFilter.RESCHEDULED}
+                    onChange={event => this.handleStatusFilterAllChange(event)}
+                    defaultChecked={chouetteJobAllFilter.RESCHEDULED}
                     name="RESCHEDULED"
                     label="Rescheduled"
                   />
                 </Col>
                 <Col md="2">
                   <Checkbox
-                    onChange={event => this.handleStatusFilterChange(event)}
-                    defaultChecked={chouetteJobFilter.STARTED}
+                    onChange={event => this.handleStatusFilterAllChange(event)}
+                    defaultChecked={chouetteJobAllFilter.STARTED}
                     name="STARTED"
                     label="Started"
                   />
                 </Col>
                 <Col md="2">
                   <Checkbox
-                    onChange={event => this.handleStatusFilterChange(event)}
-                    defaultChecked={chouetteJobFilter.TERMINATED}
+                    onChange={event => this.handleStatusFilterAllChange(event)}
+                    defaultChecked={chouetteJobAllFilter.TERMINATED}
                     name="TERMINATED"
                     label="Completed"
                   />
                 </Col>
                 <Col md="2">
                   <Checkbox
-                    onChange={event => this.handleStatusFilterChange(event)}
-                    defaultChecked={chouetteJobFilter.CANCELED}
+                    onChange={event => this.handleStatusFilterAllChange(event)}
+                    defaultChecked={chouetteJobAllFilter.CANCELED}
                     name="CANCELED"
                     label="Canceled"
                   />
                 </Col>
                 <Col md="1">
                   <Checkbox
-                    onChange={event => this.handleStatusFilterChange(event)}
-                    defaultChecked={chouetteJobFilter.ABORTED}
+                    onChange={event => this.handleStatusFilterAllChange(event)}
+                    defaultChecked={chouetteJobAllFilter.ABORTED}
                     name="ABORTED"
                     label="Aborted/Error"
                   />
@@ -193,7 +188,7 @@ class ChouetteJobDetails extends React.Component {
                 <Form>
                   <Col md="2">
                     <Radio
-                      onClick={event => this.setActiveActionFilter(event)}
+                      onClick={event => this.setActiveActionAllFilter(event)}
                       value=""
                       name="action-filter"
                       label="No filter"
@@ -202,7 +197,7 @@ class ChouetteJobDetails extends React.Component {
                   </Col>
                   <Col md="2">
                     <Radio
-                      onClick={event => this.setActiveActionFilter(event)}
+                      onClick={event => this.setActiveActionAllFilter(event)}
                       value="importer"
                       name="action-filter"
                       label="Importer"
@@ -210,7 +205,7 @@ class ChouetteJobDetails extends React.Component {
                   </Col>
                   <Col md="2">
                     <Radio
-                      onClick={event => this.setActiveActionFilter(event)}
+                      onClick={event => this.setActiveActionAllFilter(event)}
                       value="exporter"
                       name="action-filter"
                       label="Exporter"
@@ -218,45 +213,36 @@ class ChouetteJobDetails extends React.Component {
                   </Col>
                   <Col md="2">
                     <Radio
-                      onClick={event => this.setActiveActionFilter(event)}
+                      onClick={event => this.setActiveActionAllFilter(event)}
                       value="validator"
                       name="action-filter"
                       label="Validator"
                     />
                   </Col>
-                  <Col md="4">
+                  <Col md="3">
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                       <MdClear
                         onClick={() => this.setState({ filterFromDate: null })}
                         style={{ marginRight: 5 }}
                       />
                       <DatePicker
-                        hintText="Filter from date"
+                        hintText="From ..."
                         autoOk
                         onChange={this.handleOnDatePickerChange.bind(this)}
                         style={{ display: 'inline-block' }}
+                        textFieldStyle={{ width: '60%' }}
                         value={this.state.filterFromDate}
                       />
                     </div>
                   </Col>
-                  <div style={{ float: 'right', marginRight: 10 }}>
-                    <Button
-                      key={'btn-delete-all'}
-                      onClick={this.handleCancelAllChouetteJobs}
-                      size="small"
-                      color="danger"
-                    >
-                      Cancel all
-                    </Button>
-                  </div>
                 </Form>
               </Row>
             </div>
           </Panel>
           <Row>
-            <Col md="10">
+            <div>
               {paginationMap.length > 0 ? (
-                <div className="page-link-parent lm-17">
+                <div className="page-link-parent">
                   <span>Pages: </span>
                   {paginationMap.map((page, index) => {
                     const isActive =
@@ -277,7 +263,7 @@ class ChouetteJobDetails extends React.Component {
               ) : (
                 <div />
               )}
-            </Col>
+            </div>
             {requestingJobs ? (
               <div style={{ float: 'right', position: 'absolute', right: 40 }}>
                 <Loader color="#26A65B" size="23px" />
@@ -289,12 +275,20 @@ class ChouetteJobDetails extends React.Component {
               <Col md="1">
                 <div
                   className="table-header"
+                  onClick={() => this.handleSortForColumn('referential')}
+                >
+                  Provider
+                </div>
+              </Col>
+              <Col md="1">
+                <div
+                  className="table-header"
                   onClick={() => this.handleSortForColumn('id')}
                 >
                   Id
                 </div>
               </Col>
-              <Col md="2">
+              <Col md="1">
                 <div
                   className="table-header"
                   onClick={() => this.handleSortForColumn('action')}
@@ -349,6 +343,7 @@ class ChouetteJobDetails extends React.Component {
                 job.status === 'ABORTED' || job.status === 'CANCELED'
                   ? 'error'
                   : 'success';
+              const chouetteURL = `${window.config.chouetteBaseUrl}/referentials/${job.referential}/`;
 
               return (
                 <Row
@@ -356,15 +351,25 @@ class ChouetteJobDetails extends React.Component {
                   style={{ display: 'flex', alignItems: 'center' }}
                 >
                   <Col md="1">
+                    <a
+                      title={chouetteURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={chouetteURL}
+                    >
+                      {job.referential}
+                    </a>
+                  </Col>
+                  <Col md="1">
                     <ChouetteLink
                       id={job.id}
-                      action={job.action}
                       referential={job.referential}
+                      action={job.action}
                     >
                       {job.id}
                     </ChouetteLink>
                   </Col>
-                  <Col md="2">
+                  <Col md="1">
                     <p>{job.action}</p>
                   </Col>
                   <Col md="2">
@@ -389,7 +394,9 @@ class ChouetteJobDetails extends React.Component {
                     <Col md="1">
                       <Button
                         key={'btn-delete-' + index}
-                        onClick={() => this.handleCancelChouetteJob(job.id)}
+                        onClick={() =>
+                          this.handleCancelChouetteJob(job.id, job.providerId)
+                        }
                         size="small"
                         color="danger"
                       >
@@ -411,14 +418,15 @@ class ChouetteJobDetails extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  activeId: state.SuppliersReducer.activeId,
-  chouetteJobStatus: state.MardukReducer.chouetteJobStatus,
-  sortProperty: state.UtilsReducer.chouetteListSortOrder.property,
-  sortOrder: state.UtilsReducer.chouetteListSortOrder.sortOrder,
-  chouetteJobFilter: state.MardukReducer.chouetteJobFilter,
-  actionFilter: state.MardukReducer.actionFilter,
-  requestingJobs: state.MardukReducer.requesting_chouette_job
-});
+const mapStateToProps = state => {
+  return {
+    chouetteJobAllFilter: state.MardukReducer.chouetteJobAllFilter,
+    chouetteAllJobStatus: state.MardukReducer.chouetteAllJobStatus || [],
+    sortProperty: state.UtilsReducer.chouetteListAllSortOrder.property,
+    sortOrder: state.UtilsReducer.chouetteListAllSortOrder.sortOrder,
+    actionAllFilter: state.MardukReducer.actionAllFilter,
+    requestingJobs: state.MardukReducer.requesting_chouette_all_job
+  };
+};
 
-export default connect(mapStateToProps)(ChouetteJobDetails);
+export default connect(mapStateToProps)(ChouetteAllJobs);
