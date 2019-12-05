@@ -52,9 +52,10 @@ const getColorByStatus = status => {
 const Pelias = ({ otherStatus, getGraphStatus, executePeliasTask }) => {
   const [peliasOptions, setPeliasOptions] = useState(initialPeliasOptions());
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+
   useEffect(() => {
     getGraphStatus();
-  }, []);
+  }, [getGraphStatus]);
 
   const handlePeliasOptionChecked = (event, task) => {
     setPeliasOptions(
