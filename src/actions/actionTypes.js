@@ -218,3 +218,5 @@ export const RECEIVED_EXPORTED_FILES = 'RECEIVED_EXPORTED_FILES';
 
 /* utils actions */
 export const CONFIG_LOADED = 'CONFIG_LOADED';
+
+export const TOGGLE_MENU = 'TOGGLE_MENU';

@@ -1,0 +1,100 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import AppActions from 'actions/AppActions';
+import { getProvidersEnv, getTheme } from 'config/themes';
+
+const Router = props => {
+  const handleMenuItemClick = route => {
+    props.toggleMenu();
+    props.pushRoute(route);
+  };
+
+  const providersEnv = getProvidersEnv(window.config.providersBaseUrl);
+
+  const drawerStyle = {
+    width: '250px'
+    //...getTheme(providersEnv)
+  };
+
+  const paperStyle = {
+    ...getTheme(providersEnv)
+  };
+
+  return (
+    <Drawer
+      open={props.open}
+      style={drawerStyle}
+      PaperProps={{
+        style: paperStyle
+      }}
+      onClose={() => props.toggleMenu()}
+    >
+      <div style={{ minHeight: '64px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <div style={{ display: 'flex' }}>
+            <div style={{ fontSize: '2rem' }}>Ninkasi</div>
+            {providersEnv !== 'PROD' && (
+              <div
+                style={{
+                  marginLeft: 5,
+                  fontSize: '0.4em',
+                  lineHeight: '5em'
+                }}
+              >
+                {providersEnv}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      <Divider />
+      <List style={{ width: '250px' }}>
+        <ListItem
+          button
+          onClick={() => handleMenuItemClick('/')}
+          selected={props.pathname === '/'}
+        >
+          <ListItemText
+            primary="Providers"
+            primaryTypographyProps={{ style: { color: 'white' } }}
+          />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => handleMenuItemClick('/geocoder')}
+          selected={props.pathname === '/geocoder'}
+        >
+          <ListItemText
+            primary="Geocoder"
+            primaryTypographyProps={{ style: { color: 'white' } }}
+          />
+        </ListItem>
+      </List>
+    </Drawer>
+  );
+};
+
+const mapStateToProps = state => ({
+  pathname: state.router.location.pathname,
+  search: state.router.location.search,
+  hash: state.router.location.hash
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    pushRoute: route => dispatch(push(route)),
+    toggleMenu: () => dispatch(AppActions.toggleMenu())
+  };
+};
+
+Router.defaultProps = {
+  open: false
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Router);

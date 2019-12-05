@@ -15,6 +15,7 @@
  */
 
 import React from 'react';
+import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
@@ -22,8 +23,9 @@ import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MdAccount from 'material-ui/svg-icons/action/account-circle';
 import MdHelp from 'material-ui/svg-icons/action/help';
-import { connect } from 'react-redux';
 import MdHistory from 'material-ui/svg-icons/action/history';
+import MdMenu from 'material-ui/svg-icons/navigation/menu';
+import AppActions from 'actions/AppActions';
 import SuppliersActions from 'actions/SuppliersActions';
 import { getProvidersEnv, getTheme } from 'config/themes';
 
@@ -75,6 +77,13 @@ class Header extends React.Component {
               )}
             </div>
           </div>
+        }
+        iconElementLeft={
+          <IconButton
+            onClick={() => this.props.dispatch(AppActions.toggleMenu())}
+          >
+            <MdMenu />
+          </IconButton>
         }
         iconElementRight={
           <IconMenu
