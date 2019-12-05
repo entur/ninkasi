@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import AppActions from 'actions/AppActions';
 import { getProvidersEnv, getTheme } from 'config/themes';
+import Logo from './Logo';
 
 const Router = props => {
   const handleMenuItemClick = route => {
@@ -35,23 +36,16 @@ const Router = props => {
       }}
       onClose={() => props.toggleMenu()}
     >
-      <div style={{ minHeight: '64px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <div style={{ display: 'flex' }}>
-            <div style={{ fontSize: '2rem' }}>Ninkasi</div>
-            {providersEnv !== 'PROD' && (
-              <div
-                style={{
-                  marginLeft: 5,
-                  fontSize: '0.4em',
-                  lineHeight: '5em'
-                }}
-              >
-                {providersEnv}
-              </div>
-            )}
-          </div>
-        </div>
+      <div
+        style={{
+          minHeight: '64px',
+          display: 'flex',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          lineHeight: '64px'
+        }}
+      >
+        <Logo providersEnv={providersEnv} />
       </div>
       <Divider />
       <List style={{ width: '250px' }}>

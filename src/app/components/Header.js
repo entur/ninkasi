@@ -28,6 +28,7 @@ import MdMenu from 'material-ui/svg-icons/navigation/menu';
 import AppActions from 'actions/AppActions';
 import SuppliersActions from 'actions/SuppliersActions';
 import { getProvidersEnv, getTheme } from 'config/themes';
+import Logo from './Logo';
 
 class Header extends React.Component {
   handleLogout() {
@@ -62,20 +63,7 @@ class Header extends React.Component {
         style={backgroundStyle}
         title={
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex' }}>
-              <div style={{ fontSize: '1em' }}>Ninkasi</div>
-              {providersEnv !== 'PROD' && (
-                <div
-                  style={{
-                    marginLeft: 5,
-                    fontSize: '0.4em',
-                    lineHeight: '5em'
-                  }}
-                >
-                  {providersEnv}
-                </div>
-              )}
-            </div>
+            <Logo providersEnv={providersEnv} pathname={this.props.pathname} />
           </div>
         }
         iconElementLeft={
@@ -125,8 +113,9 @@ class Header extends React.Component {
   }
 }
 
-const mapStateToProps = ({ UserReducer }) => ({
-  kc: UserReducer.kc
+const mapStateToProps = ({ UserReducer, router }) => ({
+  kc: UserReducer.kc,
+  pathname: router.location.pathname
 });
 
 export default connect(mapStateToProps)(Header);
