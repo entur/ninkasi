@@ -16,8 +16,6 @@
 
 import * as types from 'actions/actionTypes';
 
-import moment from 'moment';
-
 const intialState = {
   isMenuOpen: false
 };
