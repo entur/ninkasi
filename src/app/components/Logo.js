@@ -26,7 +26,11 @@ export default ({ providersEnv, pathname }) => {
           {providersEnv}
         </div>
       )}
-      — {pageNameFromPathName(pathname)}
+      {pathname && (
+        <span style={{ color: 'white' }}>
+          — {pageNameFromPathName(pathname)}
+        </span>
+      )}
     </div>
   );
 };
