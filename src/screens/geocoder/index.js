@@ -44,7 +44,7 @@ export default () => {
         aria-label="simple tabs example"
         style={{ background: 'lightgray' }}
       >
-        <Tab label="Pelias" {...a11yProps(0)} />
+        <Tab label="Geocoder pipeline" {...a11yProps(0)} />
         <Tab label="OSM POI filter" {...a11yProps(1)} />
       </Tabs>
       <TabPanel value={value} index={0}>
