@@ -24,6 +24,7 @@ import roleParser from 'roles/rolesParser';
 import NoAccess from './components/NoAccess';
 import Router from './Router';
 import Menu from './components/Menu';
+import NotificationContainer from './components/NotificationContainer';
 
 class MainPage extends React.Component {
   componentWillMount() {
@@ -41,6 +42,7 @@ class MainPage extends React.Component {
     if (isConfigLoaded) {
       return (
         <MuiThemeProvider>
+          <NotificationContainer />
           <Menu open={isMenuOpen} />
           <div className="app">
             <Header />
