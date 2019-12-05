@@ -4,6 +4,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Pelias from './components/Pelias';
+import OSMPOIFilter from './components/OSMPOIFilter';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,7 +52,7 @@ export default () => {
         <Pelias />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        OSM filters
+        <OSMPOIFilter />
       </TabPanel>
     </div>
   );
