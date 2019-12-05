@@ -33,7 +33,6 @@ import FlatButton from 'material-ui/FlatButton';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 import ConfirmDialog from 'modals/ConfirmDialog';
 import { getIconColor, getProvidersEnv, getTheme } from 'config/themes';
-import ModalCreatePoiFilter from 'modals/ModalCreatePoiFilter';
 
 class SuppliersContainer extends React.Component {
   constructor(props) {
@@ -41,7 +40,6 @@ class SuppliersContainer extends React.Component {
 
     this.state = {
       anchorEl: null,
-      poiFilterOpen: false,
       confirmDialogOpen: false,
       confirmAction: null,
       confirmTitle: '',
@@ -379,13 +377,6 @@ class SuppliersContainer extends React.Component {
             </Popover>
             <FlatButton
               disabled={!isAdmin}
-              title={toolTips.poiFilter}
-              labelStyle={{ fontSize: 12, color: '#fff' }}
-              label={'OSM POI Filter'}
-              onClick={() => this.setState({ isCreateModalOpen: true })}
-            />
-            <FlatButton
-              disabled={!isAdmin}
               title={toolTips.fetchOSM}
               labelStyle={{ fontSize: 12, color: '#fff' }}
               label={'Fetch OSM'}
@@ -649,14 +640,6 @@ class SuppliersContainer extends React.Component {
               });
             }}
           />
-          {this.state.isCreateModalOpen && (
-            <ModalCreatePoiFilter
-              isModalOpen={this.state.isCreateModalOpen}
-              handleCloseModal={() =>
-                this.setState({ isCreateModalOpen: false })
-              }
-            />
-          )}
         </div>
       </div>
     );
