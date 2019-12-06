@@ -1,10 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
+import React, { useState, useEffect, useRef } from 'react';
+import Button from '@material-ui/core/Button';
 import TextField from 'material-ui/TextField';
-import './OSMPOIFilter.scss';
-
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 import uuid from 'uuid/v4';
+import MdDelete from 'material-ui/svg-icons/action/delete';
+import IconButton from 'material-ui/IconButton';
+import Skeleton from '@material-ui/lab/Skeleton';
+import Grid from '@material-ui/core/Grid';
+
+import './OSMPOIFilter.scss';
 
 const token = localStorage.getItem('NINKASI::jwt');
 
@@ -24,42 +32,64 @@ const getPoiFilterString = poiFilterArray => {
 };
 
 const OSMPOIFilter = () => {
+  const scrollRef = useRef(null);
+
   const [poiFilterArray, setPoiFilterArray] = useState([
     { key: '', value: '' }
   ]);
+  const [dirtyPoiFilterArray, setDirtyPoiFilterArray] = useState(
+    poiFilterArray
+  );
+  const [isDirty, setDirty] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const url = window.config.poiFilterBaseUrl;
     fetch(url)
       .then(response => response.json())
       .then(data => {
         setPoiFilterArray(getPoiFilterArray(data.value));
+        setDirtyPoiFilterArray(getPoiFilterArray(data.value));
+        setDirty(false);
+        setLoading(false);
       });
   }, []);
 
+  useEffect(() => {
+    scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [dirtyPoiFilterArray, scrollRef]);
+
   const handleAddFilter = () => {
-    const copy = poiFilterArray.slice();
+    const copy = dirtyPoiFilterArray.slice();
     copy.push({ key: '', value: '' });
-    setPoiFilterArray(copy);
+    setDirtyPoiFilterArray(copy);
+    setDirty(true);
   };
 
   const handleDeleteFilter = index => {
-    const copy = poiFilterArray.slice();
+    const copy = dirtyPoiFilterArray.slice();
     copy.splice(index, 1);
-    setPoiFilterArray(copy);
+    setDirtyPoiFilterArray(copy);
+    setDirty(true);
   };
 
   const handleChange = (index, field, value) => {
-    const copy = poiFilterArray.slice();
+    const copy = dirtyPoiFilterArray.slice();
     const deepCopy = Object.assign({}, copy[index]);
     deepCopy[field] = value;
     copy[index] = deepCopy;
-    setPoiFilterArray(copy);
+    setDirtyPoiFilterArray(copy);
+    setDirty(true);
   };
 
-  const handleReset = () => {};
+  const handleReset = () => {
+    setDirtyPoiFilterArray(poiFilterArray);
+    setDirty(false);
+  };
+
   const handleSubmit = () => {
-    const poiFilterString = getPoiFilterString(poiFilterArray);
+    const poiFilterString = getPoiFilterString(dirtyPoiFilterArray);
 
     const endpoint = window.config.poiFilterBaseUrl;
     fetch(endpoint, {
@@ -76,7 +106,11 @@ const OSMPOIFilter = () => {
         const url = window.config.poiFilterBaseUrl;
         fetch(url)
           .then(response => response.json())
-          .then(data => setPoiFilterArray(getPoiFilterArray(data.value)));
+          .then(data => {
+            setPoiFilterArray(getPoiFilterArray(data.value));
+            setDirtyPoiFilterArray(getPoiFilterArray(data.value));
+            setDirty(false);
+          });
       })
       .catch(error => {
         console.log(error);
@@ -84,38 +118,73 @@ const OSMPOIFilter = () => {
   };
 
   return (
-    <div className="poi-filter-editor">
-      {poiFilterArray &&
-        poiFilterArray.map(({ key, value }, index) => (
-          <div
-            className="poi-filter-editor-row"
-            key={`poi-filter-row_${index}`}
+    <div>
+      <Grid container justify="center" spacing={2}>
+        <Grid item>
+          <Button
+            variant="contained"
+            disabled={isLoading}
+            onClick={handleAddFilter}
           >
-            <TextField
-              hintText="Key"
-              floatingLabelText="Key"
-              value={key}
-              onChange={e => handleChange(index, 'key', e.target.value)}
-            />
-
-            <TextField
-              hintText="Value"
-              floatingLabelText="Value"
-              value={value}
-              onChange={e => handleChange(index, 'value', e.target.value)}
-            />
-
-            <FlatButton onClick={() => handleDeleteFilter(index)}>
-              Delete
-            </FlatButton>
-          </div>
-        ))}
-
-      <div className="poi-filter-editor-row">
-        <RaisedButton label="Add filter" onClick={handleAddFilter} />
-        <RaisedButton label="Reset" onClick={handleReset} />
-        <RaisedButton label="Submit" onClick={handleSubmit} />
-      </div>
+            Add filter
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            disabled={isLoading || !isDirty}
+            onClick={handleReset}
+          >
+            Reset
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            disabled={isLoading || !isDirty}
+            onClick={handleSubmit}
+          >
+            Save
+          </Button>
+        </Grid>
+      </Grid>
+      <Paper style={{ maxHeight: '70vh', overflow: 'auto', marginTop: '25px' }}>
+        <Table size="small">
+          <TableBody>
+            {isLoading ? (
+              <Skeleton variant="text" />
+            ) : (
+              dirtyPoiFilterArray &&
+              dirtyPoiFilterArray.map(({ key, value }, index) => (
+                <TableRow key={`poi-filter-row_${index}`}>
+                  <TableCell align="center" padding="none">
+                    <TextField
+                      hintText="Key"
+                      value={key}
+                      onChange={e => handleChange(index, 'key', e.target.value)}
+                    />
+                  </TableCell>
+                  <TableCell align="center" padding="none">
+                    <TextField
+                      hintText="Value"
+                      value={value}
+                      onChange={e =>
+                        handleChange(index, 'value', e.target.value)
+                      }
+                    />
+                  </TableCell>
+                  <TableCell align="center" padding="none">
+                    <IconButton onClick={() => handleDeleteFilter(index)}>
+                      <MdDelete />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+            <div style={{ float: 'left', clear: 'both' }} ref={scrollRef}></div>
+          </TableBody>
+        </Table>
+      </Paper>
     </div>
   );
 };
