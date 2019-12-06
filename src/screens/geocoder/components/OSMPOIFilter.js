@@ -151,36 +151,44 @@ const OSMPOIFilter = () => {
       <Paper style={{ maxHeight: '70vh', overflow: 'auto', marginTop: '25px' }}>
         <Table size="small">
           <TableBody>
-            {isLoading ? (
-              <Skeleton variant="text" />
-            ) : (
-              dirtyPoiFilterArray &&
-              dirtyPoiFilterArray.map(({ key, value }, index) => (
-                <TableRow key={`poi-filter-row_${index}`}>
-                  <TableCell align="center" padding="none">
-                    <TextField
-                      hintText="Key"
-                      value={key}
-                      onChange={e => handleChange(index, 'key', e.target.value)}
-                    />
-                  </TableCell>
-                  <TableCell align="center" padding="none">
-                    <TextField
-                      hintText="Value"
-                      value={value}
-                      onChange={e =>
-                        handleChange(index, 'value', e.target.value)
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="center" padding="none">
-                    <IconButton onClick={() => handleDeleteFilter(index)}>
-                      <MdDelete />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
+            {isLoading
+              ? [...Array(10).keys()].map(i => (
+                  <TableRow key={`skeleton-row_${i}`}>
+                    {[...Array(3).keys()].map(j => (
+                      <TableCell key={`skeleton-cell_${j}`}>
+                        <Skeleton variant="text" />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              : dirtyPoiFilterArray &&
+                dirtyPoiFilterArray.map(({ key, value }, index) => (
+                  <TableRow key={`poi-filter-row_${index}`}>
+                    <TableCell align="center" padding="none">
+                      <TextField
+                        hintText="Key"
+                        value={key}
+                        onChange={e =>
+                          handleChange(index, 'key', e.target.value)
+                        }
+                      />
+                    </TableCell>
+                    <TableCell align="center" padding="none">
+                      <TextField
+                        hintText="Value"
+                        value={value}
+                        onChange={e =>
+                          handleChange(index, 'value', e.target.value)
+                        }
+                      />
+                    </TableCell>
+                    <TableCell align="center" padding="none">
+                      <IconButton onClick={() => handleDeleteFilter(index)}>
+                        <MdDelete />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
             <div style={{ float: 'left', clear: 'both' }} ref={scrollRef}></div>
           </TableBody>
         </Table>
