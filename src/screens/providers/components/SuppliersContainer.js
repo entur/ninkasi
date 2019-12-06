@@ -23,12 +23,8 @@ import SelectField from 'material-ui/SelectField';
 import MdNew from 'material-ui/svg-icons/content/add';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 import { getQueryVariable } from 'utils';
-import Checkbox from 'material-ui/Checkbox';
 import Popover from 'material-ui/Popover';
 import MdDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down';
-import Divider from 'material-ui/Divider';
-import peliasTasks from 'config/peliasTasks';
-import moment from 'moment';
 import rolesParser from 'roles/rolesParser';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
@@ -37,22 +33,13 @@ import FlatButton from 'material-ui/FlatButton';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 import ConfirmDialog from 'modals/ConfirmDialog';
 import { getIconColor, getProvidersEnv, getTheme } from 'config/themes';
-import ModalCreatePoiFilter from 'modals/ModalCreatePoiFilter';
 
 class SuppliersContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    let tasks = {};
-    peliasTasks.forEach(option => (tasks[option.task] = true));
-
     this.state = {
-      peliasOpen: false,
       anchorEl: null,
-      peliasOptions: {
-        ...tasks
-      },
-      poiFilterOpen: false,
       confirmDialogOpen: false,
       confirmAction: null,
       confirmTitle: '',
@@ -216,34 +203,6 @@ class SuppliersContainer extends React.Component {
     });
   }
 
-  handleTogglePeliasOpen(event, open) {
-    this.setState({
-      peliasOpen: open,
-      anchorEl: event.currentTarget
-    });
-  }
-
-  handlePeliasOptionChecked(event, task) {
-    this.setState({
-      peliasOptions: Object.assign({}, this.state.peliasOptions, {
-        [task]: event.target.checked
-      })
-    });
-  }
-
-  handleExecutePelias() {
-    this.setState({
-      confirmDialogOpen: true,
-      confirmTitle: 'Execute Pelias tasks',
-      confirmInfo: 'Are you sure you want to execute selected pelias tasks?',
-      confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.executePeliasTask(this.state.peliasOptions));
-      },
-      peliasOpen: false
-    });
-  }
-
   handleClearEventHistory() {
     this.setState({
       confirmDialogOpen: true,
@@ -314,12 +273,6 @@ class SuppliersContainer extends React.Component {
     }
   }
 
-  getLabelByJobType(type) {
-    for (let i = 0; i < peliasTasks.length; i++) {
-      if (peliasTasks[i].task === type) return peliasTasks[i].label;
-    }
-  }
-
   handleOpenConfirmDeleteProviderDialog(open = true) {
     if (open) {
       const { dispatch, activeProviderId } = this.props;
@@ -342,13 +295,7 @@ class SuppliersContainer extends React.Component {
   }
 
   render() {
-    const {
-      suppliers,
-      activeProviderId,
-      otherStatus,
-      kc,
-      canEditOrganisation
-    } = this.props;
+    const { suppliers, activeProviderId, kc, canEditOrganisation } = this.props;
     const isAdmin = rolesParser.isAdmin(kc.tokenParsed);
     const providersEnv = getProvidersEnv(window.config.providersBaseUrl);
     const iconColor = getIconColor(providersEnv);
@@ -378,124 +325,14 @@ class SuppliersContainer extends React.Component {
       cleanAll: 'Clean all specificed by level',
       createNewProvider: 'Create new provider',
       deleteProvider: 'Delete provider',
-      pelias: 'Execute pelias operations',
       editProvider: 'Edit provider',
       cleanEventHistory: 'Clean event history'
     };
-
-    const peliasPopoverStyle = {
-      overflowY: 'hidden',
-      padding: 10
-    };
-
-    let peliasOptions = peliasTasks.map(option => (
-      <Checkbox
-        key={'pelias-checkbox-' + option.task}
-        label={option.label}
-        onCheck={e => this.handlePeliasOptionChecked(e, option.task)}
-        defaultChecked={true}
-        labelPosition="right"
-        style={{ marginTop: 5, marginBottom: 5 }}
-      />
-    ));
-
-    peliasOptions.push(
-      <Divider
-        key={'pelias-divider1'}
-        style={{ marginTop: 10, marginBottom: 5 }}
-      />
-    );
-
-    peliasOptions.push(
-      <div
-        key={'pelias-options-status-wrapper'}
-        style={{ display: 'flex', flexDirection: 'column', padding: 5 }}
-      >
-        <span style={{ fontWeight: 600 }}>Status</span>
-        {otherStatus.map((status, index) => (
-          <div
-            key={'jobtype-status' + index}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 2,
-              background: index % 2 ? '#F8F8F8' : '#fff'
-            }}
-          >
-            <div style={{ marginLeft: 5, flex: 9, fontSize: '0.9em' }}>
-              {this.getLabelByJobType(status.type)}
-            </div>
-            <div style={{ fontSize: '0.9em', flex: 6 }}>
-              {moment(status.started).format('LLLL')}
-            </div>
-            <div
-              style={{
-                marginLeft: 5,
-                flex: 2,
-                color: this.getColorByStatus(status.status)
-              }}
-            >
-              {status.status}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-
-    peliasOptions.push(
-      <Divider
-        key={'pelias-divider2'}
-        style={{ marginTop: 10, marginBottom: 10 }}
-      />
-    );
-
-    peliasOptions.push(
-      <div
-        key={'pelias-buttons'}
-        style={{ width: '100%', textAlign: 'center' }}
-      >
-        <FlatButton
-          primary={true}
-          labelStyle={{ fontSize: 12 }}
-          onClick={() => this.handleExecutePelias()}
-          disabled={Object.values(this.state.peliasOptions).every(
-            value => !value
-          )}
-          label={'Execute'}
-        />
-      </div>
-    );
 
     return (
       <div className="suppliers-container">
         <div style={innerContainerStyle}>
           <div>
-            <FlatButton
-              disabled={!isAdmin}
-              title={toolTips.pelias}
-              labelStyle={{ fontSize: 12, color: '#fff' }}
-              label={'Pelias'}
-              labelPosition="before"
-              onClick={event => this.handleTogglePeliasOpen(event, true)}
-              icon={
-                <MdDropDown
-                  color="#fff"
-                  style={{ verticalAlign: 'middle', marginTop: -3 }}
-                />
-              }
-            />
-            <Popover
-              open={this.state.peliasOpen}
-              anchorEl={this.state.anchorEl}
-              anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-              targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-              onRequestClose={event =>
-                this.handleTogglePeliasOpen(event, false)
-              }
-              style={peliasPopoverStyle}
-            >
-              {peliasOptions}
-            </Popover>
             <FlatButton
               disabled={!isAdmin}
               onClick={this.handleGraphOpen.bind(this)}
@@ -538,13 +375,6 @@ class SuppliersContainer extends React.Component {
                 title={toolTips.buildBaseGraph}
               />
             </Popover>
-            <FlatButton
-              disabled={!isAdmin}
-              title={toolTips.poiFilter}
-              labelStyle={{ fontSize: 12, color: '#fff' }}
-              label={'OSM POI Filter'}
-              onClick={() => this.setState({ isCreateModalOpen: true })}
-            />
             <FlatButton
               disabled={!isAdmin}
               title={toolTips.fetchOSM}
@@ -810,14 +640,6 @@ class SuppliersContainer extends React.Component {
               });
             }}
           />
-          {this.state.isCreateModalOpen && (
-            <ModalCreatePoiFilter
-              isModalOpen={this.state.isCreateModalOpen}
-              handleCloseModal={() =>
-                this.setState({ isCreateModalOpen: false })
-              }
-            />
-          )}
         </div>
       </div>
     );
@@ -827,7 +649,6 @@ class SuppliersContainer extends React.Component {
 const mapStateToProps = state => ({
   suppliers: state.SuppliersReducer.data,
   activeProviderId: state.SuppliersReducer.activeId,
-  otherStatus: state.SuppliersReducer.otherStatus || [],
   kc: state.UserReducer.kc,
   displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
   canEditOrganisation: rolesParser.canEditOrganisation(

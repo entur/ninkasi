@@ -14,25 +14,21 @@
  *
  */
 
-import { combineReducers } from 'redux';
-import { connectRouter } from 'connected-react-router';
+import { TOGGLE_MENU } from './actionTypes';
 
-import AppReducer from './AppReducer';
-import SuppliersReducer from './SuppliersReducer';
-import MardukReducer from './MardukReducer';
-import UtilsReducer from './UtilsReducer';
-import OrganizationReducer from './OrganizationReducer';
-import UserReducer from './UserReducer';
+const AppActions = {};
 
-const createRootReducer = history =>
-  combineReducers({
-    router: connectRouter(history),
-    app: AppReducer,
-    SuppliersReducer,
-    MardukReducer,
-    UtilsReducer,
-    OrganizationReducer,
-    UserReducer
-  });
+function sendData(payLoad, type) {
+  return {
+    payLoad: payLoad,
+    type: type
+  };
+}
 
-export default createRootReducer;
+AppActions.toggleMenu = () => {
+  return function(dispatch) {
+    dispatch(sendData(null, TOGGLE_MENU));
+  };
+};
+
+export default AppActions;

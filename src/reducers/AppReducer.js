@@ -14,25 +14,22 @@
  *
  */
 
-import { combineReducers } from 'redux';
-import { connectRouter } from 'connected-react-router';
+import * as types from 'actions/actionTypes';
 
-import AppReducer from './AppReducer';
-import SuppliersReducer from './SuppliersReducer';
-import MardukReducer from './MardukReducer';
-import UtilsReducer from './UtilsReducer';
-import OrganizationReducer from './OrganizationReducer';
-import UserReducer from './UserReducer';
+const intialState = {
+  isMenuOpen: false
+};
 
-const createRootReducer = history =>
-  combineReducers({
-    router: connectRouter(history),
-    app: AppReducer,
-    SuppliersReducer,
-    MardukReducer,
-    UtilsReducer,
-    OrganizationReducer,
-    UserReducer
-  });
+const AppReducer = (state = intialState, action) => {
+  switch (action.type) {
+    case types.TOGGLE_MENU:
+      return Object.assign({}, state, {
+        isMenuOpen: !state.isMenuOpen
+      });
 
-export default createRootReducer;
+    default:
+      return state;
+  }
+};
+
+export default AppReducer;

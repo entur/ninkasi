@@ -23,6 +23,8 @@ import UtilsActions from 'actions/UtilsActions';
 import roleParser from 'roles/rolesParser';
 import NoAccess from './components/NoAccess';
 import Router from './Router';
+import Menu from './components/Menu';
+import NotificationContainer from './components/NotificationContainer';
 
 class MainPage extends React.Component {
   componentWillMount() {
@@ -35,11 +37,13 @@ class MainPage extends React.Component {
   }
 
   render() {
-    const { isConfigLoaded, kc } = this.props;
+    const { isConfigLoaded, isMenuOpen, kc } = this.props;
 
     if (isConfigLoaded) {
       return (
         <MuiThemeProvider>
+          <NotificationContainer />
+          <Menu open={isMenuOpen} />
           <div className="app">
             <Header />
             {roleParser.isAdmin(kc.tokenParsed) ? (
@@ -63,7 +67,8 @@ class MainPage extends React.Component {
 
 const mapStateToProps = state => ({
   kc: state.UserReducer.kc,
-  isConfigLoaded: state.UtilsReducer.isConfigLoaded
+  isConfigLoaded: state.UtilsReducer.isConfigLoaded,
+  isMenuOpen: state.app.isMenuOpen
 });
 
 export default connect(mapStateToProps)(MainPage);
