@@ -16,19 +16,15 @@ import './OSMPOIFilter.scss';
 
 const token = localStorage.getItem('NINKASI::jwt');
 
-const getPoiFilterArray = poiFilterString => {
-  const keyValues = poiFilterString.split(',');
-  return keyValues.map(str => {
-    const arr = str.split('=');
-    return { key: arr[0], value: arr[1] };
+const sort = data => {
+  return data.sort((a, b) => {
+    if (a.id > b.id) {
+      return 1;
+    } else if (a.id < b.id) {
+      return -1;
+    }
+    return 0;
   });
-};
-
-const getPoiFilterString = poiFilterArray => {
-  const keyValues = poiFilterArray.map(
-    ({ key, value }) => `${key.trim()}=${value.trim()}`
-  );
-  return keyValues.join(',');
 };
 
 const OSMPOIFilter = () => {
@@ -43,22 +39,25 @@ const OSMPOIFilter = () => {
   const [isDirty, setDirty] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
+  const handleResponse = data => {
+    setPoiFilterArray(data);
+    setDirtyPoiFilterArray(data);
+    setDirty(false);
+    setLoading(false);
+  };
+
   useEffect(() => {
     setLoading(true);
     const url = window.config.poiFilterBaseUrl;
     fetch(url)
       .then(response => response.json())
-      .then(data => {
-        setPoiFilterArray(getPoiFilterArray(data.value));
-        setDirtyPoiFilterArray(getPoiFilterArray(data.value));
-        setDirty(false);
-        setLoading(false);
-      });
+      .then(sort)
+      .then(handleResponse);
   }, []);
 
-  useEffect(() => {
-    scrollRef.current.scrollIntoView({ behavior: 'smooth' });
-  }, [dirtyPoiFilterArray, scrollRef]);
+  //useEffect(() => {
+  //  scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+  //}, [dirtyPoiFilterArray, scrollRef]);
 
   const handleAddFilter = () => {
     const copy = dirtyPoiFilterArray.slice();
@@ -89,8 +88,7 @@ const OSMPOIFilter = () => {
   };
 
   const handleSubmit = () => {
-    const poiFilterString = getPoiFilterString(dirtyPoiFilterArray);
-
+    setLoading(true);
     const endpoint = window.config.poiFilterBaseUrl;
     fetch(endpoint, {
       method: 'PUT',
@@ -100,17 +98,14 @@ const OSMPOIFilter = () => {
         Authorization: 'Bearer ' + token,
         'X-Correlation-Id': uuid()
       },
-      body: JSON.stringify({ key: 'poiFilter', value: poiFilterString })
+      body: JSON.stringify(dirtyPoiFilterArray)
     })
       .then(() => {
         const url = window.config.poiFilterBaseUrl;
         fetch(url)
           .then(response => response.json())
-          .then(data => {
-            setPoiFilterArray(getPoiFilterArray(data.value));
-            setDirtyPoiFilterArray(getPoiFilterArray(data.value));
-            setDirty(false);
-          });
+          .then(sort)
+          .then(handleResponse);
       })
       .catch(error => {
         console.log(error);
@@ -162,7 +157,7 @@ const OSMPOIFilter = () => {
                   </TableRow>
                 ))
               : dirtyPoiFilterArray &&
-                dirtyPoiFilterArray.map(({ key, value }, index) => (
+                dirtyPoiFilterArray.map(({ key, value, priority }, index) => (
                   <TableRow key={`poi-filter-row_${index}`}>
                     <TableCell align="center" padding="none">
                       <TextField
@@ -179,6 +174,20 @@ const OSMPOIFilter = () => {
                         value={value}
                         onChange={e =>
                           handleChange(index, 'value', e.target.value)
+                        }
+                      />
+                    </TableCell>
+                    <TableCell align="center" padding="none">
+                      <TextField
+                        type="number"
+                        hintText="Priority"
+                        value={priority}
+                        onChange={e =>
+                          handleChange(
+                            index,
+                            'priority',
+                            parseInt(e.target.value, 10)
+                          )
                         }
                       />
                     </TableCell>
