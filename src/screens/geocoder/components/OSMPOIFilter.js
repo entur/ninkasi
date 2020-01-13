@@ -11,6 +11,7 @@ import MdDelete from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Grid from '@material-ui/core/Grid';
+import Alert from '@material-ui/lab/Alert';
 
 import './OSMPOIFilter.scss';
 
@@ -146,6 +147,10 @@ const OSMPOIFilter = () => {
         </Grid>
       </Grid>
       <Paper style={{ maxHeight: '70vh', overflow: 'auto', marginTop: '25px' }}>
+        <Alert severity="warning">
+          The priority field is experimental. Setting priority level above 10
+          could lead to unexpected boosting in the geocoder.
+        </Alert>
         <Table size="small">
           <TableBody>
             {isLoading
