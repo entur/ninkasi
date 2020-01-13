@@ -34,13 +34,11 @@ const themeV0 = getMuiTheme({
 
 const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, kc }) => {
   useEffect(() => {
-    cfgreader.readConfig(
-      function(config) {
-        window.config = config;
-        dispatch(UtilsActions.notifyConfigIsLoaded());
-      }.bind(this)
-    );
-  }, []);
+    cfgreader.readConfig(config => {
+      window.config = config;
+      dispatch(UtilsActions.notifyConfigIsLoaded());
+    });
+  }, [dispatch]);
 
   const theme = useMemo(
     () =>
