@@ -55,9 +55,11 @@ const OSMPOIFilter = () => {
       .then(handleResponse);
   }, []);
 
-  //useEffect(() => {
-  //  scrollRef.current.scrollIntoView({ behavior: 'smooth' });
-  //}, [dirtyPoiFilterArray, scrollRef]);
+  useEffect(() => {
+    if (!dirtyPoiFilterArray[dirtyPoiFilterArray.length - 1].id) {
+      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [dirtyPoiFilterArray, scrollRef]);
 
   const handleAddFilter = () => {
     const copy = dirtyPoiFilterArray.slice();
