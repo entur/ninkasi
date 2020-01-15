@@ -15,7 +15,6 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import SelectField from 'material-ui/SelectField';
@@ -261,4 +260,4 @@ class NewRoleAssignment extends React.Component {
   }
 }
 
-export default connect(null)(NewRoleAssignment);
+export default NewRoleAssignment;
