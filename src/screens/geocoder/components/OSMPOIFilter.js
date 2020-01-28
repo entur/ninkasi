@@ -15,7 +15,14 @@ import Alert from '@material-ui/lab/Alert';
 
 import './OSMPOIFilter.scss';
 
-const token = localStorage.getItem('NINKASI::jwt');
+const getConfig = () => {
+  return {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + localStorage.getItem('NINKASI::jwt'),
+    'X-Correlation-Id': uuid()
+  };
+};
 
 const sort = data => {
   return data.sort((a, b) => {
@@ -95,12 +102,7 @@ const OSMPOIFilter = () => {
     const endpoint = window.config.poiFilterBaseUrl;
     fetch(endpoint, {
       method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-        'X-Correlation-Id': uuid()
-      },
+      headers: getConfig(),
       body: JSON.stringify(dirtyPoiFilterArray)
     })
       .then(() => {
