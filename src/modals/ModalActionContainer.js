@@ -16,7 +16,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import Dialog from 'material-ui/Dialog';
+import Dialog from '@material-ui/core/Dialog';
 import SuppliersActions from 'actions/SuppliersActions';
 import FlatButton from 'material-ui/FlatButton';
 
