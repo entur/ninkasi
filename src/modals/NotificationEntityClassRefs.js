@@ -98,4 +98,4 @@ class NotificationEntityClassRef extends React.Component {
   }
 }
 
-export default connect(null)(NotificationEntityClassRef);
+export default connect()(NotificationEntityClassRef);

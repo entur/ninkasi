@@ -15,7 +15,10 @@
  */
 
 import React from 'react';
-import ModalDialog from 'material-ui/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
@@ -114,35 +117,42 @@ class ModalEditNotifications extends React.Component {
     ];
 
     return (
-      <ModalDialog
+      <Dialog
         open={isModalOpen}
-        actions={actions}
-        requestOnClose={handleCloseModal}
-        title={'Notification configurations for ' + user.username}
+        onClose={handleCloseModal}
+        aria-labelledby="notification-modal-title"
       >
-        <div>
-          {!isLoading &&
-            !!userNotifications.length &&
-            userNotifications.map((un, i) => (
-              <NotificationTypeBox
-                index={i}
-                key={'notificationTypeBox-' + i}
-                notification={un}
-                handleExpand={this.handleExpandItem.bind(this)}
-                expanded={this.state.indexExpanded === i}
-              />
-            ))}
-          {isLoading && <div style={messageStyle}>Loading ...</div>}
-          {!isLoading && !userNotifications.length && (
-            <div style={messageStyle}>
-              No notification configuration found for this user
-            </div>
-          )}
-        </div>
-        <FloatingActionButton mini={true} style={{ margin: 10 }}>
-          <ContentAdd onClick={this.handleAddNewUserNotification.bind(this)} />
-        </FloatingActionButton>
-      </ModalDialog>
+        <DialogTitle id="notification-modal-title">
+          {'Notification configurations for ' + user.username}
+        </DialogTitle>
+        <DialogContent>
+          <div>
+            {!isLoading &&
+              !!userNotifications.length &&
+              userNotifications.map((un, i) => (
+                <NotificationTypeBox
+                  index={i}
+                  key={'notificationTypeBox-' + i}
+                  notification={un}
+                  handleExpand={this.handleExpandItem.bind(this)}
+                  expanded={this.state.indexExpanded === i}
+                />
+              ))}
+            {isLoading && <div style={messageStyle}>Loading ...</div>}
+            {!isLoading && !userNotifications.length && (
+              <div style={messageStyle}>
+                No notification configuration found for this user
+              </div>
+            )}
+          </div>
+          <FloatingActionButton mini={true} style={{ margin: 10 }}>
+            <ContentAdd
+              onClick={this.handleAddNewUserNotification.bind(this)}
+            />
+          </FloatingActionButton>
+        </DialogContent>
+        <DialogActions>{actions}</DialogActions>
+      </Dialog>
     );
   }
 }
