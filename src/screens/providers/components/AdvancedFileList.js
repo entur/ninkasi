@@ -18,40 +18,32 @@ import React from 'react';
 import moment from 'moment';
 import MdDownload from 'material-ui/svg-icons/file/file-download';
 import { getSizeFromBytes } from 'utils/';
+import { saveAs } from 'file-saver';
+import axios from 'axios';
 
 class AdvancedFileList extends React.Component {
-  handleDownloadFile(e, filename) {
+  async handleDownloadFile(e, filename) {
     e.stopPropagation();
 
-    const URL =
-      window.config.timetableAdminBaseUrl +
-      `${this.props.activeProviderId}/files/${filename}`;
-    const token = localStorage.getItem('NINKASI::jwt');
-    const params = `?access_token=${token}`;
+    try {
+      // feature detection
+      // eslint-disable-next-line
+      const isFileSaverSupport = !!new Blob();
 
-    let link = document.createElement('a');
-    link.setAttribute('href', URL + params);
-    link.setAttribute('download', filename);
+      const URL = `${window.config.timetableAdminBaseUrl}${this.props.activeProviderId}/files/${filename}`;
+      const token = localStorage.getItem('NINKASI::jwt');
 
-    var event = document.createEvent('MouseEvents');
-    event.initMouseEvent(
-      'click',
-      true,
-      false,
-      window,
-      0,
-      0,
-      0,
-      0,
-      0,
-      false,
-      false,
-      false,
-      false,
-      0,
-      null
-    );
-    link.dispatchEvent(event);
+      const { data } = await axios.get(URL, {
+        responseType: 'blob',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      saveAs(data, filename);
+    } catch (e) {
+      alert('Sorry, your browser is not supported for downloads.');
+    }
   }
 
   handleSelectAll(e) {
