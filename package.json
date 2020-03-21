@@ -34,7 +34,7 @@
     "material-ui": "^0.19.4",
     "moment": "^2.14.1",
     "muicss": "^0.9.36",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "prettier": "^1.19.1",
     "prop-types": "^15.7.2",
     "rc-progress": "^2.5.2",
