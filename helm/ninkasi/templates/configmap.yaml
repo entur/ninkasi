@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "app.name" . }}-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+  {{- include "common.labels" . | indent 4 }}
+data:
+  config.json: |
+    {
+      "mapboxAdminBaseUrl": "{{ .Values.configMap.mapboxAdminBaseUrl }}",
+      "endpointBase": "/",
+      "geocoderAdminBaseUrl": "{{ .Values.configMap.geocoderAdminBaseUrl }}",
+      "authServerUrl": "{{ .Values.configMap.authServerUrl }}",
+      "chouetteBaseUrl": "{{ .Values.configMap.chouetteBaseUrl }}",
+      "timetableAdminBaseUrl": "{{ .Values.configMap.timetableAdminBaseUrl }}",
+      "mapAdminBaseUrl": "{{ .Values.configMap.mapAdminBaseUrl }}",
+      "providersBaseUrl": "{{ .Values.configMap.providersBaseUrl }}",
+      "eventsBaseUrl": "{{ .Values.configMap.eventsBaseUrl }}",
+      "organisationsBaseUrl": "{{ .Values.configMap.organisationsBaseUrl }}",
+      "poiFilterBaseUrl": "{{ .Values.configMap.poiFilterBaseUrl }}"
+    }
