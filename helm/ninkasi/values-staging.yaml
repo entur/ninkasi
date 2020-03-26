@@ -1,13 +1,13 @@
 env: staging
 
 configMap:
-    mapboxAdminBaseUrl": "https://api.staging.entur.io/mapbox-admin/v1/"
-    geocoderAdminBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/geocoder/"
-    authServerUrl": "https://kc-stage.devstage.entur.io/auth"
-    chouetteBaseUrl": "https://rutedb.staging.entur.org/"
-    timetableAdminBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/timetable/"
-    mapAdminBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/map/"
-    providersBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/providers/"
-    eventsBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/events/"
-    organisationsBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/organisations/"
-    poiFilterBaseUrl": "https://api.staging.entur.io/timetable-admin/v2/poi-filter"
+    mapboxAdminBaseUrl: "https://api.staging.entur.io/mapbox-admin/v1/"
+    geocoderAdminBaseUrl: "https://api.staging.entur.io/timetable-admin/v1/geocoder/"
+    authServerUrl: "https://kc-stage.devstage.entur.io/auth"
+    chouetteBaseUrl: "https://rutedb.staging.entur.org/"
+    timetableAdminBaseUrl: "https://api.staging.entur.io/timetable-admin/v1/timetable/"
+    mapAdminBaseUrl: "https://api.staging.entur.io/timetable-admin/v1/map/"
+    providersBaseUrl: "https://api.staging.entur.io/timetable-admin/v1/providers/"
+    eventsBaseUrl: "https://api.staging.entur.io/timetable-admin/v1/events/"
+    organisationsBaseUrl: "https://api.staging.entur.io/timetable-admin/v1/organisations/"
+    poiFilterBaseUrl: "https://api.staging.entur.io/timetable-admin/v2/poi-filter"
