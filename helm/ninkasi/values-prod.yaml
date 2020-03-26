@@ -10,4 +10,4 @@ configMap:
   providersBaseUrl: "https://api.entur.io/timetable-admin/v1/providers/"
   eventsBaseUrl: "https://api.entur.io/timetable-admin/v1/events/"
   organisationsBaseUrl: "https://api.entur.io/timetable-admin/v1/organisations/"
-  poiFilterBaseUrl: "https://api.entur.io/timetable-admin/v1/poi-filter"
+  poiFilterBaseUrl: "https://api.entur.io/timetable-admin/v2/poi-filter"
