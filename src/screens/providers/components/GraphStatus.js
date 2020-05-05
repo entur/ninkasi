@@ -20,6 +20,57 @@ import SupplierActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
 import moment from 'moment';
 
+const getColorByStatus = status => {
+  switch (status) {
+    case 'STARTED':
+      return '#08920e';
+    case 'OK':
+      return '#08920e';
+    case 'FAILED':
+      return '#990000';
+    default:
+      return 'grey';
+  }
+};
+
+const containerStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  flexDirection: 'row'
+};
+
+const wrapperStyle = {
+  padding: 10
+};
+
+const statusStyle = {
+  marginRight: 10,
+  marginTop: 10,
+  display: 'flex',
+  alignItems: 'center',
+  flexDirection: 'row'
+};
+
+const GraphStatusDetails = ({ title, status, started }) => (
+  <div style={statusStyle}>
+    <span>
+      {title}
+      <span
+        style={{
+          fontWeight: 600,
+          marginLeft: 5,
+          color: getColorByStatus(status)
+        }}
+      >
+        {status}
+      </span>
+    </span>
+    <span style={{ fontSize: '0.8em', paddingLeft: 5 }}>
+      {moment(started).fromNow()}
+    </span>
+  </div>
+);
+
 class GraphStatus extends React.Component {
   componentDidMount() {
     cfgreader.readConfig(
@@ -45,60 +96,49 @@ class GraphStatus extends React.Component {
     this.props.dispatch(SupplierActions.getGraphStatus());
   };
 
-  getColorByStatus(status) {
-    switch (status) {
-      case 'STARTED':
-        return '#08920e';
-      case 'OK':
-        return '#08920e';
-      case 'FAILED':
-        return '#990000';
-      default:
-        return 'grey';
-    }
-  }
-
   render() {
-    const { graphStatus } = this.props;
+    const { graphStatus, baseGraphStatus } = this.props;
 
-    const statusStyle = {
-      marginRight: 10,
-      marginTop: 10,
-      display: 'flex',
-      alignItems: 'center',
-      flexDirection: 'column'
-    };
-
-    if (!graphStatus) {
+    if (!graphStatus || !baseGraphStatus) {
       return null;
     }
 
-    const { status } = graphStatus;
-
     return (
-      <div style={statusStyle}>
-        <span>
+      <div style={containerStyle}>
+        <div style={wrapperStyle}>
           Graph status:
-          <span
-            style={{
-              fontWeight: 600,
-              marginLeft: 5,
-              color: this.getColorByStatus(status)
-            }}
-          >
-            {status}
-          </span>
-        </span>
-        <span style={{ fontSize: '0.8em' }}>
-          {moment(graphStatus.started).fromNow()}
-        </span>
+          <GraphStatusDetails
+            title="OTP1"
+            status={graphStatus.otp1.status}
+            started={graphStatus.otp1.started}
+          />
+          <GraphStatusDetails
+            title="OTP2"
+            status={graphStatus.otp2.status}
+            started={graphStatus.otp2.started}
+          />
+        </div>
+        <div style={wrapperStyle}>
+          Base graph status:
+          <GraphStatusDetails
+            title="OTP1"
+            status={baseGraphStatus.otp1.status}
+            started={baseGraphStatus.otp1.started}
+          />
+          <GraphStatusDetails
+            title="OTP2"
+            status={baseGraphStatus.otp2.status}
+            started={baseGraphStatus.otp2.started}
+          />
+        </div>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  graphStatus: state.SuppliersReducer.graphStatus
+  graphStatus: state.SuppliersReducer.graphStatus,
+  baseGraphStatus: state.SuppliersReducer.baseGraphStatus
 });
 
 export default connect(mapStateToProps)(GraphStatus);

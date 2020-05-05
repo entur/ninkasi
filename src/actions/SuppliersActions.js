@@ -759,11 +759,28 @@ SuppliersActions.getGraphStatus = () => dispatch => {
     .get(url, getConfig())
     .then(response => {
       let status = {
+        graphStatus: {},
+        baseGraphStatus: {},
         otherStatus: []
       };
       response.data.forEach(type => {
         if (type.jobType === 'BUILD_GRAPH') {
-          status.graphStatus = {
+          status.graphStatus.otp1 = {
+            status: type.currentState,
+            started: type.currentStateDate
+          };
+        } else if (type.jobType === 'OTP2_BUILD_GRAPH') {
+          status.graphStatus.otp2 = {
+            status: type.currentState,
+            started: type.currentStateDate
+          };
+        } else if (type.jobType === 'BUILD_BASE') {
+          status.baseGraphStatus.otp1 = {
+            status: type.currentState,
+            started: type.currentStateDate
+          };
+        } else if (type.jobType === 'OTP2_BUILD_BASE') {
+          status.baseGraphStatus.otp2 = {
             status: type.currentState,
             started: type.currentStateDate
           };
