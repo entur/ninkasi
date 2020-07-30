@@ -1,5 +1,3 @@
-env: dev
-
 configMap:
     mapboxAdminBaseUrl: "https://api.dev.entur.io/mapbox-admin/v1/"
     geocoderAdminBaseUrl: "https://api.dev.entur.io/timetable-admin/v1/geocoder/"
@@ -11,3 +9,9 @@ configMap:
     eventsBaseUrl: "https://api.dev.entur.io/timetable-admin/v1/events/"
     organisationsBaseUrl: "https://api.dev.entur.io/timetable-admin/v1/organisations/"
     poiFilterBaseUrl: "https://api.dev.entur.io/timetable-admin/v2/poi-filter"
+
+
+ingress:
+    enabled: true
+    loadBalancerIP: 35.205.134.173
+    domainName: .dev.entur.org
