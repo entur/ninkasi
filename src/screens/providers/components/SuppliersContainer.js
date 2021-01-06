@@ -318,6 +318,9 @@ class SuppliersContainer extends React.Component {
       history: 'Browse the history of your activities in Ninkasi',
       buildGraph: 'Build graph for all providers',
       buildBaseGraph: 'Build new base graph with OSM and elevation data',
+      buildCandidateGraph: 'Build candidate graph for all providers (OTP2)',
+      buildCandidateBaseGraphOTP2:
+        'Build new candidate base graph with OSM and elevation data (OTP2)',
       fetchOSM: 'Fetch Open Street Map data',
       updateMapbox: 'Update mapbox data from NSR',
       cleanFileFilter: 'Clean file filter',
@@ -373,6 +376,20 @@ class SuppliersContainer extends React.Component {
                 onClick={() => this.handleBuildBaseGraph()}
                 disabled={!isAdmin}
                 title={toolTips.buildBaseGraph}
+              />
+              <MenuItem
+                primaryText={'Build Candidate Graph OTP2'}
+                style={{ fontSize: '1em' }}
+                onClick={() => {}}
+                disabled={!isAdmin}
+                title={toolTips.buildCandidateGraphOTP2}
+              />
+              <MenuItem
+                primaryText={'Build Candidate Base Graph OTP2'}
+                style={{ fontSize: '1em' }}
+                onClick={() => {}}
+                disabled={!isAdmin}
+                title={toolTips.buildCandidateBaseGraphOTP2}
               />
             </Popover>
             <FlatButton
