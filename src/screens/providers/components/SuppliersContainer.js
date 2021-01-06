@@ -88,6 +88,29 @@ class SuppliersContainer extends React.Component {
     });
   }
 
+  handleBuildCandidateGraphOTP2() {
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Build candidate graph (OTP2)',
+      confirmInfo: 'Are you sure you want to build candidate graph (OTP2)?',
+      confirmAction: () => {
+        // TODO: implement
+      }
+    });
+  }
+
+  handleBuildCandidateBaseGraphOTP2() {
+    this.setState({
+      confirmDialogOpen: true,
+      confirmTitle: 'Build candidate base graph (OTP2)',
+      confirmInfo:
+        'Are you sure you want to build candidate base graph (OTP2)?',
+      confirmAction: () => {
+        // TODO: implement
+      }
+    });
+  }
+
   handleUpdateMapbox() {
     this.setState({
       confirmDialogOpen: true,
@@ -380,14 +403,14 @@ class SuppliersContainer extends React.Component {
               <MenuItem
                 primaryText={'Build Candidate Graph OTP2'}
                 style={{ fontSize: '1em' }}
-                onClick={() => {}}
+                onClick={() => this.handleBuildCandidateGraphOTP2()}
                 disabled={!isAdmin}
                 title={toolTips.buildCandidateGraphOTP2}
               />
               <MenuItem
                 primaryText={'Build Candidate Base Graph OTP2'}
                 style={{ fontSize: '1em' }}
-                onClick={() => {}}
+                onClick={() => this.handleBuildCandidateBaseGraphOTP2()}
                 disabled={!isAdmin}
                 title={toolTips.buildCandidateBaseGraphOTP2}
               />
