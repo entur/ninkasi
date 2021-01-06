@@ -94,7 +94,8 @@ class SuppliersContainer extends React.Component {
       confirmTitle: 'Build candidate graph (OTP2)',
       confirmInfo: 'Are you sure you want to build candidate graph (OTP2)?',
       confirmAction: () => {
-        // TODO: implement
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.buildCandidateGraphOTP2());
       }
     });
   }
@@ -106,7 +107,8 @@ class SuppliersContainer extends React.Component {
       confirmInfo:
         'Are you sure you want to build candidate base graph (OTP2)?',
       confirmAction: () => {
-        // TODO: implement
+        const { dispatch } = this.props;
+        dispatch(SuppliersActions.buildCandidateBaseGraphOTP2());
       }
     });
   }
