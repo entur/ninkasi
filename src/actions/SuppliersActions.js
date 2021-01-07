@@ -1095,12 +1095,104 @@ SuppliersActions.buildBaseGraph = () => dispatch => {
       );
     })
     .catch(function(response) {
-      console.log('ERROR BUILDING BASE_GRAPH', response);
+      console.log('ERROR BUILDING BASE GRAPH', response);
       dispatch(sendData(response.data, types.ERROR_BUILD_BASE_GRAPH));
       dispatch(
         SuppliersActions.addNotification('Base graph build failed', 'error')
       );
       dispatch(SuppliersActions.logEvent({ title: 'Base graph build failed' }));
+    });
+};
+
+SuppliersActions.buildCandidateGraphOTP2 = () => dispatch => {
+  const url =
+    window.config.timetableAdminBaseUrl +
+    'routing_graph/build_candidate/otp2_netex';
+
+  dispatch(requestBuildGraph());
+  return axios({
+    url: url,
+    timeout: 20000,
+    method: 'post',
+    ...getConfig()
+  })
+    .then(function(response) {
+      dispatch(
+        sendData(response.data, types.SUCCESS_BUILD_CANDIDATE_GRAPH_OTP2)
+      );
+      dispatch(
+        SuppliersActions.addNotification(
+          'Candidate graph build (OTP2) started',
+          'success'
+        )
+      );
+      dispatch(
+        SuppliersActions.logEvent({
+          title: 'Candidate graph build (OTP2) started'
+        })
+      );
+    })
+    .catch(function(response) {
+      console.log('ERROR BUILDING CANDIDATE GRAPH (OTP2)', response);
+      dispatch(sendData(response.data, types.ERROR_BUILD_CANDIDATE_GRAPH_OTP2));
+      dispatch(
+        SuppliersActions.addNotification(
+          'Candidate graph build (OTP2) failed',
+          'error'
+        )
+      );
+      dispatch(
+        SuppliersActions.logEvent({
+          title: 'Candidate graph build (OTP2) failed'
+        })
+      );
+    });
+};
+
+SuppliersActions.buildCandidateBaseGraphOTP2 = () => dispatch => {
+  const url =
+    window.config.timetableAdminBaseUrl +
+    'routing_graph/build_candidate/otp2_base';
+
+  dispatch(requestBuildBaseGraph());
+  return axios({
+    url: url,
+    timeout: 20000,
+    method: 'post',
+    ...getConfig()
+  })
+    .then(function(response) {
+      dispatch(
+        sendData(response.data, types.SUCCESS_BUILD_CANDIDATE_BASE_GRAPH_OTP2)
+      );
+      dispatch(
+        SuppliersActions.addNotification(
+          'Candidate base graph build (OTP2) started',
+          'success'
+        )
+      );
+      dispatch(
+        SuppliersActions.logEvent({
+          title: 'Candidate base graph build (OTP2) started'
+        })
+      );
+    })
+    .catch(function(response) {
+      console.log('ERROR BUILDING CANDIDATE BASE GRAPH (OTP2)', response);
+      dispatch(
+        sendData(response.data, types.ERROR_BUILD_CANDIDATE_BASE_GRAPH_OTP2)
+      );
+      dispatch(
+        SuppliersActions.addNotification(
+          'Candidate base graph build (OTP2) failed',
+          'error'
+        )
+      );
+      dispatch(
+        SuppliersActions.logEvent({
+          title: 'Candidate base graph build (OTP2) failed'
+        })
+      );
     });
 };
 
