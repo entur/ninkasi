@@ -79,7 +79,9 @@ class NotificationAdminZoneRefs extends React.Component {
               style={{ width: '100%', fontSize: 12 }}
             >
               {administrativeZoneRefs.map((ref, index) => (
-                <option key={'entity-' + index}>{ref} </option>
+                <option key={'entity-' + index}>
+                  {ref} - {administrativeZones.find(az => az.id === ref).name}{' '}
+                </option>
               ))}
             </select>
             <NotificationAddZoneRef
