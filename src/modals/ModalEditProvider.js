@@ -49,7 +49,8 @@ const getEmptyForm = () => ({
   _googleQAUpload: false,
   _migrateDataToProvider: null,
   _enableAutoImport: false,
-  _enableAutoValidation: false
+  _enableAutoValidation: false,
+  _enableBlocksExport: false
 });
 
 const validate = values => {
@@ -103,7 +104,8 @@ class ModalEditProvider extends Component {
         googleQAUpload,
         migrateDataToProvider,
         enableAutoImport,
-        enableAutoValidation
+        enableAutoValidation,
+        enableBlocksExport
       } = provider.chouetteInfo;
       const form = {
         _providerId: provider.id,
@@ -129,7 +131,8 @@ class ModalEditProvider extends Component {
         _googleQAUpload: googleQAUpload,
         _migrateDataToProvider: migrateDataToProvider,
         _enableAutoImport: enableAutoImport,
-        _enableAutoValidation: enableAutoValidation
+        _enableAutoValidation: enableAutoValidation,
+        _enableBlocksExport: enableBlocksExport
       };
       this.setState({ form, errors: {} });
     } else {
@@ -549,6 +552,13 @@ class ModalEditProvider extends Component {
             onCheck={(e, v) =>
               this.handleChange('_generateDatedServiceJourneyIds', v)
             }
+          />
+          <Checkbox
+            label="Enable blocks export"
+            checked={this.state.form._enableBlocksExport}
+            style={{ flex: 1 }}
+            labelStyle={{ fontSize: '0.9em' }}
+            onCheck={(e, v) => this.handleChange('_enableBlocksExport', v)}
           />
         </div>
       </Dialog>
