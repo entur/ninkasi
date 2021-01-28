@@ -1197,6 +1197,55 @@ SuppliersActions.buildCandidateBaseGraphOTP2 = () => dispatch => {
     });
 };
 
+SuppliersActions.promoteCandidateBaseGraphOTP2 = () => dispatch => {
+    const url =
+        window.config.timetableAdminBaseUrl +
+        'routing_graph/promote_base_graph';
+
+    dispatch(requestPromoteBaseGraph());
+    return axios({
+        url: url,
+        timeout: 20000,
+        method: 'post',
+        ...getConfig()
+    })
+        .then(function(response) {
+            dispatch(
+                sendData(response.data, types.SUCCESS_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2)
+            );
+            dispatch(
+                SuppliersActions.addNotification(
+                    'Candidate base graph promote (OTP2) started',
+                    'success'
+                )
+            );
+            dispatch(
+                SuppliersActions.logEvent({
+                    title: 'Candidate base graph promote (OTP2) started'
+                })
+            );
+        })
+        .catch(function(response) {
+            console.log('ERROR PROMOTING CANDIDATE BASE GRAPH (OTP2)', response);
+            dispatch(
+                sendData(response.data, types.ERROR_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2)
+            );
+            dispatch(
+                SuppliersActions.addNotification(
+                    'Candidate base graph promote (OTP2) failed',
+                    'error'
+                )
+            );
+            dispatch(
+                SuppliersActions.logEvent({
+                    title: 'Candidate base graph promote (OTP2) failed'
+                })
+            );
+        });
+};
+
+
+
 SuppliersActions.fetchOSM = () => dispatch => {
   const url = window.config.mapAdminBaseUrl + 'download';
   dispatch(requestFetchOSM());
@@ -1359,6 +1408,10 @@ function requestBuildGraph() {
 
 function requestBuildBaseGraph() {
   return { type: types.REQUEST_BUILD_BASE_GRAPH };
+}
+
+function requestPromoteBaseGraph() {
+    return { type: types.REQUEST_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2 };
 }
 
 function requestFetchOSM() {
