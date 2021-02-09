@@ -29,23 +29,25 @@ import uuid from 'uuid/v4';
 
 var SuppliersActions = {};
 
-const getConfig = () => {
+const getConfig = async auth => {
   let config = {};
-  let token = localStorage.getItem('NINKASI::jwt');
-
+  const accessToken = await auth.getAccessTokenSilently();
   config.headers = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer ' + token,
+    Authorization: 'Bearer ' + accessToken,
     'X-Correlation-Id': uuid()
   };
   return config;
 };
 
-SuppliersActions.cleanStopPlacesInChouette = () => dispatch => {
+SuppliersActions.cleanStopPlacesInChouette = () => async (
+  dispatch,
+  getState
+) => {
   const url = window.config.timetableAdminBaseUrl + 'stop_places/clean';
   return axios
-    .post(url, null, getConfig())
+    .post(url, null, await getConfig(getState().UserReducer.auth))
     .then(response => {
       dispatch(
         SuppliersActions.addNotification(
@@ -67,34 +69,38 @@ SuppliersActions.cleanStopPlacesInChouette = () => dispatch => {
     });
 };
 
-SuppliersActions.deleteAllJobs = () => dispatch => {
+SuppliersActions.deleteAllJobs = () => async (dispatch, getState) => {
   const url = `${window.config.eventsBaseUrl}timetable/`;
-  return axios.delete(url, getConfig()).then(response => {
-    dispatch(
-      SuppliersActions.addNotification('Deleted event history', 'success')
-    );
-    dispatch(SuppliersActions.logEvent({ title: 'Deleted event history' }));
-  });
+  return axios
+    .delete(url, await getConfig(getState().UserReducer.auth))
+    .then(response => {
+      dispatch(
+        SuppliersActions.addNotification('Deleted event history', 'success')
+      );
+      dispatch(SuppliersActions.logEvent({ title: 'Deleted event history' }));
+    });
 };
 
-SuppliersActions.deleteJobsForProvider = id => dispatch => {
+SuppliersActions.deleteJobsForProvider = id => async (dispatch, getState) => {
   const url = `${window.config.eventsBaseUrl}timetable/${id}`;
-  return axios.delete(url, getConfig()).then(response => {
-    dispatch(
-      SuppliersActions.addNotification(
-        'Deleted event history for provider ' + id,
-        'success'
-      )
-    );
-    dispatch(
-      SuppliersActions.logEvent({
-        title: 'Deleted event history for provider ' + id
-      })
-    );
-  });
+  return axios
+    .delete(url, await getConfig(getState().UserReducer.auth))
+    .then(response => {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Deleted event history for provider ' + id,
+          'success'
+        )
+      );
+      dispatch(
+        SuppliersActions.logEvent({
+          title: 'Deleted event history for provider ' + id
+        })
+      );
+    });
 };
 
-SuppliersActions.getProviderStatus = id => dispatch => {
+SuppliersActions.getProviderStatus = id => async (dispatch, getState) => {
   if (id < 0) return;
 
   const url = `${window.config.eventsBaseUrl}timetable/${id}`;
@@ -105,7 +111,7 @@ SuppliersActions.getProviderStatus = id => dispatch => {
     timeout: 20000,
     method: 'get',
     responseType: 'json',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       let providerStatus = SuppliersActions.formatProviderStatusDate(
@@ -119,7 +125,7 @@ SuppliersActions.getProviderStatus = id => dispatch => {
     });
 };
 
-SuppliersActions.executePeliasTask = tasks => dispatch => {
+SuppliersActions.executePeliasTask = tasks => async (dispatch, getState) => {
   const queryParams = Object.keys(tasks)
     .filter(entry => tasks[entry])
     .join('&task=');
@@ -127,7 +133,7 @@ SuppliersActions.executePeliasTask = tasks => dispatch => {
     window.config.geocoderAdminBaseUrl + `build_pipeline?task=${queryParams}`;
 
   return axios
-    .post(url, null, getConfig())
+    .post(url, null, await getConfig(getState().UserReducer.auth))
     .then(response => {
       dispatch(
         SuppliersActions.addNotification('Pelias task execution', 'success')
@@ -152,7 +158,10 @@ SuppliersActions.executePeliasTask = tasks => dispatch => {
     });
 };
 
-SuppliersActions.uploadFiles = (files, providerId) => dispatch => {
+SuppliersActions.uploadFiles = (files, providerId) => async (
+  dispatch,
+  getState
+) => {
   dispatch(sendData(0, types.UPDATED_FILE_UPLOAD_PROGRESS));
 
   const url = `${window.config.timetableAdminBaseUrl}${providerId}/files`;
@@ -168,7 +177,7 @@ SuppliersActions.uploadFiles = (files, providerId) => dispatch => {
       let percentCompleted = (progressEvent.loaded / progressEvent.total) * 100;
       dispatch(sendData(percentCompleted, types.UPDATED_FILE_UPLOAD_PROGRESS));
     },
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   };
 
   return axios
@@ -190,7 +199,7 @@ SuppliersActions.uploadFiles = (files, providerId) => dispatch => {
     });
 };
 
-SuppliersActions.getAllProviderStatus = () => (dispatch, getState) => {
+SuppliersActions.getAllProviderStatus = () => async (dispatch, getState) => {
   dispatch(sendData(null, types.REQUESTED_ALL_SUPPLIERS_STATUS));
   const state = getState();
   const providers = state.SuppliersReducer.data;
@@ -201,7 +210,7 @@ SuppliersActions.getAllProviderStatus = () => (dispatch, getState) => {
     timeout: 20000,
     method: 'get',
     responseType: 'json',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(response => {
       const providerStatus = response.data.map(status => {
@@ -256,7 +265,7 @@ function sendData(payLoad, type) {
   };
 }
 
-SuppliersActions.getAllProviders = () => (dispatch, getState) => {
+SuppliersActions.getAllProviders = () => async (dispatch, getState) => {
   const url = window.config.providersBaseUrl;
   dispatch(sendData(null, types.REQUESTED_SUPPLIERS));
   return axios({
@@ -264,10 +273,10 @@ SuppliersActions.getAllProviders = () => (dispatch, getState) => {
     timeout: 20000,
     method: 'get',
     responseType: 'json',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
-      const tokenParsed = getState().UserReducer.kc.tokenParsed;
+      const tokenParsed = getState().UserReducer.auth.idToken;
       const providers = roleParser.getUserProviders(tokenParsed, response.data);
 
       dispatch(sendData(providers, types.RECEIVED_SUPPLIERS));
@@ -287,7 +296,7 @@ SuppliersActions.getAllProviders = () => (dispatch, getState) => {
     });
 };
 
-SuppliersActions.refreshSupplierData = () => (dispatch, getState) => {
+SuppliersActions.refreshSupplierData = () => async (dispatch, getState) => {
   const state = getState();
   const { activeId } = state.SuppliersReducer;
   dispatch(SuppliersActions.selectActiveSupplier(activeId));
@@ -296,11 +305,11 @@ SuppliersActions.refreshSupplierData = () => (dispatch, getState) => {
   dispatch(SuppliersActions.getChouetteJobStatus());
 };
 
-SuppliersActions.createProvider = data => dispatch => {
+SuppliersActions.createProvider = data => async (dispatch, getState) => {
   const url = `${window.config.providersBaseUrl}`;
   const provider = getProviderPayload(data);
   return axios
-    .post(url, provider, getConfig())
+    .post(url, provider, await getConfig(getState().UserReducer.auth))
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_CREATE_PROVIDER));
 
@@ -376,11 +385,11 @@ const getProviderPayload = data => {
   return payload;
 };
 
-SuppliersActions.updateProvider = data => dispatch => {
+SuppliersActions.updateProvider = data => async (dispatch, getState) => {
   const provider = getProviderPayload(data);
   const url = `${window.config.providersBaseUrl}${provider.id}`;
   return axios
-    .put(url, provider, getConfig())
+    .put(url, provider, await getConfig(getState().UserReducer.auth))
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_UPDATE_PROVIDER));
       dispatch(
@@ -409,13 +418,13 @@ SuppliersActions.updateProvider = data => dispatch => {
     });
 };
 
-SuppliersActions.fetchProvider = id => dispatch => {
+SuppliersActions.fetchProvider = id => async (dispatch, getState) => {
   if (id < 0) return;
 
   const url = `${window.config.providersBaseUrl}${id}`;
 
   return axios
-    .get(url, getConfig())
+    .get(url, await getConfig(getState().UserReducer.auth))
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_FETCH_PROVIDER));
 
@@ -443,11 +452,11 @@ SuppliersActions.fetchProvider = id => dispatch => {
     });
 };
 
-SuppliersActions.deleteProvider = providerId => dispatch => {
+SuppliersActions.deleteProvider = providerId => async (dispatch, getState) => {
   const url = `${window.config.providersBaseUrl}${providerId}`;
 
   return axios
-    .delete(url, getConfig())
+    .delete(url, await getConfig(getState().UserReducer.auth))
     .then(response => {
       SuppliersActions.selectActiveSupplier(-1);
       dispatch(sendData(response.data, types.SUCCESS_DELETE_PROVIDER));
@@ -493,7 +502,7 @@ SuppliersActions.changeActiveSupplierId = id => {
 SuppliersActions.cancelChouetteJobForProvider = (
   providerId,
   chouetteId
-) => dispatch => {
+) => async (dispatch, getState) => {
   if (providerId < 0) return;
 
   const url =
@@ -503,7 +512,7 @@ SuppliersActions.cancelChouetteJobForProvider = (
     url: url,
     timeout: 20000,
     method: 'delete',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -539,12 +548,15 @@ SuppliersActions.cancelChouetteJobForProvider = (
     });
 };
 
-SuppliersActions.cancelAllChouetteJobsforAllProviders = () => dispatch => {
+SuppliersActions.cancelAllChouetteJobsforAllProviders = () => async (
+  dispatch,
+  getState
+) => {
   return axios({
     url: window.config.timetableAdminBaseUrl + `jobs/`,
     timeout: 20000,
     method: 'delete',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -574,7 +586,10 @@ SuppliersActions.cancelAllChouetteJobsforAllProviders = () => dispatch => {
     });
 };
 
-SuppliersActions.cancelAllChouetteJobsforProvider = providerId => dispatch => {
+SuppliersActions.cancelAllChouetteJobsforProvider = providerId => async (
+  dispatch,
+  getState
+) => {
   if (providerId < 0) return;
 
   const url = window.config.timetableAdminBaseUrl + `${providerId}/jobs`;
@@ -583,7 +598,7 @@ SuppliersActions.cancelAllChouetteJobsforProvider = providerId => dispatch => {
     url: url,
     timeout: 20000,
     method: 'delete',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -629,7 +644,7 @@ SuppliersActions.setActiveActionAllFilter = value => dispatch => {
   dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
 };
 
-SuppliersActions.getChouetteJobsForAllSuppliers = () => (
+SuppliersActions.getChouetteJobsForAllSuppliers = () => async (
   dispatch,
   getState
 ) => {
@@ -655,7 +670,7 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => (
       cancelToken: new CancelToken(function executor(cancel) {
         dispatch(sendData(cancel, types.REQUESTED_ALL_CHOUETTE_JOB_STATUS));
       }),
-      ...getConfig()
+      ...getConfig(state.UserReducer.auth)
     })
     .then(function(response) {
       let jobs = response.data.reverse();
@@ -679,7 +694,7 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => (
     });
 };
 
-SuppliersActions.getChouetteJobStatus = () => (dispatch, getState) => {
+SuppliersActions.getChouetteJobStatus = () => async (dispatch, getState) => {
   const state = getState();
 
   const { chouetteJobFilter, actionFilter } = state.MardukReducer;
@@ -708,7 +723,7 @@ SuppliersActions.getChouetteJobStatus = () => (dispatch, getState) => {
   var CancelToken = axios.CancelToken;
 
   return axios
-    .get(url, getConfig(), {
+    .get(url, getConfig(state.UserReducer.auth), {
       cancelToken: new CancelToken(function executor(cancel) {
         dispatch(sendData(cancel, types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER));
       })
@@ -723,7 +738,7 @@ SuppliersActions.getChouetteJobStatus = () => (dispatch, getState) => {
     });
 };
 
-SuppliersActions.exportData = id => dispatch => {
+SuppliersActions.exportData = id => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/export`;
 
   dispatch(requestExport());
@@ -731,7 +746,7 @@ SuppliersActions.exportData = id => dispatch => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_EXPORT_DATA));
@@ -753,11 +768,11 @@ SuppliersActions.exportData = id => dispatch => {
     });
 };
 
-SuppliersActions.getGraphStatus = () => dispatch => {
+SuppliersActions.getGraphStatus = () => async (dispatch, getState) => {
   const url = window.config.eventsBaseUrl + `admin_summary/status/aggregation`;
 
   return axios
-    .get(url, getConfig())
+    .get(url, await getConfig(getState().UserReducer.auth))
     .then(response => {
       let status = {
         graphStatus: {},
@@ -801,7 +816,7 @@ SuppliersActions.getGraphStatus = () => dispatch => {
     });
 };
 
-SuppliersActions.transferData = id => dispatch => {
+SuppliersActions.transferData = id => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/transfer`;
 
   dispatch(requestTransfer());
@@ -809,7 +824,7 @@ SuppliersActions.transferData = id => dispatch => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_TRANSFER_DATA));
@@ -831,7 +846,7 @@ SuppliersActions.transferData = id => dispatch => {
     });
 };
 
-SuppliersActions.getAllLineStats = () => dispatch => {
+SuppliersActions.getAllLineStats = () => async (dispatch, getState) => {
   dispatch(sendData(null, types.REQUESTED_LINE_STATS));
 
   return axios({
@@ -839,7 +854,7 @@ SuppliersActions.getAllLineStats = () => dispatch => {
     timeout: 10000,
     method: 'get',
     responseType: 'json',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(({ data }) => {
       Object.keys(data).forEach(providerId => {
@@ -856,13 +871,16 @@ SuppliersActions.getAllLineStats = () => dispatch => {
     });
 };
 
-SuppliersActions.getLineStatsForProvider = providerId => dispatch => {
+SuppliersActions.getLineStatsForProvider = providerId => async (
+  dispatch,
+  getState
+) => {
   dispatch(sendData(null, types.REQUESTED_LINE_STATS));
 
   return axios
     .get(
       `${window.config.timetableAdminBaseUrl}${providerId}/line_statistics`,
-      getConfig()
+      await getConfig(getState().UserReducer.auth)
     )
     .then(response => {
       dispatch(
@@ -877,7 +895,7 @@ SuppliersActions.getLineStatsForProvider = providerId => dispatch => {
     });
 };
 
-SuppliersActions.fetchFilenames = id => dispatch => {
+SuppliersActions.fetchFilenames = id => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/files`;
 
   dispatch(requestFilenames());
@@ -885,7 +903,7 @@ SuppliersActions.fetchFilenames = id => dispatch => {
     url: url,
     timeout: 20000,
     method: 'get',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       const files = addFileExtensions(response.data.files);
@@ -908,7 +926,10 @@ export const addFileExtensions = (files = []) => {
   });
 };
 
-SuppliersActions.importData = (id, selectedFiles) => dispatch => {
+SuppliersActions.importData = (id, selectedFiles) => async (
+  dispatch,
+  getState
+) => {
   dispatch(requestImport());
 
   const url = window.config.timetableAdminBaseUrl + `${id}/import`;
@@ -920,7 +941,11 @@ SuppliersActions.importData = (id, selectedFiles) => dispatch => {
   });
 
   return axios
-    .post(url, { files: bodySelectedFiles }, getConfig())
+    .post(
+      url,
+      { files: bodySelectedFiles },
+      await getConfig(getState().UserReducer.auth)
+    )
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_IMPORT_DATA));
       dispatch(SuppliersActions.addNotification('Import started', 'success'));
@@ -942,7 +967,7 @@ SuppliersActions.importData = (id, selectedFiles) => dispatch => {
     });
 };
 
-SuppliersActions.cleanDataspace = id => dispatch => {
+SuppliersActions.cleanDataspace = id => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/clean`;
 
   dispatch(requestCleanDataspace());
@@ -950,7 +975,7 @@ SuppliersActions.cleanDataspace = id => dispatch => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_DELETE_DATA));
@@ -982,14 +1007,14 @@ SuppliersActions.cleanDataspace = id => dispatch => {
     });
 };
 
-SuppliersActions.cleanAllDataspaces = filter => dispatch => {
+SuppliersActions.cleanAllDataspaces = filter => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `clean/${filter}`;
 
   return axios({
     url: url,
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -1019,7 +1044,7 @@ SuppliersActions.cleanAllDataspaces = filter => dispatch => {
     });
 };
 
-SuppliersActions.validateProvider = id => dispatch => {
+SuppliersActions.validateProvider = id => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/validate`;
 
   dispatch(requestCleanDataspace());
@@ -1027,7 +1052,7 @@ SuppliersActions.validateProvider = id => dispatch => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_VALIDATE_PROVIDER));
@@ -1051,7 +1076,7 @@ SuppliersActions.validateProvider = id => dispatch => {
     });
 };
 
-SuppliersActions.buildGraph = () => dispatch => {
+SuppliersActions.buildGraph = () => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + 'routing_graph/build';
 
   dispatch(requestBuildGraph());
@@ -1059,7 +1084,7 @@ SuppliersActions.buildGraph = () => dispatch => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_GRAPH));
@@ -1076,7 +1101,7 @@ SuppliersActions.buildGraph = () => dispatch => {
     });
 };
 
-SuppliersActions.buildBaseGraph = () => dispatch => {
+SuppliersActions.buildBaseGraph = () => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + 'routing_graph/build_base';
 
   dispatch(requestBuildBaseGraph());
@@ -1084,7 +1109,7 @@ SuppliersActions.buildBaseGraph = () => dispatch => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_BASE_GRAPH));
@@ -1105,7 +1130,7 @@ SuppliersActions.buildBaseGraph = () => dispatch => {
     });
 };
 
-SuppliersActions.buildCandidateGraphOTP2 = () => dispatch => {
+SuppliersActions.buildCandidateGraphOTP2 = () => async (dispatch, getState) => {
   const url =
     window.config.timetableAdminBaseUrl +
     'routing_graph/build_candidate/otp2_netex';
@@ -1115,7 +1140,7 @@ SuppliersActions.buildCandidateGraphOTP2 = () => dispatch => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -1150,7 +1175,10 @@ SuppliersActions.buildCandidateGraphOTP2 = () => dispatch => {
     });
 };
 
-SuppliersActions.buildCandidateBaseGraphOTP2 = () => dispatch => {
+SuppliersActions.buildCandidateBaseGraphOTP2 = () => async (
+  dispatch,
+  getState
+) => {
   const url =
     window.config.timetableAdminBaseUrl +
     'routing_graph/build_candidate/otp2_base';
@@ -1160,7 +1188,7 @@ SuppliersActions.buildCandidateBaseGraphOTP2 = () => dispatch => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -1197,63 +1225,63 @@ SuppliersActions.buildCandidateBaseGraphOTP2 = () => dispatch => {
     });
 };
 
-SuppliersActions.promoteCandidateBaseGraphOTP2 = () => dispatch => {
-    const url =
-        window.config.timetableAdminBaseUrl +
-        'routing_graph/promote_base_graph';
+SuppliersActions.promoteCandidateBaseGraphOTP2 = () => async (
+  dispatch,
+  getState
+) => {
+  const url =
+    window.config.timetableAdminBaseUrl + 'routing_graph/promote_base_graph';
 
-    dispatch(requestPromoteBaseGraph());
-    return axios({
-        url: url,
-        timeout: 20000,
-        method: 'post',
-        ...getConfig()
-    })
-        .then(function(response) {
-            dispatch(
-                sendData(response.data, types.SUCCESS_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2)
-            );
-            dispatch(
-                SuppliersActions.addNotification(
-                    'Candidate base graph promote (OTP2) started',
-                    'success'
-                )
-            );
-            dispatch(
-                SuppliersActions.logEvent({
-                    title: 'Candidate base graph promote (OTP2) started'
-                })
-            );
+  dispatch(requestPromoteBaseGraph());
+  return axios({
+    url: url,
+    timeout: 20000,
+    method: 'post',
+    ...(await getConfig(getState().UserReducer.auth))
+  })
+    .then(function(response) {
+      dispatch(
+        sendData(response.data, types.SUCCESS_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2)
+      );
+      dispatch(
+        SuppliersActions.addNotification(
+          'Candidate base graph promote (OTP2) started',
+          'success'
+        )
+      );
+      dispatch(
+        SuppliersActions.logEvent({
+          title: 'Candidate base graph promote (OTP2) started'
         })
-        .catch(function(response) {
-            console.log('ERROR PROMOTING CANDIDATE BASE GRAPH (OTP2)', response);
-            dispatch(
-                sendData(response.data, types.ERROR_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2)
-            );
-            dispatch(
-                SuppliersActions.addNotification(
-                    'Candidate base graph promote (OTP2) failed',
-                    'error'
-                )
-            );
-            dispatch(
-                SuppliersActions.logEvent({
-                    title: 'Candidate base graph promote (OTP2) failed'
-                })
-            );
-        });
+      );
+    })
+    .catch(function(response) {
+      console.log('ERROR PROMOTING CANDIDATE BASE GRAPH (OTP2)', response);
+      dispatch(
+        sendData(response.data, types.ERROR_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2)
+      );
+      dispatch(
+        SuppliersActions.addNotification(
+          'Candidate base graph promote (OTP2) failed',
+          'error'
+        )
+      );
+      dispatch(
+        SuppliersActions.logEvent({
+          title: 'Candidate base graph promote (OTP2) failed'
+        })
+      );
+    });
 };
 
-
-
-SuppliersActions.fetchOSM = () => dispatch => {
+SuppliersActions.fetchOSM = () => async (dispatch, getState) => {
   const url = window.config.mapAdminBaseUrl + 'download';
   dispatch(requestFetchOSM());
   return axios({
     url: url,
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_FETCH_OSM));
@@ -1269,14 +1297,14 @@ SuppliersActions.fetchOSM = () => dispatch => {
     });
 };
 
-SuppliersActions.uploadGoogleProduction = () => dispatch => {
+SuppliersActions.uploadGoogleProduction = () => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + 'export/google/publish';
   dispatch(requestUploadGoogleProduction());
   return axios({
     url: url,
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_UPLOAD_GOOGLE_PRODUCTION));
@@ -1308,14 +1336,14 @@ SuppliersActions.uploadGoogleProduction = () => dispatch => {
     });
 };
 
-SuppliersActions.uploadGoogleQA = () => dispatch => {
+SuppliersActions.uploadGoogleQA = () => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + 'export/google-qa/publish';
   dispatch(requestUploadGoogleQA());
   return axios({
     url: url,
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_UPLOAD_GOOGLE_QA));
@@ -1340,14 +1368,14 @@ SuppliersActions.uploadGoogleQA = () => dispatch => {
     });
 };
 
-SuppliersActions.updateMapbox = () => dispatch => {
+SuppliersActions.updateMapbox = () => async (dispatch, getState) => {
   const url = window.config.mapboxAdminBaseUrl + 'update';
 
   return axios({
     url: url,
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -1411,7 +1439,7 @@ function requestBuildBaseGraph() {
 }
 
 function requestPromoteBaseGraph() {
-    return { type: types.REQUEST_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2 };
+  return { type: types.REQUEST_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2 };
 }
 
 function requestFetchOSM() {
@@ -1576,7 +1604,7 @@ SuppliersActions.openEditModalDialog = () => {
   };
 };
 
-SuppliersActions.openEditProviderDialog = () => (dispatch, getState) => {
+SuppliersActions.openEditProviderDialog = () => async (dispatch, getState) => {
   const state = getState();
   dispatch(SuppliersActions.fetchProvider(state.SuppliersReducer.activeId));
   dispatch(SuppliersActions.openEditModalDialog());
@@ -1607,7 +1635,7 @@ SuppliersActions.logEvent = event => {
   };
 };
 
-SuppliersActions.getExportedFiles = () => dispatch => {
+SuppliersActions.getExportedFiles = () => async (dispatch, getState) => {
   dispatch(sendData(types.REQUESTED_EXPORTED_FILES, null));
   const url = window.config.timetableAdminBaseUrl + 'export/files';
   return axios({
@@ -1615,7 +1643,7 @@ SuppliersActions.getExportedFiles = () => dispatch => {
     timeout: 20000,
     method: 'get',
     responseType: 'json',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   }).then(response => {
     if (response.data && response.data.files) {
       let providerData = {};
@@ -1648,12 +1676,12 @@ SuppliersActions.getExportedFiles = () => dispatch => {
   });
 };
 
-SuppliersActions.cleanFileFilter = () => dispatch => {
+SuppliersActions.cleanFileFilter = () => async (dispatch, getState) => {
   return axios({
     url: window.config.timetableAdminBaseUrl + 'idempotentfilter/clean',
     timeout: 20000,
     method: 'post',
-    ...getConfig()
+    ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -1671,10 +1699,10 @@ SuppliersActions.cleanFileFilter = () => dispatch => {
     });
 };
 
-SuppliersActions.getTransportModes = () => dispatch => {
+SuppliersActions.getTransportModes = () => async (dispatch, getState) => {
   const url = `${window.config.providersBaseUrl}transport_modes`;
   return axios
-    .get(url, getConfig())
+    .get(url, await getConfig(getState().UserReducer.auth))
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_TRANSPORT_MODES));
     })

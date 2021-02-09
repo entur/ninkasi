@@ -32,7 +32,7 @@ const themeV0 = getMuiTheme({
   /* theme for v0.x */
 });
 
-const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, kc }) => {
+const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, auth }) => {
   useEffect(() => {
     cfgreader.readConfig(config => {
       window.config = config;
@@ -50,7 +50,7 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, kc }) => {
     []
   );
 
-  if (isConfigLoaded) {
+  if (isConfigLoaded && auth.idToken) {
     return (
       <MuiThemeProvider theme={theme}>
         <V0MuiThemeProvider muiTheme={themeV0}>
@@ -59,13 +59,13 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, kc }) => {
             <Menu open={isMenuOpen} />
             <div className="app">
               <Header />
-              {roleParser.isAdmin(kc.tokenParsed) ? (
+              {roleParser.isAdmin(auth.idToken) ? (
                 <Router />
               ) : (
                 <NoAccess
-                  username={kc.tokenParsed.preferred_username}
+                  username={auth.user.name}
                   handleLogout={() => {
-                    kc.logout();
+                    auth.logout({ returnTo: window.location.origin });
                   }}
                 />
               )}
@@ -80,7 +80,7 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, kc }) => {
 };
 
 const mapStateToProps = state => ({
-  kc: state.UserReducer.kc,
+  auth: state.UserReducer.auth,
   isConfigLoaded: state.UtilsReducer.isConfigLoaded,
   isMenuOpen: state.app.isMenuOpen
 });

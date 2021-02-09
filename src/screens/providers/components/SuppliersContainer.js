@@ -118,7 +118,7 @@ class SuppliersContainer extends React.Component {
       confirmDialogOpen: true,
       confirmTitle: 'Promote candidate base graph (OTP2)',
       confirmInfo:
-          'Are you sure you want to promote the candidate base graph (OTP2)?',
+        'Are you sure you want to promote the candidate base graph (OTP2)?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.promoteCandidateBaseGraphOTP2());
@@ -333,8 +333,9 @@ class SuppliersContainer extends React.Component {
   }
 
   render() {
-    const { suppliers, activeProviderId, kc, canEditOrganisation } = this.props;
-    const isAdmin = rolesParser.isAdmin(kc.tokenParsed);
+    const { suppliers, activeProviderId, auth } = this.props;
+    const isAdmin = rolesParser.isAdmin(auth.idToken);
+    const canEditOrganisation = rolesParser.canEditOrganisation(auth.idToken);
     const providersEnv = getProvidersEnv(window.config.providersBaseUrl);
     const iconColor = getIconColor(providersEnv);
 
@@ -360,7 +361,7 @@ class SuppliersContainer extends React.Component {
       buildCandidateBaseGraphOTP2:
         'Build new candidate base graph with OSM and elevation data (OTP2)',
       promoteCandidateBaseGraphOTP2:
-          'Build new candidate base graph with OSM and elevation data (OTP2)',
+        'Build new candidate base graph with OSM and elevation data (OTP2)',
       fetchOSM: 'Fetch Open Street Map data',
       updateMapbox: 'Update mapbox data from NSR',
       cleanFileFilter: 'Clean file filter',
@@ -432,11 +433,11 @@ class SuppliersContainer extends React.Component {
                 title={toolTips.buildCandidateBaseGraphOTP2}
               />
               <MenuItem
-                  primaryText={'Promote Candidate Base Graph OTP2'}
-                  style={{ fontSize: '1em' }}
-                  onClick={() => this.handlePromoteCandidateBaseGraphOTP2()}
-                  disabled={!isAdmin}
-                  title={toolTips.promoteCandidateBaseGraphOTP2}
+                primaryText={'Promote Candidate Base Graph OTP2'}
+                style={{ fontSize: '1em' }}
+                onClick={() => this.handlePromoteCandidateBaseGraphOTP2()}
+                disabled={!isAdmin}
+                title={toolTips.promoteCandidateBaseGraphOTP2}
               />
             </Popover>
             <FlatButton
@@ -713,11 +714,8 @@ class SuppliersContainer extends React.Component {
 const mapStateToProps = state => ({
   suppliers: state.SuppliersReducer.data,
   activeProviderId: state.SuppliersReducer.activeId,
-  kc: state.UserReducer.kc,
-  displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
-  canEditOrganisation: rolesParser.canEditOrganisation(
-    state.UserReducer.kc.tokenParsed
-  )
+  auth: state.UserReducer.auth,
+  displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected
 });
 
 export default connect(mapStateToProps)(SuppliersContainer);

@@ -18,47 +18,38 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import Keycloak from 'keycloak-js';
 import App from 'app';
 import configureStore, { history } from 'store/store';
 import 'sass/main.scss';
 import cfgreader from 'config/readConfig';
+import { Auth0Provider } from '@auth0/auth0-react';
+import AuthenticatedApp from 'app/AuthenticatedApp';
 
 cfgreader.readConfig(function(config) {
   window.config = config;
-  authWithKeyCloak(config.endpointBase);
+  renderIndex();
 });
 
-function authWithKeyCloak(endpointBase) {
-  let kc = new Keycloak(endpointBase + 'config/keycloak.json');
-
-  kc.init({ onLoad: 'login-required', checkLoginIframe: false }).success(
-    authenticated => {
-      if (authenticated) {
-        localStorage.setItem('NINKASI::jwt', kc.token);
-
-        setInterval(() => {
-          kc.updateToken(10).error(() => kc.logout());
-          localStorage.setItem('NINKASI::jwt', kc.token);
-        }, 10000);
-
-        renderIndex(kc);
-      } else {
-        kc.login();
-      }
-    }
-  );
-}
-
-function renderIndex(kc) {
-  const store = configureStore(kc);
-
+function renderIndex() {
   render(
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <App />
-      </ConnectedRouter>
-    </Provider>,
+    <Auth0Provider
+      domain="ror-entur-dev.eu.auth0.com"
+      clientId="h5bjgdnSSJi0JcaG3ugigtyBEXaPASQM"
+      redirectUri={window.location.origin}
+      audience={['https://ror.api.dev.entur.io']}
+      useRefreshToken
+      cacheLocation="localstorage" // <-- only enable on localhost
+    >
+      <AuthenticatedApp>
+        {auth => (
+          <Provider store={configureStore(auth)}>
+            <ConnectedRouter history={history}>
+              <App />
+            </ConnectedRouter>
+          </Provider>
+        )}
+      </AuthenticatedApp>
+    </Auth0Provider>,
     document.getElementById('root')
   );
 }

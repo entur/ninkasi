@@ -24,7 +24,7 @@ import createRootReducer from 'reducers';
 
 export const history = createBrowserHistory();
 
-export default function configureStore(kc) {
+export default function configureStore(auth) {
   let enchancer = {};
 
   if (process.env.NODE_ENV === 'development') {
@@ -45,7 +45,7 @@ export default function configureStore(kc) {
 
   const initialState = {
     UserReducer: {
-      kc: kc
+      auth
     }
   };
 

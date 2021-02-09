@@ -16,12 +16,14 @@
 
 const rolesParser = {};
 
+const namespace = 'https://ror.api.dev.entur.io/claims/roles';
+
 rolesParser.canEditOrganisation = tokenParsed => {
-  if (!tokenParsed || !tokenParsed.roles) return false;
+  if (!tokenParsed || !tokenParsed[namespace]) return false;
 
   let canEditOrganisation = false;
 
-  tokenParsed.roles.forEach(roleString => {
+  tokenParsed[namespace].forEach(roleString => {
     let roleJSON = JSON.parse(roleString);
     if (roleJSON.r === 'editOrganisation') {
       canEditOrganisation = true;
@@ -31,12 +33,12 @@ rolesParser.canEditOrganisation = tokenParsed => {
 };
 
 rolesParser.getUserProviders = (tokenParsed, providers) => {
-  if (!tokenParsed || !tokenParsed.roles) return [];
+  if (!tokenParsed || !tokenParsed[namespace]) return [];
 
   let allowedOrganisations = [];
   let isAdmin = false;
 
-  tokenParsed.roles.forEach(roleString => {
+  tokenParsed[namespace].forEach(roleString => {
     let roleJSON = JSON.parse(roleString);
     if (roleJSON.r === 'editRouteData') {
       allowedOrganisations.push(roleJSON.o);
@@ -61,10 +63,10 @@ rolesParser.getUserProviders = (tokenParsed, providers) => {
 };
 
 rolesParser.isAdmin = tokenParsed => {
-  if (!tokenParsed || !tokenParsed.roles) return false;
+  if (!tokenParsed || !tokenParsed[namespace]) return false;
 
-  for (let i = 0; i < tokenParsed.roles.length; i++) {
-    let role = JSON.parse(tokenParsed.roles[i]);
+  for (let i = 0; i < tokenParsed[namespace].length; i++) {
+    let role = JSON.parse(tokenParsed[namespace][i]);
     if (role.r === 'adminEditRouteData') return true;
   }
 
