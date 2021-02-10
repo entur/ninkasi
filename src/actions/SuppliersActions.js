@@ -670,7 +670,7 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => async (
       cancelToken: new CancelToken(function executor(cancel) {
         dispatch(sendData(cancel, types.REQUESTED_ALL_CHOUETTE_JOB_STATUS));
       }),
-      ...getConfig(state.UserReducer.auth)
+      ...(await getConfig(state.UserReducer.auth))
     })
     .then(function(response) {
       let jobs = response.data.reverse();
@@ -723,7 +723,7 @@ SuppliersActions.getChouetteJobStatus = () => async (dispatch, getState) => {
   var CancelToken = axios.CancelToken;
 
   return axios
-    .get(url, getConfig(state.UserReducer.auth), {
+    .get(url, await getConfig(state.UserReducer.auth), {
       cancelToken: new CancelToken(function executor(cancel) {
         dispatch(sendData(cancel, types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER));
       })
