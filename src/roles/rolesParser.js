@@ -16,7 +16,7 @@
 
 const rolesParser = {};
 
-const namespace = 'https://ror.api.dev.entur.io/claims/roles';
+const namespace = 'https://ror.api.dev.entur.io/claims/role_assignments';
 
 rolesParser.canEditOrganisation = tokenParsed => {
   if (!tokenParsed || !tokenParsed[namespace]) return false;
