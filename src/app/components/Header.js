@@ -32,9 +32,9 @@ import Logo from './Logo';
 
 class Header extends React.Component {
   handleLogout() {
-    const { kc } = this.props;
-    if (kc) {
-      kc.logout();
+    const { auth } = this.props;
+    if (auth) {
+      auth.logout();
     }
   }
 
@@ -43,9 +43,9 @@ class Header extends React.Component {
   }
 
   getUsername() {
-    const { kc } = this.props;
-    if (kc && kc.tokenParsed) {
-      return kc.tokenParsed.preferred_username || 'N/A';
+    const { auth } = this.props;
+    if (auth && auth.user) {
+      return auth.user.name || 'N/A';
     }
   }
 
@@ -114,7 +114,7 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = ({ UserReducer, router }) => ({
-  kc: UserReducer.kc,
+  auth: UserReducer.auth,
   pathname: router.location.pathname
 });
 
