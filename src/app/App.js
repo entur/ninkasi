@@ -50,7 +50,7 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, auth }) => {
     []
   );
 
-  if (isConfigLoaded && auth.idToken) {
+  if (isConfigLoaded && auth.roleAssignments) {
     return (
       <MuiThemeProvider theme={theme}>
         <V0MuiThemeProvider muiTheme={themeV0}>
@@ -59,7 +59,7 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, auth }) => {
             <Menu open={isMenuOpen} />
             <div className="app">
               <Header />
-              {roleParser.isAdmin(auth.idToken) ? (
+              {roleParser.isAdmin(auth.roleAssignments) ? (
                 <Router />
               ) : (
                 <NoAccess

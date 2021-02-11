@@ -246,7 +246,9 @@ class SupplierTabWrapper extends React.Component {
       auth
     } = this.props;
 
-    const canEditOrganisation = rolesParser.canEditOrganisation(auth.idToken);
+    const canEditOrganisation = rolesParser.canEditOrganisation(
+      auth.roleAssignments
+    );
 
     if (filelistIsLoading) {
       return (

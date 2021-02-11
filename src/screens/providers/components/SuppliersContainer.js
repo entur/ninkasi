@@ -334,8 +334,10 @@ class SuppliersContainer extends React.Component {
 
   render() {
     const { suppliers, activeProviderId, auth } = this.props;
-    const isAdmin = rolesParser.isAdmin(auth.idToken);
-    const canEditOrganisation = rolesParser.canEditOrganisation(auth.idToken);
+    const isAdmin = rolesParser.isAdmin(auth.roleAssignments);
+    const canEditOrganisation = rolesParser.canEditOrganisation(
+      auth.roleAssignments
+    );
     const providersEnv = getProvidersEnv(window.config.providersBaseUrl);
     const iconColor = getIconColor(providersEnv);
 

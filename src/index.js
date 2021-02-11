@@ -23,24 +23,30 @@ import configureStore, { history } from 'store/store';
 import 'sass/main.scss';
 import cfgreader from 'config/readConfig';
 import { Auth0Provider } from '@auth0/auth0-react';
-import AuthenticatedApp from 'app/AuthenticatedApp';
+import Auth0AuthenticatedApp from 'app/Auth0AuthenticatedApp';
+import KeycloakAuthenticatedApp from 'app/KeycloakAuthenticatedApp';
 
 cfgreader.readConfig(function(config) {
   window.config = config;
-  renderIndex();
+  determineAuthMethod(config);
 });
 
-function renderIndex() {
-  render(
-    <Auth0Provider
-      domain="ror-entur-dev.eu.auth0.com"
-      clientId="h5bjgdnSSJi0JcaG3ugigtyBEXaPASQM"
-      redirectUri={window.location.origin}
-      audience={['https://ror.api.dev.entur.io']}
-      useRefreshToken
-      cacheLocation="localstorage" // <-- only enable on localhost
-    >
-      <AuthenticatedApp>
+function determineAuthMethod(config) {
+  if (window.location.search.indexOf('auth0') > -1) {
+    localStorage.setItem('NINKASI::authMethod', 'auth0');
+  } else if (window.location.search.indexOf('keycloak') > -1) {
+    localStorage.setItem('NINKASI::authMethod', 'kc');
+  } else if (localStorage.getItem('NINKASI:authMethod') === null) {
+    localStorage.setItem('NINKASI::authMethod', 'kc');
+  }
+
+  renderIndex(localStorage.getItem('NINKASI::authMethod'), config);
+}
+
+function renderIndex(authMethod, config) {
+  if (authMethod === 'kc') {
+    render(
+      <KeycloakAuthenticatedApp config={config}>
         {auth => (
           <Provider store={configureStore(auth)}>
             <ConnectedRouter history={history}>
@@ -48,8 +54,30 @@ function renderIndex() {
             </ConnectedRouter>
           </Provider>
         )}
-      </AuthenticatedApp>
-    </Auth0Provider>,
-    document.getElementById('root')
-  );
+      </KeycloakAuthenticatedApp>,
+      document.getElementById('root')
+    );
+  } else if (authMethod === 'auth0') {
+    render(
+      <Auth0Provider
+        domain="ror-entur-dev.eu.auth0.com"
+        clientId="h5bjgdnSSJi0JcaG3ugigtyBEXaPASQM"
+        redirectUri={window.location.origin}
+        audience={['https://ror.api.dev.entur.io']}
+        useRefreshToken
+        cacheLocation="localstorage" // <-- only enable on localhost
+      >
+        <Auth0AuthenticatedApp>
+          {auth => (
+            <Provider store={configureStore(auth)}>
+              <ConnectedRouter history={history}>
+                <App />
+              </ConnectedRouter>
+            </Provider>
+          )}
+        </Auth0AuthenticatedApp>
+      </Auth0Provider>,
+      document.getElementById('root')
+    );
+  }
 }

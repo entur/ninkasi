@@ -276,8 +276,11 @@ SuppliersActions.getAllProviders = () => async (dispatch, getState) => {
     ...(await getConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
-      const tokenParsed = getState().UserReducer.auth.idToken;
-      const providers = roleParser.getUserProviders(tokenParsed, response.data);
+      const roleAssignments = getState().UserReducer.auth.roleAssignments;
+      const providers = roleParser.getUserProviders(
+        roleAssignments,
+        response.data
+      );
 
       dispatch(sendData(providers, types.RECEIVED_SUPPLIERS));
 
