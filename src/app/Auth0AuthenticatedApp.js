@@ -16,9 +16,14 @@ export default ({ children }) => {
   const [idToken, setIdToken] = useState();
 
   useEffect(() => {
-    const getClaims = async () => setIdToken(await getIdTokenClaims());
-    getClaims();
-  }, [getIdTokenClaims]);
+    const getClaims = async () => {
+      const idTokenClaims = await getIdTokenClaims();
+      setIdToken(idTokenClaims);
+    };
+    if (isAuthenticated) {
+      getClaims();
+    }
+  }, [isAuthenticated, getIdTokenClaims]);
 
   if (!isAuthenticated && !isLoading) {
     return loginWithRedirect();
