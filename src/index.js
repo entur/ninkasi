@@ -32,11 +32,11 @@ cfgreader.readConfig(function(config) {
 });
 
 function determineAuthMethod(config) {
-  if (window.location.search.indexOf('auth0') > -1) {
+  if (window.location.search.indexOf('authMethod=auth0') > -1) {
     localStorage.setItem('NINKASI::authMethod', 'auth0');
-  } else if (window.location.search.indexOf('keycloak') > -1) {
+  } else if (window.location.search.indexOf('authMethod=kc') > -1) {
     localStorage.setItem('NINKASI::authMethod', 'kc');
-  } else if (localStorage.getItem('NINKASI:authMethod') === null) {
+  } else if (localStorage.getItem('NINKASI::authMethod') === null) {
     localStorage.setItem('NINKASI::authMethod', 'kc');
   }
 
