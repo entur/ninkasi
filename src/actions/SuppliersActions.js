@@ -25,21 +25,9 @@ import {
   addExportedNorwayMetadata,
   formatProviderData
 } from './formatUtils';
-import uuid from 'uuid/v4';
+import getApiConfig from './getApiConfig';
 
 var SuppliersActions = {};
-
-const getConfig = async auth => {
-  let config = {};
-  const accessToken = await auth.getAccessTokenSilently();
-  config.headers = {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-    Authorization: 'Bearer ' + accessToken,
-    'X-Correlation-Id': uuid()
-  };
-  return config;
-};
 
 SuppliersActions.cleanStopPlacesInChouette = () => async (
   dispatch,
@@ -47,7 +35,7 @@ SuppliersActions.cleanStopPlacesInChouette = () => async (
 ) => {
   const url = window.config.timetableAdminBaseUrl + 'stop_places/clean';
   return axios
-    .post(url, null, await getConfig(getState().UserReducer.auth))
+    .post(url, null, await getApiConfig(getState().UserReducer.auth))
     .then(response => {
       dispatch(
         SuppliersActions.addNotification(
@@ -72,7 +60,7 @@ SuppliersActions.cleanStopPlacesInChouette = () => async (
 SuppliersActions.deleteAllJobs = () => async (dispatch, getState) => {
   const url = `${window.config.eventsBaseUrl}timetable/`;
   return axios
-    .delete(url, await getConfig(getState().UserReducer.auth))
+    .delete(url, await getApiConfig(getState().UserReducer.auth))
     .then(response => {
       dispatch(
         SuppliersActions.addNotification('Deleted event history', 'success')
@@ -84,7 +72,7 @@ SuppliersActions.deleteAllJobs = () => async (dispatch, getState) => {
 SuppliersActions.deleteJobsForProvider = id => async (dispatch, getState) => {
   const url = `${window.config.eventsBaseUrl}timetable/${id}`;
   return axios
-    .delete(url, await getConfig(getState().UserReducer.auth))
+    .delete(url, await getApiConfig(getState().UserReducer.auth))
     .then(response => {
       dispatch(
         SuppliersActions.addNotification(
@@ -111,7 +99,7 @@ SuppliersActions.getProviderStatus = id => async (dispatch, getState) => {
     timeout: 20000,
     method: 'get',
     responseType: 'json',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       let providerStatus = SuppliersActions.formatProviderStatusDate(
@@ -133,7 +121,7 @@ SuppliersActions.executePeliasTask = tasks => async (dispatch, getState) => {
     window.config.geocoderAdminBaseUrl + `build_pipeline?task=${queryParams}`;
 
   return axios
-    .post(url, null, await getConfig(getState().UserReducer.auth))
+    .post(url, null, await getApiConfig(getState().UserReducer.auth))
     .then(response => {
       dispatch(
         SuppliersActions.addNotification('Pelias task execution', 'success')
@@ -177,7 +165,7 @@ SuppliersActions.uploadFiles = (files, providerId) => async (
       let percentCompleted = (progressEvent.loaded / progressEvent.total) * 100;
       dispatch(sendData(percentCompleted, types.UPDATED_FILE_UPLOAD_PROGRESS));
     },
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   };
 
   return axios
@@ -210,7 +198,7 @@ SuppliersActions.getAllProviderStatus = () => async (dispatch, getState) => {
     timeout: 20000,
     method: 'get',
     responseType: 'json',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(response => {
       const providerStatus = response.data.map(status => {
@@ -273,7 +261,7 @@ SuppliersActions.getAllProviders = () => async (dispatch, getState) => {
     timeout: 20000,
     method: 'get',
     responseType: 'json',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       const roleAssignments = getState().UserReducer.auth.roleAssignments;
@@ -312,7 +300,7 @@ SuppliersActions.createProvider = data => async (dispatch, getState) => {
   const url = `${window.config.providersBaseUrl}`;
   const provider = getProviderPayload(data);
   return axios
-    .post(url, provider, await getConfig(getState().UserReducer.auth))
+    .post(url, provider, await getApiConfig(getState().UserReducer.auth))
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_CREATE_PROVIDER));
 
@@ -392,7 +380,7 @@ SuppliersActions.updateProvider = data => async (dispatch, getState) => {
   const provider = getProviderPayload(data);
   const url = `${window.config.providersBaseUrl}${provider.id}`;
   return axios
-    .put(url, provider, await getConfig(getState().UserReducer.auth))
+    .put(url, provider, await getApiConfig(getState().UserReducer.auth))
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_UPDATE_PROVIDER));
       dispatch(
@@ -427,7 +415,7 @@ SuppliersActions.fetchProvider = id => async (dispatch, getState) => {
   const url = `${window.config.providersBaseUrl}${id}`;
 
   return axios
-    .get(url, await getConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getState().UserReducer.auth))
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_FETCH_PROVIDER));
 
@@ -459,7 +447,7 @@ SuppliersActions.deleteProvider = providerId => async (dispatch, getState) => {
   const url = `${window.config.providersBaseUrl}${providerId}`;
 
   return axios
-    .delete(url, await getConfig(getState().UserReducer.auth))
+    .delete(url, await getApiConfig(getState().UserReducer.auth))
     .then(response => {
       SuppliersActions.selectActiveSupplier(-1);
       dispatch(sendData(response.data, types.SUCCESS_DELETE_PROVIDER));
@@ -515,7 +503,7 @@ SuppliersActions.cancelChouetteJobForProvider = (
     url: url,
     timeout: 20000,
     method: 'delete',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -559,7 +547,7 @@ SuppliersActions.cancelAllChouetteJobsforAllProviders = () => async (
     url: window.config.timetableAdminBaseUrl + `jobs/`,
     timeout: 20000,
     method: 'delete',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -601,7 +589,7 @@ SuppliersActions.cancelAllChouetteJobsforProvider = providerId => async (
     url: url,
     timeout: 20000,
     method: 'delete',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -673,7 +661,7 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => async (
       cancelToken: new CancelToken(function executor(cancel) {
         dispatch(sendData(cancel, types.REQUESTED_ALL_CHOUETTE_JOB_STATUS));
       }),
-      ...(await getConfig(state.UserReducer.auth))
+      ...(await getApiConfig(state.UserReducer.auth))
     })
     .then(function(response) {
       let jobs = response.data.reverse();
@@ -726,7 +714,7 @@ SuppliersActions.getChouetteJobStatus = () => async (dispatch, getState) => {
   var CancelToken = axios.CancelToken;
 
   return axios
-    .get(url, await getConfig(state.UserReducer.auth), {
+    .get(url, await getApiConfig(state.UserReducer.auth), {
       cancelToken: new CancelToken(function executor(cancel) {
         dispatch(sendData(cancel, types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER));
       })
@@ -749,7 +737,7 @@ SuppliersActions.exportData = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_EXPORT_DATA));
@@ -775,7 +763,7 @@ SuppliersActions.getGraphStatus = () => async (dispatch, getState) => {
   const url = window.config.eventsBaseUrl + `admin_summary/status/aggregation`;
 
   return axios
-    .get(url, await getConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getState().UserReducer.auth))
     .then(response => {
       let status = {
         graphStatus: {},
@@ -827,7 +815,7 @@ SuppliersActions.transferData = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_TRANSFER_DATA));
@@ -857,7 +845,7 @@ SuppliersActions.getAllLineStats = () => async (dispatch, getState) => {
     timeout: 10000,
     method: 'get',
     responseType: 'json',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(({ data }) => {
       Object.keys(data).forEach(providerId => {
@@ -883,7 +871,7 @@ SuppliersActions.getLineStatsForProvider = providerId => async (
   return axios
     .get(
       `${window.config.timetableAdminBaseUrl}${providerId}/line_statistics`,
-      await getConfig(getState().UserReducer.auth)
+      await getApiConfig(getState().UserReducer.auth)
     )
     .then(response => {
       dispatch(
@@ -906,7 +894,7 @@ SuppliersActions.fetchFilenames = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'get',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       const files = addFileExtensions(response.data.files);
@@ -947,7 +935,7 @@ SuppliersActions.importData = (id, selectedFiles) => async (
     .post(
       url,
       { files: bodySelectedFiles },
-      await getConfig(getState().UserReducer.auth)
+      await getApiConfig(getState().UserReducer.auth)
     )
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_IMPORT_DATA));
@@ -978,7 +966,7 @@ SuppliersActions.cleanDataspace = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_DELETE_DATA));
@@ -1017,7 +1005,7 @@ SuppliersActions.cleanAllDataspaces = filter => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -1055,7 +1043,7 @@ SuppliersActions.validateProvider = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_VALIDATE_PROVIDER));
@@ -1087,7 +1075,7 @@ SuppliersActions.buildGraph = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_GRAPH));
@@ -1112,7 +1100,7 @@ SuppliersActions.buildBaseGraph = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_BASE_GRAPH));
@@ -1143,7 +1131,7 @@ SuppliersActions.buildCandidateGraphOTP2 = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -1191,7 +1179,7 @@ SuppliersActions.buildCandidateBaseGraphOTP2 = () => async (
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -1240,7 +1228,7 @@ SuppliersActions.promoteCandidateBaseGraphOTP2 = () => async (
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -1284,7 +1272,7 @@ SuppliersActions.fetchOSM = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_FETCH_OSM));
@@ -1307,7 +1295,7 @@ SuppliersActions.uploadGoogleProduction = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_UPLOAD_GOOGLE_PRODUCTION));
@@ -1346,7 +1334,7 @@ SuppliersActions.uploadGoogleQA = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_UPLOAD_GOOGLE_QA));
@@ -1378,7 +1366,7 @@ SuppliersActions.updateMapbox = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -1646,7 +1634,7 @@ SuppliersActions.getExportedFiles = () => async (dispatch, getState) => {
     timeout: 20000,
     method: 'get',
     responseType: 'json',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   }).then(response => {
     if (response.data && response.data.files) {
       let providerData = {};
@@ -1684,7 +1672,7 @@ SuppliersActions.cleanFileFilter = () => async (dispatch, getState) => {
     url: window.config.timetableAdminBaseUrl + 'idempotentfilter/clean',
     timeout: 20000,
     method: 'post',
-    ...(await getConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
       dispatch(
@@ -1705,7 +1693,7 @@ SuppliersActions.cleanFileFilter = () => async (dispatch, getState) => {
 SuppliersActions.getTransportModes = () => async (dispatch, getState) => {
   const url = `${window.config.providersBaseUrl}transport_modes`;
   return axios
-    .get(url, await getConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getState().UserReducer.auth))
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_TRANSPORT_MODES));
     })
