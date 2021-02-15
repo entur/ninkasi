@@ -27,6 +27,7 @@ import OrganizationRegisterActions, {
 import MdRemove from 'material-ui/svg-icons/content/remove';
 import IconButton from 'material-ui/IconButton';
 import { getEntityClassificationRefString } from 'utils/';
+import { connect } from 'react-redux';
 
 class NewRoleAssignment extends React.Component {
   constructor(props) {
@@ -41,14 +42,15 @@ class NewRoleAssignment extends React.Component {
   }
 
   getEntityClassificationsForType(entityType) {
-    OrganizationRegisterActions.getEntityByClassification(entityType).then(
-      response => {
-        this.setState({
-          tempEntityClassification: entityType,
-          tempEntityTypes: sortBy(response.data, 'name')
-        });
-      }
-    );
+    OrganizationRegisterActions.getEntityByClassification(
+      entityType,
+      this.props.auth
+    ).then(response => {
+      this.setState({
+        tempEntityClassification: entityType,
+        tempEntityTypes: sortBy(response.data, 'name')
+      });
+    });
   }
 
   handleRemoveEntity() {
@@ -260,4 +262,8 @@ class NewRoleAssignment extends React.Component {
   }
 }
 
-export default NewRoleAssignment;
+const mapStateToProps = state => ({
+  auth: state.UserReducer.auth
+});
+
+export default connect(mapStateToProps)(NewRoleAssignment);

@@ -32,14 +32,15 @@ class NotificationAddEntityClassRef extends React.Component {
   }
 
   getEntityClassificationsForType(entityType) {
-    OrganizationRegisterActions.getEntityByClassification(entityType).then(
-      response => {
-        this.setState({
-          entityClassificationRefs: response.data,
-          entityType
-        });
-      }
-    );
+    OrganizationRegisterActions.getEntityByClassification(
+      entityType,
+      this.props.auth
+    ).then(response => {
+      this.setState({
+        entityClassificationRefs: response.data,
+        entityType
+      });
+    });
   }
 
   handleAdd() {
@@ -119,7 +120,8 @@ class NotificationAddEntityClassRef extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  entityTypes: state.OrganizationReducer.entityTypes
+  entityTypes: state.OrganizationReducer.entityTypes,
+  auth: state.UserReducer.auth
 });
 
 export default connect(mapStateToProps)(NotificationAddEntityClassRef);

@@ -516,10 +516,12 @@ OrganizationRegisterActions.addNewUserNotification = () => dispatch => {
   dispatch(sendData(null, types.ADDED_NEW_USER_NOTIFICATION));
 };
 
-OrganizationRegisterActions.getEntityByClassification = entityType => {
-  // TODO
-  // const url = `${window.config.organisationsBaseUrl}entity_types/${entityType}/entity_classifications`;
-  // return axios.get(url, await getApiConfig(getState().UserReducer.auth));
+OrganizationRegisterActions.getEntityByClassification = async (
+  entityType,
+  auth
+) => {
+  const url = `${window.config.organisationsBaseUrl}entity_types/${entityType}/entity_classifications`;
+  return axios.get(url, await getApiConfig(auth));
 };
 
 OrganizationRegisterActions.getUserNotifications = username => async (
