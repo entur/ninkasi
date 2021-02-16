@@ -22,62 +22,40 @@ import App from 'app';
 import configureStore, { history } from 'store/store';
 import 'sass/main.scss';
 import cfgreader from 'config/readConfig';
-import { Auth0Provider } from '@auth0/auth0-react';
-import Auth0AuthenticatedApp from 'app/Auth0AuthenticatedApp';
-import KeycloakAuthenticatedApp from 'app/KeycloakAuthenticatedApp';
+import AuthProvider, { useAuth } from '@entur/auth-provider';
 
 cfgreader.readConfig(function(config) {
   window.config = config;
-  determineAuthMethod(config);
+  renderIndex(config);
 });
 
-function determineAuthMethod(config) {
-  if (window.location.search.indexOf('authMethod=auth0') > -1) {
-    localStorage.setItem('NINKASI::authMethod', 'auth0');
-  } else if (window.location.search.indexOf('authMethod=kc') > -1) {
-    localStorage.setItem('NINKASI::authMethod', 'kc');
-  } else if (localStorage.getItem('NINKASI::authMethod') === null) {
-    localStorage.setItem('NINKASI::authMethod', 'kc');
-  }
+const AuthenticatedApp = () => {
+  const auth = useAuth();
 
-  renderIndex(localStorage.getItem('NINKASI::authMethod'), config);
-}
+  return (
+    <Provider store={configureStore(auth)}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </Provider>
+  );
+};
 
-function renderIndex(authMethod, config) {
-  if (authMethod === 'kc') {
-    render(
-      <KeycloakAuthenticatedApp config={config}>
-        {auth => (
-          <Provider store={configureStore(auth)}>
-            <ConnectedRouter history={history}>
-              <App />
-            </ConnectedRouter>
-          </Provider>
-        )}
-      </KeycloakAuthenticatedApp>,
-      document.getElementById('root')
-    );
-  } else if (authMethod === 'auth0') {
-    render(
-      <Auth0Provider
-        domain="ror-entur-dev.eu.auth0.com"
-        clientId="h5bjgdnSSJi0JcaG3ugigtyBEXaPASQM"
-        redirectUri={window.location.origin}
-        audience={['https://ror.api.dev.entur.io']}
-        useRefreshToken
-        cacheLocation="localstorage" // <-- only enable on localhost
-      >
-        <Auth0AuthenticatedApp>
-          {auth => (
-            <Provider store={configureStore(auth)}>
-              <ConnectedRouter history={history}>
-                <App />
-              </ConnectedRouter>
-            </Provider>
-          )}
-        </Auth0AuthenticatedApp>
-      </Auth0Provider>,
-      document.getElementById('root')
-    );
-  }
+function renderIndex(config) {
+  render(
+    <AuthProvider
+      keycloakConfigUrl={config.endpointBase + 'config/keycloak.json'}
+      auth0Config={{
+        domain: config.auth0Domain,
+        clientId: config.auth0ClientId,
+        audience: config.auth0Audience,
+        redirectUri: window.location.origin
+      }}
+      auth0ClaimsNamespace={config.auth0ClaimsNamespace}
+      defaultAuthMethod="kc"
+    >
+      <AuthenticatedApp />
+    </AuthProvider>,
+    document.getElementById('root')
+  );
 }

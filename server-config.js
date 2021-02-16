@@ -50,7 +50,11 @@ const configureApp = async (app) => {
       geocoderAdminBaseUrl: convict.get('geocoderAdminBaseUrl'),
       poiFilterBaseUrl: convict.get('poiFilterBaseUrl'),
       endpointBase: convict.get('endpointBase'),
-      chouetteBaseUrl: convict.get('chouetteBaseUrl')
+      chouetteBaseUrl: convict.get('chouetteBaseUrl'),
+      auth0Domain: convict.get('auth0Domain'),
+      auth0ClientId: convict.get('auth0ClientId'),
+      auth0Audience: convict.get('auth0Audience'),
+      auth0ClaimsNamespace: convict.get('auth0ClaimsNamespace')
     });
   });
 
