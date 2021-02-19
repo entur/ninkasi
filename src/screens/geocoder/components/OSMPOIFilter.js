@@ -12,17 +12,10 @@ import IconButton from 'material-ui/IconButton';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Grid from '@material-ui/core/Grid';
 import Alert from '@material-ui/lab/Alert';
+import { useAuth } from '@entur/auth-provider';
+import getApiConfig from 'actions/getApiConfig';
 
 import './OSMPOIFilter.scss';
-
-const getConfig = () => {
-  return {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + localStorage.getItem('NINKASI::jwt'),
-    'X-Correlation-Id': uuid()
-  };
-};
 
 const sort = data => {
   return data.sort((a, b) => {
@@ -36,6 +29,7 @@ const sort = data => {
 };
 
 const OSMPOIFilter = () => {
+  const auth = useAuth();
   const scrollRef = useRef(null);
 
   const [poiFilterArray, setPoiFilterArray] = useState([
@@ -97,12 +91,12 @@ const OSMPOIFilter = () => {
     setDirty(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
     const endpoint = window.config.poiFilterBaseUrl;
     fetch(endpoint, {
       method: 'PUT',
-      headers: getConfig(),
+      headers: await getApiConfig(auth).headers,
       body: JSON.stringify(dirtyPoiFilterArray)
     })
       .then(() => {

@@ -325,6 +325,7 @@ class DataMigrationDetails extends React.Component {
         {isLevel1Provider ? (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AdvancedFileList
+              auth={this.props.auth}
               selectedIndices={selectedIndicesSource}
               updateIndices={this.handleUpdateIndicesSource.bind(this)}
               downloadButton
@@ -377,6 +378,7 @@ class DataMigrationDetails extends React.Component {
               </div>
             )}
             <AdvancedFileList
+              auth={this.props.auth}
               selectedIndices={selectedIndicesOutbound}
               files={outboundFiles}
               updateIndices={this.handleUpdateIndicesOutbound.bind(this)}
@@ -581,7 +583,8 @@ const mapStateToProps = state => ({
   chouetteInfo: state.UtilsReducer.supplierForm.chouetteInfo,
   files: state.MardukReducer.filenames.data || [],
   importIsLoading: state.MardukReducer.isLoading,
-  importError: state.MardukReducer.error
+  importError: state.MardukReducer.error,
+  auth: state.UserReducer.auth
 });
 
 export default connect(mapStateToProps)(DataMigrationDetails);

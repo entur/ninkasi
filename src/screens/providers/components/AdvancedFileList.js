@@ -31,12 +31,11 @@ class AdvancedFileList extends React.Component {
       const isFileSaverSupport = !!new Blob();
 
       const URL = `${window.config.timetableAdminBaseUrl}${this.props.activeProviderId}/files/${filename}`;
-      const token = localStorage.getItem('NINKASI::jwt');
 
       const { data } = await axios.get(URL, {
         responseType: 'blob',
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${await this.props.auth.getAccessToken()}`
         }
       });
 
