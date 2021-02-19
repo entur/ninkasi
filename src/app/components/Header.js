@@ -34,7 +34,7 @@ class Header extends React.Component {
   handleLogout() {
     const { auth } = this.props;
     if (auth) {
-      auth.logout();
+      auth.logout({ returnTo: window.location.origin });
     }
   }
 
