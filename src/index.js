@@ -18,47 +18,44 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import Keycloak from 'keycloak-js';
 import App from 'app';
 import configureStore, { history } from 'store/store';
 import 'sass/main.scss';
 import cfgreader from 'config/readConfig';
+import AuthProvider, { useAuth } from '@entur/auth-provider';
 
 cfgreader.readConfig(function(config) {
   window.config = config;
-  authWithKeyCloak(config.endpointBase);
+  renderIndex(config);
 });
 
-function authWithKeyCloak(endpointBase) {
-  let kc = new Keycloak(endpointBase + 'config/keycloak.json');
+const AuthenticatedApp = () => {
+  const auth = useAuth();
 
-  kc.init({ onLoad: 'login-required', checkLoginIframe: false }).success(
-    authenticated => {
-      if (authenticated) {
-        localStorage.setItem('NINKASI::jwt', kc.token);
-
-        setInterval(() => {
-          kc.updateToken(10).error(() => kc.logout());
-          localStorage.setItem('NINKASI::jwt', kc.token);
-        }, 10000);
-
-        renderIndex(kc);
-      } else {
-        kc.login();
-      }
-    }
-  );
-}
-
-function renderIndex(kc) {
-  const store = configureStore(kc);
-
-  render(
-    <Provider store={store}>
+  return (
+    <Provider store={configureStore(auth)}>
       <ConnectedRouter history={history}>
         <App />
       </ConnectedRouter>
-    </Provider>,
+    </Provider>
+  );
+};
+
+function renderIndex(config) {
+  render(
+    <AuthProvider
+      keycloakConfigUrl={config.endpointBase + 'config/keycloak.json'}
+      auth0Config={{
+        domain: config.auth0Domain,
+        clientId: config.auth0ClientId,
+        audience: config.auth0Audience,
+        redirectUri: window.location.origin
+      }}
+      auth0ClaimsNamespace={config.auth0ClaimsNamespace}
+      defaultAuthMethod="kc"
+    >
+      <AuthenticatedApp />
+    </AuthProvider>,
     document.getElementById('root')
   );
 }

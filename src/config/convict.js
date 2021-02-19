@@ -98,6 +98,30 @@ module.exports = new Promise(function(resolve, reject) {
       format: String,
       default: 'https://redigering.rutebanken.org/',
       env: 'CHOUETTE_BASE_URL'
+    },
+    auth0Domain: {
+      doc: 'Auth0 domain',
+      format: String,
+      default: 'ror-entur-dev.eu.auth0.com',
+      env: 'AUTH0_DOMAIN'
+    },
+    auth0ClientId: {
+      doc: 'Auth0 Client Id',
+      format: String,
+      default: 'h5bjgdnSSJi0JcaG3ugigtyBEXaPASQM',
+      env: 'AUTH0_CLIENT_ID'
+    },
+    auth0Audience: {
+      doc: 'Auth0 Audience',
+      format: String,
+      default: 'https://ror.api.dev.entur.io',
+      env: 'AUTH0_AUDIENCE'
+    },
+    auth0ClaimsNamespace: {
+      doc: 'Namespace for auth0 ID token custom roles claims',
+      format: String,
+      default: 'https://ror.entur.io/role_assignments',
+      env: 'AUTH0_CLAIMS_NAMESPACE'
     }
   });
 

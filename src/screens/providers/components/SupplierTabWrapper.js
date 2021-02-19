@@ -243,8 +243,12 @@ class SupplierTabWrapper extends React.Component {
       filelistIsLoading,
       fileUploadProgress,
       lineStats,
-      canEditOrganisation
+      auth
     } = this.props;
+
+    const canEditOrganisation = rolesParser.canEditOrganisation(
+      auth.roleAssignments
+    );
 
     if (filelistIsLoading) {
       return (
@@ -365,10 +369,7 @@ const mapStateToProps = state => ({
   allProvidersEvents: state.SuppliersReducer.statusListAllProviders,
   fileUploadProgress: state.SuppliersReducer.fileUploadProgress,
   lineStats: state.SuppliersReducer.lineStats,
-  kc: state.UserReducer.kc,
-  canEditOrganisation: rolesParser.canEditOrganisation(
-    state.UserReducer.kc.tokenParsed
-  )
+  auth: state.UserReducer.auth
 });
 
 export default connect(mapStateToProps)(SupplierTabWrapper);
