@@ -190,6 +190,7 @@ class ModalEditUser extends React.Component {
           }}
         >
           <TextField
+            disabled
             hintText="Username"
             floatingLabelText="Username"
             value={user.username}
