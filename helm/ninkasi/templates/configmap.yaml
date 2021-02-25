@@ -6,4 +6,5 @@ metadata:
   labels:
   {{- include "common.labels" . | indent 4 }}
 data:
-  config.json: {{ .Values.configMap | toJson }}
+  config.json: |
+    {{ .Values.configMap | toJson }}
