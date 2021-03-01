@@ -15,7 +15,6 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import NotificationAddEntityClassRef from './NotificationAddEntityClassRef';
 import IconButton from 'material-ui/IconButton';
@@ -98,4 +97,4 @@ class NotificationEntityClassRef extends React.Component {
   }
 }
 
-export default connect()(NotificationEntityClassRef);
+export default NotificationEntityClassRef;

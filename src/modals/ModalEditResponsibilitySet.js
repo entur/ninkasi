@@ -23,9 +23,9 @@ import MdAdd from 'material-ui/svg-icons/content/add';
 import IconButton from 'material-ui/IconButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import { connect } from 'react-redux';
 import NewRole from './NewRoleAssignment';
 import { getEntityClassificationRefString } from 'utils/';
+import { connect } from 'react-redux';
 
 class ModalEditResponsibilitySet extends React.Component {
   constructor(props) {
@@ -265,6 +265,7 @@ class ModalEditResponsibilitySet extends React.Component {
             </div>
             {isCreatingNewRole ? (
               <NewRole
+                auth={this.props.auth}
                 newRole={newRole}
                 roles={roles}
                 entityTypes={entityTypes}
@@ -323,4 +324,8 @@ class ModalEditResponsibilitySet extends React.Component {
   }
 }
 
-export default connect(null)(ModalEditResponsibilitySet);
+const mapStateToProps = state => ({
+  auth: state.UserReducer.auth
+});
+
+export default connect(mapStateToProps)(ModalEditResponsibilitySet);

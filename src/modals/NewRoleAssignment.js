@@ -27,7 +27,6 @@ import OrganizationRegisterActions, {
 import MdRemove from 'material-ui/svg-icons/content/remove';
 import IconButton from 'material-ui/IconButton';
 import { getEntityClassificationRefString } from 'utils/';
-import { connect } from 'react-redux';
 
 class NewRoleAssignment extends React.Component {
   constructor(props) {
@@ -262,8 +261,4 @@ class NewRoleAssignment extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  auth: state.UserReducer.auth
-});
-
-export default connect(mapStateToProps)(NewRoleAssignment);
+export default NewRoleAssignment;

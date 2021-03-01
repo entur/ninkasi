@@ -15,7 +15,6 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -111,4 +110,4 @@ class EventFilterStatesPopover extends React.Component {
   }
 }
 
-export default connect(null)(EventFilterStatesPopover);
+export default EventFilterStatesPopover;
