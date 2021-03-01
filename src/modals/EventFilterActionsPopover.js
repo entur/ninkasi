@@ -22,6 +22,7 @@ import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import Checkbox from 'material-ui/Checkbox';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class EventFilterActionsPopover extends React.Component {
   static propTypes = {
@@ -117,4 +118,4 @@ class EventFilterActionsPopover extends React.Component {
   }
 }
 
-export default EventFilterActionsPopover;
+export default connect(null)(EventFilterActionsPopover);
