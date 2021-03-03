@@ -10,7 +10,7 @@ configMap:
   eventsBaseUrl: https://api.entur.io/timetable-admin/v1/events/
   organisationsBaseUrl: https://api.entur.io/timetable-admin/v1/organisations/
   poiFilterBaseUrl: https://api.entur.io/timetable-admin/v2/poi-filter
-  auth0Domain: ror-entur.eu.auth0.com
+  auth0Domain: auth2.entur.org
   auth0ClientId: AcbufyPib1kF5QOw8fgpeyqnbp2jWmLC
   auth0Audience: https://ror.api.entur.io
   auth0ClaimsNamespace: https://ror.entur.io/role_assignments
