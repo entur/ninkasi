@@ -172,6 +172,9 @@ OrganizationRegisterActions.updateUser = user => async (dispatch, getState) => {
   return axios
     .put(url, trimmedData, await getApiConfig(getState().UserReducer.auth))
     .then(response => {
+      dispatch(
+        SuppliersActions.addNotification('Updated user successfully', 'success')
+      );
       dispatch(sendData(null, types.UPDATED_USER));
       dispatch(OrganizationRegisterActions.getUsers());
     })
@@ -370,6 +373,9 @@ OrganizationRegisterActions.createUser = user => async (dispatch, getState) => {
   return axios
     .post(url, trimmedData, await getApiConfig(getState().UserReducer.auth))
     .then(response => {
+      dispatch(
+        SuppliersActions.addNotification('Created user successfully', 'success')
+      );
       dispatch(sendData(null, types.CREATED_USER));
       dispatch(
         sendData(
