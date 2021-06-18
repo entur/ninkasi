@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from 'material-ui/TextField';
 import Table from '@material-ui/core/Table';
@@ -13,7 +14,6 @@ import Grid from '@material-ui/core/Grid';
 import Alert from '@material-ui/lab/Alert';
 import { useAuth } from '@entur/auth-provider';
 import getApiConfig from 'actions/getApiConfig';
-
 import './OSMPOIFilter.scss';
 
 const sort = data => {
@@ -48,13 +48,21 @@ const OSMPOIFilter = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    const url = window.config.poiFilterBaseUrl;
-    fetch(url)
-      .then(response => response.json())
-      .then(sort)
-      .then(handleResponse);
-  }, []);
+    const fetchFilters = async () => {
+      const { headers } = await getApiConfig(auth);
+      setLoading(true);
+      const url = window.config.poiFilterBaseUrl;
+      axios
+        .get(url, {
+          headers
+        })
+        .then(response => response.data)
+        .then(sort)
+        .then(handleResponse);
+    };
+
+    fetchFilters();
+  }, [auth]);
 
   useEffect(() => {
     if (!dirtyPoiFilterArray[dirtyPoiFilterArray.length - 1].id) {
@@ -93,15 +101,18 @@ const OSMPOIFilter = () => {
   const handleSubmit = async () => {
     setLoading(true);
     const endpoint = window.config.poiFilterBaseUrl;
-    fetch(endpoint, {
-      method: 'PUT',
-      headers: await getApiConfig(auth).headers,
-      body: JSON.stringify(dirtyPoiFilterArray)
-    })
+    const { headers } = await getApiConfig(auth);
+    axios
+      .put(endpoint, JSON.stringify(dirtyPoiFilterArray), {
+        headers
+      })
       .then(() => {
         const url = window.config.poiFilterBaseUrl;
-        fetch(url)
-          .then(response => response.json())
+        axios
+          .get(url, {
+            headers
+          })
+          .then(response => response.data)
           .then(sort)
           .then(handleResponse);
       })
