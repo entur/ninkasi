@@ -18,7 +18,7 @@
     "axios": "^0.21.1",
     "bogu": "git://github.com/entur/bogu.git#1.0.7",
     "chai": "^4.2.0",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "classnames": "^2.2.5",
     "clipboard-js": "^0.3.5",
     "connected-react-router": "^6.6.1",
