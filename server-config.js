@@ -54,7 +54,8 @@ const configureApp = async (app) => {
       auth0Domain: convict.get('auth0Domain'),
       auth0ClientId: convict.get('auth0ClientId'),
       auth0Audience: convict.get('auth0Audience'),
-      auth0ClaimsNamespace: convict.get('auth0ClaimsNamespace')
+      auth0ClaimsNamespace: convict.get('auth0ClaimsNamespace'),
+      defaultAuthMethod: convict.get('defaultAuthMethod')
     });
   });
 
