@@ -25,7 +25,7 @@ class ConfirmationDialog extends React.Component {
     body: PropTypes.string.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    actionBtnTitle: PropTypes.func.isRequired
+    actionBtnTitle: PropTypes.string.isRequired
   };
 
   render() {
