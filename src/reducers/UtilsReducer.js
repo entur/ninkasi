@@ -42,7 +42,7 @@ const intialState = {
     sortOrder: 0
   },
   supplierForm: {
-    choetteInfo: {}
+    chouetteInfo: {}
   }
 };
 
