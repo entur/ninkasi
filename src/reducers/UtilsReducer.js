@@ -40,6 +40,9 @@ const intialState = {
   chouetteListSortOrder: {
     property: 'id',
     sortOrder: 0
+  },
+  supplierForm: {
+    chouetteInfo: {}
   }
 };
 
