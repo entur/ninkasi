@@ -337,7 +337,6 @@ const getProviderPayload = data => {
   );
   let payload = {
     name: trimmedData._name,
-    sftpAccount: trimmedData._sftpAccount,
     chouetteInfo: {
       xmlns: trimmedData._xmlns,
       xmlnsurl: trimmedData._xmlnsurl,

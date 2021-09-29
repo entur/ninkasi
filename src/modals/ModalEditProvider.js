@@ -28,7 +28,6 @@ import TransportModesPopover from './TransportModesPopover';
 const getEmptyForm = () => ({
   _providerId: null,
   _name: '',
-  _sftpAccount: '',
   _chouetteInfoId: null,
   _xmlns: '',
   _xmlnsurl: '',
@@ -80,7 +79,7 @@ class ModalEditProvider extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.provider !== null && nextProps.shouldUpdate) {
       const { provider } = nextProps;
-      const { name, sftpAccount } = provider;
+      const { name } = provider;
       const {
         xmlns,
         xmlnsurl,
@@ -104,7 +103,6 @@ class ModalEditProvider extends Component {
       const form = {
         _providerId: provider.id,
         _name: name,
-        _sftpAccount: sftpAccount,
         _chouetteInfoId: provider.chouetteInfo.id,
         _xmlns: xmlns,
         _xmlnsurl: xmlnsurl,
@@ -194,7 +192,6 @@ class ModalEditProvider extends Component {
         updatedForm._xmlnsurl = `http://www.rutebanken.org/ns/${value
           .toLowerCase()
           .replace('rb_', '')}`;
-        updatedForm._sftpAccount = value;
       }
     }
     this.setState({ form: updatedForm, errors });
@@ -353,13 +350,6 @@ class ModalEditProvider extends Component {
                 );
               })}
           </SelectField>
-          <TextField
-            floatingLabelText={'sFtp account'}
-            floatingLabelFixed={true}
-            value={this.state.form._sftpAccount}
-            style={{ flex: 1, padding: '0 15px' }}
-            onChange={(e, v) => this.handleChange('_sftpAccount', v)}
-          />
         </div>
         <div style={{ ...rowStyle, marginTop: 10 }}>
           <TransportModesPopover
