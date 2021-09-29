@@ -35,9 +35,6 @@ const getEmptyForm = () => ({
   _referential: '',
   _organisation: '',
   _user: '',
-  _regtoppVersion: null,
-  _regtoppCoordinateProjection: '',
-  _regtoppCalendarStrategy: '',
   _dataFormat: '',
   _enableValidation: false,
   _allowCreateMissingStopPlace: false,
@@ -90,9 +87,6 @@ class ModalEditProvider extends Component {
         referential,
         organisation,
         user,
-        regtoppVersion,
-        regtoppCoordinateProjection,
-        regtoppCalendarStrategy,
         dataFormat,
         enableValidation,
         allowCreateMissingStopPlace,
@@ -117,9 +111,6 @@ class ModalEditProvider extends Component {
         _referential: referential,
         _organisation: organisation,
         _user: user,
-        _regtoppVersion: regtoppVersion,
-        _regtoppCoordinateProjection: regtoppCoordinateProjection,
-        _regtoppCalendarStrategy: regtoppCalendarStrategy,
         _dataFormat: dataFormat,
         _enableValidation: enableValidation,
         _allowCreateMissingStopPlace: allowCreateMissingStopPlace,
@@ -157,59 +148,10 @@ class ModalEditProvider extends Component {
     return provider && provider.id && shouldUpdate;
   }
 
-  getProjections() {
-    const projections = [
-      { value: 'EPSG:32632', text: 'UTM zone 32N' },
-      { value: 'EPSG:32633', text: 'UTM zone 33N' },
-      { value: 'EPSG:32634', text: 'UTM zone 34N' },
-      { value: 'EPSG:32635', text: 'UTM zone 35N' },
-      { value: 'EPSG:4326', text: 'WGS 84 / Latlong' }
-    ];
-    return projections.map(projection => (
-      <MenuItem
-        key={'projection-' + projection.value}
-        value={projection.value}
-        primaryText={projection.text}
-      />
-    ));
-  }
-  getVersions() {
-    const versions = [
-      { value: null, text: 'Auto-detect' },
-      { value: 'R11D', text: '1.1D' },
-      { value: 'R12', text: '1.2' },
-      { value: 'R12N', text: '1.2 Novus' },
-      { value: 'R13A', text: '1.3A' }
-    ];
-    return versions.map(version => (
-      <MenuItem
-        key={'version-' + version.value}
-        value={version.value}
-        primaryText={version.text}
-      />
-    ));
-  }
-
-  getCalendarStrategies() {
-    const strategies = [
-      { value: '', text: 'None' },
-      { value: 'ADD', text: 'Add using DKO-file start-date' },
-      { value: 'UPDATE', text: 'Update/overwrite whole adminCode' }
-    ];
-    return strategies.map(strategy => (
-      <MenuItem
-        key={'strategy-' + strategy.value}
-        value={strategy.value}
-        primaryText={strategy.text}
-      />
-    ));
-  }
-
   getDataFormats() {
     const formats = [
       { value: '', text: 'None' },
       { value: 'netexprofile', text: 'NeTEx Profile' },
-      { value: 'regtopp', text: 'Regtopp' },
       { value: 'gtfs', text: 'GTFS' },
       { value: 'neptune', text: 'Neptune' }
     ];
@@ -278,9 +220,6 @@ class ModalEditProvider extends Component {
     const { errors } = this.state;
 
     const title = this.getTitle();
-    const projections = this.getProjections();
-    const versions = this.getVersions();
-    const calendarStrategies = this.getCalendarStrategies();
     const dataFormats = this.getDataFormats();
     const isEdit = this.isEdit();
 
@@ -354,60 +293,17 @@ class ModalEditProvider extends Component {
           />
         </div>
         <div style={rowStyle}>
-          <div style={{ flex: 1 }}>
-            <SelectField
-              value={this.state.form._regtoppVersion}
-              floatingLabelText={'Regtopp version'}
-              floatingLabelFixed={true}
-              fullWidth={true}
-              onChange={(e, k, v) => {
-                this.handleChange('_regtoppVersion', v);
-              }}
-            >
-              {versions}
-            </SelectField>
-          </div>
-          <div style={{ padding: '0 15px', flex: 1 }}>
-            <SelectField
-              value={this.state.form._regtoppCoordinateProjection}
-              floatingLabelText={'Regtopp Coordinate Projection'}
-              floatingLabelFixed={true}
-              fullWidth={true}
-              onChange={(e, k, v) => {
-                this.handleChange('_regtoppCoordinateProjection', v);
-              }}
-            >
-              {projections}
-            </SelectField>
-          </div>
-        </div>
-        <div style={rowStyle}>
-          <div style={{ flex: 1 }}>
-            <SelectField
-              value={this.state.form._regtoppCalendarStrategy}
-              floatingLabelText={'Regtopp calendar strategy'}
-              floatingLabelFixed={true}
-              fullWidth={true}
-              onChange={(e, k, v) => {
-                this.handleChange('_regtoppCalendarStrategy', v);
-              }}
-            >
-              {calendarStrategies}
-            </SelectField>
-          </div>
-          <div style={{ padding: '0 15px', flex: 1 }}>
-            <SelectField
-              value={this.state.form._dataFormat}
-              floatingLabelText={'Data format'}
-              floatingLabelFixed={true}
-              fullWidth={true}
-              onChange={(e, k, v) => {
-                this.handleChange('_dataFormat', v);
-              }}
-            >
-              {dataFormats}
-            </SelectField>
-          </div>
+          <SelectField
+            value={this.state.form._dataFormat}
+            floatingLabelText={'Data format'}
+            floatingLabelFixed={true}
+            fullWidth={true}
+            onChange={(e, k, v) => {
+              this.handleChange('_dataFormat', v);
+            }}
+          >
+            {dataFormats}
+          </SelectField>
         </div>
         <div style={rowStyle}>
           <TextField
