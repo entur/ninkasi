@@ -152,8 +152,7 @@ class ModalEditProvider extends Component {
     const formats = [
       { value: '', text: 'None' },
       { value: 'netexprofile', text: 'NeTEx Profile' },
-      { value: 'gtfs', text: 'GTFS' },
-      { value: 'neptune', text: 'Neptune' }
+      { value: 'gtfs', text: 'GTFS' }
     ];
     return formats.map(format => (
       <MenuItem
