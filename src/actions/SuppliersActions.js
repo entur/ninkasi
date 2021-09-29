@@ -19,7 +19,6 @@ import * as types from './actionTypes';
 import moment from 'moment';
 import { getQueryVariable } from 'utils';
 import { formatLineStats } from 'bogu/utils';
-import roleParser from 'roles/rolesParser';
 import {
   addExportedFileMetadata,
   addExportedNorwayMetadata,
@@ -264,13 +263,7 @@ SuppliersActions.getAllProviders = () => async (dispatch, getState) => {
     ...(await getApiConfig(getState().UserReducer.auth))
   })
     .then(function(response) {
-      const roleAssignments = getState().UserReducer.auth.roleAssignments;
-      const providers = roleParser.getUserProviders(
-        roleAssignments,
-        response.data
-      );
-
-      dispatch(sendData(providers, types.RECEIVED_SUPPLIERS));
+      dispatch(sendData(response.data, types.RECEIVED_SUPPLIERS));
 
       let queryTab = getQueryVariable('tab');
       let queryId = getQueryVariable('id');

@@ -30,36 +30,6 @@ rolesParser.canEditOrganisation = roleAssignments => {
   return canEditOrganisation;
 };
 
-rolesParser.getUserProviders = (roleAssignments, providers) => {
-  if (!roleAssignments) return [];
-
-  let allowedOrganisations = [];
-  let isAdmin = false;
-
-  roleAssignments.forEach(roleString => {
-    let roleJSON = JSON.parse(roleString);
-    if (roleJSON.r === 'editRouteData') {
-      allowedOrganisations.push(roleJSON.o);
-    } else if (roleJSON.r === 'adminEditRouteData') {
-      isAdmin = true;
-    }
-  });
-
-  let userOrganisations = [];
-
-  if (isAdmin) return providers;
-
-  providers.forEach(org => {
-    if (
-      org.sftpAccount &&
-      allowedOrganisations.indexOf(org.sftpAccount.toUpperCase()) > -1
-    )
-      userOrganisations.push(org);
-  });
-
-  return userOrganisations;
-};
-
 rolesParser.isAdmin = roleAssignments => {
   if (!roleAssignments) return false;
 
