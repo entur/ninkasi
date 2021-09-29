@@ -87,12 +87,6 @@ module.exports = new Promise(function(resolve, reject) {
       default: '/',
       env: 'ENDPOINTBASE'
     },
-    authServerUrl: {
-      doc: 'URL to keycloak auth server',
-      format: String,
-      default: 'https://kc-dev.devstage.entur.io/auth',
-      env: 'AUTH_SERVER_URL'
-    },
     chouetteBaseUrl: {
       doc: 'URL to Chouette UI',
       format: String,

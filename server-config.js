@@ -29,16 +29,6 @@ const configureApp = async (app) => {
     res.sendStatus(200)
   });
 
-  app.get(endpointBase + 'config/keycloak.json', function(req, res) {
-    res.send({
-      "realm": "rutebanken",
-      "tokens-not-before": 1490857383,
-      "public-client" : true,
-      "auth-server-url": convict.get('authServerUrl'),
-      "resource": "neti-frontend"
-    });
-  });
-
   app.get(endpointBase + 'config.json', function(req, res) {
     res.send({
       providersBaseUrl: convict.get('providersBaseUrl'),

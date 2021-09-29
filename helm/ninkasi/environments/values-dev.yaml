@@ -2,7 +2,6 @@ configMap:
     endpointBase: /
     mapboxAdminBaseUrl: https://api.dev.entur.io/mapbox-admin/v1/
     geocoderAdminBaseUrl: https://api.dev.entur.io/timetable-admin/v1/geocoder/
-    authServerUrl: https://kc-dev.devstage.entur.io/auth
     chouetteBaseUrl: https://rutedb.dev.entur.org/
     timetableAdminBaseUrl: https://api.dev.entur.io/timetable-admin/v1/timetable/
     mapAdminBaseUrl: https://api.dev.entur.io/timetable-admin/v1/map/
