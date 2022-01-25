@@ -93,6 +93,12 @@ module.exports = new Promise(function(resolve, reject) {
       default: 'https://redigering.rutebanken.org/',
       env: 'CHOUETTE_BASE_URL'
     },
+    udugBaseUrl: {
+      doc: 'URL to Udug (Netex validation reports)',
+      format: String,
+      default: 'https://udug-dev.web.app/',
+      env: 'UDUG_BASE_URL'
+    },
     auth0Domain: {
       doc: 'Auth0 domain',
       format: String,
