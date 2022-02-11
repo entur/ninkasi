@@ -289,6 +289,7 @@ class SupplierTabWrapper extends React.Component {
                 locale="en"
                 includeLevel2={true}
                 showNewDeliveriesFilter={true}
+                hideAntuValidationSteps={false}
               />
             </Tab>
             <Tab value="statistics" label="Statistics">
@@ -331,6 +332,7 @@ class SupplierTabWrapper extends React.Component {
                 includeLevel2={true}
                 showDateFilter={true}
                 showNewDeliveriesFilter={true}
+                hideAntuValidationSteps={false}
               />
             </Tab>
             <Tab value="chouetteJobs" label="Chouette jobs">
