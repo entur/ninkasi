@@ -42,6 +42,7 @@ const configureApp = async (app) => {
       endpointBase: convict.get('endpointBase'),
       chouetteBaseUrl: convict.get('chouetteBaseUrl'),
       udugBaseUrl: convict.get('udugBaseUrl'),
+      udugMicroFrontendUrl: convict.get('udugMicroFrontendUrl'),
       auth0Domain: convict.get('auth0Domain'),
       auth0ClientId: convict.get('auth0ClientId'),
       auth0Audience: convict.get('auth0Audience'),

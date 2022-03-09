@@ -94,10 +94,16 @@ module.exports = new Promise(function(resolve, reject) {
       env: 'CHOUETTE_BASE_URL'
     },
     udugBaseUrl: {
-      doc: 'URL to Udug (Netex validation reports)',
+      doc: 'URL for linking to NeTEx validation reports',
       format: String,
-      default: 'https://udug-dev.web.app/',
+      default: '/netex-validation-reports/',
       env: 'UDUG_BASE_URL'
+    },
+    udugMicroFrontendUrl: {
+      doc: 'URL to Udug micro frontend',
+      format: String,
+      default: 'https://udug-dev.web.app',
+      env: 'UDUG_MICRO_FRONTEND_URL'
     },
     auth0Domain: {
       doc: 'Auth0 domain',

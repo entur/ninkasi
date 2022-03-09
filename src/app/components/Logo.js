@@ -28,7 +28,9 @@ export default ({ providersEnv, pathname }) => {
       )}
       {pathname && (
         <span style={{ color: 'white' }}>
-          — {pageNameFromPathName(pathname)}
+          {pageNameFromPathName(pathname) !== ''
+            ? `— ${pageNameFromPathName(pathname)}`
+            : ''}
         </span>
       )}
     </div>
