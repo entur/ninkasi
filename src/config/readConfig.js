@@ -29,7 +29,7 @@ configreader.readConfig = callback => {
     return;
   }
   axios({
-    url: 'config.json',
+    url: '/config.json',
     timeout: 2000,
     method: 'get',
     responseType: 'json'

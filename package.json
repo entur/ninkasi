@@ -12,11 +12,12 @@
   "license": "EUPL",
   "dependencies": {
     "@entur/auth-provider": "1.0.0",
+    "@entur/micro-frontend": "^0.1.0",
     "@material-ui/core": "4.8.3",
     "@material-ui/icons": "4.5.1",
     "@material-ui/lab": "4.0.0-alpha.39",
     "axios": "0.21.1",
-    "bogu": "git://github.com/entur/bogu.git#v1.3.0",
+    "bogu": "git://github.com/entur/bogu.git#v1.3.1",
     "chai": "4.2.0",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",

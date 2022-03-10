@@ -23,6 +23,9 @@ import configureStore, { history } from 'store/store';
 import 'sass/main.scss';
 import cfgreader from 'config/readConfig';
 import AuthProvider, { useAuth } from '@entur/auth-provider';
+import { startRouteChangeEmitter } from '@entur/micro-frontend';
+
+startRouteChangeEmitter();
 
 cfgreader.readConfig(function(config) {
   window.config = config;
