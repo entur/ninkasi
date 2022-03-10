@@ -7,7 +7,7 @@ import { MicroFrontend } from '@entur/micro-frontend';
 import { useAuth } from '@entur/auth-provider';
 
 const FetchStatus = props => {
-  if (props.status !== 'SUCCESS') {
+  if (props.status !== 'SUCCESS' && props.status !== 'LOADING') {
     return <pre>{JSON.stringify(props)}</pre>;
   } else {
     return null;
