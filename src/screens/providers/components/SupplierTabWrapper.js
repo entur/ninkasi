@@ -31,6 +31,7 @@ import StaticsForProvider from './StatisticsForProvider';
 import OrganizationRegister from './OrganizationRegister';
 import rolesParser from 'roles/rolesParser';
 import ExportedFilesView from './ExportedFilesView';
+import { push } from 'connected-react-router';
 
 class SupplierTabWrapper extends React.Component {
   constructor(props) {
@@ -243,7 +244,8 @@ class SupplierTabWrapper extends React.Component {
       filelistIsLoading,
       fileUploadProgress,
       lineStats,
-      auth
+      auth,
+      dispatch
     } = this.props;
 
     const canEditOrganisation = rolesParser.canEditOrganisation(
@@ -290,6 +292,7 @@ class SupplierTabWrapper extends React.Component {
                 includeLevel2={true}
                 showNewDeliveriesFilter={true}
                 hideAntuValidationSteps={false}
+                navigate={url => dispatch(push(url))}
               />
             </Tab>
             <Tab value="statistics" label="Statistics">
@@ -333,6 +336,7 @@ class SupplierTabWrapper extends React.Component {
                 showDateFilter={true}
                 showNewDeliveriesFilter={true}
                 hideAntuValidationSteps={false}
+                navigate={url => dispatch(push(url))}
               />
             </Tab>
             <Tab value="chouetteJobs" label="Chouette jobs">
