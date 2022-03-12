@@ -34,7 +34,7 @@
     "lodash": "4.17.21",
     "material-ui": "0.20.0",
     "moment": "2.29.1",
-    "muicss": "0.9.43",
+    "muicss": "0.10.3",
     "node-sass": "4.13.0",
     "prettier": "1.19.1",
     "prop-types": "15.7.2",
