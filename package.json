@@ -18,7 +18,7 @@
     "@material-ui/lab": "4.0.0-alpha.39",
     "axios": "0.26.1",
     "bogu": "git://github.com/entur/bogu.git#v1.3.2",
-    "chai": "4.2.0",
+    "chai": "4.3.6",
     "chart.js": "2.9.4",
     "classnames": "2.2.6",
     "clipboard-js": "0.3.6",
