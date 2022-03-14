@@ -3,7 +3,7 @@ configMap:
   mapboxAdminBaseUrl: https://api.entur.io/mapbox-admin/v1/
   geocoderAdminBaseUrl: https://api.entur.io/timetable-admin/v1/geocoder/
   chouetteBaseUrl: https://rutedb.entur.org/
-  udugMicroFrontendUrl: https://udug-prod.web.app
+  udugMicroFrontendUrl: https://netex-validation-reports.entur.org
   timetableAdminBaseUrl: https://api.entur.io/timetable-admin/v1/timetable/
   mapAdminBaseUrl: https://api.entur.io/timetable-admin/v1/map/
   providersBaseUrl: https://api.entur.io/timetable-admin/v1/providers/

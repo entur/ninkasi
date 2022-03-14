@@ -5,16 +5,30 @@ import Providers from 'screens/providers';
 import Geocoder from 'screens/geocoder';
 import { MicroFrontend } from '@entur/micro-frontend';
 import { useAuth } from '@entur/auth-provider';
+import StatusLabel from 'screens/providers/components/StatusLabel';
+import { connect } from 'react-redux';
+import SuppliersActions from 'actions/SuppliersActions';
 
 const FetchStatus = props => {
   if (props.status !== 'SUCCESS' && props.status !== 'LOADING') {
-    return <pre>{JSON.stringify(props)}</pre>;
+    return (
+      <StatusLabel
+        type="ERROR"
+        label="Error loading NeTEx validation reports"
+      />
+    );
   } else {
     return null;
   }
 };
 
-export default () => {
+const handleMicroFrontendError = dispatch => () => {
+  dispatch(
+    SuppliersActions.addNotification('Error loading micro-frontend', 'error')
+  );
+};
+
+const Router = ({ dispatch }) => {
   const auth = useAuth();
   return (
     <Switch>
@@ -32,10 +46,12 @@ export default () => {
               getToken: auth.getAccessToken
             }}
             FetchStatus={FetchStatus}
-            handleError={e => console.log(e)}
+            handleError={handleMicroFrontendError(dispatch)}
           />
         )}
       </Route>
     </Switch>
   );
 };
+
+export default connect()(Router);

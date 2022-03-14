@@ -102,7 +102,7 @@ module.exports = new Promise(function(resolve, reject) {
     udugMicroFrontendUrl: {
       doc: 'URL to Udug micro frontend',
       format: String,
-      default: 'https://udug-dev.web.app',
+      default: 'https://netex-validation-reports.dev.entur.org',
       env: 'UDUG_MICRO_FRONTEND_URL'
     },
     auth0Domain: {
