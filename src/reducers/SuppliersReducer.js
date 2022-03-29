@@ -23,7 +23,6 @@ const initialState = {
   all_suppliers_selected: true,
   activeId: 0,
   fileUploadProgress: 0,
-  lineStats: {},
   allTransportModes: [],
   exportedFiles: null
 };
@@ -94,16 +93,6 @@ const SuppliersReducer = (state = initialState, action) => {
 
     case types.UPDATED_FILE_UPLOAD_PROGRESS:
       return Object.assign({}, state, { fileUploadProgress: action.payLoad });
-
-    case types.REQUESTED_LINE_STATS:
-      return Object.assign({}, state, { lineStats: {} });
-
-    case types.RECEIVED_LINE_STATS:
-      return Object.assign({}, state, {
-        lineStats: Object.assign({}, state.lineStats, {
-          [action.payLoad.id]: action.payLoad.data
-        })
-      });
 
     case types.RECEIVED_GRAPH_STATUS:
       return Object.assign({}, state, { ...action.payLoad });

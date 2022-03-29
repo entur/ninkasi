@@ -26,7 +26,6 @@ import Tabs from 'muicss/lib/react/tabs';
 import Tab from 'muicss/lib/react/tab';
 import { getQueryVariable } from 'utils';
 import FileUpload from './FileUpload';
-import StatisticsDetails from './StatisticsDetails';
 import OrganizationRegister from './OrganizationRegister';
 import rolesParser from 'roles/rolesParser';
 import ExportedFilesView from './ExportedFilesView';
@@ -59,12 +58,6 @@ class SupplierTabWrapper extends React.Component {
         dispatch(SuppliersActions.getChouetteJobStatus());
       } else {
         dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
-      }
-    } else if (queryTab === 'statistics') {
-      if (queryId) {
-        dispatch(SuppliersActions.getLineStatsForProvider(queryId));
-      } else {
-        dispatch(SuppliersActions.getAllLineStats());
       }
     } else if (queryTab === 'OrganisationRegister') {
       if (queryId) {
@@ -132,9 +125,6 @@ class SupplierTabWrapper extends React.Component {
       case 'events':
         dispatch(SuppliersActions.getProviderStatus(activeId));
         break;
-      case 'statistics':
-        dispatch(SuppliersActions.getLineStatsForProvider(activeId));
-        break;
       default:
         break;
     }
@@ -157,10 +147,6 @@ class SupplierTabWrapper extends React.Component {
       case 'events':
         this.props.dispatch(SuppliersActions.getAllProviderStatus());
         break;
-      case 'statistics':
-        this.props.dispatch(SuppliersActions.getAllLineStats());
-        break;
-
       default:
         break;
     }
@@ -254,7 +240,6 @@ class SupplierTabWrapper extends React.Component {
       suppliers,
       filelistIsLoading,
       fileUploadProgress,
-      lineStats,
       auth,
       dispatch
     } = this.props;
@@ -307,31 +292,25 @@ class SupplierTabWrapper extends React.Component {
               />
             </Tab>
             <Tab value="statistics" label="Statistics">
-              {suppliers.length && (
-                <>
-                  Her skal vi vise micro frontend
-                  {window.config.ninsarMicroFrontendUrl && (
-                    <MicroFrontend
-                      id="ror-ninsar"
-                      host={window.config.ninsarMicroFrontendUrl}
-                      path="/line-statistics"
-                      staticPath=""
-                      name="Line statistics"
-                      payload={{
-                        getToken: auth.getAccessToken
-                      }}
-                      FetchStatus={props => (
-                        <MicroFrontendFetchStatus
-                          {...props}
-                          label="Error loading line statistics"
-                        />
-                      )}
-                      handleError={this.notifyLineStatisticsLoadingFailure.bind(
-                        this
-                      )}
+              {window.config.ninsarMicroFrontendUrl && (
+                <MicroFrontend
+                  id="ror-ninsar"
+                  host={window.config.ninsarMicroFrontendUrl}
+                  staticPath=""
+                  name="Line statistics"
+                  payload={{
+                    getToken: auth.getAccessToken
+                  }}
+                  FetchStatus={props => (
+                    <MicroFrontendFetchStatus
+                      {...props}
+                      label="Error loading line statistics"
                     />
                   )}
-                </>
+                  handleError={this.notifyLineStatisticsLoadingFailure.bind(
+                    this
+                  )}
+                />
               )}
             </Tab>
             <Tab value="exportedFiles" label="Exported files">
@@ -371,7 +350,27 @@ class SupplierTabWrapper extends React.Component {
               <ChouetteJobDetails />
             </Tab>
             <Tab value="statistics" label="Statistics">
-              <StaticsForProvider provider={provider} />
+              {window.config.ninsarMicroFrontendUrl && (
+                <MicroFrontend
+                  id="ror-ninsar"
+                  host={window.config.ninsarMicroFrontendUrl}
+                  staticPath=""
+                  name="Line statistics"
+                  payload={{
+                    providerId: `${provider.id}`,
+                    getToken: auth.getAccessToken
+                  }}
+                  FetchStatus={props => (
+                    <MicroFrontendFetchStatus
+                      {...props}
+                      label="Error loading line statistics"
+                    />
+                  )}
+                  handleError={this.notifyLineStatisticsLoadingFailure.bind(
+                    this
+                  )}
+                />
+              )}
             </Tab>
             <Tab value="uploadFiles" label="Upload file">
               <FileUpload
@@ -402,7 +401,6 @@ const mapStateToProps = state => ({
   providerEvents: state.SuppliersReducer.statusList,
   allProvidersEvents: state.SuppliersReducer.statusListAllProviders,
   fileUploadProgress: state.SuppliersReducer.fileUploadProgress,
-  lineStats: state.SuppliersReducer.lineStats,
   auth: state.UserReducer.auth
 });
 

@@ -6,7 +6,7 @@ export const MicroFrontendFetchStatus = props => {
     return (
       <StatusLabel
         type="ERROR"
-        label="Error loading NeTEx validation reports"
+        label={props.label || 'Error loading micro frontend'}
       />
     );
   } else {

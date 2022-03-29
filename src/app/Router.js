@@ -5,7 +5,6 @@ import Providers from 'screens/providers';
 import Geocoder from 'screens/geocoder';
 import { MicroFrontend } from '@entur/micro-frontend';
 import { useAuth } from '@entur/auth-provider';
-import StatusLabel from 'screens/providers/components/StatusLabel';
 import { connect } from 'react-redux';
 import SuppliersActions from 'actions/SuppliersActions';
 import { MicroFrontendFetchStatus } from './components/MicroFrontendFetchStatus';

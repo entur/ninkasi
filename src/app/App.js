@@ -17,7 +17,7 @@
 import React, { Fragment, useEffect, useMemo } from 'react';
 import cfgreader from 'config/readConfig';
 import Header from './components/Header';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'; // v1.x
+import { MuiThemeProvider, createTheme } from '@material-ui/core/styles'; // v1.x
 import { MuiThemeProvider as V0MuiThemeProvider } from 'material-ui';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { connect } from 'react-redux';
@@ -42,7 +42,7 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, auth }) => {
 
   const theme = useMemo(
     () =>
-      createMuiTheme({
+      createTheme({
         palette: {
           type: 'light'
         }

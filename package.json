@@ -1,5 +1,5 @@
 {
-  "name": "Ninkasi",
+  "name": "ninkasi",
   "version": "0.5.7",
   "description": "Admin GUI for internal usage",
   "scripts": {
@@ -17,7 +17,7 @@
     "@material-ui/icons": "4.11.2",
     "@material-ui/lab": "4.0.0-alpha.60",
     "axios": "0.26.1",
-    "bogu": "git://github.com/entur/bogu.git#v1.3.2",
+    "bogu": "git+ssh://github.com/entur/bogu.git#v1.3.2",
     "chai": "4.3.6",
     "chart.js": "2.9.4",
     "classnames": "2.3.1",
