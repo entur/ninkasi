@@ -8,23 +8,14 @@ import { useAuth } from '@entur/auth-provider';
 import StatusLabel from 'screens/providers/components/StatusLabel';
 import { connect } from 'react-redux';
 import SuppliersActions from 'actions/SuppliersActions';
+import { MicroFrontendFetchStatus } from './components/MicroFrontendFetchStatus';
 
-const FetchStatus = props => {
-  if (props.status !== 'SUCCESS' && props.status !== 'LOADING') {
-    return (
-      <StatusLabel
-        type="ERROR"
-        label="Error loading NeTEx validation reports"
-      />
-    );
-  } else {
-    return null;
-  }
-};
-
-const handleMicroFrontendError = dispatch => () => {
+const notifyNetexValidationReportLoadingFailure = dispatch => () => {
   dispatch(
-    SuppliersActions.addNotification('Error loading micro-frontend', 'error')
+    SuppliersActions.addNotification(
+      'Error loading micro frontend for NeTEx validation reports',
+      'error'
+    )
   );
 };
 
@@ -45,8 +36,13 @@ const Router = ({ dispatch }) => {
             payload={{
               getToken: auth.getAccessToken
             }}
-            FetchStatus={FetchStatus}
-            handleError={handleMicroFrontendError(dispatch)}
+            FetchStatus={props => (
+              <MicroFrontendFetchStatus
+                {...props}
+                label="Error loading NeTEx validation reports"
+              />
+            )}
+            handleError={notifyNetexValidationReportLoadingFailure(dispatch)}
           />
         )}
       </Route>

@@ -105,6 +105,18 @@ module.exports = new Promise(function(resolve, reject) {
       default: 'https://netex-validation-reports.dev.entur.org',
       env: 'UDUG_MICRO_FRONTEND_URL'
     },
+    ninsarBaseUrl: {
+      doc: 'URL for linking to NeTEx validation reports',
+      format: String,
+      default: '/line-statistics/',
+      env: 'NINSAR_BASE_URL'
+    },
+    ninsarMicroFrontendUrl: {
+      doc: 'URL to Ninsar micro frontend',
+      format: String,
+      default: 'https://line-statistics.dev.entur.org',
+      env: 'NINSAR_MICRO_FRONTEND_URL'
+    },
     auth0Domain: {
       doc: 'Auth0 domain',
       format: String,

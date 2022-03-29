@@ -27,11 +27,12 @@ import Tab from 'muicss/lib/react/tab';
 import { getQueryVariable } from 'utils';
 import FileUpload from './FileUpload';
 import StatisticsDetails from './StatisticsDetails';
-import StaticsForProvider from './StatisticsForProvider';
 import OrganizationRegister from './OrganizationRegister';
 import rolesParser from 'roles/rolesParser';
 import ExportedFilesView from './ExportedFilesView';
 import { push } from 'connected-react-router';
+import { MicroFrontend } from '@entur/micro-frontend';
+import { MicroFrontendFetchStatus } from '../../../app/components/MicroFrontendFetchStatus';
 
 class SupplierTabWrapper extends React.Component {
   constructor(props) {
@@ -236,6 +237,16 @@ class SupplierTabWrapper extends React.Component {
     }
   }
 
+  notifyLineStatisticsLoadingFailure() {
+    const { dispatch } = this.props;
+    dispatch(
+      SuppliersActions.addNotification(
+        'Error loading micro frontend for line statistics',
+        'error'
+      )
+    );
+  }
+
   render() {
     const {
       displayAllSuppliers,
@@ -297,13 +308,30 @@ class SupplierTabWrapper extends React.Component {
             </Tab>
             <Tab value="statistics" label="Statistics">
               {suppliers.length && (
-                <StatisticsDetails
-                  dispatch={this.props.dispatch}
-                  lineStats={lineStats}
-                  suppliers={suppliers.filter(
-                    s => !!s.chouetteInfo.migrateDataToProvider
+                <>
+                  Her skal vi vise micro frontend
+                  {window.config.ninsarMicroFrontendUrl && (
+                    <MicroFrontend
+                      id="ror-ninsar"
+                      host={window.config.ninsarMicroFrontendUrl}
+                      path="/line-statistics"
+                      staticPath=""
+                      name="Line statistics"
+                      payload={{
+                        getToken: auth.getAccessToken
+                      }}
+                      FetchStatus={props => (
+                        <MicroFrontendFetchStatus
+                          {...props}
+                          label="Error loading line statistics"
+                        />
+                      )}
+                      handleError={this.notifyLineStatisticsLoadingFailure.bind(
+                        this
+                      )}
+                    />
                   )}
-                />
+                </>
               )}
             </Tab>
             <Tab value="exportedFiles" label="Exported files">
