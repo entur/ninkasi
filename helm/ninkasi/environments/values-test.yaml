@@ -4,6 +4,7 @@ configMap:
     geocoderAdminBaseUrl: https://api.staging.entur.io/timetable-admin/v1/geocoder/
     chouetteBaseUrl: https://rutedb.staging.entur.org/
     udugMicroFrontendUrl: https://netex-validation-reports.staging.entur.org
+    ninsarMicroFrontendUrl: https://line-statistics.staging.entur.org
     timetableAdminBaseUrl: https://api.staging.entur.io/timetable-admin/v1/timetable/
     mapAdminBaseUrl: https://api.staging.entur.io/timetable-admin/v1/map/
     providersBaseUrl: https://api.staging.entur.io/timetable-admin/v1/providers/

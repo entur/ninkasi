@@ -18,7 +18,6 @@ import axios from 'axios';
 import * as types from './actionTypes';
 import moment from 'moment';
 import { getQueryVariable } from 'utils';
-import { formatLineStats } from 'bogu/utils';
 import {
   addExportedFileMetadata,
   addExportedNorwayMetadata,
@@ -823,55 +822,6 @@ SuppliersActions.transferData = id => async (dispatch, getState) => {
           title: `Transfer failed for provider ${id}`
         })
       );
-    });
-};
-
-SuppliersActions.getAllLineStats = () => async (dispatch, getState) => {
-  dispatch(sendData(null, types.REQUESTED_LINE_STATS));
-
-  return axios({
-    url: `${window.config.timetableAdminBaseUrl}line_statistics/level1`,
-    timeout: 10000,
-    method: 'get',
-    responseType: 'json',
-    ...(await getApiConfig(getState().UserReducer.auth))
-  })
-    .then(({ data }) => {
-      Object.keys(data).forEach(providerId => {
-        dispatch(
-          sendData(
-            { id: providerId, data: formatLineStats(data[providerId]) },
-            types.RECEIVED_LINE_STATS
-          )
-        );
-      });
-    })
-    .catch(response => {
-      console.error(response);
-    });
-};
-
-SuppliersActions.getLineStatsForProvider = providerId => async (
-  dispatch,
-  getState
-) => {
-  dispatch(sendData(null, types.REQUESTED_LINE_STATS));
-
-  return axios
-    .get(
-      `${window.config.timetableAdminBaseUrl}${providerId}/line_statistics`,
-      await getApiConfig(getState().UserReducer.auth)
-    )
-    .then(response => {
-      dispatch(
-        sendData(
-          { id: providerId, data: formatLineStats(response.data) },
-          types.RECEIVED_LINE_STATS
-        )
-      );
-    })
-    .catch(response => {
-      console.error(response);
     });
 };
 
