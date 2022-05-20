@@ -41,6 +41,7 @@ class AdvancedFileList extends React.Component {
 
       saveAs(data, filename);
     } catch (e) {
+      console.log('File download failed', { error: e });
       alert('Sorry, your browser is not supported for downloads.');
     }
   }
