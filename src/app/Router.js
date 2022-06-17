@@ -26,23 +26,25 @@ const Router = ({ dispatch }) => {
       <Route exact path="/geocoder" component={Geocoder} />
       <Route path="/netex-validation-reports">
         {window.config.udugMicroFrontendUrl && (
-          <MicroFrontend
-            id="ror-udug"
-            host={window.config.udugMicroFrontendUrl}
-            path="/netex-validation-reports"
-            staticPath=""
-            name="NeTEx validation reports"
-            payload={{
-              getToken: auth.getAccessToken
-            }}
-            FetchStatus={props => (
-              <MicroFrontendFetchStatus
-                {...props}
-                label="Error loading NeTEx validation reports"
-              />
-            )}
-            handleError={notifyNetexValidationReportLoadingFailure(dispatch)}
-          />
+          <div style={{ backgroundColor: '#fff' }}>
+            <MicroFrontend
+              id="ror-udug"
+              host={window.config.udugMicroFrontendUrl}
+              path="/netex-validation-reports"
+              staticPath=""
+              name="NeTEx validation reports"
+              payload={{
+                getToken: auth.getAccessToken
+              }}
+              FetchStatus={props => (
+                <MicroFrontendFetchStatus
+                  {...props}
+                  label="Error loading NeTEx validation reports"
+                />
+              )}
+              handleError={notifyNetexValidationReportLoadingFailure(dispatch)}
+            />
+          </div>
         )}
       </Route>
     </Switch>
