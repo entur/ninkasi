@@ -8,6 +8,7 @@ import { useAuth } from '@entur/auth-provider';
 import { connect } from 'react-redux';
 import SuppliersActions from 'actions/SuppliersActions';
 import { MicroFrontendFetchStatus } from './components/MicroFrontendFetchStatus';
+import { getProvidersEnv } from 'config/themes';
 
 const notifyNetexValidationReportLoadingFailure = dispatch => () => {
   dispatch(
@@ -34,7 +35,11 @@ const Router = ({ dispatch }) => {
               staticPath=""
               name="NeTEx validation reports"
               payload={{
-                getToken: auth.getAccessToken
+                getToken: auth.getAccessToken,
+                locale: 'en',
+                env: getProvidersEnv(
+                  window.config.providersBaseUrl
+                ).toLocaleLowerCase()
               }}
               FetchStatus={props => (
                 <MicroFrontendFetchStatus
