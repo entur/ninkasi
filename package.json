@@ -19,7 +19,7 @@
     "axios": "0.26.1",
     "bogu": "git+ssh://github.com/entur/bogu.git#v1.3.2",
     "chai": "4.3.6",
-    "chart.js": "2.9.4",
+    "chart.js": "3.9.1",
     "classnames": "2.3.1",
     "clipboard-js": "0.3.6",
     "connected-react-router": "6.9.2",
