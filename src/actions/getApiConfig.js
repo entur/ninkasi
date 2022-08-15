@@ -7,7 +7,8 @@ const getConfig = async auth => {
     'Content-Type': 'application/json',
     Accept: 'application/json',
     Authorization: 'Bearer ' + accessToken,
-    'X-Correlation-Id': uuid()
+    'X-Correlation-Id': uuid(),
+    'Et-Client-Name': 'entur-ninkasi'
   };
   return config;
 };
