@@ -145,7 +145,11 @@ const OSMPOIFilter = () => {
         <Grid item>
           <Button
             variant="contained"
-            disabled={isLoading || !isDirty}
+            disabled={
+              isLoading ||
+              !isDirty ||
+              dirtyPoiFilterArray.some(filter => filter.priority < 1)
+            }
             onClick={handleSubmit}
           >
             Save
@@ -195,12 +199,16 @@ const OSMPOIFilter = () => {
                         type="number"
                         hintText="Priority"
                         value={priority}
+                        min={1}
                         onChange={e =>
                           handleChange(
                             index,
                             'priority',
                             parseInt(e.target.value, 10)
                           )
+                        }
+                        errorText={
+                          priority < 1 ? 'Priority must be 1 or more' : ''
                         }
                       />
                     </TableCell>
