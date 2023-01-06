@@ -46,7 +46,7 @@
     "react-notification-system": "0.4.0",
     "react-redux": "7.2.9",
     "react-router": "5.2.1",
-    "react-scripts": "3.4.4",
+    "react-scripts": "5.0.1",
     "react-select": "2.4.4",
     "redux": "4.1.2",
     "redux-devtools-extension": "2.13.9",
