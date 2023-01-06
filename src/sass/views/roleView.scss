@@ -15,18 +15,16 @@
  */
 
 .role-row {
-
   div {
     margin: 2px;
     margin-bottom: 5px;
     font-size: 0.9em;
-
   }
 
   .col-1-3 {
     width: 45%;
     max-width: 45%;
-    min-width: 45%  ;
+    min-width: 45%;
     display: inline-block;
   }
 
@@ -43,7 +41,6 @@
     background: rgba(238, 238, 238, 0.28);
     margin-bottom: 5px;
   }
-
 }
 
 .role-row-item:nth-child(2n) {
