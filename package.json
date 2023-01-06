@@ -23,7 +23,7 @@
     "chart.js": "2.9.4",
     "classnames": "2.3.2",
     "clipboard-js": "0.3.6",
-    "connected-react-router": "6.9.2",
+    "connected-react-router": "6.9.3",
     "file-saver": "2.0.5",
     "halogenium": "2.3.0",
     "history": "4.10.1",
