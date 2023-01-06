@@ -1,0 +1,21 @@
+{
+  "providersBaseUrl": "https://api.entur.io/timetable-admin/v1/providers/",
+  "organisationsBaseUrl": "https://api.entur.io/timetable-admin/v1/organisations/",
+  "eventsBaseUrl": "https://api.entur.io/timetable-admin/v1/events/",
+  "timetableAdminBaseUrl": "https://api.entur.io/timetable-admin/v1/timetable/",
+  "mapAdminBaseUrl": "https://api.entur.io/timetable-admin/v1/map/",
+  "mapboxAdminBaseUrl": "https://api.entur.io/mapbox-admin/v1/",
+  "geocoderAdminBaseUrl": "https://api.entur.io/timetable-admin/v1/geocoder/",
+  "poiFilterBaseUrl": "https://api.entur.io/timetable-admin/v2/poi-filter",
+  "endpointBase": "/",
+  "chouetteBaseUrl": "https://rutedb.entur.org/",
+  "udugBaseUrl": "/netex-validation-reports/",
+  "udugMicroFrontendUrl": "https://netex-validation-reports.entur.org",
+  "ninsarBaseUrl": "/line-statistics/",
+  "ninsarMicroFrontendUrl": "https://line-statistics.entur.org",
+  "auth0Domain": "auth2.entur.org",
+  "auth0ClientId": "AcbufyPib1kF5QOw8fgpeyqnbp2jWmLC",
+  "auth0Audience": "https://ror.api.entur.io",
+  "auth0ClaimsNamespace": "https://ror.entur.io/role_assignments",
+  "defaultAuthMethod": "auth0"
+}
