@@ -1,1 +1,7 @@
-{}
+{
+  "projects": {
+    "dev": "ent-ninkasi-dev",
+    "test": "ent-ninkasi-tst",
+    "prod": "ent-ninkasi-prd"
+  }
+}
