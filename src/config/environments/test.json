@@ -1,0 +1,21 @@
+{
+  "providersBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/providers/",
+  "organisationsBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/organisations/",
+  "eventsBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/events/",
+  "timetableAdminBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/timetable/",
+  "mapAdminBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/map/",
+  "mapboxAdminBaseUrl": "https://api.staging.entur.io/mapbox-admin/v1/",
+  "geocoderAdminBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/geocoder/",
+  "poiFilterBaseUrl": "https://api.staging.entur.io/timetable-admin/v2/poi-filter",
+  "endpointBase": "/",
+  "chouetteBaseUrl": "https://rutedb.staging.entur.org/",
+  "udugBaseUrl": "/netex-validation-reports/",
+  "udugMicroFrontendUrl": "https://netex-validation-reports.staging.entur.org",
+  "ninsarBaseUrl": "/line-statistics/",
+  "ninsarMicroFrontendUrl": "https://line-statistics.staging.entur.org",
+  "auth0Domain": "ror-entur-staging.eu.auth0.com",
+  "auth0ClientId": "OejmGNpgYP0uTYu1DnHiloEy4FfzeW9i",
+  "auth0Audience": "https://ror.api.staging.entur.io",
+  "auth0ClaimsNamespace": "https://ror.entur.io/role_assignments",
+  "defaultAuthMethod": "auth0"
+}

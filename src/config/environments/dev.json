@@ -1,0 +1,21 @@
+{
+  "providersBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/providers/",
+  "organisationsBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/organisations/",
+  "eventsBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/events/",
+  "timetableAdminBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/timetable/",
+  "mapAdminBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/map/",
+  "mapboxAdminBaseUrl": "https://api.dev.entur.io/mapbox-admin/v1/",
+  "geocoderAdminBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/geocoder/",
+  "poiFilterBaseUrl": "https://api.dev.entur.io/timetable-admin/v2/poi-filter",
+  "endpointBase": "/",
+  "chouetteBaseUrl": "https://rutedb.dev.entur.org/",
+  "udugBaseUrl": "/netex-validation-reports/",
+  "udugMicroFrontendUrl": "https://netex-validation-reports.dev.entur.org",
+  "ninsarBaseUrl": "/line-statistics/",
+  "ninsarMicroFrontendUrl": "https://line-statistics.dev.entur.org",
+  "auth0Domain": "ror-entur-dev.eu.auth0.com",
+  "auth0ClientId": "h5bjgdnSSJi0JcaG3ugigtyBEXaPASQM",
+  "auth0Audience": "https://ror.api.dev.entur.io",
+  "auth0ClaimsNamespace": "https://ror.entur.io/role_assignments",
+  "defaultAuthMethod": "auth0"
+}

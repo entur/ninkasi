@@ -15,7 +15,6 @@
  */
 
 .page-link-parent {
-
   display: block;
   margin-bottom: 20px;
 
@@ -26,13 +25,12 @@
     margin-top: 3px;
 
     &.active-link {
-      color: #0D3C61;
+      color: #0d3c61;
       text-decoration: underline;
     }
 
     &.inactive-link {
-      color: #2196F3;
+      color: #2196f3;
     }
   }
-
 }

@@ -15,7 +15,6 @@
  */
 
 .resp-roles-row {
-
   div {
     margin: 2px;
     margin-bottom: 5px;
@@ -25,14 +24,14 @@
   .col-1-6 {
     width: 17%;
     max-width: 17%;
-    min-width: 17%  ;
+    min-width: 17%;
     display: inline-block;
   }
 
   .col-1-7 {
     width: 12%;
     max-width: 12%;
-    min-width: 12%  ;
+    min-width: 12%;
     display: inline-block;
   }
 
@@ -56,4 +55,3 @@
 .resp-row-item:nth-child(2n) {
   background: hsla(0, 0%, 50%, 0.07);
 }
-
