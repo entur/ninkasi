@@ -1,4 +1,5 @@
 {
+  "appEnv": "test",
   "providersBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/providers/",
   "organisationsBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/organisations/",
   "eventsBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/events/",
@@ -13,6 +14,7 @@
   "udugMicroFrontendUrl": "https://netex-validation-reports.staging.entur.org",
   "ninsarBaseUrl": "/line-statistics/",
   "ninsarMicroFrontendUrl": "https://line-statistics.staging.entur.org",
+  "zagmukMicroFrontendUrl": "https://timetable-admin.staging.entur.org",
   "auth0Domain": "ror-entur-staging.eu.auth0.com",
   "auth0ClientId": "OejmGNpgYP0uTYu1DnHiloEy4FfzeW9i",
   "auth0Audience": "https://ror.api.staging.entur.io",

@@ -17,7 +17,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import SuppliersActions from 'actions/SuppliersActions';
-import { EventDetails } from 'bogu';
 import ChouetteJobDetails from './ChouetteJobDetails';
 import ChouetteAllJobs from './ChouetteAllJobs';
 import DataMigrationDetails from './DataMigrationDetails';
@@ -29,7 +28,6 @@ import FileUpload from './FileUpload';
 import OrganizationRegister from './OrganizationRegister';
 import rolesParser from 'roles/rolesParser';
 import ExportedFilesView from './ExportedFilesView';
-import { push } from 'connected-react-router';
 import { MicroFrontend } from '@entur/micro-frontend';
 import { MicroFrontendFetchStatus } from '../../../app/components/MicroFrontendFetchStatus';
 
@@ -106,7 +104,7 @@ class SupplierTabWrapper extends React.Component {
     }
   };
 
-  onTabChangeForProvider(i, value, tab, ev) {
+  onTabChangeForProvider(i, value) {
     if (typeof value === 'object') return;
     const { dispatch, activeId } = this.props;
 
@@ -130,7 +128,7 @@ class SupplierTabWrapper extends React.Component {
     }
   }
 
-  onTabChangeForAllProviders(i, value, tab, ev) {
+  onTabChangeForAllProviders(i, value) {
     if (typeof value === 'object') return;
 
     if (value) {
@@ -238,17 +236,16 @@ class SupplierTabWrapper extends React.Component {
       displayAllSuppliers,
       activeId,
       suppliers,
-      filelistIsLoading,
+      fileListIsLoading,
       fileUploadProgress,
-      auth,
-      dispatch
+      auth
     } = this.props;
 
     const canEditOrganisation = rolesParser.canEditOrganisation(
       auth.roleAssignments
     );
 
-    if (filelistIsLoading) {
+    if (fileListIsLoading) {
       return (
         <div className="supplier-details disabled">
           <div className="supplier-header">
@@ -265,7 +262,7 @@ class SupplierTabWrapper extends React.Component {
     const defaultSelectedIndex = this.getTabIndexFromParams();
 
     if (displayAllSuppliers || provider) {
-      let tabsToRender = null;
+      let tabsToRender;
 
       if (displayAllSuppliers) {
         tabsToRender = (
@@ -279,17 +276,29 @@ class SupplierTabWrapper extends React.Component {
               <ChouetteAllJobs />
             </Tab>
             <Tab value="events" label="Events">
-              <EventDetails
-                handleRefresh={this.handleRefreshAllProviders.bind(this)}
-                dataSource={this.props.allProvidersEvents}
-                key="statusList"
-                showDateFilter={true}
-                locale="en"
-                includeLevel2={true}
-                showNewDeliveriesFilter={true}
-                hideAntuValidationSteps={false}
-                navigate={url => dispatch(push(url))}
-              />
+              {window.config.zagmukMicroFrontendUrl && (
+                <MicroFrontend
+                  id="ror-zagmuk"
+                  host={window.config.zagmukMicroFrontendUrl}
+                  staticPath=""
+                  name="Events"
+                  payload={{
+                    getToken: auth.getAccessToken,
+                    locale: 'nb',
+                    env: window.config.appEnv,
+                    hideIgnoredExportNetexBlocks: true,
+                    hideAntuValidationSteps: false,
+                    navigate: url => this.props.history.push(url)
+                  }}
+                  FetchStatus={props => (
+                    <MicroFrontendFetchStatus
+                      {...props}
+                      label="Error loading events"
+                    />
+                  )}
+                  handleError={error => console.log(error)}
+                />
+              )}
             </Tab>
             <Tab value="statistics" label="Statistics">
               {window.config.ninsarMicroFrontendUrl && (
@@ -334,17 +343,30 @@ class SupplierTabWrapper extends React.Component {
               <DataMigrationDetails />
             </Tab>
             <Tab value="events" label="Events">
-              <EventDetails
-                handleRefresh={this.handleRefreshActiveProvider.bind(this)}
-                dataSource={this.props.providerEvents}
-                locale="en"
-                key="statusList"
-                includeLevel2={true}
-                showDateFilter={true}
-                showNewDeliveriesFilter={true}
-                hideAntuValidationSteps={false}
-                navigate={url => dispatch(push(url))}
-              />
+              {window.config.zagmukMicroFrontendUrl && (
+                <MicroFrontend
+                  id="ror-zagmuk"
+                  host={window.config.zagmukMicroFrontendUrl}
+                  staticPath=""
+                  name="Events"
+                  payload={{
+                    providerId: `${provider.id}`,
+                    getToken: auth.getAccessToken,
+                    locale: 'nb',
+                    env: window.config.appEnv,
+                    hideIgnoredExportNetexBlocks: true,
+                    hideAntuValidationSteps: false,
+                    navigate: url => this.props.history.push(url)
+                  }}
+                  FetchStatus={props => (
+                    <MicroFrontendFetchStatus
+                      {...props}
+                      label="Error loading events"
+                    />
+                  )}
+                  handleError={error => console.log(error)}
+                />
+              )}
             </Tab>
             <Tab value="chouetteJobs" label="Chouette jobs">
               <ChouetteJobDetails />
@@ -396,7 +418,7 @@ class SupplierTabWrapper extends React.Component {
 const mapStateToProps = state => ({
   suppliers: state.SuppliersReducer.data,
   activeId: state.SuppliersReducer.activeId,
-  filelistIsLoading: state.MardukReducer.filenames.isLoading,
+  fileListIsLoading: state.MardukReducer.filenames.isLoading,
   displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
   providerEvents: state.SuppliersReducer.statusList,
   allProvidersEvents: state.SuppliersReducer.statusListAllProviders,
