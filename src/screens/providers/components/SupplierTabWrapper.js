@@ -284,7 +284,7 @@ class SupplierTabWrapper extends React.Component {
                   name="Events"
                   payload={{
                     getToken: auth.getAccessToken,
-                    locale: 'nb',
+                    locale: 'en',
                     env: window.config.appEnv,
                     hideIgnoredExportNetexBlocks: true,
                     hideAntuValidationSteps: false,
@@ -352,7 +352,7 @@ class SupplierTabWrapper extends React.Component {
                   payload={{
                     providerId: `${provider.id}`,
                     getToken: auth.getAccessToken,
-                    locale: 'nb',
+                    locale: 'en',
                     env: window.config.appEnv,
                     hideIgnoredExportNetexBlocks: true,
                     hideAntuValidationSteps: false,
