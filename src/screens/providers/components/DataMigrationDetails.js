@@ -577,7 +577,7 @@ class DataMigrationDetails extends React.Component {
 const mapStateToProps = state => ({
   providers: state.SuppliersReducer.data,
   activeId: state.SuppliersReducer.activeId,
-  filelistIsLoading: state.MardukReducer.filenames.isLoading,
+  fileListIsLoading: state.MardukReducer.filenames.isLoading,
   statusList: state.SuppliersReducer.statusList,
   filter: state.MardukReducer.chouetteJobFilter,
   chouetteInfo: state.UtilsReducer.supplierForm.chouetteInfo,

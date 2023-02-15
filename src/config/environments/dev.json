@@ -1,4 +1,5 @@
 {
+  "appEnv": "dev",
   "providersBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/providers/",
   "organisationsBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/organisations/",
   "eventsBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/events/",
@@ -13,6 +14,7 @@
   "udugMicroFrontendUrl": "https://netex-validation-reports.dev.entur.org",
   "ninsarBaseUrl": "/line-statistics/",
   "ninsarMicroFrontendUrl": "https://line-statistics.dev.entur.org",
+  "zagmukMicroFrontendUrl": "https://timetable-admin.dev.entur.org",
   "auth0Domain": "ror-entur-dev.eu.auth0.com",
   "auth0ClientId": "h5bjgdnSSJi0JcaG3ugigtyBEXaPASQM",
   "auth0Audience": "https://ror.api.dev.entur.io",
