@@ -288,7 +288,10 @@ class SupplierTabWrapper extends React.Component {
                     env: window.config.appEnv,
                     hideIgnoredExportNetexBlocks: true,
                     hideAntuValidationSteps: false,
-                    navigate: url => this.props.history.push(url)
+                    navigate: url => {
+                      window.history.pushState(null, null, url);
+                      window.location.reload();
+                    }
                   }}
                   FetchStatus={props => (
                     <MicroFrontendFetchStatus
@@ -356,7 +359,10 @@ class SupplierTabWrapper extends React.Component {
                     env: window.config.appEnv,
                     hideIgnoredExportNetexBlocks: true,
                     hideAntuValidationSteps: false,
-                    navigate: url => this.props.history.push(url)
+                    navigate: url => {
+                      window.history.pushState(null, null, url);
+                      window.location.reload();
+                    }
                   }}
                   FetchStatus={props => (
                     <MicroFrontendFetchStatus
