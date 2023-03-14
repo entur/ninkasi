@@ -125,9 +125,8 @@ class GraphStatus extends React.Component {
                 status={graphStatus.otp2.status}
                 started={graphStatus.otp2.started}
               />
-            )}{' '}
+            )}
           </>
-          }
         </div>
         <div style={wrapperStyle}>
           Base graph status:
