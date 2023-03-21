@@ -241,6 +241,8 @@ class DataMigrationDetails extends React.Component {
     const toolTips = {
       import:
         'Import all files listed in the list on the right side below. Files will be imported in the given order. If success, VALIDATE will be called',
+      importFlex:
+        'Import all flex data files listed in the list on the right side below. Files will be imported in the given order. If success, VALIDATE will be called',
       validate:
         'Validate data in dataspace. If success, TRANSFER will be called if in level 1 space or EXPORT if in level 2 space',
       transfer:
@@ -257,13 +259,22 @@ class DataMigrationDetails extends React.Component {
       <div>
         <div style={{ display: 'flex', justfiyContent: 'flex-start' }}>
           {isLevel1Provider ? (
-            <Button
-              title={toolTips.import}
-              color="primary"
-              onClick={this.handleImportData}
-            >
-              Import
-            </Button>
+            <>
+              <Button
+                title={toolTips.import}
+                color="primary"
+                onClick={this.handleImportData}
+              >
+                Import
+              </Button>
+              <Button
+                title={toolTips.importFlex}
+                color="primary"
+                onClick={() => this.handleImportData(true)}
+              >
+                Import flex
+              </Button>
+            </>
           ) : null}
           <Button
             title={toolTips.validate}
@@ -417,7 +428,7 @@ class DataMigrationDetails extends React.Component {
     );
   }
 
-  handleImportData = () => {
+  handleImportData = (isFlex = false) => {
     const { dispatch, activeId, providers } = this.props;
     const { outboundFiles } = this.state;
     const provider = providers.find(p => p.id === activeId);
@@ -433,7 +444,11 @@ class DataMigrationDetails extends React.Component {
         );
       } else {
         dispatch(
-          SuppliersActions.importData(this.props.activeId, outboundFiles)
+          SuppliersActions.importData(
+            this.props.activeId,
+            outboundFiles,
+            isFlex
+          )
         );
       }
     } else {

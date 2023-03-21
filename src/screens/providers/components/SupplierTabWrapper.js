@@ -288,6 +288,7 @@ class SupplierTabWrapper extends React.Component {
                     env: window.config.appEnv,
                     hideIgnoredExportNetexBlocks: true,
                     hideAntuValidationSteps: false,
+                    hideFlexDataImport: false,
                     navigate: url => {
                       window.history.pushState(null, null, url);
                       window.location.reload();
@@ -359,6 +360,7 @@ class SupplierTabWrapper extends React.Component {
                     env: window.config.appEnv,
                     hideIgnoredExportNetexBlocks: true,
                     hideAntuValidationSteps: false,
+                    hideFlexDataImport: false,
                     navigate: url => {
                       window.history.pushState(null, null, url);
                       window.location.reload();

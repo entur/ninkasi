@@ -856,13 +856,15 @@ export const addFileExtensions = (files = []) => {
   });
 };
 
-SuppliersActions.importData = (id, selectedFiles) => async (
+SuppliersActions.importData = (id, selectedFiles, isFlex = false) => async (
   dispatch,
   getState
 ) => {
   dispatch(requestImport());
 
-  const url = window.config.timetableAdminBaseUrl + `${id}/import`;
+  const url =
+    window.config.timetableAdminBaseUrl +
+    `${id}${isFlex ? '/flex' : ''}/import`;
 
   const bodySelectedFiles = selectedFiles.map(file => {
     return {
