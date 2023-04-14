@@ -19,5 +19,6 @@
   "auth0ClientId": "h5bjgdnSSJi0JcaG3ugigtyBEXaPASQM",
   "auth0Audience": "https://ror.api.dev.entur.io",
   "auth0ClaimsNamespace": "https://ror.entur.io/role_assignments",
-  "defaultAuthMethod": "auth0"
+  "defaultAuthMethod": "auth0",
+  "enableFlexImport": true
 }

@@ -267,13 +267,15 @@ class DataMigrationDetails extends React.Component {
               >
                 Import
               </Button>
-              <Button
-                title={toolTips.importFlex}
-                color="primary"
-                onClick={() => this.handleImportData(true)}
-              >
-                Import flex
-              </Button>
+              {enableFlexImport === 'true' && (
+                <Button
+                  title={toolTips.importFlex}
+                  color="primary"
+                  onClick={() => this.handleImportData(true)}
+                >
+                  Import flex
+                </Button>
+              )}
             </>
           ) : null}
           <Button
