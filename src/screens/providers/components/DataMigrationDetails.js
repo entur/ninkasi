@@ -265,7 +265,7 @@ class DataMigrationDetails extends React.Component {
               <Button
                 title={toolTips.import}
                 color="primary"
-                onClick={this.handleImportData}
+                onClick={() => this.handleImportData(false)}
               >
                 Import
               </Button>
