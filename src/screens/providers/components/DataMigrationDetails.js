@@ -255,8 +255,6 @@ class DataMigrationDetails extends React.Component {
       cleanStopPlacesChouette: 'Clean Stop place register in Chouette'
     };
 
-    const enableFlexImport = `${window.config.enableFlexImport}`;
-
     return (
       <div>
         <div style={{ display: 'flex', justfiyContent: 'flex-start' }}>
@@ -269,15 +267,13 @@ class DataMigrationDetails extends React.Component {
               >
                 Import
               </Button>
-              {enableFlexImport === 'true' && (
-                <Button
-                  title={toolTips.importFlex}
-                  color="primary"
-                  onClick={() => this.handleImportData(true)}
-                >
-                  Import flex
-                </Button>
-              )}
+              <Button
+                title={toolTips.importFlex}
+                color="primary"
+                onClick={() => this.handleImportData(true)}
+              >
+                Import flex
+              </Button>
             </>
           ) : null}
           <Button
