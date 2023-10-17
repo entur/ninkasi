@@ -41,9 +41,8 @@ body {
 .supplier-info {
   background: #fff;
   padding-bottom: 20px;
-  margin: auto;
+  margin: auto auto auto 20px;
   border: 1px solid #ccc;
-  width: 98%;
 
   .supplier-details {
     margin-top: 30px;
@@ -62,7 +61,6 @@ body {
 }
 
 .suppliers-container {
-  margin: auto;
   > h1 {
     margin-bottom: 40px;
     font-weight: 500;
@@ -88,6 +86,7 @@ body {
     border-bottom: 1px dotted #eee;
     padding-bottom: 10px;
   }
+
   &:last-child {
     padding-top: 10px;
   }

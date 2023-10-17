@@ -795,6 +795,28 @@ SuppliersActions.getGraphStatus = () => async (dispatch, getState) => {
     });
 };
 
+SuppliersActions.getOTPGraphVersions = () => async (dispatch, getState) => {
+  const url = window.config.timetableAdminBaseUrl + `routing_graph/graphs`;
+
+  return axios
+    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .then(response => {
+      const graphVersions = {
+        streetGraphs: [],
+        transitGraphs: []
+      };
+      console.log('getOTPGraphVersions response = ', response);
+
+      graphVersions.streetGraphs = response.data.streetGraphs;
+      graphVersions.transitGraphs = response.data.transitGraphs;
+
+      dispatch(sendData(graphVersions, types.RECEIVED_GRAPH_VERSIONS));
+    })
+    .catch(response => {
+      console.error('error receiving graph status', response);
+    });
+};
+
 SuppliersActions.transferData = id => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/transfer`;
 
