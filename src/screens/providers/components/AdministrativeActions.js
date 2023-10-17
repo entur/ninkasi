@@ -24,6 +24,7 @@ import MdDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down';
 import FlatButton from 'material-ui/FlatButton';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 import { getIconColor, getProvidersEnv, getTheme } from 'config/themes';
+import ConfirmDialog from '../../../modals/ConfirmDialog';
 
 class AdministrativeActions extends React.Component {
   constructor(props) {
@@ -469,8 +470,21 @@ class AdministrativeActions extends React.Component {
             ]}
           />
         </Popover>
+        <ConfirmDialog
+          open={this.state.confirmDialogOpen}
+          handleSubmit={this.state.confirmAction}
+          title={this.state.confirmTitle}
+          info={this.state.confirmInfo}
+          handleClose={() => {
+            this.setState({
+              confirmDialogOpen: false,
+              confirmAction: null
+            });
+          }}
+        />
       </div>
     );
   }
 }
+
 export default AdministrativeActions;
