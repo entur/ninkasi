@@ -16,7 +16,7 @@ const Providers = ({ auth }) => {
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {isAdmin && <AdministrativeActions />}
         <div style={{ display: 'flex' }}>
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
             <SuppliersContainer />
             <SupplierTabWrapper />
             <ModalViewContainer />
