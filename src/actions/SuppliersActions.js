@@ -296,9 +296,7 @@ SuppliersActions.createProvider = data => async (dispatch, getState) => {
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_CREATE_PROVIDER));
 
-      console.log('response.data: ', response.data);
       const id = response.data.id;
-      console.log('id: ', id);
       window.history.pushState(
         window.config.endpointBase,
         'Title',
@@ -805,7 +803,6 @@ SuppliersActions.getOTPGraphVersions = () => async (dispatch, getState) => {
         streetGraphs: [],
         transitGraphs: []
       };
-      console.log('getOTPGraphVersions response = ', response);
 
       graphVersions.streetGraphs = response.data.streetGraphs;
       graphVersions.transitGraphs = response.data.transitGraphs;
