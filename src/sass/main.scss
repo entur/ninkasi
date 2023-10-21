@@ -14,13 +14,13 @@
  *
  */
 
-@import '../../node_modules/muicss/lib/sass/mui.scss';
-@import 'components/forms';
-@import 'components/links';
-@import 'components/colors';
-@import 'components/Footer';
-@import 'components/buttons';
-@import 'helpers';
+@use '../../node_modules/muicss/lib/sass/mui.scss';
+@use 'components/forms';
+@use 'components/links';
+@use 'components/colors';
+@use 'components/Footer';
+@use 'components/buttons';
+@use 'helpers';
 
 $roboto-slab: 'Roboto Slab', serif;
 $open-sans: 'Open Sans', sans-serif;

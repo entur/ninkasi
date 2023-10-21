@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import 'sass/views/organizationView.scss';
+import './organizationView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
@@ -24,7 +24,7 @@ import { connect } from 'react-redux';
 import ModalCreateOrganization from 'modals/ModalCreateOrganization';
 import ModalEditOrganization from 'modals/ModalEditOrganization';
 import MdDelete from 'material-ui/svg-icons/action/delete';
-import { sortByColumns } from 'utils/index';
+import { sortByColumns } from 'utils';
 import ModalConfirmation from 'modals/ModalConfirmation';
 
 class OrganizationView extends React.Component {

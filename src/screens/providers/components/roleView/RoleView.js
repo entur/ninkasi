@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import 'sass/views/roleView.scss';
+import './roleView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -24,7 +24,7 @@ import ModalEditRole from 'modals/ModalEditRole';
 import ModalCreateRole from 'modals/ModalCreateRole';
 import { connect } from 'react-redux';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
-import { sortByColumns } from 'utils/index';
+import { sortByColumns } from 'utils';
 import ModalConfirmation from 'modals/ModalConfirmation';
 
 class RoleView extends React.Component {
