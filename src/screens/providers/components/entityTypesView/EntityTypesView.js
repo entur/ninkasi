@@ -16,7 +16,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import 'sass/views/entityTypesView.scss';
+import './entityTypesView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -24,7 +24,7 @@ import ModalCreateEntityType from 'modals/ModalCreateEntityType';
 import ModalEditEntiyType from 'modals/ModalEditEntityType';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import MdDelete from 'material-ui/svg-icons/action/delete';
-import { sortByColumns } from 'utils/index';
+import { sortByColumns } from 'utils';
 import ModalConfirmation from 'modals/ModalConfirmation';
 
 class EntityTypesView extends React.Component {
