@@ -1,0 +1,57 @@
+/*!
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
+ * the European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at:
+ *
+ *   https://joinup.ec.europa.eu/software/page/eupl
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and
+ * limitations under the Licence.
+ *
+ */
+
+.resp-roles-row {
+  div {
+    margin: 2px;
+    margin-bottom: 5px;
+    font-size: 12px;
+  }
+
+  .col-1-6 {
+    width: 17%;
+    max-width: 17%;
+    min-width: 17%;
+    display: inline-block;
+  }
+
+  .col-1-7 {
+    width: 12%;
+    max-width: 12%;
+    min-width: 12%;
+    display: inline-block;
+  }
+
+  .col-icon {
+    width: 8%;
+    display: inline-block;
+  }
+
+  .resp-roles-header {
+    font-weight: 600;
+    text-transform: uppercase;
+    background: rgba(238, 238, 238, 0.28);
+    margin-bottom: 5px;
+  }
+
+  ul {
+    font-size: 12px;
+  }
+}
+
+.resp-row-item:nth-child(2n) {
+  background: hsla(0, 0%, 50%, 0.07);
+}

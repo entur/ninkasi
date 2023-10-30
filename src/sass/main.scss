@@ -14,13 +14,13 @@
  *
  */
 
-@use '../../node_modules/muicss/lib/sass/mui.scss';
-@use 'components/forms';
-@use 'components/links';
-@use 'components/colors';
-@use 'components/Footer';
-@use 'components/buttons';
-@use 'helpers';
+@import '../../node_modules/muicss/lib/sass/mui.scss';
+@import 'components/forms';
+@import 'components/links';
+@import 'components/colors';
+@import 'components/Footer';
+@import 'components/buttons';
+@import 'helpers';
 
 $roboto-slab: 'Roboto Slab', serif;
 $open-sans: 'Open Sans', sans-serif;
@@ -40,9 +40,10 @@ body {
 
 .supplier-info {
   background: #fff;
-  margin: 5px 0 20px 20px;
+  padding-bottom: 20px;
+  margin: auto;
   border: 1px solid #ccc;
-  flex-grow: 1;
+  width: 98%;
 
   .supplier-details {
     margin-top: 30px;
@@ -61,6 +62,7 @@ body {
 }
 
 .suppliers-container {
+  margin: auto;
   > h1 {
     margin-bottom: 40px;
     font-weight: 500;
@@ -86,7 +88,6 @@ body {
     border-bottom: 1px dotted #eee;
     padding-bottom: 10px;
   }
-
   &:last-child {
     padding-top: 10px;
   }

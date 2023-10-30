@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import './userView.scss';
+import 'sass/views/userView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import MdNotification from 'material-ui/svg-icons/social/notifications';
@@ -26,12 +26,12 @@ import ModalCreateUser from 'modals/ModalCreateUser';
 import ModalEditUser from 'modals/ModalEditUser';
 import ModalEditNotifications from 'modals/ModalEditNotifications';
 import { connect } from 'react-redux';
-import { sortUsersby } from 'utils';
+import { sortUsersby } from 'utils/index';
 import ModalConfirmation from 'modals/ModalConfirmation';
 import ForgotPassword from 'static/icons/ForgotPassword';
 import ModalNewPassword from 'modals/ModalNewPassword';
-import NotificationStatus from '../NotificationStatus';
-import OrganizationFilter from '../OrganizationFilter';
+import NotificationStatus from './NotificationStatus';
+import OrganizationFilter from './OrganizationFilter';
 
 class UserView extends React.Component {
   constructor(props) {

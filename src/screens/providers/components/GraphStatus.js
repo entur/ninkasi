@@ -35,14 +35,17 @@ const getColorByStatus = status => {
 
 const containerStyle = {
   display: 'flex',
-  flexDirection: 'column'
+  alignItems: 'center',
+  flexDirection: 'row'
 };
 
 const wrapperStyle = {
-  padding: '0 0 10px 0'
+  padding: 10
 };
 
 const statusStyle = {
+  marginRight: 10,
+  marginTop: 10,
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'row'
@@ -64,10 +67,7 @@ const GraphStatusDetails = ({ title, status, started }) => (
             {status}
           </span>
         </span>
-        <span
-          title={moment(started).format('DD-MM-YYYY hh:mm:ss')}
-          style={{ fontSize: '0.8em', paddingLeft: 5, whiteSpace: 'nowrap' }}
-        >
+        <span style={{ fontSize: '0.8em', paddingLeft: 5 }}>
           {moment(started).fromNow()}
         </span>
       </>
@@ -111,7 +111,7 @@ class GraphStatus extends React.Component {
       <div style={containerStyle}>
         <div style={wrapperStyle}>
           <>
-            <h4 style={{ fontWeight: 'bold' }}>Graph status</h4>
+            Graph status:
             {graphStatus.otp1 && (
               <GraphStatusDetails
                 title="OTP1"
@@ -129,7 +129,7 @@ class GraphStatus extends React.Component {
           </>
         </div>
         <div style={wrapperStyle}>
-          <h4 style={{ fontWeight: 'bold' }}>Base graph status</h4>
+          Base graph status:
           {baseGraphStatus.otp1 && (
             <GraphStatusDetails
               title="OTP1"
