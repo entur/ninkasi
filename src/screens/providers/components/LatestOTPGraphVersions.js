@@ -14,10 +14,9 @@
  *
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import SupplierActions from 'actions/SuppliersActions';
-import cfgreader from 'config/readConfig';
 import moment from 'moment';
 import UnfoldLess from 'material-ui/svg-icons/navigation/unfold-less';
 import UnfoldMore from 'material-ui/svg-icons/navigation/unfold-more';
@@ -77,36 +76,12 @@ class LatestOTPGraphVersions extends React.Component {
     };
   }
 
-  componentDidMount() {
-    cfgreader.readConfig(
-      function(config) {
-        window.config = config;
-        this.props.dispatch(SupplierActions.getOTPGraphVersions());
-        this.startPolling();
-      }.bind(this)
-    );
-  }
-
-  componentWillUnmount() {
-    clearInterval(this._timer);
-  }
-
-  startPolling = () => {
-    setTimeout(() => {
-      this._timer = setInterval(this.poll, 60000);
-    }, 1000);
-  };
-
-  poll = () => {
+  requestOTPGraphVersions = () => {
     this.props.dispatch(SupplierActions.getOTPGraphVersions());
   };
 
   render() {
     const { streetGraphs, transitGraphs } = this.props;
-
-    if (!streetGraphs || !transitGraphs) {
-      return null;
-    }
 
     return (
       <>
@@ -121,6 +96,8 @@ class LatestOTPGraphVersions extends React.Component {
               showGraphVersions: true,
               anchorEl: e.currentTarget
             });
+
+            this.requestOTPGraphVersions();
           }}
         />
         <Popover
@@ -128,7 +105,7 @@ class LatestOTPGraphVersions extends React.Component {
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
           targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          onRequestClose={e => {
+          onRequestClose={() => {
             this.setState({
               showGraphVersions: false
             });
@@ -136,38 +113,44 @@ class LatestOTPGraphVersions extends React.Component {
           animation={PopoverAnimationVertical}
         >
           <div style={containerStyle}>
-            <div style={wrapperStyle}>
-              <h4 style={{ fontWeight: 'bold', marginBottom: 0 }}>
-                Latest street graphs
-              </h4>
+            {!streetGraphs || !transitGraphs ? (
+              <div style={wrapperStyle}>Loading ...</div>
+            ) : (
               <>
-                {streetGraphs.map(streetGraph => (
-                  <GraphVersionDetails
-                    key={streetGraph.serializationId}
-                    name={streetGraph.name}
-                    serializationId={streetGraph.serializationId}
-                    creationDate={streetGraph.creationDate}
-                    size={streetGraph.size}
-                  />
-                ))}
+                <div style={wrapperStyle}>
+                  <h4 style={{ fontWeight: 'bold', marginBottom: 0 }}>
+                    Latest street graphs
+                  </h4>
+                  <>
+                    {streetGraphs.map(streetGraph => (
+                      <GraphVersionDetails
+                        key={streetGraph.serializationId}
+                        name={streetGraph.name}
+                        serializationId={streetGraph.serializationId}
+                        creationDate={streetGraph.creationDate}
+                        size={streetGraph.size}
+                      />
+                    ))}
+                  </>
+                </div>
+                <div style={wrapperStyle}>
+                  <h4 style={{ fontWeight: 'bold', marginBottom: 0 }}>
+                    Latest transit graphs
+                  </h4>
+                  <>
+                    {transitGraphs.map(transitGraph => (
+                      <GraphVersionDetails
+                        key={transitGraph.serializationId}
+                        name={transitGraph.name}
+                        serializationId={transitGraph.serializationId}
+                        creationDate={transitGraph.creationDate}
+                        size={transitGraph.size}
+                      />
+                    ))}
+                  </>
+                </div>
               </>
-            </div>
-            <div style={wrapperStyle}>
-              <h4 style={{ fontWeight: 'bold', marginBottom: 0 }}>
-                Latest transit graphs
-              </h4>
-              <>
-                {transitGraphs.map(transitGraph => (
-                  <GraphVersionDetails
-                    key={transitGraph.serializationId}
-                    name={transitGraph.name}
-                    serializationId={transitGraph.serializationId}
-                    creationDate={transitGraph.creationDate}
-                    size={transitGraph.size}
-                  />
-                ))}
-              </>
-            </div>
+            )}
           </div>
         </Popover>
       </>
