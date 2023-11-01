@@ -96,19 +96,6 @@ class AdministrativeActions extends React.Component {
     });
   }
 
-  handlePromoteCandidateBaseGraphOTP2() {
-    this.setState({
-      confirmDialogOpen: true,
-      confirmTitle: 'Promote candidate base graph (OTP2)',
-      confirmInfo:
-        'Are you sure you want to promote the candidate base graph (OTP2)?',
-      confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.promoteCandidateBaseGraphOTP2());
-      }
-    });
-  }
-
   handleFetchOSM() {
     this.setState({
       confirmDialogOpen: true,
@@ -269,8 +256,6 @@ class AdministrativeActions extends React.Component {
       buildCandidateGraph: 'Build candidate graph for all providers (OTP2)',
       buildCandidateBaseGraphOTP2:
         'Build new candidate base graph with OSM and elevation data (OTP2)',
-      promoteCandidateBaseGraphOTP2:
-        'Build new candidate base graph with OSM and elevation data (OTP2)',
       fetchOSM: 'Fetch Open Street Map data',
       cleanFileFilter: 'Clean file filter',
       canceAllJobs: 'Cancel all current chouette jobs',
@@ -327,12 +312,6 @@ class AdministrativeActions extends React.Component {
               style={{ fontSize: '1em' }}
               onClick={() => this.handleBuildCandidateBaseGraphOTP2()}
               title={toolTips.buildCandidateBaseGraphOTP2}
-            />
-            <MenuItem
-              primaryText={'Promote Candidate Base Graph OTP2'}
-              style={{ fontSize: '1em' }}
-              onClick={() => this.handlePromoteCandidateBaseGraphOTP2()}
-              title={toolTips.promoteCandidateBaseGraphOTP2}
             />
           </Popover>
           <FlatButton

@@ -11,7 +11,7 @@ export const ShowOTPGraphStatus = () => {
         style={{
           display: 'flex',
           alignItems: 'flex-end',
-          margin: '0px 20px 0 10px;',
+          margin: '0px 20px 0 10px',
           justifyContent: 'flex-end'
         }}
       >

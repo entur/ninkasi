@@ -37,13 +37,15 @@ const wrapperStyle = {
 const versionDetailsStyle = {
   display: 'flex',
   flexDirection: 'column',
-  whiteSpace: 'nowrap'
+  whiteSpace: 'nowrap',
+  borderBottom: '1px solid gray',
+  paddingBottom: '10px'
 };
 
 const GraphVersionDetails = ({ name, serializationId, creationDate, size }) => (
   <div style={versionDetailsStyle}>
     <div>
-      <h5 style={{ textDecoration: 'underline' }}>{name}</h5>
+      <h5>{name}</h5>
     </div>
     <div style={{ display: 'flex' }}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -118,9 +120,15 @@ class LatestOTPGraphVersions extends React.Component {
             ) : (
               <>
                 <div style={wrapperStyle}>
-                  <h4 style={{ fontWeight: 'bold', marginBottom: 0 }}>
+                  <h3
+                    style={{
+                      fontWeight: 'bold',
+                      marginBottom: 0,
+                      marginTop: 0
+                    }}
+                  >
                     Latest street graphs
-                  </h4>
+                  </h3>
                   <>
                     {streetGraphs.map(streetGraph => (
                       <GraphVersionDetails
@@ -134,9 +142,15 @@ class LatestOTPGraphVersions extends React.Component {
                   </>
                 </div>
                 <div style={wrapperStyle}>
-                  <h4 style={{ fontWeight: 'bold', marginBottom: 0 }}>
+                  <h3
+                    style={{
+                      fontWeight: 'bold',
+                      marginBottom: 0,
+                      marginTop: 0
+                    }}
+                  >
                     Latest transit graphs
-                  </h4>
+                  </h3>
                   <>
                     {transitGraphs.map(transitGraph => (
                       <GraphVersionDetails
