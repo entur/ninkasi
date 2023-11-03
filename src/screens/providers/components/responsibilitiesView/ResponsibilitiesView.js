@@ -16,7 +16,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import 'sass/views/responsibilityView.scss';
+import './responsibilityView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -25,7 +25,7 @@ import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import ResponsbilityRoleAssignments from 'modals/ResponsbilityRoleAssignments';
 import ModalCreateResponsibilitySet from 'modals/ModalCreateResponsibilitySet';
 import ModalEditResponsibilitySet from 'modals/ModalEditResponsibilitySet';
-import { sortByColumns } from 'utils/index';
+import { sortByColumns } from 'utils';
 import ModalConfirmation from 'modals/ModalConfirmation';
 
 const initialState = {

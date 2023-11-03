@@ -184,23 +184,6 @@ const MardukReducer = (state = cleanSlate, action) => {
     case types.REQUEST_BUILD_CANDIDATE_BASE_GRAPH_OTP2:
       return Object.assign({}, state, { isLoading: true, error: false });
 
-    case types.ERROR_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2:
-      return Object.assign({}, state, {
-        isLoading: false,
-        promote_candidate_base_graph_otp2: action.payLoad,
-        error: true
-      });
-
-    case types.SUCCESS_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2:
-      return Object.assign({}, state, {
-        isLoading: false,
-        promote_candidate_base_graph_otp2: action.payLoad,
-        error: false
-      });
-
-    case types.REQUEST_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2:
-      return Object.assign({}, state, { isLoading: true, error: false });
-
     case types.ERROR_FETCH_OSM:
       return Object.assign({}, state, {
         isLoading: false,

@@ -97,6 +97,9 @@ const SuppliersReducer = (state = initialState, action) => {
     case types.RECEIVED_GRAPH_STATUS:
       return Object.assign({}, state, { ...action.payLoad });
 
+    case types.RECEIVED_GRAPH_VERSIONS:
+      return Object.assign({}, state, { ...action.payLoad });
+
     case types.RECEIVED_TRANSPORT_MODES:
       return Object.assign({}, state, {
         allTransportModes: action.payLoad

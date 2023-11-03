@@ -296,9 +296,7 @@ SuppliersActions.createProvider = data => async (dispatch, getState) => {
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_CREATE_PROVIDER));
 
-      console.log('response.data: ', response.data);
       const id = response.data.id;
-      console.log('id: ', id);
       window.history.pushState(
         window.config.endpointBase,
         'Title',
@@ -795,6 +793,27 @@ SuppliersActions.getGraphStatus = () => async (dispatch, getState) => {
     });
 };
 
+SuppliersActions.getOTPGraphVersions = () => async (dispatch, getState) => {
+  const url = window.config.timetableAdminBaseUrl + `routing_graph/graphs`;
+
+  return axios
+    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .then(response => {
+      const graphVersions = {
+        streetGraphs: [],
+        transitGraphs: []
+      };
+
+      graphVersions.streetGraphs = response.data.streetGraphs;
+      graphVersions.transitGraphs = response.data.transitGraphs;
+
+      dispatch(sendData(graphVersions, types.RECEIVED_GRAPH_VERSIONS));
+    })
+    .catch(response => {
+      console.error('error receiving graph status', response);
+    });
+};
+
 SuppliersActions.transferData = id => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/transfer`;
 
@@ -1157,55 +1176,6 @@ SuppliersActions.buildCandidateBaseGraphOTP2 = () => async (
     });
 };
 
-SuppliersActions.promoteCandidateBaseGraphOTP2 = () => async (
-  dispatch,
-  getState
-) => {
-  const url =
-    window.config.timetableAdminBaseUrl + 'routing_graph/promote_base_graph';
-
-  dispatch(requestPromoteBaseGraph());
-  return axios({
-    url: url,
-    timeout: 20000,
-    method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
-  })
-    .then(function(response) {
-      dispatch(
-        sendData(response.data, types.SUCCESS_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2)
-      );
-      dispatch(
-        SuppliersActions.addNotification(
-          'Candidate base graph promote (OTP2) started',
-          'success'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Candidate base graph promote (OTP2) started'
-        })
-      );
-    })
-    .catch(function(response) {
-      console.log('ERROR PROMOTING CANDIDATE BASE GRAPH (OTP2)', response);
-      dispatch(
-        sendData(response.data, types.ERROR_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2)
-      );
-      dispatch(
-        SuppliersActions.addNotification(
-          'Candidate base graph promote (OTP2) failed',
-          'error'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Candidate base graph promote (OTP2) failed'
-        })
-      );
-    });
-};
-
 SuppliersActions.fetchOSM = () => async (dispatch, getState) => {
   const url = window.config.mapAdminBaseUrl + 'download';
   dispatch(requestFetchOSM());
@@ -1368,10 +1338,6 @@ function requestBuildGraph() {
 
 function requestBuildBaseGraph() {
   return { type: types.REQUEST_BUILD_BASE_GRAPH };
-}
-
-function requestPromoteBaseGraph() {
-  return { type: types.REQUEST_PROMOTE_CANDIDATE_BASE_GRAPH_OTP2 };
 }
 
 function requestFetchOSM() {

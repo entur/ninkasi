@@ -265,7 +265,7 @@ class ChouetteAllJobs extends React.Component {
               )}
             </div>
             {requestingJobs ? (
-              <div style={{ float: 'right', position: 'absolute', right: 40 }}>
+              <div style={{ margin: '0px 20px 10px' }}>
                 <Loader color="#26A65B" size="23px" />
               </div>
             ) : null}
@@ -331,7 +331,9 @@ class ChouetteAllJobs extends React.Component {
             </Row>
           ) : (
             <Row>
-              <p>No chouette jobs found for your search criterias.</p>
+              <p style={{ marginLeft: '20px' }}>
+                No chouette jobs found for your search criterias.
+              </p>
             </Row>
           )}
         </Container>
