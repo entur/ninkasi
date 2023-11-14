@@ -47,11 +47,15 @@ export default () => {
       >
         <Tab label="Geocoder pipeline" {...a11yProps(0)} />
         <Tab label="OSM POI filter" {...a11yProps(1)} />
+        <Tab label="TariffZone/FareZone Import" {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <Pelias />
       </TabPanel>
       <TabPanel value={value} index={1}>
+        <OSMPOIFilter />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
         <OSMPOIFilter />
       </TabPanel>
     </div>
