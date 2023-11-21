@@ -18,8 +18,6 @@ import { connect } from 'react-redux';
 import React from 'react';
 import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
 import MdNew from 'material-ui/svg-icons/content/add';
 import { getQueryVariable } from 'utils';
 import rolesParser from 'roles/rolesParser';

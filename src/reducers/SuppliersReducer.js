@@ -94,6 +94,11 @@ const SuppliersReducer = (state = initialState, action) => {
     case types.UPDATED_FILE_UPLOAD_PROGRESS:
       return Object.assign({}, state, { fileUploadProgress: action.payLoad });
 
+    case types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS:
+      return Object.assign({}, state, {
+        tariffZoneFileUploadProgress: action.payLoad
+      });
+
     case types.RECEIVED_GRAPH_STATUS:
       return Object.assign({}, state, { ...action.payLoad });
 
