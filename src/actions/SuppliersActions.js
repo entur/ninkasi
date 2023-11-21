@@ -150,8 +150,6 @@ SuppliersActions.uploadFiles = (files, providerId) => async (
 ) => {
   dispatch(sendData(0, types.UPDATED_FILE_UPLOAD_PROGRESS));
 
-  console.log('uploadFiles - Files to upload', files);
-
   const url = `${window.config.timetableAdminBaseUrl}${providerId}/files`;
 
   var data = new FormData();
@@ -187,15 +185,13 @@ SuppliersActions.uploadFiles = (files, providerId) => async (
     });
 };
 
-SuppliersActions.uploadTariffZonesFiles = (files, providerId) => async (
+SuppliersActions.uploadTariffZonesFiles = (files, provider) => async (
   dispatch,
   getState
 ) => {
   dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
 
-  console.log('uploadTariffZonesFiles - Files to upload', files);
-
-  const url = `${window.config.tariffZonesUrl}SOF/files`;
+  const url = `${window.config.tariffZonesUrl}${provider.chouetteInfo.xmlns}/files`;
 
   var data = new FormData();
 
