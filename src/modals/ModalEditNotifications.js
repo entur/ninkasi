@@ -45,9 +45,12 @@ class ModalEditNotifications extends React.Component {
     });
   }
 
-  handleUpdate() {
+  async handleUpdate() {
     const { user, dispatch } = this.props;
-    dispatch(OrganizationRegisterActions.updateUserNotification(user.username));
+    await dispatch(
+      OrganizationRegisterActions.updateUserNotification(user.username)
+    );
+    this.props.handleCloseModal();
   }
 
   handleAddNewUserNotification() {
