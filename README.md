@@ -11,7 +11,7 @@ npm install
 npm run start
 ```
 
-Requires `node@14.18.3` and `npm@6.14.15`
+Requires Node.js v18 or newer.
 
 ### Production
 
