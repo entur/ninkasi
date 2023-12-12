@@ -22,6 +22,13 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import ResponsiblitySetList from './ResponsiblitySetList';
 import UserRespSetPopover from './UserRespSetPopover';
+import {
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio
+} from '@material-ui/core';
 
 const initialState = {
   user: {
@@ -33,7 +40,8 @@ const initialState = {
       phone: '',
       firstName: '',
       lastName: ''
-    }
+    },
+    personal_account: true
   },
   isAddingResponsibilitySet: false,
   temptResponsibilitySet: '',
@@ -93,6 +101,17 @@ class ModalCreateUser extends React.Component {
         ]
       },
       temptResponsibilitySet: ''
+    });
+  }
+
+  handleChangeIsPersonalAccount(value) {
+    const { user } = this.state;
+    this.setState({
+      ...this.state,
+      user: {
+        ...user,
+        personal_account: value === 'personal_account'
+      }
     });
   }
 
@@ -188,6 +207,28 @@ class ModalCreateUser extends React.Component {
             flexDirection: 'column'
           }}
         >
+          <FormControl>
+            <RadioGroup
+              defaultValue="personal_account"
+              value={
+                user.personal_account
+                  ? 'personal_account'
+                  : 'notification_account'
+              }
+              onChange={(e, value) => this.handleChangeIsPersonalAccount(value)}
+            >
+              <FormControlLabel
+                value="personal_account"
+                control={<Radio />}
+                label="Personal account"
+              />
+              <FormControlLabel
+                value="notification_account"
+                control={<Radio />}
+                label="Notification account"
+              />
+            </RadioGroup>
+          </FormControl>
           <TextField
             hintText="Username"
             floatingLabelText="Username"
