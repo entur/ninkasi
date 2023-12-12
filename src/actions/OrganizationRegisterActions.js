@@ -372,7 +372,7 @@ OrganizationRegisterActions.createUser = user => async (dispatch, getState) => {
 
   return axios
     .post(url, trimmedData, await getApiConfig(getState().UserReducer.auth))
-    .then(response => {
+    .then(() => {
       dispatch(
         SuppliersActions.addNotification('Created user successfully', 'success')
       );
@@ -383,8 +383,7 @@ OrganizationRegisterActions.createUser = user => async (dispatch, getState) => {
             userId: 'N/A',
             error: false,
             username: user.username,
-            isNewUser: true,
-            password: response.data
+            isNewUser: true
           },
           types.OPENED_NEW_PASSWORD_DIALOG
         )

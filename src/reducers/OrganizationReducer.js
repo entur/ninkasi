@@ -72,7 +72,6 @@ const OrganizationReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         passwordDialog: {
           open: true,
-          password: action.payLoad.password,
           userId: action.payLoad.userId,
           username: action.payLoad.username,
           isNewUser: action.payLoad.isNewUser,
