@@ -340,7 +340,13 @@ OrganizationRegisterActions.getResponbilitySets = () => async (
       );
     })
     .catch(error => {
-      console.log('Error responsibility_sets users', error);
+      dispatch(
+        SuppliersActions.addNotification(
+          'Error getting responsibility sets',
+          'error'
+        )
+      );
+      console.log('Error getting responsibility sets: ' + error.message);
     });
 };
 
@@ -360,7 +366,13 @@ OrganizationRegisterActions.createResponsibilitySet = responsibilitySet => async
       dispatch(OrganizationRegisterActions.getResponbilitySets());
     })
     .catch(error => {
-      dispatch(sendData(types.FAILED_CREATING_ORGANIZATION, error));
+      dispatch(
+        SuppliersActions.addNotification(
+          'Error creating responsibility set',
+          'error'
+        )
+      );
+      console.log('Error creating responsibility set: ' + error.message);
     });
 };
 
@@ -450,7 +462,13 @@ OrganizationRegisterActions.updateResponsibilitySet = responsibilitySet => async
       dispatch(OrganizationRegisterActions.getResponbilitySets());
     })
     .catch(error => {
-      console.log('Error updating responsibility set', error);
+      dispatch(
+        SuppliersActions.addNotification(
+          'Error updating responsibility set',
+          'error'
+        )
+      );
+      console.log('Error updating responsibility set: ' + error.message);
     });
 };
 
