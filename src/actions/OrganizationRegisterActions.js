@@ -88,6 +88,10 @@ OrganizationRegisterActions.createRole = role => async (dispatch, getState) => {
     })
     .catch(error => {
       dispatch(sendData(types.ERROR_CREATE_PROVIDER, error));
+      dispatch(
+        SuppliersActions.addNotification('Error creating role', 'error')
+      );
+      console.log('Error creating role', error);
     });
 };
 
@@ -104,6 +108,9 @@ OrganizationRegisterActions.updateRole = role => async (dispatch, getState) => {
       dispatch(OrganizationRegisterActions.getRoles());
     })
     .catch(error => {
+      dispatch(
+        SuppliersActions.addNotification('Error updating role', 'error')
+      );
       console.log('Error updating role', error);
     });
 };
@@ -141,6 +148,10 @@ OrganizationRegisterActions.createOrganization = organization => async (
     })
     .catch(error => {
       dispatch(sendData(types.FAILED_CREATING_ORGANIZATION, error));
+      dispatch(
+        SuppliersActions.addNotification('Error creating organization', 'error')
+      );
+      console.log('Error creating organization', error);
     });
 };
 
@@ -159,6 +170,9 @@ OrganizationRegisterActions.updateOrganization = organization => async (
       dispatch(OrganizationRegisterActions.getOrganizations());
     })
     .catch(error => {
+      dispatch(
+        SuppliersActions.addNotification('Error updating organization', 'error')
+      );
       console.log('Error updating organization', error);
     });
 };
@@ -179,6 +193,10 @@ OrganizationRegisterActions.updateUser = user => async (dispatch, getState) => {
       dispatch(OrganizationRegisterActions.getUsers());
     })
     .catch(error => {
+      dispatch(sendData(types.FAILED_CREATING_USER, error));
+      dispatch(
+        SuppliersActions.addNotification('Error updating user', 'error')
+      );
       console.log('Error updating user', error);
     });
 };
@@ -404,6 +422,10 @@ OrganizationRegisterActions.createUser = user => async (dispatch, getState) => {
     })
     .catch(error => {
       dispatch(sendData(types.FAILED_CREATING_USER, error));
+      dispatch(
+        SuppliersActions.addNotification('Error creating user', 'error')
+      );
+      console.log('Error creating user', error);
     });
 };
 
@@ -424,6 +446,10 @@ OrganizationRegisterActions.createEntityType = entityType => async (
     })
     .catch(error => {
       dispatch(sendData(types.FAILED_CREATING_ENTITY_TYPE, error));
+      dispatch(
+        SuppliersActions.addNotification('Error creating entity type', 'error')
+      );
+      console.log('Error creating entity type', error);
     });
 };
 
@@ -442,7 +468,10 @@ OrganizationRegisterActions.updateEntityType = entityType => async (
       dispatch(OrganizationRegisterActions.getEntityTypes());
     })
     .catch(error => {
-      console.log('Error updating entity type set', error);
+      dispatch(
+        SuppliersActions.addNotification('Error updating entity type', 'error')
+      );
+      console.log('Error updating entity type', error);
     });
 };
 
