@@ -22,6 +22,12 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import ResponsiblitySetList from './ResponsiblitySetList';
 import UserRespSetPopover from './UserRespSetPopover';
+import {
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup
+} from '@material-ui/core';
 
 const initialState = {
   user: {
@@ -189,6 +195,29 @@ class ModalEditUser extends React.Component {
             flexDirection: 'column'
           }}
         >
+          <FormControl>
+            <RadioGroup
+              disabled
+              defaultValue="personal_account"
+              value={
+                user.personal_account
+                  ? 'personal_account'
+                  : 'notification_account'
+              }
+              onChange={(e, value) => this.handleChangeIsPersonalAccount(value)}
+            >
+              <FormControlLabel
+                value="personal_account"
+                control={<Radio />}
+                label="Personal account"
+              />
+              <FormControlLabel
+                value="notification_account"
+                control={<Radio />}
+                label="Notification account"
+              />
+            </RadioGroup>
+          </FormControl>
           <TextField
             disabled
             hintText="Username"
