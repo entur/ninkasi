@@ -200,7 +200,7 @@ class ModalEditUser extends React.Component {
               disabled
               defaultValue="personal_account"
               value={
-                user.personal_account
+                user.personalAccount
                   ? 'personal_account'
                   : 'notification_account'
               }

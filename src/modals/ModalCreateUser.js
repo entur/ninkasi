@@ -41,7 +41,7 @@ const initialState = {
       firstName: '',
       lastName: ''
     },
-    personal_account: true
+    personalAccount: true
   },
   isAddingResponsibilitySet: false,
   temptResponsibilitySet: '',
@@ -211,7 +211,7 @@ class ModalCreateUser extends React.Component {
             <RadioGroup
               defaultValue="personal_account"
               value={
-                user.personal_account
+                user.personalAccount
                   ? 'personal_account'
                   : 'notification_account'
               }
