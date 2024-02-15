@@ -270,6 +270,7 @@ class DataMigrationDetails extends React.Component {
               <Button
                 title={toolTips.importFlex}
                 color="primary"
+                style={{ backgroundColor: 'rgb(69, 118, 69)' }}
                 onClick={() => this.handleImportData(true)}
               >
                 Import flex
