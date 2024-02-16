@@ -18,14 +18,13 @@ import { connect } from 'react-redux';
 import React from 'react';
 import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
 import MdNew from 'material-ui/svg-icons/content/add';
 import { getQueryVariable } from 'utils';
 import rolesParser from 'roles/rolesParser';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import ConfirmDialog from 'modals/ConfirmDialog';
+import { SelectSupplier } from '../../common/components/SelectSupplier';
 
 class SuppliersContainer extends React.Component {
   constructor(props) {
@@ -121,39 +120,11 @@ class SuppliersContainer extends React.Component {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <SelectField
-              id="select-supplier"
-              floatingLabelFixed={true}
-              style={{ minWidth: 350 }}
-              floatingLabelText={'Provider'}
-              onChange={(e, k, v) => this.selectSupplier(v)}
-              autoWidth={true}
-              value={Number(activeProviderId) || -1}
-              iconStyle={{ fill: 'rgba(22, 82, 149, 0.69)' }}
-            >
-              {supplierItems.map(supplier => {
-                const isLevel1Provider =
-                  (supplier.chouetteInfo &&
-                    supplier.chouetteInfo.migrateDataToProvider) ||
-                  supplier.id === -1;
-                return (
-                  <MenuItem
-                    key={supplier.id}
-                    value={supplier.id}
-                    label={supplier.name}
-                    primaryText={
-                      <span
-                        style={{
-                          color: isLevel1Provider ? 'intial' : '#d9a51b'
-                        }}
-                      >
-                        {supplier.name}
-                      </span>
-                    }
-                  />
-                );
-              })}
-            </SelectField>
+            <SelectSupplier
+              suppliers={supplierItems}
+              selectSupplier={v => this.selectSupplier(v)}
+              selectedSupplierId={activeProviderId}
+            />
             {canEditOrganisation && (
               <div
                 style={{

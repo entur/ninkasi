@@ -8,6 +8,7 @@
   "mapboxAdminBaseUrl": "https://api.dev.entur.io/mapbox-admin/v1/",
   "geocoderAdminBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/geocoder/",
   "poiFilterBaseUrl": "https://api.dev.entur.io/timetable-admin/v2/poi-filter",
+  "tariffZonesUrl": "https://api.dev.entur.io/timetable-admin/v2/tariffzones-import/",
   "endpointBase": "/",
   "chouetteBaseUrl": "https://rutedb.dev.entur.org/",
   "udugBaseUrl": "/netex-validation-reports/",

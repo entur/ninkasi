@@ -185,6 +185,60 @@ SuppliersActions.uploadFiles = (files, providerId) => async (
     });
 };
 
+SuppliersActions.uploadTariffZonesFiles = (files, provider) => async (
+  dispatch,
+  getState
+) => {
+  dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
+
+  const url = `${window.config.tariffZonesUrl}${provider.chouetteInfo.xmlns}/files`;
+
+  var data = new FormData();
+
+  files.forEach(file => {
+    data.append('files', file);
+  });
+
+  var config = {
+    onUploadProgress: function(progressEvent) {
+      let percentCompleted = (progressEvent.loaded / progressEvent.total) * 100;
+      dispatch(
+        sendData(
+          percentCompleted,
+          types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS
+        )
+      );
+    },
+    ...(await getApiConfig(getState().UserReducer.auth))
+  };
+
+  return axios
+    .post(url, data, config)
+    .then(function(response) {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Uploaded tariff zone file(s)',
+          'success'
+        )
+      );
+      dispatch(
+        SuppliersActions.logEvent({
+          title: 'Uploaded tariff zone file(s): ' + files.join(',')
+        })
+      );
+      dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
+    })
+    .catch(function(response) {
+      dispatch(
+        SuppliersActions.addNotification(
+          'Unable to upload tariff zone file(s)',
+          'error'
+        )
+      );
+      dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
+    });
+};
+
 SuppliersActions.getAllProviderStatus = () => async (dispatch, getState) => {
   dispatch(sendData(null, types.REQUESTED_ALL_SUPPLIERS_STATUS));
   const state = getState();
