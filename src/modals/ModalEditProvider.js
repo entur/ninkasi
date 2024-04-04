@@ -439,7 +439,7 @@ class ModalEditProvider extends Component {
             }
           />
           <Checkbox
-            label="Enable blocks export"
+            label="Enable private export (blocks and restricted publication)"
             checked={this.state.form._enableBlocksExport}
             style={{ flex: 1 }}
             labelStyle={{ fontSize: '0.9em' }}
