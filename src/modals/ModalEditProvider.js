@@ -334,7 +334,7 @@ class ModalEditProvider extends Component {
             }
           >
             <MenuItem
-              value={null}
+              value={'none'}
               primaryText="None"
               style={{ fontStyle: 'italic' }}
             />
