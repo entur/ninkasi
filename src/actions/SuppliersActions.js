@@ -388,16 +388,11 @@ const getProviderPayload = data => {
       organisation: trimmedData._organisation,
       user: trimmedData._user,
       dataFormat: trimmedData._dataFormat,
-      enableValidation: trimmedData._enableValidation,
       allowCreateMissingStopPlace: trimmedData._allowCreateMissingStopPlace,
-      enableStopPlaceIdMapping: trimmedData._enableStopPlaceIdMapping,
-      enableCleanImport: trimmedData._enableCleanImport,
       generateDatedServiceJourneyIds:
         trimmedData._generateDatedServiceJourneyIds,
       generateMissingServiceLinksForModes:
         trimmedData._generateMissingServiceLinksForModes,
-      googleUpload: trimmedData._googleUpload,
-      googleQAUpload: trimmedData._googleQAUpload,
       migrateDataToProvider: trimmedData._migrateDataToProvider,
       enableAutoImport: trimmedData._enableAutoImport,
       enableAutoValidation: trimmedData._enableAutoValidation,

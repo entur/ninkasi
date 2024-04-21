@@ -35,14 +35,9 @@ const getEmptyForm = () => ({
   _organisation: '',
   _user: '',
   _dataFormat: '',
-  _enableValidation: false,
   _allowCreateMissingStopPlace: false,
-  _enableStopPlaceIdMapping: false,
-  _enableCleanImport: false,
   _generateDatedServiceJourneyIds: false,
   _generateMissingServiceLinksForModes: [],
-  _googleUpload: false,
-  _googleQAUpload: false,
   _migrateDataToProvider: null,
   _enableAutoImport: false,
   _enableAutoValidation: false,
@@ -87,14 +82,9 @@ class ModalEditProvider extends Component {
         organisation,
         user,
         dataFormat,
-        enableValidation,
         allowCreateMissingStopPlace,
-        enableStopPlaceIdMapping,
-        enableCleanImport,
         generateDatedServiceJourneyIds,
         generateMissingServiceLinksForModes,
-        googleUpload,
-        googleQAUpload,
         migrateDataToProvider,
         enableAutoImport,
         enableAutoValidation,
@@ -110,14 +100,9 @@ class ModalEditProvider extends Component {
         _organisation: organisation,
         _user: user,
         _dataFormat: dataFormat,
-        _enableValidation: enableValidation,
         _allowCreateMissingStopPlace: allowCreateMissingStopPlace,
-        _enableStopPlaceIdMapping: enableStopPlaceIdMapping,
-        _enableCleanImport: enableCleanImport,
         _generateDatedServiceJourneyIds: generateDatedServiceJourneyIds,
         _generateMissingServiceLinksForModes: generateMissingServiceLinksForModes,
-        _googleUpload: googleUpload,
-        _googleQAUpload: googleQAUpload,
         _migrateDataToProvider: migrateDataToProvider,
         _enableAutoImport: enableAutoImport,
         _enableAutoValidation: enableAutoValidation,
@@ -351,59 +336,54 @@ class ModalEditProvider extends Component {
               })}
           </SelectField>
         </div>
+
+        {this.state.form._referential.indexOf('rb_') !== 0 && (
+          <>
+            <div style={{ ...rowStyle, marginTop: 10 }}>
+              <TransportModesPopover
+                allTransportModes={allTransportModes}
+                transportModes={
+                  this.state.form._generateMissingServiceLinksForModes
+                }
+                handleCheckTransportMode={this.handleCheckTransportMode.bind(
+                  this
+                )}
+              />
+            </div>
+            <div style={{ ...rowStyle, marginTop: 10 }}>
+              <Checkbox
+                label="Allow create missing stop place"
+                checked={this.state.form._allowCreateMissingStopPlace}
+                style={{ flex: 1, maxWidth: 360 }}
+                labelStyle={{ fontSize: '0.9em' }}
+                onCheck={(e, v) =>
+                  this.handleChange('_allowCreateMissingStopPlace', v)
+                }
+              />
+            </div>
+            <div style={{ ...rowStyle, marginTop: 10 }}>
+              <Checkbox
+                label="Enable auto import"
+                checked={this.state.form._enableAutoImport}
+                style={{ flex: 1, maxWidth: 360 }}
+                labelStyle={{ fontSize: '0.9em' }}
+                onCheck={(e, v) => this.handleChange('_enableAutoImport', v)}
+              />
+            </div>
+            <div style={{ ...rowStyle, marginTop: 10 }}>
+              <Checkbox
+                label="Generate DatedServiceJourneyIds"
+                checked={this.state.form._generateDatedServiceJourneyIds}
+                style={{ flex: 1, maxWidth: 360 }}
+                labelStyle={{ fontSize: '0.9em' }}
+                onCheck={(e, v) =>
+                  this.handleChange('_generateDatedServiceJourneyIds', v)
+                }
+              />
+            </div>
+          </>
+        )}
         <div style={{ ...rowStyle, marginTop: 10 }}>
-          <TransportModesPopover
-            allTransportModes={allTransportModes}
-            transportModes={
-              this.state.form._generateMissingServiceLinksForModes
-            }
-            handleCheckTransportMode={this.handleCheckTransportMode.bind(this)}
-          />
-        </div>
-        <div style={{ ...rowStyle, marginTop: 10 }}>
-          <Checkbox
-            label="Allow create missing stop place"
-            checked={this.state.form._allowCreateMissingStopPlace}
-            style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) =>
-              this.handleChange('_allowCreateMissingStopPlace', v)
-            }
-          />
-          <Checkbox
-            label="Enable stop place Id mapping"
-            checked={this.state.form._enableStopPlaceIdMapping}
-            style={{ flex: 1 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) =>
-              this.handleChange('_enableStopPlaceIdMapping', v)
-            }
-          />
-        </div>
-        <div style={{ ...rowStyle, marginTop: 10 }}>
-          <Checkbox
-            label="Enable clean import"
-            checked={this.state.form._enableCleanImport}
-            style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.handleChange('_enableCleanImport', v)}
-          />
-          <Checkbox
-            label="Enable validation"
-            checked={this.state.form._enableValidation}
-            style={{ flex: 1 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.handleChange('_enableValidation', v)}
-          />
-        </div>
-        <div style={{ ...rowStyle, marginTop: 10 }}>
-          <Checkbox
-            label="Enable auto import"
-            checked={this.state.form._enableAutoImport}
-            style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.handleChange('_enableAutoImport', v)}
-          />
           <Checkbox
             label="Enable auto validation"
             checked={this.state.form._enableAutoValidation}
@@ -412,44 +392,22 @@ class ModalEditProvider extends Component {
             onCheck={(e, v) => this.handleChange('_enableAutoValidation', v)}
           />
         </div>
-        <div style={{ ...rowStyle, marginTop: 10 }}>
-          <Checkbox
-            label="Upload to Google (production)"
-            checked={this.state.form._googleUpload}
-            style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.handleChange('_googleUpload', v)}
-          />
-          <Checkbox
-            label="Upload to Google (QA)"
-            checked={this.state.form._googleQAUpload}
-            style={{ flex: 1 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.handleChange('_googleQAUpload', v)}
-          />
-        </div>
-        <div style={{ ...rowStyle, marginTop: 10 }}>
-          <Checkbox
-            label="Generate DatedServiceJourneyIds"
-            checked={this.state.form._generateDatedServiceJourneyIds}
-            style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) =>
-              this.handleChange('_generateDatedServiceJourneyIds', v)
-            }
-          />
-          <Checkbox
-            label="Enable private export (blocks and restricted publication)"
-            checked={this.state.form._enableBlocksExport}
-            style={{ flex: 1 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.handleChange('_enableBlocksExport', v)}
-          />
-        </div>
+        {this.state.form._referential.indexOf('rb_') === 0 && (
+          <div style={{ ...rowStyle, marginTop: 10 }}>
+            <Checkbox
+              label="Enable private export (blocks and restricted publication)"
+              checked={this.state.form._enableBlocksExport}
+              style={{ flex: 1 }}
+              labelStyle={{ fontSize: '0.9em' }}
+              onCheck={(e, v) => this.handleChange('_enableBlocksExport', v)}
+            />
+          </div>
+        )}
       </Dialog>
     );
   }
 }
+
 const mapStateToProps = state => ({
   allTransportModes: state.SuppliersReducer.allTransportModes
 });
