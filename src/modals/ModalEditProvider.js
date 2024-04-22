@@ -34,7 +34,6 @@ const getEmptyForm = () => ({
   _referential: '',
   _organisation: '',
   _user: '',
-  _dataFormat: '',
   _allowCreateMissingStopPlace: false,
   _generateDatedServiceJourneyIds: false,
   _generateMissingServiceLinksForModes: [],
@@ -81,7 +80,6 @@ class ModalEditProvider extends Component {
         referential,
         organisation,
         user,
-        dataFormat,
         allowCreateMissingStopPlace,
         generateDatedServiceJourneyIds,
         generateMissingServiceLinksForModes,
@@ -99,7 +97,6 @@ class ModalEditProvider extends Component {
         _referential: referential,
         _organisation: organisation,
         _user: user,
-        _dataFormat: dataFormat,
         _allowCreateMissingStopPlace: allowCreateMissingStopPlace,
         _generateDatedServiceJourneyIds: generateDatedServiceJourneyIds,
         _generateMissingServiceLinksForModes: generateMissingServiceLinksForModes,
@@ -129,21 +126,6 @@ class ModalEditProvider extends Component {
   isEdit() {
     const { provider, shouldUpdate } = this.props;
     return provider && provider.id && shouldUpdate;
-  }
-
-  getDataFormats() {
-    const formats = [
-      { value: '', text: 'None' },
-      { value: 'netexprofile', text: 'NeTEx Profile' },
-      { value: 'gtfs', text: 'GTFS' }
-    ];
-    return formats.map(format => (
-      <MenuItem
-        key={'strategy-' + format.value}
-        value={format.value}
-        primaryText={format.text}
-      />
-    ));
   }
 
   handleCheckTransportMode(transportMode, isChecked) {
@@ -201,7 +183,6 @@ class ModalEditProvider extends Component {
     const { errors } = this.state;
 
     const title = this.getTitle();
-    const dataFormats = this.getDataFormats();
     const isEdit = this.isEdit();
 
     const rowStyle = {
@@ -272,19 +253,6 @@ class ModalEditProvider extends Component {
             onChange={(e, v) => this.handleChange('_user', v)}
             errorText={errors._user && errors._user}
           />
-        </div>
-        <div style={rowStyle}>
-          <SelectField
-            value={this.state.form._dataFormat}
-            floatingLabelText={'Data format'}
-            floatingLabelFixed={true}
-            fullWidth={true}
-            onChange={(e, k, v) => {
-              this.handleChange('_dataFormat', v);
-            }}
-          >
-            {dataFormats}
-          </SelectField>
         </div>
         <div style={rowStyle}>
           <TextField
