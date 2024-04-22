@@ -24,7 +24,7 @@ import { PulseLoader as Loader } from 'halogenium';
 import Tabs from 'muicss/lib/react/tabs';
 import Tab from 'muicss/lib/react/tab';
 import { getQueryVariable } from 'utils';
-import FileUpload from './FileUpload';
+import { FileUpload } from '../../common/components/FileUpload';
 import OrganizationRegister from './OrganizationRegister';
 import rolesParser from 'roles/rolesParser';
 import ExportedFilesView from './ExportedFilesView';
@@ -403,10 +403,12 @@ class SupplierTabWrapper extends React.Component {
               )}
             </Tab>
             <Tab value="uploadFiles" label="Upload file">
-              <FileUpload
-                fileUploadProgress={fileUploadProgress}
-                handleFileUpload={this.handleFileUpload.bind(this)}
-              />
+              <div style={{ width: '80%', margin: '100px auto' }}>
+                <FileUpload
+                  fileUploadProgress={fileUploadProgress}
+                  handleFileUpload={this.handleFileUpload.bind(this)}
+                />
+              </div>
             </Tab>
           </Tabs>
         );
