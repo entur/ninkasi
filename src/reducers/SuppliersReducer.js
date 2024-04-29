@@ -22,7 +22,6 @@ const initialState = {
   statusListAllProviders: [],
   all_suppliers_selected: true,
   activeId: 0,
-  fileUploadProgress: 0,
   allTransportModes: [],
   exportedFiles: null
 };
@@ -90,9 +89,6 @@ const SuppliersReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         statusListAllProviders: action.payLoad
       });
-
-    case types.UPDATED_FILE_UPLOAD_PROGRESS:
-      return Object.assign({}, state, { fileUploadProgress: action.payLoad });
 
     case types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS:
       return Object.assign({}, state, {

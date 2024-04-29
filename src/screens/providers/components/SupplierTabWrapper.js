@@ -180,31 +180,9 @@ class SupplierTabWrapper extends React.Component {
           this.onTabChangeForAllProviders(0, 'migrateData', null, null);
           return 0;
         }
-      case 'uploadFiles': {
-        if (displayAllSuppliers) {
-          this.onTabChangeForAllProviders(0, 'chouetteJobs', null, null);
-          return 0;
-        } else {
-          return 4;
-        }
-      }
       default:
         return 0;
     }
-  }
-
-  handleFileUpload(files) {
-    const { dispatch, activeId } = this.props;
-    dispatch(SuppliersActions.uploadFiles(files, activeId));
-  }
-
-  handleRefreshAllProviders() {
-    this.props.dispatch(SuppliersActions.getAllProviderStatus());
-  }
-
-  handleRefreshActiveProvider() {
-    const { dispatch, activeId } = this.props;
-    dispatch(SuppliersActions.getProviderStatus(activeId));
   }
 
   componentDidUpdate() {
@@ -237,7 +215,6 @@ class SupplierTabWrapper extends React.Component {
       activeId,
       suppliers,
       fileListIsLoading,
-      fileUploadProgress,
       auth
     } = this.props;
 
@@ -402,14 +379,6 @@ class SupplierTabWrapper extends React.Component {
                 />
               )}
             </Tab>
-            <Tab value="uploadFiles" label="Upload file">
-              <div style={{ width: '80%', margin: '100px auto' }}>
-                <FileUpload
-                  fileUploadProgress={fileUploadProgress}
-                  handleFileUpload={this.handleFileUpload.bind(this)}
-                />
-              </div>
-            </Tab>
           </Tabs>
         );
       }
@@ -432,7 +401,6 @@ const mapStateToProps = state => ({
   displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
   providerEvents: state.SuppliersReducer.statusList,
   allProvidersEvents: state.SuppliersReducer.statusListAllProviders,
-  fileUploadProgress: state.SuppliersReducer.fileUploadProgress,
   auth: state.UserReducer.auth
 });
 

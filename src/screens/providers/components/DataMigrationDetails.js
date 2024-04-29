@@ -439,6 +439,8 @@ class DataMigrationDetails extends React.Component {
         provider.chouetteInfo &&
         provider.chouetteInfo.enableCleanImport &&
         outboundFiles.length > 1
+        // TODO: enableCleanImport is removed, hva skjer her?
+        //  Can we import multiple files now?
       ) {
         alert(
           'Clean before import enabled, does not make sense to import multiple files'

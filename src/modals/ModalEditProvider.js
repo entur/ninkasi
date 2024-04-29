@@ -24,6 +24,15 @@ import FlatButton from 'material-ui/FlatButton';
 import { connect } from 'react-redux';
 import SuppliersActions from 'actions/SuppliersActions';
 import TransportModesPopover from './TransportModesPopover';
+import { Tooltip } from '@material-ui/core';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import { withStyles } from '@material-ui/core/styles';
+
+const LightTooltip = withStyles(() => ({
+  tooltip: {
+    fontSize: 12
+  }
+}))(Tooltip);
 
 const getEmptyForm = () => ({
   _providerId: null,
@@ -34,15 +43,9 @@ const getEmptyForm = () => ({
   _referential: '',
   _organisation: '',
   _user: '',
-  _dataFormat: '',
-  _enableValidation: false,
   _allowCreateMissingStopPlace: false,
-  _enableStopPlaceIdMapping: false,
-  _enableCleanImport: false,
   _generateDatedServiceJourneyIds: false,
   _generateMissingServiceLinksForModes: [],
-  _googleUpload: false,
-  _googleQAUpload: false,
   _migrateDataToProvider: null,
   _enableAutoImport: false,
   _enableAutoValidation: false,
@@ -86,15 +89,9 @@ class ModalEditProvider extends Component {
         referential,
         organisation,
         user,
-        dataFormat,
-        enableValidation,
         allowCreateMissingStopPlace,
-        enableStopPlaceIdMapping,
-        enableCleanImport,
         generateDatedServiceJourneyIds,
         generateMissingServiceLinksForModes,
-        googleUpload,
-        googleQAUpload,
         migrateDataToProvider,
         enableAutoImport,
         enableAutoValidation,
@@ -109,15 +106,9 @@ class ModalEditProvider extends Component {
         _referential: referential,
         _organisation: organisation,
         _user: user,
-        _dataFormat: dataFormat,
-        _enableValidation: enableValidation,
         _allowCreateMissingStopPlace: allowCreateMissingStopPlace,
-        _enableStopPlaceIdMapping: enableStopPlaceIdMapping,
-        _enableCleanImport: enableCleanImport,
         _generateDatedServiceJourneyIds: generateDatedServiceJourneyIds,
         _generateMissingServiceLinksForModes: generateMissingServiceLinksForModes,
-        _googleUpload: googleUpload,
-        _googleQAUpload: googleQAUpload,
         _migrateDataToProvider: migrateDataToProvider,
         _enableAutoImport: enableAutoImport,
         _enableAutoValidation: enableAutoValidation,
@@ -144,21 +135,6 @@ class ModalEditProvider extends Component {
   isEdit() {
     const { provider, shouldUpdate } = this.props;
     return provider && provider.id && shouldUpdate;
-  }
-
-  getDataFormats() {
-    const formats = [
-      { value: '', text: 'None' },
-      { value: 'netexprofile', text: 'NeTEx Profile' },
-      { value: 'gtfs', text: 'GTFS' }
-    ];
-    return formats.map(format => (
-      <MenuItem
-        key={'strategy-' + format.value}
-        value={format.value}
-        primaryText={format.text}
-      />
-    ));
   }
 
   handleCheckTransportMode(transportMode, isChecked) {
@@ -208,6 +184,16 @@ class ModalEditProvider extends Component {
     }
   }
 
+  toolTip(title) {
+    return (
+      <LightTooltip arrow placement="right" title={title}>
+        <span className="question-icon">
+          <HelpOutlineIcon style={{ paddingTop: '5px' }} />
+        </span>
+      </LightTooltip>
+    );
+  }
+
   render() {
     const { open, providers, handleClose, allTransportModes } = this.props;
 
@@ -216,12 +202,16 @@ class ModalEditProvider extends Component {
     const { errors } = this.state;
 
     const title = this.getTitle();
-    const dataFormats = this.getDataFormats();
     const isEdit = this.isEdit();
 
     const rowStyle = {
       display: 'flex',
       justifyContent: 'space-between',
+      alignItems: 'center'
+    };
+
+    const formElement = {
+      display: 'flex',
       alignItems: 'center'
     };
 
@@ -289,19 +279,6 @@ class ModalEditProvider extends Component {
           />
         </div>
         <div style={rowStyle}>
-          <SelectField
-            value={this.state.form._dataFormat}
-            floatingLabelText={'Data format'}
-            floatingLabelFixed={true}
-            fullWidth={true}
-            onChange={(e, k, v) => {
-              this.handleChange('_dataFormat', v);
-            }}
-          >
-            {dataFormats}
-          </SelectField>
-        </div>
-        <div style={rowStyle}>
           <TextField
             disabled={isEdit}
             floatingLabelText={'xmlns'}
@@ -351,105 +328,115 @@ class ModalEditProvider extends Component {
               })}
           </SelectField>
         </div>
+
+        {this.state.form._referential.indexOf('rb_') !== 0 && (
+          <>
+            <div style={{ ...rowStyle, marginTop: 10 }}>
+              <TransportModesPopover
+                allTransportModes={allTransportModes}
+                transportModes={
+                  this.state.form._generateMissingServiceLinksForModes
+                }
+                handleCheckTransportMode={this.handleCheckTransportMode.bind(
+                  this
+                )}
+              />
+            </div>
+            <div style={{ ...rowStyle, marginTop: 10 }}>
+              <div style={{ ...formElement }}>
+                <Checkbox
+                  label="Allow create missing stop place"
+                  checked={this.state.form._allowCreateMissingStopPlace}
+                  style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
+                  labelStyle={{ fontSize: '0.9em' }}
+                  onCheck={(e, v) =>
+                    this.handleChange('_allowCreateMissingStopPlace', v)
+                  }
+                />
+                {this.toolTip(
+                  'Allow Chouette to create new stop places in its database. ' +
+                    'Since stop places should be already present in the Chouette database (imported from NSR) the default setting is "off". ' +
+                    'Used only when testing non-Norwegian datasets'
+                )}
+              </div>
+            </div>
+            <div style={{ ...rowStyle, marginTop: 10 }}>
+              <div style={{ ...formElement }}>
+                <Checkbox
+                  label="Enable auto import"
+                  checked={this.state.form._enableAutoImport}
+                  style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
+                  labelStyle={{ fontSize: '0.9em' }}
+                  onCheck={(e, v) => this.handleChange('_enableAutoImport', v)}
+                />
+                {this.toolTip(
+                  'Automatically trigger the import pipeline after a file delivery, ' +
+                    'either through the operator portal or the HTTP endpoint. ' +
+                    'If disabled the received file is saved in the file storage but not imported'
+                )}
+              </div>
+            </div>
+            <div style={{ ...rowStyle, marginTop: 10 }}>
+              <div style={{ ...formElement }}>
+                <Checkbox
+                  label="Generate DatedServiceJourneyIds"
+                  checked={this.state.form._generateDatedServiceJourneyIds}
+                  style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
+                  labelStyle={{ fontSize: '0.9em' }}
+                  onCheck={(e, v) =>
+                    this.handleChange('_generateDatedServiceJourneyIds', v)
+                  }
+                />
+                {this.toolTip(
+                  'Deprecated. Generates a dated NeTEx export to be processed by Namtar'
+                )}
+              </div>
+            </div>
+          </>
+        )}
         <div style={{ ...rowStyle, marginTop: 10 }}>
-          <TransportModesPopover
-            allTransportModes={allTransportModes}
-            transportModes={
-              this.state.form._generateMissingServiceLinksForModes
-            }
-            handleCheckTransportMode={this.handleCheckTransportMode.bind(this)}
-          />
+          <div style={{ ...formElement }}>
+            <Checkbox
+              label="Enable auto validation"
+              checked={this.state.form._enableAutoValidation}
+              style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
+              labelStyle={{ fontSize: '0.9em' }}
+              onCheck={(e, v) => this.handleChange('_enableAutoValidation', v)}
+            />
+            {this.toolTip(
+              this.state.form._referential.indexOf('rb_') !== 0
+                ? 'Allow Chouette to create new stop places in its database. ' +
+                    'Since stop places should be already present in the Chouette database (imported from NSR) the default setting is "off". ' +
+                    'Used only when testing non-Norwegian datasets'
+                : 'Enable nightly automatic triggering of "validation Level 2" steps. ' +
+                    'This option does not affect the execution of the "validation Level 2" step triggered by a file delivery.'
+            )}
+          </div>
         </div>
-        <div style={{ ...rowStyle, marginTop: 10 }}>
-          <Checkbox
-            label="Allow create missing stop place"
-            checked={this.state.form._allowCreateMissingStopPlace}
-            style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) =>
-              this.handleChange('_allowCreateMissingStopPlace', v)
-            }
-          />
-          <Checkbox
-            label="Enable stop place Id mapping"
-            checked={this.state.form._enableStopPlaceIdMapping}
-            style={{ flex: 1 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) =>
-              this.handleChange('_enableStopPlaceIdMapping', v)
-            }
-          />
-        </div>
-        <div style={{ ...rowStyle, marginTop: 10 }}>
-          <Checkbox
-            label="Enable clean import"
-            checked={this.state.form._enableCleanImport}
-            style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.handleChange('_enableCleanImport', v)}
-          />
-          <Checkbox
-            label="Enable validation"
-            checked={this.state.form._enableValidation}
-            style={{ flex: 1 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.handleChange('_enableValidation', v)}
-          />
-        </div>
-        <div style={{ ...rowStyle, marginTop: 10 }}>
-          <Checkbox
-            label="Enable auto import"
-            checked={this.state.form._enableAutoImport}
-            style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.handleChange('_enableAutoImport', v)}
-          />
-          <Checkbox
-            label="Enable auto validation"
-            checked={this.state.form._enableAutoValidation}
-            style={{ flex: 1 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.handleChange('_enableAutoValidation', v)}
-          />
-        </div>
-        <div style={{ ...rowStyle, marginTop: 10 }}>
-          <Checkbox
-            label="Upload to Google (production)"
-            checked={this.state.form._googleUpload}
-            style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.handleChange('_googleUpload', v)}
-          />
-          <Checkbox
-            label="Upload to Google (QA)"
-            checked={this.state.form._googleQAUpload}
-            style={{ flex: 1 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.handleChange('_googleQAUpload', v)}
-          />
-        </div>
-        <div style={{ ...rowStyle, marginTop: 10 }}>
-          <Checkbox
-            label="Generate DatedServiceJourneyIds"
-            checked={this.state.form._generateDatedServiceJourneyIds}
-            style={{ flex: 1, maxWidth: 360 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) =>
-              this.handleChange('_generateDatedServiceJourneyIds', v)
-            }
-          />
-          <Checkbox
-            label="Enable private export (blocks and restricted publication)"
-            checked={this.state.form._enableBlocksExport}
-            style={{ flex: 1 }}
-            labelStyle={{ fontSize: '0.9em' }}
-            onCheck={(e, v) => this.handleChange('_enableBlocksExport', v)}
-          />
-        </div>
+        {this.state.form._referential.indexOf('rb_') === 0 && (
+          <div style={{ ...rowStyle, marginTop: 10 }}>
+            <div style={{ ...formElement }}>
+              <Checkbox
+                label="Enable private export (blocks and restricted publication)"
+                checked={this.state.form._enableBlocksExport}
+                style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
+                labelStyle={{ fontSize: '0.9em' }}
+                onCheck={(e, v) => this.handleChange('_enableBlocksExport', v)}
+              />
+              {this.toolTip(
+                'When activated, a second NeTEx export is generated, ' +
+                  'that will include private/sensitive data ' +
+                  '(Blocks, DeadRuns, ServiceJourneys marked with publication=restricted). ' +
+                  'This export is accessible only through a private, authorized API.'
+              )}
+            </div>
+          </div>
+        )}
       </Dialog>
     );
   }
 }
+
 const mapStateToProps = state => ({
   allTransportModes: state.SuppliersReducer.allTransportModes
 });

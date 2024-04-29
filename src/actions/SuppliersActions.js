@@ -144,47 +144,6 @@ SuppliersActions.executePeliasTask = tasks => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.uploadFiles = (files, providerId) => async (
-  dispatch,
-  getState
-) => {
-  dispatch(sendData(0, types.UPDATED_FILE_UPLOAD_PROGRESS));
-
-  const url = `${window.config.timetableAdminBaseUrl}${providerId}/files`;
-
-  var data = new FormData();
-
-  files.forEach(file => {
-    data.append('files', file);
-  });
-
-  var config = {
-    onUploadProgress: function(progressEvent) {
-      let percentCompleted = (progressEvent.loaded / progressEvent.total) * 100;
-      dispatch(sendData(percentCompleted, types.UPDATED_FILE_UPLOAD_PROGRESS));
-    },
-    ...(await getApiConfig(getState().UserReducer.auth))
-  };
-
-  return axios
-    .post(url, data, config)
-    .then(function(response) {
-      dispatch(SuppliersActions.addNotification('Uploaded file(s)', 'success'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Uploaded file(s): ' + files.join(',')
-        })
-      );
-      dispatch(sendData(0, types.UPDATED_FILE_UPLOAD_PROGRESS));
-    })
-    .catch(function(response) {
-      dispatch(
-        SuppliersActions.addNotification('Unable to upload file(s)', 'error')
-      );
-      dispatch(sendData(0, types.UPDATED_FILE_UPLOAD_PROGRESS));
-    });
-};
-
 SuppliersActions.uploadTariffZonesFiles = (files, provider) => async (
   dispatch,
   getState
@@ -387,17 +346,11 @@ const getProviderPayload = data => {
       referential: trimmedData._referential,
       organisation: trimmedData._organisation,
       user: trimmedData._user,
-      dataFormat: trimmedData._dataFormat,
-      enableValidation: trimmedData._enableValidation,
       allowCreateMissingStopPlace: trimmedData._allowCreateMissingStopPlace,
-      enableStopPlaceIdMapping: trimmedData._enableStopPlaceIdMapping,
-      enableCleanImport: trimmedData._enableCleanImport,
       generateDatedServiceJourneyIds:
         trimmedData._generateDatedServiceJourneyIds,
       generateMissingServiceLinksForModes:
         trimmedData._generateMissingServiceLinksForModes,
-      googleUpload: trimmedData._googleUpload,
-      googleQAUpload: trimmedData._googleQAUpload,
       migrateDataToProvider: trimmedData._migrateDataToProvider,
       enableAutoImport: trimmedData._enableAutoImport,
       enableAutoValidation: trimmedData._enableAutoValidation,
