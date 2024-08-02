@@ -23,6 +23,7 @@ import MardukReducer from './MardukReducer';
 import UtilsReducer from './UtilsReducer';
 import OrganizationReducer from './OrganizationReducer';
 import UserReducer from './UserReducer';
+import UserContextReducer from './UserContextReducer';
 
 const createRootReducer = history =>
   combineReducers({
@@ -32,7 +33,8 @@ const createRootReducer = history =>
     MardukReducer,
     UtilsReducer,
     OrganizationReducer,
-    UserReducer
+    UserReducer,
+    UserContextReducer
   });
 
 export default createRootReducer;

@@ -14,31 +14,24 @@
  *
  */
 
-const rolesParser = {};
+import * as types from 'actions/actionTypes';
 
-rolesParser.canEditOrganisation = roleAssignments => {
-  if (!roleAssignments) return false;
-
-  let canEditOrganisation = false;
-
-  roleAssignments.forEach(roleString => {
-    let roleJSON = JSON.parse(roleString);
-    if (roleJSON.r === 'editOrganisation') {
-      canEditOrganisation = true;
-    }
-  });
-  return canEditOrganisation;
+const initialState = {
+  preferredName: '',
+  isRouteDataAdmin: false,
+  isOrganisationAdmin: false
 };
 
-rolesParser.isAdmin = roleAssignments => {
-  if (!roleAssignments) return false;
+const UserContextReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case types.RECEIVED_USER_CONTEXT:
+      return Object.assign({}, state, {
+        ...action.payLoad
+      });
 
-  for (let i = 0; i < roleAssignments.length; i++) {
-    let role = JSON.parse(roleAssignments[i]);
-    if (role.r === 'adminEditRouteData') return true;
+    default:
+      return state;
   }
-
-  return false;
 };
 
-export default rolesParser;
+export default UserContextReducer;

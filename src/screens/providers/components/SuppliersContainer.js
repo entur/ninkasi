@@ -20,7 +20,6 @@ import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
 import MdNew from 'material-ui/svg-icons/content/add';
 import { getQueryVariable } from 'utils';
-import rolesParser from 'roles/rolesParser';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import ConfirmDialog from 'modals/ConfirmDialog';
@@ -91,10 +90,7 @@ class SuppliersContainer extends React.Component {
   }
 
   render() {
-    const { suppliers, activeProviderId, auth } = this.props;
-    const canEditOrganisation = rolesParser.canEditOrganisation(
-      auth.roleAssignments
-    );
+    const { suppliers, activeProviderId, canEditOrganisation } = this.props;
 
     const supplierItems = [
       {
@@ -198,8 +194,8 @@ class SuppliersContainer extends React.Component {
 const mapStateToProps = state => ({
   suppliers: state.SuppliersReducer.data,
   activeProviderId: state.SuppliersReducer.activeId,
-  auth: state.UserReducer.auth,
-  displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected
+  displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
+  canEditOrganisation: state.UserContextReducer.isOrganisationAdmin
 });
 
 export default connect(mapStateToProps)(SuppliersContainer);

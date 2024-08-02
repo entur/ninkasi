@@ -24,9 +24,7 @@ import { PulseLoader as Loader } from 'halogenium';
 import Tabs from 'muicss/lib/react/tabs';
 import Tab from 'muicss/lib/react/tab';
 import { getQueryVariable } from 'utils';
-import { FileUpload } from '../../common/components/FileUpload';
 import OrganizationRegister from './OrganizationRegister';
-import rolesParser from 'roles/rolesParser';
 import ExportedFilesView from './ExportedFilesView';
 import { MicroFrontend } from '@entur/micro-frontend';
 import { MicroFrontendFetchStatus } from '../../../app/components/MicroFrontendFetchStatus';
@@ -215,12 +213,9 @@ class SupplierTabWrapper extends React.Component {
       activeId,
       suppliers,
       fileListIsLoading,
-      auth
+      auth,
+      canEditOrganisation
     } = this.props;
-
-    const canEditOrganisation = rolesParser.canEditOrganisation(
-      auth.roleAssignments
-    );
 
     if (fileListIsLoading) {
       return (
@@ -401,7 +396,8 @@ const mapStateToProps = state => ({
   displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
   providerEvents: state.SuppliersReducer.statusList,
   allProvidersEvents: state.SuppliersReducer.statusListAllProviders,
-  auth: state.UserReducer.auth
+  auth: state.UserReducer.auth,
+  canEditOrganisation: state.UserContextReducer.isOrganisationAdmin
 });
 
 export default connect(mapStateToProps)(SupplierTabWrapper);

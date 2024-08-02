@@ -22,21 +22,22 @@ import { MuiThemeProvider as V0MuiThemeProvider } from 'material-ui';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { connect } from 'react-redux';
 import UtilsActions from 'actions/UtilsActions';
-import roleParser from 'roles/rolesParser';
 import NoAccess from './components/NoAccess';
 import Router from './Router';
 import Menu from './components/Menu';
 import NotificationContainer from './components/NotificationContainer';
+import UserContextActions from '../actions/UserContextActions';
 
 const themeV0 = getMuiTheme({
   /* theme for v0.x */
 });
 
-const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, auth }) => {
+const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, auth, isAdmin }) => {
   useEffect(() => {
     cfgreader.readConfig(config => {
       window.config = config;
       dispatch(UtilsActions.notifyConfigIsLoaded());
+      dispatch(UserContextActions.fetchUserContext());
     });
   }, [dispatch]);
 
@@ -59,7 +60,7 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, auth }) => {
             <Menu open={isMenuOpen} />
             <div className="app">
               <Header />
-              {roleParser.isAdmin(auth.roleAssignments) ? (
+              {isAdmin ? (
                 <Router />
               ) : (
                 <NoAccess
@@ -82,7 +83,8 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, auth }) => {
 const mapStateToProps = state => ({
   auth: state.UserReducer.auth,
   isConfigLoaded: state.UtilsReducer.isConfigLoaded,
-  isMenuOpen: state.app.isMenuOpen
+  isMenuOpen: state.app.isMenuOpen,
+  isAdmin: state.UserContextReducer.isRouteDataAdmin
 });
 
 export default connect(mapStateToProps)(MainPage);
