@@ -14,8 +14,13 @@
  *
  */
 
+import { UPDATE_AUTH } from 'actions/actionTypes';
+
 const UserReducer = (state = {}, action) => {
   switch (action.type) {
+    case UPDATE_AUTH:
+      return Object.assign({}, state, { auth: action.payLoad });
+
     default:
       return state;
   }

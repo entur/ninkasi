@@ -27,19 +27,29 @@ import Router from './Router';
 import Menu from './components/Menu';
 import NotificationContainer from './components/NotificationContainer';
 import UserContextActions from '../actions/UserContextActions';
+import { useAuth } from '@entur/auth-provider';
+import UserActions from '../actions/UserActions';
 
 const themeV0 = getMuiTheme({
   /* theme for v0.x */
 });
 
-const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, auth, isAdmin }) => {
+const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
+  const auth = useAuth();
+
   useEffect(() => {
-    cfgreader.readConfig(config => {
-      window.config = config;
-      dispatch(UtilsActions.notifyConfigIsLoaded());
-      dispatch(UserContextActions.fetchUserContext());
-    });
-  }, [dispatch]);
+    dispatch(UserActions.updateAuth(auth));
+  }, [auth, dispatch]);
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      cfgreader.readConfig(config => {
+        window.config = config;
+        dispatch(UtilsActions.notifyConfigIsLoaded());
+        dispatch(UserContextActions.fetchUserContext());
+      });
+    }
+  }, [dispatch, auth.isAuthenticated]);
 
   const theme = useMemo(
     () =>
@@ -51,7 +61,7 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, auth, isAdmin }) => {
     []
   );
 
-  if (isConfigLoaded && auth.roleAssignments) {
+  if (isConfigLoaded && auth.isAuthenticated) {
     return (
       <MuiThemeProvider theme={theme}>
         <V0MuiThemeProvider muiTheme={themeV0}>

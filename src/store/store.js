@@ -24,7 +24,7 @@ import createRootReducer from 'reducers';
 
 export const history = createBrowserHistory();
 
-export default function configureStore(auth) {
+export default function configureStore() {
   let enchancer = {};
 
   if (process.env.NODE_ENV === 'development') {
@@ -43,13 +43,7 @@ export default function configureStore(auth) {
     );
   }
 
-  const initialState = {
-    UserReducer: {
-      auth
-    }
-  };
-
-  let store = createStore(createRootReducer(history), initialState, enchancer);
+  let store = createStore(createRootReducer(history), {}, enchancer);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers

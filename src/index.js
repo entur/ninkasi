@@ -14,7 +14,7 @@
  *
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
@@ -33,10 +33,8 @@ cfgreader.readConfig(function(config) {
 });
 
 const AuthenticatedApp = () => {
-  const auth = useAuth();
-
   return (
-    <Provider store={configureStore(auth)}>
+    <Provider store={configureStore()}>
       <ConnectedRouter history={history}>
         <App />
       </ConnectedRouter>
