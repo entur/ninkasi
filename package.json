@@ -12,7 +12,7 @@
   },
   "license": "EUPL",
   "dependencies": {
-    "@entur/auth-provider": "1.1.0",
+    "@entur/auth-provider": "1.1.1",
     "@entur/micro-frontend": "0.4.0",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
