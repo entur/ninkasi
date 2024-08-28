@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: 18.16.0
@@ -48,7 +48,7 @@ jobs:
     needs: [build]
     environment: 'dev'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v3
       - name: Copy favicon
@@ -64,7 +64,7 @@ jobs:
     needs: [deploy_dev]
     environment: 'staging'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v3
       - name: Copy favicon
@@ -80,7 +80,7 @@ jobs:
     needs: [deploy_dev, deploy_staging]
     environment: 'prod'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v3
       - name: Copy favicon
