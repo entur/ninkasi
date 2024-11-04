@@ -38,7 +38,7 @@
     "react": "18.2.0",
     "react-chartjs-2": "2.11.2",
     "react-dom": "16.14.0",
-    "react-dropzone": "4.3.0",
+    "react-dropzone": "14.3.5",
     "react-icons": "2.2.7",
     "react-notification": "6.8.5",
     "react-notification-system": "0.4.0",
