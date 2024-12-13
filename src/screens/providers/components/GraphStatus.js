@@ -36,12 +36,15 @@ const getColorByStatus = status => {
 const containerStyle = {
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'space-between',
-  width: '360px',
-  margin: '0 30px'
+  margin: '0 20px',
+  lineHeight: '24px'
 };
 
-const wrapperStyle = {};
+const wrapperStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  margin: '0 10px'
+};
 
 const statusStyle = {
   display: 'flex',
@@ -49,21 +52,18 @@ const statusStyle = {
   flexDirection: 'row'
 };
 
-const GraphStatusDetails = ({ title, status, started }) => (
+const GraphStatusDetails = ({ status, started }) => (
   <div style={statusStyle}>
     {status && started && (
       <>
-        <span>
-          {title}
-          <span
-            style={{
-              fontWeight: 600,
-              marginLeft: 5,
-              color: getColorByStatus(status)
-            }}
-          >
-            {status}
-          </span>
+        <span
+          style={{
+            fontWeight: 600,
+            marginLeft: 5,
+            color: getColorByStatus(status)
+          }}
+        >
+          {status}
         </span>
         <span
           title={moment(started).format('DD-MM-YYYY hh:mm:ss')}
@@ -111,38 +111,20 @@ class GraphStatus extends React.Component {
     return (
       <div style={containerStyle}>
         <div style={wrapperStyle}>
-          <>
-            <h4 style={{ fontWeight: 'bold' }}>Graph status</h4>
-            {graphStatus.otp1 && (
-              <GraphStatusDetails
-                title="OTP1"
-                status={graphStatus.otp1.status}
-                started={graphStatus.otp1.started}
-              />
-            )}
-            {graphStatus.otp2 && (
-              <GraphStatusDetails
-                title="OTP2"
-                status={graphStatus.otp2.status}
-                started={graphStatus.otp2.started}
-              />
-            )}
-          </>
+          <h4 style={{ fontWeight: 'bold', margin: '0' }}>Graph status</h4>
+          <h4 style={{ fontWeight: 'bold', margin: '0' }}>Base graph status</h4>
         </div>
         <div style={wrapperStyle}>
-          <h4 style={{ fontWeight: 'bold' }}>Base graph status</h4>
-          {baseGraphStatus.otp1 && (
-            <GraphStatusDetails
-              title="OTP1"
-              status={baseGraphStatus.otp1.status}
-              started={baseGraphStatus.otp1.started}
-            />
-          )}
           {baseGraphStatus.otp2 && (
             <GraphStatusDetails
-              title="OTP2"
               status={baseGraphStatus.otp2.status}
               started={baseGraphStatus.otp2.started}
+            />
+          )}
+          {graphStatus.otp2 && (
+            <GraphStatusDetails
+              status={'STARTED'}
+              started={graphStatus.otp2.started}
             />
           )}
         </div>
