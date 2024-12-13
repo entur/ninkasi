@@ -378,11 +378,7 @@ class SupplierTabWrapper extends React.Component {
         );
       }
 
-      return (
-        <div className="supplier-info">
-          <div style={{ marginLeft: 10, marginRight: 10 }}>{tabsToRender}</div>
-        </div>
-      );
+      return <div className="supplier-info">{tabsToRender}</div>;
     } else {
       return null;
     }

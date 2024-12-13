@@ -107,85 +107,76 @@ class SuppliersContainer extends React.Component {
 
     return (
       <div className="suppliers-container">
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            margin: 'auto',
-            width: '98%'
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <SelectSupplier
-              suppliers={supplierItems}
-              selectSupplier={v => this.selectSupplier(v)}
-              selectedSupplierId={activeProviderId}
-            />
-            {canEditOrganisation && (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <SelectSupplier
+            suppliers={supplierItems}
+            selectSupplier={v => this.selectSupplier(v)}
+            selectedSupplierId={activeProviderId}
+          />
+          {canEditOrganisation && (
+            <div
+              style={{
+                display: 'inline-block',
+                marginTop: 25,
+                marginLeft: 15
+              }}
+            >
               <div
+                title={toolTips.editProvider}
                 style={{
                   display: 'inline-block',
-                  marginTop: 25,
-                  marginLeft: 15
+                  cursor: 'pointer',
+                  marginRight: 10
                 }}
+                onClick={() => this.handleEditProvider()}
               >
-                <div
-                  title={toolTips.editProvider}
-                  style={{
-                    display: 'inline-block',
-                    cursor: 'pointer',
-                    marginRight: 10
-                  }}
-                  onClick={() => this.handleEditProvider()}
-                >
-                  {!this.props.displayAllSuppliers && (
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <MdEdit style={{ width: '1.1em', height: '1.1em' }} />
-                      <span style={{ marginLeft: 2 }}>Edit</span>
-                    </div>
-                  )}
-                </div>
-                <div
-                  title={toolTips.createNewProvider}
-                  style={{
-                    display: 'inline-block',
-                    cursor: 'pointer',
-                    marginRight: 10
-                  }}
-                  onClick={() => this.handleNewProvider()}
-                >
+                {!this.props.displayAllSuppliers && (
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <MdNew style={{ width: '1.2em', height: '1.2em' }} />
-                    <span style={{ marginLeft: 2 }}>New</span>
+                    <MdEdit style={{ width: '1.1em', height: '1.1em' }} />
+                    <span style={{ marginLeft: 2 }}>Edit</span>
                   </div>
-                </div>
-
-                <div
-                  title={toolTips.deleteProvider}
-                  style={{ display: 'inline-block', cursor: 'pointer' }}
-                  onClick={() => this.handleOpenConfirmDeleteProviderDialog()}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <MdDelete style={{ width: '1.2em', height: '1.2em' }} />
-                    <span style={{ marginLeft: 2 }}>Delete</span>
-                  </div>
+                )}
+              </div>
+              <div
+                title={toolTips.createNewProvider}
+                style={{
+                  display: 'inline-block',
+                  cursor: 'pointer',
+                  marginRight: 10
+                }}
+                onClick={() => this.handleNewProvider()}
+              >
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <MdNew style={{ width: '1.2em', height: '1.2em' }} />
+                  <span style={{ marginLeft: 2 }}>New</span>
                 </div>
               </div>
-            )}
-          </div>
-          <ConfirmDialog
-            open={this.state.confirmDialogOpen}
-            handleSubmit={this.state.confirmAction}
-            title={this.state.confirmTitle}
-            info={this.state.confirmInfo}
-            handleClose={() => {
-              this.setState({
-                confirmDialogOpen: false,
-                confirmAction: null
-              });
-            }}
-          />
+
+              <div
+                title={toolTips.deleteProvider}
+                style={{ display: 'inline-block', cursor: 'pointer' }}
+                onClick={() => this.handleOpenConfirmDeleteProviderDialog()}
+              >
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <MdDelete style={{ width: '1.2em', height: '1.2em' }} />
+                  <span style={{ marginLeft: 2 }}>Delete</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
+        <ConfirmDialog
+          open={this.state.confirmDialogOpen}
+          handleSubmit={this.state.confirmAction}
+          title={this.state.confirmTitle}
+          info={this.state.confirmInfo}
+          handleClose={() => {
+            this.setState({
+              confirmDialogOpen: false,
+              confirmAction: null
+            });
+          }}
+        />
       </div>
     );
   }

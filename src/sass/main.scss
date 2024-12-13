@@ -40,7 +40,8 @@ body {
 
 .supplier-info {
   background: #fff;
-  margin: 10px 20px 20px;
+  margin: 0 20px 20px;
+  padding: 0 10px 10px;
   border: 1px solid #ccc;
   flex-grow: 1;
 
@@ -61,7 +62,6 @@ body {
 }
 
 .suppliers-container {
-  flex-grow: 1;
   > h1 {
     margin-bottom: 40px;
     font-weight: 500;

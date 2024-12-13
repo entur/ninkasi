@@ -16,7 +16,14 @@ const Providers = ({ auth, isAdmin }) => {
           <div
             style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
           >
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                margin: '0 20px',
+                justifyContent: 'space-between'
+              }}
+            >
               <SuppliersContainer />
               <ShowOTPGraphStatus />
             </div>
