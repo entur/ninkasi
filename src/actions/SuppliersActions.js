@@ -764,12 +764,12 @@ SuppliersActions.getGraphStatus = () => async (dispatch, getState) => {
         otherStatus: []
       };
       response.data.forEach(type => {
-        if (type.jobType === 'OTP_BUILD_GRAPH') {
+        if (type.jobType === 'OTP2_BUILD_GRAPH') {
           status.graphStatus.otp2 = {
             status: type.currentState,
             started: type.currentStateDate
           };
-        } else if (type.jobType === 'OTP_BUILD_BASE') {
+        } else if (type.jobType === 'OTP2_BUILD_BASE') {
           status.baseGraphStatus.otp2 = {
             status: type.currentState,
             started: type.currentStateDate
