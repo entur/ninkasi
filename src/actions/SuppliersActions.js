@@ -764,12 +764,12 @@ SuppliersActions.getGraphStatus = () => async (dispatch, getState) => {
         otherStatus: []
       };
       response.data.forEach(type => {
-        if (type.jobType === 'OTP2_BUILD_GRAPH') {
+        if (type.jobType === 'OTP_BUILD_GRAPH') {
           status.graphStatus.otp2 = {
             status: type.currentState,
             started: type.currentStateDate
           };
-        } else if (type.jobType === 'OTP2_BUILD_BASE') {
+        } else if (type.jobType === 'OTP_BUILD_BASE') {
           status.baseGraphStatus.otp2 = {
             status: type.currentState,
             started: type.currentStateDate
@@ -1078,7 +1078,7 @@ SuppliersActions.buildBaseGraph = () => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.buildCandidateGraphOTP2 = () => async (dispatch, getState) => {
+SuppliersActions.buildCandidateGraphOTP = () => async (dispatch, getState) => {
   const url =
     window.config.timetableAdminBaseUrl +
     'routing_graph/build_candidate/otp2_netex';
@@ -1092,38 +1092,38 @@ SuppliersActions.buildCandidateGraphOTP2 = () => async (dispatch, getState) => {
   })
     .then(function(response) {
       dispatch(
-        sendData(response.data, types.SUCCESS_BUILD_CANDIDATE_GRAPH_OTP2)
+        sendData(response.data, types.SUCCESS_BUILD_CANDIDATE_GRAPH_OTP)
       );
       dispatch(
         SuppliersActions.addNotification(
-          'Candidate graph build (OTP2) started',
+          'Candidate graph build (OTP) started',
           'success'
         )
       );
       dispatch(
         SuppliersActions.logEvent({
-          title: 'Candidate graph build (OTP2) started'
+          title: 'Candidate graph build (OTP) started'
         })
       );
     })
     .catch(function(response) {
-      console.log('ERROR BUILDING CANDIDATE GRAPH (OTP2)', response);
-      dispatch(sendData(response.data, types.ERROR_BUILD_CANDIDATE_GRAPH_OTP2));
+      console.log('ERROR BUILDING CANDIDATE GRAPH (OTP)', response);
+      dispatch(sendData(response.data, types.ERROR_BUILD_CANDIDATE_GRAPH_OTP));
       dispatch(
         SuppliersActions.addNotification(
-          'Candidate graph build (OTP2) failed',
+          'Candidate graph build (OTP) failed',
           'error'
         )
       );
       dispatch(
         SuppliersActions.logEvent({
-          title: 'Candidate graph build (OTP2) failed'
+          title: 'Candidate graph build (OTP) failed'
         })
       );
     });
 };
 
-SuppliersActions.buildCandidateBaseGraphOTP2 = () => async (
+SuppliersActions.buildCandidateBaseGraphOTP = () => async (
   dispatch,
   getState
 ) => {
@@ -1140,34 +1140,34 @@ SuppliersActions.buildCandidateBaseGraphOTP2 = () => async (
   })
     .then(function(response) {
       dispatch(
-        sendData(response.data, types.SUCCESS_BUILD_CANDIDATE_BASE_GRAPH_OTP2)
+        sendData(response.data, types.SUCCESS_BUILD_CANDIDATE_BASE_GRAPH_OTP)
       );
       dispatch(
         SuppliersActions.addNotification(
-          'Candidate base graph build (OTP2) started',
+          'Candidate base graph build (OTP) started',
           'success'
         )
       );
       dispatch(
         SuppliersActions.logEvent({
-          title: 'Candidate base graph build (OTP2) started'
+          title: 'Candidate base graph build (OTP) started'
         })
       );
     })
     .catch(function(response) {
-      console.log('ERROR BUILDING CANDIDATE BASE GRAPH (OTP2)', response);
+      console.log('ERROR BUILDING CANDIDATE BASE GRAPH (OTP)', response);
       dispatch(
-        sendData(response.data, types.ERROR_BUILD_CANDIDATE_BASE_GRAPH_OTP2)
+        sendData(response.data, types.ERROR_BUILD_CANDIDATE_BASE_GRAPH_OTP)
       );
       dispatch(
         SuppliersActions.addNotification(
-          'Candidate base graph build (OTP2) failed',
+          'Candidate base graph build (OTP) failed',
           'error'
         )
       );
       dispatch(
         SuppliersActions.logEvent({
-          title: 'Candidate base graph build (OTP2) failed'
+          title: 'Candidate base graph build (OTP) failed'
         })
       );
     });

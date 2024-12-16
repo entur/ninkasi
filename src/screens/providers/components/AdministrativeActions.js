@@ -71,27 +71,26 @@ class AdministrativeActions extends React.Component {
     });
   }
 
-  handleBuildCandidateGraphOTP2() {
+  handleBuildCandidateGraphOTP() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: 'Build candidate graph (OTP2)',
-      confirmInfo: 'Are you sure you want to build candidate graph (OTP2)?',
+      confirmTitle: 'Build candidate graph (OTP)',
+      confirmInfo: 'Are you sure you want to build candidate graph (OTP)?',
       confirmAction: () => {
         const { dispatch } = this.props;
-        dispatch(SuppliersActions.buildCandidateGraphOTP2());
+        dispatch(SuppliersActions.buildCandidateGraphOTP());
       }
     });
   }
 
-  handleBuildCandidateBaseGraphOTP2() {
+  handleBuildCandidateBaseGraphOTP() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: 'Build candidate base graph (OTP2)',
-      confirmInfo:
-        'Are you sure you want to build candidate base graph (OTP2)?',
+      confirmTitle: 'Build candidate base graph (OTP)',
+      confirmInfo: 'Are you sure you want to build candidate base graph (OTP)?',
       confirmAction: () => {
         const { dispatch } = this.props;
-        dispatch(SuppliersActions.buildCandidateBaseGraphOTP2());
+        dispatch(SuppliersActions.buildCandidateBaseGraphOTP());
       }
     });
   }
@@ -253,9 +252,9 @@ class AdministrativeActions extends React.Component {
     const toolTips = {
       buildGraph: 'Build graph for all providers',
       buildBaseGraph: 'Build new base graph with OSM and elevation data',
-      buildCandidateGraph: 'Build candidate graph for all providers (OTP2)',
-      buildCandidateBaseGraphOTP2:
-        'Build new candidate base graph with OSM and elevation data (OTP2)',
+      buildCandidateGraph: 'Build candidate graph for all providers (OTP)',
+      buildCandidateBaseGraphOTP:
+        'Build new candidate base graph with OSM and elevation data (OTP)',
       fetchOSM: 'Fetch Open Street Map data',
       cleanFileFilter: 'Clean file filter',
       canceAllJobs: 'Cancel all current chouette jobs',
@@ -302,16 +301,16 @@ class AdministrativeActions extends React.Component {
               title={toolTips.buildBaseGraph}
             />
             <MenuItem
-              primaryText={'Build Candidate Graph OTP2'}
+              primaryText={'Build Candidate Graph OTP'}
               style={{ fontSize: '1em' }}
-              onClick={() => this.handleBuildCandidateGraphOTP2()}
-              title={toolTips.buildCandidateGraphOTP2}
+              onClick={() => this.handleBuildCandidateGraphOTP()}
+              title={toolTips.buildCandidateGraphOTP}
             />
             <MenuItem
-              primaryText={'Build Candidate Base Graph OTP2'}
+              primaryText={'Build Candidate Base Graph OTP'}
               style={{ fontSize: '1em' }}
-              onClick={() => this.handleBuildCandidateBaseGraphOTP2()}
-              title={toolTips.buildCandidateBaseGraphOTP2}
+              onClick={() => this.handleBuildCandidateBaseGraphOTP()}
+              title={toolTips.buildCandidateBaseGraphOTP}
             />
           </Popover>
           <FlatButton
