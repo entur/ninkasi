@@ -117,7 +117,7 @@ class GraphStatus extends React.Component {
         <div style={wrapperStyle}>
           {graphStatus.otp2 && (
             <GraphStatusDetails
-              status={'STARTED'}
+              status={graphStatus.otp2.status}
               started={graphStatus.otp2.started}
             />
           )}
