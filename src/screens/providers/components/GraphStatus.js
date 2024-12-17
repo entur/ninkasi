@@ -115,16 +115,16 @@ class GraphStatus extends React.Component {
           <h4 style={{ fontWeight: 'bold', margin: '0' }}>Base graph status</h4>
         </div>
         <div style={wrapperStyle}>
-          {baseGraphStatus.otp2 && (
-            <GraphStatusDetails
-              status={baseGraphStatus.otp2.status}
-              started={baseGraphStatus.otp2.started}
-            />
-          )}
           {graphStatus.otp2 && (
             <GraphStatusDetails
               status={'STARTED'}
               started={graphStatus.otp2.started}
+            />
+          )}
+          {baseGraphStatus.otp2 && (
+            <GraphStatusDetails
+              status={baseGraphStatus.otp2.status}
+              started={baseGraphStatus.otp2.started}
             />
           )}
         </div>
