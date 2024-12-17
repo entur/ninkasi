@@ -66,7 +66,7 @@ const GraphStatusDetails = ({ status, started }) => (
           {status}
         </span>
         <span
-          title={moment(started).format('DD-MM-YYYY hh:mm:ss')}
+          title={moment(started).format('DD-MM-YYYY HH:mm:ss')}
           style={{ fontSize: '0.8em', paddingLeft: 5, whiteSpace: 'nowrap' }}
         >
           {moment(started).fromNow()}

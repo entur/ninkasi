@@ -58,7 +58,7 @@ const GraphVersionDetails = ({ name, serializationId, creationDate, size }) => (
       >
         <span>{serializationId}</span>
         <span title={moment(creationDate).fromNow()}>
-          {moment(creationDate).format('DD-MM-YYYY hh:mm:ss')}
+          {moment(creationDate).format('DD-MM-YYYY HH:mm:ss')}
         </span>
         <span>
           {Math.round((size / 1024 / 1024 / 1024 + Number.EPSILON) * 100) / 100}{' '}
