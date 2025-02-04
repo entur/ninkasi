@@ -29,7 +29,7 @@
     "husky": "3.1.0",
     "lint-staged": "9.5.0",
     "lodash": "4.17.21",
-    "material-ui": "0.20.0",
+    "material-ui": "0.20.2",
     "moment": "2.29.4",
     "muicss": "0.10.3",
     "prettier": "1.19.1",
