@@ -15,7 +15,7 @@
     "@entur/auth-provider": "1.1.0",
     "@entur/micro-frontend": "0.4.0",
     "@material-ui/core": "4.12.4",
-    "@material-ui/icons": "4.11.3",
+    "@mui/icons-material": "5.0.0",
     "@material-ui/lab": "4.0.0-alpha.61",
     "axios": "0.27.2",
     "chai": "4.3.7",
