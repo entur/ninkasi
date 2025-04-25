@@ -14,7 +14,7 @@
   "udugBaseUrl": "/netex-validation-reports/",
   "udugMicroFrontendUrl": "https://netex-validation-reports.dev.entur.org",
   "ninsarBaseUrl": "/line-statistics/",
-  "ninsarMicroFrontendUrl": "https://line-statistics.dev.entur.org",
+  "ninsarMicroFrontendUrl": "https://ent-ninsar-dev--pr385-support-kilili-j9myixiw.web.app/",
   "zagmukMicroFrontendUrl": "https://timetable-admin.dev.entur.org",
   "auth0Domain": "ror-entur-dev.eu.auth0.com",
   "auth0ClientId": "h5bjgdnSSJi0JcaG3ugigtyBEXaPASQM",
