@@ -15,8 +15,8 @@
   "ninsarBaseUrl": "/line-statistics/",
   "ninsarMicroFrontendUrl": "https://line-statistics.staging.entur.org",
   "zagmukMicroFrontendUrl": "https://timetable-admin.staging.entur.org",
-  "auth0Domain": "ror-entur-staging.eu.auth0.com",
-  "auth0ClientId": "OejmGNpgYP0uTYu1DnHiloEy4FfzeW9i",
+  "auth0Domain": "partner.staging.entur.org",
+  "auth0ClientId": "ElRuIcRPcuWz8XlGY5fkZM6VyADmxJ8T",
   "auth0Audience": "https://ror.api.staging.entur.io",
   "auth0ClaimsNamespace": "https://ror.entur.io/role_assignments",
   "defaultAuthMethod": "auth0"
