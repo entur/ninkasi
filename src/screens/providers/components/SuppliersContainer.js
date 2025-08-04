@@ -16,6 +16,7 @@
 
 import { connect } from 'react-redux';
 import React from 'react';
+import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
 import MdNew from 'material-ui/svg-icons/content/add';
@@ -44,17 +45,19 @@ class SuppliersContainer extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
     const id = getQueryVariable('id');
-    dispatch(SuppliersActions.getAllProviders()).then(() => {
+    dispatch(SuppliersActions.getAllProviders(this.props.getToken)).then(() => {
       if (id != null) {
-        dispatch(SuppliersActions.selectActiveSupplier(Number(id)));
+        dispatch(
+          SuppliersActions.selectActiveSupplier(Number(id), this.props.getToken)
+        );
       }
     });
   }
 
   selectSupplier(value) {
-    const { dispatch } = this.props;
+    const { dispatch, getToken } = this.props;
     if (value > 0) {
-      dispatch(SuppliersActions.selectActiveSupplier(value));
+      dispatch(SuppliersActions.selectActiveSupplier(value, getToken));
     } else {
       dispatch(SuppliersActions.selectAllSuppliers());
     }
@@ -189,4 +192,4 @@ const mapStateToProps = state => ({
   canEditOrganisation: state.UserContextReducer.isOrganisationAdmin
 });
 
-export default connect(mapStateToProps)(SuppliersContainer);
+export default connect(mapStateToProps)(withAuth(SuppliersContainer));

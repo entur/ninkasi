@@ -22,7 +22,7 @@ import App from 'app';
 import configureStore, { history } from 'store/store';
 import './sass/main.scss';
 import cfgreader from 'config/readConfig';
-import AuthProvider, { useAuth } from '@entur/auth-provider';
+import { AuthProvider, useAuth } from 'react-oidc-context';
 import { startRouteChangeEmitter } from '@entur/micro-frontend';
 
 startRouteChangeEmitter();
@@ -33,6 +33,17 @@ cfgreader.readConfig(function(config) {
 });
 
 const AuthenticatedApp = () => {
+  const auth = useAuth();
+
+  if (auth.isLoading) {
+    return null;
+  }
+
+  if (!auth.isAuthenticated) {
+    auth.signinRedirect();
+    return null;
+  }
+
   return (
     <Provider store={configureStore()}>
       <ConnectedRouter history={history}>
@@ -43,16 +54,22 @@ const AuthenticatedApp = () => {
 };
 
 function renderIndex(config) {
+  const oidcConfig = {
+    authority: `https://${config.auth0Domain}`,
+    client_id: config.auth0ClientId,
+    redirect_uri: window.location.origin,
+    response_type: 'code',
+    scope: 'openid profile email',
+    automaticSilentRenew: true,
+    includeIdTokenInSilentRenew: true
+  };
+
+  if (config.auth0Audience) {
+    oidcConfig.extraQueryParams = { audience: config.auth0Audience };
+  }
+
   render(
-    <AuthProvider
-      auth0Config={{
-        domain: config.auth0Domain,
-        clientId: config.auth0ClientId,
-        audience: config.auth0Audience,
-        redirectUri: window.location.origin
-      }}
-      auth0ClaimsNamespace={config.auth0ClaimsNamespace}
-    >
+    <AuthProvider {...oidcConfig}>
       <AuthenticatedApp />
     </AuthProvider>,
     document.getElementById('root')

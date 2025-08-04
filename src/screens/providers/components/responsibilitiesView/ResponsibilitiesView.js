@@ -16,6 +16,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import withAuth from 'utils/withAuth';
 import './responsibilityView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete';
@@ -106,14 +107,19 @@ class ResponsibilitiesView extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(OrganizationRegisterActions.getResponbilitySets());
-    this.props.dispatch(OrganizationRegisterActions.getCodeSpaces());
-    this.props.dispatch(OrganizationRegisterActions.getRoles());
-    this.props.dispatch(OrganizationRegisterActions.getOrganizations());
-    this.props.dispatch(OrganizationRegisterActions.getEntityTypes());
+    const { getToken } = this.props;
+    this.props.dispatch(
+      OrganizationRegisterActions.getResponbilitySets(getToken)
+    );
+    this.props.dispatch(OrganizationRegisterActions.getCodeSpaces(getToken));
+    this.props.dispatch(OrganizationRegisterActions.getRoles(getToken));
+    this.props.dispatch(OrganizationRegisterActions.getOrganizations(getToken));
+    this.props.dispatch(OrganizationRegisterActions.getEntityTypes(getToken));
 
     if (!this.props.administrativeZones.length) {
-      this.props.dispatch(OrganizationRegisterActions.getAdministrativeZones());
+      this.props.dispatch(
+        OrganizationRegisterActions.getAdministrativeZones(getToken)
+      );
     }
   }
 
@@ -299,4 +305,4 @@ const mapStateToProps = state => ({
   administrativeZones: state.OrganizationReducer.administrativeZones
 });
 
-export default connect(mapStateToProps)(ResponsibilitiesView);
+export default connect(mapStateToProps)(withAuth(ResponsibilitiesView));

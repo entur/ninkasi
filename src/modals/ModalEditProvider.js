@@ -16,6 +16,7 @@
 
 import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
+import withAuth from 'utils/withAuth';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import SelectField from 'material-ui/SelectField';
@@ -121,7 +122,7 @@ class ModalEditProvider extends Component {
   }
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(SuppliersActions.getTransportModes());
+    dispatch(SuppliersActions.getTransportModes(this.props.getToken));
   }
 
   getTitle() {
@@ -441,4 +442,4 @@ const mapStateToProps = state => ({
   allTransportModes: state.SuppliersReducer.allTransportModes
 });
 
-export default connect(mapStateToProps)(ModalEditProvider);
+export default connect(mapStateToProps)(withAuth(ModalEditProvider));

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Route, Switch } from 'react-router';
 
 import Providers from 'screens/providers';
 import Geocoder from 'screens/geocoder';
 import { MicroFrontend } from '@entur/micro-frontend';
-import { useAuth } from '@entur/auth-provider';
+import { useAuth } from 'react-oidc-context';
 import { connect } from 'react-redux';
 import SuppliersActions from 'actions/SuppliersActions';
 import { MicroFrontendFetchStatus } from './components/MicroFrontendFetchStatus';
@@ -21,6 +21,9 @@ const notifyNetexValidationReportLoadingFailure = dispatch => () => {
 
 const Router = ({ dispatch }) => {
   const auth = useAuth();
+  const getToken = useCallback(async () => {
+    return auth.user?.access_token;
+  }, [auth]);
   return (
     <Switch>
       <Route exact path="/" component={Providers} />
@@ -35,7 +38,7 @@ const Router = ({ dispatch }) => {
               staticPath=""
               name="NeTEx validation reports"
               payload={{
-                getToken: auth.getAccessToken,
+                getToken,
                 locale: 'en',
                 env: getProvidersEnv(
                   window.config.providersBaseUrl

@@ -7,7 +7,7 @@ import AdministrativeActions from './components/AdministrativeActions';
 import { connect } from 'react-redux';
 import { ShowOTPGraphStatus } from './components/ShowOTPGraphStatus';
 
-const Providers = ({ auth, isAdmin }) => {
+const Providers = ({ isAdmin }) => {
   return (
     <div style={{ display: 'flex' }}>
       <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
@@ -38,7 +38,6 @@ const Providers = ({ auth, isAdmin }) => {
 };
 
 const mapStateToProps = state => ({
-  auth: state.UserReducer.auth,
   isAdmin: state.UserContextReducer.isRouteDataAdmin
 });
 

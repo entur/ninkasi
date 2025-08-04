@@ -12,7 +12,7 @@ import IconButton from 'material-ui/IconButton';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Grid from '@material-ui/core/Grid';
 import Alert from '@material-ui/lab/Alert';
-import { useAuth } from '@entur/auth-provider';
+import { useAuth } from 'react-oidc-context';
 import getApiConfig from 'actions/getApiConfig';
 import './OSMPOIFilter.scss';
 
@@ -29,6 +29,7 @@ const sort = data => {
 
 const OSMPOIFilter = () => {
   const auth = useAuth();
+
   const scrollRef = useRef(null);
 
   const [poiFilterArray, setPoiFilterArray] = useState([
@@ -49,13 +50,11 @@ const OSMPOIFilter = () => {
 
   useEffect(() => {
     const fetchFilters = async () => {
-      const { headers } = await getApiConfig(auth);
+      const config = await getApiConfig(() => auth.user?.access_token);
       setLoading(true);
       const url = window.config.poiFilterBaseUrl;
       axios
-        .get(url, {
-          headers
-        })
+        .get(url, config)
         .then(response => response.data)
         .then(sort)
         .then(handleResponse);
@@ -101,17 +100,13 @@ const OSMPOIFilter = () => {
   const handleSubmit = async () => {
     setLoading(true);
     const endpoint = window.config.poiFilterBaseUrl;
-    const { headers } = await getApiConfig(auth);
+    const config = await getApiConfig(() => auth.user?.access_token);
     axios
-      .put(endpoint, JSON.stringify(dirtyPoiFilterArray), {
-        headers
-      })
+      .put(endpoint, JSON.stringify(dirtyPoiFilterArray), config)
       .then(() => {
         const url = window.config.poiFilterBaseUrl;
         axios
-          .get(url, {
-            headers
-          })
+          .get(url, config)
           .then(response => response.data)
           .then(sort)
           .then(handleResponse);

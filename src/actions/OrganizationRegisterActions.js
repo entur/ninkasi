@@ -29,10 +29,13 @@ function sendData(payLoad, type) {
 
 var OrganizationRegisterActions = {};
 
-OrganizationRegisterActions.getRoles = () => async (dispatch, getState) => {
+OrganizationRegisterActions.getRoles = getToken => async (
+  dispatch,
+  getState
+) => {
   const url = `${window.config.organisationsBaseUrl}roles`;
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(sortBy(response.data, 'id'), types.RECEIVED_ROLES));
     })
@@ -75,16 +78,19 @@ OrganizationRegisterActions.removeEntityClassRefNotification = (
   );
 };
 
-OrganizationRegisterActions.createRole = role => async (dispatch, getState) => {
+OrganizationRegisterActions.createRole = (role, getToken) => async (
+  dispatch,
+  getState
+) => {
   const trimmedData = JSON.parse(
     JSON.stringify(role).replace(/"\s+|\s+"/g, '"')
   );
   const url = `${window.config.organisationsBaseUrl}roles`;
   return axios
-    .post(url, trimmedData, await getApiConfig(getState().UserReducer.auth))
+    .post(url, trimmedData, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(null, types.CREATED_ROLE));
-      dispatch(OrganizationRegisterActions.getRoles());
+      dispatch(OrganizationRegisterActions.getRoles(getToken));
     })
     .catch(error => {
       dispatch(sendData(types.ERROR_CREATE_PROVIDER, error));
@@ -95,7 +101,10 @@ OrganizationRegisterActions.createRole = role => async (dispatch, getState) => {
     });
 };
 
-OrganizationRegisterActions.updateRole = role => async (dispatch, getState) => {
+OrganizationRegisterActions.updateRole = (role, getToken) => async (
+  dispatch,
+  getState
+) => {
   const trimmedData = JSON.parse(
     JSON.stringify(role).replace(/"\s+|\s+"/g, '"')
   );
@@ -103,9 +112,9 @@ OrganizationRegisterActions.updateRole = role => async (dispatch, getState) => {
 
   const url = `${window.config.organisationsBaseUrl}roles/${trimmedData.id}`;
   return axios
-    .put(url, payLoad, await getApiConfig(getState().UserReducer.auth))
+    .put(url, payLoad, await getApiConfig(getToken))
     .then(response => {
-      dispatch(OrganizationRegisterActions.getRoles());
+      dispatch(OrganizationRegisterActions.getRoles(getToken));
     })
     .catch(error => {
       dispatch(
@@ -115,13 +124,13 @@ OrganizationRegisterActions.updateRole = role => async (dispatch, getState) => {
     });
 };
 
-OrganizationRegisterActions.getOrganizations = () => async (
+OrganizationRegisterActions.getOrganizations = getToken => async (
   dispatch,
   getState
 ) => {
   const url = `${window.config.organisationsBaseUrl}`;
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(
         sendData(sortBy(response.data, 'name'), types.RECEIVED_ORGANIZATIONS)
@@ -132,19 +141,19 @@ OrganizationRegisterActions.getOrganizations = () => async (
     });
 };
 
-OrganizationRegisterActions.createOrganization = organization => async (
-  dispatch,
-  getState
-) => {
+OrganizationRegisterActions.createOrganization = (
+  organization,
+  getToken
+) => async (dispatch, getState) => {
   const url = `${window.config.organisationsBaseUrl}`;
   const trimmedData = JSON.parse(
     JSON.stringify(organization).replace(/"\s+|\s+"/g, '"')
   );
   return axios
-    .post(url, trimmedData, await getApiConfig(getState().UserReducer.auth))
+    .post(url, trimmedData, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(null, types.CREATED_ORGANIZATION));
-      dispatch(OrganizationRegisterActions.getOrganizations());
+      dispatch(OrganizationRegisterActions.getOrganizations(getToken));
     })
     .catch(error => {
       dispatch(sendData(types.FAILED_CREATING_ORGANIZATION, error));
@@ -155,19 +164,19 @@ OrganizationRegisterActions.createOrganization = organization => async (
     });
 };
 
-OrganizationRegisterActions.updateOrganization = organization => async (
-  dispatch,
-  getState
-) => {
+OrganizationRegisterActions.updateOrganization = (
+  organization,
+  getToken
+) => async (dispatch, getState) => {
   const trimmedData = JSON.parse(
     JSON.stringify(organization).replace(/"\s+|\s+"/g, '"')
   );
   const url = `${window.config.organisationsBaseUrl}${trimmedData.id}`;
   return axios
-    .put(url, trimmedData, await getApiConfig(getState().UserReducer.auth))
+    .put(url, trimmedData, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(null, types.UPDATED_ORGANIZATION));
-      dispatch(OrganizationRegisterActions.getOrganizations());
+      dispatch(OrganizationRegisterActions.getOrganizations(getToken));
     })
     .catch(error => {
       dispatch(
@@ -177,20 +186,23 @@ OrganizationRegisterActions.updateOrganization = organization => async (
     });
 };
 
-OrganizationRegisterActions.updateUser = user => async (dispatch, getState) => {
+OrganizationRegisterActions.updateUser = (user, getToken) => async (
+  dispatch,
+  getState
+) => {
   const trimmedData = JSON.parse(
     JSON.stringify(user).replace(/"\s+|\s+"/g, '"')
   );
   const url = `${window.config.organisationsBaseUrl}users/${trimmedData.id}`;
 
   return axios
-    .put(url, trimmedData, await getApiConfig(getState().UserReducer.auth))
+    .put(url, trimmedData, await getApiConfig(getToken))
     .then(response => {
       dispatch(
         SuppliersActions.addNotification('Updated user successfully', 'success')
       );
       dispatch(sendData(null, types.UPDATED_USER));
-      dispatch(OrganizationRegisterActions.getUsers());
+      dispatch(OrganizationRegisterActions.getUsers(getToken));
     })
     .catch(error => {
       dispatch(sendData(types.FAILED_CREATING_USER, error));
@@ -201,13 +213,13 @@ OrganizationRegisterActions.updateUser = user => async (dispatch, getState) => {
     });
 };
 
-OrganizationRegisterActions.getCodeSpaces = () => async (
+OrganizationRegisterActions.getCodeSpaces = getToken => async (
   dispatch,
   getState
 ) => {
   const url = `${window.config.organisationsBaseUrl}code_spaces`;
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_CODESPACES));
     })
@@ -216,10 +228,13 @@ OrganizationRegisterActions.getCodeSpaces = () => async (
     });
 };
 
-OrganizationRegisterActions.getUsers = () => async (dispatch, getState) => {
+OrganizationRegisterActions.getUsers = getToken => async (
+  dispatch,
+  getState
+) => {
   const url = `${window.config.organisationsBaseUrl}users?full=true`;
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(
         sendData(sortBy(response.data, 'username'), types.RECEIVED_USERS)
@@ -230,33 +245,33 @@ OrganizationRegisterActions.getUsers = () => async (dispatch, getState) => {
     });
 };
 
-OrganizationRegisterActions.deleteUser = userId => async (
+OrganizationRegisterActions.deleteUser = (userId, getToken) => async (
   dispatch,
   getState
 ) => {
   const url = `${window.config.organisationsBaseUrl}users/${userId}`;
   return axios
-    .delete(url, await getApiConfig(getState().UserReducer.auth))
+    .delete(url, await getApiConfig(getToken))
     .then(response => {
-      dispatch(OrganizationRegisterActions.getUsers());
+      dispatch(OrganizationRegisterActions.getUsers(getToken));
     })
     .catch(error => {
       console.log('Error deleting user with id ' + userId, error);
     });
 };
 
-OrganizationRegisterActions.deleteOrganization = organizationId => async (
-  dispatch,
-  getState
-) => {
+OrganizationRegisterActions.deleteOrganization = (
+  organizationId,
+  getToken
+) => async (dispatch, getState) => {
   const url = `${window.config.organisationsBaseUrl}${organizationId}`;
   return axios
-    .delete(url, await getApiConfig(getState().UserReducer.auth))
+    .delete(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(
         SuppliersActions.addNotification('Deleted organization', 'success')
       );
-      dispatch(OrganizationRegisterActions.getOrganizations());
+      dispatch(OrganizationRegisterActions.getOrganizations(getToken));
     })
     .catch(error => {
       dispatch(
@@ -272,18 +287,18 @@ OrganizationRegisterActions.deleteOrganization = organizationId => async (
     });
 };
 
-OrganizationRegisterActions.deleteEntityType = entityTypeId => async (
-  dispatch,
-  getState
-) => {
+OrganizationRegisterActions.deleteEntityType = (
+  entityTypeId,
+  getToken
+) => async (dispatch, getState) => {
   const url = `${window.config.organisationsBaseUrl}entity_types/${entityTypeId}`;
   return axios
-    .delete(url, await getApiConfig(getState().UserReducer.auth))
+    .delete(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(
         SuppliersActions.addNotification('Deleted entity type', 'success')
       );
-      dispatch(OrganizationRegisterActions.getEntityTypes());
+      dispatch(OrganizationRegisterActions.getEntityTypes(getToken));
     })
     .catch(error => {
       dispatch(
@@ -296,13 +311,13 @@ OrganizationRegisterActions.deleteEntityType = entityTypeId => async (
     });
 };
 
-OrganizationRegisterActions.deleteResponsibilitySet = responsibilitySetId => async (
-  dispatch,
-  getState
-) => {
+OrganizationRegisterActions.deleteResponsibilitySet = (
+  responsibilitySetId,
+  getToken
+) => async (dispatch, getState) => {
   const url = `${window.config.organisationsBaseUrl}responsibility_sets/${responsibilitySetId}`;
   return axios
-    .delete(url, await getApiConfig(getState().UserReducer.auth))
+    .delete(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(
         SuppliersActions.addNotification(
@@ -310,7 +325,7 @@ OrganizationRegisterActions.deleteResponsibilitySet = responsibilitySetId => asy
           'success'
         )
       );
-      dispatch(OrganizationRegisterActions.getResponbilitySets());
+      dispatch(OrganizationRegisterActions.getResponbilitySets(getToken));
     })
     .catch(error => {
       dispatch(
@@ -326,16 +341,16 @@ OrganizationRegisterActions.deleteResponsibilitySet = responsibilitySetId => asy
     });
 };
 
-OrganizationRegisterActions.deleteRole = roleId => async (
+OrganizationRegisterActions.deleteRole = (roleId, getToken) => async (
   dispatch,
   getState
 ) => {
   const url = `${window.config.organisationsBaseUrl}roles/${roleId}`;
   return axios
-    .delete(url, await getApiConfig(getState().UserReducer.auth))
+    .delete(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(SuppliersActions.addNotification('Role deleted', 'success'));
-      dispatch(OrganizationRegisterActions.getRoles());
+      dispatch(OrganizationRegisterActions.getRoles(getToken));
     })
     .catch(error => {
       dispatch(
@@ -345,13 +360,13 @@ OrganizationRegisterActions.deleteRole = roleId => async (
     });
 };
 
-OrganizationRegisterActions.getResponbilitySets = () => async (
+OrganizationRegisterActions.getResponbilitySets = getToken => async (
   dispatch,
   getState
 ) => {
   const url = `${window.config.organisationsBaseUrl}responsibility_sets`;
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(
         sendData(sortBy(response.data, 'name'), types.RECEIVED_RESPONSIBILITES)
@@ -368,20 +383,20 @@ OrganizationRegisterActions.getResponbilitySets = () => async (
     });
 };
 
-OrganizationRegisterActions.createResponsibilitySet = responsibilitySet => async (
-  dispatch,
-  getState
-) => {
+OrganizationRegisterActions.createResponsibilitySet = (
+  responsibilitySet,
+  getToken
+) => async (dispatch, getState) => {
   const url = `${window.config.organisationsBaseUrl}responsibility_sets`;
   const trimmedData = JSON.parse(
     JSON.stringify(responsibilitySet).replace(/"\s+|\s+"/g, '"')
   );
 
   return axios
-    .post(url, trimmedData, await getApiConfig(getState().UserReducer.auth))
+    .post(url, trimmedData, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(null, types.CREATED_RESPONSIBILITY_SET));
-      dispatch(OrganizationRegisterActions.getResponbilitySets());
+      dispatch(OrganizationRegisterActions.getResponbilitySets(getToken));
     })
     .catch(error => {
       dispatch(
@@ -394,14 +409,17 @@ OrganizationRegisterActions.createResponsibilitySet = responsibilitySet => async
     });
 };
 
-OrganizationRegisterActions.createUser = user => async (dispatch, getState) => {
+OrganizationRegisterActions.createUser = (user, getToken) => async (
+  dispatch,
+  getState
+) => {
   const url = `${window.config.organisationsBaseUrl}users`;
   const trimmedData = JSON.parse(
     JSON.stringify(user).replace(/"\s+|\s+"/g, '"')
   );
 
   return axios
-    .post(url, trimmedData, await getApiConfig(getState().UserReducer.auth))
+    .post(url, trimmedData, await getApiConfig(getToken))
     .then(() => {
       dispatch(
         SuppliersActions.addNotification('Created user successfully', 'success')
@@ -418,7 +436,7 @@ OrganizationRegisterActions.createUser = user => async (dispatch, getState) => {
           types.OPENED_NEW_PASSWORD_DIALOG
         )
       );
-      dispatch(OrganizationRegisterActions.getUsers());
+      dispatch(OrganizationRegisterActions.getUsers(getToken));
     })
     .catch(error => {
       dispatch(sendData(types.FAILED_CREATING_USER, error));
@@ -429,7 +447,7 @@ OrganizationRegisterActions.createUser = user => async (dispatch, getState) => {
     });
 };
 
-OrganizationRegisterActions.createEntityType = entityType => async (
+OrganizationRegisterActions.createEntityType = (entityType, getToken) => async (
   dispatch,
   getState
 ) => {
@@ -439,10 +457,10 @@ OrganizationRegisterActions.createEntityType = entityType => async (
   );
 
   return axios
-    .post(url, trimmedData, await getApiConfig(getState().UserReducer.auth))
+    .post(url, trimmedData, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(null, types.CREATED_ENTITY_TYPE));
-      dispatch(OrganizationRegisterActions.getEntityTypes());
+      dispatch(OrganizationRegisterActions.getEntityTypes(getToken));
     })
     .catch(error => {
       dispatch(sendData(types.FAILED_CREATING_ENTITY_TYPE, error));
@@ -453,7 +471,7 @@ OrganizationRegisterActions.createEntityType = entityType => async (
     });
 };
 
-OrganizationRegisterActions.updateEntityType = entityType => async (
+OrganizationRegisterActions.updateEntityType = (entityType, getToken) => async (
   dispatch,
   getState
 ) => {
@@ -462,10 +480,10 @@ OrganizationRegisterActions.updateEntityType = entityType => async (
   );
   const url = `${window.config.organisationsBaseUrl}entity_types/${trimmedData.id}`;
   return axios
-    .put(url, trimmedData, await getApiConfig(getState().UserReducer.auth))
+    .put(url, trimmedData, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(null, types.UPDATED_ENTITY_TYPE));
-      dispatch(OrganizationRegisterActions.getEntityTypes());
+      dispatch(OrganizationRegisterActions.getEntityTypes(getToken));
     })
     .catch(error => {
       dispatch(
@@ -475,20 +493,20 @@ OrganizationRegisterActions.updateEntityType = entityType => async (
     });
 };
 
-OrganizationRegisterActions.updateResponsibilitySet = responsibilitySet => async (
-  dispatch,
-  getState
-) => {
+OrganizationRegisterActions.updateResponsibilitySet = (
+  responsibilitySet,
+  getToken
+) => async (dispatch, getState) => {
   const trimmedData = JSON.parse(
     JSON.stringify(responsibilitySet).replace(/"\s+|\s+"/g, '"')
   );
 
   const url = `${window.config.organisationsBaseUrl}responsibility_sets/${trimmedData.id}`;
   return axios
-    .put(url, trimmedData, await getApiConfig(getState().UserReducer.auth))
+    .put(url, trimmedData, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(null, types.UPDATED_RESPONSIBILITY_SET));
-      dispatch(OrganizationRegisterActions.getResponbilitySets());
+      dispatch(OrganizationRegisterActions.getResponbilitySets(getToken));
     })
     .catch(error => {
       dispatch(
@@ -501,13 +519,13 @@ OrganizationRegisterActions.updateResponsibilitySet = responsibilitySet => async
     });
 };
 
-OrganizationRegisterActions.getEntityTypes = () => async (
+OrganizationRegisterActions.getEntityTypes = getToken => async (
   dispatch,
   getState
 ) => {
   const url = `${window.config.organisationsBaseUrl}entity_types`;
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(
         sendData(sortBy(response.data, 'name'), types.RECEIVED_ENTITY_TYPES)
@@ -518,15 +536,16 @@ OrganizationRegisterActions.getEntityTypes = () => async (
     });
 };
 
-OrganizationRegisterActions.resetPassword = (userId, username) => async (
-  dispatch,
-  getState
-) => {
+OrganizationRegisterActions.resetPassword = (
+  userId,
+  username,
+  getToken
+) => async (dispatch, getState) => {
   const url = `${
     window.config.organisationsBaseUrl
   }users/${userId.trim()}/resetPassword`;
   return axios
-    .post(url, null, await getApiConfig(getState().UserReducer.auth))
+    .post(url, null, await getApiConfig(getToken))
     .then(response => {
       dispatch(
         sendData(
@@ -570,16 +589,16 @@ OrganizationRegisterActions.addNewUserNotification = () => dispatch => {
 
 OrganizationRegisterActions.getEntityByClassification = async (
   entityType,
-  auth
+  getToken
 ) => {
   const url = `${window.config.organisationsBaseUrl}entity_types/${entityType}/entity_classifications`;
-  return axios.get(url, await getApiConfig(auth));
+  return axios.get(url, await getApiConfig(getToken));
 };
 
-OrganizationRegisterActions.getUserNotifications = username => async (
-  dispatch,
-  getState
-) => {
+OrganizationRegisterActions.getUserNotifications = (
+  username,
+  getToken
+) => async (dispatch, getState) => {
   const url = `${window.config.organisationsBaseUrl}users/${username}/notification_configurations`;
 
   dispatch(sendData(null, types.REQUESTED_USER_NOTIFICATION));
@@ -596,15 +615,15 @@ OrganizationRegisterActions.getUserNotifications = username => async (
   } = state.OrganizationReducer;
 
   if (!eventFilterTypes.length) {
-    dispatch(OrganizationRegisterActions.getEventFilterTypes());
+    dispatch(OrganizationRegisterActions.getEventFilterTypes(getToken));
   }
 
   if (!jobDomains.length) {
-    dispatch(OrganizationRegisterActions.getJobDomains());
+    dispatch(OrganizationRegisterActions.getJobDomains(getToken));
   }
 
   if (!eventFilterStates.length) {
-    dispatch(OrganizationRegisterActions.getEventFilterStates());
+    dispatch(OrganizationRegisterActions.getEventFilterStates(getToken));
   }
 
   if (!organizations.length) {
@@ -612,11 +631,11 @@ OrganizationRegisterActions.getUserNotifications = username => async (
   }
 
   if (!administrativeZones.length) {
-    dispatch(OrganizationRegisterActions.getAdministrativeZones());
+    dispatch(OrganizationRegisterActions.getAdministrativeZones(getToken));
   }
 
   if (!notificationTypes.length) {
-    dispatch(OrganizationRegisterActions.getNotificationTypes());
+    dispatch(OrganizationRegisterActions.getNotificationTypes(getToken));
   }
 
   if (!entityTypes.length) {
@@ -624,7 +643,7 @@ OrganizationRegisterActions.getUserNotifications = username => async (
   }
 
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_USER_NOTIFICATIONS));
     })
@@ -633,20 +652,21 @@ OrganizationRegisterActions.getUserNotifications = username => async (
     });
 };
 
-OrganizationRegisterActions.setEnabledNotification = (index, enabled) => async (
-  dispatch,
-  getState
-) => {
+OrganizationRegisterActions.setEnabledNotification = (
+  index,
+  enabled,
+  getToken
+) => async (dispatch, getState) => {
   dispatch(sendData({ index, enabled }, types.ENABLED_USER_NOTIFICATION));
 };
 
-OrganizationRegisterActions.getEventFilterTypes = () => async (
+OrganizationRegisterActions.getEventFilterTypes = getToken => async (
   dispatch,
   getState
 ) => {
   const url = `${window.config.eventsBaseUrl}notifications/event_filter_types`;
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_EVENT_FILTER_TYPES));
     })
@@ -655,17 +675,19 @@ OrganizationRegisterActions.getEventFilterTypes = () => async (
     });
 };
 
-OrganizationRegisterActions.getJobDomains = () => async (
+OrganizationRegisterActions.getJobDomains = getToken => async (
   dispatch,
   getState
 ) => {
   const url = `${window.config.eventsBaseUrl}notifications/job_domains`;
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_JOB_DOMAINS));
       response.data.forEach(domain => {
-        dispatch(OrganizationRegisterActions.getJobActionsByDomain(domain));
+        dispatch(
+          OrganizationRegisterActions.getJobActionsByDomain(domain, getToken)
+        );
       });
     })
     .catch(error => {
@@ -718,13 +740,13 @@ OrganizationRegisterActions.changeEventFilterOrganizationRef = (
   );
 };
 
-OrganizationRegisterActions.getJobActionsByDomain = domain => async (
-  dispatch,
-  getState
-) => {
+OrganizationRegisterActions.getJobActionsByDomain = (
+  domain,
+  getToken
+) => async (dispatch, getState) => {
   const url = `${window.config.eventsBaseUrl}notifications/job_actions/${domain}`;
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(
         sendData(
@@ -775,13 +797,13 @@ OrganizationRegisterActions.changeEventFilterState = (
   );
 };
 
-OrganizationRegisterActions.getEventFilterStates = () => async (
+OrganizationRegisterActions.getEventFilterStates = getToken => async (
   dispatch,
   getState
 ) => {
   const url = `${window.config.eventsBaseUrl}notifications/job_states`;
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_EVENT_FILTER_STATES));
     })
@@ -790,10 +812,11 @@ OrganizationRegisterActions.getEventFilterStates = () => async (
     });
 };
 
-OrganizationRegisterActions.changeNotificationType = (index, type) => async (
-  dispatch,
-  getState
-) => {
+OrganizationRegisterActions.changeNotificationType = (
+  index,
+  type,
+  getToken
+) => async (dispatch, getState) => {
   dispatch(
     sendData(
       {
@@ -805,13 +828,13 @@ OrganizationRegisterActions.changeNotificationType = (index, type) => async (
   );
 };
 
-OrganizationRegisterActions.getNotificationTypes = () => async (
+OrganizationRegisterActions.getNotificationTypes = getToken => async (
   dispatch,
   getState
 ) => {
   const url = `${window.config.eventsBaseUrl}notifications/notification_types`;
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_NOTIFICATION_TYPES));
     })
@@ -820,13 +843,13 @@ OrganizationRegisterActions.getNotificationTypes = () => async (
     });
 };
 
-OrganizationRegisterActions.getAdministrativeZones = () => async (
+OrganizationRegisterActions.getAdministrativeZones = getToken => async (
   dispatch,
   getState
 ) => {
   const url = `${window.config.organisationsBaseUrl}administrative_zones`;
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_ADMINISTRATIVE_ZONES));
     })
@@ -865,10 +888,10 @@ OrganizationRegisterActions.removeAdminZoneRefToNotification = (
   );
 };
 
-OrganizationRegisterActions.updateUserNotification = username => async (
-  dispatch,
-  getState
-) => {
+OrganizationRegisterActions.updateUserNotification = (
+  username,
+  getToken
+) => async (dispatch, getState) => {
   let state = getState();
   let jobDomainActions = state.OrganizationReducer.jobDomainActions;
   let notificationConfiguration = formatUserNotifications(
@@ -880,11 +903,7 @@ OrganizationRegisterActions.updateUserNotification = username => async (
     window.config.organisationsBaseUrl
   }users/${username.trim()}/notification_configurations`;
   return axios
-    .put(
-      url,
-      notificationConfiguration,
-      await getApiConfig(getState().UserReducer.auth)
-    )
+    .put(url, notificationConfiguration, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(null, types.UPDATED_NOTIFICATION_CONFIGURATION));
       dispatch(

@@ -16,6 +16,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import withAuth from 'utils/withAuth';
 import Checkbox from 'material-ui/Checkbox';
 import Divider from 'material-ui/Divider';
 import peliasTasks from 'config/peliasTasks';
@@ -49,13 +50,13 @@ const getColorByStatus = status => {
   }
 };
 
-const Pelias = ({ otherStatus, getGraphStatus, executePeliasTask }) => {
+const Pelias = ({ otherStatus, dispatch, getToken }) => {
   const [peliasOptions, setPeliasOptions] = useState(initialPeliasOptions());
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
   useEffect(() => {
-    getGraphStatus();
-  }, [getGraphStatus]);
+    dispatch(SuppliersActions.getGraphStatus(getToken));
+  }, [dispatch, getToken]);
 
   const handlePeliasOptionChecked = (event, task) => {
     setPeliasOptions(
@@ -71,7 +72,7 @@ const Pelias = ({ otherStatus, getGraphStatus, executePeliasTask }) => {
 
   const confirmExecutePelias = () => {
     setConfirmDialogOpen(false);
-    executePeliasTask(peliasOptions);
+    dispatch(SuppliersActions.executePeliasTask(peliasOptions, getToken));
   };
 
   return (
@@ -156,10 +157,4 @@ const mapStateToProps = state => ({
   otherStatus: state.SuppliersReducer.otherStatus || []
 });
 
-const mapDispatchToProps = dispatch => ({
-  getGraphStatus: () => dispatch(SuppliersActions.getGraphStatus()),
-  executePeliasTask: peliasOptions =>
-    dispatch(SuppliersActions.executePeliasTask(peliasOptions))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Pelias);
+export default connect(mapStateToProps)(withAuth(Pelias));

@@ -16,6 +16,7 @@
 
 import { connect } from 'react-redux';
 import React from 'react';
+import withAuth from 'utils/withAuth';
 import Button from 'muicss/lib/react/button';
 import SuppliersActions from 'actions/SuppliersActions';
 import AdvancedFileList from './AdvancedFileList';
@@ -337,7 +338,6 @@ class DataMigrationDetails extends React.Component {
         {isLevel1Provider ? (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AdvancedFileList
-              auth={this.props.auth}
               selectedIndices={selectedIndicesSource}
               updateIndices={this.handleUpdateIndicesSource.bind(this)}
               downloadButton
@@ -390,7 +390,6 @@ class DataMigrationDetails extends React.Component {
               </div>
             )}
             <AdvancedFileList
-              auth={this.props.auth}
               selectedIndices={selectedIndicesOutbound}
               files={outboundFiles}
               updateIndices={this.handleUpdateIndicesOutbound.bind(this)}
@@ -446,11 +445,13 @@ class DataMigrationDetails extends React.Component {
           'Clean before import enabled, does not make sense to import multiple files'
         );
       } else {
+        const { getToken } = this.props;
         dispatch(
           SuppliersActions.importData(
             this.props.activeId,
             outboundFiles,
-            isFlex
+            isFlex,
+            getToken
           )
         );
       }
@@ -483,7 +484,10 @@ class DataMigrationDetails extends React.Component {
     );
     if (response === true) {
       const { dispatch } = this.props;
-      dispatch(SuppliersActions.deleteJobsForProvider(this.props.activeId));
+      const { getToken } = this.props;
+      dispatch(
+        SuppliersActions.deleteJobsForProvider(this.props.activeId, getToken)
+      );
     }
   };
 
@@ -601,8 +605,7 @@ const mapStateToProps = state => ({
   chouetteInfo: state.UtilsReducer.supplierForm.chouetteInfo,
   files: state.MardukReducer.filenames.data || [],
   importIsLoading: state.MardukReducer.isLoading,
-  importError: state.MardukReducer.error,
-  auth: state.UserReducer.auth
+  importError: state.MardukReducer.error
 });
 
-export default connect(mapStateToProps)(DataMigrationDetails);
+export default connect(mapStateToProps)(withAuth(DataMigrationDetails));

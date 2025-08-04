@@ -1,8 +1,8 @@
 import uuid from 'uuid/v4';
 
-const getConfig = async auth => {
+const getConfig = async getToken => {
   let config = {};
-  const accessToken = await auth.getAccessToken();
+  const accessToken = await getToken();
   config.headers = {
     'Content-Type': 'application/json',
     Accept: 'application/json',

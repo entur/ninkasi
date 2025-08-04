@@ -5,10 +5,13 @@ import SuppliersActions from './SuppliersActions';
 
 var UserContextActions = {};
 
-UserContextActions.fetchUserContext = () => async (dispatch, getState) => {
+UserContextActions.fetchUserContext = getToken => async (
+  dispatch,
+  getState
+) => {
   const url = window.config.providersBaseUrl + 'usercontext';
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(SuppliersActions.receiveUserContext(response.data));
     })

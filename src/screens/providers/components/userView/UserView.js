@@ -15,6 +15,7 @@
  */
 
 import React from 'react';
+import withAuth from 'utils/withAuth';
 import './userView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete';
@@ -52,9 +53,12 @@ class UserView extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(OrganizationRegisterActions.getUsers());
-    this.props.dispatch(OrganizationRegisterActions.getOrganizations());
-    this.props.dispatch(OrganizationRegisterActions.getResponbilitySets());
+    const { getToken } = this.props;
+    this.props.dispatch(OrganizationRegisterActions.getUsers(getToken));
+    this.props.dispatch(OrganizationRegisterActions.getOrganizations(getToken));
+    this.props.dispatch(
+      OrganizationRegisterActions.getResponbilitySets(getToken)
+    );
   }
 
   handleCreateUser(user) {
@@ -407,4 +411,4 @@ const mapStateToProps = state => ({
   passwordDialogState: state.OrganizationReducer.passwordDialog
 });
 
-export default connect(mapStateToProps)(UserView);
+export default connect(mapStateToProps)(withAuth(UserView));

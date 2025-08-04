@@ -16,6 +16,7 @@
 
 import React from 'react';
 import SelectField from 'material-ui/SelectField';
+import withAuth from 'utils/withAuth';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import { connect } from 'react-redux';
@@ -34,7 +35,7 @@ class NotificationAddEntityClassRef extends React.Component {
   getEntityClassificationsForType(entityType) {
     OrganizationRegisterActions.getEntityByClassification(
       entityType,
-      this.props.auth
+      this.props.getToken
     ).then(response => {
       this.setState({
         entityClassificationRefs: response.data,
@@ -120,8 +121,9 @@ class NotificationAddEntityClassRef extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  entityTypes: state.OrganizationReducer.entityTypes,
-  auth: state.UserReducer.auth
+  entityTypes: state.OrganizationReducer.entityTypes
 });
 
-export default connect(mapStateToProps)(NotificationAddEntityClassRef);
+export default connect(mapStateToProps)(
+  withAuth(NotificationAddEntityClassRef)
+);

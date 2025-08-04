@@ -43,7 +43,7 @@ class NewRoleAssignment extends React.Component {
   getEntityClassificationsForType(entityType) {
     OrganizationRegisterActions.getEntityByClassification(
       entityType,
-      this.props.auth
+      this.props.getToken
     ).then(response => {
       this.setState({
         tempEntityClassification: entityType,

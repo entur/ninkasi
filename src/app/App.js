@@ -14,7 +14,7 @@
  *
  */
 
-import React, { Fragment, useEffect, useMemo } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo } from 'react';
 import cfgreader from 'config/readConfig';
 import Header from './components/Header';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles'; // v1.x
@@ -27,15 +27,18 @@ import Router from './Router';
 import Menu from './components/Menu';
 import NotificationContainer from './components/NotificationContainer';
 import UserContextActions from '../actions/UserContextActions';
-import { useAuth } from '@entur/auth-provider';
 import UserActions from '../actions/UserActions';
-
+import { useAuth } from 'react-oidc-context';
 const themeV0 = getMuiTheme({
   /* theme for v0.x */
 });
 
 const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
   const auth = useAuth();
+
+  const getToken = useCallback(async () => {
+    return auth.user?.access_token;
+  }, [auth]);
 
   useEffect(() => {
     dispatch(UserActions.updateAuth(auth));
@@ -46,7 +49,7 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
       cfgreader.readConfig(config => {
         window.config = config;
         dispatch(UtilsActions.notifyConfigIsLoaded());
-        dispatch(UserContextActions.fetchUserContext());
+        dispatch(UserContextActions.fetchUserContext(getToken));
       });
     }
   }, [dispatch, auth.isAuthenticated]);
@@ -76,7 +79,7 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
                 <NoAccess
                   username={auth.user.name}
                   handleLogout={() => {
-                    auth.logout({ returnTo: window.location.origin });
+                    auth.signoutRedirect();
                   }}
                 />
               )}
@@ -91,7 +94,6 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
 };
 
 const mapStateToProps = state => ({
-  auth: state.UserReducer.auth,
   isConfigLoaded: state.UtilsReducer.isConfigLoaded,
   isMenuOpen: state.app.isMenuOpen,
   isAdmin: state.UserContextReducer.isRouteDataAdmin

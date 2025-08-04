@@ -16,6 +16,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import withAuth from 'utils/withAuth';
 import './entityTypesView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -80,8 +81,9 @@ class EntityTypesView extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(OrganizationRegisterActions.getEntityTypes());
-    this.props.dispatch(OrganizationRegisterActions.getCodeSpaces());
+    const { getToken } = this.props;
+    this.props.dispatch(OrganizationRegisterActions.getEntityTypes(getToken));
+    this.props.dispatch(OrganizationRegisterActions.getCodeSpaces(getToken));
   }
 
   handleCreateEntity(entityType) {
@@ -263,4 +265,4 @@ const mapStateToProps = state => ({
   codeSpaces: state.OrganizationReducer.codeSpaces
 });
 
-export default connect(mapStateToProps)(EntityTypesView);
+export default connect(mapStateToProps)(withAuth(EntityTypesView));

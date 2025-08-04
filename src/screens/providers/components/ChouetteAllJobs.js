@@ -16,6 +16,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import withAuth from 'utils/withAuth';
 import cfgreader from 'config/readConfig';
 import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
@@ -43,10 +44,10 @@ class ChouetteAllJobs extends React.Component {
   }
 
   componentWillMount() {
-    const { dispatch } = this.props;
+    const { dispatch, getToken } = this.props;
     cfgreader.readConfig(function(config) {
       window.config = config;
-      dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
+      dispatch(SuppliersActions.getChouetteJobsForAllSuppliers(getToken));
     });
   }
 
@@ -74,8 +75,10 @@ class ChouetteAllJobs extends React.Component {
 
   setActiveActionAllFilter(event) {
     if (event.target.name === 'action-filter') {
-      const { dispatch } = this.props;
-      dispatch(SuppliersActions.setActiveActionAllFilter(event.target.value));
+      const { dispatch, getToken } = this.props;
+      dispatch(
+        SuppliersActions.setActiveActionAllFilter(event.target.value, getToken)
+      );
     }
   }
 
@@ -431,4 +434,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(ChouetteAllJobs);
+export default connect(mapStateToProps)(withAuth(ChouetteAllJobs));

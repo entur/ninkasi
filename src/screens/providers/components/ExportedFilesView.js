@@ -16,13 +16,14 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import ExportedFilesRow from './ExportedFilesRow';
 import ExportedFilesHeader from './ExportedFilesHeader';
 
 class ExportedFilesView extends Component {
   componentDidMount() {
-    this.props.dispatch(SuppliersActions.getExportedFiles());
+    this.props.dispatch(SuppliersActions.getExportedFiles(this.props.getToken));
   }
 
   render() {
@@ -70,4 +71,4 @@ const mapStateToProps = ({ SuppliersReducer }) => ({
   providers: mapProviderIdToKeys(SuppliersReducer.data)
 });
 
-export default connect(mapStateToProps)(ExportedFilesView);
+export default connect(mapStateToProps)(withAuth(ExportedFilesView));
