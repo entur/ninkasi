@@ -14,7 +14,8 @@
  *
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useAuth } from 'react-oidc-context';
 import './organizationView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -78,8 +79,9 @@ class OrganizationView extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(OrganizationRegisterActions.getOrganizations());
-    this.props.dispatch(OrganizationRegisterActions.getCodeSpaces());
+    const { getToken } = this.props;
+    this.props.dispatch(OrganizationRegisterActions.getOrganizations(getToken));
+    this.props.dispatch(OrganizationRegisterActions.getCodeSpaces(getToken));
   }
 
   handleCreateOrganization(organization) {
@@ -281,4 +283,15 @@ const mapStateToProps = state => ({
   status: state.OrganizationReducer.organizationStatus
 });
 
-export default connect(mapStateToProps)(OrganizationView);
+const withAuth = Component => {
+  const AuthWrapper = props => {
+    const auth = useAuth();
+    const getToken = useCallback(async () => {
+      return auth.user?.access_token;
+    }, [auth]);
+    return <Component {...props} getToken={getToken} />;
+  };
+  return AuthWrapper;
+};
+
+export default connect(mapStateToProps)(withAuth(OrganizationView));

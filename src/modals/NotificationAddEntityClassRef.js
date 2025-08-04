@@ -16,6 +16,7 @@
 
 import React from 'react';
 import SelectField from 'material-ui/SelectField';
+import { useAuth } from 'react-oidc-context';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import { connect } from 'react-redux';
@@ -120,8 +121,17 @@ class NotificationAddEntityClassRef extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  entityTypes: state.OrganizationReducer.entityTypes,
-  auth: state.UserReducer.auth
+  entityTypes: state.OrganizationReducer.entityTypes
 });
 
-export default connect(mapStateToProps)(NotificationAddEntityClassRef);
+const withAuth = Component => {
+  const AuthWrapper = props => {
+    const auth = useAuth();
+    return <Component {...props} auth={auth} />;
+  };
+  return AuthWrapper;
+};
+
+export default connect(mapStateToProps)(
+  withAuth(NotificationAddEntityClassRef)
+);

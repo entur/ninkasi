@@ -16,6 +16,7 @@
 
 import { connect } from 'react-redux';
 import React from 'react';
+import { useAuth } from 'react-oidc-context';
 import Button from 'muicss/lib/react/button';
 import SuppliersActions from 'actions/SuppliersActions';
 import AdvancedFileList from './AdvancedFileList';
@@ -601,8 +602,15 @@ const mapStateToProps = state => ({
   chouetteInfo: state.UtilsReducer.supplierForm.chouetteInfo,
   files: state.MardukReducer.filenames.data || [],
   importIsLoading: state.MardukReducer.isLoading,
-  importError: state.MardukReducer.error,
-  auth: state.UserReducer.auth
+  importError: state.MardukReducer.error
 });
 
-export default connect(mapStateToProps)(DataMigrationDetails);
+const withAuth = Component => {
+  const AuthWrapper = props => {
+    const auth = useAuth();
+    return <Component {...props} auth={auth} />;
+  };
+  return AuthWrapper;
+};
+
+export default connect(mapStateToProps)(withAuth(DataMigrationDetails));

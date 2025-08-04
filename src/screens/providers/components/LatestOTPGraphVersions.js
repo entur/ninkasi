@@ -14,9 +14,10 @@
  *
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
-import SupplierActions from 'actions/SuppliersActions';
+import { useAuth } from 'react-oidc-context';
+import SuppliersActions from 'actions/SuppliersActions';
 import moment from 'moment';
 import UnfoldLess from 'material-ui/svg-icons/navigation/unfold-less';
 import UnfoldMore from 'material-ui/svg-icons/navigation/unfold-more';
@@ -79,7 +80,8 @@ class LatestOTPGraphVersions extends React.Component {
   }
 
   requestOTPGraphVersions = () => {
-    this.props.dispatch(SupplierActions.getOTPGraphVersions());
+    const { getToken } = this.props;
+    this.props.dispatch(SuppliersActions.getOTPGraphVersions(getToken));
   };
 
   render() {
@@ -177,4 +179,15 @@ const mapStateToProps = state => ({
   transitGraphs: state.SuppliersReducer.transitGraphs
 });
 
-export default connect(mapStateToProps)(LatestOTPGraphVersions);
+const withAuth = Component => {
+  const AuthWrapper = props => {
+    const auth = useAuth();
+    const getToken = useCallback(async () => {
+      return auth.user?.access_token;
+    }, [auth]);
+    return <Component {...props} getToken={getToken} />;
+  };
+  return AuthWrapper;
+};
+
+export default connect(mapStateToProps)(withAuth(LatestOTPGraphVersions));

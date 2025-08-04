@@ -14,9 +14,10 @@
  *
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
-import SupplierActions from 'actions/SuppliersActions';
+import { useAuth } from 'react-oidc-context';
+import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
 import moment from 'moment';
 
@@ -81,7 +82,9 @@ class GraphStatus extends React.Component {
     cfgreader.readConfig(
       function(config) {
         window.config = config;
-        this.props.dispatch(SupplierActions.getGraphStatus());
+        this.props.dispatch(
+          SuppliersActions.getGraphStatus(this.props.getToken)
+        );
         this.startPolling();
       }.bind(this)
     );
@@ -98,7 +101,8 @@ class GraphStatus extends React.Component {
   };
 
   poll = () => {
-    this.props.dispatch(SupplierActions.getGraphStatus());
+    const { getToken } = this.props;
+    this.props.dispatch(SuppliersActions.getGraphStatus(getToken));
   };
 
   render() {
@@ -138,4 +142,15 @@ const mapStateToProps = state => ({
   baseGraphStatus: state.SuppliersReducer.baseGraphStatus
 });
 
-export default connect(mapStateToProps)(GraphStatus);
+const withAuth = Component => {
+  const AuthWrapper = props => {
+    const auth = useAuth();
+    const getToken = useCallback(async () => {
+      return auth.user?.access_token;
+    }, [auth]);
+    return <Component {...props} getToken={getToken} />;
+  };
+  return AuthWrapper;
+};
+
+export default connect(mapStateToProps)(withAuth(GraphStatus));

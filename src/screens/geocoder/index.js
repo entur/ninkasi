@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
+import { useAuth } from 'react-oidc-context';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
@@ -34,13 +35,13 @@ function a11yProps(index) {
   };
 }
 
-export default () => {
+const GeocoderComponent = ({ getToken }) => {
   const [value, setValue] = React.useState(0);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(SuppliersActions.getAllProviders());
-  }, []);
+    dispatch(SuppliersActions.getAllProviders(getToken));
+  }, [dispatch, getToken]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -70,3 +71,16 @@ export default () => {
     </div>
   );
 };
+
+const withAuth = Component => {
+  const AuthWrapper = props => {
+    const auth = useAuth();
+    const getToken = useCallback(async () => {
+      return auth.user?.access_token;
+    }, [auth]);
+    return <Component {...props} getToken={getToken} />;
+  };
+  return AuthWrapper;
+};
+
+export default withAuth(GeocoderComponent);

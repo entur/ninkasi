@@ -14,8 +14,9 @@
  *
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import Modal from 'material-ui/Dialog';
+import { useAuth } from 'react-oidc-context';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import MdRemove from 'material-ui/svg-icons/content/remove';
@@ -25,7 +26,6 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import NewRole from './NewRoleAssignment';
 import { getEntityClassificationRefString } from 'utils/';
-import { connect } from 'react-redux';
 
 class ModalEditResponsibilitySet extends React.Component {
   constructor(props) {
@@ -138,7 +138,8 @@ class ModalEditResponsibilitySet extends React.Component {
       roles,
       organizations,
       handleSubmit,
-      entityTypes
+      entityTypes,
+      getToken
     } = this.props;
     const { isCreatingNewRole, responsibilitySet, newRole } = this.state;
 
@@ -265,7 +266,7 @@ class ModalEditResponsibilitySet extends React.Component {
             </div>
             {isCreatingNewRole ? (
               <NewRole
-                auth={this.props.auth}
+                getToken={getToken}
                 newRole={newRole}
                 roles={roles}
                 entityTypes={entityTypes}
@@ -324,8 +325,15 @@ class ModalEditResponsibilitySet extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  auth: state.UserReducer.auth
-});
+const withAuth = Component => {
+  const AuthWrapper = props => {
+    const auth = useAuth();
+    const getToken = useCallback(async () => {
+      return auth.user?.access_token;
+    }, [auth]);
+    return <Component {...props} getToken={getToken} />;
+  };
+  return AuthWrapper;
+};
 
-export default connect(mapStateToProps)(ModalEditResponsibilitySet);
+export default withAuth(ModalEditResponsibilitySet);

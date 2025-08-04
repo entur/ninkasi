@@ -14,7 +14,8 @@
  *
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useAuth } from 'react-oidc-context';
 import './roleView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete';
@@ -86,7 +87,8 @@ class RoleView extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(OrganizationRegisterActions.getRoles());
+    const { getToken } = this.props;
+    this.props.dispatch(OrganizationRegisterActions.getRoles(getToken));
   }
 
   handleCreateRole(role) {
@@ -231,4 +233,15 @@ const mapStateToProps = state => ({
   status: state.OrganizationReducer.roleStatus
 });
 
-export default connect(mapStateToProps)(RoleView);
+const withAuth = Component => {
+  const AuthWrapper = props => {
+    const auth = useAuth();
+    const getToken = useCallback(async () => {
+      return auth.user?.access_token;
+    }, [auth]);
+    return <Component {...props} getToken={getToken} />;
+  };
+  return AuthWrapper;
+};
+
+export default connect(mapStateToProps)(withAuth(RoleView));

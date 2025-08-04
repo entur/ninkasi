@@ -12,7 +12,6 @@
   },
   "license": "EUPL",
   "dependencies": {
-    "@entur/auth-provider": "1.1.0",
     "@entur/micro-frontend": "0.4.0",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
@@ -32,6 +31,7 @@
     "material-ui": "0.20.0",
     "moment": "2.29.4",
     "muicss": "0.10.3",
+    "oidc-client-ts": "^3.3.0",
     "prettier": "1.19.1",
     "prop-types": "15.8.1",
     "rc-progress": "2.6.1",
@@ -42,6 +42,7 @@
     "react-icons": "2.2.7",
     "react-notification": "6.8.5",
     "react-notification-system": "0.4.0",
+    "react-oidc-context": "^3.3.0",
     "react-redux": "7.2.9",
     "react-router": "5.3.4",
     "react-scripts": "5.0.1",

@@ -14,8 +14,9 @@
  *
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
+import { useAuth } from 'react-oidc-context';
 import SuppliersActions from 'actions/SuppliersActions';
 import ChouetteJobDetails from './ChouetteJobDetails';
 import ChouetteAllJobs from './ChouetteAllJobs';
@@ -45,15 +46,19 @@ class SupplierTabWrapper extends React.Component {
     const { dispatch } = this.props;
     if (queryTab === 'events') {
       if (queryId) {
-        dispatch(SuppliersActions.getProviderStatus(queryId));
+        dispatch(
+          SuppliersActions.getProviderStatus(queryId, this.props.getToken)
+        );
       } else {
-        dispatch(SuppliersActions.getAllProviderStatus());
+        dispatch(SuppliersActions.getAllProviderStatus(this.props.getToken));
       }
     } else if (queryTab === 'chouetteJobs') {
       if (queryId) {
-        dispatch(SuppliersActions.getChouetteJobStatus());
+        dispatch(SuppliersActions.getChouetteJobStatus(this.props.getToken));
       } else {
-        dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
+        dispatch(
+          SuppliersActions.getChouetteJobsForAllSuppliers(this.props.getToken)
+        );
       }
     } else if (queryTab === 'OrganisationRegister') {
       if (queryId) {
@@ -81,7 +86,7 @@ class SupplierTabWrapper extends React.Component {
   };
 
   poll = () => {
-    const { dispatch, activeId, displayAllSuppliers } = this.props;
+    const { dispatch, activeId, displayAllSuppliers, getToken } = this.props;
     const { activeTabForProvider, activeTabForAllProvider } = this.state;
     const queryTab = getQueryVariable('tab');
 
@@ -90,15 +95,15 @@ class SupplierTabWrapper extends React.Component {
       activeTabForProvider === 'chouetteJobs' &&
       activeId
     ) {
-      dispatch(SuppliersActions.getChouetteJobStatus());
+      dispatch(SuppliersActions.getChouetteJobStatus(getToken));
     }
 
     if (displayAllSuppliers && queryTab === 'exportedFiles') {
-      dispatch(SuppliersActions.getExportedFiles());
+      dispatch(SuppliersActions.getExportedFiles(getToken));
     }
 
     if (displayAllSuppliers && activeTabForAllProvider === 'chouetteJobs') {
-      dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
+      dispatch(SuppliersActions.getChouetteJobsForAllSuppliers(getToken));
     }
   };
 
@@ -116,10 +121,12 @@ class SupplierTabWrapper extends React.Component {
 
     switch (value) {
       case 'chouetteJobs':
-        dispatch(SuppliersActions.getChouetteJobStatus());
+        dispatch(SuppliersActions.getChouetteJobStatus(this.props.getToken));
         break;
       case 'events':
-        dispatch(SuppliersActions.getProviderStatus(activeId));
+        dispatch(
+          SuppliersActions.getProviderStatus(activeId, this.props.getToken)
+        );
         break;
       default:
         break;
@@ -138,10 +145,14 @@ class SupplierTabWrapper extends React.Component {
     }
     switch (value) {
       case 'chouetteJobs':
-        this.props.dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
+        this.props.dispatch(
+          SuppliersActions.getChouetteJobsForAllSuppliers(this.props.getToken)
+        );
         break;
       case 'events':
-        this.props.dispatch(SuppliersActions.getAllProviderStatus());
+        this.props.dispatch(
+          SuppliersActions.getAllProviderStatus(this.props.getToken)
+        );
         break;
       default:
         break;
@@ -213,7 +224,7 @@ class SupplierTabWrapper extends React.Component {
       activeId,
       suppliers,
       fileListIsLoading,
-      auth,
+      getToken,
       canEditOrganisation
     } = this.props;
 
@@ -255,7 +266,7 @@ class SupplierTabWrapper extends React.Component {
                   staticPath=""
                   name="Events"
                   payload={{
-                    getToken: auth.getAccessToken,
+                    getToken,
                     locale: 'en',
                     env: window.config.appEnv,
                     hideIgnoredExportNetexBlocks: true,
@@ -284,7 +295,7 @@ class SupplierTabWrapper extends React.Component {
                   staticPath=""
                   name="Line statistics"
                   payload={{
-                    getToken: auth.getAccessToken
+                    getToken
                   }}
                   FetchStatus={props => (
                     <MicroFrontendFetchStatus
@@ -327,7 +338,7 @@ class SupplierTabWrapper extends React.Component {
                   name="Events"
                   payload={{
                     providerId: `${provider.id}`,
-                    getToken: auth.getAccessToken,
+                    getToken,
                     locale: 'en',
                     env: window.config.appEnv,
                     hideIgnoredExportNetexBlocks: true,
@@ -360,7 +371,7 @@ class SupplierTabWrapper extends React.Component {
                   name="Line statistics"
                   payload={{
                     providerId: `${provider.id}`,
-                    getToken: auth.getAccessToken
+                    getToken
                   }}
                   FetchStatus={props => (
                     <MicroFrontendFetchStatus
@@ -392,8 +403,18 @@ const mapStateToProps = state => ({
   displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
   providerEvents: state.SuppliersReducer.statusList,
   allProvidersEvents: state.SuppliersReducer.statusListAllProviders,
-  auth: state.UserReducer.auth,
   canEditOrganisation: state.UserContextReducer.isOrganisationAdmin
 });
 
-export default connect(mapStateToProps)(SupplierTabWrapper);
+const withAuth = Component => {
+  const AuthWrapper = props => {
+    const auth = useAuth();
+    const getToken = useCallback(async () => {
+      return auth.user?.access_token;
+    }, [auth]);
+    return <Component {...props} getToken={getToken} />;
+  };
+  return AuthWrapper;
+};
+
+export default connect(mapStateToProps)(withAuth(SupplierTabWrapper));

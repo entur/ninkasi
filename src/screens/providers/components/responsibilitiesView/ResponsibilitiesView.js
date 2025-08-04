@@ -14,8 +14,9 @@
  *
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
+import { useAuth } from 'react-oidc-context';
 import './responsibilityView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import MdDelete from 'material-ui/svg-icons/action/delete';
@@ -106,14 +107,19 @@ class ResponsibilitiesView extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(OrganizationRegisterActions.getResponbilitySets());
-    this.props.dispatch(OrganizationRegisterActions.getCodeSpaces());
-    this.props.dispatch(OrganizationRegisterActions.getRoles());
-    this.props.dispatch(OrganizationRegisterActions.getOrganizations());
-    this.props.dispatch(OrganizationRegisterActions.getEntityTypes());
+    const { getToken } = this.props;
+    this.props.dispatch(
+      OrganizationRegisterActions.getResponbilitySets(getToken)
+    );
+    this.props.dispatch(OrganizationRegisterActions.getCodeSpaces(getToken));
+    this.props.dispatch(OrganizationRegisterActions.getRoles(getToken));
+    this.props.dispatch(OrganizationRegisterActions.getOrganizations(getToken));
+    this.props.dispatch(OrganizationRegisterActions.getEntityTypes(getToken));
 
     if (!this.props.administrativeZones.length) {
-      this.props.dispatch(OrganizationRegisterActions.getAdministrativeZones());
+      this.props.dispatch(
+        OrganizationRegisterActions.getAdministrativeZones(getToken)
+      );
     }
   }
 
@@ -299,4 +305,15 @@ const mapStateToProps = state => ({
   administrativeZones: state.OrganizationReducer.administrativeZones
 });
 
-export default connect(mapStateToProps)(ResponsibilitiesView);
+const withAuth = Component => {
+  const AuthWrapper = props => {
+    const auth = useAuth();
+    const getToken = useCallback(async () => {
+      return auth.user?.access_token;
+    }, [auth]);
+    return <Component {...props} getToken={getToken} />;
+  };
+  return AuthWrapper;
+};
+
+export default connect(mapStateToProps)(withAuth(ResponsibilitiesView));

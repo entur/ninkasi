@@ -86,7 +86,10 @@ SuppliersActions.deleteJobsForProvider = id => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.getProviderStatus = id => async (dispatch, getState) => {
+SuppliersActions.getProviderStatus = (id, getToken) => async (
+  dispatch,
+  getState
+) => {
   if (id < 0) return;
 
   const url = `${window.config.eventsBaseUrl}timetable/${id}`;
@@ -97,7 +100,7 @@ SuppliersActions.getProviderStatus = id => async (dispatch, getState) => {
     timeout: 20000,
     method: 'get',
     responseType: 'json',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       let providerStatus = SuppliersActions.formatProviderStatusDate(
@@ -168,7 +171,7 @@ SuppliersActions.uploadTariffZonesFiles = (files, provider) => async (
         )
       );
     },
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   };
 
   return axios
@@ -198,7 +201,10 @@ SuppliersActions.uploadTariffZonesFiles = (files, provider) => async (
     });
 };
 
-SuppliersActions.getAllProviderStatus = () => async (dispatch, getState) => {
+SuppliersActions.getAllProviderStatus = getToken => async (
+  dispatch,
+  getState
+) => {
   dispatch(sendData(null, types.REQUESTED_ALL_SUPPLIERS_STATUS));
   const state = getState();
   const providers = state.SuppliersReducer.data;
@@ -209,7 +215,7 @@ SuppliersActions.getAllProviderStatus = () => async (dispatch, getState) => {
     timeout: 20000,
     method: 'get',
     responseType: 'json',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(response => {
       const providerStatus = response.data.map(status => {
@@ -264,7 +270,7 @@ function sendData(payLoad, type) {
   };
 }
 
-SuppliersActions.getAllProviders = () => async (dispatch, getState) => {
+SuppliersActions.getAllProviders = getToken => async (dispatch, getState) => {
   const url = window.config.providersBaseUrl;
   dispatch(sendData(null, types.REQUESTED_SUPPLIERS));
   return axios({
@@ -272,7 +278,7 @@ SuppliersActions.getAllProviders = () => async (dispatch, getState) => {
     timeout: 20000,
     method: 'get',
     responseType: 'json',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.RECEIVED_SUPPLIERS));
@@ -284,7 +290,7 @@ SuppliersActions.getAllProviders = () => async (dispatch, getState) => {
              before getting their respective job status
              */
       if (!queryId && queryTab === 1) {
-        dispatch(SuppliersActions.getAllProviderStatus());
+        dispatch(SuppliersActions.getAllProviderStatus(getToken));
       }
     })
     .catch(function(response) {
@@ -292,20 +298,26 @@ SuppliersActions.getAllProviders = () => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.refreshSupplierData = () => async (dispatch, getState) => {
+SuppliersActions.refreshSupplierData = getToken => async (
+  dispatch,
+  getState
+) => {
   const state = getState();
   const { activeId } = state.SuppliersReducer;
-  dispatch(SuppliersActions.selectActiveSupplier(activeId));
-  dispatch(SuppliersActions.fetchFilenames(activeId));
-  dispatch(SuppliersActions.getProviderStatus(activeId));
-  dispatch(SuppliersActions.getChouetteJobStatus());
+  dispatch(SuppliersActions.selectActiveSupplier(activeId, getToken));
+  dispatch(SuppliersActions.fetchFilenames(activeId, getToken));
+  dispatch(SuppliersActions.getProviderStatus(activeId, getToken));
+  dispatch(SuppliersActions.getChouetteJobStatus(getToken));
 };
 
-SuppliersActions.createProvider = data => async (dispatch, getState) => {
+SuppliersActions.createProvider = (data, getToken) => async (
+  dispatch,
+  getState
+) => {
   const url = `${window.config.providersBaseUrl}`;
   const provider = getProviderPayload(data);
   return axios
-    .post(url, provider, await getApiConfig(getState().UserReducer.auth))
+    .post(url, provider, await getApiConfig(getToken))
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_CREATE_PROVIDER));
 
@@ -315,8 +327,8 @@ SuppliersActions.createProvider = data => async (dispatch, getState) => {
         'Title',
         `${window.config.endpointBase}?id=${id}`
       );
-      dispatch(SuppliersActions.getAllProviders()).then(() => {
-        dispatch(SuppliersActions.selectActiveSupplier(id));
+      dispatch(SuppliersActions.getAllProviders(getToken)).then(() => {
+        dispatch(SuppliersActions.selectActiveSupplier(id, getToken));
       });
 
       dispatch(SuppliersActions.addNotification('Provider created', 'success'));
@@ -330,7 +342,7 @@ SuppliersActions.createProvider = data => async (dispatch, getState) => {
       dispatch(
         SuppliersActions.logEvent({ title: 'Creating new provider failed' })
       );
-      dispatch(SuppliersActions.getAllProviders());
+      dispatch(SuppliersActions.getAllProviders(getToken));
     });
 };
 
@@ -369,11 +381,14 @@ const getProviderPayload = data => {
   return payload;
 };
 
-SuppliersActions.updateProvider = data => async (dispatch, getState) => {
+SuppliersActions.updateProvider = (data, getToken) => async (
+  dispatch,
+  getState
+) => {
   const provider = getProviderPayload(data);
   const url = `${window.config.providersBaseUrl}${provider.id}`;
   return axios
-    .put(url, provider, await getApiConfig(getState().UserReducer.auth))
+    .put(url, provider, await getApiConfig(getToken))
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_UPDATE_PROVIDER));
       dispatch(
@@ -382,7 +397,7 @@ SuppliersActions.updateProvider = data => async (dispatch, getState) => {
           'success'
         )
       );
-      dispatch(SuppliersActions.getAllProviders());
+      dispatch(SuppliersActions.getAllProviders(getToken));
       dispatch(
         SuppliersActions.logEvent({
           title: `Updated provider ${provider.id} successfully`
@@ -402,13 +417,16 @@ SuppliersActions.updateProvider = data => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.fetchProvider = id => async (dispatch, getState) => {
+SuppliersActions.fetchProvider = (id, getToken) => async (
+  dispatch,
+  getState
+) => {
   if (id < 0) return;
 
   const url = `${window.config.providersBaseUrl}${id}`;
 
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_FETCH_PROVIDER));
 
@@ -417,9 +435,9 @@ SuppliersActions.fetchProvider = id => async (dispatch, getState) => {
         : '';
 
       if (getQueryVariable('tab') === 'events') {
-        dispatch(SuppliersActions.getProviderStatus(id));
+        dispatch(SuppliersActions.getProviderStatus(id, getToken));
       } else if (getQueryVariable('tab') === 'chouetteJobs') {
-        dispatch(SuppliersActions.getChouetteJobStatus());
+        dispatch(SuppliersActions.getChouetteJobStatus(getToken));
       }
 
       window.history.pushState(
@@ -436,11 +454,14 @@ SuppliersActions.fetchProvider = id => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.deleteProvider = providerId => async (dispatch, getState) => {
+SuppliersActions.deleteProvider = (providerId, getToken) => async (
+  dispatch,
+  getState
+) => {
   const url = `${window.config.providersBaseUrl}${providerId}`;
 
   return axios
-    .delete(url, await getApiConfig(getState().UserReducer.auth))
+    .delete(url, await getApiConfig(getToken))
     .then(response => {
       SuppliersActions.selectActiveSupplier(-1);
       dispatch(sendData(response.data, types.SUCCESS_DELETE_PROVIDER));
@@ -448,7 +469,7 @@ SuppliersActions.deleteProvider = providerId => async (dispatch, getState) => {
       dispatch(SuppliersActions.addNotification('Provider deleted', 'success'));
       dispatch(SuppliersActions.logEvent({ title: 'Provider deleted' }));
 
-      dispatch(SuppliersActions.getAllProviders()).then(() => {
+      dispatch(SuppliersActions.getAllProviders(getToken)).then(() => {
         window.history.pushState(
           window.config.endpointBase,
           'Title',
@@ -465,12 +486,12 @@ SuppliersActions.deleteProvider = providerId => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.selectActiveSupplier = id => dispatch => {
+SuppliersActions.selectActiveSupplier = (id, getToken) => dispatch => {
   dispatch(SuppliersActions.changeActiveSupplierId(id));
   dispatch(SuppliersActions.restoreFilesToOutbound());
-  dispatch(SuppliersActions.fetchFilenames(id));
-  dispatch(SuppliersActions.fetchProvider(id));
-  dispatch(SuppliersActions.setActiveActionFilter(''));
+  dispatch(SuppliersActions.fetchFilenames(id, getToken));
+  dispatch(SuppliersActions.fetchProvider(id, getToken));
+  dispatch(SuppliersActions.setActiveActionFilter('', getToken));
   dispatch(SuppliersActions.unselectAllSuppliers());
 };
 
@@ -496,7 +517,7 @@ SuppliersActions.cancelChouetteJobForProvider = (
     url: url,
     timeout: 20000,
     method: 'delete',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(
@@ -540,7 +561,7 @@ SuppliersActions.cancelAllChouetteJobsforAllProviders = () => async (
     url: window.config.timetableAdminBaseUrl + `jobs/`,
     timeout: 20000,
     method: 'delete',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(
@@ -582,7 +603,7 @@ SuppliersActions.cancelAllChouetteJobsforProvider = providerId => async (
     url: url,
     timeout: 20000,
     method: 'delete',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(
@@ -618,17 +639,17 @@ SuppliersActions.cancelAllChouetteJobsforProvider = providerId => async (
     });
 };
 
-SuppliersActions.setActiveActionFilter = value => dispatch => {
+SuppliersActions.setActiveActionFilter = (value, getToken) => dispatch => {
   dispatch(sendData(value, types.SET_ACTIVE_ACTION_FILTER));
-  dispatch(SuppliersActions.getChouetteJobStatus());
+  dispatch(SuppliersActions.getChouetteJobStatus(getToken));
 };
 
-SuppliersActions.setActiveActionAllFilter = value => dispatch => {
+SuppliersActions.setActiveActionAllFilter = (value, getToken) => dispatch => {
   dispatch(sendData(value, types.SET_ACTIVE_ACTION_ALL_FILTER));
-  dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
+  dispatch(SuppliersActions.getChouetteJobsForAllSuppliers(getToken));
 };
 
-SuppliersActions.getChouetteJobsForAllSuppliers = () => async (
+SuppliersActions.getChouetteJobsForAllSuppliers = getToken => async (
   dispatch,
   getState
 ) => {
@@ -654,7 +675,7 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => async (
       cancelToken: new CancelToken(function executor(cancel) {
         dispatch(sendData(cancel, types.REQUESTED_ALL_CHOUETTE_JOB_STATUS));
       }),
-      ...(await getApiConfig(state.UserReducer.auth))
+      ...(await getApiConfig(getToken))
     })
     .then(function(response) {
       let jobs = response.data.reverse();
@@ -678,7 +699,10 @@ SuppliersActions.getChouetteJobsForAllSuppliers = () => async (
     });
 };
 
-SuppliersActions.getChouetteJobStatus = () => async (dispatch, getState) => {
+SuppliersActions.getChouetteJobStatus = getToken => async (
+  dispatch,
+  getState
+) => {
   const state = getState();
 
   const { chouetteJobFilter, actionFilter } = state.MardukReducer;
@@ -707,7 +731,7 @@ SuppliersActions.getChouetteJobStatus = () => async (dispatch, getState) => {
   var CancelToken = axios.CancelToken;
 
   return axios
-    .get(url, await getApiConfig(state.UserReducer.auth), {
+    .get(url, await getApiConfig(getToken), {
       cancelToken: new CancelToken(function executor(cancel) {
         dispatch(sendData(cancel, types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER));
       })
@@ -730,7 +754,7 @@ SuppliersActions.exportData = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_EXPORT_DATA));
@@ -752,11 +776,11 @@ SuppliersActions.exportData = id => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.getGraphStatus = () => async (dispatch, getState) => {
+SuppliersActions.getGraphStatus = getToken => async (dispatch, getState) => {
   const url = window.config.eventsBaseUrl + `admin_summary/status/aggregation`;
 
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       let status = {
         graphStatus: {},
@@ -790,11 +814,14 @@ SuppliersActions.getGraphStatus = () => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.getOTPGraphVersions = () => async (dispatch, getState) => {
+SuppliersActions.getOTPGraphVersions = getToken => async (
+  dispatch,
+  getState
+) => {
   const url = window.config.timetableAdminBaseUrl + `routing_graph/graphs`;
 
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       const graphVersions = {
         streetGraphs: [],
@@ -819,7 +846,7 @@ SuppliersActions.transferData = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_TRANSFER_DATA));
@@ -841,7 +868,10 @@ SuppliersActions.transferData = id => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.fetchFilenames = id => async (dispatch, getState) => {
+SuppliersActions.fetchFilenames = (id, getToken) => async (
+  dispatch,
+  getState
+) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/files`;
 
   dispatch(requestFilenames());
@@ -849,7 +879,7 @@ SuppliersActions.fetchFilenames = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'get',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       const files = addFileExtensions(response.data.files);
@@ -923,7 +953,7 @@ SuppliersActions.cleanDataspace = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_DELETE_DATA));
@@ -962,7 +992,7 @@ SuppliersActions.cleanAllDataspaces = filter => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(
@@ -1000,7 +1030,7 @@ SuppliersActions.validateProvider = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_VALIDATE_PROVIDER));
@@ -1032,7 +1062,7 @@ SuppliersActions.buildGraph = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_GRAPH));
@@ -1057,7 +1087,7 @@ SuppliersActions.buildBaseGraph = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_BASE_GRAPH));
@@ -1088,7 +1118,7 @@ SuppliersActions.buildCandidateGraphOTP = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(
@@ -1136,7 +1166,7 @@ SuppliersActions.buildCandidateBaseGraphOTP = () => async (
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(
@@ -1180,7 +1210,7 @@ SuppliersActions.fetchOSM = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_FETCH_OSM));
@@ -1203,7 +1233,7 @@ SuppliersActions.uploadGoogleProduction = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_UPLOAD_GOOGLE_PRODUCTION));
@@ -1242,7 +1272,7 @@ SuppliersActions.uploadGoogleQA = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_UPLOAD_GOOGLE_QA));
@@ -1274,7 +1304,7 @@ SuppliersActions.updateMapbox = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(
@@ -1530,7 +1560,7 @@ SuppliersActions.logEvent = event => {
   };
 };
 
-SuppliersActions.getExportedFiles = () => async (dispatch, getState) => {
+SuppliersActions.getExportedFiles = getToken => async (dispatch, getState) => {
   dispatch(sendData(types.REQUESTED_EXPORTED_FILES, null));
   const url = window.config.timetableAdminBaseUrl + 'export/files';
   return axios({
@@ -1538,7 +1568,7 @@ SuppliersActions.getExportedFiles = () => async (dispatch, getState) => {
     timeout: 20000,
     method: 'get',
     responseType: 'json',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   }).then(response => {
     if (response.data && response.data.files) {
       let providerData = {};
@@ -1576,7 +1606,7 @@ SuppliersActions.cleanFileFilter = () => async (dispatch, getState) => {
     url: window.config.timetableAdminBaseUrl + 'idempotentfilter/clean',
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getState().UserReducer.auth))
+    ...(await getApiConfig(getToken))
   })
     .then(function(response) {
       dispatch(
@@ -1594,10 +1624,10 @@ SuppliersActions.cleanFileFilter = () => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.getTransportModes = () => async (dispatch, getState) => {
+SuppliersActions.getTransportModes = getToken => async (dispatch, getState) => {
   const url = `${window.config.providersBaseUrl}transport_modes`;
   return axios
-    .get(url, await getApiConfig(getState().UserReducer.auth))
+    .get(url, await getApiConfig(getToken))
     .then(response => {
       dispatch(sendData(response.data, types.RECEIVED_TRANSPORT_MODES));
     })

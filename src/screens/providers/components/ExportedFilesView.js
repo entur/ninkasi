@@ -14,15 +14,16 @@
  *
  */
 
-import React, { Component } from 'react';
+import React, { Component, useCallback } from 'react';
 import { connect } from 'react-redux';
+import { useAuth } from 'react-oidc-context';
 import SuppliersActions from 'actions/SuppliersActions';
 import ExportedFilesRow from './ExportedFilesRow';
 import ExportedFilesHeader from './ExportedFilesHeader';
 
 class ExportedFilesView extends Component {
   componentDidMount() {
-    this.props.dispatch(SuppliersActions.getExportedFiles());
+    this.props.dispatch(SuppliersActions.getExportedFiles(this.props.getToken));
   }
 
   render() {
@@ -70,4 +71,15 @@ const mapStateToProps = ({ SuppliersReducer }) => ({
   providers: mapProviderIdToKeys(SuppliersReducer.data)
 });
 
-export default connect(mapStateToProps)(ExportedFilesView);
+const withAuth = Component => {
+  const AuthWrapper = props => {
+    const auth = useAuth();
+    const getToken = useCallback(async () => {
+      return auth.user?.access_token;
+    }, [auth]);
+    return <Component {...props} getToken={getToken} />;
+  };
+  return AuthWrapper;
+};
+
+export default connect(mapStateToProps)(withAuth(ExportedFilesView));

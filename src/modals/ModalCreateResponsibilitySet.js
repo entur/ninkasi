@@ -16,6 +16,7 @@
 
 import React from 'react';
 import Modal from 'material-ui/Dialog';
+import { useAuth } from 'react-oidc-context';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import MdRemove from 'material-ui/svg-icons/content/remove';
@@ -25,7 +26,6 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import NewRoleAssignment from './NewRoleAssignment';
 import { getEntityClassificationRefString } from 'utils/';
-import { connect } from 'react-redux';
 
 class ModalCreateResponsibilitySet extends React.Component {
   constructor(props) {
@@ -260,7 +260,7 @@ class ModalCreateResponsibilitySet extends React.Component {
             </div>
             {isCreatingNewRole ? (
               <NewRoleAssignment
-                auth={this.props.auth}
+                getToken={this.props.getToken}
                 newRole={newRole}
                 roles={roles}
                 entityTypes={entityTypes}
@@ -319,8 +319,15 @@ class ModalCreateResponsibilitySet extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  auth: state.UserReducer.auth
-});
+const withAuth = Component => {
+  const AuthWrapper = props => {
+    const auth = useAuth();
+    const getToken = useCallback(async () => {
+      return auth.user?.access_token;
+    }, [auth]);
+    return <Component {...props} getToken={getToken} />;
+  };
+  return AuthWrapper;
+};
 
-export default connect(mapStateToProps)(ModalCreateResponsibilitySet);
+export default withAuth(ModalCreateResponsibilitySet);
