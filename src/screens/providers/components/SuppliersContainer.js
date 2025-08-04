@@ -15,8 +15,8 @@
  */
 
 import { connect } from 'react-redux';
-import React, { useCallback } from 'react';
-import { useAuth } from 'react-oidc-context';
+import React from 'react';
+import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
 import MdNew from 'material-ui/svg-icons/content/add';
@@ -191,16 +191,5 @@ const mapStateToProps = state => ({
   displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
   canEditOrganisation: state.UserContextReducer.isOrganisationAdmin
 });
-
-const withAuth = Component => {
-  const AuthWrapper = props => {
-    const auth = useAuth();
-    const getToken = useCallback(async () => {
-      return auth.user?.access_token;
-    }, [auth]);
-    return <Component {...props} getToken={getToken} />;
-  };
-  return AuthWrapper;
-};
 
 export default connect(mapStateToProps)(withAuth(SuppliersContainer));

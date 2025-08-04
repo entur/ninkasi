@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback } from 'react';
-import { useAuth } from 'react-oidc-context';
+import React, { useEffect } from 'react';
+import withAuth from 'utils/withAuth';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
@@ -70,17 +70,6 @@ const GeocoderComponent = ({ getToken }) => {
       </TabPanel>
     </div>
   );
-};
-
-const withAuth = Component => {
-  const AuthWrapper = props => {
-    const auth = useAuth();
-    const getToken = useCallback(async () => {
-      return auth.user?.access_token;
-    }, [auth]);
-    return <Component {...props} getToken={getToken} />;
-  };
-  return AuthWrapper;
 };
 
 export default withAuth(GeocoderComponent);

@@ -14,9 +14,9 @@
  *
  */
 
-import React, { useCallback } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { useAuth } from 'react-oidc-context';
+import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import ChouetteJobDetails from './ChouetteJobDetails';
 import ChouetteAllJobs from './ChouetteAllJobs';
@@ -405,16 +405,5 @@ const mapStateToProps = state => ({
   allProvidersEvents: state.SuppliersReducer.statusListAllProviders,
   canEditOrganisation: state.UserContextReducer.isOrganisationAdmin
 });
-
-const withAuth = Component => {
-  const AuthWrapper = props => {
-    const auth = useAuth();
-    const getToken = useCallback(async () => {
-      return auth.user?.access_token;
-    }, [auth]);
-    return <Component {...props} getToken={getToken} />;
-  };
-  return AuthWrapper;
-};
 
 export default connect(mapStateToProps)(withAuth(SupplierTabWrapper));

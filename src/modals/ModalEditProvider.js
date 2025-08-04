@@ -14,9 +14,9 @@
  *
  */
 
-import React, { Component, useCallback } from 'react';
+import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
-import { useAuth } from 'react-oidc-context';
+import withAuth from 'utils/withAuth';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import SelectField from 'material-ui/SelectField';
@@ -441,16 +441,5 @@ class ModalEditProvider extends Component {
 const mapStateToProps = state => ({
   allTransportModes: state.SuppliersReducer.allTransportModes
 });
-
-const withAuth = Component => {
-  const AuthWrapper = props => {
-    const auth = useAuth();
-    const getToken = useCallback(async () => {
-      return auth.user?.access_token;
-    }, [auth]);
-    return <Component {...props} getToken={getToken} />;
-  };
-  return AuthWrapper;
-};
 
 export default connect(mapStateToProps)(withAuth(ModalEditProvider));

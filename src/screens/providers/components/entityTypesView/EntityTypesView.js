@@ -14,9 +14,9 @@
  *
  */
 
-import React, { useCallback } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { useAuth } from 'react-oidc-context';
+import withAuth from 'utils/withAuth';
 import './entityTypesView.scss';
 import MdEdit from 'material-ui/svg-icons/image/edit';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -264,16 +264,5 @@ const mapStateToProps = state => ({
   status: state.OrganizationReducer.entityTypeStatus,
   codeSpaces: state.OrganizationReducer.codeSpaces
 });
-
-const withAuth = Component => {
-  const AuthWrapper = props => {
-    const auth = useAuth();
-    const getToken = useCallback(async () => {
-      return auth.user?.access_token;
-    }, [auth]);
-    return <Component {...props} getToken={getToken} />;
-  };
-  return AuthWrapper;
-};
 
 export default connect(mapStateToProps)(withAuth(EntityTypesView));

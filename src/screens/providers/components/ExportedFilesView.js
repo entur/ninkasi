@@ -14,9 +14,9 @@
  *
  */
 
-import React, { Component, useCallback } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { useAuth } from 'react-oidc-context';
+import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import ExportedFilesRow from './ExportedFilesRow';
 import ExportedFilesHeader from './ExportedFilesHeader';
@@ -70,16 +70,5 @@ const mapStateToProps = ({ SuppliersReducer }) => ({
   files: SuppliersReducer.exportedFiles,
   providers: mapProviderIdToKeys(SuppliersReducer.data)
 });
-
-const withAuth = Component => {
-  const AuthWrapper = props => {
-    const auth = useAuth();
-    const getToken = useCallback(async () => {
-      return auth.user?.access_token;
-    }, [auth]);
-    return <Component {...props} getToken={getToken} />;
-  };
-  return AuthWrapper;
-};
 
 export default connect(mapStateToProps)(withAuth(ExportedFilesView));

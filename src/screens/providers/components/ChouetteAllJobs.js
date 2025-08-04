@@ -14,9 +14,9 @@
  *
  */
 
-import React, { useCallback } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { useAuth } from 'react-oidc-context';
+import withAuth from 'utils/withAuth';
 import cfgreader from 'config/readConfig';
 import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
@@ -432,17 +432,6 @@ const mapStateToProps = state => {
     actionAllFilter: state.MardukReducer.actionAllFilter,
     requestingJobs: state.MardukReducer.requesting_chouette_all_job
   };
-};
-
-const withAuth = Component => {
-  const AuthWrapper = props => {
-    const auth = useAuth();
-    const getToken = useCallback(async () => {
-      return auth.user?.access_token;
-    }, [auth]);
-    return <Component {...props} getToken={getToken} />;
-  };
-  return AuthWrapper;
 };
 
 export default connect(mapStateToProps)(withAuth(ChouetteAllJobs));

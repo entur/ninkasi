@@ -14,9 +14,9 @@
  *
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useAuth } from 'react-oidc-context';
+import withAuth from 'utils/withAuth';
 import Checkbox from 'material-ui/Checkbox';
 import Divider from 'material-ui/Divider';
 import peliasTasks from 'config/peliasTasks';
@@ -156,16 +156,5 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
 const mapStateToProps = state => ({
   otherStatus: state.SuppliersReducer.otherStatus || []
 });
-
-const withAuth = Component => {
-  const AuthWrapper = props => {
-    const auth = useAuth();
-    const getToken = useCallback(async () => {
-      return auth.user?.access_token;
-    }, [auth]);
-    return <Component {...props} getToken={getToken} />;
-  };
-  return AuthWrapper;
-};
 
 export default connect(mapStateToProps)(withAuth(Pelias));
