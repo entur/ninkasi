@@ -20,6 +20,7 @@ import MdDownload from 'material-ui/svg-icons/file/file-download';
 import { getSizeFromBytes } from 'utils/';
 import { saveAs } from 'file-saver';
 import axios from 'axios';
+import withAuth from 'utils/withAuth';
 
 class AdvancedFileList extends React.Component {
   async handleDownloadFile(e, filename) {
@@ -35,7 +36,7 @@ class AdvancedFileList extends React.Component {
       const { data } = await axios.get(URL, {
         responseType: 'blob',
         headers: {
-          Authorization: `Bearer ${await this.props.auth.getAccessToken()}`
+          Authorization: `Bearer ${await this.props.getToken()}`
         }
       });
 
@@ -252,4 +253,4 @@ class AdvancedFileList extends React.Component {
   }
 }
 
-export default AdvancedFileList;
+export default withAuth(AdvancedFileList);

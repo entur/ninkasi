@@ -29,6 +29,7 @@ const sort = data => {
 
 const OSMPOIFilter = () => {
   const auth = useAuth();
+
   const scrollRef = useRef(null);
 
   const [poiFilterArray, setPoiFilterArray] = useState([
@@ -49,8 +50,7 @@ const OSMPOIFilter = () => {
 
   useEffect(() => {
     const fetchFilters = async () => {
-      const getToken = async () => auth.user?.access_token;
-      const config = await getApiConfig(getToken);
+      const config = await getApiConfig(() => auth.user?.access_token);
       setLoading(true);
       const url = window.config.poiFilterBaseUrl;
       axios
@@ -100,8 +100,7 @@ const OSMPOIFilter = () => {
   const handleSubmit = async () => {
     setLoading(true);
     const endpoint = window.config.poiFilterBaseUrl;
-    const getToken = async () => auth.user?.access_token;
-    const config = await getApiConfig(getToken);
+    const config = await getApiConfig(() => auth.user?.access_token);
     axios
       .put(endpoint, JSON.stringify(dirtyPoiFilterArray), config)
       .then(() => {
