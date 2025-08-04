@@ -15,6 +15,7 @@
  */
 
 import React from 'react';
+import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
 import MenuItem from 'material-ui/MenuItem';
@@ -191,8 +192,8 @@ class AdministrativeActions extends React.Component {
       confirmTitle: 'Clean All Event History',
       confirmInfo: 'Are you want to clean all event history?',
       confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.deleteAllJobs());
+        const { dispatch, getToken } = this.props;
+        dispatch(SuppliersActions.deleteAllJobs(getToken));
       },
       cleanPopoverOpen: false
     });
@@ -204,8 +205,8 @@ class AdministrativeActions extends React.Component {
       confirmTitle: 'Clean Stop Placee Register in Chouette',
       confirmInfo: 'Are you want to clean Stop Place Register in Chouette?',
       confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.cleanStopPlacesInChouette());
+        const { dispatch, getToken } = this.props;
+        dispatch(SuppliersActions.cleanStopPlacesInChouette(getToken));
       },
       cleanPopoverOpen: false
     });
@@ -468,4 +469,4 @@ class AdministrativeActions extends React.Component {
 
 const mapStateToProps = state => ({});
 
-export default connect(mapStateToProps)(AdministrativeActions);
+export default connect(mapStateToProps)(withAuth(AdministrativeActions));

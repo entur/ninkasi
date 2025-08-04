@@ -72,7 +72,7 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
 
   const confirmExecutePelias = () => {
     setConfirmDialogOpen(false);
-    dispatch(SuppliersActions.executePeliasTask(peliasOptions));
+    dispatch(SuppliersActions.executePeliasTask(peliasOptions, getToken));
   };
 
   return (

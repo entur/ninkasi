@@ -27,13 +27,13 @@ import getApiConfig from './getApiConfig';
 
 var SuppliersActions = {};
 
-SuppliersActions.cleanStopPlacesInChouette = () => async (
+SuppliersActions.cleanStopPlacesInChouette = getToken => async (
   dispatch,
   getState
 ) => {
   const url = window.config.timetableAdminBaseUrl + 'stop_places/clean';
   return axios
-    .post(url, null, await getApiConfig(getState().UserReducer.auth))
+    .post(url, null, await getApiConfig(getToken))
     .then(response => {
       dispatch(
         SuppliersActions.addNotification(
@@ -55,35 +55,34 @@ SuppliersActions.cleanStopPlacesInChouette = () => async (
     });
 };
 
-SuppliersActions.deleteAllJobs = () => async (dispatch, getState) => {
+SuppliersActions.deleteAllJobs = getToken => async (dispatch, getState) => {
   const url = `${window.config.eventsBaseUrl}timetable/`;
-  return axios
-    .delete(url, await getApiConfig(getState().UserReducer.auth))
-    .then(response => {
-      dispatch(
-        SuppliersActions.addNotification('Deleted event history', 'success')
-      );
-      dispatch(SuppliersActions.logEvent({ title: 'Deleted event history' }));
-    });
+  return axios.delete(url, await getApiConfig(getToken)).then(response => {
+    dispatch(
+      SuppliersActions.addNotification('Deleted event history', 'success')
+    );
+    dispatch(SuppliersActions.logEvent({ title: 'Deleted event history' }));
+  });
 };
 
-SuppliersActions.deleteJobsForProvider = id => async (dispatch, getState) => {
+SuppliersActions.deleteJobsForProvider = (id, getToken) => async (
+  dispatch,
+  getState
+) => {
   const url = `${window.config.eventsBaseUrl}timetable/${id}`;
-  return axios
-    .delete(url, await getApiConfig(getState().UserReducer.auth))
-    .then(response => {
-      dispatch(
-        SuppliersActions.addNotification(
-          'Deleted event history for provider ' + id,
-          'success'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Deleted event history for provider ' + id
-        })
-      );
-    });
+  return axios.delete(url, await getApiConfig(getToken)).then(response => {
+    dispatch(
+      SuppliersActions.addNotification(
+        'Deleted event history for provider ' + id,
+        'success'
+      )
+    );
+    dispatch(
+      SuppliersActions.logEvent({
+        title: 'Deleted event history for provider ' + id
+      })
+    );
+  });
 };
 
 SuppliersActions.getProviderStatus = (id, getToken) => async (
@@ -114,7 +113,10 @@ SuppliersActions.getProviderStatus = (id, getToken) => async (
     });
 };
 
-SuppliersActions.executePeliasTask = tasks => async (dispatch, getState) => {
+SuppliersActions.executePeliasTask = (tasks, getToken) => async (
+  dispatch,
+  getState
+) => {
   const queryParams = Object.keys(tasks)
     .filter(entry => tasks[entry])
     .join('&task=');
@@ -122,7 +124,7 @@ SuppliersActions.executePeliasTask = tasks => async (dispatch, getState) => {
     window.config.geocoderAdminBaseUrl + `build_pipeline?task=${queryParams}`;
 
   return axios
-    .post(url, null, await getApiConfig(getState().UserReducer.auth))
+    .post(url, null, await getApiConfig(getToken))
     .then(response => {
       dispatch(
         SuppliersActions.addNotification('Pelias task execution', 'success')
@@ -902,10 +904,12 @@ export const addFileExtensions = (files = []) => {
   });
 };
 
-SuppliersActions.importData = (id, selectedFiles, isFlex = false) => async (
-  dispatch,
-  getState
-) => {
+SuppliersActions.importData = (
+  id,
+  selectedFiles,
+  isFlex = false,
+  getToken
+) => async (dispatch, getState) => {
   dispatch(requestImport());
 
   const url =
@@ -919,11 +923,7 @@ SuppliersActions.importData = (id, selectedFiles, isFlex = false) => async (
   });
 
   return axios
-    .post(
-      url,
-      { files: bodySelectedFiles },
-      await getApiConfig(getState().UserReducer.auth)
-    )
+    .post(url, { files: bodySelectedFiles }, await getApiConfig(getToken))
     .then(function(response) {
       dispatch(sendData(response.data, types.SUCCESS_IMPORT_DATA));
       dispatch(SuppliersActions.addNotification('Import started', 'success'));

@@ -16,7 +16,7 @@
 
 import { connect } from 'react-redux';
 import React from 'react';
-import { useAuth } from 'react-oidc-context';
+import withAuth from 'utils/withAuth';
 import Button from 'muicss/lib/react/button';
 import SuppliersActions from 'actions/SuppliersActions';
 import AdvancedFileList from './AdvancedFileList';
@@ -338,7 +338,6 @@ class DataMigrationDetails extends React.Component {
         {isLevel1Provider ? (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AdvancedFileList
-              auth={this.props.auth}
               selectedIndices={selectedIndicesSource}
               updateIndices={this.handleUpdateIndicesSource.bind(this)}
               downloadButton
@@ -391,7 +390,6 @@ class DataMigrationDetails extends React.Component {
               </div>
             )}
             <AdvancedFileList
-              auth={this.props.auth}
               selectedIndices={selectedIndicesOutbound}
               files={outboundFiles}
               updateIndices={this.handleUpdateIndicesOutbound.bind(this)}
@@ -447,11 +445,13 @@ class DataMigrationDetails extends React.Component {
           'Clean before import enabled, does not make sense to import multiple files'
         );
       } else {
+        const { getToken } = this.props;
         dispatch(
           SuppliersActions.importData(
             this.props.activeId,
             outboundFiles,
-            isFlex
+            isFlex,
+            getToken
           )
         );
       }
@@ -484,7 +484,10 @@ class DataMigrationDetails extends React.Component {
     );
     if (response === true) {
       const { dispatch } = this.props;
-      dispatch(SuppliersActions.deleteJobsForProvider(this.props.activeId));
+      const { getToken } = this.props;
+      dispatch(
+        SuppliersActions.deleteJobsForProvider(this.props.activeId, getToken)
+      );
     }
   };
 
@@ -604,13 +607,5 @@ const mapStateToProps = state => ({
   importIsLoading: state.MardukReducer.isLoading,
   importError: state.MardukReducer.error
 });
-
-const withAuth = Component => {
-  const AuthWrapper = props => {
-    const auth = useAuth();
-    return <Component {...props} auth={auth} />;
-  };
-  return AuthWrapper;
-};
 
 export default connect(mapStateToProps)(withAuth(DataMigrationDetails));
