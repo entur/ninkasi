@@ -16,8 +16,8 @@
 
 import React from 'react';
 import Modal from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 class ModalEditRole extends React.Component {
   constructor(props) {
@@ -40,8 +40,12 @@ class ModalEditRole extends React.Component {
     const { role, originalRoleName } = this.state;
 
     const actions = [
-      <FlatButton label="Close" onClick={this.props.handleCloseModal} />,
-      <FlatButton label="Update" onClick={() => handleSubmit(role)} />
+      <Button variant="text" onClick={this.props.handleCloseModal}>
+        Close
+      </Button>,
+      <Button variant="text" onClick={() => handleSubmit(role)}>
+        Update
+      </Button>
     ];
 
     if (!role) return null;
@@ -62,14 +66,14 @@ class ModalEditRole extends React.Component {
           }}
         >
           <TextField
-            hintText="Name"
-            floatingLabelText="Name"
+            placeholder="Name"
+            label="Name"
             value={role.name}
-            onChange={(e, value) =>
+            onChange={e =>
               this.setState({
                 role: {
                   ...role,
-                  name: value
+                  name: e.target.value
                 }
               })
             }
@@ -79,8 +83,8 @@ class ModalEditRole extends React.Component {
           <TextField
             disabled={true}
             defaultValue={role.privateCode}
-            hintText="private code"
-            floatingLabelText="Private code"
+            placeholder="private code"
+            label="Private code"
             fullWidth={true}
           />
         </div>

@@ -16,10 +16,9 @@
 
 import React from 'react';
 import Modal from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { FormControl, Select, MenuItem } from '@mui/material';
 
 const initialState = {
   organization: {
@@ -59,12 +58,16 @@ class ModalCreateOrganization extends React.Component {
       takenOrganizationPrivateCodes.indexOf(organization.privateCode) > -1;
 
     const actions = [
-      <FlatButton label="Cancel" onClick={handleCloseModal} />,
-      <FlatButton
+      <Button variant="text" onClick={handleCloseModal}>
+        Cancel
+      </Button>,
+      <Button
+        variant="text"
         disabled={isOrganizationNameTaken || isOrganizationPrivateCodeTaken}
-        label="Create"
         onClick={() => handleSubmit(organization)}
-      />
+      >
+        Create
+      </Button>
     ];
 
     return (
@@ -83,74 +86,70 @@ class ModalCreateOrganization extends React.Component {
           }}
         >
           <TextField
-            hintText="Name"
-            floatingLabelText="Name"
-            errorText={
+            placeholder="Name"
+            label="Name"
+            error={isOrganizationNameTaken}
+            helperText={
               isOrganizationNameTaken ? 'Organization name already exists' : ''
             }
             value={organization.name}
-            onChange={(e, value) =>
+            onChange={e =>
               this.setState({
-                organization: { ...organization, name: value }
+                organization: { ...organization, name: e.target.value }
               })
             }
             fullWidth={true}
           />
           <TextField
-            hintText="Private code"
-            floatingLabelText="Private code"
-            errorText={
+            placeholder="Private code"
+            label="Private code"
+            error={isOrganizationPrivateCodeTaken}
+            helperText={
               isOrganizationPrivateCodeTaken
                 ? 'Organization private code already exists'
                 : ''
             }
             value={organization.privateCode}
-            onChange={(e, value) =>
+            onChange={e =>
               this.setState({
-                organization: { ...organization, privateCode: value }
+                organization: { ...organization, privateCode: e.target.value }
               })
             }
             fullWidth={true}
           />
-          <SelectField
-            hintText="Organization type"
-            floatingLabelText="Organization type"
-            value={organization.organisationType}
-            onChange={(e, index, value) =>
-              this.setState({
-                organization: { ...organization, organisationType: value }
-              })
-            }
-            fullWidth={true}
-          >
-            <MenuItem
-              id="menuItem"
-              value="AUTHORITY"
-              label="AUTHORITY"
-              primaryText="AUTHORITY"
-            />
-          </SelectField>
-          <SelectField
-            hintText="Code space"
-            floatingLabelText="Code space"
-            value={organization.codeSpace}
-            onChange={(e, index, value) =>
-              this.setState({
-                organization: { ...organization, codeSpace: value }
-              })
-            }
-            fullWidth={true}
-          >
-            {codeSpaces.map(codeSpace => (
-              <MenuItem
-                key={codeSpace.id}
-                id={codeSpace.id}
-                value={codeSpace.id}
-                label={codeSpace.id}
-                primaryText={codeSpace.xmlns}
-              />
-            ))}
-          </SelectField>
+          <FormControl fullWidth>
+            <Select
+              value={organization.organisationType}
+              onChange={e =>
+                this.setState({
+                  organization: {
+                    ...organization,
+                    organisationType: e.target.value
+                  }
+                })
+              }
+              displayEmpty
+            >
+              <MenuItem value="AUTHORITY">AUTHORITY</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <Select
+              value={organization.codeSpace}
+              onChange={e =>
+                this.setState({
+                  organization: { ...organization, codeSpace: e.target.value }
+                })
+              }
+              displayEmpty
+            >
+              {codeSpaces.map(codeSpace => (
+                <MenuItem key={codeSpace.id} value={codeSpace.id}>
+                  {codeSpace.xmlns}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </div>
       </Modal>
     );

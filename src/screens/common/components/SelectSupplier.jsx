@@ -1,5 +1,4 @@
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { FormControl, Select, MenuItem } from '@mui/material';
 import React from 'react';
 
 export const SelectSupplier = ({
@@ -10,27 +9,20 @@ export const SelectSupplier = ({
 }) => {
   return (
     <>
-      <SelectField
-        id="select-supplier"
-        floatingLabelFixed={true}
-        style={{ minWidth: 350 }}
-        floatingLabelText={'Provider'}
-        onChange={(e, k, v) => selectSupplier(v)}
-        autoWidth={true}
-        value={Number(selectedSupplierId) || -1}
-        iconStyle={{ fill: 'rgba(22, 82, 149, 0.69)' }}
-      >
-        {suppliers.map(supplier => {
-          const isLevel1Provider =
-            (supplier.chouetteInfo &&
-              supplier.chouetteInfo.migrateDataToProvider) ||
-            supplier.id === -1;
-          return (
-            <MenuItem
-              key={supplier.id}
-              value={supplier.id}
-              label={supplier.name}
-              primaryText={
+      <FormControl style={{ minWidth: 350 }}>
+        <Select
+          id="select-supplier"
+          onChange={e => selectSupplier(e.target.value)}
+          value={Number(selectedSupplierId) || -1}
+          displayEmpty
+        >
+          {suppliers.map(supplier => {
+            const isLevel1Provider =
+              (supplier.chouetteInfo &&
+                supplier.chouetteInfo.migrateDataToProvider) ||
+              supplier.id === -1;
+            return (
+              <MenuItem key={supplier.id} value={supplier.id}>
                 <span
                   style={{
                     color: isLevel1Provider ? 'intial' : '#d9a51b'
@@ -38,11 +30,11 @@ export const SelectSupplier = ({
                 >
                   {supplier.name}
                 </span>
-              }
-            />
-          );
-        })}
-      </SelectField>
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
       {errorText && <div style={{ color: 'red' }}>{errorText}</div>}
     </>
   );

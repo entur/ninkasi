@@ -17,7 +17,7 @@
 import React from 'react';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@mui/material/Button';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import Checkbox from 'material-ui/Checkbox';
@@ -68,15 +68,15 @@ class EventFilterActionsPopover extends React.Component {
 
     return (
       <div>
-        <RaisedButton
+        <Button
+          variant="contained"
           disabled={!enabled && !eventFilter.jobDomain}
-          label={
-            <span>
-              Actions<span style={{ color: 'red' }}>*</span>
-            </span>
-          }
           onClick={this.handleOpen.bind(this)}
-        />
+        >
+          <span>
+            Actions<span style={{ color: 'red' }}>*</span>
+          </span>
+        </Button>
         <Popover
           anchorEl={anchorEl}
           open={open}

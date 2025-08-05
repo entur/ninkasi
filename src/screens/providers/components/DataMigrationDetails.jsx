@@ -20,7 +20,7 @@ import withAuth from 'utils/withAuth';
 import Button from 'muicss/lib/react/button';
 import SuppliersActions from 'actions/SuppliersActions';
 import AdvancedFileList from './AdvancedFileList';
-import TextField from 'material-ui/TextField';
+import TextField from '@mui/material/TextField';
 import { sortFiles } from 'utils';
 
 import FaArrowDown from 'react-icons/lib/fa/arrow-down';
@@ -319,7 +319,7 @@ class DataMigrationDetails extends React.Component {
         </div>
         {isLevel1Provider ? (
           <TextField
-            hintText="Filter ..."
+            placeholder="Filter ..."
             value={filterText}
             onChange={e => this.setState({ filterText: e.target.value })}
           />

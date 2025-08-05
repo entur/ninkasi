@@ -16,8 +16,8 @@
 
 import React from 'react';
 import Modal from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 const initialState = {
   role: {
@@ -45,16 +45,20 @@ class ModalCreateRole extends React.Component {
     const invalidPrivateCode = takenPrivateCodes.indexOf(role.privateCode) > -1;
 
     const actions = [
-      <FlatButton
+      <Button
+        variant="text"
         disabled={invalidPrivateCode}
-        label="Close"
         onClick={this.handleOnClose.bind(this)}
-      />,
-      <FlatButton
+      >
+        Close
+      </Button>,
+      <Button
+        variant="text"
         disabled={invalidPrivateCode}
-        label="Create"
         onClick={() => handleSubmit(role)}
-      />
+      >
+        Create
+      </Button>
     ];
 
     return (
@@ -73,24 +77,25 @@ class ModalCreateRole extends React.Component {
           }}
         >
           <TextField
-            hintText="Name"
-            floatingLabelText="Name"
+            placeholder="Name"
+            label="Name"
             value={role.name}
-            onChange={(e, value) =>
+            onChange={e =>
               this.setState({
-                role: { ...role, name: value }
+                role: { ...role, name: e.target.value }
               })
             }
             fullWidth={true}
           />
           <TextField
-            hintText="private code"
-            floatingLabelText="Private code"
-            errorText={invalidPrivateCode ? 'Private code already exists' : ''}
+            placeholder="private code"
+            label="Private code"
+            error={invalidPrivateCode}
+            helperText={invalidPrivateCode ? 'Private code already exists' : ''}
             value={role.privateCode}
-            onChange={(e, value) =>
+            onChange={e =>
               this.setState({
-                role: { ...role, privateCode: value }
+                role: { ...role, privateCode: e.target.value }
               })
             }
             fullWidth={true}

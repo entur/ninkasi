@@ -16,10 +16,9 @@
 
 import React from 'react';
 import ModalDialog from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { FormControl, Select, MenuItem } from '@mui/material';
 import ResponsiblitySetList from './ResponsiblitySetList';
 import UserRespSetPopover from './UserRespSetPopover';
 import {
@@ -172,13 +171,17 @@ class ModalEditUser extends React.Component {
     const disableUpdate = !usernameValid || !emailValid;
 
     const actions = [
-      <FlatButton label="Cancel" onClick={() => this.handleOnClose()} />,
-      <FlatButton
+      <Button variant="text" onClick={() => this.handleOnClose()}>
+        Cancel
+      </Button>,
+      <Button
+        variant="text"
         disabled={disableUpdate}
-        label="Update"
-        primary={true}
+        color="primary"
         onClick={() => handleSubmit(user)}
-      />
+      >
+        Update
+      </Button>
     ];
 
     return (
@@ -220,27 +223,29 @@ class ModalEditUser extends React.Component {
           </FormControl>
           <TextField
             disabled
-            hintText="Username"
-            floatingLabelText="Username"
+            placeholder="Username"
+            label="Username"
             value={user.username}
-            errorText={
-              !usernameValid &&
-              'Username can only include alphanumerics, hyphens and dot'
+            error={!usernameValid}
+            helperText={
+              !usernameValid
+                ? 'Username can only include alphanumerics, hyphens and dot'
+                : ''
             }
             onChange={this.handleChangeUsername.bind(this)}
             fullWidth={true}
           />
           <TextField
-            hintText="First name"
-            floatingLabelText="First name"
+            placeholder="First name"
+            label="First name"
             value={user.contactDetails.firstName}
-            onChange={(e, value) =>
+            onChange={e =>
               this.setState({
                 user: {
                   ...user,
                   contactDetails: {
                     ...user.contactDetails,
-                    firstName: value
+                    firstName: e.target.value
                   }
                 }
               })
@@ -248,16 +253,16 @@ class ModalEditUser extends React.Component {
             fullWidth={true}
           />
           <TextField
-            hintText="Last name"
-            floatingLabelText="Last name"
+            placeholder="Last name"
+            label="Last name"
             value={user.contactDetails.lastName}
-            onChange={(e, value) =>
+            onChange={e =>
               this.setState({
                 user: {
                   ...user,
                   contactDetails: {
                     ...user.contactDetails,
-                    lastName: value
+                    lastName: e.target.value
                   }
                 }
               })
@@ -265,9 +270,10 @@ class ModalEditUser extends React.Component {
             fullWidth={true}
           />
           <TextField
-            hintText="E-mail"
-            floatingLabelText="E-mail"
-            errorText={
+            placeholder="E-mail"
+            label="E-mail"
+            error={emailIsTaken || !emailValid}
+            helperText={
               emailIsTaken
                 ? 'E-mail already taken'
                 : !emailValid
@@ -279,43 +285,39 @@ class ModalEditUser extends React.Component {
             fullWidth={true}
           />
           <TextField
-            hintText="Phonenumber"
-            floatingLabelText="Phonenumber"
+            placeholder="Phonenumber"
+            label="Phonenumber"
             value={user.contactDetails.phone}
-            onChange={(e, value) =>
+            onChange={e =>
               this.setState({
                 user: {
                   ...user,
                   contactDetails: {
                     ...user.contactDetails,
-                    phone: value
+                    phone: e.target.value
                   }
                 }
               })
             }
             fullWidth={true}
           />
-          <SelectField
-            hintText="Organization"
-            floatingLabelText="Organization"
-            value={user.organisationRef}
-            onChange={(e, index, value) =>
-              this.setState({
-                user: { ...user, organisationRef: value }
-              })
-            }
-            fullWidth={true}
-          >
-            {organizations.map(org => (
-              <MenuItem
-                key={org.id}
-                id={org.id}
-                value={org.id}
-                label={org.name}
-                primaryText={org.name}
-              />
-            ))}
-          </SelectField>
+          <FormControl fullWidth>
+            <Select
+              value={user.organisationRef}
+              onChange={e =>
+                this.setState({
+                  user: { ...user, organisationRef: e.target.value }
+                })
+              }
+              displayEmpty
+            >
+              {organizations.map(org => (
+                <MenuItem key={org.id} value={org.id}>
+                  {org.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <UserRespSetPopover
             responsibilities={responsibilities}
             addedRespSets={this.state.user.responsibilitySetRefs}

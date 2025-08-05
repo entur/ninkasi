@@ -22,7 +22,7 @@ import moment from 'moment';
 import UnfoldLess from 'material-ui/svg-icons/navigation/unfold-less';
 import UnfoldMore from 'material-ui/svg-icons/navigation/unfold-more';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '@mui/material/Button';
 
 const containerStyle = {
   display: 'flex',
@@ -89,10 +89,11 @@ class LatestOTPGraphVersions extends React.Component {
 
     return (
       <>
-        <FlatButton
-          label="OTP graph versions"
-          labelPosition="before"
-          icon={this.state.showGraphVersions ? <UnfoldLess /> : <UnfoldMore />}
+        <Button
+          variant="text"
+          startIcon={
+            this.state.showGraphVersions ? <UnfoldLess /> : <UnfoldMore />
+          }
           onClick={e => {
             e.preventDefault();
 
@@ -103,7 +104,9 @@ class LatestOTPGraphVersions extends React.Component {
 
             this.requestOTPGraphVersions();
           }}
-        />
+        >
+          OTP graph versions
+        </Button>
         <Popover
           open={this.state.showGraphVersions}
           anchorEl={this.state.anchorEl}

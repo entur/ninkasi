@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
-import TextField from 'material-ui/TextField';
+import TextField from '@mui/material/TextField';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -173,7 +173,7 @@ const OSMPOIFilter = () => {
                   <TableRow key={`poi-filter-row_${index}`}>
                     <TableCell align="center" padding="none">
                       <TextField
-                        hintText="Key"
+                        placeholder="Key"
                         value={key}
                         onChange={e =>
                           handleChange(index, 'key', e.target.value)
@@ -182,7 +182,7 @@ const OSMPOIFilter = () => {
                     </TableCell>
                     <TableCell align="center" padding="none">
                       <TextField
-                        hintText="Value"
+                        placeholder="Value"
                         value={value}
                         onChange={e =>
                           handleChange(index, 'value', e.target.value)
@@ -192,9 +192,9 @@ const OSMPOIFilter = () => {
                     <TableCell align="center" padding="none">
                       <TextField
                         type="number"
-                        hintText="Priority"
+                        placeholder="Priority"
                         value={priority}
-                        min={1}
+                        inputProps={{ min: 1 }}
                         onChange={e =>
                           handleChange(
                             index,
@@ -202,7 +202,8 @@ const OSMPOIFilter = () => {
                             parseInt(e.target.value, 10)
                           )
                         }
-                        errorText={
+                        error={priority < 1}
+                        helperText={
                           priority < 1 ? 'Priority must be 1 or more' : ''
                         }
                       />

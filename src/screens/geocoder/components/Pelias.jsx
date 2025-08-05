@@ -21,7 +21,7 @@ import Checkbox from 'material-ui/Checkbox';
 import Divider from 'material-ui/Divider';
 import peliasTasks from 'config/peliasTasks';
 import moment from 'moment';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@mui/material/Button';
 import SuppliersActions from 'actions/SuppliersActions';
 import ConfirmDialog from 'modals/ConfirmDialog';
 
@@ -132,13 +132,15 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
         key={'pelias-buttons'}
         style={{ width: '100%', textAlign: 'center' }}
       >
-        <RaisedButton
-          primary={true}
-          labelStyle={{ fontSize: 12 }}
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ fontSize: 12 }}
           onClick={() => handleExecutePelias()}
           disabled={Object.values(peliasOptions).every(value => !value)}
-          label={'Execute'}
-        />
+        >
+          Execute
+        </Button>
       </div>
       <ConfirmDialog
         open={confirmDialogOpen}

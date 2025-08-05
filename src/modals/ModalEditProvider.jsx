@@ -17,11 +17,10 @@
 import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import withAuth from 'utils/withAuth';
-import TextField from 'material-ui/TextField';
+import TextField from '@mui/material/TextField';
 import Checkbox from 'material-ui/Checkbox';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
+import { FormControl, Select, MenuItem } from '@mui/material';
+import Button from '@mui/material/Button';
 import { connect } from 'react-redux';
 import SuppliersActions from 'actions/SuppliersActions';
 import TransportModesPopover from './TransportModesPopover';
@@ -216,20 +215,23 @@ class ModalEditProvider extends Component {
     };
 
     const actions = [
-      <FlatButton
-        label="Cancel"
-        primary={false}
+      <Button
+        variant="text"
         onClick={() => {
           handleClose();
         }}
-      />,
-      <FlatButton
-        label="Update"
-        primary={true}
+      >
+        Cancel
+      </Button>,
+      <Button
+        variant="text"
+        color="primary"
         onClick={() => {
           this.handleSubmit();
         }}
-      />
+      >
+        Update
+      </Button>
     ];
 
     return (
@@ -241,92 +243,87 @@ class ModalEditProvider extends Component {
       >
         <div style={rowStyle}>
           <TextField
-            floatingLabelText={'Name'}
-            floatingLabelFixed={true}
+            label={'Name'}
             value={this.state.form._name}
             style={{ flex: 1 }}
-            onChange={(e, v) => this.handleChange('_name', v)}
-            errorText={errors._name && errors._name}
+            onChange={e => this.handleChange('_name', e.target.value)}
+            error={!!errors._name}
+            helperText={errors._name || ''}
           />
           <TextField
             disabled={isEdit}
-            floatingLabelText={'Chouette referential name'}
-            floatingLabelFixed={true}
+            label={'Chouette referential name'}
             value={this.state.form._referential}
             style={{ flex: 1, padding: '0 15px' }}
-            onChange={(e, v) => this.handleChange('_referential', v)}
-            errorText={errors._referential && errors._referential}
+            onChange={e => this.handleChange('_referential', e.target.value)}
+            error={!!errors._referential}
+            helperText={errors._referential || ''}
           />
         </div>
         <div style={rowStyle}>
           <TextField
             disabled={isEdit}
-            floatingLabelText={'Organisation'}
-            floatingLabelFixed={true}
+            label={'Organisation'}
             value={this.state.form._organisation}
             style={{ flex: 1 }}
-            onChange={(e, v) => this.handleChange('_organisation', v)}
-            errorText={errors._organisation && errors._organisation}
+            onChange={e => this.handleChange('_organisation', e.target.value)}
+            error={!!errors._organisation}
+            helperText={errors._organisation || ''}
           />
           <TextField
             disabled={isEdit}
-            floatingLabelText={'User'}
-            floatingLabelFixed={true}
+            label={'User'}
             value={this.state.form._user}
             style={{ flex: 1, padding: '0 15px' }}
-            onChange={(e, v) => this.handleChange('_user', v)}
-            errorText={errors._user && errors._user}
+            onChange={e => this.handleChange('_user', e.target.value)}
+            error={!!errors._user}
+            helperText={errors._user || ''}
           />
         </div>
         <div style={rowStyle}>
           <TextField
             disabled={isEdit}
-            floatingLabelText={'xmlns'}
-            floatingLabelFixed={true}
+            label={'xmlns'}
             value={this.state.form._xmlns}
             style={{ flex: 1 }}
-            onChange={(e, v) => this.handleChange('_xmlns', v)}
+            onChange={e => this.handleChange('_xmlns', e.target.value)}
           />
           <TextField
             disabled={isEdit}
-            floatingLabelText={'xmlns URL'}
-            floatingLabelFixed={true}
+            label={'xmlns URL'}
             value={this.state.form._xmlnsurl}
             style={{ flex: 1, padding: '0 15px' }}
-            onChange={(e, v) => this.handleChange('_xmlnsurl', v)}
+            onChange={e => this.handleChange('_xmlnsurl', e.target.value)}
           />
         </div>
         <div style={rowStyle}>
-          <SelectField
-            floatingLabelText="Migrate data to provider"
-            floatingLabelFixed={true}
-            style={{ flex: 1 }}
-            value={this.state.form._migrateDataToProvider}
-            onChange={(e, i, v) =>
-              this.handleChange('_migrateDataToProvider', v)
-            }
-            autoWidth={true}
-            errorText={
-              errors._migrateDataToProvider && errors._migrateDataToProvider
-            }
-          >
-            <MenuItem
-              value={null}
-              primaryText="None"
-              style={{ fontStyle: 'italic' }}
-            />
-            {providers
-              .filter(provider => !provider.chouetteInfo.migrateDataToProvider)
-              .map(provider => {
-                return (
-                  <MenuItem
-                    key={'provider-' + provider.id}
-                    value={provider.id}
-                    primaryText={provider.name}
-                  />
-                );
-              })}
-          </SelectField>
+          <FormControl style={{ flex: 1 }}>
+            <Select
+              value={this.state.form._migrateDataToProvider}
+              onChange={e =>
+                this.handleChange('_migrateDataToProvider', e.target.value)
+              }
+              displayEmpty
+            >
+              <MenuItem value={null} style={{ fontStyle: 'italic' }}>
+                None
+              </MenuItem>
+              {providers
+                .filter(
+                  provider => !provider.chouetteInfo.migrateDataToProvider
+                )
+                .map(provider => {
+                  return (
+                    <MenuItem
+                      key={'provider-' + provider.id}
+                      value={provider.id}
+                    >
+                      {provider.name}
+                    </MenuItem>
+                  );
+                })}
+            </Select>
+          </FormControl>
         </div>
 
         {this.state.form._referential.indexOf('rb_') !== 0 && (

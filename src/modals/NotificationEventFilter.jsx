@@ -18,8 +18,7 @@ import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import { connect } from 'react-redux';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { FormControl, Select, MenuItem } from '@mui/material';
 import EventFilterStatesPopover from './EventFilterStatesPopover';
 import EventFilterActionsPopover from './EventFilterActionsPopover';
 import OrganisationSelect from './OrganisationSelect';
@@ -128,31 +127,37 @@ class NotificationEventFilter extends React.Component {
           />
         </div>
         <div style={{ display: 'flex', marginTop: -10 }}>
-          <SelectField
-            floatingLabelText="Type"
-            onChange={this.handleChangeEventFilterType.bind(this)}
-            style={{ flex: 1 }}
-            value={notification.eventFilter.type}
-          >
-            {eventFilterTypes.map((eft, i) => (
-              <MenuItem key={'filter-' + i} value={eft} primaryText={eft} />
-            ))}
-          </SelectField>
-          <SelectField
-            floatingLabelText="JobDomain"
-            onChange={this.handleChangeJobDomain.bind(this)}
-            disabled={!enableJobSpecific}
-            style={{ marginLeft: 10, flex: 1 }}
-            value={notification.eventFilter.jobDomain}
-          >
-            {jobDomains.map((domain, i) => (
-              <MenuItem
-                key={'domain-' + i}
-                value={domain}
-                primaryText={domain}
-              />
-            ))}
-          </SelectField>
+          <FormControl style={{ flex: 1 }}>
+            <Select
+              onChange={e =>
+                this.handleChangeEventFilterType(e, null, e.target.value)
+              }
+              value={notification.eventFilter.type}
+              displayEmpty
+            >
+              {eventFilterTypes.map((eft, i) => (
+                <MenuItem key={'filter-' + i} value={eft}>
+                  {eft}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl style={{ marginLeft: 10, flex: 1 }}>
+            <Select
+              onChange={e =>
+                this.handleChangeJobDomain(e, null, e.target.value)
+              }
+              disabled={!enableJobSpecific}
+              value={notification.eventFilter.jobDomain}
+              displayEmpty
+            >
+              {jobDomains.map((domain, i) => (
+                <MenuItem key={'domain-' + i} value={domain}>
+                  {domain}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div

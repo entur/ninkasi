@@ -20,7 +20,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '@mui/material/Button';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import NotificationTypeBox from './NotificationTypeBox';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -106,17 +106,21 @@ class ModalEditNotifications extends React.Component {
     const updateDisabled = this.shouldUpdateBtnBeDisabled();
 
     const actions = [
-      <FlatButton
-        label="Cancel"
+      <Button
+        variant="text"
         style={{ marginLeft: 10 }}
         onClick={handleCloseModal}
-      />,
-      <FlatButton
-        label="Update"
+      >
+        Cancel
+      </Button>,
+      <Button
+        variant="text"
         disabled={updateDisabled}
         style={{ marginLeft: 10 }}
         onClick={this.handleUpdate.bind(this)}
-      />
+      >
+        Update
+      </Button>
     ];
 
     return (

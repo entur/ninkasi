@@ -17,13 +17,12 @@
 import React from 'react';
 import Modal from 'material-ui/Dialog';
 import withAuth from 'utils/withAuth';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import MdRemove from 'material-ui/svg-icons/content/remove';
 import MdAdd from 'material-ui/svg-icons/content/add';
 import IconButton from 'material-ui/IconButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { FormControl, Select, MenuItem } from '@mui/material';
 import NewRoleAssignment from './NewRoleAssignment';
 import { getEntityClassificationRefString } from 'utils/';
 
@@ -148,12 +147,16 @@ class ModalCreateResponsibilitySet extends React.Component {
     const isSavable = this.isSavable() && isLegalPrivateCode;
 
     const actions = [
-      <FlatButton label="Close" onClick={handleOnClose} />,
-      <FlatButton
+      <Button variant="text" onClick={handleOnClose}>
+        Close
+      </Button>,
+      <Button
+        variant="text"
         disabled={!isSavable}
-        label="Create"
         onClick={() => handleSubmit(this.state.responsibilitySet)}
-      />
+      >
+        Create
+      </Button>
     ];
 
     return (
@@ -172,62 +175,57 @@ class ModalCreateResponsibilitySet extends React.Component {
           }}
         >
           <TextField
-            floatingLabelText="Name"
-            hintText="Name"
+            label="Name"
+            placeholder="Name"
             value={responsibilitySet.name}
             fullWidth={true}
             style={{ marginTop: -25 }}
-            onChange={(e, value) => {
+            onChange={e => {
               this.setState({
                 responsibilitySet: {
                   ...this.state.responsibilitySet,
-                  name: value
+                  name: e.target.value
                 }
               });
             }}
           />
-          <SelectField
-            hintText="Code space"
-            floatingLabelText="Code space"
-            value={responsibilitySet.codeSpace}
-            style={{ marginTop: -10 }}
-            onChange={(e, index, value) => {
-              this.setState({
-                responsibilitySet: {
-                  ...this.state.responsibilitySet,
-                  codeSpace: value
-                }
-              });
-            }}
-            fullWidth={true}
-          >
-            {codeSpaces.map(codeSpace => (
-              <MenuItem
-                key={codeSpace.id}
-                id={codeSpace.id}
-                value={codeSpace.id}
-                label={codeSpace.id}
-                primaryText={codeSpace.xmlns}
-              />
-            ))}
-          </SelectField>
+          <FormControl fullWidth style={{ marginTop: -10 }}>
+            <Select
+              value={responsibilitySet.codeSpace}
+              onChange={e => {
+                this.setState({
+                  responsibilitySet: {
+                    ...this.state.responsibilitySet,
+                    codeSpace: e.target.value
+                  }
+                });
+              }}
+              displayEmpty
+            >
+              {codeSpaces.map(codeSpace => (
+                <MenuItem key={codeSpace.id} value={codeSpace.id}>
+                  {codeSpace.xmlns}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField
-            hintText="Private code"
-            floatingLabelText="Private code"
+            placeholder="Private code"
+            label="Private code"
             value={responsibilitySet.privateCode}
-            errorText={
-              isLegalPrivateCode ? '' : 'This private code is already taken!'
+            error={!isLegalPrivateCode}
+            helperText={
+              !isLegalPrivateCode ? 'This private code is already taken!' : ''
             }
             fullWidth={true}
-            onChange={(e, value) => {
+            onChange={e => {
               this.setState({
                 responsibilitySet: {
                   ...this.state.responsibilitySet,
-                  privateCode: value
+                  privateCode: e.target.value
                 }
               });
             }}
-            errorStyle={{ float: 'right' }}
             style={{ marginBottom: 10, marginTop: -20 }}
           />
           <div style={{ width: '100%' }}>

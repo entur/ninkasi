@@ -16,10 +16,9 @@
 
 import React from 'react';
 import Modal from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { FormControl, Select, MenuItem } from '@mui/material';
 import MdRemove from 'material-ui/svg-icons/content/remove';
 import MdAdd from 'material-ui/svg-icons/content/add';
 import IconButton from 'material-ui/IconButton';
@@ -111,16 +110,20 @@ class ModalEditEntityType extends React.Component {
       entityType.privateCode.length;
 
     const actions = [
-      <FlatButton
+      <Button
+        variant="text"
         disabled={!isSavable}
-        label="Close"
         onClick={this.handleOnClose.bind(this)}
-      />,
-      <FlatButton
+      >
+        Close
+      </Button>,
+      <Button
+        variant="text"
         disabled={!isSavable}
-        label="Update"
         onClick={() => handleSubmit(entityType)}
-      />
+      >
+        Update
+      </Button>
     ];
 
     return (
@@ -140,51 +143,46 @@ class ModalEditEntityType extends React.Component {
             }}
           >
             <TextField
-              hintText="Name"
-              floatingLabelText="Name"
+              placeholder="Name"
+              label="Name"
               value={entityType.name}
-              onChange={(e, value) =>
+              onChange={e =>
                 this.setState({
-                  entityType: { ...entityType, name: value }
+                  entityType: { ...entityType, name: e.target.value }
                 })
               }
               fullWidth={true}
             />
             <TextField
-              hintText="private code"
-              floatingLabelText="Private code"
+              placeholder="private code"
+              label="Private code"
               disabled={true}
               value={entityType.privateCode}
-              onChange={(e, value) =>
+              onChange={e =>
                 this.setState({
-                  entityType: { ...entityType, privateCode: value }
+                  entityType: { ...entityType, privateCode: e.target.value }
                 })
               }
               fullWidth={true}
-              errorStyle={{ float: 'right' }}
             />
-            <SelectField
-              hintText="Code space"
-              floatingLabelText="Code space"
-              disabled={true}
-              value={entityType.codeSpace}
-              onChange={(e, index, value) =>
-                this.setState({
-                  entityType: { ...entityType, codeSpace: value }
-                })
-              }
-              fullWidth={true}
-            >
-              {codeSpaces.map(codeSpace => (
-                <MenuItem
-                  key={codeSpace.id}
-                  id={codeSpace.id}
-                  value={codeSpace.id}
-                  label={codeSpace.id}
-                  primaryText={codeSpace.xmlns}
-                />
-              ))}
-            </SelectField>
+            <FormControl fullWidth>
+              <Select
+                disabled={true}
+                value={entityType.codeSpace}
+                onChange={e =>
+                  this.setState({
+                    entityType: { ...entityType, codeSpace: e.target.value }
+                  })
+                }
+                displayEmpty
+              >
+                {codeSpaces.map(codeSpace => (
+                  <MenuItem key={codeSpace.id} value={codeSpace.id}>
+                    {codeSpace.xmlns}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <div style={{ width: '100%', fontSize: 12 }}>
               Entity classifications
             </div>
@@ -223,38 +221,41 @@ class ModalEditEntityType extends React.Component {
                   New classification
                 </div>
                 <TextField
-                  hintText="Name"
-                  floatingLabelText="Name"
+                  placeholder="Name"
+                  label="Name"
                   value={tempClassification.name}
-                  onChange={(e, value) =>
+                  onChange={e =>
                     this.setState({
-                      tempClassification: { ...tempClassification, name: value }
+                      tempClassification: {
+                        ...tempClassification,
+                        name: e.target.value
+                      }
                     })
                   }
                   fullWidth={true}
                 />
                 <TextField
-                  hintText="Private code"
-                  floatingLabelText="Private code"
-                  errorStyle={{ float: 'right' }}
-                  errorText={
+                  placeholder="Private code"
+                  label="Private code"
+                  error={isClassificationPrivateCodeTaken}
+                  helperText={
                     isClassificationPrivateCodeTaken
                       ? 'Private code is already taken'
                       : ''
                   }
-                  onChange={(e, value) =>
+                  onChange={e =>
                     this.setState({
                       tempClassification: {
                         ...tempClassification,
-                        privateCode: value
+                        privateCode: e.target.value
                       }
                     })
                   }
                   value={tempClassification.privateCode}
                   fullWidth={true}
                 />
-                <FlatButton
-                  label="Add"
+                <Button
+                  variant="text"
                   style={{ width: '100%' }}
                   disabled={
                     isClassificationPrivateCodeTaken ||
@@ -262,7 +263,9 @@ class ModalEditEntityType extends React.Component {
                     !tempClassification.privateCode.length
                   }
                   onClick={this.handleAddClassification.bind(this)}
-                />
+                >
+                  Add
+                </Button>
               </div>
             ) : null}
           </div>
