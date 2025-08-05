@@ -15,7 +15,12 @@
  */
 
 import React from 'react';
-import Modal from 'material-ui/Dialog';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { FormControl, Select, MenuItem } from '@mui/material';
@@ -71,87 +76,92 @@ class ModalCreateOrganization extends React.Component {
     ];
 
     return (
-      <Modal
+      <Dialog
         open={isModalOpen}
-        contentStyle={{ width: '30%' }}
-        title="Create a new organisation"
-        actions={actions}
-        requestClose={() => this.handleOnClose()}
+        onClose={() => this.handleOnClose()}
+        maxWidth="sm"
+        fullWidth
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}
-        >
-          <TextField
-            placeholder="Name"
-            label="Name"
-            error={isOrganizationNameTaken}
-            helperText={
-              isOrganizationNameTaken ? 'Organization name already exists' : ''
-            }
-            value={organization.name}
-            onChange={e =>
-              this.setState({
-                organization: { ...organization, name: e.target.value }
-              })
-            }
-            fullWidth={true}
-          />
-          <TextField
-            placeholder="Private code"
-            label="Private code"
-            error={isOrganizationPrivateCodeTaken}
-            helperText={
-              isOrganizationPrivateCodeTaken
-                ? 'Organization private code already exists'
-                : ''
-            }
-            value={organization.privateCode}
-            onChange={e =>
-              this.setState({
-                organization: { ...organization, privateCode: e.target.value }
-              })
-            }
-            fullWidth={true}
-          />
-          <FormControl fullWidth>
-            <Select
-              value={organization.organisationType}
+        <DialogTitle>Create a new organisation</DialogTitle>
+        <DialogContent>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            <TextField
+              placeholder="Name"
+              label="Name"
+              error={isOrganizationNameTaken}
+              helperText={
+                isOrganizationNameTaken
+                  ? 'Organization name already exists'
+                  : ''
+              }
+              value={organization.name}
               onChange={e =>
                 this.setState({
-                  organization: {
-                    ...organization,
-                    organisationType: e.target.value
-                  }
+                  organization: { ...organization, name: e.target.value }
                 })
               }
-              displayEmpty
-            >
-              <MenuItem value="AUTHORITY">AUTHORITY</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <Select
-              value={organization.codeSpace}
+              fullWidth={true}
+            />
+            <TextField
+              placeholder="Private code"
+              label="Private code"
+              error={isOrganizationPrivateCodeTaken}
+              helperText={
+                isOrganizationPrivateCodeTaken
+                  ? 'Organization private code already exists'
+                  : ''
+              }
+              value={organization.privateCode}
               onChange={e =>
                 this.setState({
-                  organization: { ...organization, codeSpace: e.target.value }
+                  organization: { ...organization, privateCode: e.target.value }
                 })
               }
-              displayEmpty
-            >
-              {codeSpaces.map(codeSpace => (
-                <MenuItem key={codeSpace.id} value={codeSpace.id}>
-                  {codeSpace.xmlns}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </div>
-      </Modal>
+              fullWidth={true}
+            />
+            <FormControl fullWidth>
+              <Select
+                value={organization.organisationType}
+                onChange={e =>
+                  this.setState({
+                    organization: {
+                      ...organization,
+                      organisationType: e.target.value
+                    }
+                  })
+                }
+                displayEmpty
+              >
+                <MenuItem value="AUTHORITY">AUTHORITY</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <Select
+                value={organization.codeSpace}
+                onChange={e =>
+                  this.setState({
+                    organization: { ...organization, codeSpace: e.target.value }
+                  })
+                }
+                displayEmpty
+              >
+                {codeSpaces.map(codeSpace => (
+                  <MenuItem key={codeSpace.id} value={codeSpace.id}>
+                    {codeSpace.xmlns}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+        </DialogContent>
+        <DialogActions>{actions}</DialogActions>
+      </Dialog>
     );
   }
 }

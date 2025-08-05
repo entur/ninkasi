@@ -15,9 +15,7 @@
  */
 
 import React, { Component } from 'react';
-import MdWarning from 'material-ui/svg-icons/alert/warning';
-import MdError from 'material-ui/svg-icons/alert/error';
-import MdOK from 'material-ui/svg-icons/action/check-circle';
+import { Warning, Error, CheckCircle } from '@mui/icons-material';
 import { ExportStatus } from 'actions/formatUtils';
 
 class StatusLabel extends Component {
@@ -27,13 +25,13 @@ class StatusLabel extends Component {
     const successColor = 'green';
 
     if (type === ExportStatus.ERROR) {
-      return <MdError style={{ height: 20, width: 20 }} color={errorColor} />;
+      return <Error style={{ height: 20, width: 20 }} color={errorColor} />;
     } else if (type === ExportStatus.WARNING) {
-      return (
-        <MdWarning style={{ height: 20, width: 20 }} color={warningColor} />
-      );
+      return <Warning style={{ height: 20, width: 20 }} color={warningColor} />;
     } else if (type === ExportStatus.OK) {
-      return <MdOK style={{ height: 20, width: 20 }} color={successColor} />;
+      return (
+        <CheckCircle style={{ height: 20, width: 20 }} color={successColor} />
+      );
     } else {
       return null;
     }

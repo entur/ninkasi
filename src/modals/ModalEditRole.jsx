@@ -15,7 +15,12 @@
  */
 
 import React from 'react';
-import Modal from 'material-ui/Dialog';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
@@ -51,44 +56,47 @@ class ModalEditRole extends React.Component {
     if (!role) return null;
 
     return (
-      <Modal
-        actions={actions}
+      <Dialog
         open={isModalOpen}
-        onRequestClose={() => this.props.handleCloseModal()}
-        contentStyle={{ width: '30%' }}
-        title={'Editing role ' + originalRoleName}
+        onClose={() => this.props.handleCloseModal()}
+        maxWidth="sm"
+        fullWidth
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}
-        >
-          <TextField
-            placeholder="Name"
-            label="Name"
-            value={role.name}
-            onChange={e =>
-              this.setState({
-                role: {
-                  ...role,
-                  name: e.target.value
-                }
-              })
-            }
-            fullWidth={true}
-            style={{ marginTop: -20 }}
-          />
-          <TextField
-            disabled={true}
-            defaultValue={role.privateCode}
-            placeholder="private code"
-            label="Private code"
-            fullWidth={true}
-          />
-        </div>
-      </Modal>
+        <DialogTitle>{'Editing role ' + originalRoleName}</DialogTitle>
+        <DialogContent>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            <TextField
+              placeholder="Name"
+              label="Name"
+              value={role.name}
+              onChange={e =>
+                this.setState({
+                  role: {
+                    ...role,
+                    name: e.target.value
+                  }
+                })
+              }
+              fullWidth={true}
+              style={{ marginTop: -20 }}
+            />
+            <TextField
+              disabled={true}
+              defaultValue={role.privateCode}
+              placeholder="private code"
+              label="Private code"
+              fullWidth={true}
+            />
+          </div>
+        </DialogContent>
+        <DialogActions>{actions}</DialogActions>
+      </Dialog>
     );
   }
 }

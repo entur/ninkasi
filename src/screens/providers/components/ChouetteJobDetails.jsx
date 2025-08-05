@@ -29,7 +29,7 @@ import SuppliersActions from 'actions/SuppliersActions';
 import { DotLoader as Loader } from 'halogenium';
 import ChouetteLink from './ChouetteLink';
 import DatePicker from 'material-ui/DatePicker';
-import MdClear from 'material-ui/svg-icons/content/clear';
+import { Clear } from '@mui/icons-material';
 import { getPaginationMap } from 'models';
 import moment from 'moment';
 
@@ -226,7 +226,7 @@ class ChouetteJobDetails extends React.Component {
                   </Col>
                   <Col md="4">
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <MdClear
+                      <Clear
                         onClick={() => this.setState({ filterFromDate: null })}
                         style={{ marginRight: 5 }}
                       />

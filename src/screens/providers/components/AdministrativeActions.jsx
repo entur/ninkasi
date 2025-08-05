@@ -19,11 +19,13 @@ import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
 import MenuItem from 'material-ui/MenuItem';
-import MdWarning from 'material-ui/svg-icons/alert/warning';
+import {
+  Warning,
+  ArrowDropDown,
+  KeyboardArrowRight
+} from '@mui/icons-material';
 import Popover from 'material-ui/Popover';
-import MdDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down';
 import Button from '@mui/material/Button';
-import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 import { getIconColor, getProvidersEnv, getTheme } from 'config/themes';
 import ConfirmDialog from '../../../modals/ConfirmDialog';
 import { connect } from 'react-redux';
@@ -279,7 +281,7 @@ class AdministrativeActions extends React.Component {
               >
                 Graph
               </div>
-              <MdDropDown color="#fff" />
+              <ArrowDropDown color="#fff" />
             </div>
           </Button>
           <Popover
@@ -336,7 +338,7 @@ class AdministrativeActions extends React.Component {
               >
                 Google
               </div>
-              <MdDropDown color="#fff" />
+              <ArrowDropDown color="#fff" />
             </div>
           </Button>
           <Popover
@@ -370,7 +372,7 @@ class AdministrativeActions extends React.Component {
         <div>
           <Button variant="text" onClick={this.handleCleanOpen.bind(this)}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <MdWarning
+              <Warning
                 color={iconColor}
                 style={{ height: '1.1em', width: '1.1em', paddingLeft: 10 }}
               />
@@ -386,7 +388,7 @@ class AdministrativeActions extends React.Component {
               >
                 Clean
               </div>
-              <MdDropDown color="#fff" />
+              <ArrowDropDown color="#fff" />
             </div>
           </Button>
           <Button
@@ -398,7 +400,7 @@ class AdministrativeActions extends React.Component {
               color: '#fff'
             }}
             startIcon={
-              <MdWarning
+              <Warning
                 color={iconColor}
                 style={{ height: '1.1em', width: '1.1em' }}
               />
@@ -437,7 +439,7 @@ class AdministrativeActions extends React.Component {
             id="dropdown-clean-all"
             primaryText={'Clean all'}
             style={{ fontSize: '1em' }}
-            rightIcon={<ArrowDropRight />}
+            rightIcon={<KeyboardArrowRight />}
             menuItems={[
               <MenuItem
                 primaryText={'All'}

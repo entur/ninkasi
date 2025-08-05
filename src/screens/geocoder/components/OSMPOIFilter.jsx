@@ -7,8 +7,8 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import MdDelete from 'material-ui/svg-icons/action/delete';
-import IconButton from 'material-ui/IconButton';
+import { Delete } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
@@ -213,7 +213,7 @@ const OSMPOIFilter = () => {
                         onClick={() => handleDeleteFilter(index)}
                         size="large"
                       >
-                        <MdDelete />
+                        <Delete />
                       </IconButton>
                     </TableCell>
                   </TableRow>

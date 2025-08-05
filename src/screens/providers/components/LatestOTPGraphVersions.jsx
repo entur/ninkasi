@@ -19,8 +19,7 @@ import { connect } from 'react-redux';
 import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import moment from 'moment';
-import UnfoldLess from 'material-ui/svg-icons/navigation/unfold-less';
-import UnfoldMore from 'material-ui/svg-icons/navigation/unfold-more';
+import { UnfoldLess, UnfoldMore } from '@mui/icons-material';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Button from '@mui/material/Button';
 

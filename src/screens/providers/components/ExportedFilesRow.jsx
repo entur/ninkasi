@@ -18,7 +18,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { getSizeFromBytes } from 'utils/';
 import StatusLabel from './StatusLabel';
-import MdFileDownload from 'material-ui/svg-icons/file/file-download';
+import { FileDownload } from '@mui/icons-material';
 import { ExportStatus } from 'actions/formatUtils';
 
 class ExportedFilesRow extends Component {
@@ -95,7 +95,7 @@ class ExportedFilesRow extends Component {
               href={netexUrl}
               download={true}
             >
-              <MdFileDownload color={'#2196F3'} />
+              <FileDownload color={'#2196F3'} />
               <span style={{ marginLeft: 2 }}>{`[${getSizeFromBytes(
                 netexFileSize
               )}]`}</span>
@@ -117,7 +117,7 @@ class ExportedFilesRow extends Component {
               href={gtfsUrl}
               download={true}
             >
-              <MdFileDownload color={'#2196F3'} />
+              <FileDownload color={'#2196F3'} />
               <span style={{ marginLeft: 2 }}>{`[${getSizeFromBytes(
                 gtfsFileSize
               )}]`}</span>

@@ -15,7 +15,12 @@
  */
 
 import React from 'react';
-import Modal from 'material-ui/Dialog';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
 import withAuth from 'utils/withAuth';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -159,163 +164,166 @@ class ModalCreateResponsibilitySet extends React.Component {
     ];
 
     return (
-      <Modal
+      <Dialog
         open={modalOpen}
-        onRequestClose={() => handleOnClose()}
-        actions={actions}
-        title="Creating a new responsibility set"
-        bodyStyle={{ height: '100%' }}
+        onClose={() => handleOnClose()}
+        maxWidth="lg"
+        fullWidth
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            marginTop: 5
-          }}
-        >
-          <TextField
-            label="Name"
-            placeholder="Name"
-            value={responsibilitySet.name}
-            fullWidth={true}
-            style={{ marginTop: -25 }}
-            onChange={e => {
-              this.setState({
-                responsibilitySet: {
-                  ...this.state.responsibilitySet,
-                  name: e.target.value
-                }
-              });
+        <DialogTitle>Creating a new responsibility set</DialogTitle>
+        <DialogContent>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              marginTop: 5
             }}
-          />
-          <FormControl fullWidth style={{ marginTop: -10 }}>
-            <Select
-              value={responsibilitySet.codeSpace}
+          >
+            <TextField
+              label="Name"
+              placeholder="Name"
+              value={responsibilitySet.name}
+              fullWidth={true}
+              style={{ marginTop: -25 }}
               onChange={e => {
                 this.setState({
                   responsibilitySet: {
                     ...this.state.responsibilitySet,
-                    codeSpace: e.target.value
+                    name: e.target.value
                   }
                 });
               }}
-              displayEmpty
-            >
-              {codeSpaces.map(codeSpace => (
-                <MenuItem key={codeSpace.id} value={codeSpace.id}>
-                  {codeSpace.xmlns}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <TextField
-            placeholder="Private code"
-            label="Private code"
-            value={responsibilitySet.privateCode}
-            error={!isLegalPrivateCode}
-            helperText={
-              !isLegalPrivateCode ? 'This private code is already taken!' : ''
-            }
-            fullWidth={true}
-            onChange={e => {
-              this.setState({
-                responsibilitySet: {
-                  ...this.state.responsibilitySet,
-                  privateCode: e.target.value
-                }
-              });
-            }}
-            style={{ marginBottom: 10, marginTop: -20 }}
-          />
-          <div style={{ width: '100%' }}>
-            <div style={{ fontSize: 10 }}>Responsibility roles *</div>
-            <div style={{ width: '100%', overflowX: 'auto' }}>
-              <select
-                multiple="multiple"
-                style={{
-                  fontSize: 10,
-                  minWidth: '100%'
-                }}
-                ref="roles"
-              >
-                {responsibilitySet.roles.map((role, i) => (
-                  <option style={{ overflowX: 'auto' }} key={'role-' + i}>
-                    {this.getRoleString(role)}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <IconButton
-                onClick={() => this.setState({ isCreatingNewRole: true })}
-                size="large"
-              >
-                <Add style={{ color: '#228B22' }} />
-              </IconButton>
-              <IconButton
-                onClick={this.handleRemoveRole.bind(this)}
-                size="large"
-              >
-                <Remove style={{ color: '#cc0000' }} />
-              </IconButton>
-            </div>
-            {isCreatingNewRole ? (
-              <NewRoleAssignment
-                getToken={this.props.getToken}
-                newRole={newRole}
-                roles={roles}
-                entityTypes={entityTypes}
-                organizations={organizations}
-                handleAddRole={this.handleAddRole.bind(this)}
-                administrativeZones={this.props.administrativeZones}
-                handleRemoveEntity={this.handleRemoveEntity.bind(this)}
-                addNewAdminZoneRef={responsibleAreaRef => {
+            />
+            <FormControl fullWidth style={{ marginTop: -10 }}>
+              <Select
+                value={responsibilitySet.codeSpace}
+                onChange={e => {
                   this.setState({
-                    newRole: {
-                      ...this.state.newRole,
-                      responsibleAreaRef
+                    responsibilitySet: {
+                      ...this.state.responsibilitySet,
+                      codeSpace: e.target.value
                     }
                   });
                 }}
-                addNewRoleAssignment={(entityClassificationRef, allow) =>
-                  this.setState({
-                    newRole: {
-                      ...newRole,
-                      entityClassificationAssignments: [
-                        ...newRole.entityClassificationAssignments,
-                        {
-                          entityClassificationRef,
-                          allow
-                        }
-                      ]
-                    },
-                    tempEntityClassification: '',
-                    tempEntityType: ''
-                  })
-                }
-                organisationChange={(e, index, value) =>
-                  this.setState({
-                    ...this.state,
-                    newRole: {
-                      ...newRole,
-                      responsibleOrganisationRef: value
-                    }
-                  })
-                }
-                entityTypeChange={(e, index, value) =>
-                  this.setState({
-                    ...this.state,
-                    newRole: {
-                      ...newRole,
-                      typeOfResponsibilityRoleRef: value
-                    }
-                  })
-                }
-              />
-            ) : null}
+                displayEmpty
+              >
+                {codeSpaces.map(codeSpace => (
+                  <MenuItem key={codeSpace.id} value={codeSpace.id}>
+                    {codeSpace.xmlns}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              placeholder="Private code"
+              label="Private code"
+              value={responsibilitySet.privateCode}
+              error={!isLegalPrivateCode}
+              helperText={
+                !isLegalPrivateCode ? 'This private code is already taken!' : ''
+              }
+              fullWidth={true}
+              onChange={e => {
+                this.setState({
+                  responsibilitySet: {
+                    ...this.state.responsibilitySet,
+                    privateCode: e.target.value
+                  }
+                });
+              }}
+              style={{ marginBottom: 10, marginTop: -20 }}
+            />
+            <div style={{ width: '100%' }}>
+              <div style={{ fontSize: 10 }}>Responsibility roles *</div>
+              <div style={{ width: '100%', overflowX: 'auto' }}>
+                <select
+                  multiple="multiple"
+                  style={{
+                    fontSize: 10,
+                    minWidth: '100%'
+                  }}
+                  ref="roles"
+                >
+                  {responsibilitySet.roles.map((role, i) => (
+                    <option style={{ overflowX: 'auto' }} key={'role-' + i}>
+                      {this.getRoleString(role)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <IconButton
+                  onClick={() => this.setState({ isCreatingNewRole: true })}
+                  size="large"
+                >
+                  <Add style={{ color: '#228B22' }} />
+                </IconButton>
+                <IconButton
+                  onClick={this.handleRemoveRole.bind(this)}
+                  size="large"
+                >
+                  <Remove style={{ color: '#cc0000' }} />
+                </IconButton>
+              </div>
+              {isCreatingNewRole ? (
+                <NewRoleAssignment
+                  getToken={this.props.getToken}
+                  newRole={newRole}
+                  roles={roles}
+                  entityTypes={entityTypes}
+                  organizations={organizations}
+                  handleAddRole={this.handleAddRole.bind(this)}
+                  administrativeZones={this.props.administrativeZones}
+                  handleRemoveEntity={this.handleRemoveEntity.bind(this)}
+                  addNewAdminZoneRef={responsibleAreaRef => {
+                    this.setState({
+                      newRole: {
+                        ...this.state.newRole,
+                        responsibleAreaRef
+                      }
+                    });
+                  }}
+                  addNewRoleAssignment={(entityClassificationRef, allow) =>
+                    this.setState({
+                      newRole: {
+                        ...newRole,
+                        entityClassificationAssignments: [
+                          ...newRole.entityClassificationAssignments,
+                          {
+                            entityClassificationRef,
+                            allow
+                          }
+                        ]
+                      },
+                      tempEntityClassification: '',
+                      tempEntityType: ''
+                    })
+                  }
+                  organisationChange={(e, index, value) =>
+                    this.setState({
+                      ...this.state,
+                      newRole: {
+                        ...newRole,
+                        responsibleOrganisationRef: value
+                      }
+                    })
+                  }
+                  entityTypeChange={(e, index, value) =>
+                    this.setState({
+                      ...this.state,
+                      newRole: {
+                        ...newRole,
+                        typeOfResponsibilityRoleRef: value
+                      }
+                    })
+                  }
+                />
+              ) : null}
+            </div>
           </div>
-        </div>
-      </Modal>
+        </DialogContent>
+        <DialogActions>{actions}</DialogActions>
+      </Dialog>
     );
   }
 }

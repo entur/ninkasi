@@ -15,7 +15,12 @@
  */
 
 import React from 'react';
-import Modal from 'material-ui/Dialog';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { FormControl, Select, MenuItem } from '@mui/material';
@@ -126,150 +131,157 @@ class ModalEditEntityType extends React.Component {
     ];
 
     return (
-      <Modal
+      <Dialog
         open={isModalOpen}
-        onRequestClose={() => this.handleOnClose()}
-        contentStyle={{ width: '40%' }}
-        title="Editing entity type"
-        actions={actions}
+        onClose={() => this.handleOnClose()}
+        maxWidth="md"
+        fullWidth
       >
-        <div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}
-          >
-            <TextField
-              placeholder="Name"
-              label="Name"
-              value={entityType.name}
-              onChange={e =>
-                this.setState({
-                  entityType: { ...entityType, name: e.target.value }
-                })
-              }
-              fullWidth={true}
-            />
-            <TextField
-              placeholder="private code"
-              label="Private code"
-              disabled={true}
-              value={entityType.privateCode}
-              onChange={e =>
-                this.setState({
-                  entityType: { ...entityType, privateCode: e.target.value }
-                })
-              }
-              fullWidth={true}
-            />
-            <FormControl fullWidth>
-              <Select
-                disabled={true}
-                value={entityType.codeSpace}
+        <DialogTitle>Editing entity type</DialogTitle>
+        <DialogContent>
+          <div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}
+            >
+              <TextField
+                placeholder="Name"
+                label="Name"
+                value={entityType.name}
                 onChange={e =>
                   this.setState({
-                    entityType: { ...entityType, codeSpace: e.target.value }
+                    entityType: { ...entityType, name: e.target.value }
                   })
                 }
-                displayEmpty
-              >
-                {codeSpaces.map(codeSpace => (
-                  <MenuItem key={codeSpace.id} value={codeSpace.id}>
-                    {codeSpace.xmlns}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <div style={{ width: '100%', fontSize: 12 }}>
-              Entity classifications
-            </div>
-            <select
-              multiple="multiple"
-              style={{ width: '100%', fontSize: 12 }}
-              ref="classifications"
-            >
-              {entityType.classifications.map((et, index) => (
-                <option key={'ec-' + index}>
-                  {this.getClassificationTitle(et)}{' '}
-                </option>
-              ))}
-            </select>
-            <div style={{ textAlign: 'left', width: '100%' }}>
-              <IconButton
-                onClick={() =>
-                  this.setState({ isCreatingNewClassification: true })
+                fullWidth={true}
+              />
+              <TextField
+                placeholder="private code"
+                label="Private code"
+                disabled={true}
+                value={entityType.privateCode}
+                onChange={e =>
+                  this.setState({
+                    entityType: { ...entityType, privateCode: e.target.value }
+                  })
                 }
-                size="large"
-              >
-                <Add style={{ color: '#228B22' }} />
-              </IconButton>
-              <IconButton
-                onClick={this.handleRemoveClassification.bind(this)}
-                size="large"
-              >
-                <Remove style={{ color: '#cc0000' }} />
-              </IconButton>
-            </div>
-            {isCreatingNewClassification ? (
-              <div style={{ border: '1px dotted', width: '100%' }}>
-                <div
-                  style={{ fontSize: 12, textAlign: 'center', fontWeight: 600 }}
-                >
-                  New classification
-                </div>
-                <TextField
-                  placeholder="Name"
-                  label="Name"
-                  value={tempClassification.name}
+                fullWidth={true}
+              />
+              <FormControl fullWidth>
+                <Select
+                  disabled={true}
+                  value={entityType.codeSpace}
                   onChange={e =>
                     this.setState({
-                      tempClassification: {
-                        ...tempClassification,
-                        name: e.target.value
-                      }
+                      entityType: { ...entityType, codeSpace: e.target.value }
                     })
                   }
-                  fullWidth={true}
-                />
-                <TextField
-                  placeholder="Private code"
-                  label="Private code"
-                  error={isClassificationPrivateCodeTaken}
-                  helperText={
-                    isClassificationPrivateCodeTaken
-                      ? 'Private code is already taken'
-                      : ''
-                  }
-                  onChange={e =>
-                    this.setState({
-                      tempClassification: {
-                        ...tempClassification,
-                        privateCode: e.target.value
-                      }
-                    })
-                  }
-                  value={tempClassification.privateCode}
-                  fullWidth={true}
-                />
-                <Button
-                  variant="text"
-                  style={{ width: '100%' }}
-                  disabled={
-                    isClassificationPrivateCodeTaken ||
-                    !tempClassification.name.length ||
-                    !tempClassification.privateCode.length
-                  }
-                  onClick={this.handleAddClassification.bind(this)}
+                  displayEmpty
                 >
-                  Add
-                </Button>
+                  {codeSpaces.map(codeSpace => (
+                    <MenuItem key={codeSpace.id} value={codeSpace.id}>
+                      {codeSpace.xmlns}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <div style={{ width: '100%', fontSize: 12 }}>
+                Entity classifications
               </div>
-            ) : null}
+              <select
+                multiple="multiple"
+                style={{ width: '100%', fontSize: 12 }}
+                ref="classifications"
+              >
+                {entityType.classifications.map((et, index) => (
+                  <option key={'ec-' + index}>
+                    {this.getClassificationTitle(et)}{' '}
+                  </option>
+                ))}
+              </select>
+              <div style={{ textAlign: 'left', width: '100%' }}>
+                <IconButton
+                  onClick={() =>
+                    this.setState({ isCreatingNewClassification: true })
+                  }
+                  size="large"
+                >
+                  <Add style={{ color: '#228B22' }} />
+                </IconButton>
+                <IconButton
+                  onClick={this.handleRemoveClassification.bind(this)}
+                  size="large"
+                >
+                  <Remove style={{ color: '#cc0000' }} />
+                </IconButton>
+              </div>
+              {isCreatingNewClassification ? (
+                <div style={{ border: '1px dotted', width: '100%' }}>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      textAlign: 'center',
+                      fontWeight: 600
+                    }}
+                  >
+                    New classification
+                  </div>
+                  <TextField
+                    placeholder="Name"
+                    label="Name"
+                    value={tempClassification.name}
+                    onChange={e =>
+                      this.setState({
+                        tempClassification: {
+                          ...tempClassification,
+                          name: e.target.value
+                        }
+                      })
+                    }
+                    fullWidth={true}
+                  />
+                  <TextField
+                    placeholder="Private code"
+                    label="Private code"
+                    error={isClassificationPrivateCodeTaken}
+                    helperText={
+                      isClassificationPrivateCodeTaken
+                        ? 'Private code is already taken'
+                        : ''
+                    }
+                    onChange={e =>
+                      this.setState({
+                        tempClassification: {
+                          ...tempClassification,
+                          privateCode: e.target.value
+                        }
+                      })
+                    }
+                    value={tempClassification.privateCode}
+                    fullWidth={true}
+                  />
+                  <Button
+                    variant="text"
+                    style={{ width: '100%' }}
+                    disabled={
+                      isClassificationPrivateCodeTaken ||
+                      !tempClassification.name.length ||
+                      !tempClassification.privateCode.length
+                    }
+                    onClick={this.handleAddClassification.bind(this)}
+                  >
+                    Add
+                  </Button>
+                </div>
+              ) : null}
+            </div>
           </div>
-        </div>
-      </Modal>
+        </DialogContent>
+        <DialogActions>{actions}</DialogActions>
+      </Dialog>
     );
   }
 }

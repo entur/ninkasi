@@ -15,7 +15,12 @@
  */
 
 import React from 'react';
-import ModalDialog from 'material-ui/Dialog';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Select, MenuItem } from '@mui/material';
@@ -197,160 +202,165 @@ class ModalCreateUser extends React.Component {
     ];
 
     return (
-      <ModalDialog
+      <Dialog
         open={isModalOpen}
-        actions={actions}
-        onRequestClose={() => this.handleOnClose()}
-        title="Creating a new user"
-        contentStyle={{ width: '40%' }}
+        onClose={() => this.handleOnClose()}
+        maxWidth="md"
+        fullWidth
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column'
-          }}
-        >
-          <FormControl>
-            <RadioGroup
-              defaultValue="personal_account"
-              value={
-                user.personalAccount
-                  ? 'personal_account'
-                  : 'notification_account'
+        <DialogTitle>Creating a new user</DialogTitle>
+        <DialogContent>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column'
+            }}
+          >
+            <FormControl>
+              <RadioGroup
+                defaultValue="personal_account"
+                value={
+                  user.personalAccount
+                    ? 'personal_account'
+                    : 'notification_account'
+                }
+                onChange={(e, value) =>
+                  this.handleChangeIsPersonalAccount(value)
+                }
+              >
+                <FormControlLabel
+                  value="personal_account"
+                  control={<Radio />}
+                  label="Personal account"
+                />
+                <FormControlLabel
+                  value="notification_account"
+                  control={<Radio />}
+                  label="Notification account"
+                />
+              </RadioGroup>
+            </FormControl>
+            <TextField
+              placeholder="Username"
+              label="Username"
+              value={user.username}
+              error={!usernameValid && user.username}
+              helperText={
+                !usernameValid &&
+                user.username &&
+                'Username can only include alphanumerics, hyphens and dot'
               }
-              onChange={(e, value) => this.handleChangeIsPersonalAccount(value)}
-            >
-              <FormControlLabel
-                value="personal_account"
-                control={<Radio />}
-                label="Personal account"
-              />
-              <FormControlLabel
-                value="notification_account"
-                control={<Radio />}
-                label="Notification account"
-              />
-            </RadioGroup>
-          </FormControl>
-          <TextField
-            placeholder="Username"
-            label="Username"
-            value={user.username}
-            error={!usernameValid && user.username}
-            helperText={
-              !usernameValid &&
-              user.username &&
-              'Username can only include alphanumerics, hyphens and dot'
-            }
-            onChange={e => this.handleChangeUsername(e, e.target.value)}
-            fullWidth={true}
-          />
-          <TextField
-            placeholder="First name"
-            label="First name"
-            value={user.contactDetails.firstName}
-            onChange={e =>
-              this.setState({
-                user: {
-                  ...user,
-                  contactDetails: {
-                    ...user.contactDetails,
-                    firstName: e.target.value
-                  }
-                }
-              })
-            }
-            fullWidth={true}
-          />
-          <TextField
-            placeholder="Last name"
-            label="Last name"
-            value={user.contactDetails.lastName}
-            onChange={e =>
-              this.setState({
-                user: {
-                  ...user,
-                  contactDetails: {
-                    ...user.contactDetails,
-                    lastName: e.target.value
-                  }
-                }
-              })
-            }
-            fullWidth={true}
-          />
-          <TextField
-            placeholder="E-mail"
-            label="E-mail"
-            error={emailIsTaken || (!emailValid && user.contactDetails.email)}
-            helperText={
-              emailIsTaken
-                ? 'E-mail already taken'
-                : !emailValid && user.contactDetails.email
-                ? 'Must be a valid e-mail'
-                : ''
-            }
-            value={user.contactDetails.email}
-            onChange={e => this.handleChangeEmail(e, e.target.value)}
-            fullWidth={true}
-          />
-          <TextField
-            placeholder="Phonenumber"
-            label="Phonenumber"
-            value={user.contactDetails.phone}
-            onChange={e =>
-              this.setState({
-                user: {
-                  ...user,
-                  contactDetails: {
-                    ...user.contactDetails,
-                    phone: e.target.value
-                  }
-                }
-              })
-            }
-            fullWidth={true}
-          />
-          <FormControl fullWidth>
-            <Select
-              value={user.organisationRef}
+              onChange={e => this.handleChangeUsername(e, e.target.value)}
+              fullWidth={true}
+            />
+            <TextField
+              placeholder="First name"
+              label="First name"
+              value={user.contactDetails.firstName}
               onChange={e =>
                 this.setState({
-                  user: { ...user, organisationRef: e.target.value }
+                  user: {
+                    ...user,
+                    contactDetails: {
+                      ...user.contactDetails,
+                      firstName: e.target.value
+                    }
+                  }
                 })
               }
-              displayEmpty
-            >
-              {organizations.map(org => (
-                <MenuItem key={org.id} value={org.id}>
-                  {org.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <UserRespSetPopover
-            responsibilities={responsibilities}
-            addedRespSets={this.state.user.responsibilitySetRefs}
-            anchorEl={this.state.addRespAnchorEl}
-            handleAdd={this.handleAddResponsibilitySet.bind(this)}
-            handleClose={() =>
-              this.setState({ isAddingResponsibilitySet: false })
-            }
-            open={isAddingResponsibilitySet}
-          />
-          <ResponsiblitySetList
-            user={user}
-            responsiblities={responsibilities}
-            handleAdd={e =>
-              this.setState({
-                isAddingResponsibilitySet: true,
-                addRespAnchorEl: e.currentTarget
-              })
-            }
-            handleRemove={this.removeResponsibilitySet.bind(this)}
-          />
-        </div>
-      </ModalDialog>
+              fullWidth={true}
+            />
+            <TextField
+              placeholder="Last name"
+              label="Last name"
+              value={user.contactDetails.lastName}
+              onChange={e =>
+                this.setState({
+                  user: {
+                    ...user,
+                    contactDetails: {
+                      ...user.contactDetails,
+                      lastName: e.target.value
+                    }
+                  }
+                })
+              }
+              fullWidth={true}
+            />
+            <TextField
+              placeholder="E-mail"
+              label="E-mail"
+              error={emailIsTaken || (!emailValid && user.contactDetails.email)}
+              helperText={
+                emailIsTaken
+                  ? 'E-mail already taken'
+                  : !emailValid && user.contactDetails.email
+                  ? 'Must be a valid e-mail'
+                  : ''
+              }
+              value={user.contactDetails.email}
+              onChange={e => this.handleChangeEmail(e, e.target.value)}
+              fullWidth={true}
+            />
+            <TextField
+              placeholder="Phonenumber"
+              label="Phonenumber"
+              value={user.contactDetails.phone}
+              onChange={e =>
+                this.setState({
+                  user: {
+                    ...user,
+                    contactDetails: {
+                      ...user.contactDetails,
+                      phone: e.target.value
+                    }
+                  }
+                })
+              }
+              fullWidth={true}
+            />
+            <FormControl fullWidth>
+              <Select
+                value={user.organisationRef}
+                onChange={e =>
+                  this.setState({
+                    user: { ...user, organisationRef: e.target.value }
+                  })
+                }
+                displayEmpty
+              >
+                {organizations.map(org => (
+                  <MenuItem key={org.id} value={org.id}>
+                    {org.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <UserRespSetPopover
+              responsibilities={responsibilities}
+              addedRespSets={this.state.user.responsibilitySetRefs}
+              anchorEl={this.state.addRespAnchorEl}
+              handleAdd={this.handleAddResponsibilitySet.bind(this)}
+              handleClose={() =>
+                this.setState({ isAddingResponsibilitySet: false })
+              }
+              open={isAddingResponsibilitySet}
+            />
+            <ResponsiblitySetList
+              user={user}
+              responsiblities={responsibilities}
+              handleAdd={e =>
+                this.setState({
+                  isAddingResponsibilitySet: true,
+                  addRespAnchorEl: e.currentTarget
+                })
+              }
+              handleRemove={this.removeResponsibilitySet.bind(this)}
+            />
+          </div>
+        </DialogContent>
+        <DialogActions>{actions}</DialogActions>
+      </Dialog>
     );
   }
 }
