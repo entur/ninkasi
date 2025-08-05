@@ -74,7 +74,6 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
   if (isConfigLoaded && auth.isAuthenticated) {
     return (
       <StyledEngineProvider injectFirst>
-        (
         <ThemeProvider theme={theme}>
           <V0MuiThemeProvider muiTheme={themeV0}>
             <Fragment>
@@ -96,7 +95,6 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
             </Fragment>
           </V0MuiThemeProvider>
         </ThemeProvider>
-        )
       </StyledEngineProvider>
     );
   } else {

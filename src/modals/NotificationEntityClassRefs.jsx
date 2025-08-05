@@ -18,8 +18,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import NotificationAddEntityClassRef from './NotificationAddEntityClassRef';
-import IconButton from 'material-ui/IconButton';
-import MdRemove from 'material-ui/svg-icons/content/remove';
+import { IconButton } from '@mui/material';
+import { Remove } from '@mui/icons-material';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 
 class NotificationEntityClassRef extends React.Component {
@@ -81,7 +81,7 @@ class NotificationEntityClassRef extends React.Component {
             onClick={this.handleRemoveEntityClass.bind(this)}
             size="large"
           >
-            <MdRemove color="#cc0000" />
+            <Remove style={{ color: '#cc0000' }} />
           </IconButton>
         </div>
         {entityClassRefs.length === 0 && (

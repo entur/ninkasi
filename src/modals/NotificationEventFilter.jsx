@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import Checkbox from 'material-ui/Checkbox';
+import { Checkbox } from '@mui/material';
 import { connect } from 'react-redux';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import { FormControl, Select, MenuItem } from '@mui/material';
@@ -25,8 +25,8 @@ import OrganisationSelect from './OrganisationSelect';
 import NotificationTypeSelect from './NotificationTypeSelect';
 import NotificationAdminZoneRefs from './NotificationAdminZoneRefs';
 import NotificationEntityClassRef from './NotificationEntityClassRefs';
-import IconButton from 'material-ui/IconButton';
-import MdDelete from 'material-ui/svg-icons/action/delete';
+import { IconButton } from '@mui/material';
+import { Delete } from '@mui/icons-material';
 
 class NotificationEventFilter extends React.Component {
   handleEnabled(value) {
@@ -215,7 +215,7 @@ class NotificationEventFilter extends React.Component {
             onClick={this.deleteUserNotification.bind(this)}
             size="large"
           >
-            <MdDelete />
+            <Delete />
           </IconButton>
           <span>Delete</span>
         </div>
