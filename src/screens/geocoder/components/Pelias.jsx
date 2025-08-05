@@ -17,8 +17,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import withAuth from 'utils/withAuth';
-import Checkbox from 'material-ui/Checkbox';
-import Divider from 'material-ui/Divider';
+import { Checkbox, Divider } from '@mui/material';
 import peliasTasks from 'config/peliasTasks';
 import moment from 'moment';
 import Button from '@mui/material/Button';

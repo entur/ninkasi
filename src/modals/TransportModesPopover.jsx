@@ -19,7 +19,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Button from '@mui/material/Button';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import Checkbox from 'material-ui/Checkbox';
+import { Checkbox } from '@mui/material';
 import PropTypes from 'prop-types';
 
 export default class TransportModesPopover extends React.Component {

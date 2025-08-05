@@ -20,7 +20,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Button from '@mui/material/Button';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
-import Checkbox from 'material-ui/Checkbox';
+import { Checkbox } from '@mui/material';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 

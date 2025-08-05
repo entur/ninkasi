@@ -18,7 +18,7 @@ import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import withAuth from 'utils/withAuth';
 import TextField from '@mui/material/TextField';
-import Checkbox from 'material-ui/Checkbox';
+import { Checkbox } from '@mui/material';
 import { FormControl, Select, MenuItem } from '@mui/material';
 import Button from '@mui/material/Button';
 import { connect } from 'react-redux';

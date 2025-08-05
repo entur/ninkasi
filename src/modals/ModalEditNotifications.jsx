@@ -23,8 +23,8 @@ import { connect } from 'react-redux';
 import Button from '@mui/material/Button';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import NotificationTypeBox from './NotificationTypeBox';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import { Fab } from '@mui/material';
+import { Add } from '@mui/icons-material';
 
 class ModalEditNotifications extends React.Component {
   constructor(props) {
@@ -152,11 +152,13 @@ class ModalEditNotifications extends React.Component {
               </div>
             )}
           </div>
-          <FloatingActionButton mini={true} style={{ margin: 10 }}>
-            <ContentAdd
-              onClick={this.handleAddNewUserNotification.bind(this)}
-            />
-          </FloatingActionButton>
+          <Fab
+            size="small"
+            style={{ margin: 10 }}
+            onClick={this.handleAddNewUserNotification.bind(this)}
+          >
+            <Add />
+          </Fab>
         </DialogContent>
         <DialogActions>{actions}</DialogActions>
       </Dialog>
