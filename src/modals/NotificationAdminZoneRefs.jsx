@@ -90,7 +90,10 @@ class NotificationAdminZoneRefs extends React.Component {
               handleDelete={this.handleRemoveAdminRefRole.bind(this)}
             />
           </div>
-          <IconButton onClick={this.handleRemoveAdminRefRole.bind(this)}>
+          <IconButton
+            onClick={this.handleRemoveAdminRefRole.bind(this)}
+            size="large"
+          >
             <MdRemove color="#cc0000" />
           </IconButton>
         </div>

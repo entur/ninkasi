@@ -17,7 +17,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '@mui/material/Button';
 
 class ConfirmationDialog extends React.Component {
   static propTypes = {
@@ -30,16 +30,12 @@ class ConfirmationDialog extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onClick={this.props.handleClose}
-      />,
-      <FlatButton
-        label={this.props.actionBtnTitle}
-        primary={true}
-        onClick={this.props.handleSubmit}
-      />
+      <Button variant="text" color="primary" onClick={this.props.handleClose}>
+        Cancel
+      </Button>,
+      <Button variant="text" color="primary" onClick={this.props.handleSubmit}>
+        {this.props.actionBtnTitle}
+      </Button>
     ];
 
     return (

@@ -77,7 +77,10 @@ class NotificationEntityClassRef extends React.Component {
               <option key={'entity-' + index}>{ref} </option>
             ))}
           </select>
-          <IconButton onClick={this.handleRemoveEntityClass.bind(this)}>
+          <IconButton
+            onClick={this.handleRemoveEntityClass.bind(this)}
+            size="large"
+          >
             <MdRemove color="#cc0000" />
           </IconButton>
         </div>

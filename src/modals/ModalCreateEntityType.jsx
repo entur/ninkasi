@@ -17,7 +17,7 @@
 import React from 'react';
 import Modal from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '@mui/material/Button';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import MdRemove from 'material-ui/svg-icons/content/remove';
@@ -113,12 +113,16 @@ class ModalCreateEntityType extends React.Component {
       entityType.privateCode.length;
 
     const actions = [
-      <FlatButton label="Close" onClick={this.handleOnClose.bind(this)} />,
-      <FlatButton
+      <Button variant="text" onClick={this.handleOnClose.bind(this)}>
+        Close
+      </Button>,
+      <Button
+        variant="text"
         disabled={!isSavable}
-        label="Create"
         onClick={() => handleSubmit(entityType)}
-      />
+      >
+        Create
+      </Button>
     ];
 
     return (
@@ -203,10 +207,14 @@ class ModalCreateEntityType extends React.Component {
                 onClick={() =>
                   this.setState({ isCreatingNewClassification: true })
                 }
+                size="large"
               >
                 <MdAdd color="#228B22" />
               </IconButton>
-              <IconButton onClick={this.handleRemoveClassification.bind(this)}>
+              <IconButton
+                onClick={this.handleRemoveClassification.bind(this)}
+                size="large"
+              >
                 <MdRemove color="#cc0000" />
               </IconButton>
             </div>
@@ -255,8 +263,8 @@ class ModalCreateEntityType extends React.Component {
                   value={tempClassification.privateCode}
                   fullWidth={true}
                 />
-                <FlatButton
-                  label="Add"
+                <Button
+                  variant="text"
                   style={{ width: '100%' }}
                   disabled={
                     isClassificationPrivateCodeTaken ||
@@ -264,7 +272,9 @@ class ModalCreateEntityType extends React.Component {
                     !tempClassification.privateCode.length
                   }
                   onClick={this.handleAddClassification.bind(this)}
-                />
+                >
+                  Add
+                </Button>
               </div>
             ) : null}
           </div>

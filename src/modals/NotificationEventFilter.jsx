@@ -206,7 +206,10 @@ class NotificationEventFilter extends React.Component {
             checked={notification.enabled}
             onCheck={(e, v) => this.handleEnabled(v)}
           />
-          <IconButton onClick={this.deleteUserNotification.bind(this)}>
+          <IconButton
+            onClick={this.deleteUserNotification.bind(this)}
+            size="large"
+          >
             <MdDelete />
           </IconButton>
           <span>Delete</span>

@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import TextField from 'material-ui/TextField';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
-import Skeleton from '@material-ui/lab/Skeleton';
-import Grid from '@material-ui/core/Grid';
-import Alert from '@material-ui/lab/Alert';
+import Skeleton from '@mui/material/Skeleton';
+import Grid from '@mui/material/Grid';
+import Alert from '@mui/material/Alert';
 import { useAuth } from 'react-oidc-context';
 import getApiConfig from 'actions/getApiConfig';
 import './OSMPOIFilter.scss';
@@ -118,7 +118,7 @@ const OSMPOIFilter = () => {
 
   return (
     <div>
-      <Grid container justify="center" spacing={2}>
+      <Grid container justifyContent="center" spacing={2}>
         <Grid item>
           <Button
             variant="contained"
@@ -208,7 +208,10 @@ const OSMPOIFilter = () => {
                       />
                     </TableCell>
                     <TableCell align="center" padding="none">
-                      <IconButton onClick={() => handleDeleteFilter(index)}>
+                      <IconButton
+                        onClick={() => handleDeleteFilter(index)}
+                        size="large"
+                      >
                         <MdDelete />
                       </IconButton>
                     </TableCell>

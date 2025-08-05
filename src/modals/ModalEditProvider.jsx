@@ -25,15 +25,14 @@ import FlatButton from 'material-ui/FlatButton';
 import { connect } from 'react-redux';
 import SuppliersActions from 'actions/SuppliersActions';
 import TransportModesPopover from './TransportModesPopover';
-import { Tooltip } from '@material-ui/core';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import { withStyles } from '@material-ui/core/styles';
+import { Tooltip, styled } from '@mui/material';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
-const LightTooltip = withStyles(() => ({
-  tooltip: {
+const LightTooltip = styled(Tooltip)(() => ({
+  '& .MuiTooltip-tooltip': {
     fontSize: 12
   }
-}))(Tooltip);
+}));
 
 const getEmptyForm = () => ({
   _providerId: null,

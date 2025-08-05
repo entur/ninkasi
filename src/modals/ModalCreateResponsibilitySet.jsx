@@ -251,10 +251,14 @@ class ModalCreateResponsibilitySet extends React.Component {
             <div>
               <IconButton
                 onClick={() => this.setState({ isCreatingNewRole: true })}
+                size="large"
               >
                 <MdAdd color="#228B22" />
               </IconButton>
-              <IconButton onClick={this.handleRemoveRole.bind(this)}>
+              <IconButton
+                onClick={this.handleRemoveRole.bind(this)}
+                size="large"
+              >
                 <MdRemove color="#cc0000" />
               </IconButton>
             </div>

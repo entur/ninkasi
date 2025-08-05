@@ -60,10 +60,14 @@ class ResponsiblitySetList extends React.Component {
             onClick={e => {
               handleAdd(e);
             }}
+            size="large"
           >
             <MdAdd color="#228B22" />
           </IconButton>
-          <IconButton onClick={this.handleRemoveResponsibilitySet.bind(this)}>
+          <IconButton
+            onClick={this.handleRemoveResponsibilitySet.bind(this)}
+            size="large"
+          >
             <MdRemove color="#cc0000" />
           </IconButton>
         </div>

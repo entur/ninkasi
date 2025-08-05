@@ -204,10 +204,14 @@ class ModalEditEntityType extends React.Component {
                 onClick={() =>
                   this.setState({ isCreatingNewClassification: true })
                 }
+                size="large"
               >
                 <MdAdd color="#228B22" />
               </IconButton>
-              <IconButton onClick={this.handleRemoveClassification.bind(this)}>
+              <IconButton
+                onClick={this.handleRemoveClassification.bind(this)}
+                size="large"
+              >
                 <MdRemove color="#cc0000" />
               </IconButton>
             </div>

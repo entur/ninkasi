@@ -72,7 +72,7 @@ class NotificationTypeBox extends React.Component {
               )}
             </div>
           </div>
-          <IconButton>
+          <IconButton size="large">
             {expanded ? (
               <MdLess
                 onClick={() => {

@@ -27,7 +27,7 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup
-} from '@material-ui/core';
+} from '@mui/material';
 
 const initialState = {
   user: {

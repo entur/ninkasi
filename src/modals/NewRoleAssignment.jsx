@@ -174,7 +174,7 @@ class NewRoleAssignment extends React.Component {
               </option>
             ))}
           </select>
-          <IconButton onClick={this.handleRemoveEntity.bind(this)}>
+          <IconButton onClick={this.handleRemoveEntity.bind(this)} size="large">
             <MdRemove color="#cc0000" />
           </IconButton>
         </div>

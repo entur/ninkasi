@@ -69,6 +69,7 @@ class Header extends React.Component {
         iconElementLeft={
           <IconButton
             onClick={() => this.props.dispatch(AppActions.toggleMenu())}
+            size="large"
           >
             <MdMenu />
           </IconButton>
@@ -76,7 +77,7 @@ class Header extends React.Component {
         iconElementRight={
           <IconMenu
             iconButtonElement={
-              <IconButton>
+              <IconButton size="large">
                 <MoreVertIcon />
               </IconButton>
             }

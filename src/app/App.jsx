@@ -17,7 +17,12 @@
 import React, { Fragment, useCallback, useEffect, useMemo } from 'react';
 import cfgreader from 'config/readConfig';
 import Header from './components/Header';
-import { MuiThemeProvider, createTheme } from '@material-ui/core/styles'; // v1.x
+import {
+  ThemeProvider,
+  StyledEngineProvider,
+  createTheme,
+  adaptV4Theme
+} from '@mui/material/styles'; // v1.x
 import { MuiThemeProvider as V0MuiThemeProvider } from 'material-ui';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { connect } from 'react-redux';
@@ -56,37 +61,43 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
 
   const theme = useMemo(
     () =>
-      createTheme({
-        palette: {
-          type: 'light'
-        }
-      }),
+      createTheme(
+        adaptV4Theme({
+          palette: {
+            mode: 'light'
+          }
+        })
+      ),
     []
   );
 
   if (isConfigLoaded && auth.isAuthenticated) {
     return (
-      <MuiThemeProvider theme={theme}>
-        <V0MuiThemeProvider muiTheme={themeV0}>
-          <Fragment>
-            <NotificationContainer />
-            <Menu open={isMenuOpen} />
-            <div className="app">
-              <Header />
-              {isAdmin ? (
-                <Router />
-              ) : (
-                <NoAccess
-                  username={auth.user.name}
-                  handleLogout={() => {
-                    auth.signoutRedirect();
-                  }}
-                />
-              )}
-            </div>
-          </Fragment>
-        </V0MuiThemeProvider>
-      </MuiThemeProvider>
+      <StyledEngineProvider injectFirst>
+        (
+        <ThemeProvider theme={theme}>
+          <V0MuiThemeProvider muiTheme={themeV0}>
+            <Fragment>
+              <NotificationContainer />
+              <Menu open={isMenuOpen} />
+              <div className="app">
+                <Header />
+                {isAdmin ? (
+                  <Router />
+                ) : (
+                  <NoAccess
+                    username={auth.user.name}
+                    handleLogout={() => {
+                      auth.signoutRedirect();
+                    }}
+                  />
+                )}
+              </div>
+            </Fragment>
+          </V0MuiThemeProvider>
+        </ThemeProvider>
+        )
+      </StyledEngineProvider>
     );
   } else {
     return null;
