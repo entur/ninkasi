@@ -114,7 +114,7 @@ class ModalCreateUser extends React.Component {
       ...this.state,
       user: {
         ...user,
-        personal_account: value === 'personal_account'
+        personalAccount: value === 'personal_account'
       }
     });
   }
@@ -216,30 +216,33 @@ class ModalCreateUser extends React.Component {
               flexDirection: 'column'
             }}
           >
-            <FormControl>
-              <RadioGroup
-                defaultValue="personal_account"
-                value={
-                  user.personalAccount
-                    ? 'personal_account'
-                    : 'notification_account'
-                }
-                onChange={(e, value) =>
-                  this.handleChangeIsPersonalAccount(value)
-                }
-              >
-                <FormControlLabel
-                  value="personal_account"
-                  control={<Radio />}
-                  label="Personal account"
-                />
-                <FormControlLabel
-                  value="notification_account"
-                  control={<Radio />}
-                  label="Notification account"
-                />
-              </RadioGroup>
-            </FormControl>
+            <div onClick={e => e.stopPropagation()}>
+              <FormControl>
+                <RadioGroup
+                  defaultValue="personal_account"
+                  value={
+                    user.personalAccount
+                      ? 'personal_account'
+                      : 'notification_account'
+                  }
+                  onChange={e => {
+                    e.stopPropagation();
+                    this.handleChangeIsPersonalAccount(e.target.value);
+                  }}
+                >
+                  <FormControlLabel
+                    value="personal_account"
+                    control={<Radio />}
+                    label="Personal account"
+                  />
+                  <FormControlLabel
+                    value="notification_account"
+                    control={<Radio />}
+                    label="Notification account"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </div>
             <TextField
               placeholder="Username"
               label="Username"
