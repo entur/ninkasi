@@ -15,9 +15,7 @@
  */
 
 import React, { Component } from 'react';
-import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import { Menu, MenuItem } from '@mui/material';
 
 class UserRespSetPopover extends Component {
   render() {
@@ -31,27 +29,28 @@ class UserRespSetPopover extends Component {
     } = this.props;
 
     return (
-      <Popover open={open} anchorEl={anchorEl} onRequestClose={handleClose}>
-        <Menu maxHeight="500">
-          {responsibilities
-            .filter(r => r.id)
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map(r => (
-              <MenuItem
-                style={{ fontSize: '0.9em' }}
-                key={r.id}
-                id={r.id}
-                value={r.id}
-                label={r.name}
-                primaryText={r.name}
-                disabled={addedRespSets.indexOf(r.id) > -1}
-                onClick={() => {
-                  handleAdd(r.id);
-                }}
-              />
-            ))}
-        </Menu>
-      </Popover>
+      <Menu
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        PaperProps={{ style: { maxHeight: '500px' } }}
+      >
+        {responsibilities
+          .filter(r => r.id)
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map(r => (
+            <MenuItem
+              style={{ fontSize: '0.9em' }}
+              key={r.id}
+              disabled={addedRespSets.indexOf(r.id) > -1}
+              onClick={() => {
+                handleAdd(r.id);
+              }}
+            >
+              {r.name}
+            </MenuItem>
+          ))}
+      </Menu>
     );
   }
 }

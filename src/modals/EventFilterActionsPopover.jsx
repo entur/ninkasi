@@ -15,10 +15,8 @@
  */
 
 import React from 'react';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import { Menu, MenuItem } from '@mui/material';
 import Button from '@mui/material/Button';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import { Checkbox } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -77,15 +75,14 @@ class EventFilterActionsPopover extends React.Component {
             Actions<span style={{ color: 'red' }}>*</span>
           </span>
         </Button>
-        <Popover
+        <Menu
           anchorEl={anchorEl}
           open={open}
-          onRequestClose={() => {
+          onClose={() => {
             this.setState({ open: false });
           }}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          animation={PopoverAnimationVertical}
+          transformOrigin={{ horizontal: 'left', vertical: 'top' }}
         >
           {eventFilter.jobDomain &&
             allActions[eventFilter.jobDomain].map((action, i) => {
@@ -96,23 +93,21 @@ class EventFilterActionsPopover extends React.Component {
                 : actions.indexOf(action) > -1;
 
               return (
-                <Menu
+                <MenuItem
                   key={'action-' + i}
-                  menuItemStyle={{ fontSize: 12, minHeight: 18 }}
+                  style={{ fontSize: 12, minHeight: 18 }}
                 >
-                  <MenuItem>
-                    <Checkbox
-                      label={actionLabel}
-                      checked={checked}
-                      onCheck={(e, isChecked) => {
-                        this.handleCheckAction(action, isChecked);
-                      }}
-                    />
-                  </MenuItem>
-                </Menu>
+                  <Checkbox
+                    checked={checked}
+                    onChange={(e, isChecked) => {
+                      this.handleCheckAction(action, isChecked);
+                    }}
+                  />
+                  {actionLabel}
+                </MenuItem>
               );
             })}
-        </Popover>
+        </Menu>
       </div>
     );
   }
