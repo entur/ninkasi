@@ -19,9 +19,8 @@ import Modal from 'material-ui/Dialog';
 import withAuth from 'utils/withAuth';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import MdRemove from 'material-ui/svg-icons/content/remove';
-import MdAdd from 'material-ui/svg-icons/content/add';
-import IconButton from 'material-ui/IconButton';
+import { Remove, Add } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 import { FormControl, Select, MenuItem } from '@mui/material';
 import NewRole from './NewRoleAssignment';
 import { getEntityClassificationRefString } from 'utils/';
@@ -257,13 +256,13 @@ class ModalEditResponsibilitySet extends React.Component {
                 onClick={() => this.setState({ isCreatingNewRole: true })}
                 size="large"
               >
-                <MdAdd color="#228B22" />
+                <Add style={{ color: '#228B22' }} />
               </IconButton>
               <IconButton
                 onClick={this.handleRemoveRole.bind(this)}
                 size="large"
               >
-                <MdRemove color="#cc0000" />
+                <Remove style={{ color: '#cc0000' }} />
               </IconButton>
             </div>
             {isCreatingNewRole ? (

@@ -17,13 +17,13 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import { FormControl, Select, MenuItem } from '@mui/material';
-import Checkbox from 'material-ui/Checkbox';
+import { Checkbox } from '@mui/material';
 import AdminZoneSearchWrapper from './AdminZoneSearchWrapper';
 import OrganizationRegisterActions, {
   sortBy
 } from 'actions/OrganizationRegisterActions';
-import MdRemove from 'material-ui/svg-icons/content/remove';
-import IconButton from 'material-ui/IconButton';
+import { Remove } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 import { getEntityClassificationRefString } from 'utils/';
 
 class NewRoleAssignment extends React.Component {
@@ -163,7 +163,7 @@ class NewRoleAssignment extends React.Component {
             ))}
           </select>
           <IconButton onClick={this.handleRemoveEntity.bind(this)} size="large">
-            <MdRemove color="#cc0000" />
+            <Remove style={{ color: '#cc0000' }} />
           </IconButton>
         </div>
         <div
