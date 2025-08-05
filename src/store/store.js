@@ -45,10 +45,10 @@ export default function configureStore() {
 
   let store = createStore(createRootReducer(history), {}, enchancer);
 
-  if (module.hot) {
-    // Enable Webpack hot module replacement for reducers
-    module.hot.accept('../reducers', () => {
-      const nextRootReducer = require('reducers/');
+  if (import.meta.hot) {
+    // Enable Vite hot module replacement for reducers
+    import.meta.hot.accept('../reducers', async () => {
+      const { default: nextRootReducer } = await import('reducers/');
       store.replaceReducer(nextRootReducer(history));
     });
   }

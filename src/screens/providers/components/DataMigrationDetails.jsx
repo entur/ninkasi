@@ -23,10 +23,10 @@ import AdvancedFileList from './AdvancedFileList';
 import TextField from 'material-ui/TextField';
 import { sortFiles } from 'utils';
 
-const FaArrowDown = require('react-icons/lib/fa/arrow-down');
-const FaArrowUp = require('react-icons/lib/fa/arrow-up');
-const FaRemove = require('react-icons/lib/fa/arrow-left');
-const FaAdd = require('react-icons/lib/fa/arrow-right');
+import FaArrowDown from 'react-icons/lib/fa/arrow-down';
+import FaArrowUp from 'react-icons/lib/fa/arrow-up';
+import FaRemove from 'react-icons/lib/fa/arrow-left';
+import FaAdd from 'react-icons/lib/fa/arrow-right';
 
 class DataMigrationDetails extends React.Component {
   constructor(props) {

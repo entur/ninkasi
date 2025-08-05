@@ -15,7 +15,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import App from 'app';
@@ -68,10 +68,10 @@ function renderIndex(config) {
     oidcConfig.extraQueryParams = { audience: config.auth0Audience };
   }
 
-  render(
+  const root = createRoot(document.getElementById('root'));
+  root.render(
     <AuthProvider {...oidcConfig}>
       <AuthenticatedApp />
-    </AuthProvider>,
-    document.getElementById('root')
+    </AuthProvider>
   );
 }
