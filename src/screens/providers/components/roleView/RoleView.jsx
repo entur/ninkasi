@@ -17,10 +17,9 @@
 import React from 'react';
 import withAuth from 'utils/withAuth';
 import './roleView.scss';
-import MdEdit from 'material-ui/svg-icons/image/edit';
-import MdDelete from 'material-ui/svg-icons/action/delete';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import { Edit, Delete } from '@mui/icons-material';
+import { Fab } from '@mui/material';
+import { Add } from '@mui/icons-material';
 import ModalEditRole from 'modals/ModalEditRole';
 import ModalCreateRole from 'modals/ModalCreateRole';
 import { connect } from 'react-redux';
@@ -131,14 +130,9 @@ class RoleView extends React.Component {
     return (
       <div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <FloatingActionButton
-            mini={true}
-            style={{ float: 'right', marginRight: 10 }}
-          >
-            <ContentAdd
-              onClick={() => this.setState({ isCreateModalOpen: true })}
-            />
-          </FloatingActionButton>
+          <Fab mini={true} style={{ float: 'right', marginRight: 10 }}>
+            <Add onClick={() => this.setState({ isCreateModalOpen: true })} />
+          </Fab>
         </div>
         <div className="role-row">
           <div className="role-header">
@@ -165,7 +159,7 @@ class RoleView extends React.Component {
                 <div className="col-1-3">{role.name}</div>
                 <div className="col-1-3">{role.privateCode}</div>
                 <div className="col-icon" style={{ cursor: 'pointer' }}>
-                  <MdDelete
+                  <Delete
                     color="#fa7b81"
                     style={{
                       height: 20,
@@ -178,7 +172,7 @@ class RoleView extends React.Component {
                       this.handleOpenDeleteConfirmationDialog(role)
                     }
                   />
-                  <MdEdit
+                  <Edit
                     color="rgba(25, 118, 210, 0.59)"
                     onClick={() => this.handleEditRole(role)}
                     style={{

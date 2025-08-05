@@ -17,14 +17,14 @@
 import React from 'react';
 import withAuth from 'utils/withAuth';
 import './organizationView.scss';
-import MdEdit from 'material-ui/svg-icons/image/edit';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
+import { Edit } from '@mui/icons-material';
+import { Fab } from '@mui/material';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import { Add } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import ModalCreateOrganization from 'modals/ModalCreateOrganization';
 import ModalEditOrganization from 'modals/ModalEditOrganization';
-import MdDelete from 'material-ui/svg-icons/action/delete';
+import { Delete } from '@mui/icons-material';
 import { sortByColumns } from 'utils';
 import ModalConfirmation from 'modals/ModalConfirmation';
 
@@ -146,12 +146,12 @@ class OrganizationView extends React.Component {
     return (
       <div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <FloatingActionButton
+          <Fab
             mini={true}
             style={{ float: 'right', marginRight: 10, cursor: 'pointer' }}
           >
-            <ContentAdd onClick={() => this.openModalWindow()} />
-          </FloatingActionButton>
+            <Add onClick={() => this.openModalWindow()} />
+          </Fab>
         </div>
         <div className="organization-row">
           <div className="organization-header">
@@ -208,7 +208,7 @@ class OrganizationView extends React.Component {
                 <div className="col-1-6">{organization.privateCode}</div>
                 <div className="col-1-6">{organization.codeSpace}</div>
                 <div className="col-icon" style={{ cursor: 'pointer' }}>
-                  <MdDelete
+                  <Delete
                     color="#fa7b81"
                     style={{
                       height: 20,
@@ -221,7 +221,7 @@ class OrganizationView extends React.Component {
                       this.handleOpenDeleteConfirmationDialog(organization)
                     }
                   />
-                  <MdEdit
+                  <Edit
                     color="rgba(25, 118, 210, 0.59)"
                     onClick={() => this.handleEditOrganization(organization)}
                     style={{ height: 20, width: 20, verticalAlign: 'middle' }}

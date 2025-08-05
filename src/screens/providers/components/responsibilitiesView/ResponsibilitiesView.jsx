@@ -18,10 +18,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import withAuth from 'utils/withAuth';
 import './responsibilityView.scss';
-import MdEdit from 'material-ui/svg-icons/image/edit';
-import MdDelete from 'material-ui/svg-icons/action/delete';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import { Edit, Delete } from '@mui/icons-material';
+import { Fab } from '@mui/material';
+import { Add } from '@mui/icons-material';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import ResponsbilityRoleAssignments from 'modals/ResponsbilityRoleAssignments';
 import ModalCreateResponsibilitySet from 'modals/ModalCreateResponsibilitySet';
@@ -164,13 +163,13 @@ class ResponsibilitiesView extends React.Component {
     return (
       <div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <FloatingActionButton
+          <Fab
             mini={true}
             style={{ marginRight: 10 }}
             onClick={this.openModalWindow.bind(this)}
           >
-            <ContentAdd />
-          </FloatingActionButton>
+            <Add />
+          </Fab>
         </div>
         <div className="responsibility-row">
           <div className="responsibility-header">
@@ -217,7 +216,7 @@ class ResponsibilitiesView extends React.Component {
                   />
                 </div>
                 <div className="col-icon" style={{ cursor: 'pointer' }}>
-                  <MdDelete
+                  <Delete
                     color="#fa7b81"
                     style={{
                       height: 20,
@@ -230,7 +229,7 @@ class ResponsibilitiesView extends React.Component {
                       this.handleOpenDeleteConfirmationDialog(responsibility)
                     }
                   />
-                  <MdEdit
+                  <Edit
                     color="rgba(25, 118, 210, 0.59)"
                     style={{
                       height: 20,

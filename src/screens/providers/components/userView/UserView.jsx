@@ -17,11 +17,9 @@
 import React from 'react';
 import withAuth from 'utils/withAuth';
 import './userView.scss';
-import MdEdit from 'material-ui/svg-icons/image/edit';
-import MdDelete from 'material-ui/svg-icons/action/delete';
-import MdNotification from 'material-ui/svg-icons/social/notifications';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import { Edit, Delete, Notifications } from '@mui/icons-material';
+import { Fab } from '@mui/material';
+import { Add } from '@mui/icons-material';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import ModalCreateUser from 'modals/ModalCreateUser';
 import ModalEditUser from 'modals/ModalEditUser';
@@ -200,11 +198,13 @@ class UserView extends React.Component {
             }}
             organisationFilterId={organisationFilterId}
           />
-          <FloatingActionButton mini={true} style={{ marginRight: 10 }}>
-            <ContentAdd
-              onClick={() => this.openModal(null, 'isCreateModalOpen')}
-            />
-          </FloatingActionButton>
+          <Fab
+            size="small"
+            style={{ marginRight: 10 }}
+            onClick={() => this.openModal(null, 'isCreateModalOpen')}
+          >
+            <Add />
+          </Fab>
         </div>
         <div className="user-row">
           <div className="user-header">
@@ -287,7 +287,7 @@ class UserView extends React.Component {
                   ))}
                 </div>
                 <div className="col-icon">
-                  <MdEdit
+                  <Edit
                     color="rgba(25, 118, 210, 0.59)"
                     style={{
                       height: 20,
@@ -298,7 +298,7 @@ class UserView extends React.Component {
                     }}
                     onClick={() => this.openModal(user, 'isEditModalOpen')}
                   />
-                  <MdNotification
+                  <Notifications
                     color="rgba(25, 118, 210, 0.59)"
                     style={{
                       marginLeft: 4,
@@ -322,7 +322,7 @@ class UserView extends React.Component {
                     }}
                     onClick={() => this.handleOpenResetConfirmationDialog(user)}
                   />
-                  <MdDelete
+                  <Delete
                     color="#fa7b81"
                     style={{
                       height: 20,
