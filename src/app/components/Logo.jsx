@@ -13,7 +13,7 @@ const pageNameFromPathName = pathname => {
 
 export default ({ providersEnv, pathname }) => {
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
       <div style={{ fontSize: '1.5rem' }}>Ninkasi</div>
       {providersEnv !== 'PROD' && (
         <div
@@ -27,7 +27,13 @@ export default ({ providersEnv, pathname }) => {
         </div>
       )}
       {pathname && (
-        <span style={{ color: 'white' }}>
+        <span
+          style={{
+            color: 'white',
+            fontSize: '1.5rem',
+            marginLeft: '0.5rem'
+          }}
+        >
           {pageNameFromPathName(pathname) !== ''
             ? `— ${pageNameFromPathName(pathname)}`
             : ''}

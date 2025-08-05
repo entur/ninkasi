@@ -280,7 +280,7 @@ class AdministrativeActions extends React.Component {
               >
                 Graph
               </div>
-              <ArrowDropDown color="#fff" />
+              <ArrowDropDown sx={{ color: 'white' }} />
             </div>
           </Button>
           <Popover
@@ -341,7 +341,7 @@ class AdministrativeActions extends React.Component {
               >
                 Google
               </div>
-              <ArrowDropDown color="#fff" />
+              <ArrowDropDown sx={{ color: 'white' }} />
             </div>
           </Button>
           <Popover
@@ -378,8 +378,12 @@ class AdministrativeActions extends React.Component {
           <Button variant="text" onClick={this.handleCleanOpen.bind(this)}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Warning
-                color={iconColor}
-                style={{ height: '1.1em', width: '1.1em', paddingLeft: 10 }}
+                sx={{
+                  color: 'white',
+                  height: '1.1em',
+                  width: '1.1em',
+                  paddingLeft: '10px'
+                }}
               />
               <div
                 style={{
@@ -393,26 +397,33 @@ class AdministrativeActions extends React.Component {
               >
                 Clean
               </div>
-              <ArrowDropDown color="#fff" />
+              <ArrowDropDown sx={{ color: 'white' }} />
             </div>
           </Button>
           <Button
             variant="text"
             title={toolTips.canceAllJobs}
-            style={{
-              transform: 'translateY(-3px)',
-              fontSize: 12,
-              color: '#fff'
-            }}
-            startIcon={
-              <Warning
-                color={iconColor}
-                style={{ height: '1.1em', width: '1.1em' }}
-              />
-            }
             onClick={() => this.handleCancelAllJobs()}
           >
-            Cancel all jobs
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Warning
+                sx={{
+                  color: 'white',
+                  height: '1.1em',
+                  width: '1.1em',
+                  paddingLeft: '10px'
+                }}
+              />
+              <div
+                style={{
+                  fontSize: 12,
+                  color: '#fff',
+                  marginLeft: '0.5rem'
+                }}
+              >
+                Cancel all jobs
+              </div>
+            </div>
           </Button>
         </div>
         <Popover

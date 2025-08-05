@@ -80,11 +80,10 @@ class Header extends React.Component {
           <Toolbar>
             <IconButton
               edge="start"
-              color="inherit"
               onClick={() => this.props.dispatch(AppActions.toggleMenu())}
               size="large"
             >
-              <MenuIcon />
+              <MenuIcon sx={{ color: 'white !important' }} />
             </IconButton>
             <div
               style={{
@@ -98,13 +97,8 @@ class Header extends React.Component {
                 pathname={this.props.pathname}
               />
             </div>
-            <IconButton
-              edge="end"
-              color="inherit"
-              onClick={this.handleMenuOpen}
-              size="large"
-            >
-              <MoreVert />
+            <IconButton edge="end" onClick={this.handleMenuOpen} size="large">
+              <MoreVert sx={{ color: 'white !important' }} />
             </IconButton>
           </Toolbar>
         </AppBar>
