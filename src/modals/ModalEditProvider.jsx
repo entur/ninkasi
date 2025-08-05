@@ -23,7 +23,7 @@ import {
 } from '@mui/material';
 import withAuth from 'utils/withAuth';
 import TextField from '@mui/material/TextField';
-import { Checkbox } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import { FormControl, Select, MenuItem } from '@mui/material';
 import Button from '@mui/material/Button';
 import { connect } from 'react-redux';
@@ -343,14 +343,25 @@ class ModalEditProvider extends Component {
               </div>
               <div style={{ ...rowStyle, marginTop: 10 }}>
                 <div style={{ ...formElement }}>
-                  <Checkbox
-                    label="Allow create missing stop place"
-                    checked={this.state.form._allowCreateMissingStopPlace}
-                    style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
-                    labelStyle={{ fontSize: '0.9em' }}
-                    onCheck={(e, v) =>
-                      this.handleChange('_allowCreateMissingStopPlace', v)
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={this.state.form._allowCreateMissingStopPlace}
+                        onChange={e =>
+                          this.handleChange(
+                            '_allowCreateMissingStopPlace',
+                            e.target.checked
+                          )
+                        }
+                      />
                     }
+                    label="Allow create missing stop place"
+                    style={{
+                      flex: 1,
+                      maxWidth: 360,
+                      whiteSpace: 'nowrap',
+                      fontSize: '0.9em'
+                    }}
                   />
                   {this.toolTip(
                     'Allow Chouette to create new stop places in its database. ' +
@@ -361,14 +372,25 @@ class ModalEditProvider extends Component {
               </div>
               <div style={{ ...rowStyle, marginTop: 10 }}>
                 <div style={{ ...formElement }}>
-                  <Checkbox
-                    label="Enable auto import"
-                    checked={this.state.form._enableAutoImport}
-                    style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
-                    labelStyle={{ fontSize: '0.9em' }}
-                    onCheck={(e, v) =>
-                      this.handleChange('_enableAutoImport', v)
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={this.state.form._enableAutoImport}
+                        onChange={e =>
+                          this.handleChange(
+                            '_enableAutoImport',
+                            e.target.checked
+                          )
+                        }
+                      />
                     }
+                    label="Enable auto import"
+                    style={{
+                      flex: 1,
+                      maxWidth: 360,
+                      whiteSpace: 'nowrap',
+                      fontSize: '0.9em'
+                    }}
                   />
                   {this.toolTip(
                     'Automatically trigger the import pipeline after a file delivery, ' +
@@ -379,14 +401,27 @@ class ModalEditProvider extends Component {
               </div>
               <div style={{ ...rowStyle, marginTop: 10 }}>
                 <div style={{ ...formElement }}>
-                  <Checkbox
-                    label="Generate DatedServiceJourneyIds"
-                    checked={this.state.form._generateDatedServiceJourneyIds}
-                    style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
-                    labelStyle={{ fontSize: '0.9em' }}
-                    onCheck={(e, v) =>
-                      this.handleChange('_generateDatedServiceJourneyIds', v)
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={
+                          this.state.form._generateDatedServiceJourneyIds
+                        }
+                        onChange={e =>
+                          this.handleChange(
+                            '_generateDatedServiceJourneyIds',
+                            e.target.checked
+                          )
+                        }
+                      />
                     }
+                    label="Generate DatedServiceJourneyIds"
+                    style={{
+                      flex: 1,
+                      maxWidth: 360,
+                      whiteSpace: 'nowrap',
+                      fontSize: '0.9em'
+                    }}
                   />
                   {this.toolTip(
                     'Deprecated. Generates a dated NeTEx export to be processed by Namtar'
@@ -397,14 +432,25 @@ class ModalEditProvider extends Component {
           )}
           <div style={{ ...rowStyle, marginTop: 10 }}>
             <div style={{ ...formElement }}>
-              <Checkbox
-                label="Enable auto validation"
-                checked={this.state.form._enableAutoValidation}
-                style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
-                labelStyle={{ fontSize: '0.9em' }}
-                onCheck={(e, v) =>
-                  this.handleChange('_enableAutoValidation', v)
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.form._enableAutoValidation}
+                    onChange={e =>
+                      this.handleChange(
+                        '_enableAutoValidation',
+                        e.target.checked
+                      )
+                    }
+                  />
                 }
+                label="Enable auto validation"
+                style={{
+                  flex: 1,
+                  maxWidth: 360,
+                  whiteSpace: 'nowrap',
+                  fontSize: '0.9em'
+                }}
               />
               {this.toolTip(
                 this.state.form._referential.indexOf('rb_') !== 0
@@ -419,14 +465,25 @@ class ModalEditProvider extends Component {
           {this.state.form._referential.indexOf('rb_') === 0 && (
             <div style={{ ...rowStyle, marginTop: 10 }}>
               <div style={{ ...formElement }}>
-                <Checkbox
-                  label="Enable private export (blocks and restricted publication)"
-                  checked={this.state.form._enableBlocksExport}
-                  style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
-                  labelStyle={{ fontSize: '0.9em' }}
-                  onCheck={(e, v) =>
-                    this.handleChange('_enableBlocksExport', v)
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={this.state.form._enableBlocksExport}
+                      onChange={e =>
+                        this.handleChange(
+                          '_enableBlocksExport',
+                          e.target.checked
+                        )
+                      }
+                    />
                   }
+                  label="Enable private export (blocks and restricted publication)"
+                  style={{
+                    flex: 1,
+                    maxWidth: 360,
+                    whiteSpace: 'nowrap',
+                    fontSize: '0.9em'
+                  }}
                 />
                 {this.toolTip(
                   'When activated, a second NeTEx export is generated, ' +

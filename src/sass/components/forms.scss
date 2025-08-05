@@ -158,6 +158,17 @@ form.supplier-form {
   &:last-child {
     margin-bottom: 0;
   }
+
+  // Ensure labels have proper font size and spacing
+  .MuiFormControlLabel-label {
+    font-size: 0.9em;
+    margin-left: 8px;
+  }
+
+  // Don't add extra margin when in flex rows
+  div[style*='display: flex'] > & {
+    margin-bottom: 0;
+  }
 }
 
 // Ensure consistent padding in dialog content

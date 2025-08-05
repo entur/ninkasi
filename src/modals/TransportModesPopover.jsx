@@ -17,7 +17,7 @@
 import React from 'react';
 import { Menu, MenuItem } from '@mui/material';
 import Button from '@mui/material/Button';
-import { Checkbox } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import PropTypes from 'prop-types';
 
 export default class TransportModesPopover extends React.Component {
@@ -71,15 +71,19 @@ export default class TransportModesPopover extends React.Component {
                 menuItemStyle={{ fontSize: 12, minHeight: 18 }}
               >
                 <MenuItem>
-                  <Checkbox
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={checked}
+                        onChange={e => {
+                          this.props.handleCheckTransportMode(
+                            transportMode,
+                            e.target.checked
+                          );
+                        }}
+                      />
+                    }
                     label={transportMode}
-                    checked={checked}
-                    onCheck={(e, isChecked) => {
-                      this.props.handleCheckTransportMode(
-                        transportMode,
-                        isChecked
-                      );
-                    }}
                   />
                 </MenuItem>
               </Menu>

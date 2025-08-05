@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import { Checkbox } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import { connect } from 'react-redux';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import { FormControl, Select, MenuItem } from '@mui/material';
@@ -205,11 +205,15 @@ class NotificationEventFilter extends React.Component {
           </div>
         </div>
         <div style={{ display: 'flex', marginTop: 10, alignItems: 'center' }}>
-          <Checkbox
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={notification.enabled}
+                onChange={e => this.handleEnabled(e.target.checked)}
+              />
+            }
             label="Enabled"
             style={{ width: 'auto' }}
-            checked={notification.enabled}
-            onCheck={(e, v) => this.handleEnabled(v)}
           />
           <IconButton
             onClick={this.deleteUserNotification.bind(this)}
