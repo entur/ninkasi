@@ -19,9 +19,8 @@ import Modal from 'material-ui/Dialog';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { FormControl, Select, MenuItem } from '@mui/material';
-import MdRemove from 'material-ui/svg-icons/content/remove';
-import MdAdd from 'material-ui/svg-icons/content/add';
-import IconButton from 'material-ui/IconButton';
+import { Remove, Add } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 
 const initialState = {
   entityType: {
@@ -204,13 +203,13 @@ class ModalCreateEntityType extends React.Component {
                 }
                 size="large"
               >
-                <MdAdd color="#228B22" />
+                <Add style={{ color: '#228B22' }} />
               </IconButton>
               <IconButton
                 onClick={this.handleRemoveClassification.bind(this)}
                 size="large"
               >
-                <MdRemove color="#cc0000" />
+                <Remove style={{ color: '#cc0000' }} />
               </IconButton>
             </div>
             {isCreatingNewClassification ? (

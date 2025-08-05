@@ -15,7 +15,12 @@
  */
 
 import React from 'react';
-import Dialog from 'material-ui/Dialog';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 
@@ -39,13 +44,10 @@ class ConfirmationDialog extends React.Component {
     ];
 
     return (
-      <Dialog
-        title={this.props.title}
-        actions={actions}
-        modal={true}
-        open={this.props.open}
-      >
-        {this.props.body}
+      <Dialog open={this.props.open} maxWidth="sm" fullWidth>
+        <DialogTitle>{this.props.title}</DialogTitle>
+        <DialogContent>{this.props.body}</DialogContent>
+        <DialogActions>{actions}</DialogActions>
       </Dialog>
     );
   }
