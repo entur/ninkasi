@@ -18,13 +18,12 @@ import React from 'react';
 import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
-import MenuItem from 'material-ui/MenuItem';
+import { MenuItem, Popover } from '@mui/material';
 import {
   Warning,
   ArrowDropDown,
   KeyboardArrowRight
 } from '@mui/icons-material';
-import Popover from 'material-ui/Popover';
 import Button from '@mui/material/Button';
 import { getIconColor, getProvidersEnv, getTheme } from 'config/themes';
 import ConfirmDialog from '../../../modals/ConfirmDialog';
@@ -288,33 +287,37 @@ class AdministrativeActions extends React.Component {
             open={this.state.graphPopoverOpen}
             anchorEl={this.state.anchorEl}
             anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-            onRequestClose={() => this.setState({ graphPopoverOpen: false })}
+            transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+            onClose={() => this.setState({ graphPopoverOpen: false })}
           >
             <MenuItem
-              primaryText={'Build graph'}
               style={{ fontSize: '1.1em' }}
               onClick={() => this.handleBuildGraph()}
               title={toolTips.buildGraph}
-            />
+            >
+              Build graph
+            </MenuItem>
             <MenuItem
-              primaryText={'Build base graph'}
               style={{ fontSize: '1em' }}
               onClick={() => this.handleBuildBaseGraph()}
               title={toolTips.buildBaseGraph}
-            />
+            >
+              Build base graph
+            </MenuItem>
             <MenuItem
-              primaryText={'Build Candidate Graph OTP'}
               style={{ fontSize: '1em' }}
               onClick={() => this.handleBuildCandidateGraphOTP()}
               title={toolTips.buildCandidateGraphOTP}
-            />
+            >
+              Build Candidate Graph OTP
+            </MenuItem>
             <MenuItem
-              primaryText={'Build Candidate Base Graph OTP'}
               style={{ fontSize: '1em' }}
               onClick={() => this.handleBuildCandidateBaseGraphOTP()}
               title={toolTips.buildCandidateBaseGraphOTP}
-            />
+            >
+              Build Candidate Base Graph OTP
+            </MenuItem>
           </Popover>
           <Button
             variant="text"
@@ -345,21 +348,23 @@ class AdministrativeActions extends React.Component {
             open={this.state.googlePopoverOpen}
             anchorEl={this.state.anchorEl}
             anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-            onRequestClose={() => this.setState({ googlePopoverOpen: false })}
+            transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+            onClose={() => this.setState({ googlePopoverOpen: false })}
           >
             <MenuItem
-              primaryText={'Upload GTFS (production)'}
               style={{ fontSize: '1.1em' }}
               onClick={() => this.handleUploadGoogleProduction()}
               title={toolTips.uploadGoogleProduction}
-            />
+            >
+              Upload GTFS (production)
+            </MenuItem>
             <MenuItem
-              primaryText={'Upload GTFS (QA)'}
               style={{ fontSize: '1em' }}
               onClick={() => this.handleUploadGoogleQA()}
               title={toolTips.uploadGoogleQA}
-            />
+            >
+              Upload GTFS (QA)
+            </MenuItem>
           </Popover>
         </div>
         <div
@@ -414,50 +419,50 @@ class AdministrativeActions extends React.Component {
           open={this.state.cleanPopoverOpen}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          onRequestClose={() => this.setState({ cleanPopoverOpen: false })}
+          transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+          onClose={() => this.setState({ cleanPopoverOpen: false })}
         >
           <MenuItem
-            primaryText={'Clean file filter'}
             style={{ fontSize: '1.1em' }}
             onClick={() => this.handleCleanFileFilter()}
             title={toolTips.cleanFileFilter}
-          />
+          >
+            Clean file filter
+          </MenuItem>
           <MenuItem
-            primaryText={'Clean event history'}
             style={{ fontSize: '1em' }}
             onClick={() => this.handleClearEventHistory()}
             title={toolTips.cleanEventHistory}
-          />
+          >
+            Clean event history
+          </MenuItem>
           <MenuItem
-            primaryText={'Clean Stop Places'}
             style={{ fontSize: '1em' }}
             onClick={() => this.handleClearStopPlaces()}
             title={toolTips.cleanStopPlacesChouette}
-          />
+          >
+            Clean Stop Places
+          </MenuItem>
           <MenuItem
             id="dropdown-clean-all"
-            primaryText={'Clean all'}
             style={{ fontSize: '1em' }}
-            rightIcon={<KeyboardArrowRight />}
-            menuItems={[
-              <MenuItem
-                primaryText={'All'}
-                onClick={() => this.handleCleanAllDataSpaces('all')}
-                style={{ fontSize: '1em' }}
-              />,
-              <MenuItem
-                primaryText={'Level 1'}
-                onClick={() => this.handleCleanAllDataSpaces('level1')}
-                style={{ fontSize: '1em' }}
-              />,
-              <MenuItem
-                primaryText={'Level 2'}
-                onClick={() => this.handleCleanAllDataSpaces('level2')}
-                style={{ fontSize: '1em' }}
-              />
-            ]}
-          />
+            onClick={() => this.handleCleanAllDataSpaces('all')}
+          >
+            <KeyboardArrowRight style={{ marginRight: 8 }} />
+            Clean all
+          </MenuItem>
+          <MenuItem
+            style={{ fontSize: '1em', paddingLeft: '2em' }}
+            onClick={() => this.handleCleanAllDataSpaces('level1')}
+          >
+            Clean Level 1
+          </MenuItem>
+          <MenuItem
+            style={{ fontSize: '1em', paddingLeft: '2em' }}
+            onClick={() => this.handleCleanAllDataSpaces('level2')}
+          >
+            Clean Level 2
+          </MenuItem>
         </Popover>
         <ConfirmDialog
           open={this.state.confirmDialogOpen}

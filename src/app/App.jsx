@@ -23,8 +23,6 @@ import {
   createTheme,
   adaptV4Theme
 } from '@mui/material/styles'; // v1.x
-import { MuiThemeProvider as V0MuiThemeProvider } from 'material-ui';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { connect } from 'react-redux';
 import UtilsActions from 'actions/UtilsActions';
 import NoAccess from './components/NoAccess';
@@ -34,9 +32,6 @@ import NotificationContainer from './components/NotificationContainer';
 import UserContextActions from '../actions/UserContextActions';
 import UserActions from '../actions/UserActions';
 import { useAuth } from 'react-oidc-context';
-const themeV0 = getMuiTheme({
-  /* theme for v0.x */
-});
 
 const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
   const auth = useAuth();
@@ -75,25 +70,23 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
     return (
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
-          <V0MuiThemeProvider muiTheme={themeV0}>
-            <Fragment>
-              <NotificationContainer />
-              <Menu open={isMenuOpen} />
-              <div className="app">
-                <Header />
-                {isAdmin ? (
-                  <Router />
-                ) : (
-                  <NoAccess
-                    username={auth.user.name}
-                    handleLogout={() => {
-                      auth.signoutRedirect();
-                    }}
-                  />
-                )}
-              </div>
-            </Fragment>
-          </V0MuiThemeProvider>
+          <Fragment>
+            <NotificationContainer />
+            <Menu open={isMenuOpen} />
+            <div className="app">
+              <Header />
+              {isAdmin ? (
+                <Router />
+              ) : (
+                <NoAccess
+                  username={auth.user.name}
+                  handleLogout={() => {
+                    auth.signoutRedirect();
+                  }}
+                />
+              )}
+            </div>
+          </Fragment>
         </ThemeProvider>
       </StyledEngineProvider>
     );

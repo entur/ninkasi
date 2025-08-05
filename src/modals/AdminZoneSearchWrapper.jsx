@@ -15,8 +15,8 @@
  */
 
 import React from 'react';
-import AutoComplete from 'material-ui/AutoComplete';
-import Chip from 'material-ui/Chip';
+import { Autocomplete, TextField } from '@mui/material';
+import { Chip } from '@mui/material';
 
 class AdminZoneSearchWrapper extends React.Component {
   getZoneType(type) {
@@ -52,29 +52,32 @@ class AdminZoneSearchWrapper extends React.Component {
 
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <AutoComplete
+        <Autocomplete
           style={{ marginTop: -5, flex: 2 }}
-          hintText="Restrict to administrative zone"
-          ref="adminSearch"
-          onNewRequest={this.handleNewRequest.bind(this)}
-          maxSearchResults={7}
-          menuProps={{
-            desktop: true,
-            disableAutoFocus: true
+          options={formattedZones}
+          getOptionLabel={option => option.text}
+          onChange={(event, newValue) => {
+            if (newValue) {
+              this.handleNewRequest(newValue, -1);
+            }
           }}
-          animated={true}
-          fullWidth={true}
-          filter={AutoComplete.caseInsensitiveFilter}
-          dataSource={formattedZones}
+          filterLimit={7}
+          fullWidth
+          renderInput={params => (
+            <TextField
+              {...params}
+              placeholder="Restrict to administrative zone"
+              variant="outlined"
+            />
+          )}
         />
         <div style={{ flex: 1, width: '100%', textAlign: 'center' }}>
           {chip ? (
             <Chip
+              label={chip.name}
               style={{ marginTop: -12, marginLeft: 20 }}
-              onRequestDelete={handleDeleteChip}
-            >
-              {chip.name}
-            </Chip>
+              onDelete={handleDeleteChip}
+            />
           ) : (
             <div style={{ fontSize: 12, fontStyle: 'italic' }}>
               No restrictions ...

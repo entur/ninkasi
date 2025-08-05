@@ -28,7 +28,10 @@ import Panel from 'muicss/lib/react/panel';
 import SuppliersActions from 'actions/SuppliersActions';
 import { DotLoader as Loader } from 'halogenium';
 import ChouetteLink from './ChouetteLink';
-import DatePicker from 'material-ui/DatePicker';
+import { DatePicker } from '@mui/lab';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TextField } from '@mui/material';
 import { Clear } from '@mui/icons-material';
 import { getPaginationMap } from 'models';
 import moment from 'moment';
@@ -230,13 +233,21 @@ class ChouetteJobDetails extends React.Component {
                         onClick={() => this.setState({ filterFromDate: null })}
                         style={{ marginRight: 5 }}
                       />
-                      <DatePicker
-                        hintText="Filter from date"
-                        autoOk
-                        onChange={this.handleOnDatePickerChange.bind(this)}
-                        style={{ display: 'inline-block' }}
-                        value={this.state.filterFromDate}
-                      />
+                      <LocalizationProvider dateAdapter={AdapterMoment}>
+                        <DatePicker
+                          label="Filter from date"
+                          value={this.state.filterFromDate}
+                          onChange={newValue => {
+                            this.setState({ filterFromDate: newValue });
+                          }}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              style={{ display: 'inline-block' }}
+                            />
+                          )}
+                        />
+                      </LocalizationProvider>
                     </div>
                   </Col>
                   <div style={{ float: 'right', marginRight: 10 }}>

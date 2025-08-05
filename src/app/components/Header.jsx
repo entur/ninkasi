@@ -16,21 +16,27 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import MdAccount from 'material-ui/svg-icons/action/account-circle';
-import MdHelp from 'material-ui/svg-icons/action/help';
-import MdHistory from 'material-ui/svg-icons/action/history';
-import MdMenu from 'material-ui/svg-icons/navigation/menu';
+import { AppBar, Toolbar, IconButton, Menu, MenuItem } from '@mui/material';
+import {
+  MoreVert,
+  AccountCircle,
+  Help,
+  History,
+  Menu as MenuIcon
+} from '@mui/icons-material';
 import AppActions from 'actions/AppActions';
 import SuppliersActions from 'actions/SuppliersActions';
 import { getProvidersEnv, getTheme } from 'config/themes';
 import Logo from './Logo';
 
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      anchorEl: null
+    };
+  }
+
   handleLogout() {
     const { auth } = this.props;
     if (auth) {
@@ -42,6 +48,14 @@ class Header extends React.Component {
     this.props.dispatch(SuppliersActions.openHistoryModal());
   }
 
+  handleMenuOpen = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleMenuClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
   getUsername() {
     const { auth } = this.props;
     if (auth && auth.user) {
@@ -51,6 +65,8 @@ class Header extends React.Component {
 
   render() {
     const providersEnv = getProvidersEnv(window.config.providersBaseUrl);
+    const { anchorEl } = this.state;
+    const open = Boolean(anchorEl);
 
     const backgroundStyle = {
       height: 60,
@@ -59,57 +75,84 @@ class Header extends React.Component {
 
     const username = this.getUsername();
     return (
-      <AppBar
-        style={backgroundStyle}
-        title={
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Logo providersEnv={providersEnv} pathname={this.props.pathname} />
-          </div>
-        }
-        iconElementLeft={
-          <IconButton
-            onClick={() => this.props.dispatch(AppActions.toggleMenu())}
-            size="large"
-          >
-            <MdMenu />
-          </IconButton>
-        }
-        iconElementRight={
-          <IconMenu
-            iconButtonElement={
-              <IconButton size="large">
-                <MoreVertIcon />
-              </IconButton>
-            }
-            targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-          >
-            <MenuItem
-              primaryText={'History'}
-              leftIcon={<MdHistory color="#41c0c4" />}
-              style={{ fontSize: 12, padding: 0 }}
-              onClick={() => {
-                this.handleShowHistory();
+      <>
+        <AppBar position="static" style={backgroundStyle}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={() => this.props.dispatch(AppActions.toggleMenu())}
+              size="large"
+            >
+              <MenuIcon />
+            </IconButton>
+            <div
+              style={{
+                flexGrow: 1,
+                display: 'flex',
+                justifyContent: 'space-between'
               }}
-            />
-            <MenuItem
-              leftIcon={<MdHelp color="#41c0c4" />}
-              href="https://enturas.atlassian.net/wiki/spaces/ROR/pages/682623320/Brukerveiledning+-+Ninkasi"
-              target="_blank"
-              primaryText="User guide (Norwegian)"
-              style={{ fontSize: 12, padding: 0 }}
-            />
-            <MenuItem
-              leftIcon={<MdAccount color="#41c0c4" />}
-              primaryText={`Log out ${username}`}
-              onClick={() => {
-                this.handleLogout();
-              }}
-              style={{ fontSize: 12, padding: 0 }}
-            />
-          </IconMenu>
-        }
-      />
+            >
+              <Logo
+                providersEnv={providersEnv}
+                pathname={this.props.pathname}
+              />
+            </div>
+            <IconButton
+              edge="end"
+              color="inherit"
+              onClick={this.handleMenuOpen}
+              size="large"
+            >
+              <MoreVert />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={this.handleMenuClose}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right'
+          }}
+        >
+          <MenuItem
+            onClick={() => {
+              this.handleShowHistory();
+              this.handleMenuClose();
+            }}
+            style={{ fontSize: 12 }}
+          >
+            <History style={{ marginRight: 8, color: '#41c0c4' }} />
+            History
+          </MenuItem>
+          <MenuItem
+            component="a"
+            href="https://enturas.atlassian.net/wiki/spaces/ROR/pages/682623320/Brukerveiledning+-+Ninkasi"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ fontSize: 12 }}
+          >
+            <Help style={{ marginRight: 8, color: '#41c0c4' }} />
+            User guide (Norwegian)
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              this.handleLogout();
+              this.handleMenuClose();
+            }}
+            style={{ fontSize: 12 }}
+          >
+            <AccountCircle style={{ marginRight: 8, color: '#41c0c4' }} />
+            Log out {username}
+          </MenuItem>
+        </Menu>
+      </>
     );
   }
 }

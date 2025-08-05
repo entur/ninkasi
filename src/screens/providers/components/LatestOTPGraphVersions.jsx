@@ -20,7 +20,7 @@ import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import moment from 'moment';
 import { UnfoldLess, UnfoldMore } from '@mui/icons-material';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
+import { Popover } from '@mui/material';
 import Button from '@mui/material/Button';
 
 const containerStyle = {
@@ -110,13 +110,12 @@ class LatestOTPGraphVersions extends React.Component {
           open={this.state.showGraphVersions}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          onRequestClose={() => {
+          transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+          onClose={() => {
             this.setState({
               showGraphVersions: false
             });
           }}
-          animation={PopoverAnimationVertical}
         >
           <div style={containerStyle}>
             {!streetGraphs || !transitGraphs ? (
