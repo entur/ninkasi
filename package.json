@@ -37,9 +37,9 @@
     "prettier": "1.19.1",
     "prop-types": "15.8.1",
     "rc-progress": "2.6.1",
-    "react": "18.2.0",
+    "react": "18.3.1",
     "react-chartjs-2": "2.11.2",
-    "react-dom": "18.2.0",
+    "react-dom": "18.3.1",
     "react-dropzone": "4.3.0",
     "react-icons": "2.2.7",
     "react-notification": "6.8.5",
@@ -83,7 +83,6 @@
     ]
   },
   "devDependencies": {
-    "@mui/codemod": "7.3.0",
     "@testing-library/jest-dom": "6.6.4",
     "@vitejs/plugin-react": "4.7.0",
     "@vitest/coverage-v8": "3.2.4",
