@@ -18,15 +18,16 @@ import React from 'react';
 import ModalDialog from 'material-ui/Dialog';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { FormControl, Select, MenuItem } from '@mui/material';
-import ResponsiblitySetList from './ResponsiblitySetList';
-import UserRespSetPopover from './UserRespSetPopover';
 import {
   FormControl,
+  Select,
+  MenuItem,
   FormControlLabel,
   Radio,
   RadioGroup
 } from '@mui/material';
+import ResponsiblitySetList from './ResponsiblitySetList';
+import UserRespSetPopover from './UserRespSetPopover';
 
 const initialState = {
   user: {
