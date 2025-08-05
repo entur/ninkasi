@@ -52,14 +52,14 @@ class SuppliersContainer extends React.Component {
     });
   }
 
-  selectSupplier(value) {
+  selectSupplier = value => {
     const { dispatch, getToken } = this.props;
     if (value > 0) {
       dispatch(SuppliersActions.selectActiveSupplier(value, getToken));
     } else {
       dispatch(SuppliersActions.selectAllSuppliers());
     }
-  }
+  };
 
   handleNewProvider() {
     this.props.dispatch(SuppliersActions.openNewProviderDialog());
@@ -111,7 +111,7 @@ class SuppliersContainer extends React.Component {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <SelectSupplier
             suppliers={supplierItems}
-            selectSupplier={v => this.selectSupplier(v)}
+            selectSupplier={this.selectSupplier}
             selectedSupplierId={activeProviderId}
           />
           {canEditOrganisation && (

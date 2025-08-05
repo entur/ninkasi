@@ -1,41 +1,49 @@
-import { FormControl, Select, MenuItem } from '@mui/material';
-import React from 'react';
+import { FormControl, NativeSelect } from '@mui/material';
+import React, { memo, useCallback } from 'react';
 
-export const SelectSupplier = ({
-  suppliers,
-  selectSupplier,
-  selectedSupplierId,
-  errorText
-}) => {
-  return (
-    <>
-      <FormControl style={{ minWidth: 350 }}>
-        <Select
-          id="select-supplier"
-          onChange={e => selectSupplier(e.target.value)}
-          value={Number(selectedSupplierId) || -1}
-          displayEmpty
-        >
-          {suppliers.map(supplier => {
-            const isLevel1Provider =
-              (supplier.chouetteInfo &&
-                supplier.chouetteInfo.migrateDataToProvider) ||
-              supplier.id === -1;
-            return (
-              <MenuItem key={supplier.id} value={supplier.id}>
-                <span
-                  style={{
-                    color: isLevel1Provider ? 'intial' : '#d9a51b'
-                  }}
-                >
-                  {supplier.name}
-                </span>
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-      {errorText && <div style={{ color: 'red' }}>{errorText}</div>}
-    </>
-  );
-};
+export const SelectSupplier = memo(
+  ({ suppliers, selectSupplier, selectedSupplierId, errorText }) => {
+    // Ensure we have a valid value that matches one of the option values
+    const validSupplierIds = suppliers.map(s => s.id);
+    const currentValue = validSupplierIds.includes(selectedSupplierId)
+      ? selectedSupplierId
+      : -1;
+
+    const handleChange = useCallback(
+      event => {
+        const value = parseInt(event.target.value, 10);
+        selectSupplier(value);
+      },
+      [selectSupplier]
+    );
+
+    return (
+      <>
+        <FormControl variant="outlined" style={{ minWidth: 350 }}>
+          <NativeSelect
+            value={currentValue}
+            onChange={handleChange}
+            sx={{
+              bgcolor: 'background.paper',
+              borderRadius: 1,
+              '& .MuiNativeSelect-select': {
+                padding: '10px 14px',
+                '&:focus': {
+                  borderRadius: 1,
+                  backgroundColor: 'background.paper'
+                }
+              }
+            }}
+          >
+            {suppliers.map(supplier => (
+              <option key={supplier.id} value={supplier.id}>
+                {supplier.name}
+              </option>
+            ))}
+          </NativeSelect>
+        </FormControl>
+        {errorText && <div style={{ color: 'red' }}>{errorText}</div>}
+      </>
+    );
+  }
+);

@@ -35,13 +35,16 @@ class SupplierTabWrapper extends React.Component {
     super(props);
     this.state = {
       activeTabForProvider: getQueryVariable('tab') || 'migrateData',
-      activeTabForAllProvider: getQueryVariable('tab') || 'chouetteJobs'
+      activeTabForAllProvider: getQueryVariable('tab') || 'chouetteJobs',
+      currentTabIndex: 0
     };
   }
 
   componentDidMount() {
     const queryTab = getQueryVariable('tab');
     const queryId = getQueryVariable('id');
+    const tabIndex = this.getTabIndexFromParams();
+    this.setState({ currentTabIndex: tabIndex });
 
     const { dispatch } = this.props;
     if (queryTab === 'events') {
@@ -111,6 +114,8 @@ class SupplierTabWrapper extends React.Component {
     if (typeof value === 'object') return;
     const { dispatch, activeId } = this.props;
 
+    this.setState({ currentTabIndex: i, activeTabForProvider: value });
+
     if (value) {
       window.history.pushState(
         window.config.endpointBase,
@@ -135,6 +140,8 @@ class SupplierTabWrapper extends React.Component {
 
   onTabChangeForAllProviders(i, value) {
     if (typeof value === 'object') return;
+
+    this.setState({ currentTabIndex: i, activeTabForAllProvider: value });
 
     if (value) {
       window.history.pushState(
@@ -194,9 +201,23 @@ class SupplierTabWrapper extends React.Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const tabIndexFromParams = this.getTabIndexFromParams();
     const { allProvidersTabs } = this.refs;
+
+    // Update currentTabIndex when activeId changes
+    if (prevProps.activeId !== this.props.activeId) {
+      this.setState({ currentTabIndex: tabIndexFromParams });
+
+      // If on chouette jobs tab, fetch the data for the new provider
+      const queryTab = getQueryVariable('tab');
+      if (queryTab === 'chouetteJobs' && this.props.activeId) {
+        this.props.dispatch(
+          SuppliersActions.getChouetteJobStatus(this.props.getToken)
+        );
+      }
+    }
+
     if (
       allProvidersTabs &&
       allProvidersTabs.state &&
@@ -248,6 +269,7 @@ class SupplierTabWrapper extends React.Component {
       let tabsToRender;
 
       if (displayAllSuppliers) {
+        const { currentTabIndex } = this.state;
         tabsToRender = (
           <Tabs
             justified={true}
@@ -256,10 +278,10 @@ class SupplierTabWrapper extends React.Component {
             ref="allProvidersTabs"
           >
             <Tab value="chouetteJobs" label="Chouette jobs">
-              <ChouetteAllJobs />
+              {currentTabIndex === 0 && <ChouetteAllJobs />}
             </Tab>
             <Tab value="events" label="Events">
-              {window.config.zagmukMicroFrontendUrl && (
+              {currentTabIndex === 1 && window.config.zagmukMicroFrontendUrl && (
                 <MicroFrontend
                   id="ror-zagmuk"
                   host={window.config.zagmukMicroFrontendUrl}
@@ -288,7 +310,7 @@ class SupplierTabWrapper extends React.Component {
               )}
             </Tab>
             <Tab value="statistics" label="Statistics">
-              {window.config.ninsarMicroFrontendUrl && (
+              {currentTabIndex === 2 && window.config.ninsarMicroFrontendUrl && (
                 <MicroFrontend
                   id="ror-ninsar"
                   host={window.config.ninsarMicroFrontendUrl}
@@ -310,16 +332,17 @@ class SupplierTabWrapper extends React.Component {
               )}
             </Tab>
             <Tab value="exportedFiles" label="Exported files">
-              <ExportedFilesView />
+              {currentTabIndex === 3 && <ExportedFilesView />}
             </Tab>
             {canEditOrganisation ? (
               <Tab value="organisationRegister" label="Organisation register">
-                <OrganizationRegister />
+                {currentTabIndex === 4 && <OrganizationRegister />}
               </Tab>
             ) : null}
           </Tabs>
         );
       } else {
+        const { currentTabIndex } = this.state;
         tabsToRender = (
           <Tabs
             justified={true}
@@ -327,10 +350,10 @@ class SupplierTabWrapper extends React.Component {
             defaultSelectedIndex={defaultSelectedIndex}
           >
             <Tab value="migrateData" label="Migrate data">
-              <DataMigrationDetails />
+              {currentTabIndex === 0 && <DataMigrationDetails />}
             </Tab>
             <Tab value="events" label="Events">
-              {window.config.zagmukMicroFrontendUrl && (
+              {currentTabIndex === 1 && window.config.zagmukMicroFrontendUrl && (
                 <MicroFrontend
                   id="ror-zagmuk"
                   host={window.config.zagmukMicroFrontendUrl}
@@ -360,10 +383,10 @@ class SupplierTabWrapper extends React.Component {
               )}
             </Tab>
             <Tab value="chouetteJobs" label="Chouette jobs">
-              <ChouetteJobDetails />
+              {currentTabIndex === 2 && <ChouetteJobDetails />}
             </Tab>
             <Tab value="statistics" label="Statistics">
-              {window.config.ninsarMicroFrontendUrl && (
+              {currentTabIndex === 3 && window.config.ninsarMicroFrontendUrl && (
                 <MicroFrontend
                   id="ror-ninsar"
                   host={window.config.ninsarMicroFrontendUrl}
