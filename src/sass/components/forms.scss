@@ -112,3 +112,78 @@ form.supplier-form {
 .mui-btn__ripple-container {
   font-size: 12px;
 }
+
+// Add consistent spacing to MUI v5+ form components
+.MuiTextField-root {
+  margin-bottom: 16px !important;
+
+  // Don't add margin when in a flex row with other fields
+  div[style*='display: flex'] > & {
+    margin-bottom: 0 !important;
+  }
+}
+
+.MuiFormControl-root {
+  margin-bottom: 16px !important;
+
+  // Don't add margin when in a flex row
+  div[style*='display: flex'] > & {
+    margin-bottom: 0 !important;
+  }
+}
+
+// Add bottom margin to form rows and handle spacing between fields
+.MuiDialogContent-root,
+.supplier-details {
+  > div[style*='display: flex'] {
+    margin-bottom: 16px;
+    gap: 16px; // Use gap instead of inline padding for consistent spacing
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    // Remove any inline padding on flex children
+    > * {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+  }
+}
+
+// Add spacing to checkbox and radio labels
+.MuiFormControlLabel-root {
+  margin-bottom: 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Ensure consistent padding in dialog content
+.MuiDialogContent-root {
+  padding: 16px 24px !important;
+}
+
+// Add spacing between form sections
+.MuiFormControl-root + .MuiFormControl-root,
+.MuiTextField-root + .MuiTextField-root {
+  margin-top: 8px;
+}
+
+// Ensure proper label positioning in TextFields
+.MuiTextField-root {
+  .MuiInputLabel-root {
+    // Ensure labels have consistent positioning
+    &:not(.MuiInputLabel-shrink) {
+      transform: translate(14px, 16px) scale(1);
+    }
+  }
+
+  .MuiOutlinedInput-root {
+    // Ensure consistent input padding
+    input {
+      padding: 16.5px 14px;
+    }
+  }
+}
