@@ -66,27 +66,25 @@ export default class TransportModesPopover extends React.Component {
           {allTransportModes.map((transportMode, i) => {
             let checked = transportModes.indexOf(transportMode) > -1;
             return (
-              <Menu
+              <MenuItem
                 key={'action-' + i}
-                menuItemStyle={{ fontSize: 12, minHeight: 18 }}
+                style={{ fontSize: 12, minHeight: 18 }}
               >
-                <MenuItem>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={checked}
-                        onChange={e => {
-                          this.props.handleCheckTransportMode(
-                            transportMode,
-                            e.target.checked
-                          );
-                        }}
-                      />
-                    }
-                    label={transportMode}
-                  />
-                </MenuItem>
-              </Menu>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checked}
+                      onChange={e => {
+                        this.props.handleCheckTransportMode(
+                          transportMode,
+                          e.target.checked
+                        );
+                      }}
+                    />
+                  }
+                  label={transportMode}
+                />
+              </MenuItem>
             );
           })}
         </Menu>
