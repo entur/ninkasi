@@ -15,7 +15,12 @@
  */
 
 import React, { Component } from 'react';
-import Dialog from 'material-ui/Dialog';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
 import withAuth from 'utils/withAuth';
 import TextField from '@mui/material/TextField';
 import { Checkbox } from '@mui/material';
@@ -235,200 +240,205 @@ class ModalEditProvider extends Component {
     ];
 
     return (
-      <Dialog
-        title={title}
-        open={open}
-        actions={actions}
-        onRequestClose={handleClose}
-      >
-        <div style={rowStyle}>
-          <TextField
-            label={'Name'}
-            value={this.state.form._name}
-            style={{ flex: 1 }}
-            onChange={e => this.handleChange('_name', e.target.value)}
-            error={!!errors._name}
-            helperText={errors._name || ''}
-          />
-          <TextField
-            disabled={isEdit}
-            label={'Chouette referential name'}
-            value={this.state.form._referential}
-            style={{ flex: 1, padding: '0 15px' }}
-            onChange={e => this.handleChange('_referential', e.target.value)}
-            error={!!errors._referential}
-            helperText={errors._referential || ''}
-          />
-        </div>
-        <div style={rowStyle}>
-          <TextField
-            disabled={isEdit}
-            label={'Organisation'}
-            value={this.state.form._organisation}
-            style={{ flex: 1 }}
-            onChange={e => this.handleChange('_organisation', e.target.value)}
-            error={!!errors._organisation}
-            helperText={errors._organisation || ''}
-          />
-          <TextField
-            disabled={isEdit}
-            label={'User'}
-            value={this.state.form._user}
-            style={{ flex: 1, padding: '0 15px' }}
-            onChange={e => this.handleChange('_user', e.target.value)}
-            error={!!errors._user}
-            helperText={errors._user || ''}
-          />
-        </div>
-        <div style={rowStyle}>
-          <TextField
-            disabled={isEdit}
-            label={'xmlns'}
-            value={this.state.form._xmlns}
-            style={{ flex: 1 }}
-            onChange={e => this.handleChange('_xmlns', e.target.value)}
-          />
-          <TextField
-            disabled={isEdit}
-            label={'xmlns URL'}
-            value={this.state.form._xmlnsurl}
-            style={{ flex: 1, padding: '0 15px' }}
-            onChange={e => this.handleChange('_xmlnsurl', e.target.value)}
-          />
-        </div>
-        <div style={rowStyle}>
-          <FormControl style={{ flex: 1 }}>
-            <Select
-              value={this.state.form._migrateDataToProvider}
-              onChange={e =>
-                this.handleChange('_migrateDataToProvider', e.target.value)
-              }
-              displayEmpty
-            >
-              <MenuItem value={null} style={{ fontStyle: 'italic' }}>
-                None
-              </MenuItem>
-              {providers
-                .filter(
-                  provider => !provider.chouetteInfo.migrateDataToProvider
-                )
-                .map(provider => {
-                  return (
-                    <MenuItem
-                      key={'provider-' + provider.id}
-                      value={provider.id}
-                    >
-                      {provider.name}
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-          </FormControl>
-        </div>
-
-        {this.state.form._referential.indexOf('rb_') !== 0 && (
-          <>
-            <div style={{ ...rowStyle, marginTop: 10 }}>
-              <TransportModesPopover
-                allTransportModes={allTransportModes}
-                transportModes={
-                  this.state.form._generateMissingServiceLinksForModes
-                }
-                handleCheckTransportMode={this.handleCheckTransportMode.bind(
-                  this
-                )}
-              />
-            </div>
-            <div style={{ ...rowStyle, marginTop: 10 }}>
-              <div style={{ ...formElement }}>
-                <Checkbox
-                  label="Allow create missing stop place"
-                  checked={this.state.form._allowCreateMissingStopPlace}
-                  style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
-                  labelStyle={{ fontSize: '0.9em' }}
-                  onCheck={(e, v) =>
-                    this.handleChange('_allowCreateMissingStopPlace', v)
-                  }
-                />
-                {this.toolTip(
-                  'Allow Chouette to create new stop places in its database. ' +
-                    'Since stop places should be already present in the Chouette database (imported from NSR) the default setting is "off". ' +
-                    'Used only when testing non-Norwegian datasets'
-                )}
-              </div>
-            </div>
-            <div style={{ ...rowStyle, marginTop: 10 }}>
-              <div style={{ ...formElement }}>
-                <Checkbox
-                  label="Enable auto import"
-                  checked={this.state.form._enableAutoImport}
-                  style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
-                  labelStyle={{ fontSize: '0.9em' }}
-                  onCheck={(e, v) => this.handleChange('_enableAutoImport', v)}
-                />
-                {this.toolTip(
-                  'Automatically trigger the import pipeline after a file delivery, ' +
-                    'either through the operator portal or the HTTP endpoint. ' +
-                    'If disabled the received file is saved in the file storage but not imported'
-                )}
-              </div>
-            </div>
-            <div style={{ ...rowStyle, marginTop: 10 }}>
-              <div style={{ ...formElement }}>
-                <Checkbox
-                  label="Generate DatedServiceJourneyIds"
-                  checked={this.state.form._generateDatedServiceJourneyIds}
-                  style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
-                  labelStyle={{ fontSize: '0.9em' }}
-                  onCheck={(e, v) =>
-                    this.handleChange('_generateDatedServiceJourneyIds', v)
-                  }
-                />
-                {this.toolTip(
-                  'Deprecated. Generates a dated NeTEx export to be processed by Namtar'
-                )}
-              </div>
-            </div>
-          </>
-        )}
-        <div style={{ ...rowStyle, marginTop: 10 }}>
-          <div style={{ ...formElement }}>
-            <Checkbox
-              label="Enable auto validation"
-              checked={this.state.form._enableAutoValidation}
-              style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
-              labelStyle={{ fontSize: '0.9em' }}
-              onCheck={(e, v) => this.handleChange('_enableAutoValidation', v)}
+      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+        <DialogTitle>{title}</DialogTitle>
+        <DialogContent>
+          <div style={rowStyle}>
+            <TextField
+              label={'Name'}
+              value={this.state.form._name}
+              style={{ flex: 1 }}
+              onChange={e => this.handleChange('_name', e.target.value)}
+              error={!!errors._name}
+              helperText={errors._name || ''}
             />
-            {this.toolTip(
-              this.state.form._referential.indexOf('rb_') !== 0
-                ? 'Allow Chouette to create new stop places in its database. ' +
-                    'Since stop places should be already present in the Chouette database (imported from NSR) the default setting is "off". ' +
-                    'Used only when testing non-Norwegian datasets'
-                : 'Enable nightly automatic triggering of "validation Level 2" steps. ' +
-                    'This option does not affect the execution of the "validation Level 2" step triggered by a file delivery.'
-            )}
+            <TextField
+              disabled={isEdit}
+              label={'Chouette referential name'}
+              value={this.state.form._referential}
+              style={{ flex: 1, padding: '0 15px' }}
+              onChange={e => this.handleChange('_referential', e.target.value)}
+              error={!!errors._referential}
+              helperText={errors._referential || ''}
+            />
           </div>
-        </div>
-        {this.state.form._referential.indexOf('rb_') === 0 && (
+          <div style={rowStyle}>
+            <TextField
+              disabled={isEdit}
+              label={'Organisation'}
+              value={this.state.form._organisation}
+              style={{ flex: 1 }}
+              onChange={e => this.handleChange('_organisation', e.target.value)}
+              error={!!errors._organisation}
+              helperText={errors._organisation || ''}
+            />
+            <TextField
+              disabled={isEdit}
+              label={'User'}
+              value={this.state.form._user}
+              style={{ flex: 1, padding: '0 15px' }}
+              onChange={e => this.handleChange('_user', e.target.value)}
+              error={!!errors._user}
+              helperText={errors._user || ''}
+            />
+          </div>
+          <div style={rowStyle}>
+            <TextField
+              disabled={isEdit}
+              label={'xmlns'}
+              value={this.state.form._xmlns}
+              style={{ flex: 1 }}
+              onChange={e => this.handleChange('_xmlns', e.target.value)}
+            />
+            <TextField
+              disabled={isEdit}
+              label={'xmlns URL'}
+              value={this.state.form._xmlnsurl}
+              style={{ flex: 1, padding: '0 15px' }}
+              onChange={e => this.handleChange('_xmlnsurl', e.target.value)}
+            />
+          </div>
+          <div style={rowStyle}>
+            <FormControl style={{ flex: 1 }}>
+              <Select
+                value={this.state.form._migrateDataToProvider}
+                onChange={e =>
+                  this.handleChange('_migrateDataToProvider', e.target.value)
+                }
+                displayEmpty
+              >
+                <MenuItem value={null} style={{ fontStyle: 'italic' }}>
+                  None
+                </MenuItem>
+                {providers
+                  .filter(
+                    provider => !provider.chouetteInfo.migrateDataToProvider
+                  )
+                  .map(provider => {
+                    return (
+                      <MenuItem
+                        key={'provider-' + provider.id}
+                        value={provider.id}
+                      >
+                        {provider.name}
+                      </MenuItem>
+                    );
+                  })}
+              </Select>
+            </FormControl>
+          </div>
+
+          {this.state.form._referential.indexOf('rb_') !== 0 && (
+            <>
+              <div style={{ ...rowStyle, marginTop: 10 }}>
+                <TransportModesPopover
+                  allTransportModes={allTransportModes}
+                  transportModes={
+                    this.state.form._generateMissingServiceLinksForModes
+                  }
+                  handleCheckTransportMode={this.handleCheckTransportMode.bind(
+                    this
+                  )}
+                />
+              </div>
+              <div style={{ ...rowStyle, marginTop: 10 }}>
+                <div style={{ ...formElement }}>
+                  <Checkbox
+                    label="Allow create missing stop place"
+                    checked={this.state.form._allowCreateMissingStopPlace}
+                    style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
+                    labelStyle={{ fontSize: '0.9em' }}
+                    onCheck={(e, v) =>
+                      this.handleChange('_allowCreateMissingStopPlace', v)
+                    }
+                  />
+                  {this.toolTip(
+                    'Allow Chouette to create new stop places in its database. ' +
+                      'Since stop places should be already present in the Chouette database (imported from NSR) the default setting is "off". ' +
+                      'Used only when testing non-Norwegian datasets'
+                  )}
+                </div>
+              </div>
+              <div style={{ ...rowStyle, marginTop: 10 }}>
+                <div style={{ ...formElement }}>
+                  <Checkbox
+                    label="Enable auto import"
+                    checked={this.state.form._enableAutoImport}
+                    style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
+                    labelStyle={{ fontSize: '0.9em' }}
+                    onCheck={(e, v) =>
+                      this.handleChange('_enableAutoImport', v)
+                    }
+                  />
+                  {this.toolTip(
+                    'Automatically trigger the import pipeline after a file delivery, ' +
+                      'either through the operator portal or the HTTP endpoint. ' +
+                      'If disabled the received file is saved in the file storage but not imported'
+                  )}
+                </div>
+              </div>
+              <div style={{ ...rowStyle, marginTop: 10 }}>
+                <div style={{ ...formElement }}>
+                  <Checkbox
+                    label="Generate DatedServiceJourneyIds"
+                    checked={this.state.form._generateDatedServiceJourneyIds}
+                    style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
+                    labelStyle={{ fontSize: '0.9em' }}
+                    onCheck={(e, v) =>
+                      this.handleChange('_generateDatedServiceJourneyIds', v)
+                    }
+                  />
+                  {this.toolTip(
+                    'Deprecated. Generates a dated NeTEx export to be processed by Namtar'
+                  )}
+                </div>
+              </div>
+            </>
+          )}
           <div style={{ ...rowStyle, marginTop: 10 }}>
             <div style={{ ...formElement }}>
               <Checkbox
-                label="Enable private export (blocks and restricted publication)"
-                checked={this.state.form._enableBlocksExport}
+                label="Enable auto validation"
+                checked={this.state.form._enableAutoValidation}
                 style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
                 labelStyle={{ fontSize: '0.9em' }}
-                onCheck={(e, v) => this.handleChange('_enableBlocksExport', v)}
+                onCheck={(e, v) =>
+                  this.handleChange('_enableAutoValidation', v)
+                }
               />
               {this.toolTip(
-                'When activated, a second NeTEx export is generated, ' +
-                  'that will include private/sensitive data ' +
-                  '(Blocks, DeadRuns, ServiceJourneys marked with publication=restricted). ' +
-                  'This export is accessible only through a private, authorized API.'
+                this.state.form._referential.indexOf('rb_') !== 0
+                  ? 'Allow Chouette to create new stop places in its database. ' +
+                      'Since stop places should be already present in the Chouette database (imported from NSR) the default setting is "off". ' +
+                      'Used only when testing non-Norwegian datasets'
+                  : 'Enable nightly automatic triggering of "validation Level 2" steps. ' +
+                      'This option does not affect the execution of the "validation Level 2" step triggered by a file delivery.'
               )}
             </div>
           </div>
-        )}
+          {this.state.form._referential.indexOf('rb_') === 0 && (
+            <div style={{ ...rowStyle, marginTop: 10 }}>
+              <div style={{ ...formElement }}>
+                <Checkbox
+                  label="Enable private export (blocks and restricted publication)"
+                  checked={this.state.form._enableBlocksExport}
+                  style={{ flex: 1, maxWidth: 360, whiteSpace: 'nowrap' }}
+                  labelStyle={{ fontSize: '0.9em' }}
+                  onCheck={(e, v) =>
+                    this.handleChange('_enableBlocksExport', v)
+                  }
+                />
+                {this.toolTip(
+                  'When activated, a second NeTEx export is generated, ' +
+                    'that will include private/sensitive data ' +
+                    '(Blocks, DeadRuns, ServiceJourneys marked with publication=restricted). ' +
+                    'This export is accessible only through a private, authorized API.'
+                )}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+        <DialogActions>{actions}</DialogActions>
       </Dialog>
     );
   }

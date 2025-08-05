@@ -15,7 +15,12 @@
  */
 
 import React from 'react';
-import Modal from 'material-ui/Dialog';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
@@ -62,46 +67,51 @@ class ModalCreateRole extends React.Component {
     ];
 
     return (
-      <Modal
+      <Dialog
         open={isModalOpen}
-        actions={actions}
-        contentStyle={{ width: '30%' }}
-        title="Create a new role"
-        onRequestClose={() => this.handleOnClose()}
+        onClose={() => this.handleOnClose()}
+        maxWidth="sm"
+        fullWidth
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}
-        >
-          <TextField
-            placeholder="Name"
-            label="Name"
-            value={role.name}
-            onChange={e =>
-              this.setState({
-                role: { ...role, name: e.target.value }
-              })
-            }
-            fullWidth={true}
-          />
-          <TextField
-            placeholder="private code"
-            label="Private code"
-            error={invalidPrivateCode}
-            helperText={invalidPrivateCode ? 'Private code already exists' : ''}
-            value={role.privateCode}
-            onChange={e =>
-              this.setState({
-                role: { ...role, privateCode: e.target.value }
-              })
-            }
-            fullWidth={true}
-          />
-        </div>
-      </Modal>
+        <DialogTitle>Create a new role</DialogTitle>
+        <DialogContent>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            <TextField
+              placeholder="Name"
+              label="Name"
+              value={role.name}
+              onChange={e =>
+                this.setState({
+                  role: { ...role, name: e.target.value }
+                })
+              }
+              fullWidth={true}
+            />
+            <TextField
+              placeholder="private code"
+              label="Private code"
+              error={invalidPrivateCode}
+              helperText={
+                invalidPrivateCode ? 'Private code already exists' : ''
+              }
+              value={role.privateCode}
+              onChange={e =>
+                this.setState({
+                  role: { ...role, privateCode: e.target.value }
+                })
+              }
+              fullWidth={true}
+            />
+          </div>
+        </DialogContent>
+        <DialogActions>{actions}</DialogActions>
+      </Dialog>
     );
   }
 }

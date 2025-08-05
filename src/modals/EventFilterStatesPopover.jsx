@@ -15,10 +15,8 @@
  */
 
 import React from 'react';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import { Menu, MenuItem } from '@mui/material';
 import Button from '@mui/material/Button';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import { Checkbox } from '@mui/material';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import PropTypes from 'prop-types';
@@ -75,15 +73,14 @@ class EventFilterStatesPopover extends React.Component {
             States<span style={{ color: 'red' }}>*</span>
           </span>
         </Button>
-        <Popover
+        <Menu
           anchorEl={anchorEl}
           open={open}
-          onRequestClose={() => {
+          onClose={() => {
             this.setState({ open: false });
           }}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          animation={PopoverAnimationVertical}
+          transformOrigin={{ horizontal: 'left', vertical: 'top' }}
         >
           {allStates.map((state, i) => {
             let checked = states.indexOf(state) > -1;
@@ -105,7 +102,7 @@ class EventFilterStatesPopover extends React.Component {
               </Menu>
             );
           })}
-        </Popover>
+        </Menu>
       </div>
     );
   }

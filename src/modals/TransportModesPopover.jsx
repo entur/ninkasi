@@ -15,10 +15,8 @@
  */
 
 import React from 'react';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import { Menu, MenuItem } from '@mui/material';
 import Button from '@mui/material/Button';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import { Checkbox } from '@mui/material';
 import PropTypes from 'prop-types';
 
@@ -56,15 +54,14 @@ export default class TransportModesPopover extends React.Component {
         >
           <span>Generate service links for transport modes</span>
         </Button>
-        <Popover
+        <Menu
           anchorEl={anchorEl}
           open={open}
-          onRequestClose={() => {
+          onClose={() => {
             this.setState({ open: false });
           }}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          animation={PopoverAnimationVertical}
+          transformOrigin={{ horizontal: 'left', vertical: 'top' }}
         >
           {allTransportModes.map((transportMode, i) => {
             let checked = transportModes.indexOf(transportMode) > -1;
@@ -88,7 +85,7 @@ export default class TransportModesPopover extends React.Component {
               </Menu>
             );
           })}
-        </Popover>
+        </Menu>
       </div>
     );
   }
