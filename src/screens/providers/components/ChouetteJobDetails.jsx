@@ -28,7 +28,7 @@ import Panel from 'muicss/lib/react/panel';
 import SuppliersActions from 'actions/SuppliersActions';
 import { DotLoader as Loader } from 'halogenium';
 import ChouetteLink from './ChouetteLink';
-import { DatePicker, LocalizationProvider, AdapterMoment } from '@mui/lab';
+import { DatePicker } from '@mui/lab';
 import { TextField } from '@mui/material';
 import { Clear } from '@mui/icons-material';
 import { getPaginationMap } from 'models';
@@ -231,21 +231,19 @@ class ChouetteJobDetails extends React.Component {
                         onClick={() => this.setState({ filterFromDate: null })}
                         style={{ marginRight: 5 }}
                       />
-                      <LocalizationProvider dateAdapter={AdapterMoment}>
-                        <DatePicker
-                          label="Filter from date"
-                          value={this.state.filterFromDate}
-                          onChange={newValue => {
-                            this.setState({ filterFromDate: newValue });
-                          }}
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              style={{ display: 'inline-block' }}
-                            />
-                          )}
-                        />
-                      </LocalizationProvider>
+                      <DatePicker
+                        label="Filter from date"
+                        value={this.state.filterFromDate}
+                        onChange={newValue => {
+                          this.setState({ filterFromDate: newValue });
+                        }}
+                        renderInput={params => (
+                          <TextField
+                            {...params}
+                            style={{ display: 'inline-block' }}
+                          />
+                        )}
+                      />
                     </div>
                   </Col>
                   <div style={{ float: 'right', marginRight: 10 }}>
