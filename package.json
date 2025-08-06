@@ -47,7 +47,7 @@
     "react-redux": "7.2.9",
     "react-router": "5.3.4",
     "react-select": "2.4.4",
-    "redux": "4.2.1",
+    "redux": "5.0.1",
     "redux-devtools-extension": "2.13.9",
     "redux-logger": "3.0.6",
     "redux-thunk": "2.4.2",
