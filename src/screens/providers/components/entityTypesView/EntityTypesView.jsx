@@ -87,21 +87,24 @@ class EntityTypesView extends React.Component {
   }
 
   handleCreateEntity(entityType) {
+    const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.createEntityType(entityType)
+      OrganizationRegisterActions.createEntityType(entityType, getToken)
     );
   }
 
   handleUpdateEntity(entityType) {
+    const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.updateEntityType(entityType)
+      OrganizationRegisterActions.updateEntityType(entityType, getToken)
     );
   }
 
   handleDeleteEntityType(entityType) {
     this.handleCloseDeleteConfirmation();
+    const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.deleteEntityType(entityType.id)
+      OrganizationRegisterActions.deleteEntityType(entityType.id, getToken)
     );
   }
 

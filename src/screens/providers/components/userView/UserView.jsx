@@ -62,21 +62,31 @@ class UserView extends React.Component {
   }
 
   handleCreateUser(user) {
-    this.props.dispatch(OrganizationRegisterActions.createUser(user));
+    const { getToken } = this.props;
+    this.props.dispatch(OrganizationRegisterActions.createUser(user, getToken));
   }
 
   handleUpdateUser(user) {
-    this.props.dispatch(OrganizationRegisterActions.updateUser(user));
+    const { getToken } = this.props;
+    this.props.dispatch(OrganizationRegisterActions.updateUser(user, getToken));
   }
 
   handleDeleteUser(user) {
     this.handleCloseDeleteConfirmation();
-    this.props.dispatch(OrganizationRegisterActions.deleteUser(user.id));
+    const { getToken } = this.props;
+    this.props.dispatch(
+      OrganizationRegisterActions.deleteUser(user.id, getToken)
+    );
   }
 
   handleResetPassword(user) {
+    const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.resetPassword(user.id, user.username)
+      OrganizationRegisterActions.resetPassword(
+        user.id,
+        user.username,
+        getToken
+      )
     );
     this.handleCloseResetConfirmation();
   }
@@ -370,6 +380,7 @@ class UserView extends React.Component {
               }
               isModalOpen={isNotificationsOpen}
               user={this.state.activeUser}
+              getToken={this.props.getToken}
             />
           )}
           <ModalConfirmation

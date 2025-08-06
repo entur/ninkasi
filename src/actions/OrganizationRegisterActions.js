@@ -627,7 +627,7 @@ OrganizationRegisterActions.getUserNotifications = (
   }
 
   if (!organizations.length) {
-    dispatch(OrganizationRegisterActions.getOrganizations());
+    dispatch(OrganizationRegisterActions.getOrganizations(getToken));
   }
 
   if (!administrativeZones.length) {
@@ -639,7 +639,7 @@ OrganizationRegisterActions.getUserNotifications = (
   }
 
   if (!entityTypes.length) {
-    dispatch(OrganizationRegisterActions.getEntityTypes());
+    dispatch(OrganizationRegisterActions.getEntityTypes(getToken));
   }
 
   return axios

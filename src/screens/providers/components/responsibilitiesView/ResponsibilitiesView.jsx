@@ -124,21 +124,33 @@ class ResponsibilitiesView extends React.Component {
   }
 
   handleCreateResponsibilitySet(responsibilitySet) {
+    const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.createResponsibilitySet(responsibilitySet)
+      OrganizationRegisterActions.createResponsibilitySet(
+        responsibilitySet,
+        getToken
+      )
     );
   }
 
   handleUpdateResponsibilitySet(responsibilitySet) {
+    const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.updateResponsibilitySet(responsibilitySet)
+      OrganizationRegisterActions.updateResponsibilitySet(
+        responsibilitySet,
+        getToken
+      )
     );
   }
 
   handleDeleteResponsibility(responsibility) {
     this.handleCloseDeleteConfirmation();
+    const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.deleteResponsibilitySet(responsibility.id)
+      OrganizationRegisterActions.deleteResponsibilitySet(
+        responsibility.id,
+        getToken
+      )
     );
   }
 
