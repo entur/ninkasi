@@ -91,11 +91,13 @@ class RoleView extends React.Component {
   }
 
   handleCreateRole(role) {
-    this.props.dispatch(OrganizationRegisterActions.createRole(role));
+    const { getToken } = this.props;
+    this.props.dispatch(OrganizationRegisterActions.createRole(role, getToken));
   }
 
   handleUpdateRole(role) {
-    this.props.dispatch(OrganizationRegisterActions.updateRole(role));
+    const { getToken } = this.props;
+    this.props.dispatch(OrganizationRegisterActions.updateRole(role, getToken));
     this.setState({
       isEditModalOpen: false
     });
@@ -103,7 +105,10 @@ class RoleView extends React.Component {
 
   handleDeleteRole(role) {
     this.handleCloseDeleteConfirmation();
-    this.props.dispatch(OrganizationRegisterActions.deleteRole(role.id));
+    const { getToken } = this.props;
+    this.props.dispatch(
+      OrganizationRegisterActions.deleteRole(role.id, getToken)
+    );
   }
 
   componentWillReceiveProps(nextProps) {

@@ -35,8 +35,10 @@ class ModalEditNotifications extends React.Component {
   }
 
   componentDidMount() {
-    const { user, dispatch } = this.props;
-    dispatch(OrganizationRegisterActions.getUserNotifications(user.username));
+    const { user, dispatch, getToken } = this.props;
+    dispatch(
+      OrganizationRegisterActions.getUserNotifications(user.username, getToken)
+    );
   }
 
   handleExpandItem(index, value) {
@@ -46,9 +48,12 @@ class ModalEditNotifications extends React.Component {
   }
 
   async handleUpdate() {
-    const { user, dispatch } = this.props;
+    const { user, dispatch, getToken } = this.props;
     await dispatch(
-      OrganizationRegisterActions.updateUserNotification(user.username)
+      OrganizationRegisterActions.updateUserNotification(
+        user.username,
+        getToken
+      )
     );
     this.props.handleCloseModal();
   }

@@ -85,14 +85,16 @@ class OrganizationView extends React.Component {
   }
 
   handleCreateOrganization(organization) {
+    const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.createOrganization(organization)
+      OrganizationRegisterActions.createOrganization(organization, getToken)
     );
   }
 
   handleUpdateOrganization(organization) {
+    const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.updateOrganization(organization)
+      OrganizationRegisterActions.updateOrganization(organization, getToken)
     );
   }
 
@@ -105,8 +107,9 @@ class OrganizationView extends React.Component {
 
   handleDeleteOrganization(organization) {
     this.handleCloseDeleteConfirmation();
+    const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.deleteOrganization(organization.id)
+      OrganizationRegisterActions.deleteOrganization(organization.id, getToken)
     );
   }
 
