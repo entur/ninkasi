@@ -90,8 +90,13 @@ class LatestOTPGraphVersions extends React.Component {
       <>
         <Button
           variant="text"
+          sx={{ color: 'black' }}
           startIcon={
-            this.state.showGraphVersions ? <UnfoldLess /> : <UnfoldMore />
+            this.state.showGraphVersions ? (
+              <UnfoldLess sx={{ color: 'black' }} />
+            ) : (
+              <UnfoldMore sx={{ color: 'black' }} />
+            )
           }
           onClick={e => {
             e.preventDefault();
