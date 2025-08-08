@@ -35,8 +35,8 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  CircularProgress,
 } from '@mui/material';
-import { DotLoader as Loader } from 'halogenium';
 import SuppliersActions from 'actions/SuppliersActions';
 import ChouetteLink from './ChouetteLink';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -333,7 +333,7 @@ class ChouetteAllJobs extends React.Component {
             )}
             {requestingJobs && (
               <Box sx={{ mx: 2.5, mb: 1.25 }}>
-                <Loader color="#26A65B" size="23px" />
+                <CircularProgress size={23} sx={{ color: '#26A65B' }} />
               </Box>
             )}
           </Box>
