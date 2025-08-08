@@ -17,7 +17,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import withAuth from 'utils/withAuth';
-import { Checkbox, Divider } from '@mui/material';
+import { Checkbox, Divider, FormControlLabel } from '@mui/material';
 import peliasTasks from 'config/peliasTasks';
 import moment from 'moment';
 import Button from '@mui/material/Button';
@@ -77,13 +77,16 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
   return (
     <div>
       {peliasTasks.map(option => (
-        <Checkbox
+        <FormControlLabel
           key={'pelias-checkbox-' + option.task}
+          control={
+            <Checkbox
+              onChange={e => handlePeliasOptionChecked(e, option.task)}
+              defaultChecked={true}
+            />
+          }
           label={option.label}
-          onCheck={e => handlePeliasOptionChecked(e, option.task)}
-          defaultChecked={true}
-          labelPosition="right"
-          style={{ marginTop: 5, marginBottom: 5 }}
+          sx={{ display: 'block', mt: 0.625, mb: 0.625 }}
         />
       ))}
       <Divider
