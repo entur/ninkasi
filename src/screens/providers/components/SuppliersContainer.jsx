@@ -68,7 +68,8 @@ class SuppliersContainer extends React.Component {
   }
 
   handleEditProvider() {
-    this.props.dispatch(SuppliersActions.openEditProviderDialog());
+    const { getToken } = this.props;
+    this.props.dispatch(SuppliersActions.openEditProviderDialog(getToken));
   }
 
   handleOpenConfirmDeleteProviderDialog(open = true) {

@@ -65,11 +65,12 @@ class ChouetteJobDetails extends React.Component {
   };
 
   handleStatusFilterChange = event => {
-    const { dispatch } = this.props;
+    const { dispatch, getToken } = this.props;
     dispatch(
       SuppliersActions.toggleChouetteInfoCheckboxFilter(
         event.target.name,
-        event.target.checked
+        event.target.checked,
+        getToken
       )
     );
   };

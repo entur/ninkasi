@@ -360,7 +360,7 @@ class SupplierTabWrapper extends React.Component {
               )}
             </Tab>
             <Tab value="chouetteJobs" label="Chouette jobs">
-              <ChouetteJobDetails />
+              <ChouetteJobDetails getToken={this.props.getToken} />
             </Tab>
             <Tab value="statistics" label="Statistics">
               {window.config.ninsarMicroFrontendUrl && (

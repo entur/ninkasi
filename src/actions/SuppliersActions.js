@@ -1401,7 +1401,8 @@ function requestFilenames() {
 
 SuppliersActions.toggleChouetteInfoCheckboxFilter = (
   option,
-  value
+  value,
+  getToken
 ) => dispatch => {
   dispatch(
     sendData(
@@ -1409,12 +1410,13 @@ SuppliersActions.toggleChouetteInfoCheckboxFilter = (
       types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER
     )
   );
-  dispatch(SuppliersActions.getChouetteJobStatus());
+  dispatch(SuppliersActions.getChouetteJobStatus(getToken));
 };
 
 SuppliersActions.toggleChouetteInfoCheckboxAllFilter = (
   option,
-  value
+  value,
+  getToken
 ) => dispatch => {
   dispatch(
     sendData(
@@ -1422,7 +1424,7 @@ SuppliersActions.toggleChouetteInfoCheckboxAllFilter = (
       types.TOGGLE_CHOUETTE_INFO_CHECKBOX_ALL_FILTER
     )
   );
-  dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
+  dispatch(SuppliersActions.getChouetteJobsForAllSuppliers(getToken));
 };
 
 SuppliersActions.formatProviderStatusDate = (list, provider) => {
@@ -1529,9 +1531,14 @@ SuppliersActions.openEditModalDialog = () => {
   };
 };
 
-SuppliersActions.openEditProviderDialog = () => async (dispatch, getState) => {
+SuppliersActions.openEditProviderDialog = getToken => async (
+  dispatch,
+  getState
+) => {
   const state = getState();
-  dispatch(SuppliersActions.fetchProvider(state.SuppliersReducer.activeId));
+  dispatch(
+    SuppliersActions.fetchProvider(state.SuppliersReducer.activeId, getToken)
+  );
   dispatch(SuppliersActions.openEditModalDialog());
 };
 
