@@ -21,6 +21,7 @@
     "@mui/material": "7.3.0",
     "@mui/x-date-pickers": "8.9.2",
     "@mui/x-date-pickers-pro": "8.9.2",
+    "axios": "1.11.0",
     "chai": "4.5.0",
     "chart.js": "2.9.4",
     "classnames": "2.5.1",
