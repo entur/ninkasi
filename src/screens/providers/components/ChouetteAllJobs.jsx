@@ -27,13 +27,10 @@ import {
   FormControlLabel,
   RadioGroup,
   Radio,
-  Checkbox
+  Checkbox,
+  Box,
+  Typography
 } from '@mui/material';
-import Container_old from 'muicss/lib/react/container';
-import Row from 'muicss/lib/react/row';
-import Col from 'muicss/lib/react/col';
-import Button_old from 'muicss/lib/react/button';
-import Panel from 'muicss/lib/react/panel';
 import { DotLoader as Loader } from 'halogenium';
 import SuppliersActions from 'actions/SuppliersActions';
 import ChouetteLink from './ChouetteLink';
@@ -134,172 +131,173 @@ class ChouetteAllJobs extends React.Component {
     const page = paginationMap ? paginationMap[activeChouettePageIndex] : null;
 
     return (
-      <div>
-        <Container fluid={true}>
-          <Panel>
-            <div className="filter-wrapper">
-              <Row>
-                <Col md="1">
-                  <p>
-                    <b>Status</b>
-                  </p>
-                </Col>
-                <Col md="2">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        onChange={event => {
-                          event.stopPropagation();
-                          this.handleStatusFilterAllChange(event);
-                        }}
-                        defaultChecked={chouetteJobAllFilter.SCHEDULED}
-                        name="SCHEDULED"
-                      />
-                    }
-                    label="Scheduled"
-                  />
-                </Col>
-                <Col md="2">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        onChange={event => {
-                          event.stopPropagation();
-                          this.handleStatusFilterAllChange(event);
-                        }}
-                        defaultChecked={chouetteJobAllFilter.RESCHEDULED}
-                        name="RESCHEDULED"
-                      />
-                    }
-                    label="Rescheduled"
-                  />
-                </Col>
-                <Col md="2">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        onChange={event => {
-                          event.stopPropagation();
-                          this.handleStatusFilterAllChange(event);
-                        }}
-                        defaultChecked={chouetteJobAllFilter.STARTED}
-                        name="STARTED"
-                      />
-                    }
-                    label="Started"
-                  />
-                </Col>
-                <Col md="2">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        onChange={event => {
-                          event.stopPropagation();
-                          this.handleStatusFilterAllChange(event);
-                        }}
-                        defaultChecked={chouetteJobAllFilter.TERMINATED}
-                        name="TERMINATED"
-                      />
-                    }
-                    label="Completed"
-                  />
-                </Col>
-                <Col md="2">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        onChange={event => {
-                          event.stopPropagation();
-                          this.handleStatusFilterAllChange(event);
-                        }}
-                        defaultChecked={chouetteJobAllFilter.CANCELED}
-                        name="CANCELED"
-                      />
-                    }
-                    label="Canceled"
-                  />
-                </Col>
-                <Col md="1">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        onChange={event => {
-                          event.stopPropagation();
-                          this.handleStatusFilterAllChange(event);
-                        }}
-                        defaultChecked={chouetteJobAllFilter.ABORTED}
-                        name="ABORTED"
-                      />
-                    }
-                    label="Aborted/Error"
-                  />
-                </Col>
-              </Row>
-            </div>
-            <div className="filter-wrapper">
-              <Grid container spacing={2} alignItems="baseline">
-                <Grid item xs={1}>
-                  <p>
-                    <b>Action</b>
-                  </p>
-                </Grid>
-                <Grid item xs={8}>
-                  <FormControl>
-                    <RadioGroup
-                      row
-                      defaultValue=""
-                      name="action-filter"
-                      onChange={(event, value) => {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        // Create a synthetic event with the target structure expected by setActiveActionAllFilter
-                        const syntheticEvent = {
-                          target: {
-                            name: 'action-filter',
-                            value: value
-                          }
-                        };
-                        this.setActiveActionAllFilter(syntheticEvent);
-                      }}
-                    >
-                      <FormControlLabel
-                        value=""
-                        control={<Radio />}
-                        label="No filter"
-                      />
-                      <FormControlLabel
-                        value="importer"
-                        control={<Radio />}
-                        label="Importer"
-                      />
-                      <FormControlLabel
-                        value="exporter"
-                        control={<Radio />}
-                        label="Exporter"
-                      />
-                      <FormControlLabel
-                        value="validator"
-                        control={<Radio />}
-                        label="Validator"
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={3}>
-                  <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DatePicker
-                      label="From ..."
-                      value={this.state.filterFromDate}
-                      onChange={newValue => {
-                        this.setState({ filterFromDate: newValue });
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Grid>
+      <Container maxWidth={false}>
+        <Paper sx={{ p: 2, mb: 2 }}>
+          <Box sx={{ mb: 2 }}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={1}>
+                <Typography variant="subtitle2" fontWeight="bold">
+                  Status
+                </Typography>
               </Grid>
-            </div>
-          </Panel>
-          <Row>
+              <Grid item xs={2}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={event => {
+                        event.stopPropagation();
+                        this.handleStatusFilterAllChange(event);
+                      }}
+                      defaultChecked={chouetteJobAllFilter.SCHEDULED}
+                      name="SCHEDULED"
+                    />
+                  }
+                  label="Scheduled"
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={event => {
+                        event.stopPropagation();
+                        this.handleStatusFilterAllChange(event);
+                      }}
+                      defaultChecked={chouetteJobAllFilter.RESCHEDULED}
+                      name="RESCHEDULED"
+                    />
+                  }
+                  label="Rescheduled"
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={event => {
+                        event.stopPropagation();
+                        this.handleStatusFilterAllChange(event);
+                      }}
+                      defaultChecked={chouetteJobAllFilter.STARTED}
+                      name="STARTED"
+                    />
+                  }
+                  label="Started"
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={event => {
+                        event.stopPropagation();
+                        this.handleStatusFilterAllChange(event);
+                      }}
+                      defaultChecked={chouetteJobAllFilter.TERMINATED}
+                      name="TERMINATED"
+                    />
+                  }
+                  label="Completed"
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={event => {
+                        event.stopPropagation();
+                        this.handleStatusFilterAllChange(event);
+                      }}
+                      defaultChecked={chouetteJobAllFilter.CANCELED}
+                      name="CANCELED"
+                    />
+                  }
+                  label="Canceled"
+                />
+              </Grid>
+              <Grid item xs={1}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={event => {
+                        event.stopPropagation();
+                        this.handleStatusFilterAllChange(event);
+                      }}
+                      defaultChecked={chouetteJobAllFilter.ABORTED}
+                      name="ABORTED"
+                    />
+                  }
+                  label="Aborted/Error"
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          <Box sx={{ mb: 2 }}>
+            <Grid container spacing={2} alignItems="baseline">
+              <Grid item xs={1}>
+                <Typography variant="subtitle2" fontWeight="bold">
+                  Action
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <FormControl>
+                  <RadioGroup
+                    row
+                    defaultValue=""
+                    name="action-filter"
+                    onChange={(event, value) => {
+                      event.stopPropagation();
+                      event.preventDefault();
+                      // Create a synthetic event with the target structure expected by setActiveActionAllFilter
+                      const syntheticEvent = {
+                        target: {
+                          name: 'action-filter',
+                          value: value
+                        }
+                      };
+                      this.setActiveActionAllFilter(syntheticEvent);
+                    }}
+                  >
+                    <FormControlLabel
+                      value=""
+                      control={<Radio />}
+                      label="No filter"
+                    />
+                    <FormControlLabel
+                      value="importer"
+                      control={<Radio />}
+                      label="Importer"
+                    />
+                    <FormControlLabel
+                      value="exporter"
+                      control={<Radio />}
+                      label="Exporter"
+                    />
+                    <FormControlLabel
+                      value="validator"
+                      control={<Radio />}
+                      label="Validator"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+              <Grid item xs={3}>
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                  <DatePicker
+                    label="From ..."
+                    value={this.state.filterFromDate}
+                    onChange={newValue => {
+                      this.setState({ filterFromDate: newValue });
+                    }}
+                  />
+                </LocalizationProvider>
+              </Grid>
+            </Grid>
+          </Box>
+        </Paper>
+
+        <Paper sx={{ p: 2 }}>
+          <Box>
             <div>
               {paginationMap.length > 0 ? (
                 <div className="page-link-parent">
@@ -329,7 +327,7 @@ class ChouetteAllJobs extends React.Component {
                 <Loader color="#26A65B" size="23px" />
               </div>
             ) : null}
-          </Row>
+          </Box>
           {page && page.length ? (
             <Row>
               <Col md="1">
@@ -396,86 +394,86 @@ class ChouetteAllJobs extends React.Component {
               </p>
             </Row>
           )}
-        </Container>
-        {page && page.length ? (
-          <Container fluid={true}>
-            {' '}
-            {page.map((job, index) => {
-              const statusClass =
-                job.status === 'ABORTED' || job.status === 'CANCELED'
-                  ? 'error'
-                  : 'success';
-              const chouetteURL = `${window.config.chouetteBaseUrl}/referentials/${job.referential}/`;
+          {page && page.length ? (
+            <Box>
+              {' '}
+              {page.map((job, index) => {
+                const statusClass =
+                  job.status === 'ABORTED' || job.status === 'CANCELED'
+                    ? 'error'
+                    : 'success';
+                const chouetteURL = `${window.config.chouetteBaseUrl}/referentials/${job.referential}/`;
 
-              return (
-                <Row
-                  key={'ch-job-' + index}
-                  style={{ display: 'flex', alignItems: 'center' }}
-                >
-                  <Col md="1">
-                    <a
-                      title={chouetteURL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={chouetteURL}
-                    >
-                      {job.referential}
-                    </a>
-                  </Col>
-                  <Col md="1">
-                    <ChouetteLink
-                      id={job.id}
-                      referential={job.referential}
-                      action={job.action}
-                    >
-                      {job.id}
-                    </ChouetteLink>
-                  </Col>
-                  <Col md="1">
-                    <p>{job.action}</p>
-                  </Col>
-                  <Col md="2">
-                    <p>{this.formatDate(job.created)}</p>
-                  </Col>
-                  <Col md="2">
-                    <p>{this.formatDate(job.started)}</p>
-                  </Col>
-                  <Col md="2">
-                    <p>{this.formatDate(job.updated)}</p>
-                  </Col>
-                  <Col md="1">
-                    <p>
-                      <span className={statusClass}>
-                        {this.getJobStatus(job.status)}
-                      </span>
-                    </p>
-                  </Col>
-                  {job.status === 'STARTED' ||
-                  job.status === 'SCHEDULED' ||
-                  job.status === 'RESCHEDULED' ? (
+                return (
+                  <Row
+                    key={'ch-job-' + index}
+                    style={{ display: 'flex', alignItems: 'center' }}
+                  >
                     <Col md="1">
-                      <Button
-                        key={'btn-delete-' + index}
-                        onClick={() =>
-                          this.handleCancelChouetteJob(job.id, job.providerId)
-                        }
-                        size="small"
-                        color="danger"
+                      <a
+                        title={chouetteURL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={chouetteURL}
                       >
-                        Cancel
-                      </Button>
+                        {job.referential}
+                      </a>
                     </Col>
-                  ) : (
-                    <div />
-                  )}
-                </Row>
-              );
-            })}
-          </Container>
-        ) : (
-          <div />
-        )}
-      </div>
+                    <Col md="1">
+                      <ChouetteLink
+                        id={job.id}
+                        referential={job.referential}
+                        action={job.action}
+                      >
+                        {job.id}
+                      </ChouetteLink>
+                    </Col>
+                    <Col md="1">
+                      <p>{job.action}</p>
+                    </Col>
+                    <Col md="2">
+                      <p>{this.formatDate(job.created)}</p>
+                    </Col>
+                    <Col md="2">
+                      <p>{this.formatDate(job.started)}</p>
+                    </Col>
+                    <Col md="2">
+                      <p>{this.formatDate(job.updated)}</p>
+                    </Col>
+                    <Col md="1">
+                      <p>
+                        <span className={statusClass}>
+                          {this.getJobStatus(job.status)}
+                        </span>
+                      </p>
+                    </Col>
+                    {job.status === 'STARTED' ||
+                    job.status === 'SCHEDULED' ||
+                    job.status === 'RESCHEDULED' ? (
+                      <Col md="1">
+                        <Button
+                          key={'btn-delete-' + index}
+                          onClick={() =>
+                            this.handleCancelChouetteJob(job.id, job.providerId)
+                          }
+                          size="small"
+                          color="danger"
+                        >
+                          Cancel
+                        </Button>
+                      </Col>
+                    ) : (
+                      <div />
+                    )}
+                  </Row>
+                );
+              })}
+            </Box>
+          ) : (
+            <div />
+          )}
+        </Paper>
+      </Container>
     );
   }
 }
