@@ -508,7 +508,8 @@ SuppliersActions.changeActiveSupplierId = id => {
 
 SuppliersActions.cancelChouetteJobForProvider = (
   providerId,
-  chouetteId
+  chouetteId,
+  getToken
 ) => async (dispatch, getState) => {
   if (providerId < 0) return;
 
@@ -555,7 +556,7 @@ SuppliersActions.cancelChouetteJobForProvider = (
     });
 };
 
-SuppliersActions.cancelAllChouetteJobsforAllProviders = () => async (
+SuppliersActions.cancelAllChouetteJobsforAllProviders = getToken => async (
   dispatch,
   getState
 ) => {
@@ -593,10 +594,10 @@ SuppliersActions.cancelAllChouetteJobsforAllProviders = () => async (
     });
 };
 
-SuppliersActions.cancelAllChouetteJobsforProvider = providerId => async (
-  dispatch,
-  getState
-) => {
+SuppliersActions.cancelAllChouetteJobsforProvider = (
+  providerId,
+  getToken
+) => async (dispatch, getState) => {
   if (providerId < 0) return;
 
   const url = window.config.timetableAdminBaseUrl + `${providerId}/jobs`;

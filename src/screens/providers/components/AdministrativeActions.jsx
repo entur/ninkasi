@@ -141,8 +141,10 @@ class AdministrativeActions extends React.Component {
       confirmInfo:
         'Are you want to cancel all chouette jobs for all providers?',
       confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.cancelAllChouetteJobsforAllProviders());
+        const { dispatch, getToken } = this.props;
+        dispatch(
+          SuppliersActions.cancelAllChouetteJobsforAllProviders(getToken)
+        );
       }
     });
   }
