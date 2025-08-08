@@ -16,28 +16,29 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import withAuth from 'utils/withAuth';
 import cfgreader from 'config/readConfig';
 import SuppliersActions from 'actions/SuppliersActions';
 import ModalEditProvider from 'modals/ModalEditProvider';
 
 class SupplierPage extends React.Component {
   componentWillMount() {
-    const { id, dispatch } = this.props;
+    const { id, dispatch, getToken } = this.props;
     cfgreader.readConfig(function(config) {
       window.config = config;
       if (id) {
-        dispatch(SuppliersActions.fetchProvider(id));
+        dispatch(SuppliersActions.fetchProvider(id, getToken));
       }
     });
   }
 
   handleUpdateProvider(data) {
-    const { shouldUpdate, dispatch } = this.props;
+    const { shouldUpdate, dispatch, getToken } = this.props;
 
     if (shouldUpdate) {
-      dispatch(SuppliersActions.updateProvider(data));
+      dispatch(SuppliersActions.updateProvider(data, getToken));
     } else {
-      dispatch(SuppliersActions.createProvider(data));
+      dispatch(SuppliersActions.createProvider(data, getToken));
     }
     this.handleClose();
   }
@@ -72,4 +73,4 @@ const mapStateToProps = state => ({
   providers: state.SuppliersReducer.data
 });
 
-export default connect(mapStateToProps)(SupplierPage);
+export default connect(mapStateToProps)(withAuth(SupplierPage));

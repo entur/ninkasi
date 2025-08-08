@@ -465,7 +465,7 @@ SuppliersActions.deleteProvider = (providerId, getToken) => async (
   return axios
     .delete(url, await getApiConfig(getToken))
     .then(response => {
-      SuppliersActions.selectActiveSupplier(-1);
+      dispatch(SuppliersActions.selectActiveSupplier(-1, getToken));
       dispatch(sendData(response.data, types.SUCCESS_DELETE_PROVIDER));
 
       dispatch(SuppliersActions.addNotification('Provider deleted', 'success'));
@@ -508,7 +508,8 @@ SuppliersActions.changeActiveSupplierId = id => {
 
 SuppliersActions.cancelChouetteJobForProvider = (
   providerId,
-  chouetteId
+  chouetteId,
+  getToken
 ) => async (dispatch, getState) => {
   if (providerId < 0) return;
 
@@ -555,7 +556,7 @@ SuppliersActions.cancelChouetteJobForProvider = (
     });
 };
 
-SuppliersActions.cancelAllChouetteJobsforAllProviders = () => async (
+SuppliersActions.cancelAllChouetteJobsforAllProviders = getToken => async (
   dispatch,
   getState
 ) => {
@@ -593,10 +594,10 @@ SuppliersActions.cancelAllChouetteJobsforAllProviders = () => async (
     });
 };
 
-SuppliersActions.cancelAllChouetteJobsforProvider = providerId => async (
-  dispatch,
-  getState
-) => {
+SuppliersActions.cancelAllChouetteJobsforProvider = (
+  providerId,
+  getToken
+) => async (dispatch, getState) => {
   if (providerId < 0) return;
 
   const url = window.config.timetableAdminBaseUrl + `${providerId}/jobs`;
@@ -1401,7 +1402,8 @@ function requestFilenames() {
 
 SuppliersActions.toggleChouetteInfoCheckboxFilter = (
   option,
-  value
+  value,
+  getToken
 ) => dispatch => {
   dispatch(
     sendData(
@@ -1409,12 +1411,13 @@ SuppliersActions.toggleChouetteInfoCheckboxFilter = (
       types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER
     )
   );
-  dispatch(SuppliersActions.getChouetteJobStatus());
+  dispatch(SuppliersActions.getChouetteJobStatus(getToken));
 };
 
 SuppliersActions.toggleChouetteInfoCheckboxAllFilter = (
   option,
-  value
+  value,
+  getToken
 ) => dispatch => {
   dispatch(
     sendData(
@@ -1422,7 +1425,7 @@ SuppliersActions.toggleChouetteInfoCheckboxAllFilter = (
       types.TOGGLE_CHOUETTE_INFO_CHECKBOX_ALL_FILTER
     )
   );
-  dispatch(SuppliersActions.getChouetteJobsForAllSuppliers());
+  dispatch(SuppliersActions.getChouetteJobsForAllSuppliers(getToken));
 };
 
 SuppliersActions.formatProviderStatusDate = (list, provider) => {
@@ -1529,9 +1532,14 @@ SuppliersActions.openEditModalDialog = () => {
   };
 };
 
-SuppliersActions.openEditProviderDialog = () => async (dispatch, getState) => {
+SuppliersActions.openEditProviderDialog = getToken => async (
+  dispatch,
+  getState
+) => {
   const state = getState();
-  dispatch(SuppliersActions.fetchProvider(state.SuppliersReducer.activeId));
+  dispatch(
+    SuppliersActions.fetchProvider(state.SuppliersReducer.activeId, getToken)
+  );
   dispatch(SuppliersActions.openEditModalDialog());
 };
 
