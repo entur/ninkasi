@@ -17,7 +17,7 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import withAuth from 'utils/withAuth';
-import Button from 'muicss/lib/react/button';
+import { Button } from '@mui/material';
 import SuppliersActions from 'actions/SuppliersActions';
 import AdvancedFileList from './AdvancedFileList';
 import TextField from '@mui/material/TextField';
@@ -264,15 +264,18 @@ class DataMigrationDetails extends React.Component {
               <Button
                 title={toolTips.import}
                 color="primary"
+                variant="contained"
                 onClick={() => this.handleImportData(false)}
+                sx={{ mr: 1 }}
               >
                 Import
               </Button>
               <Button
                 title={toolTips.importFlex}
-                color="primary"
-                style={{ backgroundColor: 'rgb(69, 118, 69)' }}
+                color="success"
+                variant="contained"
                 onClick={() => this.handleImportData(true)}
+                sx={{ mr: 1 }}
               >
                 Import flex
               </Button>
@@ -281,7 +284,9 @@ class DataMigrationDetails extends React.Component {
           <Button
             title={toolTips.validate}
             color="primary"
+            variant="contained"
             onClick={this.handleValidateProvider}
+            sx={{ mr: 1 }}
           >
             Validate
           </Button>
@@ -289,7 +294,9 @@ class DataMigrationDetails extends React.Component {
             <Button
               title={toolTips.transfer}
               color="primary"
+              variant="contained"
               onClick={this.handleTransferData}
+              sx={{ mr: 1 }}
             >
               Transfer
             </Button>
@@ -297,21 +304,26 @@ class DataMigrationDetails extends React.Component {
             <Button
               title={toolTips.export}
               color="primary"
+              variant="contained"
               onClick={this.handleExportData}
+              sx={{ mr: 1 }}
             >
               Export
             </Button>
           )}
           <Button
             title={toolTips.clearEventHistory}
-            color="danger"
+            color="error"
+            variant="contained"
             onClick={this.handleClearHistory}
+            sx={{ mr: 1 }}
           >
             Clear history
           </Button>
           <Button
             title={toolTips.clean}
-            color="danger"
+            color="error"
+            variant="contained"
             onClick={this.handleCleanDataspace}
           >
             Clean

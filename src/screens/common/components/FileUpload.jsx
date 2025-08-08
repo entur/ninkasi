@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Dropzone from 'react-dropzone';
-import Button from 'muicss/lib/react/button';
+import { Button } from '@mui/material';
 import { Line as Progress } from 'rc-progress';
 
 export const FileUpload = ({ fileUploadProgress, handleFileUpload }) => {
@@ -105,8 +105,15 @@ export const FileUpload = ({ fileUploadProgress, handleFileUpload }) => {
       <Progress strokeColor="#8dcc91" percent={uploadProgress} />
       <Button
         disabled={!files.length}
-        style={uploadButtonStyle}
+        sx={{
+          width: 100,
+          fontSize: '0.8em',
+          textAlign: 'center',
+          marginLeft: 'auto',
+          marginTop: 1.25
+        }}
         color="primary"
+        variant="contained"
         onClick={() => files.length && handleFileUpload(files)}
       >
         Upload
