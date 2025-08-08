@@ -297,102 +297,100 @@ class ChouetteAllJobs extends React.Component {
         </Paper>
 
         <Paper sx={{ p: 2 }}>
-          <Box>
-            <div>
-              {paginationMap.length > 0 ? (
-                <div className="page-link-parent">
-                  <span>Pages: </span>
-                  {paginationMap.map((page, index) => {
-                    const isActive =
+          <Box sx={{ mb: 2 }}>
+            {paginationMap.length > 0 && (
+              <Box
+                sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}
+              >
+                <Typography variant="body2">Pages:</Typography>
+                {paginationMap.map((page, index) => (
+                  <Button
+                    key={'link-' + index}
+                    size="small"
+                    variant={
                       index === activeChouettePageIndex
-                        ? 'page-link active-link'
-                        : 'page-link inactive-link';
-                    return (
-                      <span
-                        className={isActive}
-                        onClick={e => this.handlePageClick(e, index)}
-                        key={'link-' + index}
-                      >
-                        {index}
-                      </span>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div />
-              )}
-            </div>
-            {requestingJobs ? (
-              <div style={{ margin: '0px 20px 10px' }}>
+                        ? 'contained'
+                        : 'outlined'
+                    }
+                    onClick={e => this.handlePageClick(e, index)}
+                    sx={{ minWidth: '32px', px: 1 }}
+                  >
+                    {index}
+                  </Button>
+                ))}
+              </Box>
+            )}
+            {requestingJobs && (
+              <Box sx={{ mx: 2.5, mb: 1.25 }}>
                 <Loader color="#26A65B" size="23px" />
-              </div>
-            ) : null}
+              </Box>
+            )}
           </Box>
           {page && page.length ? (
-            <Row>
-              <Col md="1">
+            <Grid container spacing={1}>
+              <Grid item xs={1}>
                 <div
                   className="table-header"
                   onClick={() => this.handleSortForColumn('referential')}
                 >
                   Provider
                 </div>
-              </Col>
-              <Col md="1">
+              </Grid>
+              <Grid item xs={1}>
                 <div
                   className="table-header"
                   onClick={() => this.handleSortForColumn('id')}
                 >
                   Id
                 </div>
-              </Col>
-              <Col md="1">
+              </Grid>
+              <Grid item xs={1}>
                 <div
                   className="table-header"
                   onClick={() => this.handleSortForColumn('action')}
                 >
                   Action
                 </div>
-              </Col>
-              <Col md="2">
+              </Grid>
+              <Grid item xs={2}>
                 <div
                   className="table-header"
                   onClick={() => this.handleSortForColumn('created')}
                 >
                   Created
                 </div>
-              </Col>
-              <Col md="2">
+              </Grid>
+              <Grid item xs={2}>
                 <div
                   className="table-header"
                   onClick={() => this.handleSortForColumn('started')}
                 >
                   Started
                 </div>
-              </Col>
-              <Col md="2">
+              </Grid>
+              <Grid item xs={2}>
                 <div
                   className="table-header"
                   onClick={() => this.handleSortForColumn('updated')}
                 >
                   Updated
                 </div>
-              </Col>
-              <Col md="1">
+              </Grid>
+              <Grid item xs={1}>
                 <div
                   className="table-header"
                   onClick={() => this.handleSortForColumn('status')}
                 >
                   Status
                 </div>
-              </Col>
-            </Row>
+              </Grid>
+            </Grid>
           ) : (
-            <Row>
-              <p style={{ marginLeft: '20px' }}>
+            <Box sx={{ p: 2.5 }}>
+              <Typography>
                 No chouette jobs found for your search criterias.
-              </p>
-            </Row>
+              </Typography>
+            </Box>
           )}
           {page && page.length ? (
             <Box>
@@ -405,11 +403,13 @@ class ChouetteAllJobs extends React.Component {
                 const chouetteURL = `${window.config.chouetteBaseUrl}/referentials/${job.referential}/`;
 
                 return (
-                  <Row
+                  <Grid
+                    container
+                    spacing={1}
                     key={'ch-job-' + index}
-                    style={{ display: 'flex', alignItems: 'center' }}
+                    sx={{ alignItems: 'center', py: 1 }}
                   >
-                    <Col md="1">
+                    <Grid item xs={1}>
                       <a
                         title={chouetteURL}
                         target="_blank"
@@ -418,8 +418,8 @@ class ChouetteAllJobs extends React.Component {
                       >
                         {job.referential}
                       </a>
-                    </Col>
-                    <Col md="1">
+                    </Grid>
+                    <Grid item xs={1}>
                       <ChouetteLink
                         id={job.id}
                         referential={job.referential}
@@ -427,45 +427,52 @@ class ChouetteAllJobs extends React.Component {
                       >
                         {job.id}
                       </ChouetteLink>
-                    </Col>
-                    <Col md="1">
-                      <p>{job.action}</p>
-                    </Col>
-                    <Col md="2">
-                      <p>{this.formatDate(job.created)}</p>
-                    </Col>
-                    <Col md="2">
-                      <p>{this.formatDate(job.started)}</p>
-                    </Col>
-                    <Col md="2">
-                      <p>{this.formatDate(job.updated)}</p>
-                    </Col>
-                    <Col md="1">
-                      <p>
+                    </Grid>
+                    <Grid item xs={1}>
+                      <Typography variant="body2">{job.action}</Typography>
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Typography variant="body2">
+                        {this.formatDate(job.created)}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Typography variant="body2">
+                        {this.formatDate(job.started)}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Typography variant="body2">
+                        {this.formatDate(job.updated)}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={1}>
+                      <Typography variant="body2">
                         <span className={statusClass}>
                           {this.getJobStatus(job.status)}
                         </span>
-                      </p>
-                    </Col>
+                      </Typography>
+                    </Grid>
                     {job.status === 'STARTED' ||
                     job.status === 'SCHEDULED' ||
                     job.status === 'RESCHEDULED' ? (
-                      <Col md="1">
+                      <Grid item xs={1}>
                         <Button
                           key={'btn-delete-' + index}
                           onClick={() =>
                             this.handleCancelChouetteJob(job.id, job.providerId)
                           }
                           size="small"
-                          color="danger"
+                          color="error"
+                          variant="outlined"
                         >
                           Cancel
                         </Button>
-                      </Col>
+                      </Grid>
                     ) : (
-                      <div />
+                      <Grid item xs={1} />
                     )}
-                  </Row>
+                  </Grid>
                 );
               })}
             </Box>
