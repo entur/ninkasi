@@ -28,7 +28,12 @@ import {
   Radio,
   Checkbox,
   Box,
-  Typography
+  Typography,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell
 } from '@mui/material';
 import SuppliersActions from 'actions/SuppliersActions';
 import { DotLoader as Loader } from 'halogenium';
@@ -316,7 +321,13 @@ class ChouetteJobDetails extends React.Component {
           <Box sx={{ mb: 2 }}>
             {paginationMap.length > 0 && (
               <Box
-                sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  mb: 2,
+                  flexWrap: 'wrap'
+                }}
               >
                 <Typography variant="body2">Pages:</Typography>
                 {paginationMap.map((page, index) => (
@@ -343,135 +354,107 @@ class ChouetteJobDetails extends React.Component {
             )}
           </Box>
           {page && page.length ? (
-            <Grid container spacing={1}>
-              <Grid item xs={1}>
-                <div
-                  className="table-header"
-                  onClick={() => this.handleSortForColumn('id')}
-                >
-                  Id
-                </div>
-              </Grid>
-              <Grid item xs={2}>
-                <div
-                  className="table-header"
-                  onClick={() => this.handleSortForColumn('action')}
-                >
-                  Action
-                </div>
-              </Grid>
-              <Grid item xs={2}>
-                <div
-                  className="table-header"
-                  onClick={() => this.handleSortForColumn('created')}
-                >
-                  Created
-                </div>
-              </Grid>
-              <Grid item xs={2}>
-                <div
-                  className="table-header"
-                  onClick={() => this.handleSortForColumn('started')}
-                >
-                  Started
-                </div>
-              </Grid>
-              <Grid item xs={2}>
-                <div
-                  className="table-header"
-                  onClick={() => this.handleSortForColumn('updated')}
-                >
-                  Updated
-                </div>
-              </Grid>
-              <Grid item xs={1}>
-                <div
-                  className="table-header"
-                  onClick={() => this.handleSortForColumn('status')}
-                >
-                  Status
-                </div>
-              </Grid>
-            </Grid>
+            <Table size="small" sx={{ width: 'auto' }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    sx={{ cursor: 'pointer', fontWeight: 'bold', py: 1, px: 1 }}
+                    onClick={() => this.handleSortForColumn('id')}
+                  >
+                    Id
+                  </TableCell>
+                  <TableCell
+                    sx={{ cursor: 'pointer', fontWeight: 'bold', py: 1, px: 1 }}
+                    onClick={() => this.handleSortForColumn('action')}
+                  >
+                    Action
+                  </TableCell>
+                  <TableCell
+                    sx={{ cursor: 'pointer', fontWeight: 'bold', py: 1, px: 1 }}
+                    onClick={() => this.handleSortForColumn('created')}
+                  >
+                    Created
+                  </TableCell>
+                  <TableCell
+                    sx={{ cursor: 'pointer', fontWeight: 'bold', py: 1, px: 1 }}
+                    onClick={() => this.handleSortForColumn('started')}
+                  >
+                    Started
+                  </TableCell>
+                  <TableCell
+                    sx={{ cursor: 'pointer', fontWeight: 'bold', py: 1, px: 1 }}
+                    onClick={() => this.handleSortForColumn('updated')}
+                  >
+                    Updated
+                  </TableCell>
+                  <TableCell
+                    sx={{ cursor: 'pointer', fontWeight: 'bold', py: 1, px: 1 }}
+                    onClick={() => this.handleSortForColumn('status')}
+                  >
+                    Status
+                  </TableCell>
+                  <TableCell sx={{ py: 1, px: 1 }}></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {page.map((job, index) => {
+                  const statusClass =
+                    job.status === 'ABORTED' || job.status === 'CANCELED'
+                      ? 'error'
+                      : 'success';
+
+                  return (
+                    <TableRow key={'ch-job-' + index}>
+                      <TableCell sx={{ py: 1, px: 1 }}>
+                        <ChouetteLink
+                          id={job.id}
+                          action={job.action}
+                          referential={job.referential}
+                        >
+                          {job.id}
+                        </ChouetteLink>
+                      </TableCell>
+                      <TableCell sx={{ py: 1, px: 1 }}>{job.action}</TableCell>
+                      <TableCell sx={{ py: 1, px: 1 }}>
+                        {this.formatDate(job.created)}
+                      </TableCell>
+                      <TableCell sx={{ py: 1, px: 1 }}>
+                        {this.formatDate(job.started)}
+                      </TableCell>
+                      <TableCell sx={{ py: 1, px: 1 }}>
+                        {this.formatDate(job.updated)}
+                      </TableCell>
+                      <TableCell sx={{ py: 1, px: 1 }}>
+                        <span className={statusClass}>
+                          {this.getJobStatus(job.status)}
+                        </span>
+                      </TableCell>
+                      <TableCell sx={{ py: 1, px: 1 }}>
+                        {job.status === 'STARTED' ||
+                        job.status === 'SCHEDULED' ||
+                        job.status === 'RESCHEDULED' ? (
+                          <Button
+                            key={'btn-delete-' + index}
+                            onClick={() => this.handleCancelChouetteJob(job.id)}
+                            size="small"
+                            color="error"
+                            variant="outlined"
+                          >
+                            Cancel
+                          </Button>
+                        ) : null}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
           ) : (
             <Box sx={{ p: 2.5 }}>
               <Typography>
                 No chouette jobs found for your search criterias.
               </Typography>
             </Box>
-          )}
-          {page && page.length ? (
-            <Box>
-              {page.map((job, index) => {
-                const statusClass =
-                  job.status === 'ABORTED' || job.status === 'CANCELED'
-                    ? 'error'
-                    : 'success';
-
-                return (
-                  <Grid
-                    container
-                    spacing={1}
-                    key={'ch-job-' + index}
-                    sx={{ alignItems: 'center', py: 1 }}
-                  >
-                    <Grid item xs={1}>
-                      <ChouetteLink
-                        id={job.id}
-                        action={job.action}
-                        referential={job.referential}
-                      >
-                        {job.id}
-                      </ChouetteLink>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Typography variant="body2">{job.action}</Typography>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Typography variant="body2">
-                        {this.formatDate(job.created)}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Typography variant="body2">
-                        {this.formatDate(job.started)}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Typography variant="body2">
-                        {this.formatDate(job.updated)}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Typography variant="body2">
-                        <span className={statusClass}>
-                          {this.getJobStatus(job.status)}
-                        </span>
-                      </Typography>
-                    </Grid>
-                    {job.status === 'STARTED' ||
-                    job.status === 'SCHEDULED' ||
-                    job.status === 'RESCHEDULED' ? (
-                      <Grid item xs={1}>
-                        <Button
-                          key={'btn-delete-' + index}
-                          onClick={() => this.handleCancelChouetteJob(job.id)}
-                          size="small"
-                          color="error"
-                          variant="outlined"
-                        >
-                          Cancel
-                        </Button>
-                      </Grid>
-                    ) : (
-                      <Grid item xs={1} />
-                    )}
-                  </Grid>
-                );
-              })}
-            </Box>
-          ) : (
-            <Box />
           )}
         </Paper>
       </Container>
