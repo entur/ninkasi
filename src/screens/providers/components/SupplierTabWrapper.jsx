@@ -21,8 +21,7 @@ import SuppliersActions from 'actions/SuppliersActions';
 import ChouetteJobDetails from './ChouetteJobDetails';
 import ChouetteAllJobs from './ChouetteAllJobs';
 import DataMigrationDetails from './DataMigrationDetails';
-import { PulseLoader as Loader } from 'halogenium';
-import { Tabs, Tab, Box } from '@mui/material';
+import { Tabs, Tab, Box, CircularProgress } from '@mui/material';
 import { getQueryVariable } from 'utils';
 import OrganizationRegister from './OrganizationRegister';
 import ExportedFilesView from './ExportedFilesView';
@@ -305,7 +304,10 @@ class SupplierTabWrapper extends React.Component {
       return (
         <div className="supplier-details disabled">
           <div className="supplier-header">
-            <Loader color="#39a1f4" size="16px" margin="40px" />
+            <CircularProgress
+              size={16}
+              sx={{ color: '#39a1f4', margin: '40px' }}
+            />
           </div>
         </div>
       );
