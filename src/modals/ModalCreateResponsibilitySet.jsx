@@ -33,6 +33,7 @@ import { getEntityClassificationRefString } from 'utils/';
 class ModalCreateResponsibilitySet extends React.Component {
   constructor(props) {
     super(props);
+    this.rolesRef = React.createRef();
     this.state = {
       isCreatingNewRole: false,
       responsibilitySet: {
@@ -106,7 +107,7 @@ class ModalCreateResponsibilitySet extends React.Component {
   }
 
   handleRemoveRole() {
-    const { roles } = this.refs;
+    const roles = this.rolesRef.current;
     const index = roles.options.selectedIndex;
 
     if (index > -1) {
@@ -242,7 +243,7 @@ class ModalCreateResponsibilitySet extends React.Component {
                     fontSize: 10,
                     minWidth: '100%'
                   }}
-                  ref="roles"
+                  ref={this.rolesRef}
                 >
                   {responsibilitySet.roles.map((role, i) => (
                     <option style={{ overflowX: 'auto' }} key={'role-' + i}>

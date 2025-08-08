@@ -21,8 +21,13 @@ import SuppliersActions from 'actions/SuppliersActions';
 import NotificationSystem from 'react-notification-system';
 
 class NotificationContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.notificationSystemRef = React.createRef();
+  }
+
   componentDidMount() {
-    this.notificationSystem = this.refs.notificationSystem;
+    this.notificationSystem = this.notificationSystemRef.current;
   }
 
   componentWillReceiveProps(newProps) {
@@ -34,7 +39,7 @@ class NotificationContainer extends Component {
   }
 
   render() {
-    return <NotificationSystem ref="notificationSystem" />;
+    return <NotificationSystem ref={this.notificationSystemRef} />;
   }
 }
 

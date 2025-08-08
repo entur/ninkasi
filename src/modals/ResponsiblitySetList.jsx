@@ -19,6 +19,11 @@ import { Remove, Add } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 
 class ResponsiblitySetList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.responsibilitySetRef = React.createRef();
+  }
+
   getResponbilityNameById(id) {
     const { responsiblities } = this.props;
     for (let i = 0; responsiblities.length; i++) {
@@ -30,7 +35,7 @@ class ResponsiblitySetList extends React.Component {
   }
 
   handleRemoveResponsibilitySet() {
-    const { responsibilitySets } = this.refs;
+    const responsibilitySets = this.responsibilitySetRef.current;
     const index = responsibilitySets.options.selectedIndex;
     this.props.handleRemove(index);
   }
@@ -46,7 +51,7 @@ class ResponsiblitySetList extends React.Component {
         <select
           multiple="multiple"
           style={{ width: '100%', fontSize: 12 }}
-          ref="responsibilitySets"
+          ref={this.responsibilitySetRef}
         >
           {user.responsibilitySetRefs.map((rs, index) => (
             <option key={'ec-' + index}>

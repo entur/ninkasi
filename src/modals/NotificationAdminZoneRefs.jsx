@@ -23,13 +23,18 @@ import { IconButton } from '@mui/material';
 import { Remove } from '@mui/icons-material';
 
 class NotificationAdminZoneRefs extends React.Component {
+  constructor(props) {
+    super(props);
+    this.adminRefsRef = React.createRef();
+  }
+
   static propTypes = {
     notification: PropTypes.object.isRequired,
     visible: PropTypes.bool.isRequired
   };
 
   handleRemoveAdminRefRole() {
-    const { adminRefs } = this.refs;
+    const adminRefs = this.adminRefsRef.current;
     const { dispatch, index, notification } = this.props;
     const selectedIndex = adminRefs.options.selectedIndex;
     const administrativeZoneRefs =
@@ -75,7 +80,7 @@ class NotificationAdminZoneRefs extends React.Component {
           <div style={{ display: 'flex', flexDirection: 'column', flex: 2 }}>
             <select
               multiple="multiple"
-              ref="adminRefs"
+              ref={this.adminRefsRef}
               style={{ width: '100%', fontSize: 12 }}
             >
               {administrativeZoneRefs.map((ref, index) => (

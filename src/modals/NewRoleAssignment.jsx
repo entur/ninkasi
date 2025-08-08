@@ -29,6 +29,7 @@ import { getEntityClassificationRefString } from 'utils/';
 class NewRoleAssignment extends React.Component {
   constructor(props) {
     super(props);
+    this.entityClassRefsRef = React.createRef();
     this.state = {
       tempEntityClassification: '',
       tempEntityType: '',
@@ -51,7 +52,7 @@ class NewRoleAssignment extends React.Component {
   }
 
   handleRemoveEntity() {
-    const { entityClassRefs } = this.refs;
+    const entityClassRefs = this.entityClassRefsRef.current;
     const index = entityClassRefs.options.selectedIndex;
 
     if (index > -1) {
@@ -149,7 +150,7 @@ class NewRoleAssignment extends React.Component {
         <div style={{ width: '100%', fontSize: 12 }}>Entity classification</div>
         <div style={{ display: 'flex' }}>
           <select
-            ref="entityClassRefs"
+            ref={this.entityClassRefsRef}
             multiple="multiple"
             style={{ width: '100%', fontSize: 12 }}
           >

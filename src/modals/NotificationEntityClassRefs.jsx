@@ -23,13 +23,18 @@ import { Remove } from '@mui/icons-material';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 
 class NotificationEntityClassRef extends React.Component {
+  constructor(props) {
+    super(props);
+    this.entityRefsRef = React.createRef();
+  }
+
   static propTypes = {
     notification: PropTypes.object.isRequired,
     visible: PropTypes.bool.isRequired
   };
 
   handleRemoveEntityClass() {
-    const { entityRefs } = this.refs;
+    const entityRefs = this.entityRefsRef.current;
     const { dispatch, index, notification } = this.props;
     const selectedIndex = entityRefs.options.selectedIndex;
     const entityClassRefs =
@@ -70,7 +75,7 @@ class NotificationEntityClassRef extends React.Component {
         <div style={{ display: 'flex' }}>
           <select
             multiple="multiple"
-            ref="entityRefs"
+            ref={this.entityRefsRef}
             style={{ width: '100%', fontSize: 12, flex: 2 }}
           >
             {entityClassRefs.map((ref, index) => (
