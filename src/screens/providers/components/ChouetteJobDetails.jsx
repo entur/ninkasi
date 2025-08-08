@@ -309,6 +309,7 @@ class ChouetteJobDetails extends React.Component {
                       onClick={this.handleCancelAllChouetteJobs}
                       size="small"
                       color="error"
+                      variant="contained"
                     >
                       Cancel all
                     </Button>
