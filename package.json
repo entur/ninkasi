@@ -46,7 +46,7 @@
     "react-oidc-context": "3.3.0",
     "react-redux": "9.2.0",
     "react-router": "5.3.4",
-    "react-select": "2.4.4",
+    "react-select": "5.10.2",
     "redux": "5.0.1",
     "redux-devtools-extension": "2.13.9",
     "redux-logger": "3.0.6",
