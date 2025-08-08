@@ -19,8 +19,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NotificationAddZoneRef from './NotificationAddZoneRef';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
-import IconButton from 'material-ui/IconButton';
-import MdRemove from 'material-ui/svg-icons/content/remove';
+import { IconButton } from '@mui/material';
+import { Remove } from '@mui/icons-material';
 
 class NotificationAdminZoneRefs extends React.Component {
   static propTypes = {
@@ -90,8 +90,11 @@ class NotificationAdminZoneRefs extends React.Component {
               handleDelete={this.handleRemoveAdminRefRole.bind(this)}
             />
           </div>
-          <IconButton onClick={this.handleRemoveAdminRefRole.bind(this)}>
-            <MdRemove color="#cc0000" />
+          <IconButton
+            onClick={this.handleRemoveAdminRefRole.bind(this)}
+            size="large"
+          >
+            <Remove style={{ color: '#cc0000' }} />
           </IconButton>
         </div>
       </div>

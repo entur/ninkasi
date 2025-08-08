@@ -18,12 +18,13 @@ import React from 'react';
 import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
-import MenuItem from 'material-ui/MenuItem';
-import MdWarning from 'material-ui/svg-icons/alert/warning';
-import Popover from 'material-ui/Popover';
-import MdDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down';
-import FlatButton from 'material-ui/FlatButton';
-import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
+import { MenuItem, Popover } from '@mui/material';
+import {
+  Warning,
+  ArrowDropDown,
+  KeyboardArrowRight
+} from '@mui/icons-material';
+import Button from '@mui/material/Button';
 import { getIconColor, getProvidersEnv, getTheme } from 'config/themes';
 import ConfirmDialog from '../../../modals/ConfirmDialog';
 import { connect } from 'react-redux';
@@ -267,7 +268,7 @@ class AdministrativeActions extends React.Component {
     return (
       <div style={innerContainerStyle}>
         <div>
-          <FlatButton onClick={this.handleGraphOpen.bind(this)}>
+          <Button variant="text" onClick={this.handleGraphOpen.bind(this)}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <div
                 style={{
@@ -281,48 +282,54 @@ class AdministrativeActions extends React.Component {
               >
                 Graph
               </div>
-              <MdDropDown color="#fff" />
+              <ArrowDropDown sx={{ color: 'white' }} />
             </div>
-          </FlatButton>
+          </Button>
           <Popover
             open={this.state.graphPopoverOpen}
             anchorEl={this.state.anchorEl}
             anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-            onRequestClose={() => this.setState({ graphPopoverOpen: false })}
+            transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+            onClose={() => this.setState({ graphPopoverOpen: false })}
           >
             <MenuItem
-              primaryText={'Build graph'}
               style={{ fontSize: '1.1em' }}
               onClick={() => this.handleBuildGraph()}
               title={toolTips.buildGraph}
-            />
+            >
+              Build graph
+            </MenuItem>
             <MenuItem
-              primaryText={'Build base graph'}
               style={{ fontSize: '1em' }}
               onClick={() => this.handleBuildBaseGraph()}
               title={toolTips.buildBaseGraph}
-            />
+            >
+              Build base graph
+            </MenuItem>
             <MenuItem
-              primaryText={'Build Candidate Graph OTP'}
               style={{ fontSize: '1em' }}
               onClick={() => this.handleBuildCandidateGraphOTP()}
               title={toolTips.buildCandidateGraphOTP}
-            />
+            >
+              Build Candidate Graph OTP
+            </MenuItem>
             <MenuItem
-              primaryText={'Build Candidate Base Graph OTP'}
               style={{ fontSize: '1em' }}
               onClick={() => this.handleBuildCandidateBaseGraphOTP()}
               title={toolTips.buildCandidateBaseGraphOTP}
-            />
+            >
+              Build Candidate Base Graph OTP
+            </MenuItem>
           </Popover>
-          <FlatButton
+          <Button
+            variant="text"
             title={toolTips.fetchOSM}
-            labelStyle={{ fontSize: 12, color: '#fff' }}
-            label={'Fetch OSM'}
+            style={{ fontSize: 12, color: '#fff' }}
             onClick={this.handleFetchOSM.bind(this)}
-          />
-          <FlatButton onClick={this.handleGoogleOpen.bind(this)}>
+          >
+            Fetch OSM
+          </Button>
+          <Button variant="text" onClick={this.handleGoogleOpen.bind(this)}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <div
                 style={{
@@ -336,28 +343,30 @@ class AdministrativeActions extends React.Component {
               >
                 Google
               </div>
-              <MdDropDown color="#fff" />
+              <ArrowDropDown sx={{ color: 'white' }} />
             </div>
-          </FlatButton>
+          </Button>
           <Popover
             open={this.state.googlePopoverOpen}
             anchorEl={this.state.anchorEl}
             anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-            onRequestClose={() => this.setState({ googlePopoverOpen: false })}
+            transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+            onClose={() => this.setState({ googlePopoverOpen: false })}
           >
             <MenuItem
-              primaryText={'Upload GTFS (production)'}
               style={{ fontSize: '1.1em' }}
               onClick={() => this.handleUploadGoogleProduction()}
               title={toolTips.uploadGoogleProduction}
-            />
+            >
+              Upload GTFS (production)
+            </MenuItem>
             <MenuItem
-              primaryText={'Upload GTFS (QA)'}
               style={{ fontSize: '1em' }}
               onClick={() => this.handleUploadGoogleQA()}
               title={toolTips.uploadGoogleQA}
-            />
+            >
+              Upload GTFS (QA)
+            </MenuItem>
           </Popover>
         </div>
         <div
@@ -368,11 +377,15 @@ class AdministrativeActions extends React.Component {
           }}
         />
         <div>
-          <FlatButton onClick={this.handleCleanOpen.bind(this)}>
+          <Button variant="text" onClick={this.handleCleanOpen.bind(this)}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <MdWarning
-                color={iconColor}
-                style={{ height: '1.1em', width: '1.1em', paddingLeft: 10 }}
+              <Warning
+                sx={{
+                  color: 'white',
+                  height: '1.1em',
+                  width: '1.1em',
+                  paddingLeft: '10px'
+                }}
               />
               <div
                 style={{
@@ -386,71 +399,83 @@ class AdministrativeActions extends React.Component {
               >
                 Clean
               </div>
-              <MdDropDown color="#fff" />
+              <ArrowDropDown sx={{ color: 'white' }} />
             </div>
-          </FlatButton>
-          <FlatButton
+          </Button>
+          <Button
+            variant="text"
             title={toolTips.canceAllJobs}
-            style={{ transform: 'translateY(-3px)' }}
-            labelStyle={{ fontSize: 12, color: '#fff' }}
-            label={'Cancel all jobs'}
-            icon={
-              <MdWarning
-                color={iconColor}
-                style={{ height: '1.1em', width: '1.1em' }}
-              />
-            }
             onClick={() => this.handleCancelAllJobs()}
-          />
+          >
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Warning
+                sx={{
+                  color: 'white',
+                  height: '1.1em',
+                  width: '1.1em',
+                  paddingLeft: '10px'
+                }}
+              />
+              <div
+                style={{
+                  fontSize: 12,
+                  color: '#fff',
+                  marginLeft: '0.5rem'
+                }}
+              >
+                Cancel all jobs
+              </div>
+            </div>
+          </Button>
         </div>
         <Popover
           open={this.state.cleanPopoverOpen}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          onRequestClose={() => this.setState({ cleanPopoverOpen: false })}
+          transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+          onClose={() => this.setState({ cleanPopoverOpen: false })}
         >
           <MenuItem
-            primaryText={'Clean file filter'}
             style={{ fontSize: '1.1em' }}
             onClick={() => this.handleCleanFileFilter()}
             title={toolTips.cleanFileFilter}
-          />
+          >
+            Clean file filter
+          </MenuItem>
           <MenuItem
-            primaryText={'Clean event history'}
             style={{ fontSize: '1em' }}
             onClick={() => this.handleClearEventHistory()}
             title={toolTips.cleanEventHistory}
-          />
+          >
+            Clean event history
+          </MenuItem>
           <MenuItem
-            primaryText={'Clean Stop Places'}
             style={{ fontSize: '1em' }}
             onClick={() => this.handleClearStopPlaces()}
             title={toolTips.cleanStopPlacesChouette}
-          />
+          >
+            Clean Stop Places
+          </MenuItem>
           <MenuItem
             id="dropdown-clean-all"
-            primaryText={'Clean all'}
             style={{ fontSize: '1em' }}
-            rightIcon={<ArrowDropRight />}
-            menuItems={[
-              <MenuItem
-                primaryText={'All'}
-                onClick={() => this.handleCleanAllDataSpaces('all')}
-                style={{ fontSize: '1em' }}
-              />,
-              <MenuItem
-                primaryText={'Level 1'}
-                onClick={() => this.handleCleanAllDataSpaces('level1')}
-                style={{ fontSize: '1em' }}
-              />,
-              <MenuItem
-                primaryText={'Level 2'}
-                onClick={() => this.handleCleanAllDataSpaces('level2')}
-                style={{ fontSize: '1em' }}
-              />
-            ]}
-          />
+            onClick={() => this.handleCleanAllDataSpaces('all')}
+          >
+            <KeyboardArrowRight style={{ marginRight: 8 }} />
+            Clean all
+          </MenuItem>
+          <MenuItem
+            style={{ fontSize: '1em', paddingLeft: '2em' }}
+            onClick={() => this.handleCleanAllDataSpaces('level1')}
+          >
+            Clean Level 1
+          </MenuItem>
+          <MenuItem
+            style={{ fontSize: '1em', paddingLeft: '2em' }}
+            onClick={() => this.handleCleanAllDataSpaces('level2')}
+          >
+            Clean Level 2
+          </MenuItem>
         </Popover>
         <ConfirmDialog
           open={this.state.confirmDialogOpen}

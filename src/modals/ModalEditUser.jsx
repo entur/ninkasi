@@ -15,19 +15,24 @@
  */
 
 import React from 'react';
-import ModalDialog from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import ResponsiblitySetList from './ResponsiblitySetList';
-import UserRespSetPopover from './UserRespSetPopover';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import {
   FormControl,
+  Select,
+  MenuItem,
   FormControlLabel,
   Radio,
   RadioGroup
-} from '@material-ui/core';
+} from '@mui/material';
+import ResponsiblitySetList from './ResponsiblitySetList';
+import UserRespSetPopover from './UserRespSetPopover';
 
 const initialState = {
   user: {
@@ -39,7 +44,8 @@ const initialState = {
       phone: '',
       firstName: '',
       lastName: ''
-    }
+    },
+    personalAccount: false
   },
   isAddingResponsibilitySet: false,
   temptResponsibilitySet: '',
@@ -59,7 +65,12 @@ class ModalEditUser extends React.Component {
     this.setState({
       user: {
         ...this.state.user,
-        ...this.props.user
+        ...this.props.user,
+        contactDetails: {
+          ...this.state.user.contactDetails,
+          ...(this.props.user.contactDetails || {})
+        },
+        personalAccount: this.props.user.personalAccount || false
       },
       originalUsername: this.props.user.username
     });
@@ -70,7 +81,8 @@ class ModalEditUser extends React.Component {
     this.props.handleCloseModal();
   }
 
-  handleChangeUsername(e, value) {
+  handleChangeUsername(e) {
+    const value = e.target.value;
     const isValid = this.validateBy('USERNAME', value);
     this.setState(prevState => ({
       user: { ...prevState.user, username: value },
@@ -78,7 +90,8 @@ class ModalEditUser extends React.Component {
     }));
   }
 
-  handleChangeEmail(e, value) {
+  handleChangeEmail(e) {
+    const value = e.target.value;
     const { user } = this.state;
     const isValid = this.validateBy('EMAIL', value);
     this.setState({
@@ -138,6 +151,16 @@ class ModalEditUser extends React.Component {
     return false;
   }
 
+  handleChangeIsPersonalAccount(value) {
+    const { user } = this.state;
+    this.setState({
+      user: {
+        ...user,
+        personalAccount: value === 'personal_account'
+      }
+    });
+  }
+
   removeResponsibilitySet(index) {
     if (index > -1) {
       this.setState({
@@ -172,173 +195,183 @@ class ModalEditUser extends React.Component {
     const disableUpdate = !usernameValid || !emailValid;
 
     const actions = [
-      <FlatButton label="Cancel" onClick={() => this.handleOnClose()} />,
-      <FlatButton
+      <Button variant="text" onClick={() => this.handleOnClose()}>
+        Cancel
+      </Button>,
+      <Button
+        variant="text"
         disabled={disableUpdate}
-        label="Update"
-        primary={true}
+        color="primary"
         onClick={() => handleSubmit(user)}
-      />
+      >
+        Update
+      </Button>
     ];
 
     return (
-      <ModalDialog
+      <Dialog
         open={isModalOpen}
-        actions={actions}
-        onRequestClose={() => this.handleOnClose()}
-        title={'Editing user ' + originalUsername}
-        contentStyle={{ width: '40%' }}
+        onClose={() => this.handleOnClose()}
+        maxWidth="md"
+        fullWidth
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column'
-          }}
-        >
-          <FormControl>
-            <RadioGroup
-              disabled
-              defaultValue="personal_account"
-              value={
-                user.personalAccount
-                  ? 'personal_account'
-                  : 'notification_account'
-              }
-              onChange={(e, value) => this.handleChangeIsPersonalAccount(value)}
-            >
-              <FormControlLabel
-                value="personal_account"
-                control={<Radio />}
-                label="Personal account"
-              />
-              <FormControlLabel
-                value="notification_account"
-                control={<Radio />}
-                label="Notification account"
-              />
-            </RadioGroup>
-          </FormControl>
-          <TextField
-            disabled
-            hintText="Username"
-            floatingLabelText="Username"
-            value={user.username}
-            errorText={
-              !usernameValid &&
-              'Username can only include alphanumerics, hyphens and dot'
-            }
-            onChange={this.handleChangeUsername.bind(this)}
-            fullWidth={true}
-          />
-          <TextField
-            hintText="First name"
-            floatingLabelText="First name"
-            value={user.contactDetails.firstName}
-            onChange={(e, value) =>
-              this.setState({
-                user: {
-                  ...user,
-                  contactDetails: {
-                    ...user.contactDetails,
-                    firstName: value
-                  }
-                }
-              })
-            }
-            fullWidth={true}
-          />
-          <TextField
-            hintText="Last name"
-            floatingLabelText="Last name"
-            value={user.contactDetails.lastName}
-            onChange={(e, value) =>
-              this.setState({
-                user: {
-                  ...user,
-                  contactDetails: {
-                    ...user.contactDetails,
-                    lastName: value
-                  }
-                }
-              })
-            }
-            fullWidth={true}
-          />
-          <TextField
-            hintText="E-mail"
-            floatingLabelText="E-mail"
-            errorText={
-              emailIsTaken
-                ? 'E-mail already taken'
-                : !emailValid
-                ? 'Must be a valid e-mail'
-                : ''
-            }
-            value={user.contactDetails.email}
-            onChange={this.handleChangeEmail.bind(this)}
-            fullWidth={true}
-          />
-          <TextField
-            hintText="Phonenumber"
-            floatingLabelText="Phonenumber"
-            value={user.contactDetails.phone}
-            onChange={(e, value) =>
-              this.setState({
-                user: {
-                  ...user,
-                  contactDetails: {
-                    ...user.contactDetails,
-                    phone: value
-                  }
-                }
-              })
-            }
-            fullWidth={true}
-          />
-          <SelectField
-            hintText="Organization"
-            floatingLabelText="Organization"
-            value={user.organisationRef}
-            onChange={(e, index, value) =>
-              this.setState({
-                user: { ...user, organisationRef: value }
-              })
-            }
-            fullWidth={true}
+        <DialogTitle>{'Editing user ' + originalUsername}</DialogTitle>
+        <DialogContent>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column'
+            }}
           >
-            {organizations.map(org => (
-              <MenuItem
-                key={org.id}
-                id={org.id}
-                value={org.id}
-                label={org.name}
-                primaryText={org.name}
-              />
-            ))}
-          </SelectField>
-          <UserRespSetPopover
-            responsibilities={responsibilities}
-            addedRespSets={this.state.user.responsibilitySetRefs}
-            anchorEl={this.state.addRespAnchorEl}
-            handleAdd={this.handleAddResponsibilitySet.bind(this)}
-            handleClose={() =>
-              this.setState({ isAddingResponsibilitySet: false })
-            }
-            open={isAddingResponsibilitySet}
-          />
-          <ResponsiblitySetList
-            user={user}
-            responsiblities={responsibilities}
-            handleAdd={e =>
-              this.setState({
-                isAddingResponsibilitySet: true,
-                addRespAnchorEl: e.currentTarget
-              })
-            }
-            handleRemove={this.removeResponsibilitySet.bind(this)}
-          />
-        </div>
-      </ModalDialog>
+            <div onClick={e => e.stopPropagation()}>
+              <FormControl>
+                <RadioGroup
+                  defaultValue="notification_account"
+                  value={
+                    user.personalAccount
+                      ? 'personal_account'
+                      : 'notification_account'
+                  }
+                  onChange={e => {
+                    e.stopPropagation();
+                    this.handleChangeIsPersonalAccount(e.target.value);
+                  }}
+                >
+                  <FormControlLabel
+                    value="personal_account"
+                    control={<Radio />}
+                    label="Personal account"
+                  />
+                  <FormControlLabel
+                    value="notification_account"
+                    control={<Radio />}
+                    label="Notification account"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </div>
+            <TextField
+              disabled
+              placeholder="Username"
+              label="Username"
+              value={user.username}
+              error={!usernameValid}
+              helperText={
+                !usernameValid
+                  ? 'Username can only include alphanumerics, hyphens and dot'
+                  : ''
+              }
+              onChange={this.handleChangeUsername.bind(this)}
+              fullWidth={true}
+            />
+            <TextField
+              placeholder="First name"
+              label="First name"
+              value={user.contactDetails?.firstName || ''}
+              onChange={e =>
+                this.setState({
+                  user: {
+                    ...user,
+                    contactDetails: {
+                      ...(user.contactDetails || {}),
+                      firstName: e.target.value
+                    }
+                  }
+                })
+              }
+              fullWidth={true}
+            />
+            <TextField
+              placeholder="Last name"
+              label="Last name"
+              value={user.contactDetails?.lastName || ''}
+              onChange={e =>
+                this.setState({
+                  user: {
+                    ...user,
+                    contactDetails: {
+                      ...(user.contactDetails || {}),
+                      lastName: e.target.value
+                    }
+                  }
+                })
+              }
+              fullWidth={true}
+            />
+            <TextField
+              placeholder="E-mail"
+              label="E-mail"
+              error={emailIsTaken || !emailValid}
+              helperText={
+                emailIsTaken
+                  ? 'E-mail already taken'
+                  : !emailValid
+                  ? 'Must be a valid e-mail'
+                  : ''
+              }
+              value={user.contactDetails?.email || ''}
+              onChange={this.handleChangeEmail.bind(this)}
+              fullWidth={true}
+            />
+            <TextField
+              placeholder="Phonenumber"
+              label="Phonenumber"
+              value={user.contactDetails.phone}
+              onChange={e =>
+                this.setState({
+                  user: {
+                    ...user,
+                    contactDetails: {
+                      ...user.contactDetails,
+                      phone: e.target.value
+                    }
+                  }
+                })
+              }
+              fullWidth={true}
+            />
+            <FormControl fullWidth>
+              <Select
+                value={user.organisationRef}
+                onChange={e =>
+                  this.setState({
+                    user: { ...user, organisationRef: e.target.value }
+                  })
+                }
+                displayEmpty
+              >
+                {organizations.map(org => (
+                  <MenuItem key={org.id} value={org.id}>
+                    {org.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <UserRespSetPopover
+              responsibilities={responsibilities}
+              addedRespSets={this.state.user.responsibilitySetRefs}
+              anchorEl={this.state.addRespAnchorEl}
+              handleAdd={this.handleAddResponsibilitySet.bind(this)}
+              handleClose={() =>
+                this.setState({ isAddingResponsibilitySet: false })
+              }
+              open={isAddingResponsibilitySet}
+            />
+            <ResponsiblitySetList
+              user={user}
+              responsiblities={responsibilities}
+              handleAdd={e =>
+                this.setState({
+                  isAddingResponsibilitySet: true,
+                  addRespAnchorEl: e.currentTarget
+                })
+              }
+              handleRemove={this.removeResponsibilitySet.bind(this)}
+            />
+          </div>
+        </DialogContent>
+        <DialogActions>{actions}</DialogActions>
+      </Dialog>
     );
   }
 }

@@ -16,11 +16,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import MdMore from 'material-ui/svg-icons/navigation/expand-more';
-import MdLess from 'material-ui/svg-icons/navigation/expand-less';
-import MdActive from 'material-ui/svg-icons/social/notifications-active';
-import MdInactive from 'material-ui/svg-icons/social/notifications-off';
-import IconButton from 'material-ui/IconButton';
+import {
+  ExpandMore,
+  ExpandLess,
+  NotificationsActive,
+  NotificationsOff
+} from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 import NotificationEventFilter from './NotificationEventFilter';
 
 class NotificationTypeBox extends React.Component {
@@ -53,9 +55,9 @@ class NotificationTypeBox extends React.Component {
         >
           <div style={{ display: 'flex' }}>
             {notification.enabled ? (
-              <MdActive color="#1d9439" />
+              <NotificationsActive style={{ color: '#1d9439' }} />
             ) : (
-              <MdInactive color="#777" />
+              <NotificationsOff style={{ color: '#777' }} />
             )}
             <div style={{ fontWeight: 600, fontSize: 14 }}>
               {notification.notificationType}
@@ -72,15 +74,15 @@ class NotificationTypeBox extends React.Component {
               )}
             </div>
           </div>
-          <IconButton>
+          <IconButton size="large">
             {expanded ? (
-              <MdLess
+              <ExpandLess
                 onClick={() => {
                   handleExpand(index, false);
                 }}
               />
             ) : (
-              <MdMore
+              <ExpandMore
                 onClick={() => {
                   handleExpand(index, true);
                 }}

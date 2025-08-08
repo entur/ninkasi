@@ -15,8 +15,7 @@
  */
 
 import React from 'react';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { FormControl, Select, MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
 
 class OrganisationSelect extends React.Component {
@@ -34,25 +33,21 @@ class OrganisationSelect extends React.Component {
     } = this.props;
 
     return (
-      <SelectField
-        hintText="Organization only"
-        floatingLabelText="Organization only"
-        style={{ marginLeft: 10, flex: 1 }}
-        value={notification.eventFilter.organisationRef}
-        onChange={(e, index, value) => {
-          handleChangeOrganization(value);
-        }}
-      >
-        {organizations.map(org => (
-          <MenuItem
-            key={org.id}
-            id={org.id}
-            value={org.id}
-            label={org.name}
-            primaryText={org.name}
-          />
-        ))}
-      </SelectField>
+      <FormControl style={{ marginLeft: 10, flex: 1 }}>
+        <Select
+          value={notification.eventFilter.organisationRef}
+          onChange={e => {
+            handleChangeOrganization(e.target.value);
+          }}
+          displayEmpty
+        >
+          {organizations.map(org => (
+            <MenuItem key={org.id} value={org.id}>
+              {org.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     );
   }
 }

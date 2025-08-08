@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import withAuth from 'utils/withAuth';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import Pelias from './components/Pelias';
 import OSMPOIFilter from './components/OSMPOIFilter';
-import { TariffZonesImport } from './components/tariffZonesImport/TariffZonesImport';
 import { getQueryVariable } from '../../utils';
 import SuppliersActions from '../../actions/SuppliersActions';
 import { useDispatch } from 'react-redux';
@@ -57,16 +56,12 @@ const GeocoderComponent = ({ getToken }) => {
       >
         <Tab label="Geocoder pipeline" {...a11yProps(0)} />
         <Tab label="OSM POI filter" {...a11yProps(1)} />
-        <Tab label="TariffZone/FareZone Import" {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <Pelias />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <OSMPOIFilter />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <TariffZonesImport />
       </TabPanel>
     </div>
   );

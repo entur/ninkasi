@@ -15,9 +15,14 @@
  */
 
 import React from 'react';
-import Modal from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 const initialState = {
   role: {
@@ -45,58 +50,68 @@ class ModalCreateRole extends React.Component {
     const invalidPrivateCode = takenPrivateCodes.indexOf(role.privateCode) > -1;
 
     const actions = [
-      <FlatButton
+      <Button
+        variant="text"
         disabled={invalidPrivateCode}
-        label="Close"
         onClick={this.handleOnClose.bind(this)}
-      />,
-      <FlatButton
+      >
+        Close
+      </Button>,
+      <Button
+        variant="text"
         disabled={invalidPrivateCode}
-        label="Create"
         onClick={() => handleSubmit(role)}
-      />
+      >
+        Create
+      </Button>
     ];
 
     return (
-      <Modal
+      <Dialog
         open={isModalOpen}
-        actions={actions}
-        contentStyle={{ width: '30%' }}
-        title="Create a new role"
-        onRequestClose={() => this.handleOnClose()}
+        onClose={() => this.handleOnClose()}
+        maxWidth="sm"
+        fullWidth
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}
-        >
-          <TextField
-            hintText="Name"
-            floatingLabelText="Name"
-            value={role.name}
-            onChange={(e, value) =>
-              this.setState({
-                role: { ...role, name: value }
-              })
-            }
-            fullWidth={true}
-          />
-          <TextField
-            hintText="private code"
-            floatingLabelText="Private code"
-            errorText={invalidPrivateCode ? 'Private code already exists' : ''}
-            value={role.privateCode}
-            onChange={(e, value) =>
-              this.setState({
-                role: { ...role, privateCode: value }
-              })
-            }
-            fullWidth={true}
-          />
-        </div>
-      </Modal>
+        <DialogTitle>Create a new role</DialogTitle>
+        <DialogContent>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            <TextField
+              placeholder="Name"
+              label="Name"
+              value={role.name}
+              onChange={e =>
+                this.setState({
+                  role: { ...role, name: e.target.value }
+                })
+              }
+              fullWidth={true}
+            />
+            <TextField
+              placeholder="private code"
+              label="Private code"
+              error={invalidPrivateCode}
+              helperText={
+                invalidPrivateCode ? 'Private code already exists' : ''
+              }
+              value={role.privateCode}
+              onChange={e =>
+                this.setState({
+                  role: { ...role, privateCode: e.target.value }
+                })
+              }
+              fullWidth={true}
+            />
+          </div>
+        </DialogContent>
+        <DialogActions>{actions}</DialogActions>
+      </Dialog>
     );
   }
 }

@@ -15,17 +15,15 @@
  */
 
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import Checkbox from 'material-ui/Checkbox';
+import Button from '@mui/material/Button';
+import { FormControl, Select, MenuItem } from '@mui/material';
+import { Checkbox } from '@mui/material';
 import AdminZoneSearchWrapper from './AdminZoneSearchWrapper';
 import OrganizationRegisterActions, {
   sortBy
 } from 'actions/OrganizationRegisterActions';
-import MdRemove from 'material-ui/svg-icons/content/remove';
-import IconButton from 'material-ui/IconButton';
+import { Remove } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 import { getEntityClassificationRefString } from 'utils/';
 
 class NewRoleAssignment extends React.Component {
@@ -116,42 +114,32 @@ class NewRoleAssignment extends React.Component {
         >
           New role assignment
         </div>
-        <SelectField
-          hintText="Role type"
-          floatingLabelText="Role type"
-          value={newRole.typeOfResponsibilityRoleRef}
-          onChange={entityTypeChange}
-          fullWidth={true}
-          style={{ marginTop: -15 }}
-        >
-          {roles.map(role => (
-            <MenuItem
-              key={role.id}
-              id={role.id}
-              value={role.id}
-              label={role.name}
-              primaryText={role.name}
-            />
-          ))}
-        </SelectField>
-        <SelectField
-          hintText="Organization"
-          style={{ marginTop: -15 }}
-          floatingLabelText="Organization"
-          value={newRole.responsibleOrganisationRef}
-          onChange={organisationChange}
-          fullWidth={true}
-        >
-          {organizations.map(org => (
-            <MenuItem
-              key={org.id}
-              id={org.id}
-              value={org.id}
-              label={org.name}
-              primaryText={org.name}
-            />
-          ))}
-        </SelectField>
+        <FormControl fullWidth style={{ marginTop: -15 }}>
+          <Select
+            value={newRole.typeOfResponsibilityRoleRef}
+            onChange={e => entityTypeChange(e, null, e.target.value)}
+            displayEmpty
+          >
+            {roles.map(role => (
+              <MenuItem key={role.id} value={role.id}>
+                {role.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth style={{ marginTop: -15 }}>
+          <Select
+            value={newRole.responsibleOrganisationRef}
+            onChange={e => organisationChange(e, null, e.target.value)}
+            displayEmpty
+          >
+            {organizations.map(org => (
+              <MenuItem key={org.id} value={org.id}>
+                {org.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <AdminZoneSearchWrapper
           handleNewRequest={this.handleNewAdminZoneRequest.bind(this)}
           administrativeZones={administrativeZones}
@@ -174,8 +162,8 @@ class NewRoleAssignment extends React.Component {
               </option>
             ))}
           </select>
-          <IconButton onClick={this.handleRemoveEntity.bind(this)}>
-            <MdRemove color="#cc0000" />
+          <IconButton onClick={this.handleRemoveEntity.bind(this)} size="large">
+            <Remove style={{ color: '#cc0000' }} />
           </IconButton>
         </div>
         <div
@@ -202,60 +190,56 @@ class NewRoleAssignment extends React.Component {
               });
             }}
           />
-          <SelectField
-            hintText="Classification"
-            floatingLabelText="Classification"
-            style={{ flex: 2.5, marginLeft: 5, marginRight: 5 }}
-            value={tempEntityClassification}
-            onChange={(e, i, v) => this.getEntityClassificationsForType(v)}
-            fullWidth={true}
-          >
-            {entityTypes.map(entity => (
-              <MenuItem
-                key={entity.id}
-                id={entity.id}
-                value={entity.id}
-                label={entity.name}
-                primaryText={entity.name}
-              />
-            ))}
-          </SelectField>
-          <SelectField
-            hintText="Type"
-            style={{ flex: 2.5 }}
-            floatingLabelText="Type"
-            value={tempEntityType}
-            onChange={(e, i, v) => this.setState({ tempEntityType: v })}
-            fullWidth={true}
-            disabled={!this.state.tempEntityClassification}
-          >
-            {tempEntityTypes.map(type => (
-              <MenuItem
-                key={type.id}
-                id={type.id}
-                value={type.id}
-                label={type.name}
-                primaryText={type.name}
-              />
-            ))}
-          </SelectField>
-          <FlatButton
-            label="Add"
+          <FormControl style={{ flex: 2.5, marginLeft: 5, marginRight: 5 }}>
+            <Select
+              value={tempEntityClassification}
+              onChange={e =>
+                this.getEntityClassificationsForType(e.target.value)
+              }
+              displayEmpty
+            >
+              {entityTypes.map(entity => (
+                <MenuItem key={entity.id} value={entity.id}>
+                  {entity.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl style={{ flex: 2.5 }}>
+            <Select
+              value={tempEntityType}
+              onChange={e => this.setState({ tempEntityType: e.target.value })}
+              disabled={!this.state.tempEntityClassification}
+              displayEmpty
+            >
+              {tempEntityTypes.map(type => (
+                <MenuItem key={type.id} value={type.id}>
+                  {type.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Button
+            variant="text"
             style={{ flex: 1 }}
             disabled={!tempEntityClassification.length}
             onClick={() => addNewRoleAssignment(tempEntityType, !negate)}
-          />
+          >
+            Add
+          </Button>
         </div>
-        <RaisedButton
-          label="Add role"
-          primary={true}
+        <Button
+          variant="contained"
+          color="primary"
           disabled={
             !newRole.typeOfResponsibilityRoleRef.length ||
             !newRole.responsibleOrganisationRef.length
           }
           style={{ display: 'block' }}
           onClick={handleAddRole}
-        />
+        >
+          Add role
+        </Button>
       </div>
     );
   }

@@ -19,10 +19,8 @@ import React from 'react';
 import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
-import MdNew from 'material-ui/svg-icons/content/add';
+import { Add, Edit, DeleteForever } from '@mui/icons-material';
 import { getQueryVariable } from 'utils';
-import MdEdit from 'material-ui/svg-icons/image/edit';
-import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import ConfirmDialog from 'modals/ConfirmDialog';
 import { SelectSupplier } from '../../common/components/SelectSupplier';
 
@@ -54,14 +52,14 @@ class SuppliersContainer extends React.Component {
     });
   }
 
-  selectSupplier(value) {
+  selectSupplier = value => {
     const { dispatch, getToken } = this.props;
     if (value > 0) {
       dispatch(SuppliersActions.selectActiveSupplier(value, getToken));
     } else {
       dispatch(SuppliersActions.selectAllSuppliers());
     }
-  }
+  };
 
   handleNewProvider() {
     this.props.dispatch(SuppliersActions.openNewProviderDialog());
@@ -114,7 +112,7 @@ class SuppliersContainer extends React.Component {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <SelectSupplier
             suppliers={supplierItems}
-            selectSupplier={v => this.selectSupplier(v)}
+            selectSupplier={this.selectSupplier}
             selectedSupplierId={activeProviderId}
           />
           {canEditOrganisation && (
@@ -136,7 +134,7 @@ class SuppliersContainer extends React.Component {
               >
                 {!this.props.displayAllSuppliers && (
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <MdEdit style={{ width: '1.1em', height: '1.1em' }} />
+                    <Edit style={{ width: '1.1em', height: '1.1em' }} />
                     <span style={{ marginLeft: 2 }}>Edit</span>
                   </div>
                 )}
@@ -151,7 +149,7 @@ class SuppliersContainer extends React.Component {
                 onClick={() => this.handleNewProvider()}
               >
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <MdNew style={{ width: '1.2em', height: '1.2em' }} />
+                  <Add style={{ width: '1.2em', height: '1.2em' }} />
                   <span style={{ marginLeft: 2 }}>New</span>
                 </div>
               </div>
@@ -162,7 +160,7 @@ class SuppliersContainer extends React.Component {
                 onClick={() => this.handleOpenConfirmDeleteProviderDialog()}
               >
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <MdDelete style={{ width: '1.2em', height: '1.2em' }} />
+                  <DeleteForever style={{ width: '1.2em', height: '1.2em' }} />
                   <span style={{ marginLeft: 2 }}>Delete</span>
                 </div>
               </div>

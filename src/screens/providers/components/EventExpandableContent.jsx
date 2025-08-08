@@ -15,8 +15,7 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import Row from 'muicss/lib/react/row';
-import Col from 'muicss/lib/react/col';
+import { Grid, Typography, Box, Divider } from '@mui/material';
 
 const EventExpandableContent = props => {
   const { events, correlationId } = props;
@@ -24,18 +23,18 @@ const EventExpandableContent = props => {
   return (
     <div className="visible-wrapper">
       <p>Events for {correlationId}</p>
-      <Row>
-        <Col md="4">
-          <b>Action</b>
-        </Col>
-        <Col md="4">
-          <b>Date</b>
-        </Col>
-        <Col md="4">
-          <b>State</b>
-        </Col>
-      </Row>
-      <div className="mui--divider-bottom"></div>
+      <Grid container spacing={2}>
+        <Grid item md={4}>
+          <Typography fontWeight="bold">Action</Typography>
+        </Grid>
+        <Grid item md={4}>
+          <Typography fontWeight="bold">Date</Typography>
+        </Grid>
+        <Grid item md={4}>
+          <Typography fontWeight="bold">State</Typography>
+        </Grid>
+      </Grid>
+      <Divider sx={{ my: 1 }} />
 
       {events && events.length ? (
         <div>
@@ -47,17 +46,19 @@ const EventExpandableContent = props => {
                 ? 'error'
                 : 'success';
             return (
-              <Row key={'action-' + index}>
-                <Col md="4" key={'event-action-' + index}>
-                  {event.action}
-                </Col>
-                <Col md="4" key={'event-date-' + index}>
-                  {event.date}
-                </Col>
-                <Col md="4" key={'event-state-' + index}>
-                  <span className={stateClass}>{event.state}</span>
-                </Col>
-              </Row>
+              <Grid container spacing={2} key={'action-' + index}>
+                <Grid item md={4} key={'event-action-' + index}>
+                  <Typography>{event.action}</Typography>
+                </Grid>
+                <Grid item md={4} key={'event-date-' + index}>
+                  <Typography>{event.date}</Typography>
+                </Grid>
+                <Grid item md={4} key={'event-state-' + index}>
+                  <Typography>
+                    <span className={stateClass}>{event.state}</span>
+                  </Typography>
+                </Grid>
+              </Grid>
             );
           })}
         </div>

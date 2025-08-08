@@ -18,13 +18,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import withAuth from 'utils/withAuth';
 import './entityTypesView.scss';
-import MdEdit from 'material-ui/svg-icons/image/edit';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import { Edit } from '@mui/icons-material';
+import { Fab } from '@mui/material';
+import { Add } from '@mui/icons-material';
 import ModalCreateEntityType from 'modals/ModalCreateEntityType';
 import ModalEditEntiyType from 'modals/ModalEditEntityType';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
-import MdDelete from 'material-ui/svg-icons/action/delete';
+import { Delete } from '@mui/icons-material';
 import { sortByColumns } from 'utils';
 import ModalConfirmation from 'modals/ModalConfirmation';
 
@@ -138,14 +138,13 @@ class EntityTypesView extends React.Component {
     return (
       <div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <FloatingActionButton
-            mini={true}
+          <Fab
+            size="small"
             style={{ float: 'right', marginRight: 10 }}
+            onClick={() => this.setState({ isCreateModalOpen: true })}
           >
-            <ContentAdd
-              onClick={() => this.setState({ isCreateModalOpen: true })}
-            />
-          </FloatingActionButton>
+            <Add />
+          </Fab>
         </div>
         <div className="et-row">
           <div className="et-header">
@@ -199,7 +198,7 @@ class EntityTypesView extends React.Component {
                   </ul>
                 </div>
                 <div className="col-icon" style={{ cursor: 'pointer' }}>
-                  <MdDelete
+                  <Delete
                     color="#fa7b81"
                     style={{
                       height: 20,
@@ -210,7 +209,7 @@ class EntityTypesView extends React.Component {
                     }}
                     onClick={() => this.handleOpenDeleteConfirmationDialog(et)}
                   />
-                  <MdEdit
+                  <Edit
                     color="rgba(25, 118, 210, 0.59)"
                     style={{
                       height: 20,

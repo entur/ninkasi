@@ -15,14 +15,17 @@
  */
 
 import React from 'react';
-import Modal from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import MdRemove from 'material-ui/svg-icons/content/remove';
-import MdAdd from 'material-ui/svg-icons/content/add';
-import IconButton from 'material-ui/IconButton';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { FormControl, Select, MenuItem } from '@mui/material';
+import { Remove, Add } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 
 const initialState = {
   entityType: {
@@ -111,159 +114,174 @@ class ModalEditEntityType extends React.Component {
       entityType.privateCode.length;
 
     const actions = [
-      <FlatButton
+      <Button
+        variant="text"
         disabled={!isSavable}
-        label="Close"
         onClick={this.handleOnClose.bind(this)}
-      />,
-      <FlatButton
+      >
+        Close
+      </Button>,
+      <Button
+        variant="text"
         disabled={!isSavable}
-        label="Update"
         onClick={() => handleSubmit(entityType)}
-      />
+      >
+        Update
+      </Button>
     ];
 
     return (
-      <Modal
+      <Dialog
         open={isModalOpen}
-        onRequestClose={() => this.handleOnClose()}
-        contentStyle={{ width: '40%' }}
-        title="Editing entity type"
-        actions={actions}
+        onClose={() => this.handleOnClose()}
+        maxWidth="md"
+        fullWidth
       >
-        <div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}
-          >
-            <TextField
-              hintText="Name"
-              floatingLabelText="Name"
-              value={entityType.name}
-              onChange={(e, value) =>
-                this.setState({
-                  entityType: { ...entityType, name: value }
-                })
-              }
-              fullWidth={true}
-            />
-            <TextField
-              hintText="private code"
-              floatingLabelText="Private code"
-              disabled={true}
-              value={entityType.privateCode}
-              onChange={(e, value) =>
-                this.setState({
-                  entityType: { ...entityType, privateCode: value }
-                })
-              }
-              fullWidth={true}
-              errorStyle={{ float: 'right' }}
-            />
-            <SelectField
-              hintText="Code space"
-              floatingLabelText="Code space"
-              disabled={true}
-              value={entityType.codeSpace}
-              onChange={(e, index, value) =>
-                this.setState({
-                  entityType: { ...entityType, codeSpace: value }
-                })
-              }
-              fullWidth={true}
+        <DialogTitle>Editing entity type</DialogTitle>
+        <DialogContent>
+          <div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}
             >
-              {codeSpaces.map(codeSpace => (
-                <MenuItem
-                  key={codeSpace.id}
-                  id={codeSpace.id}
-                  value={codeSpace.id}
-                  label={codeSpace.id}
-                  primaryText={codeSpace.xmlns}
-                />
-              ))}
-            </SelectField>
-            <div style={{ width: '100%', fontSize: 12 }}>
-              Entity classifications
-            </div>
-            <select
-              multiple="multiple"
-              style={{ width: '100%', fontSize: 12 }}
-              ref="classifications"
-            >
-              {entityType.classifications.map((et, index) => (
-                <option key={'ec-' + index}>
-                  {this.getClassificationTitle(et)}{' '}
-                </option>
-              ))}
-            </select>
-            <div style={{ textAlign: 'left', width: '100%' }}>
-              <IconButton
-                onClick={() =>
-                  this.setState({ isCreatingNewClassification: true })
+              <TextField
+                placeholder="Name"
+                label="Name"
+                value={entityType.name}
+                onChange={e =>
+                  this.setState({
+                    entityType: { ...entityType, name: e.target.value }
+                  })
                 }
-              >
-                <MdAdd color="#228B22" />
-              </IconButton>
-              <IconButton onClick={this.handleRemoveClassification.bind(this)}>
-                <MdRemove color="#cc0000" />
-              </IconButton>
-            </div>
-            {isCreatingNewClassification ? (
-              <div style={{ border: '1px dotted', width: '100%' }}>
-                <div
-                  style={{ fontSize: 12, textAlign: 'center', fontWeight: 600 }}
+                fullWidth={true}
+              />
+              <TextField
+                placeholder="private code"
+                label="Private code"
+                disabled={true}
+                value={entityType.privateCode}
+                onChange={e =>
+                  this.setState({
+                    entityType: { ...entityType, privateCode: e.target.value }
+                  })
+                }
+                fullWidth={true}
+              />
+              <FormControl fullWidth>
+                <Select
+                  disabled={true}
+                  value={entityType.codeSpace}
+                  onChange={e =>
+                    this.setState({
+                      entityType: { ...entityType, codeSpace: e.target.value }
+                    })
+                  }
+                  displayEmpty
                 >
-                  New classification
-                </div>
-                <TextField
-                  hintText="Name"
-                  floatingLabelText="Name"
-                  value={tempClassification.name}
-                  onChange={(e, value) =>
-                    this.setState({
-                      tempClassification: { ...tempClassification, name: value }
-                    })
-                  }
-                  fullWidth={true}
-                />
-                <TextField
-                  hintText="Private code"
-                  floatingLabelText="Private code"
-                  errorStyle={{ float: 'right' }}
-                  errorText={
-                    isClassificationPrivateCodeTaken
-                      ? 'Private code is already taken'
-                      : ''
-                  }
-                  onChange={(e, value) =>
-                    this.setState({
-                      tempClassification: {
-                        ...tempClassification,
-                        privateCode: value
-                      }
-                    })
-                  }
-                  value={tempClassification.privateCode}
-                  fullWidth={true}
-                />
-                <FlatButton
-                  label="Add"
-                  style={{ width: '100%' }}
-                  disabled={
-                    isClassificationPrivateCodeTaken ||
-                    !tempClassification.name.length ||
-                    !tempClassification.privateCode.length
-                  }
-                  onClick={this.handleAddClassification.bind(this)}
-                />
+                  {codeSpaces.map(codeSpace => (
+                    <MenuItem key={codeSpace.id} value={codeSpace.id}>
+                      {codeSpace.xmlns}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <div style={{ width: '100%', fontSize: 12 }}>
+                Entity classifications
               </div>
-            ) : null}
+              <select
+                multiple="multiple"
+                style={{ width: '100%', fontSize: 12 }}
+                ref="classifications"
+              >
+                {entityType.classifications.map((et, index) => (
+                  <option key={'ec-' + index}>
+                    {this.getClassificationTitle(et)}{' '}
+                  </option>
+                ))}
+              </select>
+              <div style={{ textAlign: 'left', width: '100%' }}>
+                <IconButton
+                  onClick={() =>
+                    this.setState({ isCreatingNewClassification: true })
+                  }
+                  size="large"
+                >
+                  <Add style={{ color: '#228B22' }} />
+                </IconButton>
+                <IconButton
+                  onClick={this.handleRemoveClassification.bind(this)}
+                  size="large"
+                >
+                  <Remove style={{ color: '#cc0000' }} />
+                </IconButton>
+              </div>
+              {isCreatingNewClassification ? (
+                <div style={{ border: '1px dotted', width: '100%' }}>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      textAlign: 'center',
+                      fontWeight: 600
+                    }}
+                  >
+                    New classification
+                  </div>
+                  <TextField
+                    placeholder="Name"
+                    label="Name"
+                    value={tempClassification.name}
+                    onChange={e =>
+                      this.setState({
+                        tempClassification: {
+                          ...tempClassification,
+                          name: e.target.value
+                        }
+                      })
+                    }
+                    fullWidth={true}
+                  />
+                  <TextField
+                    placeholder="Private code"
+                    label="Private code"
+                    error={isClassificationPrivateCodeTaken}
+                    helperText={
+                      isClassificationPrivateCodeTaken
+                        ? 'Private code is already taken'
+                        : ''
+                    }
+                    onChange={e =>
+                      this.setState({
+                        tempClassification: {
+                          ...tempClassification,
+                          privateCode: e.target.value
+                        }
+                      })
+                    }
+                    value={tempClassification.privateCode}
+                    fullWidth={true}
+                  />
+                  <Button
+                    variant="text"
+                    style={{ width: '100%' }}
+                    disabled={
+                      isClassificationPrivateCodeTaken ||
+                      !tempClassification.name.length ||
+                      !tempClassification.privateCode.length
+                    }
+                    onClick={this.handleAddClassification.bind(this)}
+                  >
+                    Add
+                  </Button>
+                </div>
+              ) : null}
+            </div>
           </div>
-        </div>
-      </Modal>
+        </DialogContent>
+        <DialogActions>{actions}</DialogActions>
+      </Dialog>
     );
   }
 }

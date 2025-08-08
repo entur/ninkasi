@@ -15,9 +15,14 @@
  */
 
 import React from 'react';
-import Dialog from 'material-ui/Dialog';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '@mui/material/Button';
 
 class ConfirmationDialog extends React.Component {
   static propTypes = {
@@ -30,26 +35,19 @@ class ConfirmationDialog extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onClick={this.props.handleClose}
-      />,
-      <FlatButton
-        label={this.props.actionBtnTitle}
-        primary={true}
-        onClick={this.props.handleSubmit}
-      />
+      <Button variant="text" color="primary" onClick={this.props.handleClose}>
+        Cancel
+      </Button>,
+      <Button variant="text" color="primary" onClick={this.props.handleSubmit}>
+        {this.props.actionBtnTitle}
+      </Button>
     ];
 
     return (
-      <Dialog
-        title={this.props.title}
-        actions={actions}
-        modal={true}
-        open={this.props.open}
-      >
-        {this.props.body}
+      <Dialog open={this.props.open} maxWidth="sm" fullWidth>
+        <DialogTitle>{this.props.title}</DialogTitle>
+        <DialogContent>{this.props.body}</DialogContent>
+        <DialogActions>{actions}</DialogActions>
       </Dialog>
     );
   }

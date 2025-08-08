@@ -17,11 +17,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import withAuth from 'utils/withAuth';
-import Checkbox from 'material-ui/Checkbox';
-import Divider from 'material-ui/Divider';
+import { Checkbox, Divider, FormControlLabel } from '@mui/material';
 import peliasTasks from 'config/peliasTasks';
 import moment from 'moment';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@mui/material/Button';
 import SuppliersActions from 'actions/SuppliersActions';
 import ConfirmDialog from 'modals/ConfirmDialog';
 
@@ -78,13 +77,16 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
   return (
     <div>
       {peliasTasks.map(option => (
-        <Checkbox
+        <FormControlLabel
           key={'pelias-checkbox-' + option.task}
+          control={
+            <Checkbox
+              onChange={e => handlePeliasOptionChecked(e, option.task)}
+              defaultChecked={true}
+            />
+          }
           label={option.label}
-          onCheck={e => handlePeliasOptionChecked(e, option.task)}
-          defaultChecked={true}
-          labelPosition="right"
-          style={{ marginTop: 5, marginBottom: 5 }}
+          sx={{ display: 'block', mt: 0.625, mb: 0.625 }}
         />
       ))}
       <Divider
@@ -132,13 +134,15 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
         key={'pelias-buttons'}
         style={{ width: '100%', textAlign: 'center' }}
       >
-        <RaisedButton
-          primary={true}
-          labelStyle={{ fontSize: 12 }}
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ fontSize: 12 }}
           onClick={() => handleExecutePelias()}
           disabled={Object.values(peliasOptions).every(value => !value)}
-          label={'Execute'}
-        />
+        >
+          Execute
+        </Button>
       </div>
       <ConfirmDialog
         open={confirmDialogOpen}

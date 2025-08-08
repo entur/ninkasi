@@ -19,10 +19,9 @@ import { connect } from 'react-redux';
 import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import moment from 'moment';
-import UnfoldLess from 'material-ui/svg-icons/navigation/unfold-less';
-import UnfoldMore from 'material-ui/svg-icons/navigation/unfold-more';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import FlatButton from 'material-ui/FlatButton';
+import { UnfoldLess, UnfoldMore } from '@mui/icons-material';
+import { Popover } from '@mui/material';
+import Button from '@mui/material/Button';
 
 const containerStyle = {
   display: 'flex',
@@ -89,10 +88,16 @@ class LatestOTPGraphVersions extends React.Component {
 
     return (
       <>
-        <FlatButton
-          label="OTP graph versions"
-          labelPosition="before"
-          icon={this.state.showGraphVersions ? <UnfoldLess /> : <UnfoldMore />}
+        <Button
+          variant="text"
+          sx={{ color: 'black' }}
+          startIcon={
+            this.state.showGraphVersions ? (
+              <UnfoldLess sx={{ color: 'black' }} />
+            ) : (
+              <UnfoldMore sx={{ color: 'black' }} />
+            )
+          }
           onClick={e => {
             e.preventDefault();
 
@@ -103,18 +108,19 @@ class LatestOTPGraphVersions extends React.Component {
 
             this.requestOTPGraphVersions();
           }}
-        />
+        >
+          OTP graph versions
+        </Button>
         <Popover
           open={this.state.showGraphVersions}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          onRequestClose={() => {
+          transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+          onClose={() => {
             this.setState({
               showGraphVersions: false
             });
           }}
-          animation={PopoverAnimationVertical}
         >
           <div style={containerStyle}>
             {!streetGraphs || !transitGraphs ? (

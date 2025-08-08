@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import AutoComplete from 'material-ui/AutoComplete';
+import { Autocomplete, TextField } from '@mui/material';
 
 class NotificationAddZoneRef extends React.Component {
   handleNewRequest({ text, value }) {
@@ -50,18 +50,23 @@ class NotificationAddZoneRef extends React.Component {
         <div
           style={{ display: 'flex', flexDirection: 'column', marginLeft: 10 }}
         >
-          <AutoComplete
-            maxSearchResults={7}
-            ref="adminSearch"
-            floatingLabelText={'Add administrative zone'}
-            animated={true}
-            filter={(searchText, key) =>
-              searchText !== '' &&
-              key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
-            }
-            hintText="Administrative zone"
-            dataSource={formattedZones}
-            onNewRequest={this.handleNewRequest.bind(this)}
+          <Autocomplete
+            options={formattedZones}
+            getOptionLabel={option => option.text}
+            onChange={(event, newValue) => {
+              if (newValue) {
+                this.handleNewRequest(newValue);
+              }
+            }}
+            filterLimit={7}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="Add administrative zone"
+                placeholder="Administrative zone"
+                variant="outlined"
+              />
+            )}
           />
         </div>
       </div>

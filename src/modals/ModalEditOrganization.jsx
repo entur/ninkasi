@@ -15,11 +15,15 @@
  */
 
 import React from 'react';
-import Modal from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { FormControl, Select, MenuItem } from '@mui/material';
 
 const initialState = {
   organization: {
@@ -65,92 +69,97 @@ class ModalEditOrganization extends React.Component {
       this.props.organization.privateCode !== organization.privateCode;
 
     const actions = [
-      <FlatButton label="Cancel" onClick={() => handleCloseModal()} />,
-      <FlatButton
+      <Button variant="text" onClick={() => handleCloseModal()}>
+        Cancel
+      </Button>,
+      <Button
+        variant="text"
         disabled={isOrganizationNameTaken || isOrganizationPrivateCodeTaken}
-        label="Update"
         onClick={() => handleSubmit(organization)}
-      />
+      >
+        Update
+      </Button>
     ];
 
     return (
-      <Modal
+      <Dialog
         open={isModalOpen}
-        actions={actions}
-        contentStyle={{ width: '30%' }}
-        onRequestClose={() => handleCloseModal()}
-        title={'Editing organisation ' + originalName}
+        onClose={() => handleCloseModal()}
+        maxWidth="sm"
+        fullWidth
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}
-        >
-          <TextField
-            hintText="Name"
-            floatingLabelText="Name"
-            errorText={
-              isOrganizationNameTaken ? 'Organization name already exists' : ''
-            }
-            value={organization.name}
-            onChange={(e, value) =>
-              this.setState({
-                organization: { ...organization, name: value }
-              })
-            }
-            fullWidth={true}
-          />
-          <TextField
-            hintText="Private code"
-            floatingLabelText="Private code"
-            errorText={
-              isOrganizationPrivateCodeTaken
-                ? 'Organization private code already exists'
-                : ''
-            }
-            value={organization.privateCode}
-            disabled={true}
-            fullWidth={true}
-          />
-          <SelectField
-            hintText="Organization type"
-            floatingLabelText="Organization type"
-            value={organization.organisationType}
-            onChange={(e, index, value) =>
-              this.setState({
-                organization: { ...organization, organisationType: value }
-              })
-            }
-            fullWidth={true}
+        <DialogTitle>{'Editing organisation ' + originalName}</DialogTitle>
+        <DialogContent>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
           >
-            <MenuItem
-              id="menuItem"
-              value="AUTHORITY"
-              label="AUTHORITY"
-              primaryText="AUTHORITY"
+            <TextField
+              placeholder="Name"
+              label="Name"
+              error={isOrganizationNameTaken}
+              helperText={
+                isOrganizationNameTaken
+                  ? 'Organization name already exists'
+                  : ''
+              }
+              value={organization.name}
+              onChange={e =>
+                this.setState({
+                  organization: { ...organization, name: e.target.value }
+                })
+              }
+              fullWidth={true}
             />
-          </SelectField>
-          <SelectField
-            hintText="Code space"
-            floatingLabelText="Code space"
-            value={organization.codeSpace}
-            disabled={true}
-            fullWidth={true}
-          >
-            {codeSpaces.map(codeSpace => (
-              <MenuItem
-                key={codeSpace.id}
-                id={codeSpace.id}
-                value={codeSpace.id}
-                label={codeSpace.id}
-                primaryText={codeSpace.xmlns}
-              />
-            ))}
-          </SelectField>
-        </div>
-      </Modal>
+            <TextField
+              placeholder="Private code"
+              label="Private code"
+              error={isOrganizationPrivateCodeTaken}
+              helperText={
+                isOrganizationPrivateCodeTaken
+                  ? 'Organization private code already exists'
+                  : ''
+              }
+              value={organization.privateCode}
+              disabled={true}
+              fullWidth={true}
+            />
+            <FormControl fullWidth>
+              <Select
+                value={organization.organisationType}
+                onChange={e =>
+                  this.setState({
+                    organization: {
+                      ...organization,
+                      organisationType: e.target.value
+                    }
+                  })
+                }
+                displayEmpty
+              >
+                <MenuItem value="AUTHORITY">AUTHORITY</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <Select
+                value={organization.codeSpace}
+                disabled={true}
+                displayEmpty
+              >
+                {codeSpaces.map(codeSpace => (
+                  <MenuItem key={codeSpace.id} value={codeSpace.id}>
+                    {codeSpace.xmlns}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+        </DialogContent>
+        <DialogActions>{actions}</DialogActions>
+      </Dialog>
     );
   }
 }

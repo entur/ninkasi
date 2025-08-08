@@ -15,10 +15,9 @@
  */
 
 import React from 'react';
-import SelectField from 'material-ui/SelectField';
 import withAuth from 'utils/withAuth';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
+import { FormControl, Select, MenuItem } from '@mui/material';
+import Button from '@mui/material/Button';
 import { connect } from 'react-redux';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 
@@ -73,48 +72,41 @@ class NotificationAddEntityClassRef extends React.Component {
           justifyContent: 'space-around'
         }}
       >
-        <SelectField
-          hintText="Classification"
-          floatingLabelText="Classification"
-          value={entityType}
-          onChange={(e, i, v) => this.getEntityClassificationsForType(v)}
-          fullWidth={true}
-        >
-          {entityTypes.map(entity => (
-            <MenuItem
-              key={entity.id}
-              id={entity.id}
-              value={entity.id}
-              label={entity.name}
-              primaryText={entity.name}
-            />
-          ))}
-        </SelectField>
-        <SelectField
-          hintText="Type"
-          floatingLabelText="Type"
-          value={this.state.entityClasRefSelected}
-          onChange={(e, i, v) => {
-            this.setState({ entityClasRefSelected: v });
-          }}
-          style={{ marginLeft: 5 }}
-          fullWidth={true}
-        >
-          {entityClassificationRefs.map(type => (
-            <MenuItem
-              key={type.id}
-              id={type.id}
-              value={type.id}
-              label={type.name}
-              primaryText={type.name}
-            />
-          ))}
-        </SelectField>
-        <FlatButton
-          label="Add"
+        <FormControl fullWidth>
+          <Select
+            value={entityType}
+            onChange={e => this.getEntityClassificationsForType(e.target.value)}
+            displayEmpty
+          >
+            {entityTypes.map(entity => (
+              <MenuItem key={entity.id} value={entity.id}>
+                {entity.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth style={{ marginLeft: 5 }}>
+          <Select
+            value={this.state.entityClasRefSelected}
+            onChange={e => {
+              this.setState({ entityClasRefSelected: e.target.value });
+            }}
+            displayEmpty
+          >
+            {entityClassificationRefs.map(type => (
+              <MenuItem key={type.id} value={type.id}>
+                {type.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button
+          variant="text"
           onClick={this.handleAdd.bind(this)}
           disabled={!this.state.entityClasRefSelected}
-        />
+        >
+          Add
+        </Button>
       </div>
     );
   }

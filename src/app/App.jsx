@@ -17,9 +17,12 @@
 import React, { Fragment, useCallback, useEffect, useMemo } from 'react';
 import cfgreader from 'config/readConfig';
 import Header from './components/Header';
-import { MuiThemeProvider, createTheme } from '@material-ui/core/styles'; // v1.x
-import { MuiThemeProvider as V0MuiThemeProvider } from 'material-ui';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {
+  ThemeProvider,
+  StyledEngineProvider,
+  createTheme,
+  adaptV4Theme
+} from '@mui/material/styles'; // v1.x
 import { connect } from 'react-redux';
 import UtilsActions from 'actions/UtilsActions';
 import NoAccess from './components/NoAccess';
@@ -29,9 +32,6 @@ import NotificationContainer from './components/NotificationContainer';
 import UserContextActions from '../actions/UserContextActions';
 import UserActions from '../actions/UserActions';
 import { useAuth } from 'react-oidc-context';
-const themeV0 = getMuiTheme({
-  /* theme for v0.x */
-});
 
 const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
   const auth = useAuth();
@@ -56,18 +56,20 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
 
   const theme = useMemo(
     () =>
-      createTheme({
-        palette: {
-          type: 'light'
-        }
-      }),
+      createTheme(
+        adaptV4Theme({
+          palette: {
+            mode: 'light'
+          }
+        })
+      ),
     []
   );
 
   if (isConfigLoaded && auth.isAuthenticated) {
     return (
-      <MuiThemeProvider theme={theme}>
-        <V0MuiThemeProvider muiTheme={themeV0}>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
           <Fragment>
             <NotificationContainer />
             <Menu open={isMenuOpen} />
@@ -85,8 +87,8 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
               )}
             </div>
           </Fragment>
-        </V0MuiThemeProvider>
-      </MuiThemeProvider>
+        </ThemeProvider>
+      </StyledEngineProvider>
     );
   } else {
     return null;

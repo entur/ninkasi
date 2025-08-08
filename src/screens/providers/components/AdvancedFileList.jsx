@@ -16,7 +16,7 @@
 
 import React from 'react';
 import moment from 'moment';
-import MdDownload from 'material-ui/svg-icons/file/file-download';
+import { FileDownload } from '@mui/icons-material';
 import { getSizeFromBytes } from 'utils/';
 import { saveAs } from 'file-saver';
 import axios from 'axios';
@@ -235,7 +235,7 @@ class AdvancedFileList extends React.Component {
                     background: '#fff'
                   }}
                 >
-                  <MdDownload
+                  <FileDownload
                     style={{
                       marginTop: 1,
                       fill: '#2196F3',

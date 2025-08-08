@@ -15,19 +15,18 @@
  */
 
 import React from 'react';
-import Checkbox from 'material-ui/Checkbox';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import { connect } from 'react-redux';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { FormControl, Select, MenuItem } from '@mui/material';
 import EventFilterStatesPopover from './EventFilterStatesPopover';
 import EventFilterActionsPopover from './EventFilterActionsPopover';
 import OrganisationSelect from './OrganisationSelect';
 import NotificationTypeSelect from './NotificationTypeSelect';
 import NotificationAdminZoneRefs from './NotificationAdminZoneRefs';
 import NotificationEntityClassRef from './NotificationEntityClassRefs';
-import IconButton from 'material-ui/IconButton';
-import MdDelete from 'material-ui/svg-icons/action/delete';
+import { IconButton } from '@mui/material';
+import { Delete } from '@mui/icons-material';
 
 class NotificationEventFilter extends React.Component {
   handleEnabled(value) {
@@ -128,31 +127,37 @@ class NotificationEventFilter extends React.Component {
           />
         </div>
         <div style={{ display: 'flex', marginTop: -10 }}>
-          <SelectField
-            floatingLabelText="Type"
-            onChange={this.handleChangeEventFilterType.bind(this)}
-            style={{ flex: 1 }}
-            value={notification.eventFilter.type}
-          >
-            {eventFilterTypes.map((eft, i) => (
-              <MenuItem key={'filter-' + i} value={eft} primaryText={eft} />
-            ))}
-          </SelectField>
-          <SelectField
-            floatingLabelText="JobDomain"
-            onChange={this.handleChangeJobDomain.bind(this)}
-            disabled={!enableJobSpecific}
-            style={{ marginLeft: 10, flex: 1 }}
-            value={notification.eventFilter.jobDomain}
-          >
-            {jobDomains.map((domain, i) => (
-              <MenuItem
-                key={'domain-' + i}
-                value={domain}
-                primaryText={domain}
-              />
-            ))}
-          </SelectField>
+          <FormControl style={{ flex: 1 }}>
+            <Select
+              onChange={e =>
+                this.handleChangeEventFilterType(e, null, e.target.value)
+              }
+              value={notification.eventFilter.type}
+              displayEmpty
+            >
+              {eventFilterTypes.map((eft, i) => (
+                <MenuItem key={'filter-' + i} value={eft}>
+                  {eft}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl style={{ marginLeft: 10, flex: 1 }}>
+            <Select
+              onChange={e =>
+                this.handleChangeJobDomain(e, null, e.target.value)
+              }
+              disabled={!enableJobSpecific}
+              value={notification.eventFilter.jobDomain}
+              displayEmpty
+            >
+              {jobDomains.map((domain, i) => (
+                <MenuItem key={'domain-' + i} value={domain}>
+                  {domain}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div
@@ -200,14 +205,21 @@ class NotificationEventFilter extends React.Component {
           </div>
         </div>
         <div style={{ display: 'flex', marginTop: 10, alignItems: 'center' }}>
-          <Checkbox
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={notification.enabled}
+                onChange={e => this.handleEnabled(e.target.checked)}
+              />
+            }
             label="Enabled"
             style={{ width: 'auto' }}
-            checked={notification.enabled}
-            onCheck={(e, v) => this.handleEnabled(v)}
           />
-          <IconButton onClick={this.deleteUserNotification.bind(this)}>
-            <MdDelete />
+          <IconButton
+            onClick={this.deleteUserNotification.bind(this)}
+            size="large"
+          >
+            <Delete />
           </IconButton>
           <span>Delete</span>
         </div>

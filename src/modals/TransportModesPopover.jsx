@@ -15,11 +15,9 @@
  */
 
 import React from 'react';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import Checkbox from 'material-ui/Checkbox';
+import { Menu, MenuItem } from '@mui/material';
+import Button from '@mui/material/Button';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import PropTypes from 'prop-types';
 
 export default class TransportModesPopover extends React.Component {
@@ -49,44 +47,47 @@ export default class TransportModesPopover extends React.Component {
     const { allTransportModes, transportModes } = this.props;
     return (
       <div>
-        <RaisedButton
-          label={<span>Generate service links for transport modes</span>}
+        <Button
+          variant="contained"
           onClick={this.handleOpen.bind(this)}
           style={{ marginLeft: 10 }}
-        />
-        <Popover
+        >
+          <span>Generate service links for transport modes</span>
+        </Button>
+        <Menu
           anchorEl={anchorEl}
           open={open}
-          onRequestClose={() => {
+          onClose={() => {
             this.setState({ open: false });
           }}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          animation={PopoverAnimationVertical}
+          transformOrigin={{ horizontal: 'left', vertical: 'top' }}
         >
           {allTransportModes.map((transportMode, i) => {
             let checked = transportModes.indexOf(transportMode) > -1;
             return (
-              <Menu
+              <MenuItem
                 key={'action-' + i}
-                menuItemStyle={{ fontSize: 12, minHeight: 18 }}
+                style={{ fontSize: 12, minHeight: 18 }}
               >
-                <MenuItem>
-                  <Checkbox
-                    label={transportMode}
-                    checked={checked}
-                    onCheck={(e, isChecked) => {
-                      this.props.handleCheckTransportMode(
-                        transportMode,
-                        isChecked
-                      );
-                    }}
-                  />
-                </MenuItem>
-              </Menu>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checked}
+                      onChange={e => {
+                        this.props.handleCheckTransportMode(
+                          transportMode,
+                          e.target.checked
+                        );
+                      }}
+                    />
+                  }
+                  label={transportMode}
+                />
+              </MenuItem>
             );
           })}
-        </Popover>
+        </Menu>
       </div>
     );
   }

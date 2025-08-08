@@ -22,8 +22,7 @@ import ChouetteJobDetails from './ChouetteJobDetails';
 import ChouetteAllJobs from './ChouetteAllJobs';
 import DataMigrationDetails from './DataMigrationDetails';
 import { PulseLoader as Loader } from 'halogenium';
-import Tabs from 'muicss/lib/react/tabs';
-import Tab from 'muicss/lib/react/tab';
+import { Tabs, Tab, Box } from '@mui/material';
 import { getQueryVariable } from 'utils';
 import OrganizationRegister from './OrganizationRegister';
 import ExportedFilesView from './ExportedFilesView';
@@ -35,13 +34,16 @@ class SupplierTabWrapper extends React.Component {
     super(props);
     this.state = {
       activeTabForProvider: getQueryVariable('tab') || 'migrateData',
-      activeTabForAllProvider: getQueryVariable('tab') || 'chouetteJobs'
+      activeTabForAllProvider: getQueryVariable('tab') || 'chouetteJobs',
+      currentTabIndex: 0
     };
   }
 
   componentDidMount() {
     const queryTab = getQueryVariable('tab');
     const queryId = getQueryVariable('id');
+    const tabIndex = this.getTabIndexFromParams();
+    this.setState({ currentTabIndex: tabIndex });
 
     const { dispatch } = this.props;
     if (queryTab === 'events') {
@@ -107,19 +109,26 @@ class SupplierTabWrapper extends React.Component {
     }
   };
 
-  onTabChangeForProvider(i, value) {
-    if (typeof value === 'object') return;
+  onTabChangeForProvider = (event, newValue) => {
+    if (typeof newValue === 'object') return;
     const { dispatch, activeId } = this.props;
 
-    if (value) {
+    // Find the tab index based on the value
+    const tabIndex = this.getTabIndexForValue(newValue, false);
+    this.setState({
+      currentTabIndex: tabIndex,
+      activeTabForProvider: newValue
+    });
+
+    if (newValue) {
       window.history.pushState(
         window.config.endpointBase,
         'Title',
-        `?id=${activeId}&tab=${value}`
+        `?id=${activeId}&tab=${newValue}`
       );
     }
 
-    switch (value) {
+    switch (newValue) {
       case 'chouetteJobs':
         dispatch(SuppliersActions.getChouetteJobStatus(this.props.getToken));
         break;
@@ -131,19 +140,26 @@ class SupplierTabWrapper extends React.Component {
       default:
         break;
     }
-  }
+  };
 
-  onTabChangeForAllProviders(i, value) {
-    if (typeof value === 'object') return;
+  onTabChangeForAllProviders = (event, newValue) => {
+    if (typeof newValue === 'object') return;
 
-    if (value) {
+    // Find the tab index based on the value
+    const tabIndex = this.getTabIndexForValue(newValue, true);
+    this.setState({
+      currentTabIndex: tabIndex,
+      activeTabForAllProvider: newValue
+    });
+
+    if (newValue) {
       window.history.pushState(
         window.config.endpointBase,
         'Title',
-        `?tab=${value}`
+        `?tab=${newValue}`
       );
     }
-    switch (value) {
+    switch (newValue) {
       case 'chouetteJobs':
         this.props.dispatch(
           SuppliersActions.getChouetteJobsForAllSuppliers(this.props.getToken)
@@ -157,7 +173,7 @@ class SupplierTabWrapper extends React.Component {
       default:
         break;
     }
-  }
+  };
 
   getTabIndexFromParams() {
     const { displayAllSuppliers } = this.props;
@@ -169,7 +185,8 @@ class SupplierTabWrapper extends React.Component {
         return displayAllSuppliers ? 0 : 2;
       case 'migrateData': {
         if (displayAllSuppliers) {
-          this.onTabChangeForAllProviders(0, 'chouetteJobs', null, null);
+          // For MUI tabs, we need to call with event and value
+          this.onTabChangeForAllProviders(null, 'chouetteJobs');
         }
         return 0;
       }
@@ -179,14 +196,14 @@ class SupplierTabWrapper extends React.Component {
         if (displayAllSuppliers) {
           return 3;
         } else {
-          this.onTabChangeForAllProviders(0, 'migrateData', null, null);
+          this.onTabChangeForAllProviders(null, 'migrateData');
           return 0;
         }
       case 'organisationRegister':
         if (displayAllSuppliers) {
           return 4;
         } else {
-          this.onTabChangeForAllProviders(0, 'migrateData', null, null);
+          this.onTabChangeForAllProviders(null, 'migrateData');
           return 0;
         }
       default:
@@ -194,17 +211,73 @@ class SupplierTabWrapper extends React.Component {
     }
   }
 
-  componentDidUpdate() {
+  getTabIndexForValue(value, isAllProviders) {
+    if (isAllProviders) {
+      switch (value) {
+        case 'chouetteJobs':
+          return 0;
+        case 'events':
+          return 1;
+        case 'statistics':
+          return 2;
+        case 'exportedFiles':
+          return 3;
+        case 'organisationRegister':
+          return 4;
+        default:
+          return 0;
+      }
+    } else {
+      switch (value) {
+        case 'migrateData':
+          return 0;
+        case 'events':
+          return 1;
+        case 'chouetteJobs':
+          return 2;
+        case 'statistics':
+          return 3;
+        default:
+          return 0;
+      }
+    }
+  }
+
+  getTabValueFromIndex(index, isAllProviders) {
+    if (isAllProviders) {
+      const values = [
+        'chouetteJobs',
+        'events',
+        'statistics',
+        'exportedFiles',
+        'organisationRegister'
+      ];
+      return values[index] || 'chouetteJobs';
+    } else {
+      const values = ['migrateData', 'events', 'chouetteJobs', 'statistics'];
+      return values[index] || 'migrateData';
+    }
+  }
+
+  componentDidUpdate(prevProps) {
     const tabIndexFromParams = this.getTabIndexFromParams();
-    const { allProvidersTabs } = this.refs;
-    if (
-      allProvidersTabs &&
-      allProvidersTabs.state &&
-      allProvidersTabs.state.currentSelectedIndex !== tabIndexFromParams
-    ) {
-      allProvidersTabs.setState({
-        currentSelectedIndex: tabIndexFromParams
-      });
+
+    // Update currentTabIndex when activeId changes
+    if (prevProps.activeId !== this.props.activeId) {
+      this.setState({ currentTabIndex: tabIndexFromParams });
+
+      // If on chouette jobs tab, fetch the data for the new provider
+      const queryTab = getQueryVariable('tab');
+      if (queryTab === 'chouetteJobs' && this.props.activeId) {
+        this.props.dispatch(
+          SuppliersActions.getChouetteJobStatus(this.props.getToken)
+        );
+      }
+    }
+
+    // Update tab state if params changed (for MUI tabs we manage state internally)
+    if (this.state.currentTabIndex !== tabIndexFromParams) {
+      this.setState({ currentTabIndex: tabIndexFromParams });
     }
   }
 
@@ -248,18 +321,30 @@ class SupplierTabWrapper extends React.Component {
       let tabsToRender;
 
       if (displayAllSuppliers) {
+        const { currentTabIndex, activeTabForAllProvider } = this.state;
+        const currentValue = this.getTabValueFromIndex(currentTabIndex, true);
         tabsToRender = (
-          <Tabs
-            justified={true}
-            onChange={this.onTabChangeForAllProviders.bind(this)}
-            defaultSelectedIndex={defaultSelectedIndex}
-            ref="allProvidersTabs"
-          >
-            <Tab value="chouetteJobs" label="Chouette jobs">
-              <ChouetteAllJobs />
-            </Tab>
-            <Tab value="events" label="Events">
-              {window.config.zagmukMicroFrontendUrl && (
+          <Box>
+            <Tabs
+              value={currentValue}
+              onChange={this.onTabChangeForAllProviders}
+              variant="fullWidth"
+              sx={{ borderBottom: 1, borderColor: 'divider' }}
+            >
+              <Tab value="chouetteJobs" label="Chouette jobs" />
+              <Tab value="events" label="Events" />
+              <Tab value="statistics" label="Statistics" />
+              <Tab value="exportedFiles" label="Exported files" />
+              {canEditOrganisation && (
+                <Tab
+                  value="organisationRegister"
+                  label="Organisation register"
+                />
+              )}
+            </Tabs>
+            <Box sx={{ p: 3 }}>
+              {currentTabIndex === 0 && <ChouetteAllJobs />}
+              {currentTabIndex === 1 && window.config.zagmukMicroFrontendUrl && (
                 <MicroFrontend
                   id="ror-zagmuk"
                   host={window.config.zagmukMicroFrontendUrl}
@@ -286,9 +371,7 @@ class SupplierTabWrapper extends React.Component {
                   handleError={error => console.log(error)}
                 />
               )}
-            </Tab>
-            <Tab value="statistics" label="Statistics">
-              {window.config.ninsarMicroFrontendUrl && (
+              {currentTabIndex === 2 && window.config.ninsarMicroFrontendUrl && (
                 <MicroFrontend
                   id="ror-ninsar"
                   host={window.config.ninsarMicroFrontendUrl}
@@ -308,29 +391,32 @@ class SupplierTabWrapper extends React.Component {
                   )}
                 />
               )}
-            </Tab>
-            <Tab value="exportedFiles" label="Exported files">
-              <ExportedFilesView />
-            </Tab>
-            {canEditOrganisation ? (
-              <Tab value="organisationRegister" label="Organisation register">
+              {currentTabIndex === 3 && <ExportedFilesView />}
+              {canEditOrganisation && currentTabIndex === 4 && (
                 <OrganizationRegister />
-              </Tab>
-            ) : null}
-          </Tabs>
+              )}
+            </Box>
+          </Box>
         );
       } else {
+        const { currentTabIndex } = this.state;
+        const currentValue = this.getTabValueFromIndex(currentTabIndex, false);
         tabsToRender = (
-          <Tabs
-            justified={true}
-            onChange={this.onTabChangeForProvider.bind(this)}
-            defaultSelectedIndex={defaultSelectedIndex}
-          >
-            <Tab value="migrateData" label="Migrate data">
-              <DataMigrationDetails />
-            </Tab>
-            <Tab value="events" label="Events">
-              {window.config.zagmukMicroFrontendUrl && (
+          <Box>
+            <Tabs
+              value={currentValue}
+              onChange={this.onTabChangeForProvider}
+              variant="fullWidth"
+              sx={{ borderBottom: 1, borderColor: 'divider' }}
+            >
+              <Tab value="migrateData" label="Migrate data" />
+              <Tab value="events" label="Events" />
+              <Tab value="chouetteJobs" label="Chouette jobs" />
+              <Tab value="statistics" label="Statistics" />
+            </Tabs>
+            <Box sx={{ p: 3 }}>
+              {currentTabIndex === 0 && <DataMigrationDetails />}
+              {currentTabIndex === 1 && window.config.zagmukMicroFrontendUrl && (
                 <MicroFrontend
                   id="ror-zagmuk"
                   host={window.config.zagmukMicroFrontendUrl}
@@ -358,12 +444,10 @@ class SupplierTabWrapper extends React.Component {
                   handleError={error => console.log(error)}
                 />
               )}
-            </Tab>
-            <Tab value="chouetteJobs" label="Chouette jobs">
-              <ChouetteJobDetails getToken={this.props.getToken} />
-            </Tab>
-            <Tab value="statistics" label="Statistics">
-              {window.config.ninsarMicroFrontendUrl && (
+              {currentTabIndex === 2 && (
+                <ChouetteJobDetails getToken={this.props.getToken} />
+              )}
+              {currentTabIndex === 3 && window.config.ninsarMicroFrontendUrl && (
                 <MicroFrontend
                   id="ror-ninsar"
                   host={window.config.ninsarMicroFrontendUrl}
@@ -384,8 +468,8 @@ class SupplierTabWrapper extends React.Component {
                   )}
                 />
               )}
-            </Tab>
-          </Tabs>
+            </Box>
+          </Box>
         );
       }
 
