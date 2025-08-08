@@ -18,13 +18,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import withAuth from 'utils/withAuth';
 import cfgreader from 'config/readConfig';
-import Container from 'muicss/lib/react/container';
+import {
+  Container,
+  Paper,
+  Grid,
+  Button,
+  FormControl,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+  Checkbox
+} from '@mui/material';
+import Container_old from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
-import Button from 'muicss/lib/react/button';
-import Checkbox from 'muicss/lib/react/checkbox';
-import Radio from 'muicss/lib/react/radio';
-import Form from 'muicss/lib/react/form';
+import Button_old from 'muicss/lib/react/button';
 import Panel from 'muicss/lib/react/panel';
 import { DotLoader as Loader } from 'halogenium';
 import SuppliersActions from 'actions/SuppliersActions';
@@ -137,109 +145,158 @@ class ChouetteAllJobs extends React.Component {
                   </p>
                 </Col>
                 <Col md="2">
-                  <Checkbox
-                    onChange={event => this.handleStatusFilterAllChange(event)}
-                    defaultChecked={chouetteJobAllFilter.SCHEDULED}
-                    name="SCHEDULED"
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={event => {
+                          event.stopPropagation();
+                          this.handleStatusFilterAllChange(event);
+                        }}
+                        defaultChecked={chouetteJobAllFilter.SCHEDULED}
+                        name="SCHEDULED"
+                      />
+                    }
                     label="Scheduled"
                   />
                 </Col>
                 <Col md="2">
-                  <Checkbox
-                    onChange={event => this.handleStatusFilterAllChange(event)}
-                    defaultChecked={chouetteJobAllFilter.RESCHEDULED}
-                    name="RESCHEDULED"
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={event => {
+                          event.stopPropagation();
+                          this.handleStatusFilterAllChange(event);
+                        }}
+                        defaultChecked={chouetteJobAllFilter.RESCHEDULED}
+                        name="RESCHEDULED"
+                      />
+                    }
                     label="Rescheduled"
                   />
                 </Col>
                 <Col md="2">
-                  <Checkbox
-                    onChange={event => this.handleStatusFilterAllChange(event)}
-                    defaultChecked={chouetteJobAllFilter.STARTED}
-                    name="STARTED"
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={event => {
+                          event.stopPropagation();
+                          this.handleStatusFilterAllChange(event);
+                        }}
+                        defaultChecked={chouetteJobAllFilter.STARTED}
+                        name="STARTED"
+                      />
+                    }
                     label="Started"
                   />
                 </Col>
                 <Col md="2">
-                  <Checkbox
-                    onChange={event => this.handleStatusFilterAllChange(event)}
-                    defaultChecked={chouetteJobAllFilter.TERMINATED}
-                    name="TERMINATED"
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={event => {
+                          event.stopPropagation();
+                          this.handleStatusFilterAllChange(event);
+                        }}
+                        defaultChecked={chouetteJobAllFilter.TERMINATED}
+                        name="TERMINATED"
+                      />
+                    }
                     label="Completed"
                   />
                 </Col>
                 <Col md="2">
-                  <Checkbox
-                    onChange={event => this.handleStatusFilterAllChange(event)}
-                    defaultChecked={chouetteJobAllFilter.CANCELED}
-                    name="CANCELED"
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={event => {
+                          event.stopPropagation();
+                          this.handleStatusFilterAllChange(event);
+                        }}
+                        defaultChecked={chouetteJobAllFilter.CANCELED}
+                        name="CANCELED"
+                      />
+                    }
                     label="Canceled"
                   />
                 </Col>
                 <Col md="1">
-                  <Checkbox
-                    onChange={event => this.handleStatusFilterAllChange(event)}
-                    defaultChecked={chouetteJobAllFilter.ABORTED}
-                    name="ABORTED"
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={event => {
+                          event.stopPropagation();
+                          this.handleStatusFilterAllChange(event);
+                        }}
+                        defaultChecked={chouetteJobAllFilter.ABORTED}
+                        name="ABORTED"
+                      />
+                    }
                     label="Aborted/Error"
                   />
                 </Col>
               </Row>
             </div>
             <div className="filter-wrapper">
-              <Row>
-                <Col md="1">
+              <Grid container spacing={2} alignItems="baseline">
+                <Grid item xs={1}>
                   <p>
                     <b>Action</b>
                   </p>
-                </Col>
-                <Form>
-                  <Col md="2">
-                    <Radio
-                      onClick={event => this.setActiveActionAllFilter(event)}
-                      value=""
+                </Grid>
+                <Grid item xs={8}>
+                  <FormControl>
+                    <RadioGroup
+                      row
+                      defaultValue=""
                       name="action-filter"
-                      label="No filter"
-                      defaultChecked={true}
-                    />
-                  </Col>
-                  <Col md="2">
-                    <Radio
-                      onClick={event => this.setActiveActionAllFilter(event)}
-                      value="importer"
-                      name="action-filter"
-                      label="Importer"
-                    />
-                  </Col>
-                  <Col md="2">
-                    <Radio
-                      onClick={event => this.setActiveActionAllFilter(event)}
-                      value="exporter"
-                      name="action-filter"
-                      label="Exporter"
-                    />
-                  </Col>
-                  <Col md="2">
-                    <Radio
-                      onClick={event => this.setActiveActionAllFilter(event)}
-                      value="validator"
-                      name="action-filter"
-                      label="Validator"
-                    />
-                  </Col>
-                  <Col md="3">
-                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DatePicker
-                        label="From ..."
-                        value={this.state.filterFromDate}
-                        onChange={newValue => {
-                          this.setState({ filterFromDate: newValue });
-                        }}
+                      onChange={(event, value) => {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        // Create a synthetic event with the target structure expected by setActiveActionAllFilter
+                        const syntheticEvent = {
+                          target: {
+                            name: 'action-filter',
+                            value: value
+                          }
+                        };
+                        this.setActiveActionAllFilter(syntheticEvent);
+                      }}
+                    >
+                      <FormControlLabel
+                        value=""
+                        control={<Radio />}
+                        label="No filter"
                       />
-                    </LocalizationProvider>
-                  </Col>
-                </Form>
-              </Row>
+                      <FormControlLabel
+                        value="importer"
+                        control={<Radio />}
+                        label="Importer"
+                      />
+                      <FormControlLabel
+                        value="exporter"
+                        control={<Radio />}
+                        label="Exporter"
+                      />
+                      <FormControlLabel
+                        value="validator"
+                        control={<Radio />}
+                        label="Validator"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={3}>
+                  <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <DatePicker
+                      label="From ..."
+                      value={this.state.filterFromDate}
+                      onChange={newValue => {
+                        this.setState({ filterFromDate: newValue });
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Grid>
+              </Grid>
             </div>
           </Panel>
           <Row>
