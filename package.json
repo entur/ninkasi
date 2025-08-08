@@ -52,7 +52,7 @@
     "redux-logger": "3.0.6",
     "redux-thunk": "2.4.2",
     "sass": "1.90.0",
-    "styled-components": "4.4.1",
+    "styled-components": "6.1.19",
     "uuid": "3.4.0"
   },
   "browserslist": {
