@@ -465,7 +465,7 @@ SuppliersActions.deleteProvider = (providerId, getToken) => async (
   return axios
     .delete(url, await getApiConfig(getToken))
     .then(response => {
-      SuppliersActions.selectActiveSupplier(-1);
+      dispatch(SuppliersActions.selectActiveSupplier(-1, getToken));
       dispatch(sendData(response.data, types.SUCCESS_DELETE_PROVIDER));
 
       dispatch(SuppliersActions.addNotification('Provider deleted', 'success'));

@@ -74,13 +74,13 @@ class SuppliersContainer extends React.Component {
 
   handleOpenConfirmDeleteProviderDialog(open = true) {
     if (open) {
-      const { dispatch, activeProviderId } = this.props;
+      const { dispatch, activeProviderId, getToken } = this.props;
       this.setState({
         confirmDialogOpen: true,
         confirmTitle: 'Delete provider',
         confirmInfo: 'Are you sure you want delete the provider?',
         confirmAction: () => {
-          dispatch(SuppliersActions.deleteProvider(activeProviderId));
+          dispatch(SuppliersActions.deleteProvider(activeProviderId, getToken));
         }
       });
     } else {
