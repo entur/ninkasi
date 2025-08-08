@@ -24,7 +24,7 @@
     "@mui/x-date-pickers-pro": "8.10.0",
     "axios": "1.11.0",
     "chai": "5.2.1",
-    "chart.js": "2.9.4",
+    "chart.js": "4.5.0",
     "classnames": "2.5.1",
     "clipboard-js": "0.3.6",
     "connected-react-router": "6.9.3",
