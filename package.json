@@ -46,7 +46,7 @@
     "react-notification": "6.8.5",
     "react-notification-system": "0.4.0",
     "react-oidc-context": "3.3.0",
-    "react-redux": "7.2.9",
+    "react-redux": "9.2.0",
     "react-router": "5.3.4",
     "react-select": "2.4.4",
     "redux": "5.0.1",
