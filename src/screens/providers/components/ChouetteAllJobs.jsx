@@ -54,16 +54,19 @@ class ChouetteAllJobs extends React.Component {
   }
 
   handleCancelChouetteJob = (id, providerId) => {
+    const { getToken } = this.props;
     this.props.dispatch(
-      SuppliersActions.cancelChouetteJobForProvider(providerId, id)
+      SuppliersActions.cancelChouetteJobForProvider(providerId, id, getToken)
     );
   };
 
   handleStatusFilterAllChange = event => {
+    const { getToken } = this.props;
     this.props.dispatch(
       SuppliersActions.toggleChouetteInfoCheckboxAllFilter(
         event.target.name,
-        event.target.checked
+        event.target.checked,
+        getToken
       )
     );
   };

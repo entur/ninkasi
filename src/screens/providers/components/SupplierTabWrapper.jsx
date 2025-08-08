@@ -383,7 +383,9 @@ class SupplierTabWrapper extends React.Component {
               )}
             </Tab>
             <Tab value="chouetteJobs" label="Chouette jobs">
-              {currentTabIndex === 2 && <ChouetteJobDetails />}
+              {currentTabIndex === 2 && (
+                <ChouetteJobDetails getToken={this.props.getToken} />
+              )}
             </Tab>
             <Tab value="statistics" label="Statistics">
               {currentTabIndex === 3 && window.config.ninsarMicroFrontendUrl && (
