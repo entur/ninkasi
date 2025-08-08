@@ -19,6 +19,13 @@ import { Autocomplete, TextField } from '@mui/material';
 import { Chip } from '@mui/material';
 
 class AdminZoneSearchWrapper extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputValue: ''
+    };
+  }
+
   getZoneType(type) {
     let typeMap = {
       COUNTRY: 'Country',
@@ -37,8 +44,8 @@ class AdminZoneSearchWrapper extends React.Component {
       });
     }
 
-    this.refs.adminSearch.setState({
-      searchText: ''
+    this.setState({
+      inputValue: ''
     });
   }
 
@@ -56,6 +63,10 @@ class AdminZoneSearchWrapper extends React.Component {
           style={{ marginTop: -5, flex: 2 }}
           options={formattedZones}
           getOptionLabel={option => option.text}
+          inputValue={this.state.inputValue}
+          onInputChange={(event, newInputValue) => {
+            this.setState({ inputValue: newInputValue });
+          }}
           onChange={(event, newValue) => {
             if (newValue) {
               this.handleNewRequest(newValue, -1);

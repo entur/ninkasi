@@ -44,6 +44,7 @@ const initialState = {
 class ModalCreateEntityType extends React.Component {
   constructor(props) {
     super(props);
+    this.classificationsRef = React.createRef();
     this.state = initialState;
   }
 
@@ -73,7 +74,7 @@ class ModalCreateEntityType extends React.Component {
   }
 
   handleRemoveClassification() {
-    const { classifications } = this.refs;
+    const classifications = this.classificationsRef.current;
     const index = classifications.options.selectedIndex;
 
     if (index > -1) {
@@ -194,7 +195,7 @@ class ModalCreateEntityType extends React.Component {
               <select
                 multiple="multiple"
                 style={{ width: '100%', fontSize: 12 }}
-                ref="classifications"
+                ref={this.classificationsRef}
               >
                 {entityType.classifications.map((et, index) => (
                   <option key={'ec-' + index}>

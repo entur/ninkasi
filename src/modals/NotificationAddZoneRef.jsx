@@ -18,11 +18,18 @@ import React from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 
 class NotificationAddZoneRef extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputValue: ''
+    };
+  }
+
   handleNewRequest({ text, value }) {
     if (text && value) {
       this.props.handleAdd(value);
-      this.refs.adminSearch.setState({
-        searchText: ''
+      this.setState({
+        inputValue: ''
       });
     }
   }
@@ -53,6 +60,10 @@ class NotificationAddZoneRef extends React.Component {
           <Autocomplete
             options={formattedZones}
             getOptionLabel={option => option.text}
+            inputValue={this.state.inputValue}
+            onInputChange={(event, newInputValue) => {
+              this.setState({ inputValue: newInputValue });
+            }}
             onChange={(event, newValue) => {
               if (newValue) {
                 this.handleNewRequest(newValue);
