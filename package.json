@@ -9,7 +9,8 @@
     "prod": "BABEL_ENV=production NODE_ENV=production node server.js",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky install"
   },
   "license": "EUPL",
   "dependencies": {
@@ -69,16 +70,12 @@
   "prettier": {
     "singleQuote": true
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "prettier --write",
       "git add"
-    ]
+    ],
+    "*.{js,jsx,ts,tsx,json,css,scss,md}": "prettier --write"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "6.6.4",
