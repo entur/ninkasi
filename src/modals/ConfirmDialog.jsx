@@ -20,7 +20,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
 } from '@mui/material';
 import Button from '@mui/material/Button';
 
@@ -45,7 +45,7 @@ class ConfirmDialog extends Component {
       </Button>,
       <Button variant="text" onClick={this.handleSubmit.bind(this)}>
         Confirm
-      </Button>
+      </Button>,
     ];
 
     return (
@@ -64,7 +64,7 @@ ConfirmDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func,
   title: PropTypes.string,
-  info: PropTypes.string
+  info: PropTypes.string,
 };
 
 export default ConfirmDialog;

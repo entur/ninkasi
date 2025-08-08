@@ -27,7 +27,7 @@ import { startRouteChangeEmitter } from '@entur/micro-frontend';
 
 startRouteChangeEmitter();
 
-cfgreader.readConfig(function(config) {
+cfgreader.readConfig(function (config) {
   window.config = config;
   renderIndex(config);
 });
@@ -61,7 +61,7 @@ function renderIndex(config) {
     response_type: 'code',
     scope: 'openid profile email',
     automaticSilentRenew: true,
-    includeIdTokenInSilentRenew: true
+    includeIdTokenInSilentRenew: true,
   };
 
   if (config.auth0Audience) {
@@ -72,6 +72,6 @@ function renderIndex(config) {
   root.render(
     <AuthProvider {...oidcConfig}>
       <AuthenticatedApp />
-    </AuthProvider>
+    </AuthProvider>,
   );
 }

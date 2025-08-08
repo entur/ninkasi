@@ -10,8 +10,8 @@ import AppActions from 'actions/AppActions';
 import { getProvidersEnv, getTheme } from 'config/themes';
 import Logo from './Logo';
 
-const Router = props => {
-  const handleMenuItemClick = route => {
+const Router = (props) => {
+  const handleMenuItemClick = (route) => {
     props.toggleMenu();
     props.pushRoute(route);
   };
@@ -19,12 +19,12 @@ const Router = props => {
   const providersEnv = getProvidersEnv(window.config.providersBaseUrl);
 
   const drawerStyle = {
-    width: '250px'
+    width: '250px',
     //...getTheme(providersEnv)
   };
 
   const paperStyle = {
-    ...getTheme(providersEnv)
+    ...getTheme(providersEnv),
   };
 
   return (
@@ -32,7 +32,7 @@ const Router = props => {
       open={props.open}
       style={drawerStyle}
       PaperProps={{
-        style: paperStyle
+        style: paperStyle,
       }}
       onClose={() => props.toggleMenu()}
     >
@@ -42,7 +42,7 @@ const Router = props => {
           display: 'flex',
           justifyContent: 'space-around',
           alignItems: 'center',
-          lineHeight: '64px'
+          lineHeight: '64px',
         }}
       >
         <Logo providersEnv={providersEnv} />
@@ -74,21 +74,21 @@ const Router = props => {
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   pathname: state.router.location.pathname,
   search: state.router.location.search,
-  hash: state.router.location.hash
+  hash: state.router.location.hash,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    pushRoute: route => dispatch(push(route)),
-    toggleMenu: () => dispatch(AppActions.toggleMenu())
+    pushRoute: (route) => dispatch(push(route)),
+    toggleMenu: () => dispatch(AppActions.toggleMenu()),
   };
 };
 
 Router.defaultProps = {
-  open: false
+  open: false,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Router);

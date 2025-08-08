@@ -17,7 +17,7 @@ import { useAuth } from 'react-oidc-context';
 import getApiConfig from 'actions/getApiConfig';
 import './OSMPOIFilter.scss';
 
-const sort = data => {
+const sort = (data) => {
   return data.sort((a, b) => {
     if (a.id > b.id) {
       return 1;
@@ -34,15 +34,14 @@ const OSMPOIFilter = () => {
   const scrollRef = useRef(null);
 
   const [poiFilterArray, setPoiFilterArray] = useState([
-    { key: '', value: '' }
+    { key: '', value: '' },
   ]);
-  const [dirtyPoiFilterArray, setDirtyPoiFilterArray] = useState(
-    poiFilterArray
-  );
+  const [dirtyPoiFilterArray, setDirtyPoiFilterArray] =
+    useState(poiFilterArray);
   const [isDirty, setDirty] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
-  const handleResponse = data => {
+  const handleResponse = (data) => {
     setPoiFilterArray(data);
     setDirtyPoiFilterArray(data);
     setDirty(false);
@@ -56,7 +55,7 @@ const OSMPOIFilter = () => {
       const url = window.config.poiFilterBaseUrl;
       axios
         .get(url, config)
-        .then(response => response.data)
+        .then((response) => response.data)
         .then(sort)
         .then(handleResponse);
     };
@@ -77,7 +76,7 @@ const OSMPOIFilter = () => {
     setDirty(true);
   };
 
-  const handleDeleteFilter = index => {
+  const handleDeleteFilter = (index) => {
     const copy = dirtyPoiFilterArray.slice();
     copy.splice(index, 1);
     setDirtyPoiFilterArray(copy);
@@ -108,11 +107,11 @@ const OSMPOIFilter = () => {
         const url = window.config.poiFilterBaseUrl;
         axios
           .get(url, config)
-          .then(response => response.data)
+          .then((response) => response.data)
           .then(sort)
           .then(handleResponse);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -144,7 +143,7 @@ const OSMPOIFilter = () => {
             disabled={
               isLoading ||
               !isDirty ||
-              dirtyPoiFilterArray.some(filter => filter.priority < 1)
+              dirtyPoiFilterArray.some((filter) => filter.priority < 1)
             }
             onClick={handleSubmit}
           >
@@ -176,9 +175,9 @@ const OSMPOIFilter = () => {
           </TableHead>
           <TableBody>
             {isLoading
-              ? [...Array(10).keys()].map(i => (
+              ? [...Array(10).keys()].map((i) => (
                   <TableRow key={`skeleton-row_${i}`}>
-                    {[...Array(4).keys()].map(j => (
+                    {[...Array(4).keys()].map((j) => (
                       <TableCell key={`skeleton-cell_${j}`}>
                         <Skeleton variant="text" />
                       </TableCell>
@@ -196,7 +195,7 @@ const OSMPOIFilter = () => {
                         label="Key"
                         placeholder="Enter key"
                         value={key}
-                        onChange={e =>
+                        onChange={(e) =>
                           handleChange(index, 'key', e.target.value)
                         }
                         size="small"
@@ -211,7 +210,7 @@ const OSMPOIFilter = () => {
                         label="Value"
                         placeholder="Enter value"
                         value={value}
-                        onChange={e =>
+                        onChange={(e) =>
                           handleChange(index, 'value', e.target.value)
                         }
                         size="small"
@@ -228,11 +227,11 @@ const OSMPOIFilter = () => {
                         placeholder="Enter priority"
                         value={priority}
                         inputProps={{ min: 1 }}
-                        onChange={e =>
+                        onChange={(e) =>
                           handleChange(
                             index,
                             'priority',
-                            parseInt(e.target.value, 10)
+                            parseInt(e.target.value, 10),
                           )
                         }
                         error={priority < 1}

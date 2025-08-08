@@ -20,7 +20,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import Actions from 'actions/OrganizationRegisterActions';
@@ -45,7 +45,7 @@ class ModalNewPassword extends React.Component {
         onClick={this.handleClose.bind(this)}
       >
         Close
-      </Button>
+      </Button>,
     ];
 
     return (

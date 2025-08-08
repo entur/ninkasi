@@ -27,21 +27,21 @@ class EventFilterStatesPopover extends React.Component {
     index: PropTypes.number.isRequired,
     eventFilter: PropTypes.object.isRequired,
     enabled: PropTypes.bool.isRequired,
-    allStates: PropTypes.array.isRequired
+    allStates: PropTypes.array.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      anchorEl: null
+      anchorEl: null,
     };
   }
 
   handleOpen(event) {
     this.setState({
       open: true,
-      anchorEl: event.currentTarget
+      anchorEl: event.currentTarget,
     });
   }
 
@@ -51,8 +51,8 @@ class EventFilterStatesPopover extends React.Component {
       OrganizationRegisterActions.changeEventFilterState(
         index,
         state,
-        isChecked
-      )
+        isChecked,
+      ),
     );
   }
 

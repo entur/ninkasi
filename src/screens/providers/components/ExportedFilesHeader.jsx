@@ -25,7 +25,7 @@ class ExportedFilesHeader extends Component {
       alignItems: 'center',
       fontWeight: 600,
       background: 'rgb(47, 47, 47)',
-      color: '#fff'
+      color: '#fff',
     };
 
     return (

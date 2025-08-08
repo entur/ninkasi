@@ -8,7 +8,7 @@ export const ShowOTPGraphStatus = () => {
       <div
         style={{
           display: 'flex',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
         <LatestOTPGraphVersions />

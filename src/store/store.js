@@ -34,12 +34,12 @@ export default function configureStore() {
       applyMiddleware(
         routerMiddleware(history),
         thunkMiddleware,
-        loggerMiddleware
-      )
+        loggerMiddleware,
+      ),
     );
   } else {
     enchancer = compose(
-      applyMiddleware(routerMiddleware(history), thunkMiddleware)
+      applyMiddleware(routerMiddleware(history), thunkMiddleware),
     );
   }
 

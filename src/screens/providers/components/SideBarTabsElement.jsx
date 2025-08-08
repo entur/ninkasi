@@ -26,12 +26,12 @@ class SideBarTabsElement extends React.Component {
       borderRadius: 5,
       background: 'rgba(128, 128, 128, 0.17)',
       marginBottom: 10,
-      color: '#454545'
+      color: '#454545',
     };
 
     const activeStyle = {
       background: '#39a1f4',
-      color: '#fff'
+      color: '#fff',
     };
 
     const appliedStyle = active ? { ...style, ...activeStyle } : style;

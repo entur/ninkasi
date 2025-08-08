@@ -33,7 +33,7 @@ import {
   TableHead,
   TableBody,
   TableRow,
-  TableCell
+  TableCell,
 } from '@mui/material';
 import SuppliersActions from 'actions/SuppliersActions';
 import { DotLoader as Loader } from 'halogenium';
@@ -50,12 +50,12 @@ class ChouetteJobDetails extends React.Component {
     super(props);
     this.state = {
       activeChouettePageIndex: 0,
-      filterFromDate: null
+      filterFromDate: null,
     };
   }
 
   componentWillMount() {
-    cfgreader.readConfig(function(config) {
+    cfgreader.readConfig(function (config) {
       window.config = config;
     });
   }
@@ -65,36 +65,36 @@ class ChouetteJobDetails extends React.Component {
     return status;
   }
 
-  handleCancelChouetteJob = index => {
+  handleCancelChouetteJob = (index) => {
     const { dispatch, activeId, getToken } = this.props;
     dispatch(
-      SuppliersActions.cancelChouetteJobForProvider(activeId, index, getToken)
+      SuppliersActions.cancelChouetteJobForProvider(activeId, index, getToken),
     );
   };
 
-  handleCancelAllChouetteJobs = event => {
+  handleCancelAllChouetteJobs = (event) => {
     event.preventDefault();
     const { dispatch, activeId, getToken } = this.props;
     dispatch(
-      SuppliersActions.cancelAllChouetteJobsforProvider(activeId, getToken)
+      SuppliersActions.cancelAllChouetteJobsforProvider(activeId, getToken),
     );
   };
 
-  handleStatusFilterChange = event => {
+  handleStatusFilterChange = (event) => {
     const { dispatch, getToken } = this.props;
     dispatch(
       SuppliersActions.toggleChouetteInfoCheckboxFilter(
         event.target.name,
         event.target.checked,
-        getToken
-      )
+        getToken,
+      ),
     );
   };
 
   handlePageClick(e, pageIndex) {
     e.preventDefault();
     this.setState({
-      activeChouettePageIndex: pageIndex
+      activeChouettePageIndex: pageIndex,
     });
   }
 
@@ -102,7 +102,7 @@ class ChouetteJobDetails extends React.Component {
     if (event.target.name === 'action-filter') {
       const { dispatch, getToken } = this.props;
       dispatch(
-        SuppliersActions.setActiveActionFilter(event.target.value, getToken)
+        SuppliersActions.setActiveActionFilter(event.target.value, getToken),
       );
     }
   }
@@ -114,7 +114,7 @@ class ChouetteJobDetails extends React.Component {
 
   handleOnDatePickerChange(event, date) {
     this.setState({
-      filterFromDate: date
+      filterFromDate: date,
     });
   }
 
@@ -129,14 +129,14 @@ class ChouetteJobDetails extends React.Component {
       requestingJobs,
       chouetteJobStatus,
       sortProperty,
-      sortOrder
+      sortOrder,
     } = this.props;
     const { activeChouettePageIndex, filterFromDate } = this.state;
     const paginationMap = getPaginationMap(
       chouetteJobStatus,
       sortProperty,
       sortOrder,
-      filterFromDate
+      filterFromDate,
     );
 
     const page = paginationMap ? paginationMap[activeChouettePageIndex] : null;
@@ -155,7 +155,7 @@ class ChouetteJobDetails extends React.Component {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={event => {
+                      onChange={(event) => {
                         event.stopPropagation();
                         this.handleStatusFilterChange(event);
                       }}
@@ -170,7 +170,7 @@ class ChouetteJobDetails extends React.Component {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={event => {
+                      onChange={(event) => {
                         event.stopPropagation();
                         this.handleStatusFilterChange(event);
                       }}
@@ -185,7 +185,7 @@ class ChouetteJobDetails extends React.Component {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={event => {
+                      onChange={(event) => {
                         event.stopPropagation();
                         this.handleStatusFilterChange(event);
                       }}
@@ -200,7 +200,7 @@ class ChouetteJobDetails extends React.Component {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={event => {
+                      onChange={(event) => {
                         event.stopPropagation();
                         this.handleStatusFilterChange(event);
                       }}
@@ -215,7 +215,7 @@ class ChouetteJobDetails extends React.Component {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={event => {
+                      onChange={(event) => {
                         event.stopPropagation();
                         this.handleStatusFilterChange(event);
                       }}
@@ -230,7 +230,7 @@ class ChouetteJobDetails extends React.Component {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={event => {
+                      onChange={(event) => {
                         event.stopPropagation();
                         this.handleStatusFilterChange(event);
                       }}
@@ -263,8 +263,8 @@ class ChouetteJobDetails extends React.Component {
                       const syntheticEvent = {
                         target: {
                           name: 'action-filter',
-                          value: value
-                        }
+                          value: value,
+                        },
                       };
                       this.setActiveActionFilter(syntheticEvent);
                     }}
@@ -297,7 +297,7 @@ class ChouetteJobDetails extends React.Component {
                   <DatePicker
                     label="From ..."
                     value={this.state.filterFromDate}
-                    onChange={newValue => {
+                    onChange={(newValue) => {
                       this.setState({ filterFromDate: newValue });
                     }}
                   />
@@ -326,7 +326,7 @@ class ChouetteJobDetails extends React.Component {
                   alignItems: 'center',
                   gap: 1,
                   mb: 2,
-                  flexWrap: 'wrap'
+                  flexWrap: 'wrap',
                 }}
               >
                 <Typography variant="body2">Pages:</Typography>
@@ -339,7 +339,7 @@ class ChouetteJobDetails extends React.Component {
                         ? 'contained'
                         : 'outlined'
                     }
-                    onClick={e => this.handlePageClick(e, index)}
+                    onClick={(e) => this.handlePageClick(e, index)}
                     sx={{ minWidth: '32px', px: 1 }}
                   >
                     {index}
@@ -462,14 +462,14 @@ class ChouetteJobDetails extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   activeId: state.SuppliersReducer.activeId,
   chouetteJobStatus: state.MardukReducer.chouetteJobStatus,
   sortProperty: state.UtilsReducer.chouetteListSortOrder.property,
   sortOrder: state.UtilsReducer.chouetteListSortOrder.sortOrder,
   chouetteJobFilter: state.MardukReducer.chouetteJobFilter,
   actionFilter: state.MardukReducer.actionFilter,
-  requestingJobs: state.MardukReducer.requesting_chouette_job
+  requestingJobs: state.MardukReducer.requesting_chouette_job,
 });
 
 export default connect(mapStateToProps)(ChouetteJobDetails);

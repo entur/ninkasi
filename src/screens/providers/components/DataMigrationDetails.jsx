@@ -27,7 +27,7 @@ import {
   FaArrowDown,
   FaArrowUp,
   FaArrowLeft as FaRemove,
-  FaArrowRight as FaAdd
+  FaArrowRight as FaAdd,
 } from 'react-icons/fa';
 
 class DataMigrationDetails extends React.Component {
@@ -38,15 +38,15 @@ class DataMigrationDetails extends React.Component {
       selectedIndicesOutbound: new Set(),
       selectedIndicesSource: new Set(),
       outboundFileSortOrder: {
-        date: 2
+        date: 2,
       },
       sortOrder: {
         ext: 0,
         name: 0,
         size: 0,
-        date: 2
+        date: 2,
       },
-      filterText: ''
+      filterText: '',
     };
   }
 
@@ -58,32 +58,32 @@ class DataMigrationDetails extends React.Component {
     ) {
       this.setState({
         outboundFiles: [],
-        selectedIndicesOutbound: new Set()
+        selectedIndicesOutbound: new Set(),
       });
     }
   }
 
   handleUpdateIndicesSource(indices) {
     this.setState({
-      selectedIndicesSource: indices
+      selectedIndicesSource: indices,
     });
   }
 
   handleUpdateIndicesOutbound(indices) {
     this.setState({
-      selectedIndicesOutbound: indices
+      selectedIndicesOutbound: indices,
     });
   }
 
   handleSortOutboundFiles() {
     const { outboundFileSortOrder, outboundFiles } = this.state;
     const newSortOrder = {
-      date: outboundFileSortOrder.date === 1 ? 2 : 1
+      date: outboundFileSortOrder.date === 1 ? 2 : 1,
     };
 
     this.setState({
       outboundFileSortOrder: newSortOrder,
-      outboundFiles: sortFiles(outboundFiles, newSortOrder, '')
+      outboundFiles: sortFiles(outboundFiles, newSortOrder, ''),
     });
   }
 
@@ -93,15 +93,15 @@ class DataMigrationDetails extends React.Component {
 
     if (source) {
       const sortedFiles = sortFiles(files, sortOrder, filterText)
-        .filter(file => file.name.indexOf(filterText) > -1)
+        .filter((file) => file.name.indexOf(filterText) > -1)
         .map((f, i) => i);
 
       this.setState({
-        selectedIndicesSource: new Set(sortedFiles)
+        selectedIndicesSource: new Set(sortedFiles),
       });
     } else {
       this.setState({
-        selectedIndicesOutbound: new Set(outboundFiles.map((f, i) => i))
+        selectedIndicesOutbound: new Set(outboundFiles.map((f, i) => i)),
       });
     }
   }
@@ -114,11 +114,11 @@ class DataMigrationDetails extends React.Component {
       const isAllSelected = selectedIndicesSource.size === files.length;
       const highestIndex = Math.max.apply(
         Math,
-        Array.from(selectedIndicesSource.values())
+        Array.from(selectedIndicesSource.values()),
       );
       const isLastSelected =
         highestIndex ===
-        files.filter(file => file.name.indexOf(filterText) > -1).length - 1;
+        files.filter((file) => file.name.indexOf(filterText) > -1).length - 1;
 
       if (!isAllSelected && !isLastSelected) {
         this.handleUpdateIndicesSource(new Set([highestIndex + 1]));
@@ -131,7 +131,7 @@ class DataMigrationDetails extends React.Component {
         outboundFiles.length === selectedIndicesOutbound.size;
       const highestIndex = Math.max.apply(
         Math,
-        Array.from(selectedIndicesOutbound.values())
+        Array.from(selectedIndicesOutbound.values()),
       );
       const isLastSelected = highestIndex === outboundFiles.length - 1;
 
@@ -149,10 +149,10 @@ class DataMigrationDetails extends React.Component {
 
       const isAllSelected =
         selectedIndicesSource.size ===
-        files.filter(file => file.name.indexOf(filterText) > -1).length;
+        files.filter((file) => file.name.indexOf(filterText) > -1).length;
       const lowestIndex = Math.min.apply(
         Math,
-        Array.from(selectedIndicesSource.values())
+        Array.from(selectedIndicesSource.values()),
       );
       const isFirstSelected = lowestIndex === 0;
 
@@ -168,7 +168,7 @@ class DataMigrationDetails extends React.Component {
 
       const lowestIndex = Math.max.apply(
         Math,
-        Array.from(selectedIndicesOutbound.values())
+        Array.from(selectedIndicesOutbound.values()),
       );
       const isFirstSelected = lowestIndex === 0;
 
@@ -186,8 +186,8 @@ class DataMigrationDetails extends React.Component {
         ext: sortOrder.ext === 2 ? 0 : sortOrder.ext + 1,
         name: 0,
         date: 0,
-        size: 0
-      }
+        size: 0,
+      },
     });
   }
 
@@ -198,8 +198,8 @@ class DataMigrationDetails extends React.Component {
         name: sortOrder.name === 2 ? 0 : sortOrder.name + 1,
         ext: 0,
         date: 0,
-        size: 0
-      }
+        size: 0,
+      },
     });
   }
 
@@ -210,8 +210,8 @@ class DataMigrationDetails extends React.Component {
         size: sortOrder.size === 2 ? 0 : sortOrder.size + 1,
         ext: 0,
         date: 0,
-        name: 0
-      }
+        name: 0,
+      },
     });
   }
 
@@ -222,8 +222,8 @@ class DataMigrationDetails extends React.Component {
         date: sortOrder.date === 2 ? 0 : sortOrder.date + 1,
         ext: 0,
         name: 0,
-        size: 0
-      }
+        size: 0,
+      },
     });
   }
 
@@ -234,7 +234,7 @@ class DataMigrationDetails extends React.Component {
       selectedIndicesOutbound,
       selectedIndicesSource,
       sortOrder,
-      filterText
+      filterText,
     } = this.state;
 
     const isLevel1Provider = !!chouetteInfo.migrateDataToProvider;
@@ -255,7 +255,7 @@ class DataMigrationDetails extends React.Component {
       export: 'Export GTFS data and trigger bulding',
       clearEventHistory: 'Clean event history',
       clean: 'Clean data space (delete ALL transport data)',
-      cleanStopPlacesChouette: 'Clean Stop place register in Chouette'
+      cleanStopPlacesChouette: 'Clean Stop place register in Chouette',
     };
 
     return (
@@ -335,7 +335,7 @@ class DataMigrationDetails extends React.Component {
           <TextField
             placeholder="Filter ..."
             value={filterText}
-            onChange={e => this.setState({ filterText: e.target.value })}
+            onChange={(e) => this.setState({ filterText: e.target.value })}
           />
         ) : (
           <div
@@ -343,7 +343,7 @@ class DataMigrationDetails extends React.Component {
               fontWeight: 600,
               marginTop: 20,
               width: '100%',
-              textAlign: 'center'
+              textAlign: 'center',
             }}
           >
             Level 2 provider
@@ -365,7 +365,7 @@ class DataMigrationDetails extends React.Component {
               handleKeyDown={this.handleKeyDown.bind(this)}
               handleKeyUp={this.handleKeyUp.bind(this)}
               handleSelectAllShowingIndices={this.handleSelectAllShowingIndices.bind(
-                this
+                this,
               )}
             />
             {sortedFiles.length ? (
@@ -375,7 +375,7 @@ class DataMigrationDetails extends React.Component {
                   alignItem: 'center',
                   flexDirection: 'column',
                   flex: 0.1,
-                  cursor: 'pointer'
+                  cursor: 'pointer',
                 }}
               >
                 <FaAdd
@@ -384,7 +384,7 @@ class DataMigrationDetails extends React.Component {
                     color: '#2196f3',
                     marginBottom: 30,
                     marginLeft: 20,
-                    marginRight: 20
+                    marginRight: 20,
                   }}
                   onClick={this.appendSelectedFiles.bind(this)}
                 />
@@ -393,7 +393,7 @@ class DataMigrationDetails extends React.Component {
                     transform: 'scale(2)',
                     color: outboundFiles.length ? '#b91c1c' : '#9e9e9e',
                     marginLeft: 20,
-                    marginRight: 20
+                    marginRight: 20,
                   }}
                   onClick={this.removeSelectedFiles.bind(this)}
                 />
@@ -411,7 +411,7 @@ class DataMigrationDetails extends React.Component {
               handleKeyUp={this.handleKeyUp.bind(this)}
               handleSortByDate={this.handleSortOutboundFiles.bind(this)}
               handleSelectAllShowingIndices={this.handleSelectAllShowingIndices.bind(
-                this
+                this,
               )}
             />
             <div
@@ -420,14 +420,14 @@ class DataMigrationDetails extends React.Component {
                 display: outboundFiles.length ? 'flex' : 'none',
                 alignItems: 'center',
                 flexDirection: 'column',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
             >
               <FaArrowDown
                 style={{
                   transform: 'scale(2)',
                   marginBottom: 30,
-                  marginLeft: 20
+                  marginLeft: 20,
                 }}
                 onClick={this.moveDown}
               />
@@ -445,7 +445,7 @@ class DataMigrationDetails extends React.Component {
   handleImportData = (isFlex = false) => {
     const { dispatch, activeId, providers } = this.props;
     const { outboundFiles } = this.state;
-    const provider = providers.find(p => p.id === activeId);
+    const provider = providers.find((p) => p.id === activeId);
 
     if (outboundFiles.length && provider) {
       if (
@@ -456,7 +456,7 @@ class DataMigrationDetails extends React.Component {
         //  Can we import multiple files now?
       ) {
         alert(
-          'Clean before import enabled, does not make sense to import multiple files'
+          'Clean before import enabled, does not make sense to import multiple files',
         );
       } else {
         const { getToken } = this.props;
@@ -465,8 +465,8 @@ class DataMigrationDetails extends React.Component {
             this.props.activeId,
             outboundFiles,
             isFlex,
-            getToken
-          )
+            getToken,
+          ),
         );
       }
     } else {
@@ -484,7 +484,7 @@ class DataMigrationDetails extends React.Component {
 
   handleCleanDataspace = () => {
     const response = window.confirm(
-      'Are you sure you want to clean up the dataspace current provider?'
+      'Are you sure you want to clean up the dataspace current provider?',
     );
     if (response === true) {
       const { dispatch } = this.props;
@@ -494,13 +494,13 @@ class DataMigrationDetails extends React.Component {
 
   handleClearHistory = () => {
     const response = window.confirm(
-      'Are you sure you want to clear event history for current provider?'
+      'Are you sure you want to clear event history for current provider?',
     );
     if (response === true) {
       const { dispatch } = this.props;
       const { getToken } = this.props;
       dispatch(
-        SuppliersActions.deleteJobsForProvider(this.props.activeId, getToken)
+        SuppliersActions.deleteJobsForProvider(this.props.activeId, getToken),
       );
     }
   };
@@ -516,12 +516,12 @@ class DataMigrationDetails extends React.Component {
 
     const maxValue = Math.max.apply(
       Math,
-      Array.from(selectedIndicesOutbound.values())
+      Array.from(selectedIndicesOutbound.values()),
     );
 
     if (maxValue >= outboundFiles.length - 1) return;
 
-    selectedIndicesOutbound.forEach(value => {
+    selectedIndicesOutbound.forEach((value) => {
       if (value > -1) {
         outboundFiles.splice(value + 1, 0, outboundFiles.splice(value, 1)[0]);
         updatedIndices.add(value + 1);
@@ -532,7 +532,7 @@ class DataMigrationDetails extends React.Component {
 
     this.setState({
       outboundFiles: outboundFiles,
-      selectedIndicesOutbound: updatedIndices
+      selectedIndicesOutbound: updatedIndices,
     });
   };
 
@@ -543,12 +543,12 @@ class DataMigrationDetails extends React.Component {
 
     const minIndex = Math.min.apply(
       Math,
-      Array.from(selectedIndicesOutbound.values())
+      Array.from(selectedIndicesOutbound.values()),
     );
 
     if (!minIndex) return;
 
-    selectedIndicesOutbound.forEach(value => {
+    selectedIndicesOutbound.forEach((value) => {
       if (value) {
         outboundFiles.splice(value - 1, 0, outboundFiles.splice(value, 1)[0]);
         updatedIndices.add(value - 1);
@@ -559,17 +559,13 @@ class DataMigrationDetails extends React.Component {
 
     this.setState({
       outboundFiles: outboundFiles,
-      selectedIndicesOutbound: updatedIndices
+      selectedIndicesOutbound: updatedIndices,
     });
   };
 
   appendSelectedFiles = () => {
-    let {
-      selectedIndicesSource,
-      sortOrder,
-      filterText,
-      outboundFiles
-    } = this.state;
+    let { selectedIndicesSource, sortOrder, filterText, outboundFiles } =
+      this.state;
 
     if (!selectedIndicesSource.size) return;
 
@@ -578,16 +574,16 @@ class DataMigrationDetails extends React.Component {
     const sortedFiles = sortFiles(files, sortOrder, filterText);
 
     const filestoAppend = Array.from(selectedIndicesSource).map(
-      i => sortedFiles[i]
+      (i) => sortedFiles[i],
     );
 
     const updateOutboundFiles = Array.from(
-      new Set(outboundFiles.concat(filestoAppend))
+      new Set(outboundFiles.concat(filestoAppend)),
     );
 
     this.setState({
       outboundFiles: updateOutboundFiles,
-      selectedIndicesSource: new Set()
+      selectedIndicesSource: new Set(),
     });
   };
 
@@ -605,12 +601,12 @@ class DataMigrationDetails extends React.Component {
 
     this.setState({
       outboundFiles: filteredList,
-      selectedIndicesOutbound: new Set()
+      selectedIndicesOutbound: new Set(),
     });
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   providers: state.SuppliersReducer.data,
   activeId: state.SuppliersReducer.activeId,
   fileListIsLoading: state.MardukReducer.filenames.isLoading,
@@ -619,7 +615,7 @@ const mapStateToProps = state => ({
   chouetteInfo: state.UtilsReducer.supplierForm.chouetteInfo,
   files: state.MardukReducer.filenames.data || [],
   importIsLoading: state.MardukReducer.isLoading,
-  importError: state.MardukReducer.error
+  importError: state.MardukReducer.error,
 });
 
 export default connect(mapStateToProps)(withAuth(DataMigrationDetails));

@@ -22,7 +22,7 @@ import { MenuItem, Popover } from '@mui/material';
 import {
   Warning,
   ArrowDropDown,
-  KeyboardArrowRight
+  KeyboardArrowRight,
 } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { getIconColor, getProvidersEnv, getTheme } from 'config/themes';
@@ -41,10 +41,10 @@ class AdministrativeActions extends React.Component {
       confirmInfo: '',
       cleanPopoverOpen: false,
       googlePopoverOpen: false,
-      graphPopoverOpen: false
+      graphPopoverOpen: false,
     };
 
-    cfgreader.readConfig(function(config) {
+    cfgreader.readConfig(function (config) {
       window.config = config;
     });
   }
@@ -57,7 +57,7 @@ class AdministrativeActions extends React.Component {
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.buildGraph());
-      }
+      },
     });
   }
 
@@ -69,7 +69,7 @@ class AdministrativeActions extends React.Component {
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.buildBaseGraph());
-      }
+      },
     });
   }
 
@@ -81,7 +81,7 @@ class AdministrativeActions extends React.Component {
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.buildCandidateGraphOTP());
-      }
+      },
     });
   }
 
@@ -93,7 +93,7 @@ class AdministrativeActions extends React.Component {
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.buildCandidateBaseGraphOTP());
-      }
+      },
     });
   }
 
@@ -105,7 +105,7 @@ class AdministrativeActions extends React.Component {
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.fetchOSM());
-      }
+      },
     });
   }
 
@@ -118,7 +118,7 @@ class AdministrativeActions extends React.Component {
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.uploadGoogleProduction());
-      }
+      },
     });
   }
 
@@ -131,7 +131,7 @@ class AdministrativeActions extends React.Component {
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.uploadGoogleQA());
-      }
+      },
     });
   }
 
@@ -144,9 +144,9 @@ class AdministrativeActions extends React.Component {
       confirmAction: () => {
         const { dispatch, getToken } = this.props;
         dispatch(
-          SuppliersActions.cancelAllChouetteJobsforAllProviders(getToken)
+          SuppliersActions.cancelAllChouetteJobsforAllProviders(getToken),
         );
-      }
+      },
     });
   }
 
@@ -172,7 +172,7 @@ class AdministrativeActions extends React.Component {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.cleanAllDataspaces(filter));
       },
-      cleanPopoverOpen: false
+      cleanPopoverOpen: false,
     });
   }
 
@@ -185,7 +185,7 @@ class AdministrativeActions extends React.Component {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.cleanFileFilter());
       },
-      cleanPopoverOpen: false
+      cleanPopoverOpen: false,
     });
   }
 
@@ -198,7 +198,7 @@ class AdministrativeActions extends React.Component {
         const { dispatch, getToken } = this.props;
         dispatch(SuppliersActions.deleteAllJobs(getToken));
       },
-      cleanPopoverOpen: false
+      cleanPopoverOpen: false,
     });
   }
 
@@ -211,7 +211,7 @@ class AdministrativeActions extends React.Component {
         const { dispatch, getToken } = this.props;
         dispatch(SuppliersActions.cleanStopPlacesInChouette(getToken));
       },
-      cleanPopoverOpen: false
+      cleanPopoverOpen: false,
     });
   }
 
@@ -220,7 +220,7 @@ class AdministrativeActions extends React.Component {
 
     this.setState({
       graphPopoverOpen: true,
-      anchorEl: event.currentTarget
+      anchorEl: event.currentTarget,
     });
   }
 
@@ -229,7 +229,7 @@ class AdministrativeActions extends React.Component {
 
     this.setState({
       googlePopoverOpen: true,
-      anchorEl: event.currentTarget
+      anchorEl: event.currentTarget,
     });
   }
 
@@ -238,7 +238,7 @@ class AdministrativeActions extends React.Component {
 
     this.setState({
       cleanPopoverOpen: true,
-      anchorEl: event.currentTarget
+      anchorEl: event.currentTarget,
     });
   }
 
@@ -250,7 +250,7 @@ class AdministrativeActions extends React.Component {
       display: 'flex',
       justifyContent: 'center',
       borderTop: '1px solid rgba(158, 158, 158, 0.15)',
-      ...getTheme(providersEnv)
+      ...getTheme(providersEnv),
     };
 
     const toolTips = {
@@ -262,7 +262,7 @@ class AdministrativeActions extends React.Component {
       fetchOSM: 'Fetch Open Street Map data',
       cleanFileFilter: 'Clean file filter',
       canceAllJobs: 'Cancel all current chouette jobs',
-      cleanEventHistory: 'Clean event history'
+      cleanEventHistory: 'Clean event history',
     };
 
     return (
@@ -277,7 +277,7 @@ class AdministrativeActions extends React.Component {
                   paddingLeft: 8,
                   paddingRight: 8,
                   paddingTop: 2,
-                  textTransform: 'uppercase'
+                  textTransform: 'uppercase',
                 }}
               >
                 Graph
@@ -338,7 +338,7 @@ class AdministrativeActions extends React.Component {
                   paddingLeft: 8,
                   paddingRight: 8,
                   paddingTop: 2,
-                  textTransform: 'uppercase'
+                  textTransform: 'uppercase',
                 }}
               >
                 Google
@@ -373,7 +373,7 @@ class AdministrativeActions extends React.Component {
           style={{
             borderLeft: '1px solid #4c4c4c',
             height: 15,
-            margin: '10px 0'
+            margin: '10px 0',
           }}
         />
         <div>
@@ -384,7 +384,7 @@ class AdministrativeActions extends React.Component {
                   color: 'white',
                   height: '1.1em',
                   width: '1.1em',
-                  paddingLeft: '10px'
+                  paddingLeft: '10px',
                 }}
               />
               <div
@@ -394,7 +394,7 @@ class AdministrativeActions extends React.Component {
                   paddingLeft: 8,
                   paddingRight: 8,
                   paddingTop: 2,
-                  textTransform: 'uppercase'
+                  textTransform: 'uppercase',
                 }}
               >
                 Clean
@@ -413,14 +413,14 @@ class AdministrativeActions extends React.Component {
                   color: 'white',
                   height: '1.1em',
                   width: '1.1em',
-                  paddingLeft: '10px'
+                  paddingLeft: '10px',
                 }}
               />
               <div
                 style={{
                   fontSize: 12,
                   color: '#fff',
-                  marginLeft: '0.5rem'
+                  marginLeft: '0.5rem',
                 }}
               >
                 Cancel all jobs
@@ -485,7 +485,7 @@ class AdministrativeActions extends React.Component {
           handleClose={() => {
             this.setState({
               confirmDialogOpen: false,
-              confirmAction: null
+              confirmAction: null,
             });
           }}
         />
@@ -494,6 +494,6 @@ class AdministrativeActions extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
 export default connect(mapStateToProps)(withAuth(AdministrativeActions));

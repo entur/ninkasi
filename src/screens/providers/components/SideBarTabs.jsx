@@ -26,7 +26,7 @@ class SideBarTabs extends React.Component {
     const style = {
       maxWidth: 120,
       fontSize: '0.9em',
-      marginRight: 10
+      marginRight: 10,
     };
 
     const { activeTab } = this.props;

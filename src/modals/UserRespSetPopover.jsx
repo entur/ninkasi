@@ -25,7 +25,7 @@ class UserRespSetPopover extends Component {
       anchorEl,
       open,
       responsibilities = [],
-      addedRespSets
+      addedRespSets,
     } = this.props;
 
     return (
@@ -36,9 +36,9 @@ class UserRespSetPopover extends Component {
         PaperProps={{ style: { maxHeight: '500px' } }}
       >
         {responsibilities
-          .filter(r => r.id)
+          .filter((r) => r.id)
           .sort((a, b) => a.name.localeCompare(b.name))
-          .map(r => (
+          .map((r) => (
             <MenuItem
               style={{ fontSize: '0.9em' }}
               key={r.id}

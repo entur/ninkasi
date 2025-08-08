@@ -21,7 +21,7 @@ const Providers = ({ isAdmin }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 margin: '0 20px',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
               }}
             >
               <SuppliersContainer />
@@ -37,8 +37,8 @@ const Providers = ({ isAdmin }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  isAdmin: state.UserContextReducer.isRouteDataAdmin
+const mapStateToProps = (state) => ({
+  isAdmin: state.UserContextReducer.isRouteDataAdmin,
 });
 
 export default connect(mapStateToProps)(Providers);

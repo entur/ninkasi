@@ -35,8 +35,8 @@ const initialState = {
   isDeleteConfirmationOpen: false,
   sortOrder: {
     column: 'name',
-    asc: true
-  }
+    asc: true,
+  },
 };
 
 class ResponsibilitiesView extends React.Component {
@@ -49,35 +49,35 @@ class ResponsibilitiesView extends React.Component {
     if (nextProps.status && nextProps.status.error === null) {
       this.setState({
         isCreatingResponsibilitySet: false,
-        isEditingResponsibilitySet: false
+        isEditingResponsibilitySet: false,
       });
     }
   }
 
   openModalWindow() {
     this.setState({
-      isCreatingResponsibilitySet: true
+      isCreatingResponsibilitySet: true,
     });
   }
 
   handleOpenEditResp(responsibility) {
     this.setState({
       isEditingResponsibilitySet: true,
-      activeResponsibilitySet: responsibility
+      activeResponsibilitySet: responsibility,
     });
   }
 
   handleOpenDeleteConfirmationDialog(activeResponsibilitySet) {
     this.setState({
       activeResponsibilitySet,
-      isDeleteConfirmationOpen: true
+      isDeleteConfirmationOpen: true,
     });
   }
 
   handleCloseDeleteConfirmation() {
     this.setState({
       activeResponsibilitySet: null,
-      isDeleteConfirmationOpen: false
+      isDeleteConfirmationOpen: false,
     });
   }
 
@@ -100,15 +100,15 @@ class ResponsibilitiesView extends React.Component {
     this.setState({
       sortOrder: {
         column,
-        asc
-      }
+        asc,
+      },
     });
   }
 
   componentDidMount() {
     const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.getResponbilitySets(getToken)
+      OrganizationRegisterActions.getResponbilitySets(getToken),
     );
     this.props.dispatch(OrganizationRegisterActions.getCodeSpaces(getToken));
     this.props.dispatch(OrganizationRegisterActions.getRoles(getToken));
@@ -117,7 +117,7 @@ class ResponsibilitiesView extends React.Component {
 
     if (!this.props.administrativeZones.length) {
       this.props.dispatch(
-        OrganizationRegisterActions.getAdministrativeZones(getToken)
+        OrganizationRegisterActions.getAdministrativeZones(getToken),
       );
     }
   }
@@ -127,8 +127,8 @@ class ResponsibilitiesView extends React.Component {
     this.props.dispatch(
       OrganizationRegisterActions.createResponsibilitySet(
         responsibilitySet,
-        getToken
-      )
+        getToken,
+      ),
     );
   }
 
@@ -137,8 +137,8 @@ class ResponsibilitiesView extends React.Component {
     this.props.dispatch(
       OrganizationRegisterActions.updateResponsibilitySet(
         responsibilitySet,
-        getToken
-      )
+        getToken,
+      ),
     );
   }
 
@@ -148,8 +148,8 @@ class ResponsibilitiesView extends React.Component {
     this.props.dispatch(
       OrganizationRegisterActions.deleteResponsibilitySet(
         responsibility.id,
-        getToken
-      )
+        getToken,
+      ),
     );
   }
 
@@ -160,13 +160,13 @@ class ResponsibilitiesView extends React.Component {
       roles,
       organizations,
       administrativeZones,
-      entityTypes
+      entityTypes,
     } = this.props;
     const {
       isCreatingResponsibilitySet,
       isEditingResponsibilitySet,
       activeResponsibilitySet,
-      sortOrder
+      sortOrder,
     } = this.state;
 
     const sortedResponsibilities = sortByColumns(responsibilities, sortOrder);
@@ -211,7 +211,7 @@ class ResponsibilitiesView extends React.Component {
             </div>
             <div className="col-1-6">Roles assignments</div>
           </div>
-          {sortedResponsibilities.map(responsibility => {
+          {sortedResponsibilities.map((responsibility) => {
             return (
               <div
                 key={'responsibility-' + responsibility.id}
@@ -235,7 +235,7 @@ class ResponsibilitiesView extends React.Component {
                       width: 20,
                       marginRight: 10,
                       verticalAlign: 'middle',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
                     }}
                     onClick={() =>
                       this.handleOpenDeleteConfirmationDialog(responsibility)
@@ -247,7 +247,7 @@ class ResponsibilitiesView extends React.Component {
                       height: 20,
                       width: 20,
                       verticalAlign: 'middle',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
                     }}
                     onClick={() => {
                       this.handleOpenEditResp(responsibility);
@@ -264,7 +264,7 @@ class ResponsibilitiesView extends React.Component {
               handleOnClose={() =>
                 this.setState({ isCreatingResponsibilitySet: false })
               }
-              takenPrivateCodes={responsibilities.map(r => r.privateCode)}
+              takenPrivateCodes={responsibilities.map((r) => r.privateCode)}
               roles={roles}
               organizations={organizations}
               handleSubmit={this.handleCreateResponsibilitySet.bind(this)}
@@ -280,7 +280,7 @@ class ResponsibilitiesView extends React.Component {
               handleOnClose={() =>
                 this.setState({ isEditingResponsibilitySet: false })
               }
-              takenPrivateCodes={responsibilities.map(r => r.privateCode)}
+              takenPrivateCodes={responsibilities.map((r) => r.privateCode)}
               roles={roles}
               organizations={organizations}
               handleSubmit={this.handleUpdateResponsibilitySet.bind(this)}
@@ -306,14 +306,14 @@ class ResponsibilitiesView extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   responsibilities: state.OrganizationReducer.responsibilities,
   codeSpaces: state.OrganizationReducer.codeSpaces,
   roles: state.OrganizationReducer.roles,
   organizations: state.OrganizationReducer.organizations,
   status: state.OrganizationReducer.responsibilitySetStatus,
   entityTypes: state.OrganizationReducer.entityTypes,
-  administrativeZones: state.OrganizationReducer.administrativeZones
+  administrativeZones: state.OrganizationReducer.administrativeZones,
 });
 
 export default connect(mapStateToProps)(withAuth(ResponsibilitiesView));

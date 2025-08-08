@@ -19,7 +19,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
@@ -30,7 +30,7 @@ class ConfirmationDialog extends React.Component {
     body: PropTypes.string.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    actionBtnTitle: PropTypes.string.isRequired
+    actionBtnTitle: PropTypes.string.isRequired,
   };
 
   render() {
@@ -40,7 +40,7 @@ class ConfirmationDialog extends React.Component {
       </Button>,
       <Button variant="text" color="primary" onClick={this.props.handleSubmit}>
         {this.props.actionBtnTitle}
-      </Button>
+      </Button>,
     ];
 
     return (

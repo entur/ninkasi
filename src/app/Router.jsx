@@ -10,12 +10,12 @@ import SuppliersActions from 'actions/SuppliersActions';
 import { MicroFrontendFetchStatus } from './components/MicroFrontendFetchStatus';
 import { getProvidersEnv } from 'config/themes';
 
-const notifyNetexValidationReportLoadingFailure = dispatch => () => {
+const notifyNetexValidationReportLoadingFailure = (dispatch) => () => {
   dispatch(
     SuppliersActions.addNotification(
       'Error loading micro frontend for NeTEx validation reports',
-      'error'
-    )
+      'error',
+    ),
   );
 };
 
@@ -41,10 +41,10 @@ const Router = ({ dispatch }) => {
                 getToken,
                 locale: 'en',
                 env: getProvidersEnv(
-                  window.config.providersBaseUrl
-                ).toLocaleLowerCase()
+                  window.config.providersBaseUrl,
+                ).toLocaleLowerCase(),
               }}
-              FetchStatus={props => (
+              FetchStatus={(props) => (
                 <MicroFrontendFetchStatus
                   {...props}
                   label="Error loading NeTEx validation reports"

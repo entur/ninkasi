@@ -38,29 +38,29 @@ class EntityTypesView extends React.Component {
       activeEntityType: null,
       sortOrder: {
         column: 'name',
-        asc: true
-      }
+        asc: true,
+      },
     };
   }
 
   handleOpenDeleteConfirmationDialog(activeEntityType) {
     this.setState({
       activeEntityType,
-      isDeleteConfirmationOpen: true
+      isDeleteConfirmationOpen: true,
     });
   }
 
   handleCloseDeleteConfirmation() {
     this.setState({
       activeEntityType: null,
-      isDeleteConfirmationOpen: false
+      isDeleteConfirmationOpen: false,
     });
   }
 
   handleEditEntityType(entityType) {
     this.setState({
       activeEntityType: entityType,
-      isEditModalOpen: true
+      isEditModalOpen: true,
     });
   }
 
@@ -75,8 +75,8 @@ class EntityTypesView extends React.Component {
     this.setState({
       sortOrder: {
         column,
-        asc
-      }
+        asc,
+      },
     });
   }
 
@@ -89,14 +89,14 @@ class EntityTypesView extends React.Component {
   handleCreateEntity(entityType) {
     const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.createEntityType(entityType, getToken)
+      OrganizationRegisterActions.createEntityType(entityType, getToken),
     );
   }
 
   handleUpdateEntity(entityType) {
     const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.updateEntityType(entityType, getToken)
+      OrganizationRegisterActions.updateEntityType(entityType, getToken),
     );
   }
 
@@ -104,7 +104,7 @@ class EntityTypesView extends React.Component {
     this.handleCloseDeleteConfirmation();
     const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.deleteEntityType(entityType.id, getToken)
+      OrganizationRegisterActions.deleteEntityType(entityType.id, getToken),
     );
   }
 
@@ -123,7 +123,7 @@ class EntityTypesView extends React.Component {
     ) {
       this.setState({
         isCreateModalOpen: false,
-        isEditModalOpen: false
+        isEditModalOpen: false,
       });
     }
   }
@@ -176,7 +176,7 @@ class EntityTypesView extends React.Component {
               <span>Classifications</span>
             </div>
           </div>
-          {sortedEntityTypes.map(et => {
+          {sortedEntityTypes.map((et) => {
             return (
               <div key={'et-' + et.id} className="et-row-item">
                 <div className="col-1-5">{et.name}</div>
@@ -187,7 +187,7 @@ class EntityTypesView extends React.Component {
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      listStyleType: 'circle'
+                      listStyleType: 'circle',
                     }}
                   >
                     {et.classifications
@@ -205,7 +205,7 @@ class EntityTypesView extends React.Component {
                       width: 20,
                       marginRight: 10,
                       verticalAlign: 'middle',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
                     }}
                     onClick={() => this.handleOpenDeleteConfirmationDialog(et)}
                   />
@@ -215,7 +215,7 @@ class EntityTypesView extends React.Component {
                       height: 20,
                       width: 20,
                       verticalAlign: 'middle',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
                     }}
                     onClick={() => this.handleEditEntityType(et)}
                   />
@@ -230,7 +230,7 @@ class EntityTypesView extends React.Component {
               handleCloseModal={() =>
                 this.setState({ isCreateModalOpen: false })
               }
-              takenPrivateCodes={entityTypes.map(et => et.privateCode)}
+              takenPrivateCodes={entityTypes.map((et) => et.privateCode)}
               handleSubmit={this.handleCreateEntity.bind(this)}
             />
           ) : null}
@@ -261,10 +261,10 @@ class EntityTypesView extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   entityTypes: state.OrganizationReducer.entityTypes,
   status: state.OrganizationReducer.entityTypeStatus,
-  codeSpaces: state.OrganizationReducer.codeSpaces
+  codeSpaces: state.OrganizationReducer.codeSpaces,
 });
 
 export default connect(mapStateToProps)(withAuth(EntityTypesView));

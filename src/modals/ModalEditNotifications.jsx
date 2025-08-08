@@ -30,20 +30,20 @@ class ModalEditNotifications extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      indexExpanded: null
+      indexExpanded: null,
     };
   }
 
   componentDidMount() {
     const { user, dispatch, getToken } = this.props;
     dispatch(
-      OrganizationRegisterActions.getUserNotifications(user.username, getToken)
+      OrganizationRegisterActions.getUserNotifications(user.username, getToken),
     );
   }
 
   handleExpandItem(index, value) {
     this.setState({
-      indexExpanded: value ? index : null
+      indexExpanded: value ? index : null,
     });
   }
 
@@ -52,8 +52,8 @@ class ModalEditNotifications extends React.Component {
     await dispatch(
       OrganizationRegisterActions.updateUserNotification(
         user.username,
-        getToken
-      )
+        getToken,
+      ),
     );
     this.props.handleCloseModal();
   }
@@ -62,7 +62,7 @@ class ModalEditNotifications extends React.Component {
     const { userNotifications, dispatch } = this.props;
     dispatch(OrganizationRegisterActions.addNewUserNotification());
     this.setState({
-      indexExpanded: userNotifications.length
+      indexExpanded: userNotifications.length,
     });
   }
 
@@ -70,7 +70,7 @@ class ModalEditNotifications extends React.Component {
     const { userNotifications } = this.props;
     if (userNotifications === null) return true;
 
-    return userNotifications.some(un => {
+    return userNotifications.some((un) => {
       if (un.eventFilter.type === 'JOB') {
         if (!un.eventFilter.actions || !un.eventFilter.states) {
           return true;
@@ -97,7 +97,7 @@ class ModalEditNotifications extends React.Component {
       handleCloseModal,
       user,
       userNotifications,
-      isLoading
+      isLoading,
     } = this.props;
 
     const messageStyle = {
@@ -105,7 +105,7 @@ class ModalEditNotifications extends React.Component {
       width: '100%',
       paddingBottom: 10,
       marginLeft: 10,
-      fontStyle: 'italic'
+      fontStyle: 'italic',
     };
 
     const updateDisabled = this.shouldUpdateBtnBeDisabled();
@@ -125,7 +125,7 @@ class ModalEditNotifications extends React.Component {
         onClick={this.handleUpdate.bind(this)}
       >
         Update
-      </Button>
+      </Button>,
     ];
 
     return (
@@ -171,10 +171,10 @@ class ModalEditNotifications extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userNotifications: state.OrganizationReducer.userNotifications,
   eventFilterTypes: state.OrganizationReducer.eventFilterTypes,
-  isLoading: state.OrganizationReducer.userNotificationsLoading
+  isLoading: state.OrganizationReducer.userNotificationsLoading,
 });
 
 export default connect(mapStateToProps)(ModalEditNotifications);

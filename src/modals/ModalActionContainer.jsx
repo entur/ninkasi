@@ -21,7 +21,7 @@ import SuppliersActions from 'actions/SuppliersActions';
 import Button from '@mui/material/Button';
 
 class ModalActionContainer extends React.Component {
-  handleFilterChange = event => {
+  handleFilterChange = (event) => {
     const { dispatch } = this.props;
     dispatch(SuppliersActions.logEventFilter(event.target.value));
   };
@@ -41,19 +41,19 @@ class ModalActionContainer extends React.Component {
         }}
       >
         Close
-      </Button>
+      </Button>,
     ];
 
     const selectStyle = {
       height: '100%',
       minHeight: '50vh',
       width: '96%',
-      margin: 10
+      margin: 10,
     };
 
     const inputStyle = {
       width: '95%',
-      margin: 10
+      margin: 10,
     };
 
     return (
@@ -70,12 +70,12 @@ class ModalActionContainer extends React.Component {
           placeholder="Filter"
         />
         <select style={selectStyle} multiple>
-          {filteredLoggedEvents.map(event => {
+          {filteredLoggedEvents.map((event) => {
             if (event.files && event.files.length) {
               let options = [];
               options.push(<option key={event.id}>{event.title}</option>);
               options.push(
-                <option key={event.id + '-files'}>{'Files imported:'}</option>
+                <option key={event.id + '-files'}>{'Files imported:'}</option>,
               );
               let fileOptions = event.files.map((file, index) => (
                 <option key={event.id + '-files' + index}>{file}</option>
@@ -95,7 +95,7 @@ class ModalActionContainer extends React.Component {
 
 const mapStateToProps = ({ UtilsReducer }) => ({
   isModalOpen: UtilsReducer.isModalOpen,
-  filteredLoggedEvents: UtilsReducer.filteredLoggedEvents
+  filteredLoggedEvents: UtilsReducer.filteredLoggedEvents,
 });
 
 export default connect(mapStateToProps)(ModalActionContainer);

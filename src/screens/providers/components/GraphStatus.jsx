@@ -21,7 +21,7 @@ import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
 import moment from 'moment';
 
-const getColorByStatus = status => {
+const getColorByStatus = (status) => {
   switch (status) {
     case 'STARTED':
       return '#08920e';
@@ -38,19 +38,19 @@ const containerStyle = {
   display: 'flex',
   flexDirection: 'row',
   margin: '0 20px',
-  lineHeight: '24px'
+  lineHeight: '24px',
 };
 
 const wrapperStyle = {
   display: 'flex',
   flexDirection: 'column',
-  margin: '0 10px'
+  margin: '0 10px',
 };
 
 const statusStyle = {
   display: 'flex',
   alignItems: 'center',
-  flexDirection: 'row'
+  flexDirection: 'row',
 };
 
 const GraphStatusDetails = ({ status, started }) => (
@@ -61,7 +61,7 @@ const GraphStatusDetails = ({ status, started }) => (
           style={{
             fontWeight: 600,
             marginLeft: 5,
-            color: getColorByStatus(status)
+            color: getColorByStatus(status),
           }}
         >
           {status}
@@ -80,13 +80,13 @@ const GraphStatusDetails = ({ status, started }) => (
 class GraphStatus extends React.Component {
   componentDidMount() {
     cfgreader.readConfig(
-      function(config) {
+      function (config) {
         window.config = config;
         this.props.dispatch(
-          SuppliersActions.getGraphStatus(this.props.getToken)
+          SuppliersActions.getGraphStatus(this.props.getToken),
         );
         this.startPolling();
-      }.bind(this)
+      }.bind(this),
     );
   }
 
@@ -137,9 +137,9 @@ class GraphStatus extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   graphStatus: state.SuppliersReducer.graphStatus,
-  baseGraphStatus: state.SuppliersReducer.baseGraphStatus
+  baseGraphStatus: state.SuppliersReducer.baseGraphStatus,
 });
 
 export default connect(mapStateToProps)(withAuth(GraphStatus));

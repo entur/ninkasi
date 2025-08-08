@@ -45,8 +45,8 @@ class UserView extends React.Component {
       activeUser: null,
       sortOrder: {
         column: 'username',
-        asc: true
-      }
+        asc: true,
+      },
     };
   }
 
@@ -55,7 +55,7 @@ class UserView extends React.Component {
     this.props.dispatch(OrganizationRegisterActions.getUsers(getToken));
     this.props.dispatch(OrganizationRegisterActions.getOrganizations(getToken));
     this.props.dispatch(
-      OrganizationRegisterActions.getResponbilitySets(getToken)
+      OrganizationRegisterActions.getResponbilitySets(getToken),
     );
   }
 
@@ -73,7 +73,7 @@ class UserView extends React.Component {
     this.handleCloseDeleteConfirmation();
     const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.deleteUser(user.id, getToken)
+      OrganizationRegisterActions.deleteUser(user.id, getToken),
     );
   }
 
@@ -83,8 +83,8 @@ class UserView extends React.Component {
       OrganizationRegisterActions.resetPassword(
         user.id,
         user.username,
-        getToken
-      )
+        getToken,
+      ),
     );
     this.handleCloseResetConfirmation();
   }
@@ -92,28 +92,28 @@ class UserView extends React.Component {
   handleCloseDeleteConfirmation() {
     this.setState({
       activeuser: null,
-      isDeleteConfirmationOpen: false
+      isDeleteConfirmationOpen: false,
     });
   }
 
   handleCloseResetConfirmation() {
     this.setState({
       activeuser: null,
-      isResetConfirmationOpen: false
+      isResetConfirmationOpen: false,
     });
   }
 
   handleOpenDeleteConfirmationDialog(activeUser) {
     this.setState({
       activeUser,
-      isDeleteConfirmationOpen: true
+      isDeleteConfirmationOpen: true,
     });
   }
 
   handleOpenResetConfirmationDialog(activeUser) {
     this.setState({
       activeUser,
-      isResetConfirmationOpen: true
+      isResetConfirmationOpen: true,
     });
   }
 
@@ -147,15 +147,15 @@ class UserView extends React.Component {
     this.setState({
       sortOrder: {
         column,
-        asc
-      }
+        asc,
+      },
     });
   }
 
   openModal(activeUser, attribute) {
     this.setState({
       activeUser,
-      [attribute]: true
+      [attribute]: true,
     });
   }
 
@@ -168,24 +168,20 @@ class UserView extends React.Component {
     ) {
       this.setState({
         isCreateModalOpen: false,
-        isEditModalOpen: false
+        isEditModalOpen: false,
       });
     }
   }
 
   render() {
-    const {
-      users,
-      organizations,
-      responsibilities,
-      passwordDialogState
-    } = this.props;
+    const { users, organizations, responsibilities, passwordDialogState } =
+      this.props;
     const {
       isCreateModalOpen,
       isEditModalOpen,
       isNotificationsOpen,
       sortOrder,
-      organisationFilterId
+      organisationFilterId,
     } = this.state;
 
     const sortedUsers = sortUsersby(users, sortOrder);
@@ -198,12 +194,12 @@ class UserView extends React.Component {
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <OrganizationFilter
             organizations={organizations}
-            handleOnChange={id => {
+            handleOnChange={(id) => {
               this.setState({ organisationFilterId: id });
             }}
             organisationFilterId={organisationFilterId}
@@ -261,7 +257,7 @@ class UserView extends React.Component {
             <div className="col-1-7">Responsiblity set</div>
             <div className="col-1-9">Notifications</div>
           </div>
-          {sortedUsers.filter(this.filterUserByOrg.bind(this)).map(user => {
+          {sortedUsers.filter(this.filterUserByOrg.bind(this)).map((user) => {
             return (
               <div
                 key={'user-' + user.id}
@@ -278,7 +274,7 @@ class UserView extends React.Component {
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      listStyleType: 'circle'
+                      listStyleType: 'circle',
                     }}
                   >
                     {user.responsibilitySets
@@ -304,7 +300,7 @@ class UserView extends React.Component {
                       marginRight: 4,
                       width: 20,
                       verticalAlign: 'middle',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
                     }}
                     onClick={() => this.openModal(user, 'isEditModalOpen')}
                   />
@@ -316,7 +312,7 @@ class UserView extends React.Component {
                       width: 20,
                       marginRight: 4,
                       verticalAlign: 'middle',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
                     }}
                     onClick={() => this.openModal(user, 'isNotificationsOpen')}
                   />
@@ -328,7 +324,7 @@ class UserView extends React.Component {
                       verticalAlign: 'middle',
                       cursor: 'pointer',
                       marginTop: 4,
-                      color: 'orange'
+                      color: 'orange',
                     }}
                     onClick={() => this.handleOpenResetConfirmationDialog(user)}
                   />
@@ -339,7 +335,7 @@ class UserView extends React.Component {
                       width: 20,
                       marginRight: 10,
                       verticalAlign: 'middle',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
                     }}
                     onClick={() =>
                       this.handleOpenDeleteConfirmationDialog(user)
@@ -355,8 +351,8 @@ class UserView extends React.Component {
               handleCloseModal={() =>
                 this.setState({ isCreateModalOpen: false })
               }
-              takenUsernames={users.map(user => user.username)}
-              takenEmails={users.map(user => user.contactDetails.email)}
+              takenUsernames={users.map((user) => user.username)}
+              takenEmails={users.map((user) => user.contactDetails.email)}
               organizations={organizations}
               responsibilities={responsibilities}
               handleSubmit={this.handleCreateUser.bind(this)}
@@ -366,7 +362,7 @@ class UserView extends React.Component {
             <ModalEditUser
               isModalOpen={isEditModalOpen}
               handleCloseModal={() => this.setState({ isEditModalOpen: false })}
-              takenUsernames={users.map(user => user.username)}
+              takenUsernames={users.map((user) => user.username)}
               organizations={organizations}
               user={this.state.activeUser}
               responsibilities={responsibilities}
@@ -414,12 +410,12 @@ class UserView extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   users: state.OrganizationReducer.users,
   organizations: state.OrganizationReducer.organizations,
   responsibilities: state.OrganizationReducer.responsibilities,
   status: state.OrganizationReducer.userStatus,
-  passwordDialogState: state.OrganizationReducer.passwordDialog
+  passwordDialogState: state.OrganizationReducer.passwordDialog,
 });
 
 export default connect(mapStateToProps)(withAuth(UserView));

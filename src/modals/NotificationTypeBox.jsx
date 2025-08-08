@@ -20,7 +20,7 @@ import {
   ExpandMore,
   ExpandLess,
   NotificationsActive,
-  NotificationsOff
+  NotificationsOff,
 } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import NotificationEventFilter from './NotificationEventFilter';
@@ -29,7 +29,7 @@ class NotificationTypeBox extends React.Component {
   static propTypes = {
     notification: PropTypes.object.isRequired,
     handleExpand: PropTypes.func.isRequired,
-    expanded: PropTypes.bool.isRequired
+    expanded: PropTypes.bool.isRequired,
   };
 
   render() {
@@ -41,7 +41,7 @@ class NotificationTypeBox extends React.Component {
       <div
         style={{
           border: '1px solid #eee',
-          margin: 5
+          margin: 5,
         }}
       >
         <div
@@ -50,7 +50,7 @@ class NotificationTypeBox extends React.Component {
             justifyContent: 'space-between',
             alignItems: 'center',
             verticalAlign: 'middle',
-            height: 40
+            height: 40,
           }}
         >
           <div style={{ display: 'flex' }}>
@@ -66,7 +66,7 @@ class NotificationTypeBox extends React.Component {
                   style={{
                     color: 'orange',
                     fontSize: 8,
-                    verticalAlign: 'super'
+                    verticalAlign: 'super',
                   }}
                 >
                   New

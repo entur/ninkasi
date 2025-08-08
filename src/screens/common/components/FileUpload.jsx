@@ -33,7 +33,7 @@ export const FileUpload = ({ fileUploadProgress, handleFileUpload }) => {
     setUploadProgress(0);
   };
 
-  const handleOnDrop = files => {
+  const handleOnDrop = (files) => {
     if (files.length) {
       setFiles(files);
     }
@@ -48,13 +48,13 @@ export const FileUpload = ({ fileUploadProgress, handleFileUpload }) => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    cursor: 'pointer'
+    cursor: 'pointer',
   };
 
   const filesStyle = {
     marginTop: '5%',
     minHeight: '300px',
-    maxHeight: '300px'
+    maxHeight: '300px',
   };
 
   const uploadButtonStyle = {
@@ -62,14 +62,14 @@ export const FileUpload = ({ fileUploadProgress, handleFileUpload }) => {
     fontSize: '0.8em',
     textAlign: 'center',
     marginLeft: 'auto',
-    marginTop: 10
+    marginTop: 10,
   };
 
   return (
     <div
       style={{
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
       }}
     >
       <Dropzone
@@ -110,7 +110,7 @@ export const FileUpload = ({ fileUploadProgress, handleFileUpload }) => {
           fontSize: '0.8em',
           textAlign: 'center',
           marginLeft: 'auto',
-          marginTop: 1.25
+          marginTop: 1.25,
         }}
         color="primary"
         variant="contained"

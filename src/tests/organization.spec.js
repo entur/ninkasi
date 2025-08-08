@@ -19,7 +19,7 @@ import {
   changeFilterActions,
   changeFilterStates,
   addAdminRef,
-  removeAdminRef
+  removeAdminRef,
 } from 'reducers/OrganizationReducerUtils';
 import { removeRedundantActions } from 'actions/OrganizationUtils';
 import { assert } from 'chai';
@@ -30,16 +30,16 @@ describe('Organization reducer utils', () => {
       eventFilter: {
         type: null,
         jobDomain: null,
-        action: null
-      }
+        action: null,
+      },
     };
 
     let notification2 = {
       eventFilter: {
         type: null,
         jobDomain: null,
-        action: null
-      }
+        action: null,
+      },
     };
 
     let notifications = [];
@@ -49,7 +49,7 @@ describe('Organization reducer utils', () => {
       notifications,
       'type',
       1,
-      'JOB'
+      'JOB',
     );
 
     assert.equal(modifiedNotifications[1].eventFilter.type, 'JOB');
@@ -67,10 +67,10 @@ describe('Organization reducer utils', () => {
           type: 'JOB',
           jobDomain: 'TIMETABLE',
           actions: [],
-          states: ['FAILED']
+          states: ['FAILED'],
         },
-        enabled: true
-      }
+        enabled: true,
+      },
     ];
 
     let importAdded = changeFilterActions(notifications, 0, 'IMPORT', true);
@@ -80,7 +80,7 @@ describe('Organization reducer utils', () => {
       importAdded,
       0,
       'IMPORT',
-      false
+      false,
     );
     assert.deepEqual(importRemovedAgain[0].eventFilter.actions, []);
   });
@@ -93,10 +93,10 @@ describe('Organization reducer utils', () => {
           type: 'JOB',
           jobDomain: 'TIMETABLE',
           actions: ['*'],
-          states: []
+          states: [],
         },
-        enabled: true
-      }
+        enabled: true,
+      },
     ];
 
     let importRemoved = changeFilterActions(notifications, 0, 'IMPORT', false);
@@ -111,10 +111,10 @@ describe('Organization reducer utils', () => {
           type: 'JOB',
           jobDomain: 'TIMETABLE',
           actions: [],
-          states: []
+          states: [],
         },
-        enabled: true
-      }
+        enabled: true,
+      },
     ];
 
     let failedAdded = changeFilterStates(notifications, 0, 'FAILED', true);
@@ -124,7 +124,7 @@ describe('Organization reducer utils', () => {
       failedAdded,
       0,
       'FAILED',
-      false
+      false,
     );
     assert.deepEqual(failedRemovedAgain[0].eventFilter.states, []);
   });
@@ -134,16 +134,16 @@ describe('Organization reducer utils', () => {
       {
         notificationType: 'EMAIL',
         eventFilter: {
-          administrativeZoneRefs: []
+          administrativeZoneRefs: [],
         },
-        enabled: true
-      }
+        enabled: true,
+      },
     ];
 
     let adminZoneRef = 'RB:AdministrativeZone:0127';
     let newNotifications = addAdminRef(notifications, 0, adminZoneRef);
     assert.deepEqual(newNotifications[0].eventFilter.administrativeZoneRefs, [
-      adminZoneRef
+      adminZoneRef,
     ]);
   });
 
@@ -154,17 +154,17 @@ describe('Organization reducer utils', () => {
         eventFilter: {
           administrativeZoneRefs: [
             'RB:AdministrativeZone:0127',
-            'RB:AdministrativeZone:0128'
-          ]
+            'RB:AdministrativeZone:0128',
+          ],
         },
-        enabled: true
-      }
+        enabled: true,
+      },
     ];
 
     let adminZoneRefRemove = 'RB:AdministrativeZone:0127';
     let newNotifications = removeAdminRef(notifications, 0, adminZoneRefRemove);
     assert.deepEqual(newNotifications[0].eventFilter.administrativeZoneRefs, [
-      'RB:AdministrativeZone:0128'
+      'RB:AdministrativeZone:0128',
     ]);
   });
 
@@ -181,7 +181,7 @@ describe('Organization reducer utils', () => {
         'CLEAN',
         'DATASPACE_TRANSFER',
         'BUILD_GRAPH',
-        'EXPORT_NETEX'
+        'EXPORT_NETEX',
       ],
       GEOCODER: [
         '*',
@@ -192,9 +192,9 @@ describe('Organization reducer utils', () => {
         'TIAMAT_ADMINISTRATIVE_UNITS_UPDATE',
         'TIAMAT_NEIGHBOURING_COUNTRIES_UPDATE',
         'TIAMAT_EXPORT',
-        'PELIAS_UPDATE'
+        'PELIAS_UPDATE',
       ],
-      GRAPH: ['*', 'BUILD_GRAPH']
+      GRAPH: ['*', 'BUILD_GRAPH'],
     };
 
     let allActionsForJobDomain = [
@@ -207,31 +207,31 @@ describe('Organization reducer utils', () => {
       'CLEAN',
       'DATASPACE_TRANSFER',
       'BUILD_GRAPH',
-      'EXPORT_NETEX'
+      'EXPORT_NETEX',
     ];
 
     let checkedAllActions = removeRedundantActions(
       allActionsForJobDomain,
       'TIMETABLE',
-      jobDomainActions
+      jobDomainActions,
     );
     assert.deepEqual(checkedAllActions, ['*']);
 
     let someActionsForJobDomain = [
       'FILE_TRANSFER',
       'FILE_CLASSIFICATION',
-      'IMPORT'
+      'IMPORT',
     ];
 
     let checkedSomeActions = removeRedundantActions(
       someActionsForJobDomain,
       'TIMETABLE',
-      jobDomainActions
+      jobDomainActions,
     );
     assert.deepEqual(checkedSomeActions, [
       'FILE_TRANSFER',
       'FILE_CLASSIFICATION',
-      'IMPORT'
+      'IMPORT',
     ]);
 
     let allActionsForJobDomainWithAsterisk = [
@@ -245,13 +245,13 @@ describe('Organization reducer utils', () => {
       'CLEAN',
       'DATASPACE_TRANSFER',
       'BUILD_GRAPH',
-      'EXPORT_NETEX'
+      'EXPORT_NETEX',
     ];
 
     let allActionsWithAsterisk = removeRedundantActions(
       allActionsForJobDomainWithAsterisk,
       'TIMETABLE',
-      jobDomainActions
+      jobDomainActions,
     );
     assert.deepEqual(allActionsWithAsterisk, ['*']);
   });

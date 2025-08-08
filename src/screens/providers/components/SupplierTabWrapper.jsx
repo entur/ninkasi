@@ -35,7 +35,7 @@ class SupplierTabWrapper extends React.Component {
     this.state = {
       activeTabForProvider: getQueryVariable('tab') || 'migrateData',
       activeTabForAllProvider: getQueryVariable('tab') || 'chouetteJobs',
-      currentTabIndex: 0
+      currentTabIndex: 0,
     };
   }
 
@@ -49,7 +49,7 @@ class SupplierTabWrapper extends React.Component {
     if (queryTab === 'events') {
       if (queryId) {
         dispatch(
-          SuppliersActions.getProviderStatus(queryId, this.props.getToken)
+          SuppliersActions.getProviderStatus(queryId, this.props.getToken),
         );
       } else {
         dispatch(SuppliersActions.getAllProviderStatus(this.props.getToken));
@@ -59,7 +59,7 @@ class SupplierTabWrapper extends React.Component {
         dispatch(SuppliersActions.getChouetteJobStatus(this.props.getToken));
       } else {
         dispatch(
-          SuppliersActions.getChouetteJobsForAllSuppliers(this.props.getToken)
+          SuppliersActions.getChouetteJobsForAllSuppliers(this.props.getToken),
         );
       }
     } else if (queryTab === 'OrganisationRegister') {
@@ -117,14 +117,14 @@ class SupplierTabWrapper extends React.Component {
     const tabIndex = this.getTabIndexForValue(newValue, false);
     this.setState({
       currentTabIndex: tabIndex,
-      activeTabForProvider: newValue
+      activeTabForProvider: newValue,
     });
 
     if (newValue) {
       window.history.pushState(
         window.config.endpointBase,
         'Title',
-        `?id=${activeId}&tab=${newValue}`
+        `?id=${activeId}&tab=${newValue}`,
       );
     }
 
@@ -134,7 +134,7 @@ class SupplierTabWrapper extends React.Component {
         break;
       case 'events':
         dispatch(
-          SuppliersActions.getProviderStatus(activeId, this.props.getToken)
+          SuppliersActions.getProviderStatus(activeId, this.props.getToken),
         );
         break;
       default:
@@ -149,25 +149,25 @@ class SupplierTabWrapper extends React.Component {
     const tabIndex = this.getTabIndexForValue(newValue, true);
     this.setState({
       currentTabIndex: tabIndex,
-      activeTabForAllProvider: newValue
+      activeTabForAllProvider: newValue,
     });
 
     if (newValue) {
       window.history.pushState(
         window.config.endpointBase,
         'Title',
-        `?tab=${newValue}`
+        `?tab=${newValue}`,
       );
     }
     switch (newValue) {
       case 'chouetteJobs':
         this.props.dispatch(
-          SuppliersActions.getChouetteJobsForAllSuppliers(this.props.getToken)
+          SuppliersActions.getChouetteJobsForAllSuppliers(this.props.getToken),
         );
         break;
       case 'events':
         this.props.dispatch(
-          SuppliersActions.getAllProviderStatus(this.props.getToken)
+          SuppliersActions.getAllProviderStatus(this.props.getToken),
         );
         break;
       default:
@@ -250,7 +250,7 @@ class SupplierTabWrapper extends React.Component {
         'events',
         'statistics',
         'exportedFiles',
-        'organisationRegister'
+        'organisationRegister',
       ];
       return values[index] || 'chouetteJobs';
     } else {
@@ -270,7 +270,7 @@ class SupplierTabWrapper extends React.Component {
       const queryTab = getQueryVariable('tab');
       if (queryTab === 'chouetteJobs' && this.props.activeId) {
         this.props.dispatch(
-          SuppliersActions.getChouetteJobStatus(this.props.getToken)
+          SuppliersActions.getChouetteJobStatus(this.props.getToken),
         );
       }
     }
@@ -286,8 +286,8 @@ class SupplierTabWrapper extends React.Component {
     dispatch(
       SuppliersActions.addNotification(
         'Error loading micro frontend for line statistics',
-        'error'
-      )
+        'error',
+      ),
     );
   }
 
@@ -298,7 +298,7 @@ class SupplierTabWrapper extends React.Component {
       suppliers,
       fileListIsLoading,
       getToken,
-      canEditOrganisation
+      canEditOrganisation,
     } = this.props;
 
     if (fileListIsLoading) {
@@ -313,7 +313,7 @@ class SupplierTabWrapper extends React.Component {
 
     const provider =
       !displayAllSuppliers && suppliers.length
-        ? suppliers.find(s => s.id === activeId)
+        ? suppliers.find((s) => s.id === activeId)
         : null;
     const defaultSelectedIndex = this.getTabIndexFromParams();
 
@@ -344,53 +344,55 @@ class SupplierTabWrapper extends React.Component {
             </Tabs>
             <Box sx={{ p: 3 }}>
               {currentTabIndex === 0 && <ChouetteAllJobs />}
-              {currentTabIndex === 1 && window.config.zagmukMicroFrontendUrl && (
-                <MicroFrontend
-                  id="ror-zagmuk"
-                  host={window.config.zagmukMicroFrontendUrl}
-                  staticPath=""
-                  name="Events"
-                  payload={{
-                    getToken,
-                    locale: 'en',
-                    env: window.config.appEnv,
-                    hideIgnoredExportNetexBlocks: true,
-                    hideAntuValidationSteps: false,
-                    hideFlexDataImport: false,
-                    navigate: url => {
-                      window.history.pushState(null, null, url);
-                      window.location.reload();
-                    }
-                  }}
-                  FetchStatus={props => (
-                    <MicroFrontendFetchStatus
-                      {...props}
-                      label="Error loading events"
-                    />
-                  )}
-                  handleError={error => console.log(error)}
-                />
-              )}
-              {currentTabIndex === 2 && window.config.ninsarMicroFrontendUrl && (
-                <MicroFrontend
-                  id="ror-ninsar"
-                  host={window.config.ninsarMicroFrontendUrl}
-                  staticPath=""
-                  name="Line statistics"
-                  payload={{
-                    getToken
-                  }}
-                  FetchStatus={props => (
-                    <MicroFrontendFetchStatus
-                      {...props}
-                      label="Error loading line statistics"
-                    />
-                  )}
-                  handleError={this.notifyLineStatisticsLoadingFailure.bind(
-                    this
-                  )}
-                />
-              )}
+              {currentTabIndex === 1 &&
+                window.config.zagmukMicroFrontendUrl && (
+                  <MicroFrontend
+                    id="ror-zagmuk"
+                    host={window.config.zagmukMicroFrontendUrl}
+                    staticPath=""
+                    name="Events"
+                    payload={{
+                      getToken,
+                      locale: 'en',
+                      env: window.config.appEnv,
+                      hideIgnoredExportNetexBlocks: true,
+                      hideAntuValidationSteps: false,
+                      hideFlexDataImport: false,
+                      navigate: (url) => {
+                        window.history.pushState(null, null, url);
+                        window.location.reload();
+                      },
+                    }}
+                    FetchStatus={(props) => (
+                      <MicroFrontendFetchStatus
+                        {...props}
+                        label="Error loading events"
+                      />
+                    )}
+                    handleError={(error) => console.log(error)}
+                  />
+                )}
+              {currentTabIndex === 2 &&
+                window.config.ninsarMicroFrontendUrl && (
+                  <MicroFrontend
+                    id="ror-ninsar"
+                    host={window.config.ninsarMicroFrontendUrl}
+                    staticPath=""
+                    name="Line statistics"
+                    payload={{
+                      getToken,
+                    }}
+                    FetchStatus={(props) => (
+                      <MicroFrontendFetchStatus
+                        {...props}
+                        label="Error loading line statistics"
+                      />
+                    )}
+                    handleError={this.notifyLineStatisticsLoadingFailure.bind(
+                      this,
+                    )}
+                  />
+                )}
               {currentTabIndex === 3 && <ExportedFilesView />}
               {canEditOrganisation && currentTabIndex === 4 && (
                 <OrganizationRegister />
@@ -416,58 +418,60 @@ class SupplierTabWrapper extends React.Component {
             </Tabs>
             <Box sx={{ p: 3 }}>
               {currentTabIndex === 0 && <DataMigrationDetails />}
-              {currentTabIndex === 1 && window.config.zagmukMicroFrontendUrl && (
-                <MicroFrontend
-                  id="ror-zagmuk"
-                  host={window.config.zagmukMicroFrontendUrl}
-                  staticPath=""
-                  name="Events"
-                  payload={{
-                    providerId: `${provider.id}`,
-                    getToken,
-                    locale: 'en',
-                    env: window.config.appEnv,
-                    hideIgnoredExportNetexBlocks: true,
-                    hideAntuValidationSteps: false,
-                    hideFlexDataImport: false,
-                    navigate: url => {
-                      window.history.pushState(null, null, url);
-                      window.location.reload();
-                    }
-                  }}
-                  FetchStatus={props => (
-                    <MicroFrontendFetchStatus
-                      {...props}
-                      label="Error loading events"
-                    />
-                  )}
-                  handleError={error => console.log(error)}
-                />
-              )}
+              {currentTabIndex === 1 &&
+                window.config.zagmukMicroFrontendUrl && (
+                  <MicroFrontend
+                    id="ror-zagmuk"
+                    host={window.config.zagmukMicroFrontendUrl}
+                    staticPath=""
+                    name="Events"
+                    payload={{
+                      providerId: `${provider.id}`,
+                      getToken,
+                      locale: 'en',
+                      env: window.config.appEnv,
+                      hideIgnoredExportNetexBlocks: true,
+                      hideAntuValidationSteps: false,
+                      hideFlexDataImport: false,
+                      navigate: (url) => {
+                        window.history.pushState(null, null, url);
+                        window.location.reload();
+                      },
+                    }}
+                    FetchStatus={(props) => (
+                      <MicroFrontendFetchStatus
+                        {...props}
+                        label="Error loading events"
+                      />
+                    )}
+                    handleError={(error) => console.log(error)}
+                  />
+                )}
               {currentTabIndex === 2 && (
                 <ChouetteJobDetails getToken={this.props.getToken} />
               )}
-              {currentTabIndex === 3 && window.config.ninsarMicroFrontendUrl && (
-                <MicroFrontend
-                  id="ror-ninsar"
-                  host={window.config.ninsarMicroFrontendUrl}
-                  staticPath=""
-                  name="Line statistics"
-                  payload={{
-                    providerId: `${provider.id}`,
-                    getToken
-                  }}
-                  FetchStatus={props => (
-                    <MicroFrontendFetchStatus
-                      {...props}
-                      label="Error loading line statistics"
-                    />
-                  )}
-                  handleError={this.notifyLineStatisticsLoadingFailure.bind(
-                    this
-                  )}
-                />
-              )}
+              {currentTabIndex === 3 &&
+                window.config.ninsarMicroFrontendUrl && (
+                  <MicroFrontend
+                    id="ror-ninsar"
+                    host={window.config.ninsarMicroFrontendUrl}
+                    staticPath=""
+                    name="Line statistics"
+                    payload={{
+                      providerId: `${provider.id}`,
+                      getToken,
+                    }}
+                    FetchStatus={(props) => (
+                      <MicroFrontendFetchStatus
+                        {...props}
+                        label="Error loading line statistics"
+                      />
+                    )}
+                    handleError={this.notifyLineStatisticsLoadingFailure.bind(
+                      this,
+                    )}
+                  />
+                )}
             </Box>
           </Box>
         );
@@ -480,14 +484,14 @@ class SupplierTabWrapper extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   suppliers: state.SuppliersReducer.data,
   activeId: state.SuppliersReducer.activeId,
   fileListIsLoading: state.MardukReducer.filenames.isLoading,
   displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
   providerEvents: state.SuppliersReducer.statusList,
   allProvidersEvents: state.SuppliersReducer.statusListAllProviders,
-  canEditOrganisation: state.UserContextReducer.isOrganisationAdmin
+  canEditOrganisation: state.UserContextReducer.isOrganisationAdmin,
 });
 
 export default connect(mapStateToProps)(withAuth(SupplierTabWrapper));

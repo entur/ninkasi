@@ -21,12 +21,12 @@ const AppActions = {};
 function sendData(payLoad, type) {
   return {
     payLoad: payLoad,
-    type: type
+    type: type,
   };
 }
 
 AppActions.toggleMenu = () => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(sendData(null, TOGGLE_MENU));
   };
 };

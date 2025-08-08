@@ -17,7 +17,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Grid, Typography, Box, Divider } from '@mui/material';
 
-const EventExpandableContent = props => {
+const EventExpandableContent = (props) => {
   const { events, correlationId } = props;
 
   return (
@@ -71,7 +71,7 @@ const EventExpandableContent = props => {
 
 EventExpandableContent.propTypes = {
   events: PropTypes.arrayOf(React.PropTypes.object).isRequired,
-  correlationId: PropTypes.string.isRequired
+  correlationId: PropTypes.string.isRequired,
 };
 
 export default EventExpandableContent;

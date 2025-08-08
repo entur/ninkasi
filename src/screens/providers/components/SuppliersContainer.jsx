@@ -32,10 +32,10 @@ class SuppliersContainer extends React.Component {
       confirmDialogOpen: false,
       confirmAction: null,
       confirmTitle: '',
-      confirmInfo: ''
+      confirmInfo: '',
     };
 
-    cfgreader.readConfig(function(config) {
+    cfgreader.readConfig(function (config) {
       window.config = config;
     });
   }
@@ -46,13 +46,16 @@ class SuppliersContainer extends React.Component {
     dispatch(SuppliersActions.getAllProviders(this.props.getToken)).then(() => {
       if (id != null) {
         dispatch(
-          SuppliersActions.selectActiveSupplier(Number(id), this.props.getToken)
+          SuppliersActions.selectActiveSupplier(
+            Number(id),
+            this.props.getToken,
+          ),
         );
       }
     });
   }
 
-  selectSupplier = value => {
+  selectSupplier = (value) => {
     const { dispatch, getToken } = this.props;
     if (value > 0) {
       dispatch(SuppliersActions.selectActiveSupplier(value, getToken));
@@ -79,14 +82,14 @@ class SuppliersContainer extends React.Component {
         confirmInfo: 'Are you sure you want delete the provider?',
         confirmAction: () => {
           dispatch(SuppliersActions.deleteProvider(activeProviderId, getToken));
-        }
+        },
       });
     } else {
       this.setState({
         confirmDialogOpen: false,
         confirmTitle: '',
         confirmInfo: '',
-        confirmAction: null
+        confirmAction: null,
       });
     }
   }
@@ -97,14 +100,14 @@ class SuppliersContainer extends React.Component {
     const supplierItems = [
       {
         id: -1,
-        name: 'All providers'
-      }
+        name: 'All providers',
+      },
     ].concat(suppliers);
 
     const toolTips = {
       createNewProvider: 'Create new provider',
       deleteProvider: 'Delete provider',
-      editProvider: 'Edit provider'
+      editProvider: 'Edit provider',
     };
 
     return (
@@ -120,7 +123,7 @@ class SuppliersContainer extends React.Component {
               style={{
                 display: 'inline-block',
                 marginTop: 25,
-                marginLeft: 15
+                marginLeft: 15,
               }}
             >
               <div
@@ -128,7 +131,7 @@ class SuppliersContainer extends React.Component {
                 style={{
                   display: 'inline-block',
                   cursor: 'pointer',
-                  marginRight: 10
+                  marginRight: 10,
                 }}
                 onClick={() => this.handleEditProvider()}
               >
@@ -144,7 +147,7 @@ class SuppliersContainer extends React.Component {
                 style={{
                   display: 'inline-block',
                   cursor: 'pointer',
-                  marginRight: 10
+                  marginRight: 10,
                 }}
                 onClick={() => this.handleNewProvider()}
               >
@@ -175,7 +178,7 @@ class SuppliersContainer extends React.Component {
           handleClose={() => {
             this.setState({
               confirmDialogOpen: false,
-              confirmAction: null
+              confirmAction: null,
             });
           }}
         />
@@ -184,11 +187,11 @@ class SuppliersContainer extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   suppliers: state.SuppliersReducer.data,
   activeProviderId: state.SuppliersReducer.activeId,
   displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,
-  canEditOrganisation: state.UserContextReducer.isOrganisationAdmin
+  canEditOrganisation: state.UserContextReducer.isOrganisationAdmin,
 });
 
 export default connect(mapStateToProps)(withAuth(SuppliersContainer));

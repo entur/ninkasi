@@ -21,25 +21,25 @@ class OrganizationFilter extends Component {
     const {
       organizations = [],
       handleOnChange,
-      organisationFilterId
+      organisationFilterId,
     } = this.props;
 
     const options = [
       {
         id: -1,
         value: -1,
-        name: 'All organisations'
+        name: 'All organisations',
       },
-      ...organizations
+      ...organizations,
     ];
 
     return (
       <select
         style={{ marginLeft: 5 }}
         value={organisationFilterId}
-        onChange={e => handleOnChange(e.target.value)}
+        onChange={(e) => handleOnChange(e.target.value)}
       >
-        {options.map(org => (
+        {options.map((org) => (
           <option value={org.id} key={org.id}>
             {org.name}
           </option>

@@ -42,7 +42,7 @@ class NotificationEventFilter extends React.Component {
   handleChangeJobDomain(event, key, value) {
     const { index, dispatch } = this.props;
     dispatch(
-      OrganizationRegisterActions.changeEventFilterJobDomain(index, value)
+      OrganizationRegisterActions.changeEventFilterJobDomain(index, value),
     );
   }
 
@@ -51,8 +51,8 @@ class NotificationEventFilter extends React.Component {
     dispatch(
       OrganizationRegisterActions.changeEventFilterOrganizationRef(
         index,
-        organization
-      )
+        organization,
+      ),
     );
   }
 
@@ -89,7 +89,7 @@ class NotificationEventFilter extends React.Component {
         let fieldIsOrAre =
           missingFields.length === 1 ? 'field is ' : 'fields are ';
         return `Required* ${fieldIsOrAre} missing for ${missingFields.join(
-          ' and '
+          ' and ',
         )}`;
       }
     }
@@ -105,7 +105,7 @@ class NotificationEventFilter extends React.Component {
       jobDomainActions,
       index,
       organizations,
-      notificationTypes
+      notificationTypes,
     } = this.props;
     const enableJobSpecific =
       notification.eventFilter.type && notification.eventFilter.type === 'JOB';
@@ -117,7 +117,7 @@ class NotificationEventFilter extends React.Component {
             notification={notification}
             notificationTypes={notificationTypes}
             handleChangeNotificationType={this.handleChangeNotificationType.bind(
-              this
+              this,
             )}
           />
           <OrganisationSelect
@@ -129,7 +129,7 @@ class NotificationEventFilter extends React.Component {
         <div style={{ display: 'flex', marginTop: -10 }}>
           <FormControl style={{ flex: 1 }}>
             <Select
-              onChange={e =>
+              onChange={(e) =>
                 this.handleChangeEventFilterType(e, null, e.target.value)
               }
               value={notification.eventFilter.type}
@@ -144,7 +144,7 @@ class NotificationEventFilter extends React.Component {
           </FormControl>
           <FormControl style={{ marginLeft: 10, flex: 1 }}>
             <Select
-              onChange={e =>
+              onChange={(e) =>
                 this.handleChangeJobDomain(e, null, e.target.value)
               }
               disabled={!enableJobSpecific}
@@ -164,7 +164,7 @@ class NotificationEventFilter extends React.Component {
             style={{
               display: enableJobSpecific ? 'none' : 'flex',
               flexDirection: 'column',
-              flex: 2
+              flex: 2,
             }}
           >
             <NotificationAdminZoneRefs
@@ -182,7 +182,7 @@ class NotificationEventFilter extends React.Component {
             style={{
               display: enableJobSpecific ? 'flex' : 'none',
               marginTop: 10,
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <div style={{ display: 'flex' }}>
@@ -209,7 +209,7 @@ class NotificationEventFilter extends React.Component {
             control={
               <Checkbox
                 checked={notification.enabled}
-                onChange={e => this.handleEnabled(e.target.checked)}
+                onChange={(e) => this.handleEnabled(e.target.checked)}
               />
             }
             label="Enabled"
@@ -228,13 +228,13 @@ class NotificationEventFilter extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   eventFilterTypes: state.OrganizationReducer.eventFilterTypes,
   jobDomains: state.OrganizationReducer.jobDomains,
   jobDomainActions: state.OrganizationReducer.jobDomainActions,
   eventFilterStates: state.OrganizationReducer.eventFilterStates,
   organizations: state.OrganizationReducer.organizations,
-  notificationTypes: state.OrganizationReducer.notificationTypes
+  notificationTypes: state.OrganizationReducer.notificationTypes,
 });
 
 export default connect(mapStateToProps)(NotificationEventFilter);

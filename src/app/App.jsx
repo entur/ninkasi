@@ -21,7 +21,7 @@ import {
   ThemeProvider,
   StyledEngineProvider,
   createTheme,
-  adaptV4Theme
+  adaptV4Theme,
 } from '@mui/material/styles'; // v1.x
 import { connect } from 'react-redux';
 import UtilsActions from 'actions/UtilsActions';
@@ -46,7 +46,7 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
 
   useEffect(() => {
     if (auth.isAuthenticated) {
-      cfgreader.readConfig(config => {
+      cfgreader.readConfig((config) => {
         window.config = config;
         dispatch(UtilsActions.notifyConfigIsLoaded());
         dispatch(UserContextActions.fetchUserContext(getToken));
@@ -59,11 +59,11 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
       createTheme(
         adaptV4Theme({
           palette: {
-            mode: 'light'
-          }
-        })
+            mode: 'light',
+          },
+        }),
       ),
-    []
+    [],
   );
 
   if (isConfigLoaded && auth.isAuthenticated) {
@@ -95,10 +95,10 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
   }
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isConfigLoaded: state.UtilsReducer.isConfigLoaded,
   isMenuOpen: state.app.isMenuOpen,
-  isAdmin: state.UserContextReducer.isRouteDataAdmin
+  isAdmin: state.UserContextReducer.isRouteDataAdmin,
 });
 
 export default connect(mapStateToProps)(MainPage);

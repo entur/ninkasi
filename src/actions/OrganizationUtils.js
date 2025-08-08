@@ -17,7 +17,7 @@
 export const removeRedundantActions = (
   actions,
   jobDomain,
-  jobDomainActions
+  jobDomainActions,
 ) => {
   if (!actions || !actions.length) return [];
 
@@ -37,9 +37,9 @@ export const removeRedundantActions = (
 
 export const formatUserNotifications = (
   userNotifications,
-  jobDomainActions
+  jobDomainActions,
 ) => {
-  return userNotifications.map(userNotification => {
+  return userNotifications.map((userNotification) => {
     if (userNotification.isNew) {
       delete userNotification.isNew;
     }
@@ -55,7 +55,7 @@ export const formatUserNotifications = (
       userNotification.eventFilter.actions = removeRedundantActions(
         userNotification.eventFilter.actions,
         userNotification.eventFilter.jobDomain,
-        jobDomainActions
+        jobDomainActions,
       );
     } else if (userNotification.eventFilter.type === 'CRUD') {
       if (!userNotification.eventFilter.administrativeZoneRefs) {

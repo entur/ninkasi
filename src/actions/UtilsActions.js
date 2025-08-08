@@ -21,12 +21,12 @@ var UtilsActions = {};
 function sendData(payLoad, type) {
   return {
     payLoad: payLoad,
-    type: type
+    type: type,
   };
 }
 
 UtilsActions.notifyConfigIsLoaded = () => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(sendData(null, types.CONFIG_LOADED));
   };
 };

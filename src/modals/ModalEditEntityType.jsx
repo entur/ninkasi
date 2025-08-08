@@ -19,7 +19,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -32,13 +32,13 @@ const initialState = {
     name: '',
     privateCode: '',
     codeSpace: '',
-    classifications: []
+    classifications: [],
   },
   isCreatingNewClassification: false,
   tempClassification: {
     name: '',
-    privateCode: ''
-  }
+    privateCode: '',
+  },
 };
 
 class ModalEditEntityType extends React.Component {
@@ -50,7 +50,7 @@ class ModalEditEntityType extends React.Component {
 
   componentDidMount() {
     this.setState({
-      entityType: this.props.entityType
+      entityType: this.props.entityType,
     });
   }
 
@@ -59,7 +59,7 @@ class ModalEditEntityType extends React.Component {
     this.props.handleCloseModal();
   }
 
-  getClassificationTitle = classification => {
+  getClassificationTitle = (classification) => {
     return `name=${classification.name}, privateCode=${classification.privateCode}`;
   };
 
@@ -70,12 +70,12 @@ class ModalEditEntityType extends React.Component {
       isCreatingNewClassification: false,
       entityType: {
         ...entityType,
-        classifications: [...entityType.classifications, tempClassification]
+        classifications: [...entityType.classifications, tempClassification],
       },
       tempClassification: {
         name: '',
-        privateCode: ''
-      }
+        privateCode: '',
+      },
     });
   }
 
@@ -89,9 +89,9 @@ class ModalEditEntityType extends React.Component {
           ...this.state.entityType,
           classifications: [
             ...this.state.entityType.classifications.slice(0, index),
-            ...this.state.entityType.classifications.slice(index + 1)
-          ]
-        }
+            ...this.state.entityType.classifications.slice(index + 1),
+          ],
+        },
       });
     }
   }
@@ -99,15 +99,12 @@ class ModalEditEntityType extends React.Component {
   render() {
     const { isModalOpen, handleSubmit, codeSpaces } = this.props;
 
-    const {
-      entityType,
-      isCreatingNewClassification,
-      tempClassification
-    } = this.state;
+    const { entityType, isCreatingNewClassification, tempClassification } =
+      this.state;
 
     const isClassificationPrivateCodeTaken =
       entityType.classifications
-        .map(c => c.privateCode)
+        .map((c) => c.privateCode)
         .indexOf(tempClassification.privateCode) > -1;
     const isSavable =
       entityType.name.length &&
@@ -128,7 +125,7 @@ class ModalEditEntityType extends React.Component {
         onClick={() => handleSubmit(entityType)}
       >
         Update
-      </Button>
+      </Button>,
     ];
 
     return (
@@ -145,16 +142,16 @@ class ModalEditEntityType extends React.Component {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <TextField
                 placeholder="Name"
                 label="Name"
                 value={entityType.name}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
-                    entityType: { ...entityType, name: e.target.value }
+                    entityType: { ...entityType, name: e.target.value },
                   })
                 }
                 fullWidth={true}
@@ -164,9 +161,9 @@ class ModalEditEntityType extends React.Component {
                 label="Private code"
                 disabled={true}
                 value={entityType.privateCode}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
-                    entityType: { ...entityType, privateCode: e.target.value }
+                    entityType: { ...entityType, privateCode: e.target.value },
                   })
                 }
                 fullWidth={true}
@@ -175,14 +172,14 @@ class ModalEditEntityType extends React.Component {
                 <Select
                   disabled={true}
                   value={entityType.codeSpace}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.setState({
-                      entityType: { ...entityType, codeSpace: e.target.value }
+                      entityType: { ...entityType, codeSpace: e.target.value },
                     })
                   }
                   displayEmpty
                 >
-                  {codeSpaces.map(codeSpace => (
+                  {codeSpaces.map((codeSpace) => (
                     <MenuItem key={codeSpace.id} value={codeSpace.id}>
                       {codeSpace.xmlns}
                     </MenuItem>
@@ -225,7 +222,7 @@ class ModalEditEntityType extends React.Component {
                     style={{
                       fontSize: 12,
                       textAlign: 'center',
-                      fontWeight: 600
+                      fontWeight: 600,
                     }}
                   >
                     New classification
@@ -234,12 +231,12 @@ class ModalEditEntityType extends React.Component {
                     placeholder="Name"
                     label="Name"
                     value={tempClassification.name}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({
                         tempClassification: {
                           ...tempClassification,
-                          name: e.target.value
-                        }
+                          name: e.target.value,
+                        },
                       })
                     }
                     fullWidth={true}
@@ -253,12 +250,12 @@ class ModalEditEntityType extends React.Component {
                         ? 'Private code is already taken'
                         : ''
                     }
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({
                         tempClassification: {
                           ...tempClassification,
-                          privateCode: e.target.value
-                        }
+                          privateCode: e.target.value,
+                        },
                       })
                     }
                     value={tempClassification.privateCode}

@@ -36,8 +36,8 @@ class AdvancedFileList extends React.Component {
       const { data } = await axios.get(URL, {
         responseType: 'blob',
         headers: {
-          Authorization: `Bearer ${await this.props.getToken()}`
-        }
+          Authorization: `Bearer ${await this.props.getToken()}`,
+        },
       });
 
       saveAs(data, filename);
@@ -53,7 +53,7 @@ class AdvancedFileList extends React.Component {
       handleKeyDown,
       handleKeyUp,
       isSource,
-      handleSelectAllShowingIndices
+      handleSelectAllShowingIndices,
     } = this.props;
 
     if (e.keyCode === 40) {
@@ -78,7 +78,7 @@ class AdvancedFileList extends React.Component {
     if (e.shiftKey && selectedIndices.size) {
       const previousMax = Math.max.apply(
         Math,
-        Array.from(selectedIndices.values())
+        Array.from(selectedIndices.values()),
       );
       let indicesToAdd = [];
 
@@ -116,7 +116,7 @@ class AdvancedFileList extends React.Component {
       maxWidth: '30%',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
-      overflowX: 'hidden'
+      overflowX: 'hidden',
     };
 
     const columnStyle = {
@@ -127,7 +127,7 @@ class AdvancedFileList extends React.Component {
       maxWidth: '30%',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
-      overflowX: 'hidden'
+      overflowX: 'hidden',
     };
 
     return (
@@ -139,9 +139,9 @@ class AdvancedFileList extends React.Component {
           lineHeight: '1.2',
           tableLayout: 'fixed',
           height: '60vh',
-          minWidth: '42vw'
+          minWidth: '42vw',
         }}
-        onKeyDown={e => this.handleSelectAll(e)}
+        onKeyDown={(e) => this.handleSelectAll(e)}
       >
         <div
           style={{
@@ -149,7 +149,7 @@ class AdvancedFileList extends React.Component {
             minWidth: '100%',
             color: '#191919',
             fontWeight: 600,
-            background: '#F5F4F4'
+            background: '#F5F4F4',
           }}
         >
           <div
@@ -210,10 +210,10 @@ class AdvancedFileList extends React.Component {
                 verticalAlign: 'middle',
                 height: 20,
                 lineHeight: 3,
-                overflowY: 'auto'
+                overflowY: 'auto',
               }}
-              onClick={e => this.handleMenuItemOnClick(e, index)}
-              onDoubleClick={e => {
+              onClick={(e) => this.handleMenuItemOnClick(e, index)}
+              onDoubleClick={(e) => {
                 e.preventDefault();
               }}
             >
@@ -221,9 +221,7 @@ class AdvancedFileList extends React.Component {
               <div style={columnStyle}>{getSizeFromBytes(file.fileSize)}</div>
               <div style={columnStyle}> {file.ext}</div>
               <div style={columnStyle}>
-                {moment(file.updated)
-                  .format('YYYY-MM-DD HH:mm:ss')
-                  .toString()}
+                {moment(file.updated).format('YYYY-MM-DD HH:mm:ss').toString()}
               </div>
               {downloadButton ? (
                 <div
@@ -232,16 +230,16 @@ class AdvancedFileList extends React.Component {
                     display: 'table-cell',
                     width: 50,
                     paddingLeft: 10,
-                    background: '#fff'
+                    background: '#fff',
                   }}
                 >
                   <FileDownload
                     style={{
                       marginTop: 1,
                       fill: '#2196F3',
-                      verticalAlign: 'middle'
+                      verticalAlign: 'middle',
                     }}
-                    onClick={e => this.handleDownloadFile(e, file.name)}
+                    onClick={(e) => this.handleDownloadFile(e, file.name)}
                   />
                 </div>
               ) : null}

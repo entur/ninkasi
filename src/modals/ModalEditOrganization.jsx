@@ -19,7 +19,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -30,9 +30,9 @@ const initialState = {
     name: '',
     organisationType: 'AUTHORITY',
     privateCode: '',
-    codeSpace: ''
+    codeSpace: '',
   },
-  originalName: ''
+  originalName: '',
 };
 
 class ModalEditOrganization extends React.Component {
@@ -44,7 +44,7 @@ class ModalEditOrganization extends React.Component {
   componentWillMount() {
     this.setState({
       organization: this.props.organization,
-      originalName: this.props.organization.name
+      originalName: this.props.organization.name,
     });
   }
 
@@ -55,7 +55,7 @@ class ModalEditOrganization extends React.Component {
       takenOrganizationNames,
       takenOrganizationPrivateCodes,
       codeSpaces,
-      handleCloseModal
+      handleCloseModal,
     } = this.props;
 
     const { organization, originalName } = this.state;
@@ -78,7 +78,7 @@ class ModalEditOrganization extends React.Component {
         onClick={() => handleSubmit(organization)}
       >
         Update
-      </Button>
+      </Button>,
     ];
 
     return (
@@ -94,7 +94,7 @@ class ModalEditOrganization extends React.Component {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <TextField
@@ -107,9 +107,9 @@ class ModalEditOrganization extends React.Component {
                   : ''
               }
               value={organization.name}
-              onChange={e =>
+              onChange={(e) =>
                 this.setState({
-                  organization: { ...organization, name: e.target.value }
+                  organization: { ...organization, name: e.target.value },
                 })
               }
               fullWidth={true}
@@ -130,12 +130,12 @@ class ModalEditOrganization extends React.Component {
             <FormControl fullWidth>
               <Select
                 value={organization.organisationType}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     organization: {
                       ...organization,
-                      organisationType: e.target.value
-                    }
+                      organisationType: e.target.value,
+                    },
                   })
                 }
                 displayEmpty
@@ -149,7 +149,7 @@ class ModalEditOrganization extends React.Component {
                 disabled={true}
                 displayEmpty
               >
-                {codeSpaces.map(codeSpace => (
+                {codeSpaces.map((codeSpace) => (
                   <MenuItem key={codeSpace.id} value={codeSpace.id}>
                     {codeSpace.xmlns}
                   </MenuItem>

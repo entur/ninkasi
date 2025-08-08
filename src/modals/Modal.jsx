@@ -32,15 +32,15 @@ class Modal extends React.Component {
       minWidth: minWidth || '50%',
       height: minHeight,
       minHeight: minHeight || '60%',
-      background: '#fff'
+      background: '#fff',
     };
 
     if (this.props.width && this.props.height) {
       modalStyle.width = this.props.width;
       modalStyle.height = this.props.height;
-      (modalStyle.marginLeft = (this.props.width / 2) * -1),
+      ((modalStyle.marginLeft = (this.props.width / 2) * -1),
         (modalStyle.marginTop = (this.props.height / 2) * -1),
-        (modalStyle.transform = null);
+        (modalStyle.transform = null));
     }
 
     if (this.props.style) {
@@ -56,7 +56,7 @@ class Modal extends React.Component {
       top: 0,
       left: 0,
       zIndex: '10',
-      background: 'rgba(0, 0, 0, 0.3)'
+      background: 'rgba(0, 0, 0, 0.3)',
     };
 
     if (this.props.backdropStyle) {
@@ -74,7 +74,7 @@ class Modal extends React.Component {
           <div
             className={this.props.backdropClassName}
             style={backdropStyle}
-            onClick={e => this.close(e)}
+            onClick={(e) => this.close(e)}
           />
         )}
       </div>
@@ -90,9 +90,9 @@ class Modal extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    loggedEvents: state.UtilsReducer.loggedEvents
+    loggedEvents: state.UtilsReducer.loggedEvents,
   };
 };
 
