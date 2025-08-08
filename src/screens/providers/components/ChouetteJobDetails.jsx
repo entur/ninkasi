@@ -88,8 +88,10 @@ class ChouetteJobDetails extends React.Component {
 
   setActiveActionFilter(event) {
     if (event.target.name === 'action-filter') {
-      const { dispatch } = this.props;
-      dispatch(SuppliersActions.setActiveActionFilter(event.target.value));
+      const { dispatch, getToken } = this.props;
+      dispatch(
+        SuppliersActions.setActiveActionFilter(event.target.value, getToken)
+      );
     }
   }
 
