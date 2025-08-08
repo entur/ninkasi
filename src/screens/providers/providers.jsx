@@ -2,7 +2,6 @@ import React from 'react';
 import SuppliersContainer from './components/SuppliersContainer';
 import SupplierTabWrapper from './components/SupplierTabWrapper';
 import SupplierPage from './components/SupplierPage';
-import ModalViewContainer from 'modals/ModalActionContainer';
 import AdministrativeActions from './components/AdministrativeActions';
 import { connect } from 'react-redux';
 import { ShowOTPGraphStatus } from './components/ShowOTPGraphStatus';
@@ -28,7 +27,6 @@ const Providers = ({ isAdmin }) => {
               <ShowOTPGraphStatus />
             </div>
             <SupplierTabWrapper />
-            <ModalViewContainer />
             <SupplierPage />
           </div>
         </div>

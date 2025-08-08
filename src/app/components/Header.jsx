@@ -21,7 +21,6 @@ import {
   MoreVert,
   AccountCircle,
   Help,
-  History,
   Menu as MenuIcon
 } from '@mui/icons-material';
 import AppActions from 'actions/AppActions';
@@ -42,10 +41,6 @@ class Header extends React.Component {
     if (auth) {
       auth.logout({ returnTo: window.location.origin });
     }
-  }
-
-  handleShowHistory() {
-    this.props.dispatch(SuppliersActions.openHistoryModal());
   }
 
   handleMenuOpen = event => {
@@ -115,16 +110,6 @@ class Header extends React.Component {
             horizontal: 'right'
           }}
         >
-          <MenuItem
-            onClick={() => {
-              this.handleShowHistory();
-              this.handleMenuClose();
-            }}
-            style={{ fontSize: 12 }}
-          >
-            <History style={{ marginRight: 8, color: '#41c0c4' }} />
-            History
-          </MenuItem>
           <MenuItem
             component="a"
             href="https://enturas.atlassian.net/wiki/spaces/ROR/pages/682623320/Brukerveiledning+-+Ninkasi"
