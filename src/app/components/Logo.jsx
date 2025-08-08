@@ -1,6 +1,6 @@
 import React from 'react';
 
-const pageNameFromPathName = pathname => {
+const pageNameFromPathName = (pathname) => {
   switch (pathname) {
     case '/':
       return 'Providers';
@@ -20,7 +20,7 @@ export default ({ providersEnv, pathname }) => {
           style={{
             marginLeft: 5,
             fontSize: '0.75rem',
-            lineHeight: '3rem'
+            lineHeight: '3rem',
           }}
         >
           {providersEnv}
@@ -31,7 +31,7 @@ export default ({ providersEnv, pathname }) => {
           style={{
             color: 'white',
             fontSize: '1.5rem',
-            marginLeft: '0.5rem'
+            marginLeft: '0.5rem',
           }}
         >
           {pageNameFromPathName(pathname) !== ''

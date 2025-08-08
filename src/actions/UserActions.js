@@ -2,10 +2,10 @@ import * as types from './actionTypes';
 
 var UserActions = {};
 
-UserActions.updateAuth = data => {
+UserActions.updateAuth = (data) => {
   return {
     type: types.UPDATE_AUTH,
-    payLoad: data
+    payLoad: data,
   };
 };
 

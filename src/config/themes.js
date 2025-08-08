@@ -14,7 +14,7 @@
  *
  */
 
-export const getProvidersEnv = providersBaseUrl => {
+export const getProvidersEnv = (providersBaseUrl) => {
   if (providersBaseUrl) {
     if (providersBaseUrl.indexOf('api.staging.entur.io') > -1) {
       return 'TEST';
@@ -26,31 +26,31 @@ export const getProvidersEnv = providersBaseUrl => {
   }
 };
 
-export const getTheme = env => {
+export const getTheme = (env) => {
   return themes[env || 'DEV'];
 };
 
-export const getIconColor = env => {
+export const getIconColor = (env) => {
   return iconColor[env || 'DEV'];
 };
 
 const themes = {
   PROD: {
     backgroundColor: '#2f2f2f',
-    color: '#fff'
+    color: '#fff',
   },
   TEST: {
     backgroundColor: '#d18e25',
-    color: '#fff'
+    color: '#fff',
   },
   DEV: {
     backgroundColor: '#457645',
-    color: '#fff'
-  }
+    color: '#fff',
+  },
 };
 
 const iconColor = {
   PROD: '#FBB829',
   TEST: '#FBB829',
-  DEV: '#fff'
+  DEV: '#fff',
 };

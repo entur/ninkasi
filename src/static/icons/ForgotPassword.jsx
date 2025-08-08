@@ -17,7 +17,7 @@
 import React from 'react';
 import { SvgIcon } from '@mui/material';
 
-const ForgotPassword = props => (
+const ForgotPassword = (props) => (
   <SvgIcon
     {...props}
     x="0px"

@@ -18,7 +18,7 @@ import * as types from 'actions/actionTypes';
 
 const cleanSlate = {
   filenames: {
-    isLoading: false
+    isLoading: false,
   },
   isLoading: false,
   data: [],
@@ -30,7 +30,7 @@ const cleanSlate = {
     STARTED: true,
     TERMINATED: false,
     ABORTED: false,
-    CANCELED: false
+    CANCELED: false,
   },
   chouetteJobAllFilter: {
     SCHEDULED: true,
@@ -38,12 +38,12 @@ const cleanSlate = {
     STARTED: true,
     TERMINATED: false,
     ABORTED: false,
-    CANCELED: false
+    CANCELED: false,
   },
   actionFilter: '',
   actionAllFilter: '',
   requesting_chouette_job: false,
-  requesting_chouette_all_job: false
+  requesting_chouette_all_job: false,
 };
 
 const MardukReducer = (state = cleanSlate, action) => {
@@ -52,14 +52,14 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         import_data: action.payLoad,
-        error: true
+        error: true,
       });
 
     case types.SUCCESS_IMPORT_DATA:
       return Object.assign({}, state, {
         isLoading: false,
         import_data: action.payLoad,
-        error: false
+        error: false,
       });
 
     case types.REQUEST_IMPORT_DATA:
@@ -69,14 +69,14 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         export_data: action.payLoad,
-        error: true
+        error: true,
       });
 
     case types.SUCCESS_EXPORT_DATA:
       return Object.assign({}, state, {
         isLoading: false,
         export_data: action.payLoad,
-        error: false
+        error: false,
       });
 
     case types.REQUEST_EXPORT_DATA:
@@ -86,14 +86,14 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         transfer_data: action.payLoad,
-        error: true
+        error: true,
       });
 
     case types.SUCCESS_TRANSFER_DATA:
       return Object.assign({}, state, {
         isLoading: false,
         transfer_data: action.payLoad,
-        error: false
+        error: false,
       });
 
     case types.REQUEST_TRANSFER_DATA:
@@ -103,14 +103,14 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         delete_data: action.payLoad,
-        error: true
+        error: true,
       });
 
     case types.SUCCESS_DELETE_DATA:
       return Object.assign({}, state, {
         isLoading: false,
         delete_data: action.payLoad,
-        error: false
+        error: false,
       });
 
     case types.REQUEST_DELETE_DATA:
@@ -120,14 +120,14 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         build_graph: action.payLoad,
-        error: true
+        error: true,
       });
 
     case types.SUCCESS_BUILD_GRAPH:
       return Object.assign({}, state, {
         isLoading: false,
         build_graph: action.payLoad,
-        error: false
+        error: false,
       });
 
     case types.REQUEST_BUILD_GRAPH:
@@ -137,14 +137,14 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         build_base_graph: action.payLoad,
-        error: true
+        error: true,
       });
 
     case types.SUCCESS_BUILD_BASE_GRAPH:
       return Object.assign({}, state, {
         isLoading: false,
         build_base_graph: action.payLoad,
-        error: false
+        error: false,
       });
 
     case types.REQUEST_BUILD_BASE_GRAPH:
@@ -154,14 +154,14 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         build_candidate_graph_otp: action.payLoad,
-        error: true
+        error: true,
       });
 
     case types.SUCCESS_BUILD_CANDIDATE_GRAPH_OTP:
       return Object.assign({}, state, {
         isLoading: false,
         build_candidate_graph_otp: action.payLoad,
-        error: false
+        error: false,
       });
 
     case types.REQUEST_BUILD_CANDIDATE_GRAPH_OTP:
@@ -171,14 +171,14 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         build_candidate_base_graph_otp: action.payLoad,
-        error: true
+        error: true,
       });
 
     case types.SUCCESS_BUILD_CANDIDATE_BASE_GRAPH_OTP:
       return Object.assign({}, state, {
         isLoading: false,
         build_candidate_base_graph_otp: action.payLoad,
-        error: false
+        error: false,
       });
 
     case types.REQUEST_BUILD_CANDIDATE_BASE_GRAPH_OTP:
@@ -188,14 +188,14 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         fetch_osm: action.payLoad,
-        error: true
+        error: true,
       });
 
     case types.SUCCESS_FETCH_OSM:
       return Object.assign({}, state, {
         isLoading: false,
         fetch_osm: action.payLoad,
-        error: false
+        error: false,
       });
 
     case types.REQUEST_FETCH_OSM:
@@ -205,14 +205,14 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         upload_google_production: action.payLoad,
-        error: true
+        error: true,
       });
 
     case types.SUCCESS_UPLOAD_GOOGLE_PRODUCTION:
       return Object.assign({}, state, {
         isLoading: false,
         upload_google_production: action.payLoad,
-        error: false
+        error: false,
       });
 
     case types.REQUEST_UPLOAD_GOOGLE_PRODUCTION:
@@ -222,14 +222,14 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         upload_google_qa: action.payLoad,
-        error: true
+        error: true,
       });
 
     case types.SUCCESS_UPLOAD_GOOGLE_QA:
       return Object.assign({}, state, {
         isLoading: false,
         upload_google_qa: action.payLoad,
-        error: false
+        error: false,
       });
 
     case types.REQUEST_UPLOAD_GOOGLE_QA:
@@ -239,41 +239,41 @@ const MardukReducer = (state = cleanSlate, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         validate_provider: action.payLoad,
-        error: true
+        error: true,
       });
 
     case types.SUCCESS_VALIDATE_PROVIDER:
       return Object.assign({}, state, {
         isLoading: false,
         validate_provider: action.payLoad,
-        error: false
+        error: false,
       });
 
     case types.REQUEST_FILENAMES:
       return Object.assign({}, state, {
-        filenames: { isLoading: true, error: false }
+        filenames: { isLoading: true, error: false },
       });
 
     case types.SUCCESS_FILENAMES:
       return Object.assign({}, state, {
-        filenames: { isLoading: false, data: action.payLoad, error: false }
+        filenames: { isLoading: false, data: action.payLoad, error: false },
       });
 
     case types.ERROR_FILENAMES:
       return Object.assign({}, state, {
-        filesnames: { isLoading: false, error: action.payLoad }
+        filesnames: { isLoading: false, error: action.payLoad },
       });
 
     case types.SUCCESS_CHOUETTE_JOB_STATUS:
       return Object.assign({}, state, {
         requesting_chouette_job: false,
-        chouetteJobStatus: action.payLoad
+        chouetteJobStatus: action.payLoad,
       });
 
     case types.SUCCESS_ALL_CHOUETTE_JOB_STATUS:
       return Object.assign({}, state, {
         requesting_chouette_all_job: false,
-        chouetteAllJobStatus: action.payLoad
+        chouetteAllJobStatus: action.payLoad,
       });
 
     case types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER:
@@ -285,7 +285,7 @@ const MardukReducer = (state = cleanSlate, action) => {
       let chouetteJobAllFilter = { ...state.chouetteJobAllFilter };
       chouetteJobAllFilter[action.payLoad.option] = action.payLoad.value;
       return Object.assign({}, state, {
-        chouetteJobAllFilter: chouetteJobAllFilter
+        chouetteJobAllFilter: chouetteJobAllFilter,
       });
 
     case types.SET_ACTIVE_ACTION_FILTER:
@@ -302,7 +302,7 @@ const MardukReducer = (state = cleanSlate, action) => {
 
       return Object.assign({}, state, {
         requesting_chouette_job: true,
-        chouette_cancel_token: action.payLoad
+        chouette_cancel_token: action.payLoad,
       });
 
     case types.REQUESTED_ALL_CHOUETTE_JOB_STATUS:
@@ -313,13 +313,13 @@ const MardukReducer = (state = cleanSlate, action) => {
 
       return Object.assign({}, state, {
         requesting_chouette_all_job: true,
-        chouette_cancel_all_token: action.payLoad
+        chouette_cancel_all_token: action.payLoad,
       });
 
     case types.SELECTED_ALL_SUPPLIERS:
       return Object.assign({}, state, {
         chouette_cancel_all_token: null,
-        chouette_cancel_token: null
+        chouette_cancel_token: null,
       });
 
     default:

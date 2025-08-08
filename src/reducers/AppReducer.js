@@ -17,14 +17,14 @@
 import * as types from 'actions/actionTypes';
 
 const intialState = {
-  isMenuOpen: false
+  isMenuOpen: false,
 };
 
 const AppReducer = (state = intialState, action) => {
   switch (action.type) {
     case types.TOGGLE_MENU:
       return Object.assign({}, state, {
-        isMenuOpen: !state.isMenuOpen
+        isMenuOpen: !state.isMenuOpen,
       });
 
     default:

@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4';
 
-const getConfig = async getToken => {
+const getConfig = async (getToken) => {
   let config = {};
   const accessToken = await getToken();
   config.headers = {
@@ -8,7 +8,7 @@ const getConfig = async getToken => {
     Accept: 'application/json',
     Authorization: 'Bearer ' + accessToken,
     'X-Correlation-Id': uuid(),
-    'Et-Client-Name': 'entur-ninkasi'
+    'Et-Client-Name': 'entur-ninkasi',
   };
   return config;
 };

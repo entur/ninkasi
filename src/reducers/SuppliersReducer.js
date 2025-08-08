@@ -23,7 +23,7 @@ const initialState = {
   all_suppliers_selected: true,
   activeId: 0,
   allTransportModes: [],
-  exportedFiles: null
+  exportedFiles: null,
 };
 
 const SuppliersReducer = (state = initialState, action) => {
@@ -32,17 +32,19 @@ const SuppliersReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         data: action.payLoad,
-        error: true
+        error: true,
       });
     case types.RECEIVED_SUPPLIERS:
       const level1Providers = action.payLoad
-        .filter(p => p.chouetteInfo && p.chouetteInfo.migrateDataToProvider)
+        .filter((p) => p.chouetteInfo && p.chouetteInfo.migrateDataToProvider)
         .sort((a, b) => {
           return a.name.localeCompare(b.name, 'nb');
         });
 
       const level2Providers = action.payLoad
-        .filter(p => !(p.chouetteInfo && p.chouetteInfo.migrateDataToProvider))
+        .filter(
+          (p) => !(p.chouetteInfo && p.chouetteInfo.migrateDataToProvider),
+        )
         .sort((a, b) => {
           return a.name.localeCompare(b.name, 'nb');
         });
@@ -50,7 +52,7 @@ const SuppliersReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         isLoading: false,
         data: level1Providers.concat(level2Providers),
-        error: false
+        error: false,
       });
     case types.REQUESTED_SUPPLIERS:
       return Object.assign({}, state, { isLoading: true, error: false });
@@ -59,24 +61,24 @@ const SuppliersReducer = (state = initialState, action) => {
     case types.RECEIVED_SUPPLIER_STATUS:
       return Object.assign({}, state, {
         SupplierStatusIsLoading: true,
-        statusList: action.payLoad
+        statusList: action.payLoad,
       });
 
     case types.REQUESTED_SUPPLIER_STATUS:
       return Object.assign({}, state, {
         SupplierStatusIsLoading: false,
-        statusList: action.payLoad
+        statusList: action.payLoad,
       });
 
     case types.SELECTED_ALL_SUPPLIERS:
       return Object.assign({}, state, {
         activeId: -1,
-        all_suppliers_selected: true
+        all_suppliers_selected: true,
       });
 
     case types.RECEIVED_EXPORTED_FILES:
       return Object.assign({}, state, {
-        exportedFiles: action.payLoad
+        exportedFiles: action.payLoad,
       });
 
     case types.UNSELECTED_ALL_SUPPLIERS:
@@ -87,12 +89,12 @@ const SuppliersReducer = (state = initialState, action) => {
 
     case types.RECEIVED_ALL_SUPPLIERS_STATUS:
       return Object.assign({}, state, {
-        statusListAllProviders: action.payLoad
+        statusListAllProviders: action.payLoad,
       });
 
     case types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS:
       return Object.assign({}, state, {
-        tariffZoneFileUploadProgress: action.payLoad
+        tariffZoneFileUploadProgress: action.payLoad,
       });
 
     case types.RECEIVED_GRAPH_STATUS:
@@ -103,7 +105,7 @@ const SuppliersReducer = (state = initialState, action) => {
 
     case types.RECEIVED_TRANSPORT_MODES:
       return Object.assign({}, state, {
-        allTransportModes: action.payLoad
+        allTransportModes: action.payLoad,
       });
 
     default:

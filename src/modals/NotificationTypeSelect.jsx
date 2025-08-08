@@ -21,26 +21,23 @@ import PropTypes from 'prop-types';
 class NotificationTypeSelect extends React.Component {
   static propTypes = {
     notification: PropTypes.object.isRequired,
-    handleChangeNotificationType: PropTypes.func.isRequired
+    handleChangeNotificationType: PropTypes.func.isRequired,
   };
 
   render() {
-    const {
-      handleChangeNotificationType,
-      notification,
-      notificationTypes
-    } = this.props;
+    const { handleChangeNotificationType, notification, notificationTypes } =
+      this.props;
 
     return (
       <FormControl style={{ flex: 1 }}>
         <Select
           value={notification.notificationType}
-          onChange={e => {
+          onChange={(e) => {
             handleChangeNotificationType(e.target.value);
           }}
           displayEmpty
         >
-          {notificationTypes.map(type => (
+          {notificationTypes.map((type) => (
             <MenuItem key={'notification-type-' + type} value={type}>
               {type}
             </MenuItem>

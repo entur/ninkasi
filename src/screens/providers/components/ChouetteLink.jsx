@@ -21,7 +21,7 @@ const ChouetteLink = ({ action, id, referential, children }) => {
   const actionMap = {
     importer: `imports/${id}/compliance_check`,
     exporter: `exports/${id}/compliance_check`,
-    validator: `compliance_checks/${id}/report`
+    validator: `compliance_checks/${id}/report`,
   };
   const URL = `${baseURL}${referential}/${actionMap[action]}`;
 

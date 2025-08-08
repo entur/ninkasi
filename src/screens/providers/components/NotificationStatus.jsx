@@ -21,7 +21,7 @@ const NotificationStatus = ({ notification }) => {
   const enumMap = {
     EMAIL: 'Email',
     EMAIL_BATCH: 'Email batch',
-    WEB: 'Web'
+    WEB: 'Web',
   };
 
   return (

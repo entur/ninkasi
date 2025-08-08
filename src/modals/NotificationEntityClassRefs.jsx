@@ -30,7 +30,7 @@ class NotificationEntityClassRef extends React.Component {
 
   static propTypes = {
     notification: PropTypes.object.isRequired,
-    visible: PropTypes.bool.isRequired
+    visible: PropTypes.bool.isRequired,
   };
 
   handleRemoveEntityClass() {
@@ -45,8 +45,8 @@ class NotificationEntityClassRef extends React.Component {
       dispatch(
         OrganizationRegisterActions.removeEntityClassRefNotification(
           index,
-          entityClassToRemove
-        )
+          entityClassToRemove,
+        ),
       );
     }
   }
@@ -65,7 +65,7 @@ class NotificationEntityClassRef extends React.Component {
           flex: 2,
           border: '1px solid #eee',
           marginTop: 10,
-          padding: 5
+          padding: 5,
         }}
       >
         <div style={{ width: '100%', fontSize: 12, fontWeight: 600 }}>
@@ -94,7 +94,7 @@ class NotificationEntityClassRef extends React.Component {
             style={{
               fontSize: 12,
               color: 'red',
-              textAlign: 'left'
+              textAlign: 'left',
             }}
           >
             Required set of entity classifications can not be empty

@@ -24,21 +24,21 @@ export default class TransportModesPopover extends React.Component {
   static propTypes = {
     transportModes: PropTypes.array.isRequired,
     allTransportModes: PropTypes.array.isRequired,
-    handleCheckTransportMode: PropTypes.func.isRequired
+    handleCheckTransportMode: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      anchorEl: null
+      anchorEl: null,
     };
   }
 
   handleOpen(event) {
     this.setState({
       open: true,
-      anchorEl: event.currentTarget
+      anchorEl: event.currentTarget,
     });
   }
 
@@ -74,10 +74,10 @@ export default class TransportModesPopover extends React.Component {
                   control={
                     <Checkbox
                       checked={checked}
-                      onChange={e => {
+                      onChange={(e) => {
                         this.props.handleCheckTransportMode(
                           transportMode,
-                          e.target.checked
+                          e.target.checked,
                         );
                       }}
                     />

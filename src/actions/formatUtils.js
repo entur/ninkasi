@@ -19,7 +19,7 @@ import moment from 'moment';
 export const ExportStatus = Object.freeze({
   OK: 'OK',
   WARNING: 'WARNING',
-  ERROR: 'ERROR'
+  ERROR: 'ERROR',
 });
 
 const isOfficialNorwegianGTFS = (name = '') =>
@@ -32,7 +32,7 @@ export const addExportedFileMetadata = (
   file,
   norwayNetex,
   norwayGTFS,
-  providerData
+  providerData,
 ) => {
   if (providerId === null) {
     if (format === 'NETEX') {
@@ -45,16 +45,15 @@ export const addExportedFileMetadata = (
 
   if (providerData[providerId]) {
     if (providerData[providerId][format]) {
-      providerData[providerId][format] = providerData[providerId][
-        format
-      ].concat(file);
+      providerData[providerId][format] =
+        providerData[providerId][format].concat(file);
     } else {
       providerData[providerId][format] = [file];
     }
   } else {
     providerData[providerId] = {
       [format]: [file],
-      referential
+      referential,
     };
   }
 };
@@ -62,20 +61,20 @@ export const addExportedFileMetadata = (
 export const addExportedNorwayMetadata = (
   norwayNetex,
   norwayGTFS,
-  providerData
+  providerData,
 ) => {
   const GTFS = norwayGTFS
     .sort((a, b) => b.updated - a.updated)
-    .filter(file => isOfficialNorwegianGTFS(file.name));
+    .filter((file) => isOfficialNorwegianGTFS(file.name));
   const NETEX = norwayNetex.sort((a, b) => b.updated - a.updated);
   providerData['ALL'] = {
     NETEX,
     GTFS,
-    referential: 'Norway'
+    referential: 'Norway',
   };
 };
 
-export const formatProviderData = providerData => {
+export const formatProviderData = (providerData) => {
   const data = Object.assign({}, providerData);
   const comparator = (a, b) => {
     const statusA = a.status.status;
@@ -83,7 +82,7 @@ export const formatProviderData = providerData => {
     const priority = {
       [ExportStatus.OK]: 0,
       [ExportStatus.WARNING]: 1,
-      [ExportStatus.ERROR]: 2
+      [ExportStatus.ERROR]: 2,
     };
 
     if (a.referential === 'Norway') return -1;
@@ -92,11 +91,13 @@ export const formatProviderData = providerData => {
   };
 
   return Object.keys(data)
-    .map(providerId => (data[providerId] = formatProviderRow(data[providerId])))
+    .map(
+      (providerId) => (data[providerId] = formatProviderRow(data[providerId])),
+    )
     .sort(comparator);
 };
 
-const formatProviderRow = providerRow => {
+const formatProviderRow = (providerRow) => {
   const { NETEX, GTFS } = providerRow;
 
   const netexDate = getFirstFromArray(NETEX, 'updated');
@@ -122,7 +123,7 @@ const formatProviderRow = providerRow => {
     netexDate,
     netexFileSize,
     netexUrl,
-    status
+    status,
   };
 };
 
@@ -133,18 +134,18 @@ const getProviderRowStatus = (netexDate, gtfsDate) => {
   if (gtfsWithin24hours && !netexWithin24hours)
     return {
       status: ExportStatus.WARNING,
-      message: 'Netex older than 24h'
+      message: 'Netex older than 24h',
     };
 
   if (!gtfsWithin24hours && !netexWithin24hours)
     return {
       status: ExportStatus.ERROR,
-      message: 'Netex and GTFS older than 24h'
+      message: 'Netex and GTFS older than 24h',
     };
 
   return {
     status: ExportStatus.OK,
-    message: 'OK'
+    message: 'OK',
   };
 };
 
@@ -152,7 +153,7 @@ const getFirstFromArray = (arr, field) => {
   return Array.isArray(arr) && arr[0] && arr[0][field] ? arr[0][field] : null;
 };
 
-const isWithinLast24Hours = date => {
+const isWithinLast24Hours = (date) => {
   const now = Date.now();
   const momentDiff = moment.duration(moment(date).diff(moment(now)));
   if (momentDiff && momentDiff._data) {

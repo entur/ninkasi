@@ -25,7 +25,7 @@ import OrganizationReducer from './OrganizationReducer';
 import UserReducer from './UserReducer';
 import UserContextReducer from './UserContextReducer';
 
-const createRootReducer = history =>
+const createRootReducer = (history) =>
   combineReducers({
     router: connectRouter(history),
     app: AppReducer,
@@ -34,7 +34,7 @@ const createRootReducer = history =>
     UtilsReducer,
     OrganizationReducer,
     UserReducer,
-    UserContextReducer
+    UserContextReducer,
   });
 
 export default createRootReducer;

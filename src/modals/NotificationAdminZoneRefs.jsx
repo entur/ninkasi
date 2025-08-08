@@ -30,7 +30,7 @@ class NotificationAdminZoneRefs extends React.Component {
 
   static propTypes = {
     notification: PropTypes.object.isRequired,
-    visible: PropTypes.bool.isRequired
+    visible: PropTypes.bool.isRequired,
   };
 
   handleRemoveAdminRefRole() {
@@ -45,8 +45,8 @@ class NotificationAdminZoneRefs extends React.Component {
       dispatch(
         OrganizationRegisterActions.removeAdminZoneRefToNotification(
           index,
-          adminZoneIdToDelete
-        )
+          adminZoneIdToDelete,
+        ),
       );
     }
   }
@@ -54,7 +54,7 @@ class NotificationAdminZoneRefs extends React.Component {
   handleAddAdminRefRole(value) {
     const { index, dispatch } = this.props;
     dispatch(
-      OrganizationRegisterActions.addAdminZoneRefToNotification(index, value)
+      OrganizationRegisterActions.addAdminZoneRefToNotification(index, value),
     );
   }
 
@@ -70,7 +70,7 @@ class NotificationAdminZoneRefs extends React.Component {
           flexDirection: 'column',
           flex: 2,
           border: '1px solid #eee',
-          padding: 5
+          padding: 5,
         }}
       >
         <div style={{ width: '100%', fontSize: 12, fontWeight: 600 }}>
@@ -85,7 +85,8 @@ class NotificationAdminZoneRefs extends React.Component {
             >
               {administrativeZoneRefs.map((ref, index) => (
                 <option key={'entity-' + index}>
-                  {ref} - {administrativeZones.find(az => az.id === ref).name}{' '}
+                  {ref} -{' '}
+                  {administrativeZones.find((az) => az.id === ref).name}{' '}
                 </option>
               ))}
             </select>
@@ -107,8 +108,8 @@ class NotificationAdminZoneRefs extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  administrativeZones: state.OrganizationReducer.administrativeZones
+const mapStateToProps = (state) => ({
+  administrativeZones: state.OrganizationReducer.administrativeZones,
 });
 
 export default connect(mapStateToProps)(NotificationAdminZoneRefs);

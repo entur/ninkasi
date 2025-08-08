@@ -53,10 +53,10 @@ class ExportedFilesView extends Component {
   }
 }
 
-const mapProviderIdToKeys = data => {
+const mapProviderIdToKeys = (data) => {
   if (data && data.length) {
     let providerIdKeys = {};
-    data.forEach(provider => {
+    data.forEach((provider) => {
       if (provider.chouetteInfo && provider.chouetteInfo.referential) {
         providerIdKeys[provider.chouetteInfo.referential] = provider.name;
       }
@@ -68,7 +68,7 @@ const mapProviderIdToKeys = data => {
 
 const mapStateToProps = ({ SuppliersReducer }) => ({
   files: SuppliersReducer.exportedFiles,
-  providers: mapProviderIdToKeys(SuppliersReducer.data)
+  providers: mapProviderIdToKeys(SuppliersReducer.data),
 });
 
 export default connect(mapStateToProps)(withAuth(ExportedFilesView));

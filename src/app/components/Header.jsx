@@ -22,7 +22,7 @@ import {
   AccountCircle,
   Help,
   History,
-  Menu as MenuIcon
+  Menu as MenuIcon,
 } from '@mui/icons-material';
 import AppActions from 'actions/AppActions';
 import SuppliersActions from 'actions/SuppliersActions';
@@ -33,7 +33,7 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      anchorEl: null
+      anchorEl: null,
     };
   }
 
@@ -48,7 +48,7 @@ class Header extends React.Component {
     this.props.dispatch(SuppliersActions.openHistoryModal());
   }
 
-  handleMenuOpen = event => {
+  handleMenuOpen = (event) => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
@@ -70,7 +70,7 @@ class Header extends React.Component {
 
     const backgroundStyle = {
       height: 60,
-      ...getTheme(providersEnv)
+      ...getTheme(providersEnv),
     };
 
     const username = this.getUsername();
@@ -89,7 +89,7 @@ class Header extends React.Component {
               style={{
                 flexGrow: 1,
                 display: 'flex',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
               }}
             >
               <Logo
@@ -108,11 +108,11 @@ class Header extends React.Component {
           onClose={this.handleMenuClose}
           anchorOrigin={{
             vertical: 'top',
-            horizontal: 'right'
+            horizontal: 'right',
           }}
           transformOrigin={{
             vertical: 'top',
-            horizontal: 'right'
+            horizontal: 'right',
           }}
         >
           <MenuItem
@@ -153,7 +153,7 @@ class Header extends React.Component {
 
 const mapStateToProps = ({ UserReducer, router }) => ({
   auth: UserReducer.auth,
-  pathname: router.location.pathname
+  pathname: router.location.pathname,
 });
 
 export default connect(mapStateToProps)(Header);

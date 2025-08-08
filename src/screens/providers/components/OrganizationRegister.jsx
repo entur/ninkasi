@@ -26,19 +26,19 @@ class OrganizationRegister extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: 0
+      activeTab: 0,
     };
   }
 
   setActiveTab(value) {
     this.setState({
-      activeTab: value
+      activeTab: value,
     });
   }
 
   render() {
     const style = {
-      display: 'flex'
+      display: 'flex',
     };
 
     const { activeTab } = this.state;
@@ -53,7 +53,7 @@ class OrganizationRegister extends React.Component {
           style={{
             border: '1px solid rgb(229, 229, 229)',
             flex: 2,
-            overflow: 'hidden'
+            overflow: 'hidden',
           }}
         >
           {activeTab === 0 ? <UserView /> : null}

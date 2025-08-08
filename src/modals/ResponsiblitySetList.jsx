@@ -61,7 +61,7 @@ class ResponsiblitySetList extends React.Component {
         </select>
         <div style={{ textAlign: 'left', width: '100%' }}>
           <IconButton
-            onClick={e => {
+            onClick={(e) => {
               handleAdd(e);
             }}
             size="large"

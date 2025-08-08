@@ -19,14 +19,14 @@ import * as types from 'actions/actionTypes';
 const initialState = {
   preferredName: '',
   isRouteDataAdmin: false,
-  isOrganisationAdmin: false
+  isOrganisationAdmin: false,
 };
 
 const UserContextReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.RECEIVED_USER_CONTEXT:
       return Object.assign({}, state, {
-        ...action.payLoad
+        ...action.payLoad,
       });
 
     default:

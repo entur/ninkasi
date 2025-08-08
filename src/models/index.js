@@ -18,11 +18,11 @@ export const getPaginationMap = (
   chouetteJobStatus,
   sortProperty,
   sortOrder,
-  filterFromDate
+  filterFromDate,
 ) => {
   let filteredStatus =
     chouetteJobStatus
-      .filter(job => {
+      .filter((job) => {
         if (!filterFromDate) return true;
 
         return new Date(job.created) > new Date(filterFromDate);

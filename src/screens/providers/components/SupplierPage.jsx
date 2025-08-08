@@ -24,7 +24,7 @@ import ModalEditProvider from 'modals/ModalEditProvider';
 class SupplierPage extends React.Component {
   componentWillMount() {
     const { id, dispatch, getToken } = this.props;
-    cfgreader.readConfig(function(config) {
+    cfgreader.readConfig(function (config) {
       window.config = config;
       if (id) {
         dispatch(SuppliersActions.fetchProvider(id, getToken));
@@ -65,12 +65,12 @@ class SupplierPage extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   provider: state.UtilsReducer.supplierForm,
   id: state.SuppliersReducer.activeId,
   isModalOpen: state.UtilsReducer.editProviderModal,
   shouldUpdate: state.UtilsReducer.shouldUpdateProvider,
-  providers: state.SuppliersReducer.data
+  providers: state.SuppliersReducer.data,
 });
 
 export default connect(mapStateToProps)(withAuth(SupplierPage));

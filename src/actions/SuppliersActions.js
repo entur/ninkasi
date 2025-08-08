@@ -21,227 +21,216 @@ import { getQueryVariable } from 'utils';
 import {
   addExportedFileMetadata,
   addExportedNorwayMetadata,
-  formatProviderData
+  formatProviderData,
 } from './formatUtils';
 import getApiConfig from './getApiConfig';
 
 var SuppliersActions = {};
 
-SuppliersActions.cleanStopPlacesInChouette = getToken => async (
-  dispatch,
-  getState
-) => {
-  const url = window.config.timetableAdminBaseUrl + 'stop_places/clean';
-  return axios
-    .post(url, null, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(
+SuppliersActions.cleanStopPlacesInChouette =
+  (getToken) => async (dispatch, getState) => {
+    const url = window.config.timetableAdminBaseUrl + 'stop_places/clean';
+    return axios
+      .post(url, null, await getApiConfig(getToken))
+      .then((response) => {
+        dispatch(
+          SuppliersActions.addNotification(
+            'Deleted Stop Place Register in Chouette',
+            'success',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: 'Deleted Stop Place Register in Chouette',
+          }),
+        );
+      })
+      .catch((err) => {
         SuppliersActions.addNotification(
-          'Deleted Stop Place Register in Chouette',
-          'success'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Deleted Stop Place Register in Chouette'
-        })
-      );
-    })
-    .catch(err => {
-      SuppliersActions.addNotification(
-        'Failed to delete Stop Place Register in Chouette',
-        'error'
-      );
-    });
-};
+          'Failed to delete Stop Place Register in Chouette',
+          'error',
+        );
+      });
+  };
 
-SuppliersActions.deleteAllJobs = getToken => async (dispatch, getState) => {
+SuppliersActions.deleteAllJobs = (getToken) => async (dispatch, getState) => {
   const url = `${window.config.eventsBaseUrl}timetable/`;
-  return axios.delete(url, await getApiConfig(getToken)).then(response => {
+  return axios.delete(url, await getApiConfig(getToken)).then((response) => {
     dispatch(
-      SuppliersActions.addNotification('Deleted event history', 'success')
+      SuppliersActions.addNotification('Deleted event history', 'success'),
     );
     dispatch(SuppliersActions.logEvent({ title: 'Deleted event history' }));
   });
 };
 
-SuppliersActions.deleteJobsForProvider = (id, getToken) => async (
-  dispatch,
-  getState
-) => {
-  const url = `${window.config.eventsBaseUrl}timetable/${id}`;
-  return axios.delete(url, await getApiConfig(getToken)).then(response => {
-    dispatch(
-      SuppliersActions.addNotification(
-        'Deleted event history for provider ' + id,
-        'success'
-      )
-    );
-    dispatch(
-      SuppliersActions.logEvent({
-        title: 'Deleted event history for provider ' + id
-      })
-    );
-  });
-};
-
-SuppliersActions.getProviderStatus = (id, getToken) => async (
-  dispatch,
-  getState
-) => {
-  if (id < 0) return;
-
-  const url = `${window.config.eventsBaseUrl}timetable/${id}`;
-
-  dispatch(sendData(null, types.REQUESTED_SUPPLIER_STATUS));
-  return axios({
-    url: url,
-    timeout: 20000,
-    method: 'get',
-    responseType: 'json',
-    ...(await getApiConfig(getToken))
-  })
-    .then(function(response) {
-      let providerStatus = SuppliersActions.formatProviderStatusDate(
-        response.data.reverse(),
-        null
-      );
-      dispatch(sendData(providerStatus, types.RECEIVED_SUPPLIER_STATUS));
-    })
-    .catch(function(response) {
-      dispatch(sendData(response.data, types.ERROR_SUPPLIER_STATUS));
-    });
-};
-
-SuppliersActions.executePeliasTask = (tasks, getToken) => async (
-  dispatch,
-  getState
-) => {
-  const queryParams = Object.keys(tasks)
-    .filter(entry => tasks[entry])
-    .join('&task=');
-  const url =
-    window.config.geocoderAdminBaseUrl + `build_pipeline?task=${queryParams}`;
-
-  return axios
-    .post(url, null, await getApiConfig(getToken))
-    .then(response => {
+SuppliersActions.deleteJobsForProvider =
+  (id, getToken) => async (dispatch, getState) => {
+    const url = `${window.config.eventsBaseUrl}timetable/${id}`;
+    return axios.delete(url, await getApiConfig(getToken)).then((response) => {
       dispatch(
-        SuppliersActions.addNotification('Pelias task execution', 'success')
+        SuppliersActions.addNotification(
+          'Deleted event history for provider ' + id,
+          'success',
+        ),
       );
       dispatch(
         SuppliersActions.logEvent({
-          title: 'Pelias tasks executed successfully'
-        })
+          title: 'Deleted event history for provider ' + id,
+        }),
       );
-    })
-    .catch(err => {
-      dispatch(
-        SuppliersActions.addNotification(
-          'Unable to execute pelias tasks',
-          'error'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({ title: 'Running pelias tasks failed' })
-      );
-      console.log('err', err);
     });
-};
-
-SuppliersActions.uploadTariffZonesFiles = (files, provider) => async (
-  dispatch,
-  getState
-) => {
-  dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
-
-  const url = `${window.config.tariffZonesUrl}${provider.chouetteInfo.xmlns}/files`;
-
-  var data = new FormData();
-
-  files.forEach(file => {
-    data.append('files', file);
-  });
-
-  var config = {
-    onUploadProgress: function(progressEvent) {
-      let percentCompleted = (progressEvent.loaded / progressEvent.total) * 100;
-      dispatch(
-        sendData(
-          percentCompleted,
-          types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS
-        )
-      );
-    },
-    ...(await getApiConfig(getToken))
   };
 
-  return axios
-    .post(url, data, config)
-    .then(function(response) {
-      dispatch(
-        SuppliersActions.addNotification(
-          'Uploaded tariff zone file(s)',
-          'success'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Uploaded tariff zone file(s): ' + files.join(',')
-        })
-      );
-      dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
+SuppliersActions.getProviderStatus =
+  (id, getToken) => async (dispatch, getState) => {
+    if (id < 0) return;
+
+    const url = `${window.config.eventsBaseUrl}timetable/${id}`;
+
+    dispatch(sendData(null, types.REQUESTED_SUPPLIER_STATUS));
+    return axios({
+      url: url,
+      timeout: 20000,
+      method: 'get',
+      responseType: 'json',
+      ...(await getApiConfig(getToken)),
     })
-    .catch(function(response) {
-      dispatch(
-        SuppliersActions.addNotification(
-          'Unable to upload tariff zone file(s)',
-          'error'
-        )
-      );
-      dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
-    });
-};
-
-SuppliersActions.getAllProviderStatus = getToken => async (
-  dispatch,
-  getState
-) => {
-  dispatch(sendData(null, types.REQUESTED_ALL_SUPPLIERS_STATUS));
-  const state = getState();
-  const providers = state.SuppliersReducer.data;
-
-  const url = `${window.config.eventsBaseUrl}timetable`;
-  return axios({
-    url: url,
-    timeout: 20000,
-    method: 'get',
-    responseType: 'json',
-    ...(await getApiConfig(getToken))
-  })
-    .then(response => {
-      const providerStatus = response.data.map(status => {
-        let provider = null;
-        for (let i = 0; i < providers.length; i++) {
-          if (providers[i].id === status.providerId) {
-            provider = providers[i];
-            break;
-          }
-        }
-        return SuppliersActions.formatProviderStatusDate([status], provider);
+      .then(function (response) {
+        let providerStatus = SuppliersActions.formatProviderStatusDate(
+          response.data.reverse(),
+          null,
+        );
+        dispatch(sendData(providerStatus, types.RECEIVED_SUPPLIER_STATUS));
+      })
+      .catch(function (response) {
+        dispatch(sendData(response.data, types.ERROR_SUPPLIER_STATUS));
       });
-      const eventList = [].concat.apply([], providerStatus);
-      dispatch(
-        sendData(
-          sortEventlistByNewestFirst(eventList),
-          types.RECEIVED_ALL_SUPPLIERS_STATUS
-        )
-      );
-    })
-    .catch(response => {
-      dispatch(sendData(response.data, types.ERROR_SUPPLIER_STATUS));
+  };
+
+SuppliersActions.executePeliasTask =
+  (tasks, getToken) => async (dispatch, getState) => {
+    const queryParams = Object.keys(tasks)
+      .filter((entry) => tasks[entry])
+      .join('&task=');
+    const url =
+      window.config.geocoderAdminBaseUrl + `build_pipeline?task=${queryParams}`;
+
+    return axios
+      .post(url, null, await getApiConfig(getToken))
+      .then((response) => {
+        dispatch(
+          SuppliersActions.addNotification('Pelias task execution', 'success'),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: 'Pelias tasks executed successfully',
+          }),
+        );
+      })
+      .catch((err) => {
+        dispatch(
+          SuppliersActions.addNotification(
+            'Unable to execute pelias tasks',
+            'error',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({ title: 'Running pelias tasks failed' }),
+        );
+        console.log('err', err);
+      });
+  };
+
+SuppliersActions.uploadTariffZonesFiles =
+  (files, provider) => async (dispatch, getState) => {
+    dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
+
+    const url = `${window.config.tariffZonesUrl}${provider.chouetteInfo.xmlns}/files`;
+
+    var data = new FormData();
+
+    files.forEach((file) => {
+      data.append('files', file);
     });
-};
+
+    var config = {
+      onUploadProgress: function (progressEvent) {
+        let percentCompleted =
+          (progressEvent.loaded / progressEvent.total) * 100;
+        dispatch(
+          sendData(
+            percentCompleted,
+            types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS,
+          ),
+        );
+      },
+      ...(await getApiConfig(getToken)),
+    };
+
+    return axios
+      .post(url, data, config)
+      .then(function (response) {
+        dispatch(
+          SuppliersActions.addNotification(
+            'Uploaded tariff zone file(s)',
+            'success',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: 'Uploaded tariff zone file(s): ' + files.join(','),
+          }),
+        );
+        dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
+      })
+      .catch(function (response) {
+        dispatch(
+          SuppliersActions.addNotification(
+            'Unable to upload tariff zone file(s)',
+            'error',
+          ),
+        );
+        dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
+      });
+  };
+
+SuppliersActions.getAllProviderStatus =
+  (getToken) => async (dispatch, getState) => {
+    dispatch(sendData(null, types.REQUESTED_ALL_SUPPLIERS_STATUS));
+    const state = getState();
+    const providers = state.SuppliersReducer.data;
+
+    const url = `${window.config.eventsBaseUrl}timetable`;
+    return axios({
+      url: url,
+      timeout: 20000,
+      method: 'get',
+      responseType: 'json',
+      ...(await getApiConfig(getToken)),
+    })
+      .then((response) => {
+        const providerStatus = response.data.map((status) => {
+          let provider = null;
+          for (let i = 0; i < providers.length; i++) {
+            if (providers[i].id === status.providerId) {
+              provider = providers[i];
+              break;
+            }
+          }
+          return SuppliersActions.formatProviderStatusDate([status], provider);
+        });
+        const eventList = [].concat.apply([], providerStatus);
+        dispatch(
+          sendData(
+            sortEventlistByNewestFirst(eventList),
+            types.RECEIVED_ALL_SUPPLIERS_STATUS,
+          ),
+        );
+      })
+      .catch((response) => {
+        dispatch(sendData(response.data, types.ERROR_SUPPLIER_STATUS));
+      });
+  };
 
 SuppliersActions.selectAllSuppliers = () => {
   const tabQueryParam = getQueryVariable('tab')
@@ -251,28 +240,28 @@ SuppliersActions.selectAllSuppliers = () => {
   window.history.pushState(
     window.config.endpointBase,
     'Title',
-    `${window.config.endpointBase}${tabQueryParam}`
+    `${window.config.endpointBase}${tabQueryParam}`,
   );
 
   return {
-    type: types.SELECTED_ALL_SUPPLIERS
+    type: types.SELECTED_ALL_SUPPLIERS,
   };
 };
 
 SuppliersActions.unselectAllSuppliers = () => {
   return {
-    type: types.UNSELECTED_ALL_SUPPLIERS
+    type: types.UNSELECTED_ALL_SUPPLIERS,
   };
 };
 
 function sendData(payLoad, type) {
   return {
     payLoad: payLoad,
-    type: type
+    type: type,
   };
 }
 
-SuppliersActions.getAllProviders = getToken => async (dispatch, getState) => {
+SuppliersActions.getAllProviders = (getToken) => async (dispatch, getState) => {
   const url = window.config.providersBaseUrl;
   dispatch(sendData(null, types.REQUESTED_SUPPLIERS));
   return axios({
@@ -280,9 +269,9 @@ SuppliersActions.getAllProviders = getToken => async (dispatch, getState) => {
     timeout: 20000,
     method: 'get',
     responseType: 'json',
-    ...(await getApiConfig(getToken))
+    ...(await getApiConfig(getToken)),
   })
-    .then(function(response) {
+    .then(function (response) {
       dispatch(sendData(response.data, types.RECEIVED_SUPPLIERS));
 
       let queryTab = getQueryVariable('tab');
@@ -295,62 +284,63 @@ SuppliersActions.getAllProviders = getToken => async (dispatch, getState) => {
         dispatch(SuppliersActions.getAllProviderStatus(getToken));
       }
     })
-    .catch(function(response) {
+    .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_SUPPLIERS));
     });
 };
 
-SuppliersActions.refreshSupplierData = getToken => async (
-  dispatch,
-  getState
-) => {
-  const state = getState();
-  const { activeId } = state.SuppliersReducer;
-  dispatch(SuppliersActions.selectActiveSupplier(activeId, getToken));
-  dispatch(SuppliersActions.fetchFilenames(activeId, getToken));
-  dispatch(SuppliersActions.getProviderStatus(activeId, getToken));
-  dispatch(SuppliersActions.getChouetteJobStatus(getToken));
-};
+SuppliersActions.refreshSupplierData =
+  (getToken) => async (dispatch, getState) => {
+    const state = getState();
+    const { activeId } = state.SuppliersReducer;
+    dispatch(SuppliersActions.selectActiveSupplier(activeId, getToken));
+    dispatch(SuppliersActions.fetchFilenames(activeId, getToken));
+    dispatch(SuppliersActions.getProviderStatus(activeId, getToken));
+    dispatch(SuppliersActions.getChouetteJobStatus(getToken));
+  };
 
-SuppliersActions.createProvider = (data, getToken) => async (
-  dispatch,
-  getState
-) => {
-  const url = `${window.config.providersBaseUrl}`;
-  const provider = getProviderPayload(data);
-  return axios
-    .post(url, provider, await getApiConfig(getToken))
-    .then(function(response) {
-      dispatch(sendData(response.data, types.SUCCESS_CREATE_PROVIDER));
+SuppliersActions.createProvider =
+  (data, getToken) => async (dispatch, getState) => {
+    const url = `${window.config.providersBaseUrl}`;
+    const provider = getProviderPayload(data);
+    return axios
+      .post(url, provider, await getApiConfig(getToken))
+      .then(function (response) {
+        dispatch(sendData(response.data, types.SUCCESS_CREATE_PROVIDER));
 
-      const id = response.data.id;
-      window.history.pushState(
-        window.config.endpointBase,
-        'Title',
-        `${window.config.endpointBase}?id=${id}`
-      );
-      dispatch(SuppliersActions.getAllProviders(getToken)).then(() => {
-        dispatch(SuppliersActions.selectActiveSupplier(id, getToken));
+        const id = response.data.id;
+        window.history.pushState(
+          window.config.endpointBase,
+          'Title',
+          `${window.config.endpointBase}?id=${id}`,
+        );
+        dispatch(SuppliersActions.getAllProviders(getToken)).then(() => {
+          dispatch(SuppliersActions.selectActiveSupplier(id, getToken));
+        });
+
+        dispatch(
+          SuppliersActions.addNotification('Provider created', 'success'),
+        );
+        dispatch(SuppliersActions.logEvent({ title: 'New provider created' }));
+      })
+      .catch(function (response) {
+        dispatch(sendData(response.data, types.ERROR_CREATE_PROVIDER));
+        dispatch(
+          SuppliersActions.addNotification(
+            'Unable to create provider',
+            'error',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({ title: 'Creating new provider failed' }),
+        );
+        dispatch(SuppliersActions.getAllProviders(getToken));
       });
+  };
 
-      dispatch(SuppliersActions.addNotification('Provider created', 'success'));
-      dispatch(SuppliersActions.logEvent({ title: 'New provider created' }));
-    })
-    .catch(function(response) {
-      dispatch(sendData(response.data, types.ERROR_CREATE_PROVIDER));
-      dispatch(
-        SuppliersActions.addNotification('Unable to create provider', 'error')
-      );
-      dispatch(
-        SuppliersActions.logEvent({ title: 'Creating new provider failed' })
-      );
-      dispatch(SuppliersActions.getAllProviders(getToken));
-    });
-};
-
-const getProviderPayload = data => {
+const getProviderPayload = (data) => {
   const trimmedData = JSON.parse(
-    JSON.stringify(data).replace(/"\s+|\s+"/g, '"')
+    JSON.stringify(data).replace(/"\s+|\s+"/g, '"'),
   );
   let payload = {
     name: trimmedData._name,
@@ -368,8 +358,8 @@ const getProviderPayload = data => {
       migrateDataToProvider: trimmedData._migrateDataToProvider,
       enableAutoImport: trimmedData._enableAutoImport,
       enableAutoValidation: trimmedData._enableAutoValidation,
-      enableBlocksExport: trimmedData._enableBlocksExport
-    }
+      enableBlocksExport: trimmedData._enableBlocksExport,
+    },
   };
 
   if (trimmedData._providerId) {
@@ -383,112 +373,114 @@ const getProviderPayload = data => {
   return payload;
 };
 
-SuppliersActions.updateProvider = (data, getToken) => async (
-  dispatch,
-  getState
-) => {
-  const provider = getProviderPayload(data);
-  const url = `${window.config.providersBaseUrl}${provider.id}`;
-  return axios
-    .put(url, provider, await getApiConfig(getToken))
-    .then(function(response) {
-      dispatch(sendData(response.data, types.SUCCESS_UPDATE_PROVIDER));
-      dispatch(
-        SuppliersActions.addNotification(
-          'Updated provider successfully',
-          'success'
-        )
-      );
-      dispatch(SuppliersActions.getAllProviders(getToken));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Updated provider ${provider.id} successfully`
-        })
-      );
-    })
-    .catch(function(response) {
-      dispatch(sendData(response.data, types.ERROR_UPDATE_PROVIDER));
-      dispatch(
-        SuppliersActions.addNotification('Unable to update provider', 'error')
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Updating provider ${provider.id} failed`
-        })
-      );
-    });
-};
+SuppliersActions.updateProvider =
+  (data, getToken) => async (dispatch, getState) => {
+    const provider = getProviderPayload(data);
+    const url = `${window.config.providersBaseUrl}${provider.id}`;
+    return axios
+      .put(url, provider, await getApiConfig(getToken))
+      .then(function (response) {
+        dispatch(sendData(response.data, types.SUCCESS_UPDATE_PROVIDER));
+        dispatch(
+          SuppliersActions.addNotification(
+            'Updated provider successfully',
+            'success',
+          ),
+        );
+        dispatch(SuppliersActions.getAllProviders(getToken));
+        dispatch(
+          SuppliersActions.logEvent({
+            title: `Updated provider ${provider.id} successfully`,
+          }),
+        );
+      })
+      .catch(function (response) {
+        dispatch(sendData(response.data, types.ERROR_UPDATE_PROVIDER));
+        dispatch(
+          SuppliersActions.addNotification(
+            'Unable to update provider',
+            'error',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: `Updating provider ${provider.id} failed`,
+          }),
+        );
+      });
+  };
 
-SuppliersActions.fetchProvider = (id, getToken) => async (
-  dispatch,
-  getState
-) => {
-  if (id < 0) return;
+SuppliersActions.fetchProvider =
+  (id, getToken) => async (dispatch, getState) => {
+    if (id < 0) return;
 
-  const url = `${window.config.providersBaseUrl}${id}`;
+    const url = `${window.config.providersBaseUrl}${id}`;
 
-  return axios
-    .get(url, await getApiConfig(getToken))
-    .then(function(response) {
-      dispatch(sendData(response.data, types.SUCCESS_FETCH_PROVIDER));
+    return axios
+      .get(url, await getApiConfig(getToken))
+      .then(function (response) {
+        dispatch(sendData(response.data, types.SUCCESS_FETCH_PROVIDER));
 
-      let tabQueryParam = getQueryVariable('tab')
-        ? `&tab=${getQueryVariable('tab')}`
-        : '';
+        let tabQueryParam = getQueryVariable('tab')
+          ? `&tab=${getQueryVariable('tab')}`
+          : '';
 
-      if (getQueryVariable('tab') === 'events') {
-        dispatch(SuppliersActions.getProviderStatus(id, getToken));
-      } else if (getQueryVariable('tab') === 'chouetteJobs') {
-        dispatch(SuppliersActions.getChouetteJobStatus(getToken));
-      }
+        if (getQueryVariable('tab') === 'events') {
+          dispatch(SuppliersActions.getProviderStatus(id, getToken));
+        } else if (getQueryVariable('tab') === 'chouetteJobs') {
+          dispatch(SuppliersActions.getChouetteJobStatus(getToken));
+        }
 
-      window.history.pushState(
-        window.config.endpointBase,
-        'Title',
-        `${window.config.endpointBase}?id=${id}${tabQueryParam}`
-      );
-    })
-    .catch(function(response) {
-      dispatch(sendData(response.data, types.ERROR_FETCH_PROVIDER));
-      dispatch(
-        SuppliersActions.addNotification('Unable to fetch provider', 'error')
-      );
-    });
-};
-
-SuppliersActions.deleteProvider = (providerId, getToken) => async (
-  dispatch,
-  getState
-) => {
-  const url = `${window.config.providersBaseUrl}${providerId}`;
-
-  return axios
-    .delete(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(SuppliersActions.selectActiveSupplier(-1, getToken));
-      dispatch(sendData(response.data, types.SUCCESS_DELETE_PROVIDER));
-
-      dispatch(SuppliersActions.addNotification('Provider deleted', 'success'));
-      dispatch(SuppliersActions.logEvent({ title: 'Provider deleted' }));
-
-      dispatch(SuppliersActions.getAllProviders(getToken)).then(() => {
         window.history.pushState(
           window.config.endpointBase,
           'Title',
-          `${window.config.endpointBase}`
+          `${window.config.endpointBase}?id=${id}${tabQueryParam}`,
         );
-        dispatch(SuppliersActions.selectAllSuppliers());
+      })
+      .catch(function (response) {
+        dispatch(sendData(response.data, types.ERROR_FETCH_PROVIDER));
+        dispatch(
+          SuppliersActions.addNotification('Unable to fetch provider', 'error'),
+        );
       });
-    })
-    .catch(error => {
-      dispatch(sendData(error.data, types.ERROR_DELETE_PROVIDER));
-      dispatch(
-        SuppliersActions.addNotification('Unable to delete provider', 'error')
-      );
-    });
-};
+  };
 
-SuppliersActions.selectActiveSupplier = (id, getToken) => dispatch => {
+SuppliersActions.deleteProvider =
+  (providerId, getToken) => async (dispatch, getState) => {
+    const url = `${window.config.providersBaseUrl}${providerId}`;
+
+    return axios
+      .delete(url, await getApiConfig(getToken))
+      .then((response) => {
+        dispatch(SuppliersActions.selectActiveSupplier(-1, getToken));
+        dispatch(sendData(response.data, types.SUCCESS_DELETE_PROVIDER));
+
+        dispatch(
+          SuppliersActions.addNotification('Provider deleted', 'success'),
+        );
+        dispatch(SuppliersActions.logEvent({ title: 'Provider deleted' }));
+
+        dispatch(SuppliersActions.getAllProviders(getToken)).then(() => {
+          window.history.pushState(
+            window.config.endpointBase,
+            'Title',
+            `${window.config.endpointBase}`,
+          );
+          dispatch(SuppliersActions.selectAllSuppliers());
+        });
+      })
+      .catch((error) => {
+        dispatch(sendData(error.data, types.ERROR_DELETE_PROVIDER));
+        dispatch(
+          SuppliersActions.addNotification(
+            'Unable to delete provider',
+            'error',
+          ),
+        );
+      });
+  };
+
+SuppliersActions.selectActiveSupplier = (id, getToken) => (dispatch) => {
   dispatch(SuppliersActions.changeActiveSupplierId(id));
   dispatch(SuppliersActions.restoreFilesToOutbound());
   dispatch(SuppliersActions.fetchFilenames(id, getToken));
@@ -497,259 +489,256 @@ SuppliersActions.selectActiveSupplier = (id, getToken) => dispatch => {
   dispatch(SuppliersActions.unselectAllSuppliers());
 };
 
-SuppliersActions.changeActiveSupplierId = id => {
+SuppliersActions.changeActiveSupplierId = (id) => {
   return {
     type: types.SELECT_SUPPLIER,
-    payLoad: id
+    payLoad: id,
   };
 };
 
 /* marduk actions */
 
-SuppliersActions.cancelChouetteJobForProvider = (
-  providerId,
-  chouetteId,
-  getToken
-) => async (dispatch, getState) => {
-  if (providerId < 0) return;
+SuppliersActions.cancelChouetteJobForProvider =
+  (providerId, chouetteId, getToken) => async (dispatch, getState) => {
+    if (providerId < 0) return;
 
-  const url =
-    window.config.timetableAdminBaseUrl + `${providerId}/jobs/${chouetteId}`;
+    const url =
+      window.config.timetableAdminBaseUrl + `${providerId}/jobs/${chouetteId}`;
 
-  return axios({
-    url: url,
-    timeout: 20000,
-    method: 'delete',
-    ...(await getApiConfig(getToken))
-  })
-    .then(function(response) {
-      dispatch(
-        sendData(response.data, types.SUCCESS_DELETE_PROVIDERS_CHOUETTE_JOB)
-      );
-      dispatch(
-        SuppliersActions.addNotification(
-          `Cancelled chouettejob with id ${chouetteId}`,
-          'success'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Chouette job with ${chouetteId} successfully cancelled for provider ${providerId}`
-        })
-      );
+    return axios({
+      url: url,
+      timeout: 20000,
+      method: 'delete',
+      ...(await getApiConfig(getToken)),
     })
-    .catch(function(response) {
-      dispatch(
-        sendData(response.data, types.ERROR_DELETE_PROVIDERS_CHOUETTE_JOB)
-      );
-      dispatch(
-        SuppliersActions.addNotification(
-          `Unable to cancel chouettejob with id ${chouetteId}`,
-          'error'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Unable to cancel chouette job with id ${chouetteId} for provider ${providerId}`
-        })
-      );
-    });
-};
+      .then(function (response) {
+        dispatch(
+          sendData(response.data, types.SUCCESS_DELETE_PROVIDERS_CHOUETTE_JOB),
+        );
+        dispatch(
+          SuppliersActions.addNotification(
+            `Cancelled chouettejob with id ${chouetteId}`,
+            'success',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: `Chouette job with ${chouetteId} successfully cancelled for provider ${providerId}`,
+          }),
+        );
+      })
+      .catch(function (response) {
+        dispatch(
+          sendData(response.data, types.ERROR_DELETE_PROVIDERS_CHOUETTE_JOB),
+        );
+        dispatch(
+          SuppliersActions.addNotification(
+            `Unable to cancel chouettejob with id ${chouetteId}`,
+            'error',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: `Unable to cancel chouette job with id ${chouetteId} for provider ${providerId}`,
+          }),
+        );
+      });
+  };
 
-SuppliersActions.cancelAllChouetteJobsforAllProviders = getToken => async (
-  dispatch,
-  getState
-) => {
-  return axios({
-    url: window.config.timetableAdminBaseUrl + `jobs/`,
-    timeout: 20000,
-    method: 'delete',
-    ...(await getApiConfig(getToken))
-  })
-    .then(function(response) {
-      dispatch(
-        SuppliersActions.addNotification(
-          `Cancelled all chouette jobs for all providers`,
-          'success'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `All chouette jobs for all providers successfully cancelled `
-        })
-      );
+SuppliersActions.cancelAllChouetteJobsforAllProviders =
+  (getToken) => async (dispatch, getState) => {
+    return axios({
+      url: window.config.timetableAdminBaseUrl + `jobs/`,
+      timeout: 20000,
+      method: 'delete',
+      ...(await getApiConfig(getToken)),
     })
-    .catch(function(response) {
-      dispatch(
-        SuppliersActions.addNotification(
-          `Failed deleting all chouttejobs for all providers`,
-          'error'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Unable to cancel all chouette jobs for all providers`
-        })
-      );
-    });
-};
+      .then(function (response) {
+        dispatch(
+          SuppliersActions.addNotification(
+            `Cancelled all chouette jobs for all providers`,
+            'success',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: `All chouette jobs for all providers successfully cancelled `,
+          }),
+        );
+      })
+      .catch(function (response) {
+        dispatch(
+          SuppliersActions.addNotification(
+            `Failed deleting all chouttejobs for all providers`,
+            'error',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: `Unable to cancel all chouette jobs for all providers`,
+          }),
+        );
+      });
+  };
 
-SuppliersActions.cancelAllChouetteJobsforProvider = (
-  providerId,
-  getToken
-) => async (dispatch, getState) => {
-  if (providerId < 0) return;
+SuppliersActions.cancelAllChouetteJobsforProvider =
+  (providerId, getToken) => async (dispatch, getState) => {
+    if (providerId < 0) return;
 
-  const url = window.config.timetableAdminBaseUrl + `${providerId}/jobs`;
+    const url = window.config.timetableAdminBaseUrl + `${providerId}/jobs`;
 
-  return axios({
-    url: url,
-    timeout: 20000,
-    method: 'delete',
-    ...(await getApiConfig(getToken))
-  })
-    .then(function(response) {
-      dispatch(
-        sendData(response.data, types.SUCCESS_DELETE_ALL_PROVIDERS_CHOUETTE_JOB)
-      );
-      dispatch(
-        SuppliersActions.addNotification(
-          `Deleted all chouttejobs for provider ${providerId}`,
-          'success'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `All chouette jobs for provider ${providerId} successfully  cancelled `
-        })
-      );
+    return axios({
+      url: url,
+      timeout: 20000,
+      method: 'delete',
+      ...(await getApiConfig(getToken)),
     })
-    .catch(function(response) {
-      dispatch(
-        sendData(response.data, types.ERROR_DELETE_ALL_PROVIDERS_CHOUETTE_JOB)
-      );
-      dispatch(
-        SuppliersActions.addNotification(
-          `Failed deleting all chouttejobs for provider ${providerId}`,
-          'error'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Unable to cancel chouette jobs for provider ${providerId}`
-        })
-      );
-    });
-};
+      .then(function (response) {
+        dispatch(
+          sendData(
+            response.data,
+            types.SUCCESS_DELETE_ALL_PROVIDERS_CHOUETTE_JOB,
+          ),
+        );
+        dispatch(
+          SuppliersActions.addNotification(
+            `Deleted all chouttejobs for provider ${providerId}`,
+            'success',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: `All chouette jobs for provider ${providerId} successfully  cancelled `,
+          }),
+        );
+      })
+      .catch(function (response) {
+        dispatch(
+          sendData(
+            response.data,
+            types.ERROR_DELETE_ALL_PROVIDERS_CHOUETTE_JOB,
+          ),
+        );
+        dispatch(
+          SuppliersActions.addNotification(
+            `Failed deleting all chouttejobs for provider ${providerId}`,
+            'error',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: `Unable to cancel chouette jobs for provider ${providerId}`,
+          }),
+        );
+      });
+  };
 
-SuppliersActions.setActiveActionFilter = (value, getToken) => dispatch => {
+SuppliersActions.setActiveActionFilter = (value, getToken) => (dispatch) => {
   dispatch(sendData(value, types.SET_ACTIVE_ACTION_FILTER));
   dispatch(SuppliersActions.getChouetteJobStatus(getToken));
 };
 
-SuppliersActions.setActiveActionAllFilter = (value, getToken) => dispatch => {
+SuppliersActions.setActiveActionAllFilter = (value, getToken) => (dispatch) => {
   dispatch(sendData(value, types.SET_ACTIVE_ACTION_ALL_FILTER));
   dispatch(SuppliersActions.getChouetteJobsForAllSuppliers(getToken));
 };
 
-SuppliersActions.getChouetteJobsForAllSuppliers = getToken => async (
-  dispatch,
-  getState
-) => {
-  const state = getState();
-  const { chouetteJobAllFilter, actionAllFilter } = state.MardukReducer;
+SuppliersActions.getChouetteJobsForAllSuppliers =
+  (getToken) => async (dispatch, getState) => {
+    const state = getState();
+    const { chouetteJobAllFilter, actionAllFilter } = state.MardukReducer;
 
-  let queryString = '';
+    let queryString = '';
 
-  for (let [key, value] of Object.entries(chouetteJobAllFilter)) {
-    if (value) queryString += `&status=${key}`;
-  }
+    for (let [key, value] of Object.entries(chouetteJobAllFilter)) {
+      if (value) queryString += `&status=${key}`;
+    }
 
-  if (actionAllFilter && actionAllFilter.length) {
-    queryString += `&action=${actionAllFilter}`;
-  }
+    if (actionAllFilter && actionAllFilter.length) {
+      queryString += `&action=${actionAllFilter}`;
+    }
 
-  const url = window.config.timetableAdminBaseUrl + `jobs?${queryString}`;
+    const url = window.config.timetableAdminBaseUrl + `jobs?${queryString}`;
 
-  var CancelToken = axios.CancelToken;
+    var CancelToken = axios.CancelToken;
 
-  return axios
-    .get(url, {
-      cancelToken: new CancelToken(function executor(cancel) {
-        dispatch(sendData(cancel, types.REQUESTED_ALL_CHOUETTE_JOB_STATUS));
-      }),
-      ...(await getApiConfig(getToken))
-    })
-    .then(function(response) {
-      let jobs = response.data.reverse();
-      var allJobs = [];
-
-      if (jobs.length) {
-        jobs.forEach(job => {
-          if (job.pendingJobs) {
-            job.pendingJobs.forEach(pendingJob => {
-              pendingJob.providerId = job.providerId;
-              allJobs.push(pendingJob);
-            });
-          }
-        });
-      }
-
-      dispatch(sendData(allJobs, types.SUCCESS_ALL_CHOUETTE_JOB_STATUS));
-    })
-    .catch(function(response) {
-      dispatch(sendData(response.data, types.ERROR_ALL_CHOUETTE_JOB_STATUS));
-    });
-};
-
-SuppliersActions.getChouetteJobStatus = getToken => async (
-  dispatch,
-  getState
-) => {
-  const state = getState();
-
-  const { chouetteJobFilter, actionFilter } = state.MardukReducer;
-
-  const { activeId } = state.SuppliersReducer;
-
-  if (activeId < 0) return;
-
-  let queryString = '';
-
-  for (let [key, value] of Object.entries(chouetteJobFilter)) {
-    if (value) queryString += `&status=${key}`;
-  }
-
-  if (actionFilter && actionFilter.length) {
-    queryString += `&action=${actionFilter}`;
-  }
-
-  if (queryString.length) {
-    queryString = queryString.substring(1);
-  }
-
-  const url =
-    window.config.timetableAdminBaseUrl + `${activeId}/jobs?${queryString}`;
-
-  var CancelToken = axios.CancelToken;
-
-  return axios
-    .get(url, await getApiConfig(getToken), {
-      cancelToken: new CancelToken(function executor(cancel) {
-        dispatch(sendData(cancel, types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER));
+    return axios
+      .get(url, {
+        cancelToken: new CancelToken(function executor(cancel) {
+          dispatch(sendData(cancel, types.REQUESTED_ALL_CHOUETTE_JOB_STATUS));
+        }),
+        ...(await getApiConfig(getToken)),
       })
-    })
-    .then(function(response) {
-      dispatch(
-        sendData(response.data.reverse(), types.SUCCESS_CHOUETTE_JOB_STATUS)
-      );
-    })
-    .catch(function(response) {
-      dispatch(sendData(response.data, types.ERROR_CHOUETTE_JOB_STATUS));
-    });
-};
+      .then(function (response) {
+        let jobs = response.data.reverse();
+        var allJobs = [];
 
-SuppliersActions.exportData = id => async (dispatch, getState) => {
+        if (jobs.length) {
+          jobs.forEach((job) => {
+            if (job.pendingJobs) {
+              job.pendingJobs.forEach((pendingJob) => {
+                pendingJob.providerId = job.providerId;
+                allJobs.push(pendingJob);
+              });
+            }
+          });
+        }
+
+        dispatch(sendData(allJobs, types.SUCCESS_ALL_CHOUETTE_JOB_STATUS));
+      })
+      .catch(function (response) {
+        dispatch(sendData(response.data, types.ERROR_ALL_CHOUETTE_JOB_STATUS));
+      });
+  };
+
+SuppliersActions.getChouetteJobStatus =
+  (getToken) => async (dispatch, getState) => {
+    const state = getState();
+
+    const { chouetteJobFilter, actionFilter } = state.MardukReducer;
+
+    const { activeId } = state.SuppliersReducer;
+
+    if (activeId < 0) return;
+
+    let queryString = '';
+
+    for (let [key, value] of Object.entries(chouetteJobFilter)) {
+      if (value) queryString += `&status=${key}`;
+    }
+
+    if (actionFilter && actionFilter.length) {
+      queryString += `&action=${actionFilter}`;
+    }
+
+    if (queryString.length) {
+      queryString = queryString.substring(1);
+    }
+
+    const url =
+      window.config.timetableAdminBaseUrl + `${activeId}/jobs?${queryString}`;
+
+    var CancelToken = axios.CancelToken;
+
+    return axios
+      .get(url, await getApiConfig(getToken), {
+        cancelToken: new CancelToken(function executor(cancel) {
+          dispatch(
+            sendData(cancel, types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER),
+          );
+        }),
+      })
+      .then(function (response) {
+        dispatch(
+          sendData(response.data.reverse(), types.SUCCESS_CHOUETTE_JOB_STATUS),
+        );
+      })
+      .catch(function (response) {
+        dispatch(sendData(response.data, types.ERROR_CHOUETTE_JOB_STATUS));
+      });
+  };
+
+SuppliersActions.exportData = (id) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/export`;
 
   dispatch(requestExport());
@@ -757,91 +746,89 @@ SuppliersActions.exportData = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getToken))
+    ...(await getApiConfig(getToken)),
   })
-    .then(function(response) {
+    .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_EXPORT_DATA));
       dispatch(SuppliersActions.addNotification('Export started', 'success'));
       dispatch(
         SuppliersActions.logEvent({
-          title: `Exported data for provider ${id}`
-        })
+          title: `Exported data for provider ${id}`,
+        }),
       );
     })
-    .catch(function(response) {
+    .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_EXPORT_DATA));
       dispatch(SuppliersActions.addNotification('Export failed', 'error'));
       dispatch(
         SuppliersActions.logEvent({
-          title: `Export failed for provider ${id}`
-        })
+          title: `Export failed for provider ${id}`,
+        }),
       );
     });
 };
 
-SuppliersActions.getGraphStatus = getToken => async (dispatch, getState) => {
+SuppliersActions.getGraphStatus = (getToken) => async (dispatch, getState) => {
   const url = window.config.eventsBaseUrl + `admin_summary/status/aggregation`;
 
   return axios
     .get(url, await getApiConfig(getToken))
-    .then(response => {
+    .then((response) => {
       let status = {
         graphStatus: {},
         baseGraphStatus: {},
-        otherStatus: []
+        otherStatus: [],
       };
-      response.data.forEach(type => {
+      response.data.forEach((type) => {
         if (type.jobType === 'OTP2_BUILD_GRAPH') {
           status.graphStatus.otp2 = {
             status: type.currentState,
-            started: type.currentStateDate
+            started: type.currentStateDate,
           };
         } else if (type.jobType === 'OTP2_BUILD_BASE') {
           status.baseGraphStatus.otp2 = {
             status: type.currentState,
-            started: type.currentStateDate
+            started: type.currentStateDate,
           };
         } else if (type.jobDomain === 'GEOCODER') {
           status.otherStatus.push({
             type: type.jobType,
             status: type.currentState,
-            started: type.currentStateDate
+            started: type.currentStateDate,
           });
         }
       });
 
       dispatch(sendData(status, types.RECEIVED_GRAPH_STATUS));
     })
-    .catch(response => {
+    .catch((response) => {
       console.error('error receiving graph status', response);
     });
 };
 
-SuppliersActions.getOTPGraphVersions = getToken => async (
-  dispatch,
-  getState
-) => {
-  const url = window.config.timetableAdminBaseUrl + `routing_graph/graphs`;
+SuppliersActions.getOTPGraphVersions =
+  (getToken) => async (dispatch, getState) => {
+    const url = window.config.timetableAdminBaseUrl + `routing_graph/graphs`;
 
-  return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      const graphVersions = {
-        streetGraphs: [],
-        transitGraphs: []
-      };
+    return axios
+      .get(url, await getApiConfig(getToken))
+      .then((response) => {
+        const graphVersions = {
+          streetGraphs: [],
+          transitGraphs: [],
+        };
 
-      graphVersions.streetGraphs = response.data.streetGraphs;
-      graphVersions.transitGraphs = response.data.transitGraphs;
+        graphVersions.streetGraphs = response.data.streetGraphs;
+        graphVersions.transitGraphs = response.data.transitGraphs;
 
-      dispatch(sendData(graphVersions, types.RECEIVED_GRAPH_VERSIONS));
-    })
-    .catch(response => {
-      console.error('error receiving graph status', response);
-    });
-};
+        dispatch(sendData(graphVersions, types.RECEIVED_GRAPH_VERSIONS));
+      })
+      .catch((response) => {
+        console.error('error receiving graph status', response);
+      });
+  };
 
-SuppliersActions.transferData = id => async (dispatch, getState) => {
+SuppliersActions.transferData = (id) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/transfer`;
 
   dispatch(requestTransfer());
@@ -849,53 +836,51 @@ SuppliersActions.transferData = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getToken))
+    ...(await getApiConfig(getToken)),
   })
-    .then(function(response) {
+    .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_TRANSFER_DATA));
       dispatch(SuppliersActions.addNotification('Transfer started', 'success'));
       dispatch(
         SuppliersActions.logEvent({
-          title: `Transfered data for provider ${id}`
-        })
+          title: `Transfered data for provider ${id}`,
+        }),
       );
     })
-    .catch(function(response) {
+    .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_TRANSFER_DATA));
       dispatch(SuppliersActions.addNotification('Transfer failed', 'error'));
       dispatch(
         SuppliersActions.logEvent({
-          title: `Transfer failed for provider ${id}`
-        })
+          title: `Transfer failed for provider ${id}`,
+        }),
       );
     });
 };
 
-SuppliersActions.fetchFilenames = (id, getToken) => async (
-  dispatch,
-  getState
-) => {
-  const url = window.config.timetableAdminBaseUrl + `${id}/files`;
+SuppliersActions.fetchFilenames =
+  (id, getToken) => async (dispatch, getState) => {
+    const url = window.config.timetableAdminBaseUrl + `${id}/files`;
 
-  dispatch(requestFilenames());
-  return axios({
-    url: url,
-    timeout: 20000,
-    method: 'get',
-    ...(await getApiConfig(getToken))
-  })
-    .then(function(response) {
-      const files = addFileExtensions(response.data.files);
-
-      dispatch(sendData(files, types.SUCCESS_FILENAMES));
+    dispatch(requestFilenames());
+    return axios({
+      url: url,
+      timeout: 20000,
+      method: 'get',
+      ...(await getApiConfig(getToken)),
     })
-    .catch(function(response) {
-      dispatch(sendData(response.data, types.ERROR_FILENAMES));
-    });
-};
+      .then(function (response) {
+        const files = addFileExtensions(response.data.files);
+
+        dispatch(sendData(files, types.SUCCESS_FILENAMES));
+      })
+      .catch(function (response) {
+        dispatch(sendData(response.data, types.ERROR_FILENAMES));
+      });
+  };
 
 export const addFileExtensions = (files = []) => {
-  return files.map(file => {
+  return files.map((file) => {
     if (file.name) {
       file.ext = file.name
         .substring(file.name.lastIndexOf('.') + 1)
@@ -905,48 +890,45 @@ export const addFileExtensions = (files = []) => {
   });
 };
 
-SuppliersActions.importData = (
-  id,
-  selectedFiles,
-  isFlex = false,
-  getToken
-) => async (dispatch, getState) => {
-  dispatch(requestImport());
+SuppliersActions.importData =
+  (id, selectedFiles, isFlex = false, getToken) =>
+  async (dispatch, getState) => {
+    dispatch(requestImport());
 
-  const url =
-    window.config.timetableAdminBaseUrl +
-    `${id}${isFlex ? '/flex' : ''}/import`;
+    const url =
+      window.config.timetableAdminBaseUrl +
+      `${id}${isFlex ? '/flex' : ''}/import`;
 
-  const bodySelectedFiles = selectedFiles.map(file => {
-    return {
-      name: file.name
-    };
-  });
-
-  return axios
-    .post(url, { files: bodySelectedFiles }, await getApiConfig(getToken))
-    .then(function(response) {
-      dispatch(sendData(response.data, types.SUCCESS_IMPORT_DATA));
-      dispatch(SuppliersActions.addNotification('Import started', 'success'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Imported data for provider ${id}`,
-          files: selectedFiles
-        })
-      );
-    })
-    .catch(function(response) {
-      dispatch(sendData(response.data, types.ERROR_IMPORT_DATA));
-      dispatch(SuppliersActions.addNotification('Import failed', 'error'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Import failed for provider ${id}`
-        })
-      );
+    const bodySelectedFiles = selectedFiles.map((file) => {
+      return {
+        name: file.name,
+      };
     });
-};
 
-SuppliersActions.cleanDataspace = id => async (dispatch, getState) => {
+    return axios
+      .post(url, { files: bodySelectedFiles }, await getApiConfig(getToken))
+      .then(function (response) {
+        dispatch(sendData(response.data, types.SUCCESS_IMPORT_DATA));
+        dispatch(SuppliersActions.addNotification('Import started', 'success'));
+        dispatch(
+          SuppliersActions.logEvent({
+            title: `Imported data for provider ${id}`,
+            files: selectedFiles,
+          }),
+        );
+      })
+      .catch(function (response) {
+        dispatch(sendData(response.data, types.ERROR_IMPORT_DATA));
+        dispatch(SuppliersActions.addNotification('Import failed', 'error'));
+        dispatch(
+          SuppliersActions.logEvent({
+            title: `Import failed for provider ${id}`,
+          }),
+        );
+      });
+  };
+
+SuppliersActions.cleanDataspace = (id) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/clean`;
 
   dispatch(requestCleanDataspace());
@@ -954,76 +936,77 @@ SuppliersActions.cleanDataspace = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getToken))
+    ...(await getApiConfig(getToken)),
   })
-    .then(function(response) {
+    .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_DELETE_DATA));
       dispatch(
         SuppliersActions.addNotification(
           'Cleaning of dataspace started',
-          'success'
-        )
+          'success',
+        ),
       );
       dispatch(
         SuppliersActions.logEvent({
-          title: `Cleaned data space for provider ${id}`
-        })
+          title: `Cleaned data space for provider ${id}`,
+        }),
       );
     })
-    .catch(function(response) {
+    .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_DELETE_DATA));
       dispatch(
         SuppliersActions.addNotification(
           'Cleaning of dataspace failed',
-          'error'
-        )
+          'error',
+        ),
       );
       dispatch(
         SuppliersActions.logEvent({
-          title: `Cleaning data space failed for provider ${id}`
-        })
+          title: `Cleaning data space failed for provider ${id}`,
+        }),
       );
     });
 };
 
-SuppliersActions.cleanAllDataspaces = filter => async (dispatch, getState) => {
-  const url = window.config.timetableAdminBaseUrl + `clean/${filter}`;
+SuppliersActions.cleanAllDataspaces =
+  (filter) => async (dispatch, getState) => {
+    const url = window.config.timetableAdminBaseUrl + `clean/${filter}`;
 
-  return axios({
-    url: url,
-    timeout: 20000,
-    method: 'post',
-    ...(await getApiConfig(getToken))
-  })
-    .then(function(response) {
-      dispatch(
-        SuppliersActions.addNotification(
-          'Cleaning of all dataspaces started with filter ' + filter,
-          'success'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Cleaned all dataspaces with filter ${filter}`
-        })
-      );
+    return axios({
+      url: url,
+      timeout: 20000,
+      method: 'post',
+      ...(await getApiConfig(getToken)),
     })
-    .catch(function(response) {
-      dispatch(
-        SuppliersActions.addNotification(
-          'Cleaning of all dataspaces failed with filter ' + filter,
-          'error'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Cleaning all dataspaces failed for filter ${filter}`
-        })
-      );
-    });
-};
+      .then(function (response) {
+        dispatch(
+          SuppliersActions.addNotification(
+            'Cleaning of all dataspaces started with filter ' + filter,
+            'success',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: `Cleaned all dataspaces with filter ${filter}`,
+          }),
+        );
+      })
+      .catch(function (response) {
+        dispatch(
+          SuppliersActions.addNotification(
+            'Cleaning of all dataspaces failed with filter ' + filter,
+            'error',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: `Cleaning all dataspaces failed for filter ${filter}`,
+          }),
+        );
+      });
+  };
 
-SuppliersActions.validateProvider = id => async (dispatch, getState) => {
+SuppliersActions.validateProvider = (id) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/validate`;
 
   dispatch(requestCleanDataspace());
@@ -1031,26 +1014,26 @@ SuppliersActions.validateProvider = id => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getToken))
+    ...(await getApiConfig(getToken)),
   })
-    .then(function(response) {
+    .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_VALIDATE_PROVIDER));
       dispatch(
-        SuppliersActions.addNotification('Validation started', 'success')
+        SuppliersActions.addNotification('Validation started', 'success'),
       );
       dispatch(
         SuppliersActions.logEvent({
-          title: `Validated, imported and exported data for provider ${id} successfully`
-        })
+          title: `Validated, imported and exported data for provider ${id} successfully`,
+        }),
       );
     })
-    .catch(function(response) {
+    .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_VALIDATE_PROVIDER));
       dispatch(SuppliersActions.addNotification('Validation failed', 'error'));
       dispatch(
         SuppliersActions.logEvent({
-          title: `Validating, importing and exporting data for provider ${id} failed`
-        })
+          title: `Validating, importing and exporting data for provider ${id} failed`,
+        }),
       );
     });
 };
@@ -1063,16 +1046,16 @@ SuppliersActions.buildGraph = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getToken))
+    ...(await getApiConfig(getToken)),
   })
-    .then(function(response) {
+    .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_GRAPH));
       dispatch(
-        SuppliersActions.addNotification('Graph build started', 'success')
+        SuppliersActions.addNotification('Graph build started', 'success'),
       );
       dispatch(SuppliersActions.logEvent({ title: 'Graph build started' }));
     })
-    .catch(function(response) {
+    .catch(function (response) {
       console.log('ERROR BUILDING GRAPH', response);
       dispatch(sendData(response.data, types.ERROR_BUILD_GRAPH));
       dispatch(SuppliersActions.addNotification('Graph build failed', 'error'));
@@ -1088,22 +1071,22 @@ SuppliersActions.buildBaseGraph = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getToken))
+    ...(await getApiConfig(getToken)),
   })
-    .then(function(response) {
+    .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_BASE_GRAPH));
       dispatch(
-        SuppliersActions.addNotification('Base graph build started', 'success')
+        SuppliersActions.addNotification('Base graph build started', 'success'),
       );
       dispatch(
-        SuppliersActions.logEvent({ title: 'Base graph build started' })
+        SuppliersActions.logEvent({ title: 'Base graph build started' }),
       );
     })
-    .catch(function(response) {
+    .catch(function (response) {
       console.log('ERROR BUILDING BASE GRAPH', response);
       dispatch(sendData(response.data, types.ERROR_BUILD_BASE_GRAPH));
       dispatch(
-        SuppliersActions.addNotification('Base graph build failed', 'error')
+        SuppliersActions.addNotification('Base graph build failed', 'error'),
       );
       dispatch(SuppliersActions.logEvent({ title: 'Base graph build failed' }));
     });
@@ -1119,90 +1102,88 @@ SuppliersActions.buildCandidateGraphOTP = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getToken))
+    ...(await getApiConfig(getToken)),
   })
-    .then(function(response) {
+    .then(function (response) {
       dispatch(
-        sendData(response.data, types.SUCCESS_BUILD_CANDIDATE_GRAPH_OTP)
+        sendData(response.data, types.SUCCESS_BUILD_CANDIDATE_GRAPH_OTP),
       );
       dispatch(
         SuppliersActions.addNotification(
           'Candidate graph build (OTP) started',
-          'success'
-        )
+          'success',
+        ),
       );
       dispatch(
         SuppliersActions.logEvent({
-          title: 'Candidate graph build (OTP) started'
-        })
+          title: 'Candidate graph build (OTP) started',
+        }),
       );
     })
-    .catch(function(response) {
+    .catch(function (response) {
       console.log('ERROR BUILDING CANDIDATE GRAPH (OTP)', response);
       dispatch(sendData(response.data, types.ERROR_BUILD_CANDIDATE_GRAPH_OTP));
       dispatch(
         SuppliersActions.addNotification(
           'Candidate graph build (OTP) failed',
-          'error'
-        )
+          'error',
+        ),
       );
       dispatch(
         SuppliersActions.logEvent({
-          title: 'Candidate graph build (OTP) failed'
-        })
+          title: 'Candidate graph build (OTP) failed',
+        }),
       );
     });
 };
 
-SuppliersActions.buildCandidateBaseGraphOTP = () => async (
-  dispatch,
-  getState
-) => {
-  const url =
-    window.config.timetableAdminBaseUrl +
-    'routing_graph/build_candidate/otp2_base';
+SuppliersActions.buildCandidateBaseGraphOTP =
+  () => async (dispatch, getState) => {
+    const url =
+      window.config.timetableAdminBaseUrl +
+      'routing_graph/build_candidate/otp2_base';
 
-  dispatch(requestBuildBaseGraph());
-  return axios({
-    url: url,
-    timeout: 20000,
-    method: 'post',
-    ...(await getApiConfig(getToken))
-  })
-    .then(function(response) {
-      dispatch(
-        sendData(response.data, types.SUCCESS_BUILD_CANDIDATE_BASE_GRAPH_OTP)
-      );
-      dispatch(
-        SuppliersActions.addNotification(
-          'Candidate base graph build (OTP) started',
-          'success'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Candidate base graph build (OTP) started'
-        })
-      );
+    dispatch(requestBuildBaseGraph());
+    return axios({
+      url: url,
+      timeout: 20000,
+      method: 'post',
+      ...(await getApiConfig(getToken)),
     })
-    .catch(function(response) {
-      console.log('ERROR BUILDING CANDIDATE BASE GRAPH (OTP)', response);
-      dispatch(
-        sendData(response.data, types.ERROR_BUILD_CANDIDATE_BASE_GRAPH_OTP)
-      );
-      dispatch(
-        SuppliersActions.addNotification(
-          'Candidate base graph build (OTP) failed',
-          'error'
-        )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Candidate base graph build (OTP) failed'
-        })
-      );
-    });
-};
+      .then(function (response) {
+        dispatch(
+          sendData(response.data, types.SUCCESS_BUILD_CANDIDATE_BASE_GRAPH_OTP),
+        );
+        dispatch(
+          SuppliersActions.addNotification(
+            'Candidate base graph build (OTP) started',
+            'success',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: 'Candidate base graph build (OTP) started',
+          }),
+        );
+      })
+      .catch(function (response) {
+        console.log('ERROR BUILDING CANDIDATE BASE GRAPH (OTP)', response);
+        dispatch(
+          sendData(response.data, types.ERROR_BUILD_CANDIDATE_BASE_GRAPH_OTP),
+        );
+        dispatch(
+          SuppliersActions.addNotification(
+            'Candidate base graph build (OTP) failed',
+            'error',
+          ),
+        );
+        dispatch(
+          SuppliersActions.logEvent({
+            title: 'Candidate base graph build (OTP) failed',
+          }),
+        );
+      });
+  };
 
 SuppliersActions.fetchOSM = () => async (dispatch, getState) => {
   const url = window.config.mapAdminBaseUrl + 'download';
@@ -1211,16 +1192,16 @@ SuppliersActions.fetchOSM = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getToken))
+    ...(await getApiConfig(getToken)),
   })
-    .then(function(response) {
+    .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_FETCH_OSM));
       dispatch(
-        SuppliersActions.addNotification('OSM update started', 'success')
+        SuppliersActions.addNotification('OSM update started', 'success'),
       );
       dispatch(SuppliersActions.logEvent({ title: 'OSM update started' }));
     })
-    .catch(function(response) {
+    .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_FETCH_OSM));
       dispatch(SuppliersActions.addNotification('OSM update failed', 'error'));
       dispatch(SuppliersActions.logEvent({ title: 'OSM update failed' }));
@@ -1234,34 +1215,34 @@ SuppliersActions.uploadGoogleProduction = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getToken))
+    ...(await getApiConfig(getToken)),
   })
-    .then(function(response) {
+    .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_UPLOAD_GOOGLE_PRODUCTION));
       dispatch(
         SuppliersActions.addNotification(
           'Google upload started (production)',
-          'success'
-        )
+          'success',
+        ),
       );
       dispatch(
         SuppliersActions.logEvent({
-          title: 'Google upload started (production)'
-        })
+          title: 'Google upload started (production)',
+        }),
       );
     })
-    .catch(function(response) {
+    .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_UPLOAD_GOOGLE_PRODUCTION));
       dispatch(
         SuppliersActions.addNotification(
           'Google upload failed (production)',
-          'error'
-        )
+          'error',
+        ),
       );
       dispatch(
         SuppliersActions.logEvent({
-          title: 'Google upload failed (production)'
-        })
+          title: 'Google upload failed (production)',
+        }),
       );
     });
 };
@@ -1273,27 +1254,27 @@ SuppliersActions.uploadGoogleQA = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getToken))
+    ...(await getApiConfig(getToken)),
   })
-    .then(function(response) {
+    .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_UPLOAD_GOOGLE_QA));
       dispatch(
         SuppliersActions.addNotification(
           'Google upload started (QA)',
-          'success'
-        )
+          'success',
+        ),
       );
       dispatch(
-        SuppliersActions.logEvent({ title: 'Google upload started (QA)' })
+        SuppliersActions.logEvent({ title: 'Google upload started (QA)' }),
       );
     })
-    .catch(function(response) {
+    .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_UPLOAD_GOOGLE_QA));
       dispatch(
-        SuppliersActions.addNotification('Google upload failed (QA)', 'error')
+        SuppliersActions.addNotification('Google upload failed (QA)', 'error'),
       );
       dispatch(
-        SuppliersActions.logEvent({ title: 'Google upload failed (QA)' })
+        SuppliersActions.logEvent({ title: 'Google upload failed (QA)' }),
       );
     });
 };
@@ -1305,22 +1286,22 @@ SuppliersActions.updateMapbox = () => async (dispatch, getState) => {
     url: url,
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getToken))
+    ...(await getApiConfig(getToken)),
   })
-    .then(function(response) {
+    .then(function (response) {
       dispatch(
-        SuppliersActions.addNotification('Mapbox update started', 'success')
+        SuppliersActions.addNotification('Mapbox update started', 'success'),
       );
       dispatch(SuppliersActions.logEvent({ title: 'Mapbox update started' }));
     })
-    .catch(function(response) {
+    .catch(function (response) {
       const errorMessage = 'Mapbox update failed';
       dispatch(SuppliersActions.addNotification(errorMessage, 'error'));
       dispatch(SuppliersActions.logEvent({ title: errorMessage }));
     });
 };
 
-SuppliersActions.sortListByColumn = (listName, columnName) => dispatch => {
+SuppliersActions.sortListByColumn = (listName, columnName) => (dispatch) => {
   switch (listName) {
     case 'events':
       dispatch(SuppliersActions.sortEventlistByColumn(columnName));
@@ -1335,24 +1316,24 @@ SuppliersActions.sortListByColumn = (listName, columnName) => dispatch => {
   }
 };
 
-SuppliersActions.sortEventlistByColumn = columnName => {
+SuppliersActions.sortEventlistByColumn = (columnName) => {
   return {
     type: types.SORT_EVENTLIST_BY_COLUMN,
-    payLoad: columnName
+    payLoad: columnName,
   };
 };
 
-SuppliersActions.sortChouetteAllByColumn = columnName => {
+SuppliersActions.sortChouetteAllByColumn = (columnName) => {
   return {
     type: types.SORT_CHOUETTE_ALL_BY_COLUMN,
-    payLoad: columnName
+    payLoad: columnName,
   };
 };
 
-SuppliersActions.sortChouetteByColumn = columnName => {
+SuppliersActions.sortChouetteByColumn = (columnName) => {
   return {
     type: types.SORT_CHOUETTE_BY_COLUMN,
-    payLoad: columnName
+    payLoad: columnName,
   };
 };
 
@@ -1400,39 +1381,33 @@ function requestFilenames() {
   return { type: types.REQUEST_FILENAMES };
 }
 
-SuppliersActions.toggleChouetteInfoCheckboxFilter = (
-  option,
-  value,
-  getToken
-) => dispatch => {
-  dispatch(
-    sendData(
-      { option: option, value: value },
-      types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER
-    )
-  );
-  dispatch(SuppliersActions.getChouetteJobStatus(getToken));
-};
+SuppliersActions.toggleChouetteInfoCheckboxFilter =
+  (option, value, getToken) => (dispatch) => {
+    dispatch(
+      sendData(
+        { option: option, value: value },
+        types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER,
+      ),
+    );
+    dispatch(SuppliersActions.getChouetteJobStatus(getToken));
+  };
 
-SuppliersActions.toggleChouetteInfoCheckboxAllFilter = (
-  option,
-  value,
-  getToken
-) => dispatch => {
-  dispatch(
-    sendData(
-      { option: option, value: value },
-      types.TOGGLE_CHOUETTE_INFO_CHECKBOX_ALL_FILTER
-    )
-  );
-  dispatch(SuppliersActions.getChouetteJobsForAllSuppliers(getToken));
-};
+SuppliersActions.toggleChouetteInfoCheckboxAllFilter =
+  (option, value, getToken) => (dispatch) => {
+    dispatch(
+      sendData(
+        { option: option, value: value },
+        types.TOGGLE_CHOUETTE_INFO_CHECKBOX_ALL_FILTER,
+      ),
+    );
+    dispatch(SuppliersActions.getChouetteJobsForAllSuppliers(getToken));
+  };
 
 SuppliersActions.formatProviderStatusDate = (list, provider) => {
   try {
-    return list.map(listItem => {
+    return list.map((listItem) => {
       listItem.duration = moment(
-        moment(listItem.lastEvent).diff(moment(listItem.firstEvent))
+        moment(listItem.lastEvent).diff(moment(listItem.firstEvent)),
       )
         .locale('nb')
         .utc()
@@ -1443,16 +1418,14 @@ SuppliersActions.formatProviderStatusDate = (list, provider) => {
       listItem.lastEvent = moment(listItem.lastEvent)
         .locale('nb')
         .format('YYYY-MM-DD HH:mm:ss');
-      listItem.started = moment(listItem.firstEvent)
-        .locale('en')
-        .fromNow();
+      listItem.started = moment(listItem.firstEvent).locale('en').fromNow();
 
       if (provider) {
         listItem.provider = provider;
       }
 
       if (listItem.events) {
-        listItem.events.forEach(function(event) {
+        listItem.events.forEach(function (event) {
           event.date = moment(event.date)
             .locale('nb')
             .format('YYYY-MM-DD HH:mm:ss');
@@ -1467,35 +1440,35 @@ SuppliersActions.formatProviderStatusDate = (list, provider) => {
 
 SuppliersActions.restoreFilesToOutbound = () => {
   return {
-    type: types.RESET_OUTBOUND_FILES
+    type: types.RESET_OUTBOUND_FILES,
   };
 };
 
-SuppliersActions.logEventFilter = filter => {
+SuppliersActions.logEventFilter = (filter) => {
   return {
     type: types.LOG_EVENT_FILTER,
-    payLoad: filter
+    payLoad: filter,
   };
 };
 
-SuppliersActions.updateOutboundFilelist = files => {
+SuppliersActions.updateOutboundFilelist = (files) => {
   return {
     type: types.UPDATE_FILES_TO_OUTBOUND,
-    payLoad: files
+    payLoad: files,
   };
 };
 
-SuppliersActions.appendFilesToOutbound = files => {
+SuppliersActions.appendFilesToOutbound = (files) => {
   return {
     type: types.APPEND_FILES_TO_OUTBOUND,
-    payLoad: files
+    payLoad: files,
   };
 };
 
-SuppliersActions.removeFilesToOutbound = files => {
+SuppliersActions.removeFilesToOutbound = (files) => {
   return {
     type: types.REMOVE_FILES_FROM_OUTBOUND,
-    payLoad: files
+    payLoad: files,
   };
 };
 
@@ -1503,145 +1476,148 @@ SuppliersActions.addNotification = (message, level) => {
   return {
     type: types.ADD_NOTIFICATION,
     message,
-    level
+    level,
   };
 };
 
-SuppliersActions.toggleExpandableEventsContent = id => {
+SuppliersActions.toggleExpandableEventsContent = (id) => {
   return {
     type: types.TOGGLE_EXPANDABLE_FOR_EVENT_WRAPPER,
-    payLoad: id
+    payLoad: id,
   };
 };
 
 SuppliersActions.openHistoryModal = () => {
   return {
-    type: types.OPENED_HISTORY_MODAL
+    type: types.OPENED_HISTORY_MODAL,
   };
 };
 
 SuppliersActions.dismissModalDialog = () => {
   return {
-    type: types.DISMISS_MODAL_DIALOG
+    type: types.DISMISS_MODAL_DIALOG,
   };
 };
 
 SuppliersActions.openEditModalDialog = () => {
   return {
-    type: types.OPENED_EDIT_PROVIDER_DIALOG
+    type: types.OPENED_EDIT_PROVIDER_DIALOG,
   };
 };
 
-SuppliersActions.openEditProviderDialog = getToken => async (
-  dispatch,
-  getState
-) => {
-  const state = getState();
-  dispatch(
-    SuppliersActions.fetchProvider(state.SuppliersReducer.activeId, getToken)
-  );
-  dispatch(SuppliersActions.openEditModalDialog());
-};
+SuppliersActions.openEditProviderDialog =
+  (getToken) => async (dispatch, getState) => {
+    const state = getState();
+    dispatch(
+      SuppliersActions.fetchProvider(state.SuppliersReducer.activeId, getToken),
+    );
+    dispatch(SuppliersActions.openEditModalDialog());
+  };
 
 SuppliersActions.openPoiFilterDialog = () => {
   return {
-    type: types.OPENED_POI_FILTER_DIALOG
+    type: types.OPENED_POI_FILTER_DIALOG,
   };
 };
 
 SuppliersActions.openNewProviderDialog = () => {
   return {
-    type: types.OPENED_NEW_PROVIDER_DIALOG
+    type: types.OPENED_NEW_PROVIDER_DIALOG,
   };
 };
 
 SuppliersActions.dismissEditProviderDialog = () => {
   return {
-    type: types.DISMISS_EDIT_PROVIDER_DIALOG
+    type: types.DISMISS_EDIT_PROVIDER_DIALOG,
   };
 };
 
-SuppliersActions.logEvent = event => {
+SuppliersActions.logEvent = (event) => {
   return {
     type: types.LOG_EVENT,
-    payLoad: event
+    payLoad: event,
   };
 };
 
-SuppliersActions.getExportedFiles = getToken => async (dispatch, getState) => {
-  dispatch(sendData(types.REQUESTED_EXPORTED_FILES, null));
-  const url = window.config.timetableAdminBaseUrl + 'export/files';
-  return axios({
-    url: url,
-    timeout: 20000,
-    method: 'get',
-    responseType: 'json',
-    ...(await getApiConfig(getToken))
-  }).then(response => {
-    if (response.data && response.data.files) {
-      let providerData = {};
-      let norwayGTFS = [];
-      let norwayNetex = [];
+SuppliersActions.getExportedFiles =
+  (getToken) => async (dispatch, getState) => {
+    dispatch(sendData(types.REQUESTED_EXPORTED_FILES, null));
+    const url = window.config.timetableAdminBaseUrl + 'export/files';
+    return axios({
+      url: url,
+      timeout: 20000,
+      method: 'get',
+      responseType: 'json',
+      ...(await getApiConfig(getToken)),
+    }).then((response) => {
+      if (response.data && response.data.files) {
+        let providerData = {};
+        let norwayGTFS = [];
+        let norwayNetex = [];
 
-      response.data.files.forEach(file => {
-        addExportedFileMetadata(
-          file.providerId,
-          file.referential,
-          file.format,
-          file,
-          norwayNetex,
-          norwayGTFS,
-          providerData
+        response.data.files.forEach((file) => {
+          addExportedFileMetadata(
+            file.providerId,
+            file.referential,
+            file.format,
+            file,
+            norwayNetex,
+            norwayGTFS,
+            providerData,
+          );
+        });
+
+        addExportedNorwayMetadata(norwayNetex, norwayGTFS, providerData);
+
+        const formattedProviderData = formatProviderData(providerData);
+
+        dispatch(
+          sendData(
+            { providerData: formattedProviderData },
+            types.RECEIVED_EXPORTED_FILES,
+          ),
         );
-      });
-
-      addExportedNorwayMetadata(norwayNetex, norwayGTFS, providerData);
-
-      const formattedProviderData = formatProviderData(providerData);
-
-      dispatch(
-        sendData(
-          { providerData: formattedProviderData },
-          types.RECEIVED_EXPORTED_FILES
-        )
-      );
-    }
-  });
-};
+      }
+    });
+  };
 
 SuppliersActions.cleanFileFilter = () => async (dispatch, getState) => {
   return axios({
     url: window.config.timetableAdminBaseUrl + 'idempotentfilter/clean',
     timeout: 20000,
     method: 'post',
-    ...(await getApiConfig(getToken))
+    ...(await getApiConfig(getToken)),
   })
-    .then(function(response) {
+    .then(function (response) {
       dispatch(
-        SuppliersActions.addNotification('File filter cleaned', 'success')
+        SuppliersActions.addNotification('File filter cleaned', 'success'),
       );
       dispatch(SuppliersActions.logEvent({ title: 'File filter cleaned' }));
     })
-    .catch(function(response) {
+    .catch(function (response) {
       dispatch(
-        SuppliersActions.addNotification('Cleaning file filter failed', 'error')
+        SuppliersActions.addNotification(
+          'Cleaning file filter failed',
+          'error',
+        ),
       );
       dispatch(
-        SuppliersActions.logEvent({ title: 'Cleaning file filter failed' })
+        SuppliersActions.logEvent({ title: 'Cleaning file filter failed' }),
       );
     });
 };
 
-SuppliersActions.getTransportModes = getToken => async (dispatch, getState) => {
-  const url = `${window.config.providersBaseUrl}transport_modes`;
-  return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(sendData(response.data, types.RECEIVED_TRANSPORT_MODES));
-    })
-    .catch(error => {
-      console.log('Error receiving transport modes', error);
-    });
-};
+SuppliersActions.getTransportModes =
+  (getToken) => async (dispatch, getState) => {
+    const url = `${window.config.providersBaseUrl}transport_modes`;
+    return axios
+      .get(url, await getApiConfig(getToken))
+      .then((response) => {
+        dispatch(sendData(response.data, types.RECEIVED_TRANSPORT_MODES));
+      })
+      .catch((error) => {
+        console.log('Error receiving transport modes', error);
+      });
+  };
 
 export default SuppliersActions;

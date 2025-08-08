@@ -19,7 +19,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -29,7 +29,7 @@ import {
   MenuItem,
   FormControlLabel,
   Radio,
-  RadioGroup
+  RadioGroup,
 } from '@mui/material';
 import ResponsiblitySetList from './ResponsiblitySetList';
 import UserRespSetPopover from './UserRespSetPopover';
@@ -43,16 +43,16 @@ const initialState = {
       email: '',
       phone: '',
       firstName: '',
-      lastName: ''
+      lastName: '',
     },
-    personalAccount: false
+    personalAccount: false,
   },
   isAddingResponsibilitySet: false,
   temptResponsibilitySet: '',
   addRespAnchorEl: null,
   emailValid: true,
   originalUsername: '',
-  usernameValid: true
+  usernameValid: true,
 };
 
 class ModalEditUser extends React.Component {
@@ -68,11 +68,11 @@ class ModalEditUser extends React.Component {
         ...this.props.user,
         contactDetails: {
           ...this.state.user.contactDetails,
-          ...(this.props.user.contactDetails || {})
+          ...(this.props.user.contactDetails || {}),
         },
-        personalAccount: this.props.user.personalAccount || false
+        personalAccount: this.props.user.personalAccount || false,
       },
-      originalUsername: this.props.user.username
+      originalUsername: this.props.user.username,
     });
   }
 
@@ -84,9 +84,9 @@ class ModalEditUser extends React.Component {
   handleChangeUsername(e) {
     const value = e.target.value;
     const isValid = this.validateBy('USERNAME', value);
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       user: { ...prevState.user, username: value },
-      usernameValid: isValid
+      usernameValid: isValid,
     }));
   }
 
@@ -100,9 +100,9 @@ class ModalEditUser extends React.Component {
         ...user,
         contactDetails: {
           ...user.contactDetails,
-          email: value
-        }
-      }
+          email: value,
+        },
+      },
     });
   }
 
@@ -115,10 +115,10 @@ class ModalEditUser extends React.Component {
         ...user,
         responsibilitySetRefs: [
           ...user.responsibilitySetRefs,
-          temptResponsibilitySet
-        ]
+          temptResponsibilitySet,
+        ],
       },
-      temptResponsibilitySet: ''
+      temptResponsibilitySet: '',
     });
   }
 
@@ -156,8 +156,8 @@ class ModalEditUser extends React.Component {
     this.setState({
       user: {
         ...user,
-        personalAccount: value === 'personal_account'
-      }
+        personalAccount: value === 'personal_account',
+      },
     });
   }
 
@@ -168,20 +168,16 @@ class ModalEditUser extends React.Component {
           ...this.state.user,
           responsibilitySetRefs: [
             ...this.state.user.responsibilitySetRefs.slice(0, index),
-            ...this.state.user.responsibilitySetRefs.slice(index + 1)
-          ]
-        }
+            ...this.state.user.responsibilitySetRefs.slice(index + 1),
+          ],
+        },
       });
     }
   }
 
   render() {
-    const {
-      isModalOpen,
-      handleSubmit,
-      organizations,
-      responsibilities
-    } = this.props;
+    const { isModalOpen, handleSubmit, organizations, responsibilities } =
+      this.props;
 
     const {
       user,
@@ -189,7 +185,7 @@ class ModalEditUser extends React.Component {
       usernameValid,
       emailValid,
       emailIsTaken,
-      originalUsername
+      originalUsername,
     } = this.state;
 
     const disableUpdate = !usernameValid || !emailValid;
@@ -205,7 +201,7 @@ class ModalEditUser extends React.Component {
         onClick={() => handleSubmit(user)}
       >
         Update
-      </Button>
+      </Button>,
     ];
 
     return (
@@ -220,10 +216,10 @@ class ModalEditUser extends React.Component {
           <div
             style={{
               display: 'flex',
-              flexDirection: 'column'
+              flexDirection: 'column',
             }}
           >
-            <div onClick={e => e.stopPropagation()}>
+            <div onClick={(e) => e.stopPropagation()}>
               <FormControl>
                 <RadioGroup
                   defaultValue="notification_account"
@@ -232,7 +228,7 @@ class ModalEditUser extends React.Component {
                       ? 'personal_account'
                       : 'notification_account'
                   }
-                  onChange={e => {
+                  onChange={(e) => {
                     e.stopPropagation();
                     this.handleChangeIsPersonalAccount(e.target.value);
                   }}
@@ -268,15 +264,15 @@ class ModalEditUser extends React.Component {
               placeholder="First name"
               label="First name"
               value={user.contactDetails?.firstName || ''}
-              onChange={e =>
+              onChange={(e) =>
                 this.setState({
                   user: {
                     ...user,
                     contactDetails: {
                       ...(user.contactDetails || {}),
-                      firstName: e.target.value
-                    }
-                  }
+                      firstName: e.target.value,
+                    },
+                  },
                 })
               }
               fullWidth={true}
@@ -285,15 +281,15 @@ class ModalEditUser extends React.Component {
               placeholder="Last name"
               label="Last name"
               value={user.contactDetails?.lastName || ''}
-              onChange={e =>
+              onChange={(e) =>
                 this.setState({
                   user: {
                     ...user,
                     contactDetails: {
                       ...(user.contactDetails || {}),
-                      lastName: e.target.value
-                    }
-                  }
+                      lastName: e.target.value,
+                    },
+                  },
                 })
               }
               fullWidth={true}
@@ -306,8 +302,8 @@ class ModalEditUser extends React.Component {
                 emailIsTaken
                   ? 'E-mail already taken'
                   : !emailValid
-                  ? 'Must be a valid e-mail'
-                  : ''
+                    ? 'Must be a valid e-mail'
+                    : ''
               }
               value={user.contactDetails?.email || ''}
               onChange={this.handleChangeEmail.bind(this)}
@@ -317,15 +313,15 @@ class ModalEditUser extends React.Component {
               placeholder="Phonenumber"
               label="Phonenumber"
               value={user.contactDetails.phone}
-              onChange={e =>
+              onChange={(e) =>
                 this.setState({
                   user: {
                     ...user,
                     contactDetails: {
                       ...user.contactDetails,
-                      phone: e.target.value
-                    }
-                  }
+                      phone: e.target.value,
+                    },
+                  },
                 })
               }
               fullWidth={true}
@@ -333,14 +329,14 @@ class ModalEditUser extends React.Component {
             <FormControl fullWidth>
               <Select
                 value={user.organisationRef}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
-                    user: { ...user, organisationRef: e.target.value }
+                    user: { ...user, organisationRef: e.target.value },
                   })
                 }
                 displayEmpty
               >
-                {organizations.map(org => (
+                {organizations.map((org) => (
                   <MenuItem key={org.id} value={org.id}>
                     {org.name}
                   </MenuItem>
@@ -360,10 +356,10 @@ class ModalEditUser extends React.Component {
             <ResponsiblitySetList
               user={user}
               responsiblities={responsibilities}
-              handleAdd={e =>
+              handleAdd={(e) =>
                 this.setState({
                   isAddingResponsibilitySet: true,
-                  addRespAnchorEl: e.currentTarget
+                  addRespAnchorEl: e.currentTarget,
                 })
               }
               handleRemove={this.removeResponsibilitySet.bind(this)}

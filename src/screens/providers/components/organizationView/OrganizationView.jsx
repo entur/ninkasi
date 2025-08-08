@@ -38,8 +38,8 @@ class OrganizationView extends React.Component {
       activeOrganization: null,
       sortOrder: {
         column: 'name',
-        asc: true
-      }
+        asc: true,
+      },
     };
   }
 
@@ -51,14 +51,14 @@ class OrganizationView extends React.Component {
 
   openModalWindow() {
     this.setState({
-      isCreateModalOpen: true
+      isCreateModalOpen: true,
     });
   }
 
   handleCloseDeleteConfirmation() {
     this.setState({
       activeOrganization: null,
-      isDeleteConfirmationOpen: false
+      isDeleteConfirmationOpen: false,
     });
   }
 
@@ -73,8 +73,8 @@ class OrganizationView extends React.Component {
     this.setState({
       sortOrder: {
         column,
-        asc
-      }
+        asc,
+      },
     });
   }
 
@@ -87,21 +87,21 @@ class OrganizationView extends React.Component {
   handleCreateOrganization(organization) {
     const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.createOrganization(organization, getToken)
+      OrganizationRegisterActions.createOrganization(organization, getToken),
     );
   }
 
   handleUpdateOrganization(organization) {
     const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.updateOrganization(organization, getToken)
+      OrganizationRegisterActions.updateOrganization(organization, getToken),
     );
   }
 
   handleEditOrganization(organization) {
     this.setState({
       activeOrganization: organization,
-      isEditModalOpen: true
+      isEditModalOpen: true,
     });
   }
 
@@ -109,14 +109,14 @@ class OrganizationView extends React.Component {
     this.handleCloseDeleteConfirmation();
     const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.deleteOrganization(organization.id, getToken)
+      OrganizationRegisterActions.deleteOrganization(organization.id, getToken),
     );
   }
 
   handleOpenDeleteConfirmationDialog(activeOrganization) {
     this.setState({
       activeOrganization,
-      isDeleteConfirmationOpen: true
+      isDeleteConfirmationOpen: true,
     });
   }
 
@@ -129,7 +129,7 @@ class OrganizationView extends React.Component {
     ) {
       this.setState({
         isCreateModalOpen: false,
-        isEditModalOpen: false
+        isEditModalOpen: false,
       });
     }
   }
@@ -140,7 +140,7 @@ class OrganizationView extends React.Component {
       activeOrganization,
       isCreateModalOpen,
       isEditModalOpen,
-      sortOrder
+      sortOrder,
     } = this.state;
 
     const sortedOrganizations = sortByColumns(organizations, sortOrder);
@@ -199,7 +199,7 @@ class OrganizationView extends React.Component {
               </span>
             </div>
           </div>
-          {sortedOrganizations.map(organization => {
+          {sortedOrganizations.map((organization) => {
             return (
               <div
                 key={'organization-' + organization.id}
@@ -218,7 +218,7 @@ class OrganizationView extends React.Component {
                       width: 20,
                       marginRight: 10,
                       verticalAlign: 'middle',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
                     }}
                     onClick={() =>
                       this.handleOpenDeleteConfirmationDialog(organization)
@@ -239,9 +239,9 @@ class OrganizationView extends React.Component {
               handleCloseModal={() =>
                 this.setState({ isCreateModalOpen: false })
               }
-              takenOrganizationNames={organizations.map(org => org.name)}
+              takenOrganizationNames={organizations.map((org) => org.name)}
               takenOrganizationPrivateCodes={organizations.map(
-                org => org.privateCode
+                (org) => org.privateCode,
               )}
               codeSpaces={codeSpaces}
               organization={activeOrganization}
@@ -253,9 +253,9 @@ class OrganizationView extends React.Component {
             <ModalEditOrganization
               isModalOpen={isEditModalOpen}
               handleCloseModal={() => this.setState({ isEditModalOpen: false })}
-              takenOrganizationNames={organizations.map(org => org.name)}
+              takenOrganizationNames={organizations.map((org) => org.name)}
               takenOrganizationPrivateCodes={organizations.map(
-                org => org.privateCode
+                (org) => org.privateCode,
               )}
               organization={this.state.activeOrganization}
               codeSpaces={codeSpaces}
@@ -280,10 +280,10 @@ class OrganizationView extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   organizations: state.OrganizationReducer.organizations,
   codeSpaces: state.OrganizationReducer.codeSpaces,
-  status: state.OrganizationReducer.organizationStatus
+  status: state.OrganizationReducer.organizationStatus,
 });
 
 export default connect(mapStateToProps)(withAuth(OrganizationView));

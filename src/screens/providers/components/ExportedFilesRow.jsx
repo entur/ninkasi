@@ -26,20 +26,20 @@ class ExportedFilesRow extends Component {
     const backgrounds = {
       [ExportStatus.ERROR]: 'rgba(255, 0, 0, 0.2)',
       [ExportStatus.WARNING]: 'hsla(39, 100%, 50%, 0.21)',
-      [ExportStatus.OK]: index % 2 ? '#fff' : 'rgba(238, 238, 238, 0.36)'
+      [ExportStatus.OK]: index % 2 ? '#fff' : 'rgba(238, 238, 238, 0.36)',
     };
 
     if (!rowStatus)
       return {
         background: backgrounds[ExportStatus.OK],
-        label: null
+        label: null,
       };
 
     const { status, message } = rowStatus;
 
     return {
       label: <StatusLabel type={status} label={message} />,
-      background: backgrounds[status]
+      background: backgrounds[status],
     };
   }
 
@@ -54,7 +54,7 @@ class ExportedFilesRow extends Component {
       gtfsUrl,
       diffHumanized,
       gtfsFileSize,
-      status
+      status,
     } = data;
 
     const { background, label } = this.getStatusLabel(status, index);
@@ -67,11 +67,11 @@ class ExportedFilesRow extends Component {
       border: '1px solid #eee',
       display: 'flex',
       alignItems: 'center',
-      background
+      background,
     };
 
     const missingStyle = {
-      fontStyle: 'italic'
+      fontStyle: 'italic',
     };
 
     return (
@@ -83,7 +83,7 @@ class ExportedFilesRow extends Component {
         <div
           style={{
             flex: 3,
-            fontStyle: !netexDate ? missingStyle.fontStyle : 'initial'
+            fontStyle: !netexDate ? missingStyle.fontStyle : 'initial',
           }}
         >
           {netexDate ? moment(netexDate).format('LLLL') : 'NO EXPORT'}
@@ -97,7 +97,7 @@ class ExportedFilesRow extends Component {
             >
               <FileDownload color={'#2196F3'} />
               <span style={{ marginLeft: 2 }}>{`[${getSizeFromBytes(
-                netexFileSize
+                netexFileSize,
               )}]`}</span>
             </a>
           )}
@@ -105,7 +105,7 @@ class ExportedFilesRow extends Component {
         <div
           style={{
             flex: 3,
-            fontStyle: !gtfsDate ? missingStyle.fontStyle : 'initial'
+            fontStyle: !gtfsDate ? missingStyle.fontStyle : 'initial',
           }}
         >
           {gtfsDate ? moment(gtfsDate).format('LLLL') : 'NO EXPORT'}
@@ -119,7 +119,7 @@ class ExportedFilesRow extends Component {
             >
               <FileDownload color={'#2196F3'} />
               <span style={{ marginLeft: 2 }}>{`[${getSizeFromBytes(
-                gtfsFileSize
+                gtfsFileSize,
               )}]`}</span>
             </a>
           )}

@@ -34,7 +34,7 @@ class NotificationContainer extends Component {
     const { message, level } = newProps.notification;
     this.notificationSystem.addNotification({
       message,
-      level
+      level,
     });
   }
 
@@ -45,7 +45,7 @@ class NotificationContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    notification: state.UtilsReducer.notification
+    notification: state.UtilsReducer.notification,
   };
 }
 
@@ -53,14 +53,14 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
       {
-        addNotification: SuppliersActions.addNotification
+        addNotification: SuppliersActions.addNotification,
       },
-      dispatch
-    )
+      dispatch,
+    ),
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(NotificationContainer);

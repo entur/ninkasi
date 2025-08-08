@@ -19,7 +19,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -27,8 +27,8 @@ import Button from '@mui/material/Button';
 const initialState = {
   role: {
     name: '',
-    privateCode: ''
-  }
+    privateCode: '',
+  },
 };
 
 class ModalCreateRole extends React.Component {
@@ -63,7 +63,7 @@ class ModalCreateRole extends React.Component {
         onClick={() => handleSubmit(role)}
       >
         Create
-      </Button>
+      </Button>,
     ];
 
     return (
@@ -79,16 +79,16 @@ class ModalCreateRole extends React.Component {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <TextField
               placeholder="Name"
               label="Name"
               value={role.name}
-              onChange={e =>
+              onChange={(e) =>
                 this.setState({
-                  role: { ...role, name: e.target.value }
+                  role: { ...role, name: e.target.value },
                 })
               }
               fullWidth={true}
@@ -101,9 +101,9 @@ class ModalCreateRole extends React.Component {
                 invalidPrivateCode ? 'Private code already exists' : ''
               }
               value={role.privateCode}
-              onChange={e =>
+              onChange={(e) =>
                 this.setState({
-                  role: { ...role, privateCode: e.target.value }
+                  role: { ...role, privateCode: e.target.value },
                 })
               }
               fullWidth={true}

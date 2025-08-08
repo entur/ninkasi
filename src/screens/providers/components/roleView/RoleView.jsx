@@ -37,15 +37,15 @@ class RoleView extends React.Component {
       activeRole: null,
       sortOrder: {
         column: 'name',
-        asc: true
-      }
+        asc: true,
+      },
     };
   }
 
   handleEditRole(role) {
     this.setState({
       activeRole: role,
-      isEditModalOpen: true
+      isEditModalOpen: true,
     });
   }
 
@@ -58,14 +58,14 @@ class RoleView extends React.Component {
   handleOpenDeleteConfirmationDialog(activeRole) {
     this.setState({
       activeRole,
-      isDeleteConfirmationOpen: true
+      isDeleteConfirmationOpen: true,
     });
   }
 
   handleCloseDeleteConfirmation() {
     this.setState({
       activeRole: null,
-      isDeleteConfirmationOpen: false
+      isDeleteConfirmationOpen: false,
     });
   }
 
@@ -80,8 +80,8 @@ class RoleView extends React.Component {
     this.setState({
       sortOrder: {
         column,
-        asc
-      }
+        asc,
+      },
     });
   }
 
@@ -99,7 +99,7 @@ class RoleView extends React.Component {
     const { getToken } = this.props;
     this.props.dispatch(OrganizationRegisterActions.updateRole(role, getToken));
     this.setState({
-      isEditModalOpen: false
+      isEditModalOpen: false,
     });
   }
 
@@ -107,7 +107,7 @@ class RoleView extends React.Component {
     this.handleCloseDeleteConfirmation();
     const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.deleteRole(role.id, getToken)
+      OrganizationRegisterActions.deleteRole(role.id, getToken),
     );
   }
 
@@ -120,7 +120,7 @@ class RoleView extends React.Component {
     ) {
       this.setState({
         isCreateModalOpen: false,
-        isEditModalOpen: false
+        isEditModalOpen: false,
       });
     }
   }
@@ -158,7 +158,7 @@ class RoleView extends React.Component {
               </span>
             </div>
           </div>
-          {sortedRoles.map(role => {
+          {sortedRoles.map((role) => {
             return (
               <div key={'role-' + role.id} className="role-row-item">
                 <div className="col-1-3">{role.name}</div>
@@ -171,7 +171,7 @@ class RoleView extends React.Component {
                       width: 20,
                       marginRight: 10,
                       verticalAlign: 'middle',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
                     }}
                     onClick={() =>
                       this.handleOpenDeleteConfirmationDialog(role)
@@ -184,7 +184,7 @@ class RoleView extends React.Component {
                       height: 20,
                       width: 20,
                       verticalAlign: 'middle',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
                     }}
                   />
                 </div>
@@ -197,7 +197,7 @@ class RoleView extends React.Component {
               handleCloseModal={() =>
                 this.setState({ isCreateModalOpen: false })
               }
-              takenPrivateCodes={roles.map(role => role.privateCode)}
+              takenPrivateCodes={roles.map((role) => role.privateCode)}
               handleSubmit={this.handleCreateRole.bind(this)}
             />
           ) : null}
@@ -227,9 +227,9 @@ class RoleView extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   roles: state.OrganizationReducer.roles,
-  status: state.OrganizationReducer.roleStatus
+  status: state.OrganizationReducer.roleStatus,
 });
 
 export default connect(mapStateToProps)(withAuth(RoleView));

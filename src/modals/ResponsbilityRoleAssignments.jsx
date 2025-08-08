@@ -18,7 +18,7 @@ import React from 'react';
 import {
   getEntityClassificationRefString,
   getOrganizationNameByRef,
-  getAdminZoneNameByRef
+  getAdminZoneNameByRef,
 } from 'utils/index';
 
 class ResponsbilityRoleAssignments extends React.Component {
@@ -29,14 +29,14 @@ class ResponsbilityRoleAssignments extends React.Component {
       flexBasis: '100%',
       fontSize: 12,
       alignItems: 'flex-start',
-      flex: 1
+      flex: 1,
     };
 
     const itemStyle = {
       alignSelf: 'flex-start',
       flexBasis: '100%',
       fontSize: 12,
-      flex: 1
+      flex: 1,
     };
 
     return (
@@ -48,13 +48,13 @@ class ResponsbilityRoleAssignments extends React.Component {
             <div style={columnStyle}>Area</div>
             <div style={{ ...columnStyle, flex: 2 }}>Entity class</div>
           </div>
-          {roleAssignments.map(role => (
+          {roleAssignments.map((role) => (
             <div key={'resp-role-' + role.id} style={{ display: 'flex' }}>
               <div style={itemStyle}> {role.typeOfResponsibilityRoleRef}</div>
               <div style={itemStyle}>
                 {getOrganizationNameByRef(
                   organizations,
-                  role.responsibleOrganisationRef
+                  role.responsibleOrganisationRef,
                 )}
               </div>
               <div style={itemStyle}>
@@ -66,7 +66,7 @@ class ResponsbilityRoleAssignments extends React.Component {
                     display: 'flex',
                     flexWrap: 'wrap',
                     flexDirection: 'column',
-                    listStyleType: 'none'
+                    listStyleType: 'none',
                   }}
                 >
                   {role.entityClassificationAssignments &&
@@ -75,10 +75,10 @@ class ResponsbilityRoleAssignments extends React.Component {
                         <li key={i}>
                           {getEntityClassificationRefString(
                             assignment.entityClassificationRef,
-                            assignment.allow
+                            assignment.allow,
                           )}
                         </li>
-                      )
+                      ),
                     )}
                 </ul>
               </div>

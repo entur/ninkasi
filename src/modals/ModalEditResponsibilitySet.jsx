@@ -19,7 +19,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
 } from '@mui/material';
 import withAuth from 'utils/withAuth';
 import TextField from '@mui/material/TextField';
@@ -37,29 +37,30 @@ class ModalEditResponsibilitySet extends React.Component {
     this.state = {
       isCreatingNewRole: false,
       responsibilitySet: {
-        ...props.responsibilitySet
+        ...props.responsibilitySet,
       },
       newRole: {
         typeOfResponsibilityRoleRef: '',
         responsibleOrganisationRef: '',
-        entityClassificationAssignments: []
-      }
+        entityClassificationAssignments: [],
+      },
     };
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      responsibilitySet: nextProps.responsibilitySet
+      responsibilitySet: nextProps.responsibilitySet,
     });
   }
 
   getRoleString(role) {
-    const responsibleAreaRefString = `responsibleAreaRef=${role.responsibleAreaRef ||
-      ''}`;
+    const responsibleAreaRefString = `responsibleAreaRef=${
+      role.responsibleAreaRef || ''
+    }`;
     return `ORG=${role.responsibleOrganisationRef}, type=${
       role.typeOfResponsibilityRoleRef
     }, ${responsibleAreaRefString}, entities=${this.getEntityClassAssignmentString(
-      role.entityClassificationAssignments
+      role.entityClassificationAssignments,
     )}`;
   }
 
@@ -67,7 +68,7 @@ class ModalEditResponsibilitySet extends React.Component {
     if (!assignments || !assignments.length) return '';
     return assignments
       .map(({ allow, entityClassificationRef }) =>
-        getEntityClassificationRefString(entityClassificationRef, allow)
+        getEntityClassificationRefString(entityClassificationRef, allow),
       )
       .join(', ');
   }
@@ -81,16 +82,16 @@ class ModalEditResponsibilitySet extends React.Component {
         typeOfResponsibilityRoleRef: '',
         responsibleOrganisationRef: '',
         entityClassificationAssignments: [],
-        responsibleAreaRef: null
+        responsibleAreaRef: null,
       },
       tempEntityClassification: '',
       tempEntityType: '',
       tempEntityTypes: [],
       responsibilitySet: {
         ...this.state.responsibilitySet,
-        roles: [...this.state.responsibilitySet.roles, newRole]
+        roles: [...this.state.responsibilitySet.roles, newRole],
       },
-      isCreatingNewRole: false
+      isCreatingNewRole: false,
     });
   }
 
@@ -104,9 +105,9 @@ class ModalEditResponsibilitySet extends React.Component {
           ...this.state.responsibilitySet,
           roles: [
             ...this.state.responsibilitySet.roles.slice(0, index),
-            ...this.state.responsibilitySet.roles.slice(index + 1)
-          ]
-        }
+            ...this.state.responsibilitySet.roles.slice(index + 1),
+          ],
+        },
       });
     }
   }
@@ -117,9 +118,11 @@ class ModalEditResponsibilitySet extends React.Component {
         ...this.state.newRole,
         entityClassificationAssignments: [
           ...this.state.newRole.entityClassificationAssignments.slice(0, index),
-          ...this.state.newRole.entityClassificationAssignments.slice(index + 1)
-        ]
-      }
+          ...this.state.newRole.entityClassificationAssignments.slice(
+            index + 1,
+          ),
+        ],
+      },
     });
   }
 
@@ -143,7 +146,7 @@ class ModalEditResponsibilitySet extends React.Component {
       organizations,
       handleSubmit,
       entityTypes,
-      getToken
+      getToken,
     } = this.props;
     const { isCreatingNewRole, responsibilitySet, newRole } = this.state;
 
@@ -164,7 +167,7 @@ class ModalEditResponsibilitySet extends React.Component {
         onClick={() => handleSubmit(this.state.responsibilitySet)}
       >
         Update
-      </Button>
+      </Button>,
     ];
 
     return (
@@ -180,7 +183,7 @@ class ModalEditResponsibilitySet extends React.Component {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              marginTop: 5
+              marginTop: 5,
             }}
           >
             <TextField
@@ -188,12 +191,12 @@ class ModalEditResponsibilitySet extends React.Component {
               placeholder="Name"
               value={responsibilitySet.name}
               fullWidth={true}
-              onChange={e => {
+              onChange={(e) => {
                 this.setState({
                   responsibilitySet: {
                     ...this.state.responsibilitySet,
-                    name: e.target.value
-                  }
+                    name: e.target.value,
+                  },
                 });
               }}
               style={{ marginTop: -25 }}
@@ -202,17 +205,17 @@ class ModalEditResponsibilitySet extends React.Component {
               <Select
                 disabled={true}
                 value={responsibilitySet.codeSpace}
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
                     responsibilitySet: {
                       ...this.state.responsibilitySet,
-                      codeSpace: e.target.value
-                    }
+                      codeSpace: e.target.value,
+                    },
                   });
                 }}
                 displayEmpty
               >
-                {codeSpaces.map(codeSpace => (
+                {codeSpaces.map((codeSpace) => (
                   <MenuItem key={codeSpace.id} value={codeSpace.id}>
                     {codeSpace.xmlns}
                   </MenuItem>
@@ -229,12 +232,12 @@ class ModalEditResponsibilitySet extends React.Component {
                 !isLegalPrivateCode ? 'This private code is already taken!' : ''
               }
               fullWidth={true}
-              onChange={e => {
+              onChange={(e) => {
                 this.setState({
                   responsibilitySet: {
                     ...this.state.responsibilitySet,
-                    privateCode: e.target.value.trim()
-                  }
+                    privateCode: e.target.value.trim(),
+                  },
                 });
               }}
               style={{ marginBottom: 10, marginTop: -15 }}
@@ -248,7 +251,7 @@ class ModalEditResponsibilitySet extends React.Component {
                   multiple="multiple"
                   style={{
                     fontSize: 10,
-                    minWidth: '100%'
+                    minWidth: '100%',
                   }}
                   ref={this.rolesRef}
                 >
@@ -283,12 +286,12 @@ class ModalEditResponsibilitySet extends React.Component {
                   handleAddRole={this.handleAddRole.bind(this)}
                   administrativeZones={this.props.administrativeZones}
                   handleRemoveEntity={this.handleRemoveEntity.bind(this)}
-                  addNewAdminZoneRef={responsibleAreaRef => {
+                  addNewAdminZoneRef={(responsibleAreaRef) => {
                     this.setState({
                       newRole: {
                         ...this.state.newRole,
-                        responsibleAreaRef
-                      }
+                        responsibleAreaRef,
+                      },
                     });
                   }}
                   addNewRoleAssignment={(entityClassificationRef, allow) =>
@@ -299,12 +302,12 @@ class ModalEditResponsibilitySet extends React.Component {
                           ...newRole.entityClassificationAssignments,
                           {
                             entityClassificationRef,
-                            allow
-                          }
-                        ]
+                            allow,
+                          },
+                        ],
                       },
                       tempEntityClassification: '',
-                      tempEntityType: ''
+                      tempEntityType: '',
                     })
                   }
                   organisationChange={(e, index, value) =>
@@ -312,8 +315,8 @@ class ModalEditResponsibilitySet extends React.Component {
                       ...this.state,
                       newRole: {
                         ...newRole,
-                        responsibleOrganisationRef: value
-                      }
+                        responsibleOrganisationRef: value,
+                      },
                     })
                   }
                   entityTypeChange={(e, index, value) =>
@@ -321,8 +324,8 @@ class ModalEditResponsibilitySet extends React.Component {
                       ...this.state,
                       newRole: {
                         ...newRole,
-                        typeOfResponsibilityRoleRef: value
-                      }
+                        typeOfResponsibilityRoleRef: value,
+                      },
                     })
                   }
                 />

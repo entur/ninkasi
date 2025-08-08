@@ -19,7 +19,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -29,14 +29,14 @@ class ModalEditRole extends React.Component {
     super(props);
     this.state = {
       role: null,
-      originalRoleName: ''
+      originalRoleName: '',
     };
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       role: nextProps.role,
-      originalRoleName: nextProps.role.name
+      originalRoleName: nextProps.role.name,
     });
   }
 
@@ -50,7 +50,7 @@ class ModalEditRole extends React.Component {
       </Button>,
       <Button variant="text" onClick={() => handleSubmit(role)}>
         Update
-      </Button>
+      </Button>,
     ];
 
     if (!role) return null;
@@ -68,19 +68,19 @@ class ModalEditRole extends React.Component {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <TextField
               placeholder="Name"
               label="Name"
               value={role.name}
-              onChange={e =>
+              onChange={(e) =>
                 this.setState({
                   role: {
                     ...role,
-                    name: e.target.value
-                  }
+                    name: e.target.value,
+                  },
                 })
               }
               fullWidth={true}

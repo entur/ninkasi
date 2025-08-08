@@ -27,11 +27,11 @@ const containerStyle = {
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
-  backgroundColor: 'rgb(229, 229, 229)'
+  backgroundColor: 'rgb(229, 229, 229)',
 };
 
 const wrapperStyle = {
-  padding: '20px'
+  padding: '20px',
 };
 
 const versionDetailsStyle = {
@@ -39,7 +39,7 @@ const versionDetailsStyle = {
   flexDirection: 'column',
   whiteSpace: 'nowrap',
   borderBottom: '1px solid gray',
-  paddingBottom: '10px'
+  paddingBottom: '10px',
 };
 
 const GraphVersionDetails = ({ name, serializationId, creationDate, size }) => (
@@ -74,7 +74,7 @@ class LatestOTPGraphVersions extends React.Component {
     super(props);
     this.state = {
       showGraphVersions: false,
-      anchorEl: null
+      anchorEl: null,
     };
   }
 
@@ -98,12 +98,12 @@ class LatestOTPGraphVersions extends React.Component {
               <UnfoldMore sx={{ color: 'black' }} />
             )
           }
-          onClick={e => {
+          onClick={(e) => {
             e.preventDefault();
 
             this.setState({
               showGraphVersions: true,
-              anchorEl: e.currentTarget
+              anchorEl: e.currentTarget,
             });
 
             this.requestOTPGraphVersions();
@@ -118,7 +118,7 @@ class LatestOTPGraphVersions extends React.Component {
           transformOrigin={{ horizontal: 'left', vertical: 'top' }}
           onClose={() => {
             this.setState({
-              showGraphVersions: false
+              showGraphVersions: false,
             });
           }}
         >
@@ -132,13 +132,13 @@ class LatestOTPGraphVersions extends React.Component {
                     style={{
                       fontWeight: 'bold',
                       marginBottom: 0,
-                      marginTop: 0
+                      marginTop: 0,
                     }}
                   >
                     Latest street graphs
                   </h3>
                   <>
-                    {streetGraphs.map(streetGraph => (
+                    {streetGraphs.map((streetGraph) => (
                       <GraphVersionDetails
                         key={streetGraph.serializationId}
                         name={streetGraph.name}
@@ -154,13 +154,13 @@ class LatestOTPGraphVersions extends React.Component {
                     style={{
                       fontWeight: 'bold',
                       marginBottom: 0,
-                      marginTop: 0
+                      marginTop: 0,
                     }}
                   >
                     Latest transit graphs
                   </h3>
                   <>
-                    {transitGraphs.map(transitGraph => (
+                    {transitGraphs.map((transitGraph) => (
                       <GraphVersionDetails
                         key={transitGraph.serializationId}
                         name={transitGraph.name}
@@ -180,9 +180,9 @@ class LatestOTPGraphVersions extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   streetGraphs: state.SuppliersReducer.streetGraphs,
-  transitGraphs: state.SuppliersReducer.transitGraphs
+  transitGraphs: state.SuppliersReducer.transitGraphs,
 });
 
 export default connect(mapStateToProps)(withAuth(LatestOTPGraphVersions));

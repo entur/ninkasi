@@ -18,7 +18,7 @@ import { getEnvironment } from './getEnvironment';
 
 var configreader = {};
 
-configreader.readConfig = callback => {
+configreader.readConfig = (callback) => {
   const fetchEnvConfig = async () => {
     const env = getEnvironment();
     const { default: config } = await import(`./environments/${env}.json`);

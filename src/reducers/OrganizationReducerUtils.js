@@ -18,12 +18,12 @@ export const changeFilterValue = (original, key, index, newValue) => {
   return original.map((notification, i) => {
     if (index === i) {
       let newEventFilter = Object.assign({}, notification.eventFilter, {
-        [key]: newValue
+        [key]: newValue,
       });
 
       return {
         ...notification,
-        eventFilter: newEventFilter
+        eventFilter: newEventFilter,
       };
     } else {
       return notification;
@@ -36,11 +36,11 @@ export const changeJobDomainValue = (original, index, newValue) => {
     if (index === i) {
       let newEventFilter = Object.assign({}, notification.eventFilter, {
         jobDomain: newValue,
-        actions: []
+        actions: [],
       });
       return {
         ...notification,
-        eventFilter: newEventFilter
+        eventFilter: newEventFilter,
       };
     } else {
       return notification;
@@ -58,7 +58,7 @@ export const changeFilterActions = (original, index, action, isChecked) => {
   } else {
     let allWasChosen = actions.indexOf('*') > -1;
 
-    actions = actions.filter(entry => !(action === entry || entry === '*'));
+    actions = actions.filter((entry) => !(action === entry || entry === '*'));
 
     if (allWasChosen && action !== '*') {
       actions.push(action);
@@ -76,7 +76,7 @@ export const changeFilterStates = (original, index, state, isChecked) => {
   if (isChecked) {
     states.push(state);
   } else {
-    states = states.filter(entry => state !== entry);
+    states = states.filter((entry) => state !== entry);
   }
 
   return changeFilterValue(original, 'states', index, states);
@@ -93,7 +93,7 @@ export const addAdminRef = (original, index, id) => {
     original,
     'administrativeZoneRefs',
     index,
-    adminRefs
+    adminRefs,
   );
 };
 
@@ -108,7 +108,7 @@ export const addEntityClassRef = (original, index, id) => {
     original,
     'entityClassificationRefs',
     index,
-    entityClassRefs
+    entityClassRefs,
   );
 };
 
@@ -117,13 +117,13 @@ export const removeEntityClassRef = (original, index, id) => {
     ? original[index].eventFilter.entityClassificationRefs.slice()
     : [];
 
-  entityClassRefs = entityClassRefs.filter(ref => ref !== id);
+  entityClassRefs = entityClassRefs.filter((ref) => ref !== id);
 
   return changeFilterValue(
     original,
     'entityClassificationRefs',
     index,
-    entityClassRefs
+    entityClassRefs,
   );
 };
 
@@ -132,12 +132,12 @@ export const removeAdminRef = (original, index, id) => {
     ? original[index].eventFilter.administrativeZoneRefs.slice()
     : [];
 
-  adminRefs = adminRefs.filter(ref => ref !== id);
+  adminRefs = adminRefs.filter((ref) => ref !== id);
 
   return changeFilterValue(
     original,
     'administrativeZoneRefs',
     index,
-    adminRefs
+    adminRefs,
   );
 };

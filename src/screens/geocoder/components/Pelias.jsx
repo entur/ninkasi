@@ -26,17 +26,17 @@ import ConfirmDialog from 'modals/ConfirmDialog';
 
 const initialPeliasOptions = () => {
   let tasks = {};
-  peliasTasks.forEach(option => (tasks[option.task] = true));
+  peliasTasks.forEach((option) => (tasks[option.task] = true));
   return tasks;
 };
 
-const getLabelByJobType = type => {
+const getLabelByJobType = (type) => {
   for (let i = 0; i < peliasTasks.length; i++) {
     if (peliasTasks[i].task === type) return peliasTasks[i].label;
   }
 };
 
-const getColorByStatus = status => {
+const getColorByStatus = (status) => {
   switch (status) {
     case 'STARTED':
       return '#08920e';
@@ -60,8 +60,8 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
   const handlePeliasOptionChecked = (event, task) => {
     setPeliasOptions(
       Object.assign({}, peliasOptions, {
-        [task]: event.target.checked
-      })
+        [task]: event.target.checked,
+      }),
     );
   };
 
@@ -76,12 +76,12 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
 
   return (
     <div>
-      {peliasTasks.map(option => (
+      {peliasTasks.map((option) => (
         <FormControlLabel
           key={'pelias-checkbox-' + option.task}
           control={
             <Checkbox
-              onChange={e => handlePeliasOptionChecked(e, option.task)}
+              onChange={(e) => handlePeliasOptionChecked(e, option.task)}
               defaultChecked={true}
             />
           }
@@ -105,7 +105,7 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
               display: 'flex',
               alignItems: 'center',
               padding: 2,
-              background: index % 2 ? '#F8F8F8' : '#fff'
+              background: index % 2 ? '#F8F8F8' : '#fff',
             }}
           >
             <div style={{ marginLeft: 5, flex: 9, fontSize: '0.9em' }}>
@@ -118,7 +118,7 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
               style={{
                 marginLeft: 5,
                 flex: 2,
-                color: getColorByStatus(status.status)
+                color: getColorByStatus(status.status),
               }}
             >
               {status.status}
@@ -139,7 +139,7 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
           color="primary"
           style={{ fontSize: 12 }}
           onClick={() => handleExecutePelias()}
-          disabled={Object.values(peliasOptions).every(value => !value)}
+          disabled={Object.values(peliasOptions).every((value) => !value)}
         >
           Execute
         </Button>
@@ -157,8 +157,8 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  otherStatus: state.SuppliersReducer.otherStatus || []
+const mapStateToProps = (state) => ({
+  otherStatus: state.SuppliersReducer.otherStatus || [],
 });
 
 export default connect(mapStateToProps)(withAuth(Pelias));
