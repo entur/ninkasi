@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Delete } from '@mui/icons-material';
@@ -157,11 +158,27 @@ const OSMPOIFilter = () => {
           could lead to unexpected boosting in the geocoder.
         </Alert>
         <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center" sx={{ fontWeight: 'bold' }}>
+                Key
+              </TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold' }}>
+                Value
+              </TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold' }}>
+                Priority
+              </TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold' }}>
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
           <TableBody>
             {isLoading
               ? [...Array(10).keys()].map(i => (
                   <TableRow key={`skeleton-row_${i}`}>
-                    {[...Array(3).keys()].map(j => (
+                    {[...Array(4).keys()].map(j => (
                       <TableCell key={`skeleton-cell_${j}`}>
                         <Skeleton variant="text" />
                       </TableCell>
@@ -170,29 +187,45 @@ const OSMPOIFilter = () => {
                 ))
               : dirtyPoiFilterArray &&
                 dirtyPoiFilterArray.map(({ key, value, priority }, index) => (
-                  <TableRow key={`poi-filter-row_${index}`}>
-                    <TableCell align="center" padding="none">
+                  <TableRow key={`poi-filter-row_${index}`} sx={{ height: 80 }}>
+                    <TableCell
+                      align="center"
+                      sx={{ p: 1, verticalAlign: 'middle' }}
+                    >
                       <TextField
-                        placeholder="Key"
+                        label="Key"
+                        placeholder="Enter key"
                         value={key}
                         onChange={e =>
                           handleChange(index, 'key', e.target.value)
                         }
+                        size="small"
+                        variant="outlined"
                       />
                     </TableCell>
-                    <TableCell align="center" padding="none">
+                    <TableCell
+                      align="center"
+                      sx={{ p: 1, verticalAlign: 'middle' }}
+                    >
                       <TextField
-                        placeholder="Value"
+                        label="Value"
+                        placeholder="Enter value"
                         value={value}
                         onChange={e =>
                           handleChange(index, 'value', e.target.value)
                         }
+                        size="small"
+                        variant="outlined"
                       />
                     </TableCell>
-                    <TableCell align="center" padding="none">
+                    <TableCell
+                      align="center"
+                      sx={{ p: 1, verticalAlign: 'middle' }}
+                    >
                       <TextField
                         type="number"
-                        placeholder="Priority"
+                        label="Priority"
+                        placeholder="Enter priority"
                         value={priority}
                         inputProps={{ min: 1 }}
                         onChange={e =>
@@ -206,9 +239,14 @@ const OSMPOIFilter = () => {
                         helperText={
                           priority < 1 ? 'Priority must be 1 or more' : ''
                         }
+                        size="small"
+                        variant="outlined"
                       />
                     </TableCell>
-                    <TableCell align="center" padding="none">
+                    <TableCell
+                      align="center"
+                      sx={{ p: 1, verticalAlign: 'middle' }}
+                    >
                       <IconButton
                         onClick={() => handleDeleteFilter(index)}
                         size="large"
