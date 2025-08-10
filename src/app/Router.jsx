@@ -28,8 +28,9 @@ const Router = ({ dispatch }) => {
   return (
     <Switch>
       <Route exact path="/" component={Providers} />
-      <Route exact path="/geocoder" component={Geocoder} />
-      <Route exact path="/organization" component={Organization} />
+      <Route exact path="/timetable-admin" component={Providers} />
+      <Route exact path="/geocoder-pipeline" component={Geocoder} />
+      <Route exact path="/permissions" component={Organization} />
       <Route path="/netex-validation-reports">
         {window.config.udugMicroFrontendUrl && (
           <div style={{ backgroundColor: '#fff' }}>
