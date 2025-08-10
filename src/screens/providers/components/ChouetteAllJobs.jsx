@@ -65,19 +65,17 @@ class ChouetteAllJobs extends React.Component {
 
   handleCancelChouetteJob = (id, providerId) => {
     const { getToken } = this.props;
-    this.props.dispatch(
-      SuppliersActions.cancelChouetteJobForProvider(providerId, id, getToken),
-    );
+    this.props.dispatch(SuppliersActions.cancelChouetteJobForProvider(providerId, id, getToken));
   };
 
-  handleStatusFilterAllChange = (event) => {
+  handleStatusFilterAllChange = event => {
     const { getToken } = this.props;
     this.props.dispatch(
       SuppliersActions.toggleChouetteInfoCheckboxAllFilter(
         event.target.name,
         event.target.checked,
-        getToken,
-      ),
+        getToken
+      )
     );
   };
 
@@ -91,9 +89,7 @@ class ChouetteAllJobs extends React.Component {
   setActiveActionAllFilter(event) {
     if (event.target.name === 'action-filter') {
       const { dispatch, getToken } = this.props;
-      dispatch(
-        SuppliersActions.setActiveActionAllFilter(event.target.value, getToken),
-      );
+      dispatch(SuppliersActions.setActiveActionAllFilter(event.target.value, getToken));
     }
   }
 
@@ -119,19 +115,14 @@ class ChouetteAllJobs extends React.Component {
   }
 
   render() {
-    const {
-      chouetteJobAllFilter,
-      requestingJobs,
-      chouetteAllJobStatus,
-      sortProperty,
-      sortOrder,
-    } = this.props;
+    const { chouetteJobAllFilter, requestingJobs, chouetteAllJobStatus, sortProperty, sortOrder } =
+      this.props;
     const { activeChouettePageIndex, filterFromDate } = this.state;
     const paginationMap = getPaginationMap(
       chouetteAllJobStatus,
       sortProperty,
       sortOrder,
-      filterFromDate,
+      filterFromDate
     );
     const page = paginationMap ? paginationMap[activeChouettePageIndex] : null;
 
@@ -149,7 +140,7 @@ class ChouetteAllJobs extends React.Component {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={(event) => {
+                      onChange={event => {
                         event.stopPropagation();
                         this.handleStatusFilterAllChange(event);
                       }}
@@ -164,7 +155,7 @@ class ChouetteAllJobs extends React.Component {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={(event) => {
+                      onChange={event => {
                         event.stopPropagation();
                         this.handleStatusFilterAllChange(event);
                       }}
@@ -179,7 +170,7 @@ class ChouetteAllJobs extends React.Component {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={(event) => {
+                      onChange={event => {
                         event.stopPropagation();
                         this.handleStatusFilterAllChange(event);
                       }}
@@ -194,7 +185,7 @@ class ChouetteAllJobs extends React.Component {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={(event) => {
+                      onChange={event => {
                         event.stopPropagation();
                         this.handleStatusFilterAllChange(event);
                       }}
@@ -209,7 +200,7 @@ class ChouetteAllJobs extends React.Component {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={(event) => {
+                      onChange={event => {
                         event.stopPropagation();
                         this.handleStatusFilterAllChange(event);
                       }}
@@ -224,7 +215,7 @@ class ChouetteAllJobs extends React.Component {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={(event) => {
+                      onChange={event => {
                         event.stopPropagation();
                         this.handleStatusFilterAllChange(event);
                       }}
@@ -263,26 +254,10 @@ class ChouetteAllJobs extends React.Component {
                       this.setActiveActionAllFilter(syntheticEvent);
                     }}
                   >
-                    <FormControlLabel
-                      value=""
-                      control={<Radio />}
-                      label="No filter"
-                    />
-                    <FormControlLabel
-                      value="importer"
-                      control={<Radio />}
-                      label="Importer"
-                    />
-                    <FormControlLabel
-                      value="exporter"
-                      control={<Radio />}
-                      label="Exporter"
-                    />
-                    <FormControlLabel
-                      value="validator"
-                      control={<Radio />}
-                      label="Validator"
-                    />
+                    <FormControlLabel value="" control={<Radio />} label="No filter" />
+                    <FormControlLabel value="importer" control={<Radio />} label="Importer" />
+                    <FormControlLabel value="exporter" control={<Radio />} label="Exporter" />
+                    <FormControlLabel value="validator" control={<Radio />} label="Validator" />
                   </RadioGroup>
                 </FormControl>
               </Grid>
@@ -291,7 +266,7 @@ class ChouetteAllJobs extends React.Component {
                   <DatePicker
                     label="From ..."
                     value={this.state.filterFromDate}
-                    onChange={(newValue) => {
+                    onChange={newValue => {
                       this.setState({ filterFromDate: newValue });
                     }}
                   />
@@ -318,12 +293,8 @@ class ChouetteAllJobs extends React.Component {
                   <Button
                     key={'link-' + index}
                     size="small"
-                    variant={
-                      index === activeChouettePageIndex
-                        ? 'contained'
-                        : 'outlined'
-                    }
-                    onClick={(e) => this.handlePageClick(e, index)}
+                    variant={index === activeChouettePageIndex ? 'contained' : 'outlined'}
+                    onClick={e => this.handlePageClick(e, index)}
                     sx={{ minWidth: '32px', px: 1 }}
                   >
                     {index}
@@ -389,9 +360,7 @@ class ChouetteAllJobs extends React.Component {
               <TableBody>
                 {page.map((job, index) => {
                   const statusClass =
-                    job.status === 'ABORTED' || job.status === 'CANCELED'
-                      ? 'error'
-                      : 'success';
+                    job.status === 'ABORTED' || job.status === 'CANCELED' ? 'error' : 'success';
                   const chouetteURL = `${window.config.chouetteBaseUrl}/referentials/${job.referential}/`;
 
                   return (
@@ -407,28 +376,16 @@ class ChouetteAllJobs extends React.Component {
                         </a>
                       </TableCell>
                       <TableCell sx={{ py: 1, px: 1 }}>
-                        <ChouetteLink
-                          id={job.id}
-                          referential={job.referential}
-                          action={job.action}
-                        >
+                        <ChouetteLink id={job.id} referential={job.referential} action={job.action}>
                           {job.id}
                         </ChouetteLink>
                       </TableCell>
                       <TableCell sx={{ py: 1, px: 1 }}>{job.action}</TableCell>
+                      <TableCell sx={{ py: 1, px: 1 }}>{this.formatDate(job.created)}</TableCell>
+                      <TableCell sx={{ py: 1, px: 1 }}>{this.formatDate(job.started)}</TableCell>
+                      <TableCell sx={{ py: 1, px: 1 }}>{this.formatDate(job.updated)}</TableCell>
                       <TableCell sx={{ py: 1, px: 1 }}>
-                        {this.formatDate(job.created)}
-                      </TableCell>
-                      <TableCell sx={{ py: 1, px: 1 }}>
-                        {this.formatDate(job.started)}
-                      </TableCell>
-                      <TableCell sx={{ py: 1, px: 1 }}>
-                        {this.formatDate(job.updated)}
-                      </TableCell>
-                      <TableCell sx={{ py: 1, px: 1 }}>
-                        <span className={statusClass}>
-                          {this.getJobStatus(job.status)}
-                        </span>
+                        <span className={statusClass}>{this.getJobStatus(job.status)}</span>
                       </TableCell>
                       <TableCell sx={{ py: 1, px: 1 }}>
                         {job.status === 'STARTED' ||
@@ -436,12 +393,7 @@ class ChouetteAllJobs extends React.Component {
                         job.status === 'RESCHEDULED' ? (
                           <Button
                             key={'btn-delete-' + index}
-                            onClick={() =>
-                              this.handleCancelChouetteJob(
-                                job.id,
-                                job.providerId,
-                              )
-                            }
+                            onClick={() => this.handleCancelChouetteJob(job.id, job.providerId)}
                             size="small"
                             color="error"
                             variant="outlined"
@@ -457,9 +409,7 @@ class ChouetteAllJobs extends React.Component {
             </Table>
           ) : (
             <Box sx={{ p: 2.5 }}>
-              <Typography>
-                No chouette jobs found for your search criterias.
-              </Typography>
+              <Typography>No chouette jobs found for your search criterias.</Typography>
             </Box>
           )}
         </Paper>
@@ -468,7 +418,7 @@ class ChouetteAllJobs extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     chouetteJobAllFilter: state.MardukReducer.chouetteJobAllFilter,
     chouetteAllJobStatus: state.MardukReducer.chouetteAllJobStatus || [],

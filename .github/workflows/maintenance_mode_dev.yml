@@ -16,4 +16,3 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_NINKASI_DEV }}'
           channelId: live
           projectId: ent-ninkasi-dev
-  

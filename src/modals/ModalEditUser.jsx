@@ -15,22 +15,10 @@
  */
 
 import React from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {
-  FormControl,
-  Select,
-  MenuItem,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-} from '@mui/material';
+import { FormControl, Select, MenuItem, FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import ResponsiblitySetList from './ResponsiblitySetList';
 import UserRespSetPopover from './UserRespSetPopover';
 
@@ -84,7 +72,7 @@ class ModalEditUser extends React.Component {
   handleChangeUsername(e) {
     const value = e.target.value;
     const isValid = this.validateBy('USERNAME', value);
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       user: { ...prevState.user, username: value },
       usernameValid: isValid,
     }));
@@ -113,10 +101,7 @@ class ModalEditUser extends React.Component {
       isAddingResponsibilitySet: false,
       user: {
         ...user,
-        responsibilitySetRefs: [
-          ...user.responsibilitySetRefs,
-          temptResponsibilitySet,
-        ],
+        responsibilitySetRefs: [...user.responsibilitySetRefs, temptResponsibilitySet],
       },
       temptResponsibilitySet: '',
     });
@@ -176,8 +161,7 @@ class ModalEditUser extends React.Component {
   }
 
   render() {
-    const { isModalOpen, handleSubmit, organizations, responsibilities } =
-      this.props;
+    const { isModalOpen, handleSubmit, organizations, responsibilities } = this.props;
 
     const {
       user,
@@ -205,12 +189,7 @@ class ModalEditUser extends React.Component {
     ];
 
     return (
-      <Dialog
-        open={isModalOpen}
-        onClose={() => this.handleOnClose()}
-        maxWidth="md"
-        fullWidth
-      >
+      <Dialog open={isModalOpen} onClose={() => this.handleOnClose()} maxWidth="md" fullWidth>
         <DialogTitle>{'Editing user ' + originalUsername}</DialogTitle>
         <DialogContent>
           <div
@@ -219,16 +198,12 @@ class ModalEditUser extends React.Component {
               flexDirection: 'column',
             }}
           >
-            <div onClick={(e) => e.stopPropagation()}>
+            <div onClick={e => e.stopPropagation()}>
               <FormControl>
                 <RadioGroup
                   defaultValue="notification_account"
-                  value={
-                    user.personalAccount
-                      ? 'personal_account'
-                      : 'notification_account'
-                  }
-                  onChange={(e) => {
+                  value={user.personalAccount ? 'personal_account' : 'notification_account'}
+                  onChange={e => {
                     e.stopPropagation();
                     this.handleChangeIsPersonalAccount(e.target.value);
                   }}
@@ -253,9 +228,7 @@ class ModalEditUser extends React.Component {
               value={user.username}
               error={!usernameValid}
               helperText={
-                !usernameValid
-                  ? 'Username can only include alphanumerics, hyphens and dot'
-                  : ''
+                !usernameValid ? 'Username can only include alphanumerics, hyphens and dot' : ''
               }
               onChange={this.handleChangeUsername.bind(this)}
               fullWidth={true}
@@ -264,7 +237,7 @@ class ModalEditUser extends React.Component {
               placeholder="First name"
               label="First name"
               value={user.contactDetails?.firstName || ''}
-              onChange={(e) =>
+              onChange={e =>
                 this.setState({
                   user: {
                     ...user,
@@ -281,7 +254,7 @@ class ModalEditUser extends React.Component {
               placeholder="Last name"
               label="Last name"
               value={user.contactDetails?.lastName || ''}
-              onChange={(e) =>
+              onChange={e =>
                 this.setState({
                   user: {
                     ...user,
@@ -299,11 +272,7 @@ class ModalEditUser extends React.Component {
               label="E-mail"
               error={emailIsTaken || !emailValid}
               helperText={
-                emailIsTaken
-                  ? 'E-mail already taken'
-                  : !emailValid
-                    ? 'Must be a valid e-mail'
-                    : ''
+                emailIsTaken ? 'E-mail already taken' : !emailValid ? 'Must be a valid e-mail' : ''
               }
               value={user.contactDetails?.email || ''}
               onChange={this.handleChangeEmail.bind(this)}
@@ -313,7 +282,7 @@ class ModalEditUser extends React.Component {
               placeholder="Phonenumber"
               label="Phonenumber"
               value={user.contactDetails.phone}
-              onChange={(e) =>
+              onChange={e =>
                 this.setState({
                   user: {
                     ...user,
@@ -329,14 +298,14 @@ class ModalEditUser extends React.Component {
             <FormControl fullWidth>
               <Select
                 value={user.organisationRef}
-                onChange={(e) =>
+                onChange={e =>
                   this.setState({
                     user: { ...user, organisationRef: e.target.value },
                   })
                 }
                 displayEmpty
               >
-                {organizations.map((org) => (
+                {organizations.map(org => (
                   <MenuItem key={org.id} value={org.id}>
                     {org.name}
                   </MenuItem>
@@ -348,15 +317,13 @@ class ModalEditUser extends React.Component {
               addedRespSets={this.state.user.responsibilitySetRefs}
               anchorEl={this.state.addRespAnchorEl}
               handleAdd={this.handleAddResponsibilitySet.bind(this)}
-              handleClose={() =>
-                this.setState({ isAddingResponsibilitySet: false })
-              }
+              handleClose={() => this.setState({ isAddingResponsibilitySet: false })}
               open={isAddingResponsibilitySet}
             />
             <ResponsiblitySetList
               user={user}
               responsiblities={responsibilities}
-              handleAdd={(e) =>
+              handleAdd={e =>
                 this.setState({
                   isAddingResponsibilitySet: true,
                   addRespAnchorEl: e.currentTarget,

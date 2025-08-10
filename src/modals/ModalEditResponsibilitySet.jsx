@@ -15,12 +15,7 @@
  */
 
 import React from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import withAuth from 'utils/withAuth';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -54,13 +49,11 @@ class ModalEditResponsibilitySet extends React.Component {
   }
 
   getRoleString(role) {
-    const responsibleAreaRefString = `responsibleAreaRef=${
-      role.responsibleAreaRef || ''
-    }`;
+    const responsibleAreaRefString = `responsibleAreaRef=${role.responsibleAreaRef || ''}`;
     return `ORG=${role.responsibleOrganisationRef}, type=${
       role.typeOfResponsibilityRoleRef
     }, ${responsibleAreaRefString}, entities=${this.getEntityClassAssignmentString(
-      role.entityClassificationAssignments,
+      role.entityClassificationAssignments
     )}`;
   }
 
@@ -68,7 +61,7 @@ class ModalEditResponsibilitySet extends React.Component {
     if (!assignments || !assignments.length) return '';
     return assignments
       .map(({ allow, entityClassificationRef }) =>
-        getEntityClassificationRefString(entityClassificationRef, allow),
+        getEntityClassificationRefString(entityClassificationRef, allow)
       )
       .join(', ');
   }
@@ -118,9 +111,7 @@ class ModalEditResponsibilitySet extends React.Component {
         ...this.state.newRole,
         entityClassificationAssignments: [
           ...this.state.newRole.entityClassificationAssignments.slice(0, index),
-          ...this.state.newRole.entityClassificationAssignments.slice(
-            index + 1,
-          ),
+          ...this.state.newRole.entityClassificationAssignments.slice(index + 1),
         ],
       },
     });
@@ -151,8 +142,7 @@ class ModalEditResponsibilitySet extends React.Component {
     const { isCreatingNewRole, responsibilitySet, newRole } = this.state;
 
     const isLegalPrivateCode =
-      responsibilitySet.privateCode ===
-        this.props.responsibilitySet.privateCode ||
+      responsibilitySet.privateCode === this.props.responsibilitySet.privateCode ||
       takenPrivateCodes.indexOf(responsibilitySet.privateCode) === -1;
 
     const isSavable = this.isSavable() && isLegalPrivateCode;
@@ -171,12 +161,7 @@ class ModalEditResponsibilitySet extends React.Component {
     ];
 
     return (
-      <Dialog
-        open={modalOpen}
-        onClose={() => handleOnClose()}
-        maxWidth="lg"
-        fullWidth
-      >
+      <Dialog open={modalOpen} onClose={() => handleOnClose()} maxWidth="lg" fullWidth>
         <DialogTitle>Editing responsibility set</DialogTitle>
         <DialogContent>
           <div
@@ -191,7 +176,7 @@ class ModalEditResponsibilitySet extends React.Component {
               placeholder="Name"
               value={responsibilitySet.name}
               fullWidth={true}
-              onChange={(e) => {
+              onChange={e => {
                 this.setState({
                   responsibilitySet: {
                     ...this.state.responsibilitySet,
@@ -205,7 +190,7 @@ class ModalEditResponsibilitySet extends React.Component {
               <Select
                 disabled={true}
                 value={responsibilitySet.codeSpace}
-                onChange={(e) => {
+                onChange={e => {
                   this.setState({
                     responsibilitySet: {
                       ...this.state.responsibilitySet,
@@ -215,7 +200,7 @@ class ModalEditResponsibilitySet extends React.Component {
                 }}
                 displayEmpty
               >
-                {codeSpaces.map((codeSpace) => (
+                {codeSpaces.map(codeSpace => (
                   <MenuItem key={codeSpace.id} value={codeSpace.id}>
                     {codeSpace.xmlns}
                   </MenuItem>
@@ -228,11 +213,9 @@ class ModalEditResponsibilitySet extends React.Component {
               disabled={true}
               value={responsibilitySet.privateCode}
               error={!isLegalPrivateCode}
-              helperText={
-                !isLegalPrivateCode ? 'This private code is already taken!' : ''
-              }
+              helperText={!isLegalPrivateCode ? 'This private code is already taken!' : ''}
               fullWidth={true}
-              onChange={(e) => {
+              onChange={e => {
                 this.setState({
                   responsibilitySet: {
                     ...this.state.responsibilitySet,
@@ -243,9 +226,7 @@ class ModalEditResponsibilitySet extends React.Component {
               style={{ marginBottom: 10, marginTop: -15 }}
             />
             <div style={{ minWidth: '100%', fontSize: 10, marginTop: -10 }}>
-              <div style={{ width: '100%', fontSize: 10 }}>
-                Responsibility roles *
-              </div>
+              <div style={{ width: '100%', fontSize: 10 }}>Responsibility roles *</div>
               <div style={{ width: '100%', overflowX: 'auto' }}>
                 <select
                   multiple="multiple"
@@ -263,16 +244,10 @@ class ModalEditResponsibilitySet extends React.Component {
                 </select>
               </div>
               <div>
-                <IconButton
-                  onClick={() => this.setState({ isCreatingNewRole: true })}
-                  size="large"
-                >
+                <IconButton onClick={() => this.setState({ isCreatingNewRole: true })} size="large">
                   <Add style={{ color: '#228B22' }} />
                 </IconButton>
-                <IconButton
-                  onClick={this.handleRemoveRole.bind(this)}
-                  size="large"
-                >
+                <IconButton onClick={this.handleRemoveRole.bind(this)} size="large">
                   <Remove style={{ color: '#cc0000' }} />
                 </IconButton>
               </div>
@@ -286,7 +261,7 @@ class ModalEditResponsibilitySet extends React.Component {
                   handleAddRole={this.handleAddRole.bind(this)}
                   administrativeZones={this.props.administrativeZones}
                   handleRemoveEntity={this.handleRemoveEntity.bind(this)}
-                  addNewAdminZoneRef={(responsibleAreaRef) => {
+                  addNewAdminZoneRef={responsibleAreaRef => {
                     this.setState({
                       newRole: {
                         ...this.state.newRole,

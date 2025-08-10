@@ -14,7 +14,7 @@
  *
  */
 
-export const getProvidersEnv = (providersBaseUrl) => {
+export const getProvidersEnv = providersBaseUrl => {
   if (providersBaseUrl) {
     if (providersBaseUrl.indexOf('api.staging.entur.io') > -1) {
       return 'TEST';
@@ -26,11 +26,11 @@ export const getProvidersEnv = (providersBaseUrl) => {
   }
 };
 
-export const getTheme = (env) => {
+export const getTheme = env => {
   return themes[env || 'DEV'];
 };
 
-export const getIconColor = (env) => {
+export const getIconColor = env => {
   return iconColor[env || 'DEV'];
 };
 

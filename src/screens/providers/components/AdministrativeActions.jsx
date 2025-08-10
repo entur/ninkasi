@@ -19,11 +19,7 @@ import withAuth from 'utils/withAuth';
 import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
 import { MenuItem, Popover } from '@mui/material';
-import {
-  Warning,
-  ArrowDropDown,
-  KeyboardArrowRight,
-} from '@mui/icons-material';
+import { Warning, ArrowDropDown, KeyboardArrowRight } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { getIconColor, getProvidersEnv, getTheme } from 'config/themes';
 import ConfirmDialog from '../../../modals/ConfirmDialog';
@@ -113,8 +109,7 @@ class AdministrativeActions extends React.Component {
     this.setState({
       confirmDialogOpen: true,
       confirmTitle: 'Upload GTFS data to Google (production)',
-      confirmInfo:
-        'Are you sure you want to upload latest GTFS export to Google (production)?',
+      confirmInfo: 'Are you sure you want to upload latest GTFS export to Google (production)?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.uploadGoogleProduction());
@@ -126,8 +121,7 @@ class AdministrativeActions extends React.Component {
     this.setState({
       confirmDialogOpen: true,
       confirmTitle: 'Upload GTFS data to Google (QA)',
-      confirmInfo:
-        'Are you sure you want to upload latest GTFS export to Google (QA)?',
+      confirmInfo: 'Are you sure you want to upload latest GTFS export to Google (QA)?',
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.uploadGoogleQA());
@@ -139,13 +133,10 @@ class AdministrativeActions extends React.Component {
     this.setState({
       confirmDialogOpen: true,
       confirmTitle: 'Cancel all chouette jobs',
-      confirmInfo:
-        'Are you want to cancel all chouette jobs for all providers?',
+      confirmInfo: 'Are you want to cancel all chouette jobs for all providers?',
       confirmAction: () => {
         const { dispatch, getToken } = this.props;
-        dispatch(
-          SuppliersActions.cancelAllChouetteJobsforAllProviders(getToken),
-        );
+        dispatch(SuppliersActions.cancelAllChouetteJobsforAllProviders(getToken));
       },
     });
   }
@@ -494,6 +485,6 @@ class AdministrativeActions extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps)(withAuth(AdministrativeActions));

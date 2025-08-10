@@ -26,19 +26,18 @@ class OrganisationSelect extends React.Component {
   };
 
   render() {
-    const { organizations, notification, handleChangeOrganization } =
-      this.props;
+    const { organizations, notification, handleChangeOrganization } = this.props;
 
     return (
       <FormControl style={{ marginLeft: 10, flex: 1 }}>
         <Select
           value={notification.eventFilter.organisationRef}
-          onChange={(e) => {
+          onChange={e => {
             handleChangeOrganization(e.target.value);
           }}
           displayEmpty
         >
-          {organizations.map((org) => (
+          {organizations.map(org => (
             <MenuItem key={org.id} value={org.id}>
               {org.name}
             </MenuItem>

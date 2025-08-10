@@ -55,12 +55,9 @@ function mapDispatchToProps(dispatch) {
       {
         addNotification: SuppliersActions.addNotification,
       },
-      dispatch,
+      dispatch
     ),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(NotificationContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationContainer);

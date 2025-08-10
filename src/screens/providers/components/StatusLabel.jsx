@@ -29,9 +29,7 @@ class StatusLabel extends Component {
     } else if (type === ExportStatus.WARNING) {
       return <Warning style={{ height: 20, width: 20 }} color={warningColor} />;
     } else if (type === ExportStatus.OK) {
-      return (
-        <CheckCircle style={{ height: 20, width: 20 }} color={successColor} />
-      );
+      return <CheckCircle style={{ height: 20, width: 20 }} color={successColor} />;
     } else {
       return null;
     }

@@ -19,9 +19,7 @@ import Button from '@mui/material/Button';
 import { FormControl, Select, MenuItem } from '@mui/material';
 import { Checkbox } from '@mui/material';
 import AdminZoneSearchWrapper from './AdminZoneSearchWrapper';
-import OrganizationRegisterActions, {
-  sortBy,
-} from 'actions/OrganizationRegisterActions';
+import OrganizationRegisterActions, { sortBy } from 'actions/OrganizationRegisterActions';
 import { Remove } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { getEntityClassificationRefString } from 'utils/';
@@ -40,15 +38,14 @@ class NewRoleAssignment extends React.Component {
   }
 
   getEntityClassificationsForType(entityType) {
-    OrganizationRegisterActions.getEntityByClassification(
-      entityType,
-      this.props.getToken,
-    ).then((response) => {
-      this.setState({
-        tempEntityClassification: entityType,
-        tempEntityTypes: sortBy(response.data, 'name'),
-      });
-    });
+    OrganizationRegisterActions.getEntityByClassification(entityType, this.props.getToken).then(
+      response => {
+        this.setState({
+          tempEntityClassification: entityType,
+          tempEntityTypes: sortBy(response.data, 'name'),
+        });
+      }
+    );
   }
 
   handleRemoveEntity() {
@@ -84,22 +81,10 @@ class NewRoleAssignment extends React.Component {
   }
 
   render() {
-    const {
-      newRole,
-      roles,
-      organizations,
-      entityTypes,
-      handleAddRole,
-      administrativeZones,
-    } = this.props;
-    const { entityTypeChange, organisationChange, addNewRoleAssignment } =
+    const { newRole, roles, organizations, entityTypes, handleAddRole, administrativeZones } =
       this.props;
-    const {
-      tempEntityType,
-      tempEntityTypes,
-      tempEntityClassification,
-      negate,
-    } = this.state;
+    const { entityTypeChange, organisationChange, addNewRoleAssignment } = this.props;
+    const { tempEntityType, tempEntityTypes, tempEntityClassification, negate } = this.state;
 
     return (
       <div style={{ border: '1px dotted', height: '100%' }}>
@@ -115,10 +100,10 @@ class NewRoleAssignment extends React.Component {
         <FormControl fullWidth style={{ marginTop: -15 }}>
           <Select
             value={newRole.typeOfResponsibilityRoleRef}
-            onChange={(e) => entityTypeChange(e, null, e.target.value)}
+            onChange={e => entityTypeChange(e, null, e.target.value)}
             displayEmpty
           >
-            {roles.map((role) => (
+            {roles.map(role => (
               <MenuItem key={role.id} value={role.id}>
                 {role.name}
               </MenuItem>
@@ -128,10 +113,10 @@ class NewRoleAssignment extends React.Component {
         <FormControl fullWidth style={{ marginTop: -15 }}>
           <Select
             value={newRole.responsibleOrganisationRef}
-            onChange={(e) => organisationChange(e, null, e.target.value)}
+            onChange={e => organisationChange(e, null, e.target.value)}
             displayEmpty
           >
-            {organizations.map((org) => (
+            {organizations.map(org => (
               <MenuItem key={org.id} value={org.id}>
                 {org.name}
               </MenuItem>
@@ -153,10 +138,7 @@ class NewRoleAssignment extends React.Component {
           >
             {newRole.entityClassificationAssignments.map((ref, index) => (
               <option key={'entity-' + index}>
-                {getEntityClassificationRefString(
-                  ref.entityClassificationRef,
-                  ref.allow,
-                )}
+                {getEntityClassificationRefString(ref.entityClassificationRef, ref.allow)}
               </option>
             ))}
           </select>
@@ -191,12 +173,10 @@ class NewRoleAssignment extends React.Component {
           <FormControl style={{ flex: 2.5, marginLeft: 5, marginRight: 5 }}>
             <Select
               value={tempEntityClassification}
-              onChange={(e) =>
-                this.getEntityClassificationsForType(e.target.value)
-              }
+              onChange={e => this.getEntityClassificationsForType(e.target.value)}
               displayEmpty
             >
-              {entityTypes.map((entity) => (
+              {entityTypes.map(entity => (
                 <MenuItem key={entity.id} value={entity.id}>
                   {entity.name}
                 </MenuItem>
@@ -206,13 +186,11 @@ class NewRoleAssignment extends React.Component {
           <FormControl style={{ flex: 2.5 }}>
             <Select
               value={tempEntityType}
-              onChange={(e) =>
-                this.setState({ tempEntityType: e.target.value })
-              }
+              onChange={e => this.setState({ tempEntityType: e.target.value })}
               disabled={!this.state.tempEntityClassification}
               displayEmpty
             >
-              {tempEntityTypes.map((type) => (
+              {tempEntityTypes.map(type => (
                 <MenuItem key={type.id} value={type.id}>
                   {type.name}
                 </MenuItem>

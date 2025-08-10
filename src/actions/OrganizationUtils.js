@@ -14,14 +14,10 @@
  *
  */
 
-export const removeRedundantActions = (
-  actions,
-  jobDomain,
-  jobDomainActions,
-) => {
+export const removeRedundantActions = (actions, jobDomain, jobDomainActions) => {
   if (!actions || !actions.length) return [];
 
-  let asteriskFound = actions.indexOf('*') > -1;
+  const asteriskFound = actions.indexOf('*') > -1;
 
   if (asteriskFound) {
     return ['*'];
@@ -35,11 +31,8 @@ export const removeRedundantActions = (
   return actions;
 };
 
-export const formatUserNotifications = (
-  userNotifications,
-  jobDomainActions,
-) => {
-  return userNotifications.map((userNotification) => {
+export const formatUserNotifications = (userNotifications, jobDomainActions) => {
+  return userNotifications.map(userNotification => {
     if (userNotification.isNew) {
       delete userNotification.isNew;
     }
@@ -55,7 +48,7 @@ export const formatUserNotifications = (
       userNotification.eventFilter.actions = removeRedundantActions(
         userNotification.eventFilter.actions,
         userNotification.eventFilter.jobDomain,
-        jobDomainActions,
+        jobDomainActions
       );
     } else if (userNotification.eventFilter.type === 'CRUD') {
       if (!userNotification.eventFilter.administrativeZoneRefs) {

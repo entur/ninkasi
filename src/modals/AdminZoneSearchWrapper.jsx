@@ -27,7 +27,7 @@ class AdminZoneSearchWrapper extends React.Component {
   }
 
   getZoneType(type) {
-    let typeMap = {
+    const typeMap = {
       COUNTRY: 'Country',
       COUNTY: 'County',
       LOCALITY: 'Muncipality',
@@ -52,7 +52,7 @@ class AdminZoneSearchWrapper extends React.Component {
   render() {
     const { administrativeZones, chip, handleDeleteChip } = this.props;
 
-    const formattedZones = administrativeZones.map((zone) => ({
+    const formattedZones = administrativeZones.map(zone => ({
       text: `${zone.name}  (${this.getZoneType(zone.type)})`,
       value: zone.id,
     }));
@@ -62,7 +62,7 @@ class AdminZoneSearchWrapper extends React.Component {
         <Autocomplete
           style={{ marginTop: -5, flex: 2 }}
           options={formattedZones}
-          getOptionLabel={(option) => option.text}
+          getOptionLabel={option => option.text}
           inputValue={this.state.inputValue}
           onInputChange={(event, newInputValue) => {
             this.setState({ inputValue: newInputValue });
@@ -74,7 +74,7 @@ class AdminZoneSearchWrapper extends React.Component {
           }}
           filterLimit={7}
           fullWidth
-          renderInput={(params) => (
+          renderInput={params => (
             <TextField
               {...params}
               placeholder="Restrict to administrative zone"
@@ -90,9 +90,7 @@ class AdminZoneSearchWrapper extends React.Component {
               onDelete={handleDeleteChip}
             />
           ) : (
-            <div style={{ fontSize: 12, fontStyle: 'italic' }}>
-              No restrictions ...
-            </div>
+            <div style={{ fontSize: 12, fontStyle: 'italic' }}>No restrictions ...</div>
           )}
         </div>
       </div>

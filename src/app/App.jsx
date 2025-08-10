@@ -46,7 +46,7 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
 
   useEffect(() => {
     if (auth.isAuthenticated) {
-      cfgreader.readConfig((config) => {
+      cfgreader.readConfig(config => {
         window.config = config;
         dispatch(UtilsActions.notifyConfigIsLoaded());
         dispatch(UserContextActions.fetchUserContext(getToken));
@@ -61,9 +61,9 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
           palette: {
             mode: 'light',
           },
-        }),
+        })
       ),
-    [],
+    []
   );
 
   if (isConfigLoaded && auth.isAuthenticated) {
@@ -95,7 +95,7 @@ const MainPage = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
   }
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   isConfigLoaded: state.UtilsReducer.isConfigLoaded,
   isMenuOpen: state.app.isMenuOpen,
   isAdmin: state.UserContextReducer.isRouteDataAdmin,

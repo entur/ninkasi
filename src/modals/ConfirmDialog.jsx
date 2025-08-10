@@ -16,12 +16,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import Button from '@mui/material/Button';
 
 class ConfirmDialog extends Component {

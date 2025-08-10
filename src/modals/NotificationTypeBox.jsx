@@ -16,12 +16,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  ExpandMore,
-  ExpandLess,
-  NotificationsActive,
-  NotificationsOff,
-} from '@mui/icons-material';
+import { ExpandMore, ExpandLess, NotificationsActive, NotificationsOff } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import NotificationEventFilter from './NotificationEventFilter';
 
@@ -90,9 +85,7 @@ class NotificationTypeBox extends React.Component {
             )}
           </IconButton>
         </div>
-        {expanded && (
-          <NotificationEventFilter index={index} notification={notification} />
-        )}
+        {expanded && <NotificationEventFilter index={index} notification={notification} />}
       </div>
     );
   }

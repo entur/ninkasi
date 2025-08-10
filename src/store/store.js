@@ -31,19 +31,13 @@ export default function configureStore() {
     const loggerMiddleware = createLogger({ collapsed: true });
     const composeEnhancers = composeWithDevTools({});
     enchancer = composeEnhancers(
-      applyMiddleware(
-        routerMiddleware(history),
-        thunkMiddleware,
-        loggerMiddleware,
-      ),
+      applyMiddleware(routerMiddleware(history), thunkMiddleware, loggerMiddleware)
     );
   } else {
-    enchancer = compose(
-      applyMiddleware(routerMiddleware(history), thunkMiddleware),
-    );
+    enchancer = compose(applyMiddleware(routerMiddleware(history), thunkMiddleware));
   }
 
-  let store = createStore(createRootReducer(history), {}, enchancer);
+  const store = createStore(createRootReducer(history), {}, enchancer);
 
   if (import.meta.hot) {
     // Enable Vite hot module replacement for reducers

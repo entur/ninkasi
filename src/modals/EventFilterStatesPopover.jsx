@@ -47,13 +47,7 @@ class EventFilterStatesPopover extends React.Component {
 
   handleCheckState(state, isChecked) {
     const { index, dispatch } = this.props;
-    dispatch(
-      OrganizationRegisterActions.changeEventFilterState(
-        index,
-        state,
-        isChecked,
-      ),
-    );
+    dispatch(OrganizationRegisterActions.changeEventFilterState(index, state, isChecked));
   }
 
   render() {
@@ -83,13 +77,10 @@ class EventFilterStatesPopover extends React.Component {
           transformOrigin={{ horizontal: 'left', vertical: 'top' }}
         >
           {allStates.map((state, i) => {
-            let checked = states.indexOf(state) > -1;
+            const checked = states.indexOf(state) > -1;
 
             return (
-              <Menu
-                key={'action-' + i}
-                menuItemStyle={{ fontSize: 12, minHeight: 18 }}
-              >
+              <Menu key={'action-' + i} menuItemStyle={{ fontSize: 12, minHeight: 18 }}>
                 <MenuItem>
                   <Checkbox
                     label={state}

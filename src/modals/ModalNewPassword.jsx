@@ -16,12 +16,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import Button from '@mui/material/Button';
 import Actions from 'actions/OrganizationRegisterActions';
 import Clipboard from 'clipboard-js';
@@ -39,20 +34,14 @@ class ModalNewPassword extends React.Component {
     const { open, isNewUser } = this.props.passwordDialogState;
 
     const actions = [
-      <Button
-        variant="text"
-        color="primary"
-        onClick={this.handleClose.bind(this)}
-      >
+      <Button variant="text" color="primary" onClick={this.handleClose.bind(this)}>
         Close
       </Button>,
     ];
 
     return (
       <Dialog open={open} maxWidth="sm" fullWidth>
-        <DialogTitle>
-          {isNewUser ? 'User created' : 'Password reset'}
-        </DialogTitle>
+        <DialogTitle>{isNewUser ? 'User created' : 'Password reset'}</DialogTitle>
         <DialogContent>
           <div style={{ fontSize: 12, marginTop: 5 }}>
             An email has been sent to the user with further instructions.

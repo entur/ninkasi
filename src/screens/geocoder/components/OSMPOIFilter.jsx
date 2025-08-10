@@ -17,7 +17,7 @@ import { useAuth } from 'react-oidc-context';
 import getApiConfig from 'actions/getApiConfig';
 import './OSMPOIFilter.scss';
 
-const sort = (data) => {
+const sort = data => {
   return data.sort((a, b) => {
     if (a.id > b.id) {
       return 1;
@@ -33,15 +33,12 @@ const OSMPOIFilter = () => {
 
   const scrollRef = useRef(null);
 
-  const [poiFilterArray, setPoiFilterArray] = useState([
-    { key: '', value: '' },
-  ]);
-  const [dirtyPoiFilterArray, setDirtyPoiFilterArray] =
-    useState(poiFilterArray);
+  const [poiFilterArray, setPoiFilterArray] = useState([{ key: '', value: '' }]);
+  const [dirtyPoiFilterArray, setDirtyPoiFilterArray] = useState(poiFilterArray);
   const [isDirty, setDirty] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
-  const handleResponse = (data) => {
+  const handleResponse = data => {
     setPoiFilterArray(data);
     setDirtyPoiFilterArray(data);
     setDirty(false);
@@ -55,7 +52,7 @@ const OSMPOIFilter = () => {
       const url = window.config.poiFilterBaseUrl;
       axios
         .get(url, config)
-        .then((response) => response.data)
+        .then(response => response.data)
         .then(sort)
         .then(handleResponse);
     };
@@ -76,7 +73,7 @@ const OSMPOIFilter = () => {
     setDirty(true);
   };
 
-  const handleDeleteFilter = (index) => {
+  const handleDeleteFilter = index => {
     const copy = dirtyPoiFilterArray.slice();
     copy.splice(index, 1);
     setDirtyPoiFilterArray(copy);
@@ -107,11 +104,11 @@ const OSMPOIFilter = () => {
         const url = window.config.poiFilterBaseUrl;
         axios
           .get(url, config)
-          .then((response) => response.data)
+          .then(response => response.data)
           .then(sort)
           .then(handleResponse);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
@@ -120,20 +117,12 @@ const OSMPOIFilter = () => {
     <div>
       <Grid container justifyContent="center" spacing={2}>
         <Grid item>
-          <Button
-            variant="contained"
-            disabled={isLoading}
-            onClick={handleAddFilter}
-          >
+          <Button variant="contained" disabled={isLoading} onClick={handleAddFilter}>
             Add filter
           </Button>
         </Grid>
         <Grid item>
-          <Button
-            variant="contained"
-            disabled={isLoading || !isDirty}
-            onClick={handleReset}
-          >
+          <Button variant="contained" disabled={isLoading || !isDirty} onClick={handleReset}>
             Reset
           </Button>
         </Grid>
@@ -141,9 +130,7 @@ const OSMPOIFilter = () => {
           <Button
             variant="contained"
             disabled={
-              isLoading ||
-              !isDirty ||
-              dirtyPoiFilterArray.some((filter) => filter.priority < 1)
+              isLoading || !isDirty || dirtyPoiFilterArray.some(filter => filter.priority < 1)
             }
             onClick={handleSubmit}
           >
@@ -153,8 +140,8 @@ const OSMPOIFilter = () => {
       </Grid>
       <Paper style={{ maxHeight: '70vh', overflow: 'auto', marginTop: '25px' }}>
         <Alert severity="warning">
-          The priority field is experimental. Setting priority level above 10
-          could lead to unexpected boosting in the geocoder.
+          The priority field is experimental. Setting priority level above 10 could lead to
+          unexpected boosting in the geocoder.
         </Alert>
         <Table size="small">
           <TableHead>
@@ -175,9 +162,9 @@ const OSMPOIFilter = () => {
           </TableHead>
           <TableBody>
             {isLoading
-              ? [...Array(10).keys()].map((i) => (
+              ? [...Array(10).keys()].map(i => (
                   <TableRow key={`skeleton-row_${i}`}>
-                    {[...Array(4).keys()].map((j) => (
+                    {[...Array(4).keys()].map(j => (
                       <TableCell key={`skeleton-cell_${j}`}>
                         <Skeleton variant="text" />
                       </TableCell>
@@ -187,69 +174,44 @@ const OSMPOIFilter = () => {
               : dirtyPoiFilterArray &&
                 dirtyPoiFilterArray.map(({ key, value, priority }, index) => (
                   <TableRow key={`poi-filter-row_${index}`} sx={{ height: 80 }}>
-                    <TableCell
-                      align="center"
-                      sx={{ p: 1, verticalAlign: 'middle' }}
-                    >
+                    <TableCell align="center" sx={{ p: 1, verticalAlign: 'middle' }}>
                       <TextField
                         label="Key"
                         placeholder="Enter key"
                         value={key}
-                        onChange={(e) =>
-                          handleChange(index, 'key', e.target.value)
-                        }
+                        onChange={e => handleChange(index, 'key', e.target.value)}
                         size="small"
                         variant="outlined"
                       />
                     </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={{ p: 1, verticalAlign: 'middle' }}
-                    >
+                    <TableCell align="center" sx={{ p: 1, verticalAlign: 'middle' }}>
                       <TextField
                         label="Value"
                         placeholder="Enter value"
                         value={value}
-                        onChange={(e) =>
-                          handleChange(index, 'value', e.target.value)
-                        }
+                        onChange={e => handleChange(index, 'value', e.target.value)}
                         size="small"
                         variant="outlined"
                       />
                     </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={{ p: 1, verticalAlign: 'middle' }}
-                    >
+                    <TableCell align="center" sx={{ p: 1, verticalAlign: 'middle' }}>
                       <TextField
                         type="number"
                         label="Priority"
                         placeholder="Enter priority"
                         value={priority}
                         inputProps={{ min: 1 }}
-                        onChange={(e) =>
-                          handleChange(
-                            index,
-                            'priority',
-                            parseInt(e.target.value, 10),
-                          )
+                        onChange={e =>
+                          handleChange(index, 'priority', parseInt(e.target.value, 10))
                         }
                         error={priority < 1}
-                        helperText={
-                          priority < 1 ? 'Priority must be 1 or more' : ''
-                        }
+                        helperText={priority < 1 ? 'Priority must be 1 or more' : ''}
                         size="small"
                         variant="outlined"
                       />
                     </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={{ p: 1, verticalAlign: 'middle' }}
-                    >
-                      <IconButton
-                        onClick={() => handleDeleteFilter(index)}
-                        size="large"
-                      >
+                    <TableCell align="center" sx={{ p: 1, verticalAlign: 'middle' }}>
+                      <IconButton onClick={() => handleDeleteFilter(index)} size="large">
                         <Delete />
                       </IconButton>
                     </TableCell>

@@ -10,8 +10,8 @@ import AppActions from 'actions/AppActions';
 import { getProvidersEnv, getTheme } from 'config/themes';
 import Logo from './Logo';
 
-const Router = (props) => {
-  const handleMenuItemClick = (route) => {
+const Router = props => {
+  const handleMenuItemClick = route => {
     props.toggleMenu();
     props.pushRoute(route);
   };
@@ -49,11 +49,7 @@ const Router = (props) => {
       </div>
       <Divider />
       <List style={{ width: '250px' }}>
-        <ListItem
-          button
-          onClick={() => handleMenuItemClick('/')}
-          selected={props.pathname === '/'}
-        >
+        <ListItem button onClick={() => handleMenuItemClick('/')} selected={props.pathname === '/'}>
           <ListItemText
             primary="Providers"
             primaryTypographyProps={{ style: { color: 'white' } }}
@@ -64,25 +60,22 @@ const Router = (props) => {
           onClick={() => handleMenuItemClick('/geocoder')}
           selected={props.pathname === '/geocoder'}
         >
-          <ListItemText
-            primary="Geocoder"
-            primaryTypographyProps={{ style: { color: 'white' } }}
-          />
+          <ListItemText primary="Geocoder" primaryTypographyProps={{ style: { color: 'white' } }} />
         </ListItem>
       </List>
     </Drawer>
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   pathname: state.router.location.pathname,
   search: state.router.location.search,
   hash: state.router.location.hash,
 });
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    pushRoute: (route) => dispatch(push(route)),
+    pushRoute: route => dispatch(push(route)),
     toggleMenu: () => dispatch(AppActions.toggleMenu()),
   };
 };

@@ -37,16 +37,12 @@ class NotificationEntityClassRef extends React.Component {
     const entityRefs = this.entityRefsRef.current;
     const { dispatch, index, notification } = this.props;
     const selectedIndex = entityRefs.options.selectedIndex;
-    const entityClassRefs =
-      notification.eventFilter.entityClassificationRefs || [];
+    const entityClassRefs = notification.eventFilter.entityClassificationRefs || [];
     const entityClassToRemove = entityClassRefs[selectedIndex];
 
     if (entityClassToRemove) {
       dispatch(
-        OrganizationRegisterActions.removeEntityClassRefNotification(
-          index,
-          entityClassToRemove,
-        ),
+        OrganizationRegisterActions.removeEntityClassRefNotification(index, entityClassToRemove)
       );
     }
   }
@@ -54,8 +50,7 @@ class NotificationEntityClassRef extends React.Component {
   render() {
     const { notification, visible } = this.props;
 
-    const entityClassRefs =
-      notification.eventFilter.entityClassificationRefs || [];
+    const entityClassRefs = notification.eventFilter.entityClassificationRefs || [];
 
     return (
       <div
@@ -82,10 +77,7 @@ class NotificationEntityClassRef extends React.Component {
               <option key={'entity-' + index}>{ref} </option>
             ))}
           </select>
-          <IconButton
-            onClick={this.handleRemoveEntityClass.bind(this)}
-            size="large"
-          >
+          <IconButton onClick={this.handleRemoveEntityClass.bind(this)} size="large">
             <Remove style={{ color: '#cc0000' }} />
           </IconButton>
         </div>

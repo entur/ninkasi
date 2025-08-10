@@ -15,12 +15,7 @@
  */
 
 import React from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
@@ -50,29 +45,16 @@ class ModalCreateRole extends React.Component {
     const invalidPrivateCode = takenPrivateCodes.indexOf(role.privateCode) > -1;
 
     const actions = [
-      <Button
-        variant="text"
-        disabled={invalidPrivateCode}
-        onClick={this.handleOnClose.bind(this)}
-      >
+      <Button variant="text" disabled={invalidPrivateCode} onClick={this.handleOnClose.bind(this)}>
         Close
       </Button>,
-      <Button
-        variant="text"
-        disabled={invalidPrivateCode}
-        onClick={() => handleSubmit(role)}
-      >
+      <Button variant="text" disabled={invalidPrivateCode} onClick={() => handleSubmit(role)}>
         Create
       </Button>,
     ];
 
     return (
-      <Dialog
-        open={isModalOpen}
-        onClose={() => this.handleOnClose()}
-        maxWidth="sm"
-        fullWidth
-      >
+      <Dialog open={isModalOpen} onClose={() => this.handleOnClose()} maxWidth="sm" fullWidth>
         <DialogTitle>Create a new role</DialogTitle>
         <DialogContent>
           <div
@@ -86,7 +68,7 @@ class ModalCreateRole extends React.Component {
               placeholder="Name"
               label="Name"
               value={role.name}
-              onChange={(e) =>
+              onChange={e =>
                 this.setState({
                   role: { ...role, name: e.target.value },
                 })
@@ -97,11 +79,9 @@ class ModalCreateRole extends React.Component {
               placeholder="private code"
               label="Private code"
               error={invalidPrivateCode}
-              helperText={
-                invalidPrivateCode ? 'Private code already exists' : ''
-              }
+              helperText={invalidPrivateCode ? 'Private code already exists' : ''}
               value={role.privateCode}
-              onChange={(e) =>
+              onChange={e =>
                 this.setState({
                   role: { ...role, privateCode: e.target.value },
                 })

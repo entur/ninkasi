@@ -72,6 +72,6 @@ function renderIndex(config) {
   root.render(
     <AuthProvider {...oidcConfig}>
       <AuthenticatedApp />
-    </AuthProvider>,
+    </AuthProvider>
   );
 }

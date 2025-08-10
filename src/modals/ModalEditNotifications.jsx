@@ -36,9 +36,7 @@ class ModalEditNotifications extends React.Component {
 
   componentDidMount() {
     const { user, dispatch, getToken } = this.props;
-    dispatch(
-      OrganizationRegisterActions.getUserNotifications(user.username, getToken),
-    );
+    dispatch(OrganizationRegisterActions.getUserNotifications(user.username, getToken));
   }
 
   handleExpandItem(index, value) {
@@ -49,12 +47,7 @@ class ModalEditNotifications extends React.Component {
 
   async handleUpdate() {
     const { user, dispatch, getToken } = this.props;
-    await dispatch(
-      OrganizationRegisterActions.updateUserNotification(
-        user.username,
-        getToken,
-      ),
-    );
+    await dispatch(OrganizationRegisterActions.updateUserNotification(user.username, getToken));
     this.props.handleCloseModal();
   }
 
@@ -70,7 +63,7 @@ class ModalEditNotifications extends React.Component {
     const { userNotifications } = this.props;
     if (userNotifications === null) return true;
 
-    return userNotifications.some((un) => {
+    return userNotifications.some(un => {
       if (un.eventFilter.type === 'JOB') {
         if (!un.eventFilter.actions || !un.eventFilter.states) {
           return true;
@@ -92,13 +85,7 @@ class ModalEditNotifications extends React.Component {
   }
 
   render() {
-    const {
-      isModalOpen,
-      handleCloseModal,
-      user,
-      userNotifications,
-      isLoading,
-    } = this.props;
+    const { isModalOpen, handleCloseModal, user, userNotifications, isLoading } = this.props;
 
     const messageStyle = {
       fontSize: 13,
@@ -111,11 +98,7 @@ class ModalEditNotifications extends React.Component {
     const updateDisabled = this.shouldUpdateBtnBeDisabled();
 
     const actions = [
-      <Button
-        variant="text"
-        style={{ marginLeft: 10 }}
-        onClick={handleCloseModal}
-      >
+      <Button variant="text" style={{ marginLeft: 10 }} onClick={handleCloseModal}>
         Cancel
       </Button>,
       <Button
@@ -152,9 +135,7 @@ class ModalEditNotifications extends React.Component {
               ))}
             {isLoading && <div style={messageStyle}>Loading ...</div>}
             {!isLoading && !userNotifications.length && (
-              <div style={messageStyle}>
-                No notification configuration found for this user
-              </div>
+              <div style={messageStyle}>No notification configuration found for this user</div>
             )}
           </div>
           <Fab
@@ -171,7 +152,7 @@ class ModalEditNotifications extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   userNotifications: state.OrganizationReducer.userNotifications,
   eventFilterTypes: state.OrganizationReducer.eventFilterTypes,
   isLoading: state.OrganizationReducer.userNotificationsLoading,

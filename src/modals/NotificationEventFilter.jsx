@@ -41,19 +41,12 @@ class NotificationEventFilter extends React.Component {
 
   handleChangeJobDomain(event, key, value) {
     const { index, dispatch } = this.props;
-    dispatch(
-      OrganizationRegisterActions.changeEventFilterJobDomain(index, value),
-    );
+    dispatch(OrganizationRegisterActions.changeEventFilterJobDomain(index, value));
   }
 
   handleChangeOrganization(organization) {
     const { index, dispatch } = this.props;
-    dispatch(
-      OrganizationRegisterActions.changeEventFilterOrganizationRef(
-        index,
-        organization,
-      ),
-    );
+    dispatch(OrganizationRegisterActions.changeEventFilterOrganizationRef(index, organization));
   }
 
   handleChangeNotificationType(type) {
@@ -69,28 +62,19 @@ class NotificationEventFilter extends React.Component {
   getErrorMessage() {
     const { notification } = this.props;
     if (notification.eventFilter.type === 'JOB') {
-      let missingFields = [];
+      const missingFields = [];
 
-      if (
-        notification.eventFilter.actions &&
-        notification.eventFilter.actions.length === 0
-      ) {
+      if (notification.eventFilter.actions && notification.eventFilter.actions.length === 0) {
         missingFields.push('actions');
       }
 
-      if (
-        notification.eventFilter.states &&
-        notification.eventFilter.states.length === 0
-      ) {
+      if (notification.eventFilter.states && notification.eventFilter.states.length === 0) {
         missingFields.push('states');
       }
 
       if (missingFields.length) {
-        let fieldIsOrAre =
-          missingFields.length === 1 ? 'field is ' : 'fields are ';
-        return `Required* ${fieldIsOrAre} missing for ${missingFields.join(
-          ' and ',
-        )}`;
+        const fieldIsOrAre = missingFields.length === 1 ? 'field is ' : 'fields are ';
+        return `Required* ${fieldIsOrAre} missing for ${missingFields.join(' and ')}`;
       }
     }
     return '';
@@ -116,9 +100,7 @@ class NotificationEventFilter extends React.Component {
           <NotificationTypeSelect
             notification={notification}
             notificationTypes={notificationTypes}
-            handleChangeNotificationType={this.handleChangeNotificationType.bind(
-              this,
-            )}
+            handleChangeNotificationType={this.handleChangeNotificationType.bind(this)}
           />
           <OrganisationSelect
             organizations={organizations}
@@ -129,9 +111,7 @@ class NotificationEventFilter extends React.Component {
         <div style={{ display: 'flex', marginTop: -10 }}>
           <FormControl style={{ flex: 1 }}>
             <Select
-              onChange={(e) =>
-                this.handleChangeEventFilterType(e, null, e.target.value)
-              }
+              onChange={e => this.handleChangeEventFilterType(e, null, e.target.value)}
               value={notification.eventFilter.type}
               displayEmpty
             >
@@ -144,9 +124,7 @@ class NotificationEventFilter extends React.Component {
           </FormControl>
           <FormControl style={{ marginLeft: 10, flex: 1 }}>
             <Select
-              onChange={(e) =>
-                this.handleChangeJobDomain(e, null, e.target.value)
-              }
+              onChange={e => this.handleChangeJobDomain(e, null, e.target.value)}
               disabled={!enableJobSpecific}
               value={notification.eventFilter.jobDomain}
               displayEmpty
@@ -209,16 +187,13 @@ class NotificationEventFilter extends React.Component {
             control={
               <Checkbox
                 checked={notification.enabled}
-                onChange={(e) => this.handleEnabled(e.target.checked)}
+                onChange={e => this.handleEnabled(e.target.checked)}
               />
             }
             label="Enabled"
             style={{ width: 'auto' }}
           />
-          <IconButton
-            onClick={this.deleteUserNotification.bind(this)}
-            size="large"
-          >
+          <IconButton onClick={this.deleteUserNotification.bind(this)} size="large">
             <Delete />
           </IconButton>
           <span>Delete</span>
@@ -228,7 +203,7 @@ class NotificationEventFilter extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   eventFilterTypes: state.OrganizationReducer.eventFilterTypes,
   jobDomains: state.OrganizationReducer.jobDomains,
   jobDomainActions: state.OrganizationReducer.jobDomainActions,

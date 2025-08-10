@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "checkJs": false,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist/app",
+
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "app/*": ["./src/app/*"],
+      "config/*": ["./src/config/*"],
+      "store/*": ["./src/store/*"],
+      "actions/*": ["./src/actions/*"],
+      "reducers/*": ["./src/reducers/*"],
+      "modals/*": ["./src/modals/*"],
+      "screens/*": ["./src/screens/*"],
+      "utils/*": ["./src/utils/*"],
+      "models/*": ["./src/models/*"],
+      "static/*": ["./src/static/*"]
+    }
+  },
+  "include": ["src", "src/**/*.json"]
+}

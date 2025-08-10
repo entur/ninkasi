@@ -40,13 +40,7 @@ class EventFilterActionsPopover extends React.Component {
 
   handleCheckAction(action, isChecked) {
     const { index, dispatch } = this.props;
-    dispatch(
-      OrganizationRegisterActions.changeEventFilterAction(
-        index,
-        action,
-        isChecked,
-      ),
-    );
+    dispatch(OrganizationRegisterActions.changeEventFilterAction(index, action, isChecked));
   }
 
   handleOpen(event) {
@@ -87,16 +81,11 @@ class EventFilterActionsPopover extends React.Component {
           {eventFilter.jobDomain &&
             allActions[eventFilter.jobDomain].map((action, i) => {
               //TODO: Map all values to plain English
-              let actionLabel = action === '*' ? 'ALL' : action;
-              let checked = allActionsChecked
-                ? true
-                : actions.indexOf(action) > -1;
+              const actionLabel = action === '*' ? 'ALL' : action;
+              const checked = allActionsChecked ? true : actions.indexOf(action) > -1;
 
               return (
-                <MenuItem
-                  key={'action-' + i}
-                  style={{ fontSize: 12, minHeight: 18 }}
-                >
+                <MenuItem key={'action-' + i} style={{ fontSize: 12, minHeight: 18 }}>
                   <Checkbox
                     checked={checked}
                     onChange={(e, isChecked) => {

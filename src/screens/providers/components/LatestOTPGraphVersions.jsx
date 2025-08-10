@@ -53,17 +53,12 @@ const GraphVersionDetails = ({ name, serializationId, creationDate, size }) => (
         <span style={{ fontWeight: 'bold' }}>Created: </span>
         <span style={{ fontWeight: 'bold' }}>Size: </span>
       </div>
-      <div
-        style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px' }}
-      >
+      <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px' }}>
         <span>{serializationId}</span>
         <span title={moment(creationDate).fromNow()}>
           {moment(creationDate).format('DD-MM-YYYY HH:mm:ss')}
         </span>
-        <span>
-          {Math.round((size / 1024 / 1024 / 1024 + Number.EPSILON) * 100) / 100}{' '}
-          GB
-        </span>
+        <span>{Math.round((size / 1024 / 1024 / 1024 + Number.EPSILON) * 100) / 100} GB</span>
       </div>
     </div>
   </div>
@@ -98,7 +93,7 @@ class LatestOTPGraphVersions extends React.Component {
               <UnfoldMore sx={{ color: 'black' }} />
             )
           }
-          onClick={(e) => {
+          onClick={e => {
             e.preventDefault();
 
             this.setState({
@@ -138,7 +133,7 @@ class LatestOTPGraphVersions extends React.Component {
                     Latest street graphs
                   </h3>
                   <>
-                    {streetGraphs.map((streetGraph) => (
+                    {streetGraphs.map(streetGraph => (
                       <GraphVersionDetails
                         key={streetGraph.serializationId}
                         name={streetGraph.name}
@@ -160,7 +155,7 @@ class LatestOTPGraphVersions extends React.Component {
                     Latest transit graphs
                   </h3>
                   <>
-                    {transitGraphs.map((transitGraph) => (
+                    {transitGraphs.map(transitGraph => (
                       <GraphVersionDetails
                         key={transitGraph.serializationId}
                         name={transitGraph.name}
@@ -180,7 +175,7 @@ class LatestOTPGraphVersions extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   streetGraphs: state.SuppliersReducer.streetGraphs,
   transitGraphs: state.SuppliersReducer.transitGraphs,
 });

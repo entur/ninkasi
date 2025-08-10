@@ -18,11 +18,7 @@ import React, { Component } from 'react';
 
 class OrganizationFilter extends Component {
   render() {
-    const {
-      organizations = [],
-      handleOnChange,
-      organisationFilterId,
-    } = this.props;
+    const { organizations = [], handleOnChange, organisationFilterId } = this.props;
 
     const options = [
       {
@@ -37,9 +33,9 @@ class OrganizationFilter extends Component {
       <select
         style={{ marginLeft: 5 }}
         value={organisationFilterId}
-        onChange={(e) => handleOnChange(e.target.value)}
+        onChange={e => handleOnChange(e.target.value)}
       >
-        {options.map((org) => (
+        {options.map(org => (
           <option value={org.id} key={org.id}>
             {org.name}
           </option>

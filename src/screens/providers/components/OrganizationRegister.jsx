@@ -45,10 +45,7 @@ class OrganizationRegister extends React.Component {
 
     return (
       <div style={style}>
-        <SideBarTabs
-          activeTab={activeTab}
-          setActiveTab={this.setActiveTab.bind(this)}
-        />
+        <SideBarTabs activeTab={activeTab} setActiveTab={this.setActiveTab.bind(this)} />
         <div
           style={{
             border: '1px solid rgb(229, 229, 229)',

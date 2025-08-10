@@ -15,12 +15,7 @@
  */
 
 import React from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { FormControl, Select, MenuItem } from '@mui/material';
@@ -57,8 +52,7 @@ class ModalCreateOrganization extends React.Component {
 
     const { organization } = this.state;
 
-    const isOrganizationNameTaken =
-      takenOrganizationNames.indexOf(organization.name) > -1;
+    const isOrganizationNameTaken = takenOrganizationNames.indexOf(organization.name) > -1;
     const isOrganizationPrivateCodeTaken =
       takenOrganizationPrivateCodes.indexOf(organization.privateCode) > -1;
 
@@ -76,12 +70,7 @@ class ModalCreateOrganization extends React.Component {
     ];
 
     return (
-      <Dialog
-        open={isModalOpen}
-        onClose={() => this.handleOnClose()}
-        maxWidth="sm"
-        fullWidth
-      >
+      <Dialog open={isModalOpen} onClose={() => this.handleOnClose()} maxWidth="sm" fullWidth>
         <DialogTitle>Create a new organisation</DialogTitle>
         <DialogContent>
           <div
@@ -95,13 +84,9 @@ class ModalCreateOrganization extends React.Component {
               placeholder="Name"
               label="Name"
               error={isOrganizationNameTaken}
-              helperText={
-                isOrganizationNameTaken
-                  ? 'Organization name already exists'
-                  : ''
-              }
+              helperText={isOrganizationNameTaken ? 'Organization name already exists' : ''}
               value={organization.name}
-              onChange={(e) =>
+              onChange={e =>
                 this.setState({
                   organization: { ...organization, name: e.target.value },
                 })
@@ -113,12 +98,10 @@ class ModalCreateOrganization extends React.Component {
               label="Private code"
               error={isOrganizationPrivateCodeTaken}
               helperText={
-                isOrganizationPrivateCodeTaken
-                  ? 'Organization private code already exists'
-                  : ''
+                isOrganizationPrivateCodeTaken ? 'Organization private code already exists' : ''
               }
               value={organization.privateCode}
-              onChange={(e) =>
+              onChange={e =>
                 this.setState({
                   organization: {
                     ...organization,
@@ -131,7 +114,7 @@ class ModalCreateOrganization extends React.Component {
             <FormControl fullWidth>
               <Select
                 value={organization.organisationType}
-                onChange={(e) =>
+                onChange={e =>
                   this.setState({
                     organization: {
                       ...organization,
@@ -147,7 +130,7 @@ class ModalCreateOrganization extends React.Component {
             <FormControl fullWidth>
               <Select
                 value={organization.codeSpace}
-                onChange={(e) =>
+                onChange={e =>
                   this.setState({
                     organization: {
                       ...organization,
@@ -157,7 +140,7 @@ class ModalCreateOrganization extends React.Component {
                 }
                 displayEmpty
               >
-                {codeSpaces.map((codeSpace) => (
+                {codeSpaces.map(codeSpace => (
                   <MenuItem key={codeSpace.id} value={codeSpace.id}>
                     {codeSpace.xmlns}
                   </MenuItem>

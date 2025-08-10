@@ -17,8 +17,8 @@
 import React, { useCallback } from 'react';
 import { useAuth } from 'react-oidc-context';
 
-const withAuth = (Component) => {
-  const AuthWrapper = (props) => {
+const withAuth = Component => {
+  const AuthWrapper = props => {
     const auth = useAuth();
     const getToken = useCallback(async () => {
       return auth.user?.access_token;

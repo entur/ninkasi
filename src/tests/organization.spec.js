@@ -26,7 +26,7 @@ import { assert } from 'chai';
 
 describe('Organization reducer utils', () => {
   it('should change event filter by key', () => {
-    let notification1 = {
+    const notification1 = {
       eventFilter: {
         type: null,
         jobDomain: null,
@@ -34,7 +34,7 @@ describe('Organization reducer utils', () => {
       },
     };
 
-    let notification2 = {
+    const notification2 = {
       eventFilter: {
         type: null,
         jobDomain: null,
@@ -42,15 +42,10 @@ describe('Organization reducer utils', () => {
       },
     };
 
-    let notifications = [];
+    const notifications = [];
     notifications.push(notification1, notification2);
 
-    let modifiedNotifications = changeFilterValue(
-      notifications,
-      'type',
-      1,
-      'JOB',
-    );
+    const modifiedNotifications = changeFilterValue(notifications, 'type', 1, 'JOB');
 
     assert.equal(modifiedNotifications[1].eventFilter.type, 'JOB');
     assert.equal(modifiedNotifications[0].eventFilter.type, null);
@@ -60,7 +55,7 @@ describe('Organization reducer utils', () => {
   });
 
   it('should add and remove action to event filter actions', () => {
-    let notifications = [
+    const notifications = [
       {
         notificationType: 'EMAIL',
         eventFilter: {
@@ -73,20 +68,15 @@ describe('Organization reducer utils', () => {
       },
     ];
 
-    let importAdded = changeFilterActions(notifications, 0, 'IMPORT', true);
+    const importAdded = changeFilterActions(notifications, 0, 'IMPORT', true);
     assert.deepEqual(importAdded[0].eventFilter.actions, ['IMPORT']);
 
-    let importRemovedAgain = changeFilterActions(
-      importAdded,
-      0,
-      'IMPORT',
-      false,
-    );
+    const importRemovedAgain = changeFilterActions(importAdded, 0, 'IMPORT', false);
     assert.deepEqual(importRemovedAgain[0].eventFilter.actions, []);
   });
 
   it('should enable item on disable if * is selected for event filter actions', () => {
-    let notifications = [
+    const notifications = [
       {
         notificationType: 'EMAIL',
         eventFilter: {
@@ -99,12 +89,12 @@ describe('Organization reducer utils', () => {
       },
     ];
 
-    let importRemoved = changeFilterActions(notifications, 0, 'IMPORT', false);
+    const importRemoved = changeFilterActions(notifications, 0, 'IMPORT', false);
     assert.deepEqual(importRemoved[0].eventFilter.actions, ['IMPORT']);
   });
 
   it('should add and remove action to event filter states', () => {
-    let notifications = [
+    const notifications = [
       {
         notificationType: 'EMAIL',
         eventFilter: {
@@ -117,20 +107,15 @@ describe('Organization reducer utils', () => {
       },
     ];
 
-    let failedAdded = changeFilterStates(notifications, 0, 'FAILED', true);
+    const failedAdded = changeFilterStates(notifications, 0, 'FAILED', true);
     assert.deepEqual(failedAdded[0].eventFilter.states, ['FAILED']);
 
-    let failedRemovedAgain = changeFilterStates(
-      failedAdded,
-      0,
-      'FAILED',
-      false,
-    );
+    const failedRemovedAgain = changeFilterStates(failedAdded, 0, 'FAILED', false);
     assert.deepEqual(failedRemovedAgain[0].eventFilter.states, []);
   });
 
   it('should add adminZoneRef', () => {
-    let notifications = [
+    const notifications = [
       {
         notificationType: 'EMAIL',
         eventFilter: {
@@ -140,36 +125,31 @@ describe('Organization reducer utils', () => {
       },
     ];
 
-    let adminZoneRef = 'RB:AdministrativeZone:0127';
-    let newNotifications = addAdminRef(notifications, 0, adminZoneRef);
-    assert.deepEqual(newNotifications[0].eventFilter.administrativeZoneRefs, [
-      adminZoneRef,
-    ]);
+    const adminZoneRef = 'RB:AdministrativeZone:0127';
+    const newNotifications = addAdminRef(notifications, 0, adminZoneRef);
+    assert.deepEqual(newNotifications[0].eventFilter.administrativeZoneRefs, [adminZoneRef]);
   });
 
   it('should remove adminZoneRef', () => {
-    let notifications = [
+    const notifications = [
       {
         notificationType: 'EMAIL',
         eventFilter: {
-          administrativeZoneRefs: [
-            'RB:AdministrativeZone:0127',
-            'RB:AdministrativeZone:0128',
-          ],
+          administrativeZoneRefs: ['RB:AdministrativeZone:0127', 'RB:AdministrativeZone:0128'],
         },
         enabled: true,
       },
     ];
 
-    let adminZoneRefRemove = 'RB:AdministrativeZone:0127';
-    let newNotifications = removeAdminRef(notifications, 0, adminZoneRefRemove);
+    const adminZoneRefRemove = 'RB:AdministrativeZone:0127';
+    const newNotifications = removeAdminRef(notifications, 0, adminZoneRefRemove);
     assert.deepEqual(newNotifications[0].eventFilter.administrativeZoneRefs, [
       'RB:AdministrativeZone:0128',
     ]);
   });
 
   it('should remove redundant job domain actions', () => {
-    let jobDomainActions = {
+    const jobDomainActions = {
       TIMETABLE: [
         '*',
         'FILE_TRANSFER',
@@ -197,7 +177,7 @@ describe('Organization reducer utils', () => {
       GRAPH: ['*', 'BUILD_GRAPH'],
     };
 
-    let allActionsForJobDomain = [
+    const allActionsForJobDomain = [
       'FILE_TRANSFER',
       'FILE_CLASSIFICATION',
       'IMPORT',
@@ -210,31 +190,23 @@ describe('Organization reducer utils', () => {
       'EXPORT_NETEX',
     ];
 
-    let checkedAllActions = removeRedundantActions(
+    const checkedAllActions = removeRedundantActions(
       allActionsForJobDomain,
       'TIMETABLE',
-      jobDomainActions,
+      jobDomainActions
     );
     assert.deepEqual(checkedAllActions, ['*']);
 
-    let someActionsForJobDomain = [
-      'FILE_TRANSFER',
-      'FILE_CLASSIFICATION',
-      'IMPORT',
-    ];
+    const someActionsForJobDomain = ['FILE_TRANSFER', 'FILE_CLASSIFICATION', 'IMPORT'];
 
-    let checkedSomeActions = removeRedundantActions(
+    const checkedSomeActions = removeRedundantActions(
       someActionsForJobDomain,
       'TIMETABLE',
-      jobDomainActions,
+      jobDomainActions
     );
-    assert.deepEqual(checkedSomeActions, [
-      'FILE_TRANSFER',
-      'FILE_CLASSIFICATION',
-      'IMPORT',
-    ]);
+    assert.deepEqual(checkedSomeActions, ['FILE_TRANSFER', 'FILE_CLASSIFICATION', 'IMPORT']);
 
-    let allActionsForJobDomainWithAsterisk = [
+    const allActionsForJobDomainWithAsterisk = [
       '*',
       'FILE_TRANSFER',
       'FILE_CLASSIFICATION',
@@ -248,10 +220,10 @@ describe('Organization reducer utils', () => {
       'EXPORT_NETEX',
     ];
 
-    let allActionsWithAsterisk = removeRedundantActions(
+    const allActionsWithAsterisk = removeRedundantActions(
       allActionsForJobDomainWithAsterisk,
       'TIMETABLE',
-      jobDomainActions,
+      jobDomainActions
     );
     assert.deepEqual(allActionsWithAsterisk, ['*']);
   });

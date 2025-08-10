@@ -16,7 +16,7 @@
 
 import * as types from './actionTypes';
 
-var UtilsActions = {};
+const UtilsActions = {};
 
 function sendData(payLoad, type) {
   return {

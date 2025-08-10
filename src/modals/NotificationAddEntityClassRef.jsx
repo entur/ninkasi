@@ -32,15 +32,14 @@ class NotificationAddEntityClassRef extends React.Component {
   }
 
   getEntityClassificationsForType(entityType) {
-    OrganizationRegisterActions.getEntityByClassification(
-      entityType,
-      this.props.getToken,
-    ).then((response) => {
-      this.setState({
-        entityClassificationRefs: response.data,
-        entityType,
-      });
-    });
+    OrganizationRegisterActions.getEntityByClassification(entityType, this.props.getToken).then(
+      response => {
+        this.setState({
+          entityClassificationRefs: response.data,
+          entityType,
+        });
+      }
+    );
   }
 
   handleAdd() {
@@ -48,10 +47,7 @@ class NotificationAddEntityClassRef extends React.Component {
     const { index, dispatch } = this.props;
     if (entityClasRefSelected !== null) {
       dispatch(
-        OrganizationRegisterActions.addEntityRefToNotification(
-          index,
-          entityClasRefSelected,
-        ),
+        OrganizationRegisterActions.addEntityRefToNotification(index, entityClasRefSelected)
       );
     }
   }
@@ -75,12 +71,10 @@ class NotificationAddEntityClassRef extends React.Component {
         <FormControl fullWidth>
           <Select
             value={entityType}
-            onChange={(e) =>
-              this.getEntityClassificationsForType(e.target.value)
-            }
+            onChange={e => this.getEntityClassificationsForType(e.target.value)}
             displayEmpty
           >
-            {entityTypes.map((entity) => (
+            {entityTypes.map(entity => (
               <MenuItem key={entity.id} value={entity.id}>
                 {entity.name}
               </MenuItem>
@@ -90,12 +84,12 @@ class NotificationAddEntityClassRef extends React.Component {
         <FormControl fullWidth style={{ marginLeft: 5 }}>
           <Select
             value={this.state.entityClasRefSelected}
-            onChange={(e) => {
+            onChange={e => {
               this.setState({ entityClasRefSelected: e.target.value });
             }}
             displayEmpty
           >
-            {entityClassificationRefs.map((type) => (
+            {entityClassificationRefs.map(type => (
               <MenuItem key={type.id} value={type.id}>
                 {type.name}
               </MenuItem>
@@ -114,10 +108,8 @@ class NotificationAddEntityClassRef extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   entityTypes: state.OrganizationReducer.entityTypes,
 });
 
-export default connect(mapStateToProps)(
-  withAuth(NotificationAddEntityClassRef),
-);
+export default connect(mapStateToProps)(withAuth(NotificationAddEntityClassRef));
