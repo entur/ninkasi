@@ -3,10 +3,11 @@ import React from 'react';
 const pageNameFromPathName = pathname => {
   switch (pathname) {
     case '/':
+    case '/timetable-admin':
       return 'Timetable Admin';
-    case '/geocoder':
+    case '/geocoder-pipeline':
       return 'Geocoder Pipeline';
-    case '/organization':
+    case '/permissions':
       return 'Permissions';
     default:
       return '';
