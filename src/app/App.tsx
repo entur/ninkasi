@@ -9,10 +9,9 @@ import {
 import { connect } from 'react-redux';
 import { useAuth } from '../auth';
 import { useConfig } from '../contexts/ConfigContext';
-import Header from './components/Header';
+import Header from './components/header/Header';
 import NoAccess from './components/NoAccess';
 import Router from './Router';
-import Menu from './components/Menu';
 import NotificationContainer from './components/NotificationContainer';
 import UtilsActions from '../actions/UtilsActions';
 import UserContextActions from '../actions/UserContextActions';
@@ -21,11 +20,10 @@ import UserActions from '../actions/UserActions';
 interface AppProps {
   dispatch: any;
   isConfigLoaded: boolean;
-  isMenuOpen: boolean;
   isAdmin: boolean;
 }
 
-const App: React.FC<AppProps> = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin }) => {
+const App: React.FC<AppProps> = ({ dispatch, isConfigLoaded, isAdmin }) => {
   const auth = useAuth();
   const config = useConfig();
 
@@ -82,9 +80,8 @@ const App: React.FC<AppProps> = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <NotificationContainer />
-          <Menu open={isMenuOpen} />
-          <div className="app">
-            <Header />
+          <Header />
+          <div className="app" style={{ marginTop: '64px' }}>
             {isAdmin ? (
               <Router />
             ) : (
@@ -106,7 +103,6 @@ const App: React.FC<AppProps> = ({ dispatch, isConfigLoaded, isMenuOpen, isAdmin
 
 const mapStateToProps = (state: any) => ({
   isConfigLoaded: state.UtilsReducer.isConfigLoaded,
-  isMenuOpen: state.app.isMenuOpen,
   isAdmin: state.UserContextReducer.isRouteDataAdmin,
 });
 

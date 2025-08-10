@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router';
 
 import Providers from 'screens/providers';
 import Geocoder from 'screens/geocoder';
+import Organization from 'screens/organization';
 import { MicroFrontend } from '@entur/micro-frontend';
 import { useAuth } from 'react-oidc-context';
 import { connect } from 'react-redux';
@@ -28,6 +29,7 @@ const Router = ({ dispatch }) => {
     <Switch>
       <Route exact path="/" component={Providers} />
       <Route exact path="/geocoder" component={Geocoder} />
+      <Route exact path="/organization" component={Organization} />
       <Route path="/netex-validation-reports">
         {window.config.udugMicroFrontendUrl && (
           <div style={{ backgroundColor: '#fff' }}>

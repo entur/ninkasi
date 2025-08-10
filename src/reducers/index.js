@@ -15,7 +15,6 @@
  */
 
 import { combineReducers } from 'redux';
-import { connectRouter } from 'connected-react-router';
 
 import AppReducer from './AppReducer';
 import SuppliersReducer from './SuppliersReducer';
@@ -25,16 +24,14 @@ import OrganizationReducer from './OrganizationReducer';
 import UserReducer from './UserReducer';
 import UserContextReducer from './UserContextReducer';
 
-const createRootReducer = history =>
-  combineReducers({
-    router: connectRouter(history),
-    app: AppReducer,
-    SuppliersReducer,
-    MardukReducer,
-    UtilsReducer,
-    OrganizationReducer,
-    UserReducer,
-    UserContextReducer,
-  });
+const rootReducer = combineReducers({
+  app: AppReducer,
+  SuppliersReducer,
+  MardukReducer,
+  UtilsReducer,
+  OrganizationReducer,
+  UserReducer,
+  UserContextReducer,
+});
 
-export default createRootReducer;
+export default rootReducer;
