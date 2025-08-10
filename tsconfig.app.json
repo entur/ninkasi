@@ -42,5 +42,5 @@
       "static/*": ["./src/static/*"]
     }
   },
-  "include": ["src", "src/**/*.json"]
+  "include": ["src", "src/**/*.json", "src/**/*.d.ts"]
 }
