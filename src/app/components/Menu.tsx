@@ -32,8 +32,9 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
 }));
 
 const menuItems = [
-  { text: 'Providers', path: '/' },
-  { text: 'Geocoder', path: '/geocoder' },
+  { text: 'Timetable Admin', path: '/' },
+  { text: 'Geocoder Pipeline', path: '/geocoder' },
+  { text: 'Permissions', path: '/organization' },
 ];
 
 interface MenuProps {

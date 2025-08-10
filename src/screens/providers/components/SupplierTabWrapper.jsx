@@ -23,7 +23,6 @@ import ChouetteAllJobs from './ChouetteAllJobs';
 import DataMigrationDetails from './DataMigrationDetails';
 import { Tabs, Tab, Box, CircularProgress } from '@mui/material';
 import { getQueryVariable } from 'utils';
-import OrganizationRegister from './OrganizationRegister';
 import ExportedFilesView from './ExportedFilesView';
 import { MicroFrontend } from '@entur/micro-frontend';
 import { MicroFrontendFetchStatus } from '../../../app/components/MicroFrontendFetchStatus';
@@ -180,13 +179,6 @@ class SupplierTabWrapper extends React.Component {
           this.onTabChangeForAllProviders(null, 'migrateData');
           return 0;
         }
-      case 'organisationRegister':
-        if (displayAllSuppliers) {
-          return 4;
-        } else {
-          this.onTabChangeForAllProviders(null, 'migrateData');
-          return 0;
-        }
       default:
         return 0;
     }
@@ -203,8 +195,6 @@ class SupplierTabWrapper extends React.Component {
           return 2;
         case 'exportedFiles':
           return 3;
-        case 'organisationRegister':
-          return 4;
         default:
           return 0;
       }
@@ -226,13 +216,7 @@ class SupplierTabWrapper extends React.Component {
 
   getTabValueFromIndex(index, isAllProviders) {
     if (isAllProviders) {
-      const values = [
-        'chouetteJobs',
-        'events',
-        'statistics',
-        'exportedFiles',
-        'organisationRegister',
-      ];
+      const values = ['chouetteJobs', 'events', 'statistics', 'exportedFiles'];
       return values[index] || 'chouetteJobs';
     } else {
       const values = ['migrateData', 'events', 'chouetteJobs', 'statistics'];
@@ -309,9 +293,6 @@ class SupplierTabWrapper extends React.Component {
               <Tab value="events" label="Events" />
               <Tab value="statistics" label="Statistics" />
               <Tab value="exportedFiles" label="Exported files" />
-              {canEditOrganisation && (
-                <Tab value="organisationRegister" label="Organisation register" />
-              )}
             </Tabs>
             <Box sx={{ p: 3 }}>
               {currentTabIndex === 0 && <ChouetteAllJobs />}
@@ -355,7 +336,6 @@ class SupplierTabWrapper extends React.Component {
                 />
               )}
               {currentTabIndex === 3 && <ExportedFilesView />}
-              {canEditOrganisation && currentTabIndex === 4 && <OrganizationRegister />}
             </Box>
           </Box>
         );
