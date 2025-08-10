@@ -17,10 +17,9 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
-import { routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
-import createRootReducer from 'reducers';
+import rootReducer from 'reducers';
 
 export const history = createBrowserHistory();
 
@@ -30,20 +29,18 @@ export default function configureStore() {
   if (process.env.NODE_ENV === 'development') {
     const loggerMiddleware = createLogger({ collapsed: true });
     const composeEnhancers = composeWithDevTools({});
-    enchancer = composeEnhancers(
-      applyMiddleware(routerMiddleware(history), thunkMiddleware, loggerMiddleware)
-    );
+    enchancer = composeEnhancers(applyMiddleware(thunkMiddleware, loggerMiddleware));
   } else {
-    enchancer = compose(applyMiddleware(routerMiddleware(history), thunkMiddleware));
+    enchancer = compose(applyMiddleware(thunkMiddleware));
   }
 
-  const store = createStore(createRootReducer(history), {}, enchancer);
+  const store = createStore(rootReducer, {}, enchancer);
 
   if (import.meta.hot) {
     // Enable Vite hot module replacement for reducers
     import.meta.hot.accept('../reducers', async () => {
       const { default: nextRootReducer } = await import('reducers/');
-      store.replaceReducer(nextRootReducer(history));
+      store.replaceReducer(nextRootReducer);
     });
   }
 

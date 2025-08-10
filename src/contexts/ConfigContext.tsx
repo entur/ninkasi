@@ -16,6 +16,7 @@ export interface Config {
   uttuBaseUrl?: string;
   organisationRegisterBaseUrl?: string;
   noonReportBaseUrl?: string;
+  providersBaseUrl?: string;
 }
 
 export const ConfigContext = React.createContext<Config>({});

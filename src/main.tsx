@@ -1,11 +1,11 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
+import { BrowserRouter } from 'react-router-dom';
 import { startRouteChangeEmitter } from '@entur/micro-frontend';
 import './sass/main.scss';
 import App from './app/App';
-import configureStore, { history } from './store/store';
+import configureStore from './store/store';
 import { fetchConfig } from './config/fetchConfig';
 import { ConfigContext } from './contexts/ConfigContext';
 import { AuthProvider } from './auth';
@@ -23,9 +23,9 @@ fetchConfig().then(config => {
       <ConfigContext.Provider value={config}>
         <AuthProvider>
           <Provider store={configureStore()}>
-            <ConnectedRouter history={history}>
+            <BrowserRouter>
               <App />
-            </ConnectedRouter>
+            </BrowserRouter>
           </Provider>
         </AuthProvider>
       </ConfigContext.Provider>
