@@ -276,17 +276,19 @@ const MardukReducer = (state = cleanSlate, action) => {
         chouetteAllJobStatus: action.payLoad,
       });
 
-    case types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER:
-      let chouetteJobFilter = { ...state.chouetteJobFilter };
+    case types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER: {
+      const chouetteJobFilter = { ...state.chouetteJobFilter };
       chouetteJobFilter[action.payLoad.option] = action.payLoad.value;
       return Object.assign({}, state, { chouetteJobFilter: chouetteJobFilter });
+    }
 
-    case types.TOGGLE_CHOUETTE_INFO_CHECKBOX_ALL_FILTER:
-      let chouetteJobAllFilter = { ...state.chouetteJobAllFilter };
+    case types.TOGGLE_CHOUETTE_INFO_CHECKBOX_ALL_FILTER: {
+      const chouetteJobAllFilter = { ...state.chouetteJobAllFilter };
       chouetteJobAllFilter[action.payLoad.option] = action.payLoad.value;
       return Object.assign({}, state, {
         chouetteJobAllFilter: chouetteJobAllFilter,
       });
+    }
 
     case types.SET_ACTIVE_ACTION_FILTER:
       return Object.assign({}, state, { actionFilter: action.payLoad });
@@ -296,7 +298,7 @@ const MardukReducer = (state = cleanSlate, action) => {
 
     case types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER:
       if (state.chouette_cancel_token) {
-        let cancelToken = state.chouette_cancel_token;
+        const cancelToken = state.chouette_cancel_token;
         cancelToken('Operation canceled by new request.');
       }
 
@@ -307,7 +309,7 @@ const MardukReducer = (state = cleanSlate, action) => {
 
     case types.REQUESTED_ALL_CHOUETTE_JOB_STATUS:
       if (state.chouette_cancel_all_token) {
-        let cancelAllToken = state.chouette_cancel_all_token;
+        const cancelAllToken = state.chouette_cancel_all_token;
         cancelAllToken('Operation canceled by new request');
       }
 

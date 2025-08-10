@@ -47,11 +47,7 @@ export default class TransportModesPopover extends React.Component {
     const { allTransportModes, transportModes } = this.props;
     return (
       <div>
-        <Button
-          variant="contained"
-          onClick={this.handleOpen.bind(this)}
-          style={{ marginLeft: 10 }}
-        >
+        <Button variant="contained" onClick={this.handleOpen.bind(this)} style={{ marginLeft: 10 }}>
           <span>Generate service links for transport modes</span>
         </Button>
         <Menu
@@ -64,21 +60,15 @@ export default class TransportModesPopover extends React.Component {
           transformOrigin={{ horizontal: 'left', vertical: 'top' }}
         >
           {allTransportModes.map((transportMode, i) => {
-            let checked = transportModes.indexOf(transportMode) > -1;
+            const checked = transportModes.indexOf(transportMode) > -1;
             return (
-              <MenuItem
-                key={'action-' + i}
-                style={{ fontSize: 12, minHeight: 18 }}
-              >
+              <MenuItem key={'action-' + i} style={{ fontSize: 12, minHeight: 18 }}>
                 <FormControlLabel
                   control={
                     <Checkbox
                       checked={checked}
-                      onChange={(e) => {
-                        this.props.handleCheckTransportMode(
-                          transportMode,
-                          e.target.checked,
-                        );
+                      onChange={e => {
+                        this.props.handleCheckTransportMode(transportMode, e.target.checked);
                       }}
                     />
                   }

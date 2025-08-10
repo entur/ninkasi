@@ -50,9 +50,7 @@ export const sortByColumns = (items, sortOrder) => {
   const { column, asc } = sortOrder;
   return items
     .slice(0)
-    .sort((a, b) =>
-      asc ? sortAsc(a[column], b[column]) : sortDesc(a[column], b[column]),
-    );
+    .sort((a, b) => (asc ? sortAsc(a[column], b[column]) : sortDesc(a[column], b[column])));
 };
 
 const sortAsc = (a, b) => {
@@ -67,22 +65,18 @@ export const getEntityClassificationRefString = (entityType, allow) => {
   if (!allow) {
     const lastIndex = entityType.lastIndexOf(':');
     if (lastIndex > -1) {
-      return (
-        entityType.substr(0, lastIndex + 1) +
-        '!' +
-        entityType.substr(lastIndex + 1)
-      );
+      return entityType.substr(0, lastIndex + 1) + '!' + entityType.substr(lastIndex + 1);
     }
   }
   return entityType;
 };
 
-export const getSizeFromBytes = (bytes) => {
-  var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+export const getSizeFromBytes = bytes => {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
   if (bytes === 0) return '0 Byte';
 
-  let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
 
   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 };
@@ -91,7 +85,7 @@ export const getOrganizationNameByRef = (organizations, ref) => {
   if (!organizations) return ref;
 
   for (let i = 0; i < organizations.length; i++) {
-    let org = organizations[i];
+    const org = organizations[i];
     if (org.id === ref) return org.name;
   }
   return ref;
@@ -101,53 +95,50 @@ export const getAdminZoneNameByRef = (adminZones, ref) => {
   if (!adminZones) return ref;
 
   for (let i = 0; i < adminZones.length; i++) {
-    let zone = adminZones[i];
+    const zone = adminZones[i];
     if (zone.id === ref) return zone.name;
   }
   return ref;
 };
 
 export const sortFiles = (unsortedFiles, sortOrder, filterText) => {
-  let files = unsortedFiles.slice().filter((file) => {
-    return (
-      file.name &&
-      file.name.toLowerCase().indexOf(filterText.toLowerCase()) > -1
-    );
+  const files = unsortedFiles.slice().filter(file => {
+    return file.name && file.name.toLowerCase().indexOf(filterText.toLowerCase()) > -1;
   });
 
   let sortedFiles = !sortOrder.ext
-    ? sortBy(files, (file) => new Date(file.updated))
+    ? sortBy(files, file => new Date(file.updated))
     : sortOrder.ext === 1
-      ? sortBy(files, (file) => file.ext)
-      : sortBy(files, (file) => file.ext).reverse();
+      ? sortBy(files, file => file.ext)
+      : sortBy(files, file => file.ext).reverse();
 
   sortedFiles = !sortOrder.name
     ? sortedFiles
     : sortOrder.name === 1
-      ? sortBy(files, (file) => file.name)
-      : sortBy(files, (file) => file.name).reverse();
+      ? sortBy(files, file => file.name)
+      : sortBy(files, file => file.name).reverse();
 
   sortedFiles = !sortOrder.size
     ? sortedFiles
     : sortOrder.size === 1
-      ? sortBy(files, (file) => file.fileSize)
-      : sortBy(files, (file) => file.fileSize).reverse();
+      ? sortBy(files, file => file.fileSize)
+      : sortBy(files, file => file.fileSize).reverse();
 
   sortedFiles = !sortOrder.date
     ? sortedFiles
     : sortOrder.date === 1
-      ? sortBy(files, (file) => new Date(file.updated))
-      : sortBy(files, (file) => new Date(file.updated)).reverse();
+      ? sortBy(files, file => new Date(file.updated))
+      : sortBy(files, file => new Date(file.updated)).reverse();
 
   return sortedFiles;
 };
 
-export const getQueryVariable = (variable) => {
-  let query = window.location.search.substring(1);
-  let vars = query.split('&');
+export const getQueryVariable = variable => {
+  const query = window.location.search.substring(1);
+  const vars = query.split('&');
 
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split('=');
+  for (let i = 0; i < vars.length; i++) {
+    const pair = vars[i].split('=');
     if (decodeURIComponent(pair[0]) === variable) {
       return decodeURIComponent(pair[1]);
     }

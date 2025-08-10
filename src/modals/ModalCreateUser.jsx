@@ -15,24 +15,13 @@
  */
 
 import React from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Select, MenuItem } from '@mui/material';
 import ResponsiblitySetList from './ResponsiblitySetList';
 import UserRespSetPopover from './UserRespSetPopover';
-import {
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-} from '@mui/material';
+import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 
 const initialState = {
   user: {
@@ -68,7 +57,7 @@ class ModalCreateUser extends React.Component {
 
   handleChangeUsername(e, value) {
     const isValid = this.validateBy('USERNAME', value);
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       user: { ...prevState.user, username: value },
       usernameValid: isValid,
     }));
@@ -99,10 +88,7 @@ class ModalCreateUser extends React.Component {
       isAddingResponsibilitySet: false,
       user: {
         ...user,
-        responsibilitySetRefs: [
-          ...user.responsibilitySetRefs,
-          temptResponsibilitySet,
-        ],
+        responsibilitySetRefs: [...user.responsibilitySetRefs, temptResponsibilitySet],
       },
       temptResponsibilitySet: '',
     });
@@ -163,21 +149,10 @@ class ModalCreateUser extends React.Component {
   }
 
   render() {
-    const {
-      isModalOpen,
-      handleSubmit,
-      takenUsernames,
-      organizations,
-      responsibilities,
-    } = this.props;
+    const { isModalOpen, handleSubmit, takenUsernames, organizations, responsibilities } =
+      this.props;
 
-    const {
-      user,
-      isAddingResponsibilitySet,
-      usernameValid,
-      emailValid,
-      emailIsTaken,
-    } = this.state;
+    const { user, isAddingResponsibilitySet, usernameValid, emailValid, emailIsTaken } = this.state;
 
     const invalidPrivateCode = takenUsernames.indexOf(user.username) > -1;
     const disableCreate =
@@ -202,12 +177,7 @@ class ModalCreateUser extends React.Component {
     ];
 
     return (
-      <Dialog
-        open={isModalOpen}
-        onClose={() => this.handleOnClose()}
-        maxWidth="md"
-        fullWidth
-      >
+      <Dialog open={isModalOpen} onClose={() => this.handleOnClose()} maxWidth="md" fullWidth>
         <DialogTitle>Creating a new user</DialogTitle>
         <DialogContent>
           <div
@@ -216,16 +186,12 @@ class ModalCreateUser extends React.Component {
               flexDirection: 'column',
             }}
           >
-            <div onClick={(e) => e.stopPropagation()}>
+            <div onClick={e => e.stopPropagation()}>
               <FormControl>
                 <RadioGroup
                   defaultValue="personal_account"
-                  value={
-                    user.personalAccount
-                      ? 'personal_account'
-                      : 'notification_account'
-                  }
-                  onChange={(e) => {
+                  value={user.personalAccount ? 'personal_account' : 'notification_account'}
+                  onChange={e => {
                     e.stopPropagation();
                     this.handleChangeIsPersonalAccount(e.target.value);
                   }}
@@ -253,14 +219,14 @@ class ModalCreateUser extends React.Component {
                 user.username &&
                 'Username can only include alphanumerics, hyphens and dot'
               }
-              onChange={(e) => this.handleChangeUsername(e, e.target.value)}
+              onChange={e => this.handleChangeUsername(e, e.target.value)}
               fullWidth={true}
             />
             <TextField
               placeholder="First name"
               label="First name"
               value={user.contactDetails.firstName}
-              onChange={(e) =>
+              onChange={e =>
                 this.setState({
                   user: {
                     ...user,
@@ -277,7 +243,7 @@ class ModalCreateUser extends React.Component {
               placeholder="Last name"
               label="Last name"
               value={user.contactDetails.lastName}
-              onChange={(e) =>
+              onChange={e =>
                 this.setState({
                   user: {
                     ...user,
@@ -302,14 +268,14 @@ class ModalCreateUser extends React.Component {
                     : ''
               }
               value={user.contactDetails.email}
-              onChange={(e) => this.handleChangeEmail(e, e.target.value)}
+              onChange={e => this.handleChangeEmail(e, e.target.value)}
               fullWidth={true}
             />
             <TextField
               placeholder="Phonenumber"
               label="Phonenumber"
               value={user.contactDetails.phone}
-              onChange={(e) =>
+              onChange={e =>
                 this.setState({
                   user: {
                     ...user,
@@ -325,14 +291,14 @@ class ModalCreateUser extends React.Component {
             <FormControl fullWidth>
               <Select
                 value={user.organisationRef}
-                onChange={(e) =>
+                onChange={e =>
                   this.setState({
                     user: { ...user, organisationRef: e.target.value },
                   })
                 }
                 displayEmpty
               >
-                {organizations.map((org) => (
+                {organizations.map(org => (
                   <MenuItem key={org.id} value={org.id}>
                     {org.name}
                   </MenuItem>
@@ -344,15 +310,13 @@ class ModalCreateUser extends React.Component {
               addedRespSets={this.state.user.responsibilitySetRefs}
               anchorEl={this.state.addRespAnchorEl}
               handleAdd={this.handleAddResponsibilitySet.bind(this)}
-              handleClose={() =>
-                this.setState({ isAddingResponsibilitySet: false })
-              }
+              handleClose={() => this.setState({ isAddingResponsibilitySet: false })}
               open={isAddingResponsibilitySet}
             />
             <ResponsiblitySetList
               user={user}
               responsiblities={responsibilities}
-              handleAdd={(e) =>
+              handleAdd={e =>
                 this.setState({
                   isAddingResponsibilitySet: true,
                   addRespAnchorEl: e.currentTarget,

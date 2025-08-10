@@ -47,10 +47,8 @@ const intialState = {
 };
 
 const filterHelper = (loggedEvents, loggedEventsFilter) => {
-  return loggedEvents.filter((item) => {
-    return (
-      item.title.toLowerCase().indexOf(loggedEventsFilter.toLowerCase()) > -1
-    );
+  return loggedEvents.filter(item => {
+    return item.title.toLowerCase().indexOf(loggedEventsFilter.toLowerCase()) > -1;
   });
 };
 
@@ -76,17 +74,13 @@ const UtilsReducer = (state = intialState, action) => {
       return Object.assign({}, state, {
         outboundFilelist: [
           ...state.outboundFilelist,
-          ...action.payLoad.filter(
-            (x) => state.outboundFilelist.indexOf(x) === -1,
-          ),
+          ...action.payLoad.filter(x => state.outboundFilelist.indexOf(x) === -1),
         ],
       });
 
     case types.REMOVE_FILES_FROM_OUTBOUND:
       return Object.assign({}, state, {
-        outboundFilelist: state.outboundFilelist.filter(
-          (x) => action.payLoad.indexOf(x) === -1,
-        ),
+        outboundFilelist: state.outboundFilelist.filter(x => action.payLoad.indexOf(x) === -1),
       });
 
     case types.RESET_OUTBOUND_FILES:
@@ -97,10 +91,7 @@ const UtilsReducer = (state = intialState, action) => {
 
     case types.TOGGLE_EXPANDABLE_FOR_EVENT_WRAPPER:
       return Object.assign({}, state, {
-        expandedEvents: toggleExpandedEvents(
-          action.payLoad,
-          state.expandedEvents,
-        ),
+        expandedEvents: toggleExpandedEvents(action.payLoad, state.expandedEvents),
       });
 
     case types.OPENED_HISTORY_MODAL:
@@ -132,11 +123,12 @@ const UtilsReducer = (state = intialState, action) => {
         shouldUpdatePoiFilter: true,
       });
 
-    case types.LOG_EVENT:
+    case types.LOG_EVENT: {
       const event = eventHelper(action.payLoad, state.loggedEvents);
       return Object.assign({}, state, {
         loggedEvents: state.loggedEvents.concat(event),
       });
+    }
 
     case types.LOG_EVENT_FILTER:
       return Object.assign({}, state, {
@@ -147,7 +139,7 @@ const UtilsReducer = (state = intialState, action) => {
     case types.SUCCESS_FETCH_PROVIDER:
       return Object.assign({}, state, { supplierForm: action.payLoad });
 
-    case types.SORT_EVENTLIST_BY_COLUMN:
+    case types.SORT_EVENTLIST_BY_COLUMN: {
       let eventsSortOrder = 0;
 
       if (state.eventListSortOrder.property === action.payLoad) {
@@ -160,13 +152,13 @@ const UtilsReducer = (state = intialState, action) => {
           sortOrder: eventsSortOrder,
         },
       });
+    }
 
-    case types.SORT_CHOUETTE_ALL_BY_COLUMN:
+    case types.SORT_CHOUETTE_ALL_BY_COLUMN: {
       let chouetteAllSortOrder = 0;
 
       if (state.chouetteListAllSortOrder.property === action.payLoad) {
-        chouetteAllSortOrder =
-          state.chouetteListAllSortOrder.sortOrder >= 1 ? 0 : 1;
+        chouetteAllSortOrder = state.chouetteListAllSortOrder.sortOrder >= 1 ? 0 : 1;
       }
 
       return Object.assign({}, state, {
@@ -175,8 +167,9 @@ const UtilsReducer = (state = intialState, action) => {
           sortOrder: chouetteAllSortOrder,
         },
       });
+    }
 
-    case types.SORT_CHOUETTE_BY_COLUMN:
+    case types.SORT_CHOUETTE_BY_COLUMN: {
       let chouetteSortOrder = 0;
 
       if (state.chouetteListSortOrder.property === action.payLoad) {
@@ -189,6 +182,7 @@ const UtilsReducer = (state = intialState, action) => {
           sortOrder: chouetteSortOrder,
         },
       });
+    }
 
     case types.CONFIG_LOADED:
       return Object.assign({}, state, { isConfigLoaded: true });
@@ -201,7 +195,7 @@ const UtilsReducer = (state = intialState, action) => {
 const toggleExpandedEvents = (index, expanded) => {
   if (expanded.indexOf(index) === -1) return expanded.concat(index);
 
-  return expanded.filter((item) => item !== index);
+  return expanded.filter(item => item !== index);
 };
 
 export default UtilsReducer;

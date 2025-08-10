@@ -21,7 +21,7 @@ import SuppliersActions from 'actions/SuppliersActions';
 import cfgreader from 'config/readConfig';
 import moment from 'moment';
 
-const getColorByStatus = (status) => {
+const getColorByStatus = status => {
   switch (status) {
     case 'STARTED':
       return '#08920e';
@@ -82,11 +82,9 @@ class GraphStatus extends React.Component {
     cfgreader.readConfig(
       function (config) {
         window.config = config;
-        this.props.dispatch(
-          SuppliersActions.getGraphStatus(this.props.getToken),
-        );
+        this.props.dispatch(SuppliersActions.getGraphStatus(this.props.getToken));
         this.startPolling();
-      }.bind(this),
+      }.bind(this)
     );
   }
 
@@ -137,7 +135,7 @@ class GraphStatus extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   graphStatus: state.SuppliersReducer.graphStatus,
   baseGraphStatus: state.SuppliersReducer.baseGraphStatus,
 });

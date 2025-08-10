@@ -37,31 +37,24 @@ class NotificationAdminZoneRefs extends React.Component {
     const adminRefs = this.adminRefsRef.current;
     const { dispatch, index, notification } = this.props;
     const selectedIndex = adminRefs.options.selectedIndex;
-    const administrativeZoneRefs =
-      notification.eventFilter.administrativeZoneRefs || [];
+    const administrativeZoneRefs = notification.eventFilter.administrativeZoneRefs || [];
     const adminZoneIdToDelete = administrativeZoneRefs[selectedIndex];
 
     if (adminZoneIdToDelete) {
       dispatch(
-        OrganizationRegisterActions.removeAdminZoneRefToNotification(
-          index,
-          adminZoneIdToDelete,
-        ),
+        OrganizationRegisterActions.removeAdminZoneRefToNotification(index, adminZoneIdToDelete)
       );
     }
   }
 
   handleAddAdminRefRole(value) {
     const { index, dispatch } = this.props;
-    dispatch(
-      OrganizationRegisterActions.addAdminZoneRefToNotification(index, value),
-    );
+    dispatch(OrganizationRegisterActions.addAdminZoneRefToNotification(index, value));
   }
 
   render() {
     const { notification, visible, administrativeZones } = this.props;
-    const administrativeZoneRefs =
-      notification.eventFilter.administrativeZoneRefs || [];
+    const administrativeZoneRefs = notification.eventFilter.administrativeZoneRefs || [];
 
     return (
       <div
@@ -73,9 +66,7 @@ class NotificationAdminZoneRefs extends React.Component {
           padding: 5,
         }}
       >
-        <div style={{ width: '100%', fontSize: 12, fontWeight: 600 }}>
-          Administrative zones
-        </div>
+        <div style={{ width: '100%', fontSize: 12, fontWeight: 600 }}>Administrative zones</div>
         <div style={{ display: 'flex' }}>
           <div style={{ display: 'flex', flexDirection: 'column', flex: 2 }}>
             <select
@@ -85,8 +76,7 @@ class NotificationAdminZoneRefs extends React.Component {
             >
               {administrativeZoneRefs.map((ref, index) => (
                 <option key={'entity-' + index}>
-                  {ref} -{' '}
-                  {administrativeZones.find((az) => az.id === ref).name}{' '}
+                  {ref} - {administrativeZones.find(az => az.id === ref).name}{' '}
                 </option>
               ))}
             </select>
@@ -96,10 +86,7 @@ class NotificationAdminZoneRefs extends React.Component {
               handleDelete={this.handleRemoveAdminRefRole.bind(this)}
             />
           </div>
-          <IconButton
-            onClick={this.handleRemoveAdminRefRole.bind(this)}
-            size="large"
-          >
+          <IconButton onClick={this.handleRemoveAdminRefRole.bind(this)} size="large">
             <Remove style={{ color: '#cc0000' }} />
           </IconButton>
         </div>
@@ -108,7 +95,7 @@ class NotificationAdminZoneRefs extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   administrativeZones: state.OrganizationReducer.administrativeZones,
 });
 

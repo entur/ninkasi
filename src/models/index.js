@@ -14,15 +14,10 @@
  *
  */
 
-export const getPaginationMap = (
-  chouetteJobStatus,
-  sortProperty,
-  sortOrder,
-  filterFromDate,
-) => {
-  let filteredStatus =
+export const getPaginationMap = (chouetteJobStatus, sortProperty, sortOrder, filterFromDate) => {
+  const filteredStatus =
     chouetteJobStatus
-      .filter((job) => {
+      .filter(job => {
         if (!filterFromDate) return true;
 
         return new Date(job.created) > new Date(filterFromDate);
@@ -39,7 +34,7 @@ export const getPaginationMap = (
         return 0;
       }) || [];
 
-  let paginationMap = [];
+  const paginationMap = [];
 
   for (let i = 0, j = filteredStatus.length; i < j; i += 20) {
     paginationMap.push(filteredStatus.slice(i, i + 20));

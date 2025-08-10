@@ -35,7 +35,7 @@ class NotificationAddZoneRef extends React.Component {
   }
 
   getZoneType(type) {
-    let typeMap = {
+    const typeMap = {
       COUNTRY: 'Country',
       COUNTY: 'County',
       LOCALITY: 'Muncipality',
@@ -47,19 +47,17 @@ class NotificationAddZoneRef extends React.Component {
   render() {
     const { dataSource } = this.props;
 
-    const formattedZones = dataSource.map((zone) => ({
+    const formattedZones = dataSource.map(zone => ({
       text: `${zone.name}  (${this.getZoneType(zone.type)})`,
       value: zone.id,
     }));
 
     return (
       <div>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', marginLeft: 10 }}
-        >
+        <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 10 }}>
           <Autocomplete
             options={formattedZones}
-            getOptionLabel={(option) => option.text}
+            getOptionLabel={option => option.text}
             inputValue={this.state.inputValue}
             onInputChange={(event, newInputValue) => {
               this.setState({ inputValue: newInputValue });
@@ -70,7 +68,7 @@ class NotificationAddZoneRef extends React.Component {
               }
             }}
             filterLimit={7}
-            renderInput={(params) => (
+            renderInput={params => (
               <TextField
                 {...params}
                 label="Add administrative zone"

@@ -51,7 +51,7 @@ class RoleView extends React.Component {
 
   getDeleteConfirmationTitle() {
     const { activeRole } = this.state;
-    let role = activeRole ? activeRole.name : 'N/A';
+    const role = activeRole ? activeRole.name : 'N/A';
     return `Delete role ${role}`;
   }
 
@@ -106,9 +106,7 @@ class RoleView extends React.Component {
   handleDeleteRole(role) {
     this.handleCloseDeleteConfirmation();
     const { getToken } = this.props;
-    this.props.dispatch(
-      OrganizationRegisterActions.deleteRole(role.id, getToken),
-    );
+    this.props.dispatch(OrganizationRegisterActions.deleteRole(role.id, getToken));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -142,23 +140,17 @@ class RoleView extends React.Component {
         <div className="role-row">
           <div className="role-header">
             <div className="col-1-3">
-              <span
-                className="sortable"
-                onClick={() => this.handleSortOrder('name')}
-              >
+              <span className="sortable" onClick={() => this.handleSortOrder('name')}>
                 name
               </span>
             </div>
             <div className="col-1-3">
-              <span
-                className="sortable"
-                onClick={() => this.handleSortOrder('privateCode')}
-              >
+              <span className="sortable" onClick={() => this.handleSortOrder('privateCode')}>
                 private code
               </span>
             </div>
           </div>
-          {sortedRoles.map((role) => {
+          {sortedRoles.map(role => {
             return (
               <div key={'role-' + role.id} className="role-row-item">
                 <div className="col-1-3">{role.name}</div>
@@ -173,9 +165,7 @@ class RoleView extends React.Component {
                       verticalAlign: 'middle',
                       cursor: 'pointer',
                     }}
-                    onClick={() =>
-                      this.handleOpenDeleteConfirmationDialog(role)
-                    }
+                    onClick={() => this.handleOpenDeleteConfirmationDialog(role)}
                   />
                   <Edit
                     color="rgba(25, 118, 210, 0.59)"
@@ -194,10 +184,8 @@ class RoleView extends React.Component {
           {this.state.isCreateModalOpen ? (
             <ModalCreateRole
               isModalOpen={this.state.isCreateModalOpen}
-              handleCloseModal={() =>
-                this.setState({ isCreateModalOpen: false })
-              }
-              takenPrivateCodes={roles.map((role) => role.privateCode)}
+              handleCloseModal={() => this.setState({ isCreateModalOpen: false })}
+              takenPrivateCodes={roles.map(role => role.privateCode)}
               handleSubmit={this.handleCreateRole.bind(this)}
             />
           ) : null}
@@ -227,7 +215,7 @@ class RoleView extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   roles: state.OrganizationReducer.roles,
   status: state.OrganizationReducer.roleStatus,
 });

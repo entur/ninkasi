@@ -34,17 +34,15 @@ const SuppliersReducer = (state = initialState, action) => {
         data: action.payLoad,
         error: true,
       });
-    case types.RECEIVED_SUPPLIERS:
+    case types.RECEIVED_SUPPLIERS: {
       const level1Providers = action.payLoad
-        .filter((p) => p.chouetteInfo && p.chouetteInfo.migrateDataToProvider)
+        .filter(p => p.chouetteInfo && p.chouetteInfo.migrateDataToProvider)
         .sort((a, b) => {
           return a.name.localeCompare(b.name, 'nb');
         });
 
       const level2Providers = action.payLoad
-        .filter(
-          (p) => !(p.chouetteInfo && p.chouetteInfo.migrateDataToProvider),
-        )
+        .filter(p => !(p.chouetteInfo && p.chouetteInfo.migrateDataToProvider))
         .sort((a, b) => {
           return a.name.localeCompare(b.name, 'nb');
         });
@@ -54,6 +52,7 @@ const SuppliersReducer = (state = initialState, action) => {
         data: level1Providers.concat(level2Providers),
         error: false,
       });
+    }
     case types.REQUESTED_SUPPLIERS:
       return Object.assign({}, state, { isLoading: true, error: false });
     case types.SELECT_SUPPLIER:

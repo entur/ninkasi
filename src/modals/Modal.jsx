@@ -23,7 +23,7 @@ class Modal extends React.Component {
 
     const { minWidth, minHeight } = this.props;
 
-    let modalStyle = {
+    const modalStyle = {
       position: 'absolute',
       top: '50%',
       left: '50%',
@@ -38,18 +38,18 @@ class Modal extends React.Component {
     if (this.props.width && this.props.height) {
       modalStyle.width = this.props.width;
       modalStyle.height = this.props.height;
-      ((modalStyle.marginLeft = (this.props.width / 2) * -1),
-        (modalStyle.marginTop = (this.props.height / 2) * -1),
-        (modalStyle.transform = null));
+      modalStyle.marginLeft = (this.props.width / 2) * -1;
+      modalStyle.marginTop = (this.props.height / 2) * -1;
+      modalStyle.transform = null;
     }
 
     if (this.props.style) {
-      for (let key in this.props.style) {
+      for (const key in this.props.style) {
         modalStyle[key] = this.props.style[key];
       }
     }
 
-    let backdropStyle = {
+    const backdropStyle = {
       position: 'fixed',
       width: '100%',
       height: '100%',
@@ -60,7 +60,7 @@ class Modal extends React.Component {
     };
 
     if (this.props.backdropStyle) {
-      for (let key in this.props.backdropStyle) {
+      for (const key in this.props.backdropStyle) {
         backdropStyle[key] = this.props.backdropStyle[key];
       }
     }
@@ -74,7 +74,7 @@ class Modal extends React.Component {
           <div
             className={this.props.backdropClassName}
             style={backdropStyle}
-            onClick={(e) => this.close(e)}
+            onClick={e => this.close(e)}
           />
         )}
       </div>
@@ -90,7 +90,7 @@ class Modal extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     loggedEvents: state.UtilsReducer.loggedEvents,
   };

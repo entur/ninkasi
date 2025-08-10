@@ -17,7 +17,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Grid, Typography, Box, Divider } from '@mui/material';
 
-const EventExpandableContent = (props) => {
+const EventExpandableContent = props => {
   const { events, correlationId } = props;
 
   return (
@@ -40,9 +40,7 @@ const EventExpandableContent = (props) => {
         <div>
           {events.map((event, index) => {
             const stateClass =
-              event.state === 'TIMEOUT' ||
-              event.state === 'ERROR' ||
-              event.state === 'FAILED'
+              event.state === 'TIMEOUT' || event.state === 'ERROR' || event.state === 'FAILED'
                 ? 'error'
                 : 'success';
             return (

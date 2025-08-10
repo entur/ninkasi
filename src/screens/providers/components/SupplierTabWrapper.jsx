@@ -47,9 +47,7 @@ class SupplierTabWrapper extends React.Component {
     const { dispatch } = this.props;
     if (queryTab === 'events') {
       if (queryId) {
-        dispatch(
-          SuppliersActions.getProviderStatus(queryId, this.props.getToken),
-        );
+        dispatch(SuppliersActions.getProviderStatus(queryId, this.props.getToken));
       } else {
         dispatch(SuppliersActions.getAllProviderStatus(this.props.getToken));
       }
@@ -57,9 +55,7 @@ class SupplierTabWrapper extends React.Component {
       if (queryId) {
         dispatch(SuppliersActions.getChouetteJobStatus(this.props.getToken));
       } else {
-        dispatch(
-          SuppliersActions.getChouetteJobsForAllSuppliers(this.props.getToken),
-        );
+        dispatch(SuppliersActions.getChouetteJobsForAllSuppliers(this.props.getToken));
       }
     } else if (queryTab === 'OrganisationRegister') {
       if (queryId) {
@@ -91,11 +87,7 @@ class SupplierTabWrapper extends React.Component {
     const { activeTabForProvider, activeTabForAllProvider } = this.state;
     const queryTab = getQueryVariable('tab');
 
-    if (
-      !displayAllSuppliers &&
-      activeTabForProvider === 'chouetteJobs' &&
-      activeId
-    ) {
+    if (!displayAllSuppliers && activeTabForProvider === 'chouetteJobs' && activeId) {
       dispatch(SuppliersActions.getChouetteJobStatus(getToken));
     }
 
@@ -123,7 +115,7 @@ class SupplierTabWrapper extends React.Component {
       window.history.pushState(
         window.config.endpointBase,
         'Title',
-        `?id=${activeId}&tab=${newValue}`,
+        `?id=${activeId}&tab=${newValue}`
       );
     }
 
@@ -132,9 +124,7 @@ class SupplierTabWrapper extends React.Component {
         dispatch(SuppliersActions.getChouetteJobStatus(this.props.getToken));
         break;
       case 'events':
-        dispatch(
-          SuppliersActions.getProviderStatus(activeId, this.props.getToken),
-        );
+        dispatch(SuppliersActions.getProviderStatus(activeId, this.props.getToken));
         break;
       default:
         break;
@@ -152,22 +142,14 @@ class SupplierTabWrapper extends React.Component {
     });
 
     if (newValue) {
-      window.history.pushState(
-        window.config.endpointBase,
-        'Title',
-        `?tab=${newValue}`,
-      );
+      window.history.pushState(window.config.endpointBase, 'Title', `?tab=${newValue}`);
     }
     switch (newValue) {
       case 'chouetteJobs':
-        this.props.dispatch(
-          SuppliersActions.getChouetteJobsForAllSuppliers(this.props.getToken),
-        );
+        this.props.dispatch(SuppliersActions.getChouetteJobsForAllSuppliers(this.props.getToken));
         break;
       case 'events':
-        this.props.dispatch(
-          SuppliersActions.getAllProviderStatus(this.props.getToken),
-        );
+        this.props.dispatch(SuppliersActions.getAllProviderStatus(this.props.getToken));
         break;
       default:
         break;
@@ -176,7 +158,7 @@ class SupplierTabWrapper extends React.Component {
 
   getTabIndexFromParams() {
     const { displayAllSuppliers } = this.props;
-    let param = getQueryVariable('tab');
+    const param = getQueryVariable('tab');
     switch (param) {
       case 'events':
         return displayAllSuppliers ? 1 : 1;
@@ -268,9 +250,7 @@ class SupplierTabWrapper extends React.Component {
       // If on chouette jobs tab, fetch the data for the new provider
       const queryTab = getQueryVariable('tab');
       if (queryTab === 'chouetteJobs' && this.props.activeId) {
-        this.props.dispatch(
-          SuppliersActions.getChouetteJobStatus(this.props.getToken),
-        );
+        this.props.dispatch(SuppliersActions.getChouetteJobStatus(this.props.getToken));
       }
     }
 
@@ -283,10 +263,7 @@ class SupplierTabWrapper extends React.Component {
   notifyLineStatisticsLoadingFailure() {
     const { dispatch } = this.props;
     dispatch(
-      SuppliersActions.addNotification(
-        'Error loading micro frontend for line statistics',
-        'error',
-      ),
+      SuppliersActions.addNotification('Error loading micro frontend for line statistics', 'error')
     );
   }
 
@@ -304,19 +281,14 @@ class SupplierTabWrapper extends React.Component {
       return (
         <div className="supplier-details disabled">
           <div className="supplier-header">
-            <CircularProgress
-              size={16}
-              sx={{ color: '#39a1f4', margin: '40px' }}
-            />
+            <CircularProgress size={16} sx={{ color: '#39a1f4', margin: '40px' }} />
           </div>
         </div>
       );
     }
 
     const provider =
-      !displayAllSuppliers && suppliers.length
-        ? suppliers.find((s) => s.id === activeId)
-        : null;
+      !displayAllSuppliers && suppliers.length ? suppliers.find(s => s.id === activeId) : null;
     const defaultSelectedIndex = this.getTabIndexFromParams();
 
     if (displayAllSuppliers || provider) {
@@ -338,67 +310,52 @@ class SupplierTabWrapper extends React.Component {
               <Tab value="statistics" label="Statistics" />
               <Tab value="exportedFiles" label="Exported files" />
               {canEditOrganisation && (
-                <Tab
-                  value="organisationRegister"
-                  label="Organisation register"
-                />
+                <Tab value="organisationRegister" label="Organisation register" />
               )}
             </Tabs>
             <Box sx={{ p: 3 }}>
               {currentTabIndex === 0 && <ChouetteAllJobs />}
-              {currentTabIndex === 1 &&
-                window.config.zagmukMicroFrontendUrl && (
-                  <MicroFrontend
-                    id="ror-zagmuk"
-                    host={window.config.zagmukMicroFrontendUrl}
-                    staticPath=""
-                    name="Events"
-                    payload={{
-                      getToken,
-                      locale: 'en',
-                      env: window.config.appEnv,
-                      hideIgnoredExportNetexBlocks: true,
-                      hideAntuValidationSteps: false,
-                      hideFlexDataImport: false,
-                      navigate: (url) => {
-                        window.history.pushState(null, null, url);
-                        window.location.reload();
-                      },
-                    }}
-                    FetchStatus={(props) => (
-                      <MicroFrontendFetchStatus
-                        {...props}
-                        label="Error loading events"
-                      />
-                    )}
-                    handleError={(error) => console.log(error)}
-                  />
-                )}
-              {currentTabIndex === 2 &&
-                window.config.ninsarMicroFrontendUrl && (
-                  <MicroFrontend
-                    id="ror-ninsar"
-                    host={window.config.ninsarMicroFrontendUrl}
-                    staticPath=""
-                    name="Line statistics"
-                    payload={{
-                      getToken,
-                    }}
-                    FetchStatus={(props) => (
-                      <MicroFrontendFetchStatus
-                        {...props}
-                        label="Error loading line statistics"
-                      />
-                    )}
-                    handleError={this.notifyLineStatisticsLoadingFailure.bind(
-                      this,
-                    )}
-                  />
-                )}
-              {currentTabIndex === 3 && <ExportedFilesView />}
-              {canEditOrganisation && currentTabIndex === 4 && (
-                <OrganizationRegister />
+              {currentTabIndex === 1 && window.config.zagmukMicroFrontendUrl && (
+                <MicroFrontend
+                  id="ror-zagmuk"
+                  host={window.config.zagmukMicroFrontendUrl}
+                  staticPath=""
+                  name="Events"
+                  payload={{
+                    getToken,
+                    locale: 'en',
+                    env: window.config.appEnv,
+                    hideIgnoredExportNetexBlocks: true,
+                    hideAntuValidationSteps: false,
+                    hideFlexDataImport: false,
+                    navigate: url => {
+                      window.history.pushState(null, null, url);
+                      window.location.reload();
+                    },
+                  }}
+                  FetchStatus={props => (
+                    <MicroFrontendFetchStatus {...props} label="Error loading events" />
+                  )}
+                  handleError={error => console.log(error)}
+                />
               )}
+              {currentTabIndex === 2 && window.config.ninsarMicroFrontendUrl && (
+                <MicroFrontend
+                  id="ror-ninsar"
+                  host={window.config.ninsarMicroFrontendUrl}
+                  staticPath=""
+                  name="Line statistics"
+                  payload={{
+                    getToken,
+                  }}
+                  FetchStatus={props => (
+                    <MicroFrontendFetchStatus {...props} label="Error loading line statistics" />
+                  )}
+                  handleError={this.notifyLineStatisticsLoadingFailure.bind(this)}
+                />
+              )}
+              {currentTabIndex === 3 && <ExportedFilesView />}
+              {canEditOrganisation && currentTabIndex === 4 && <OrganizationRegister />}
             </Box>
           </Box>
         );
@@ -420,60 +377,48 @@ class SupplierTabWrapper extends React.Component {
             </Tabs>
             <Box sx={{ p: 3 }}>
               {currentTabIndex === 0 && <DataMigrationDetails />}
-              {currentTabIndex === 1 &&
-                window.config.zagmukMicroFrontendUrl && (
-                  <MicroFrontend
-                    id="ror-zagmuk"
-                    host={window.config.zagmukMicroFrontendUrl}
-                    staticPath=""
-                    name="Events"
-                    payload={{
-                      providerId: `${provider.id}`,
-                      getToken,
-                      locale: 'en',
-                      env: window.config.appEnv,
-                      hideIgnoredExportNetexBlocks: true,
-                      hideAntuValidationSteps: false,
-                      hideFlexDataImport: false,
-                      navigate: (url) => {
-                        window.history.pushState(null, null, url);
-                        window.location.reload();
-                      },
-                    }}
-                    FetchStatus={(props) => (
-                      <MicroFrontendFetchStatus
-                        {...props}
-                        label="Error loading events"
-                      />
-                    )}
-                    handleError={(error) => console.log(error)}
-                  />
-                )}
-              {currentTabIndex === 2 && (
-                <ChouetteJobDetails getToken={this.props.getToken} />
+              {currentTabIndex === 1 && window.config.zagmukMicroFrontendUrl && (
+                <MicroFrontend
+                  id="ror-zagmuk"
+                  host={window.config.zagmukMicroFrontendUrl}
+                  staticPath=""
+                  name="Events"
+                  payload={{
+                    providerId: `${provider.id}`,
+                    getToken,
+                    locale: 'en',
+                    env: window.config.appEnv,
+                    hideIgnoredExportNetexBlocks: true,
+                    hideAntuValidationSteps: false,
+                    hideFlexDataImport: false,
+                    navigate: url => {
+                      window.history.pushState(null, null, url);
+                      window.location.reload();
+                    },
+                  }}
+                  FetchStatus={props => (
+                    <MicroFrontendFetchStatus {...props} label="Error loading events" />
+                  )}
+                  handleError={error => console.log(error)}
+                />
               )}
-              {currentTabIndex === 3 &&
-                window.config.ninsarMicroFrontendUrl && (
-                  <MicroFrontend
-                    id="ror-ninsar"
-                    host={window.config.ninsarMicroFrontendUrl}
-                    staticPath=""
-                    name="Line statistics"
-                    payload={{
-                      providerId: `${provider.id}`,
-                      getToken,
-                    }}
-                    FetchStatus={(props) => (
-                      <MicroFrontendFetchStatus
-                        {...props}
-                        label="Error loading line statistics"
-                      />
-                    )}
-                    handleError={this.notifyLineStatisticsLoadingFailure.bind(
-                      this,
-                    )}
-                  />
-                )}
+              {currentTabIndex === 2 && <ChouetteJobDetails getToken={this.props.getToken} />}
+              {currentTabIndex === 3 && window.config.ninsarMicroFrontendUrl && (
+                <MicroFrontend
+                  id="ror-ninsar"
+                  host={window.config.ninsarMicroFrontendUrl}
+                  staticPath=""
+                  name="Line statistics"
+                  payload={{
+                    providerId: `${provider.id}`,
+                    getToken,
+                  }}
+                  FetchStatus={props => (
+                    <MicroFrontendFetchStatus {...props} label="Error loading line statistics" />
+                  )}
+                  handleError={this.notifyLineStatisticsLoadingFailure.bind(this)}
+                />
+              )}
             </Box>
           </Box>
         );
@@ -486,7 +431,7 @@ class SupplierTabWrapper extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   suppliers: state.SuppliersReducer.data,
   activeId: state.SuppliersReducer.activeId,
   fileListIsLoading: state.MardukReducer.filenames.isLoading,

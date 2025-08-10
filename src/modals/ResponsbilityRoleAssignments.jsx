@@ -48,14 +48,11 @@ class ResponsbilityRoleAssignments extends React.Component {
             <div style={columnStyle}>Area</div>
             <div style={{ ...columnStyle, flex: 2 }}>Entity class</div>
           </div>
-          {roleAssignments.map((role) => (
+          {roleAssignments.map(role => (
             <div key={'resp-role-' + role.id} style={{ display: 'flex' }}>
               <div style={itemStyle}> {role.typeOfResponsibilityRoleRef}</div>
               <div style={itemStyle}>
-                {getOrganizationNameByRef(
-                  organizations,
-                  role.responsibleOrganisationRef,
-                )}
+                {getOrganizationNameByRef(organizations, role.responsibleOrganisationRef)}
               </div>
               <div style={itemStyle}>
                 {getAdminZoneNameByRef(adminZones, role.responsibleAreaRef)}
@@ -70,16 +67,14 @@ class ResponsbilityRoleAssignments extends React.Component {
                   }}
                 >
                   {role.entityClassificationAssignments &&
-                    role.entityClassificationAssignments.map(
-                      (assignment, i) => (
-                        <li key={i}>
-                          {getEntityClassificationRefString(
-                            assignment.entityClassificationRef,
-                            assignment.allow,
-                          )}
-                        </li>
-                      ),
-                    )}
+                    role.entityClassificationAssignments.map((assignment, i) => (
+                      <li key={i}>
+                        {getEntityClassificationRefString(
+                          assignment.entityClassificationRef,
+                          assignment.allow
+                        )}
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>

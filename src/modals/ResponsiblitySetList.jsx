@@ -45,33 +45,26 @@ class ResponsiblitySetList extends React.Component {
 
     return (
       <div>
-        <div style={{ fontSize: '0.8em', marginBottom: 2 }}>
-          Responsibility sets
-        </div>
+        <div style={{ fontSize: '0.8em', marginBottom: 2 }}>Responsibility sets</div>
         <select
           multiple="multiple"
           style={{ width: '100%', fontSize: 12 }}
           ref={this.responsibilitySetRef}
         >
           {user.responsibilitySetRefs.map((rs, index) => (
-            <option key={'ec-' + index}>
-              {this.getResponbilityNameById(rs)}{' '}
-            </option>
+            <option key={'ec-' + index}>{this.getResponbilityNameById(rs)} </option>
           ))}
         </select>
         <div style={{ textAlign: 'left', width: '100%' }}>
           <IconButton
-            onClick={(e) => {
+            onClick={e => {
               handleAdd(e);
             }}
             size="large"
           >
             <Add style={{ color: '#228B22' }} />
           </IconButton>
-          <IconButton
-            onClick={this.handleRemoveResponsibilitySet.bind(this)}
-            size="large"
-          >
+          <IconButton onClick={this.handleRemoveResponsibilitySet.bind(this)} size="large">
             <Remove style={{ color: '#cc0000' }} />
           </IconButton>
         </div>

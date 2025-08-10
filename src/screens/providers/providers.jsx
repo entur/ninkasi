@@ -13,9 +13,7 @@ const Providers = ({ isAdmin }) => {
       <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
         {isAdmin && <AdministrativeActions />}
         <div style={{ display: 'flex' }}>
-          <div
-            style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
-          >
+          <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
             <div
               style={{
                 display: 'flex',
@@ -37,7 +35,7 @@ const Providers = ({ isAdmin }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   isAdmin: state.UserContextReducer.isRouteDataAdmin,
 });
 

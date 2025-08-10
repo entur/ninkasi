@@ -15,12 +15,7 @@
  */
 
 import React from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
@@ -75,7 +70,7 @@ class ModalEditRole extends React.Component {
               placeholder="Name"
               label="Name"
               value={role.name}
-              onChange={(e) =>
+              onChange={e =>
                 this.setState({
                   role: {
                     ...role,

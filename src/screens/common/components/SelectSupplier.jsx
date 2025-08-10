@@ -4,17 +4,15 @@ import React, { memo, useCallback } from 'react';
 export const SelectSupplier = memo(
   ({ suppliers, selectSupplier, selectedSupplierId, errorText }) => {
     // Ensure we have a valid value that matches one of the option values
-    const validSupplierIds = suppliers.map((s) => s.id);
-    const currentValue = validSupplierIds.includes(selectedSupplierId)
-      ? selectedSupplierId
-      : -1;
+    const validSupplierIds = suppliers.map(s => s.id);
+    const currentValue = validSupplierIds.includes(selectedSupplierId) ? selectedSupplierId : -1;
 
     const handleChange = useCallback(
-      (event) => {
+      event => {
         const value = parseInt(event.target.value, 10);
         selectSupplier(value);
       },
-      [selectSupplier],
+      [selectSupplier]
     );
 
     return (
@@ -35,7 +33,7 @@ export const SelectSupplier = memo(
               },
             }}
           >
-            {suppliers.map((supplier) => (
+            {suppliers.map(supplier => (
               <option key={supplier.id} value={supplier.id}>
                 {supplier.name}
               </option>
@@ -45,5 +43,5 @@ export const SelectSupplier = memo(
         {errorText && <div style={{ color: 'red' }}>{errorText}</div>}
       </>
     );
-  },
+  }
 );

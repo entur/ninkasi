@@ -50,10 +50,7 @@ const initialState = {
   },
 };
 
-const removeByIndex = (list, index) => [
-  ...list.slice(0, index),
-  ...list.slice(index + 1),
-];
+const removeByIndex = (list, index) => [...list.slice(0, index), ...list.slice(index + 1)];
 
 const OrganizationReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -188,7 +185,7 @@ const OrganizationReducer = (state = initialState, action) => {
           state.userNotifications,
           'type',
           action.payLoad.index,
-          action.payLoad.value,
+          action.payLoad.value
         ),
       });
 
@@ -197,7 +194,7 @@ const OrganizationReducer = (state = initialState, action) => {
         userNotifications: changeJobDomainValue(
           state.userNotifications,
           action.payLoad.index,
-          action.payLoad.value,
+          action.payLoad.value
         ),
       });
 
@@ -207,7 +204,7 @@ const OrganizationReducer = (state = initialState, action) => {
           state.userNotifications,
           action.payLoad.index,
           action.payLoad.action,
-          action.payLoad.isChecked,
+          action.payLoad.isChecked
         ),
       });
 
@@ -217,13 +214,13 @@ const OrganizationReducer = (state = initialState, action) => {
           state.userNotifications,
           'organisationRef',
           action.payLoad.index,
-          action.payLoad.organisationRef,
+          action.payLoad.organisationRef
         ),
       });
 
     case types.UPDATED_NOTIFICATION_CONFIGURATION:
       return Object.assign({}, state, {
-        userNotifications: state.userNotifications.map((un) => {
+        userNotifications: state.userNotifications.map(un => {
           delete un.isNew;
           return un;
         }),
@@ -248,7 +245,7 @@ const OrganizationReducer = (state = initialState, action) => {
           state.userNotifications,
           action.payLoad.index,
           action.payLoad.state,
-          action.payLoad.isChecked,
+          action.payLoad.isChecked
         ),
       });
 
@@ -308,7 +305,7 @@ const OrganizationReducer = (state = initialState, action) => {
         userNotifications: addAdminRef(
           state.userNotifications,
           action.payLoad.index,
-          action.payLoad.id,
+          action.payLoad.id
         ),
       });
 
@@ -317,7 +314,7 @@ const OrganizationReducer = (state = initialState, action) => {
         userNotifications: removeAdminRef(
           state.userNotifications,
           action.payLoad.index,
-          action.payLoad.id,
+          action.payLoad.id
         ),
       });
 
@@ -326,7 +323,7 @@ const OrganizationReducer = (state = initialState, action) => {
         userNotifications: addEntityClassRef(
           state.userNotifications,
           action.payLoad.index,
-          action.payLoad.entityClassRef,
+          action.payLoad.entityClassRef
         ),
       });
 
@@ -335,16 +332,13 @@ const OrganizationReducer = (state = initialState, action) => {
         userNotifications: removeEntityClassRef(
           state.userNotifications,
           action.payLoad.index,
-          action.payLoad.entityClassRef,
+          action.payLoad.entityClassRef
         ),
       });
 
     case types.DELETED_USER_NOTIFICATION:
       return Object.assign({}, state, {
-        userNotifications: removeByIndex(
-          state.userNotifications,
-          action.payLoad,
-        ),
+        userNotifications: removeByIndex(state.userNotifications, action.payLoad),
       });
 
     case types.REQUESTED_USER_NOTIFICATION:

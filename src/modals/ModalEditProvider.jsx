@@ -15,12 +15,7 @@
  */
 
 import React, { Component } from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import withAuth from 'utils/withAuth';
 import TextField from '@mui/material/TextField';
 import { Checkbox, FormControlLabel } from '@mui/material';
@@ -56,7 +51,7 @@ const getEmptyForm = () => ({
   _enableBlocksExport: false,
 });
 
-const validate = (values) => {
+const validate = values => {
   const errors = {};
   if (!values._name.length) {
     errors._name = 'Required';
@@ -68,10 +63,7 @@ const validate = (values) => {
     errors._organisation = 'Required';
   } else if (!values._user.length) {
     errors._user = 'Required';
-  } else if (
-    values._referential.indexOf('rb_') !== 0 &&
-    !values._migrateDataToProvider
-  ) {
+  } else if (values._referential.indexOf('rb_') !== 0 && !values._migrateDataToProvider) {
     errors._migrateDataToProvider = 'Required';
   }
   return errors;
@@ -112,8 +104,7 @@ class ModalEditProvider extends Component {
         _user: user,
         _allowCreateMissingStopPlace: allowCreateMissingStopPlace,
         _generateDatedServiceJourneyIds: generateDatedServiceJourneyIds,
-        _generateMissingServiceLinksForModes:
-          generateMissingServiceLinksForModes,
+        _generateMissingServiceLinksForModes: generateMissingServiceLinksForModes,
         _migrateDataToProvider: migrateDataToProvider,
         _enableAutoImport: enableAutoImport,
         _enableAutoValidation: enableAutoValidation,
@@ -144,16 +135,13 @@ class ModalEditProvider extends Component {
 
   handleCheckTransportMode(transportMode, isChecked) {
     let transportModes = this.state.form._generateMissingServiceLinksForModes;
-    var idx = transportModes.indexOf(transportMode);
+    const idx = transportModes.indexOf(transportMode);
     if (isChecked && idx === -1) {
       transportModes = transportModes.concat(transportMode);
     } else if (!isChecked && idx >= 0) {
-      transportModes = [
-        ...transportModes.slice(0, idx),
-        ...transportModes.slice(idx + 1),
-      ];
+      transportModes = [...transportModes.slice(0, idx), ...transportModes.slice(idx + 1)];
     }
-    this.setState((state) => {
+    this.setState(state => {
       const newState = Object.assign({}, state);
       newState.form._generateMissingServiceLinksForModes = transportModes;
       return newState;
@@ -249,7 +237,7 @@ class ModalEditProvider extends Component {
               label={'Name'}
               value={this.state.form._name}
               style={{ flex: 1 }}
-              onChange={(e) => this.handleChange('_name', e.target.value)}
+              onChange={e => this.handleChange('_name', e.target.value)}
               error={!!errors._name}
               helperText={errors._name || ''}
             />
@@ -258,9 +246,7 @@ class ModalEditProvider extends Component {
               label={'Chouette referential name'}
               value={this.state.form._referential}
               style={{ flex: 1, padding: '0 15px' }}
-              onChange={(e) =>
-                this.handleChange('_referential', e.target.value)
-              }
+              onChange={e => this.handleChange('_referential', e.target.value)}
               error={!!errors._referential}
               helperText={errors._referential || ''}
             />
@@ -271,9 +257,7 @@ class ModalEditProvider extends Component {
               label={'Organisation'}
               value={this.state.form._organisation}
               style={{ flex: 1 }}
-              onChange={(e) =>
-                this.handleChange('_organisation', e.target.value)
-              }
+              onChange={e => this.handleChange('_organisation', e.target.value)}
               error={!!errors._organisation}
               helperText={errors._organisation || ''}
             />
@@ -282,7 +266,7 @@ class ModalEditProvider extends Component {
               label={'User'}
               value={this.state.form._user}
               style={{ flex: 1, padding: '0 15px' }}
-              onChange={(e) => this.handleChange('_user', e.target.value)}
+              onChange={e => this.handleChange('_user', e.target.value)}
               error={!!errors._user}
               helperText={errors._user || ''}
             />
@@ -293,38 +277,31 @@ class ModalEditProvider extends Component {
               label={'xmlns'}
               value={this.state.form._xmlns}
               style={{ flex: 1 }}
-              onChange={(e) => this.handleChange('_xmlns', e.target.value)}
+              onChange={e => this.handleChange('_xmlns', e.target.value)}
             />
             <TextField
               disabled={isEdit}
               label={'xmlns URL'}
               value={this.state.form._xmlnsurl}
               style={{ flex: 1, padding: '0 15px' }}
-              onChange={(e) => this.handleChange('_xmlnsurl', e.target.value)}
+              onChange={e => this.handleChange('_xmlnsurl', e.target.value)}
             />
           </div>
           <div style={rowStyle}>
             <FormControl style={{ flex: 1 }}>
               <Select
                 value={this.state.form._migrateDataToProvider}
-                onChange={(e) =>
-                  this.handleChange('_migrateDataToProvider', e.target.value)
-                }
+                onChange={e => this.handleChange('_migrateDataToProvider', e.target.value)}
                 displayEmpty
               >
                 <MenuItem value={null} style={{ fontStyle: 'italic' }}>
                   None
                 </MenuItem>
                 {providers
-                  .filter(
-                    (provider) => !provider.chouetteInfo.migrateDataToProvider,
-                  )
-                  .map((provider) => {
+                  .filter(provider => !provider.chouetteInfo.migrateDataToProvider)
+                  .map(provider => {
                     return (
-                      <MenuItem
-                        key={'provider-' + provider.id}
-                        value={provider.id}
-                      >
+                      <MenuItem key={'provider-' + provider.id} value={provider.id}>
                         {provider.name}
                       </MenuItem>
                     );
@@ -338,12 +315,8 @@ class ModalEditProvider extends Component {
               <div style={{ ...rowStyle, marginTop: 10 }}>
                 <TransportModesPopover
                   allTransportModes={allTransportModes}
-                  transportModes={
-                    this.state.form._generateMissingServiceLinksForModes
-                  }
-                  handleCheckTransportMode={this.handleCheckTransportMode.bind(
-                    this,
-                  )}
+                  transportModes={this.state.form._generateMissingServiceLinksForModes}
+                  handleCheckTransportMode={this.handleCheckTransportMode.bind(this)}
                 />
               </div>
               <div style={{ ...rowStyle, marginTop: 10 }}>
@@ -352,11 +325,8 @@ class ModalEditProvider extends Component {
                     control={
                       <Checkbox
                         checked={this.state.form._allowCreateMissingStopPlace}
-                        onChange={(e) =>
-                          this.handleChange(
-                            '_allowCreateMissingStopPlace',
-                            e.target.checked,
-                          )
+                        onChange={e =>
+                          this.handleChange('_allowCreateMissingStopPlace', e.target.checked)
                         }
                       />
                     }
@@ -371,7 +341,7 @@ class ModalEditProvider extends Component {
                   {this.toolTip(
                     'Allow Chouette to create new stop places in its database. ' +
                       'Since stop places should be already present in the Chouette database (imported from NSR) the default setting is "off". ' +
-                      'Used only when testing non-Norwegian datasets',
+                      'Used only when testing non-Norwegian datasets'
                   )}
                 </div>
               </div>
@@ -381,12 +351,7 @@ class ModalEditProvider extends Component {
                     control={
                       <Checkbox
                         checked={this.state.form._enableAutoImport}
-                        onChange={(e) =>
-                          this.handleChange(
-                            '_enableAutoImport',
-                            e.target.checked,
-                          )
-                        }
+                        onChange={e => this.handleChange('_enableAutoImport', e.target.checked)}
                       />
                     }
                     label="Enable auto import"
@@ -400,7 +365,7 @@ class ModalEditProvider extends Component {
                   {this.toolTip(
                     'Automatically trigger the import pipeline after a file delivery, ' +
                       'either through the operator portal or the HTTP endpoint. ' +
-                      'If disabled the received file is saved in the file storage but not imported',
+                      'If disabled the received file is saved in the file storage but not imported'
                   )}
                 </div>
               </div>
@@ -409,14 +374,9 @@ class ModalEditProvider extends Component {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={
-                          this.state.form._generateDatedServiceJourneyIds
-                        }
-                        onChange={(e) =>
-                          this.handleChange(
-                            '_generateDatedServiceJourneyIds',
-                            e.target.checked,
-                          )
+                        checked={this.state.form._generateDatedServiceJourneyIds}
+                        onChange={e =>
+                          this.handleChange('_generateDatedServiceJourneyIds', e.target.checked)
                         }
                       />
                     }
@@ -429,7 +389,7 @@ class ModalEditProvider extends Component {
                     }}
                   />
                   {this.toolTip(
-                    'Deprecated. Generates a dated NeTEx export to be processed by Namtar',
+                    'Deprecated. Generates a dated NeTEx export to be processed by Namtar'
                   )}
                 </div>
               </div>
@@ -441,12 +401,7 @@ class ModalEditProvider extends Component {
                 control={
                   <Checkbox
                     checked={this.state.form._enableAutoValidation}
-                    onChange={(e) =>
-                      this.handleChange(
-                        '_enableAutoValidation',
-                        e.target.checked,
-                      )
-                    }
+                    onChange={e => this.handleChange('_enableAutoValidation', e.target.checked)}
                   />
                 }
                 label="Enable auto validation"
@@ -463,7 +418,7 @@ class ModalEditProvider extends Component {
                       'Since stop places should be already present in the Chouette database (imported from NSR) the default setting is "off". ' +
                       'Used only when testing non-Norwegian datasets'
                   : 'Enable nightly automatic triggering of "validation Level 2" steps. ' +
-                      'This option does not affect the execution of the "validation Level 2" step triggered by a file delivery.',
+                      'This option does not affect the execution of the "validation Level 2" step triggered by a file delivery.'
               )}
             </div>
           </div>
@@ -474,12 +429,7 @@ class ModalEditProvider extends Component {
                   control={
                     <Checkbox
                       checked={this.state.form._enableBlocksExport}
-                      onChange={(e) =>
-                        this.handleChange(
-                          '_enableBlocksExport',
-                          e.target.checked,
-                        )
-                      }
+                      onChange={e => this.handleChange('_enableBlocksExport', e.target.checked)}
                     />
                   }
                   label="Enable private export (blocks and restricted publication)"
@@ -494,7 +444,7 @@ class ModalEditProvider extends Component {
                   'When activated, a second NeTEx export is generated, ' +
                     'that will include private/sensitive data ' +
                     '(Blocks, DeadRuns, ServiceJourneys marked with publication=restricted). ' +
-                    'This export is accessible only through a private, authorized API.',
+                    'This export is accessible only through a private, authorized API.'
                 )}
               </div>
             </div>
@@ -506,7 +456,7 @@ class ModalEditProvider extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   allTransportModes: state.SuppliersReducer.allTransportModes,
 });
 

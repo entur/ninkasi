@@ -25,18 +25,18 @@ import SuppliersActions from 'actions/SuppliersActions';
 import ConfirmDialog from 'modals/ConfirmDialog';
 
 const initialPeliasOptions = () => {
-  let tasks = {};
-  peliasTasks.forEach((option) => (tasks[option.task] = true));
+  const tasks = {};
+  peliasTasks.forEach(option => (tasks[option.task] = true));
   return tasks;
 };
 
-const getLabelByJobType = (type) => {
+const getLabelByJobType = type => {
   for (let i = 0; i < peliasTasks.length; i++) {
     if (peliasTasks[i].task === type) return peliasTasks[i].label;
   }
 };
 
-const getColorByStatus = (status) => {
+const getColorByStatus = status => {
   switch (status) {
     case 'STARTED':
       return '#08920e';
@@ -61,7 +61,7 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
     setPeliasOptions(
       Object.assign({}, peliasOptions, {
         [task]: event.target.checked,
-      }),
+      })
     );
   };
 
@@ -76,12 +76,12 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
 
   return (
     <div>
-      {peliasTasks.map((option) => (
+      {peliasTasks.map(option => (
         <FormControlLabel
           key={'pelias-checkbox-' + option.task}
           control={
             <Checkbox
-              onChange={(e) => handlePeliasOptionChecked(e, option.task)}
+              onChange={e => handlePeliasOptionChecked(e, option.task)}
               defaultChecked={true}
             />
           }
@@ -89,10 +89,7 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
           sx={{ display: 'block', mt: 0.625, mb: 0.625 }}
         />
       ))}
-      <Divider
-        key={'pelias-divider1'}
-        style={{ marginTop: 10, marginBottom: 5 }}
-      />
+      <Divider key={'pelias-divider1'} style={{ marginTop: 10, marginBottom: 5 }} />
       <div
         key={'pelias-options-status-wrapper'}
         style={{ display: 'flex', flexDirection: 'column', padding: 5 }}
@@ -126,20 +123,14 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
           </div>
         ))}
       </div>
-      <Divider
-        key={'pelias-divider2'}
-        style={{ marginTop: 10, marginBottom: 10 }}
-      />
-      <div
-        key={'pelias-buttons'}
-        style={{ width: '100%', textAlign: 'center' }}
-      >
+      <Divider key={'pelias-divider2'} style={{ marginTop: 10, marginBottom: 10 }} />
+      <div key={'pelias-buttons'} style={{ width: '100%', textAlign: 'center' }}>
         <Button
           variant="contained"
           color="primary"
           style={{ fontSize: 12 }}
           onClick={() => handleExecutePelias()}
-          disabled={Object.values(peliasOptions).every((value) => !value)}
+          disabled={Object.values(peliasOptions).every(value => !value)}
         >
           Execute
         </Button>
@@ -157,7 +148,7 @@ const Pelias = ({ otherStatus, dispatch, getToken }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   otherStatus: state.SuppliersReducer.otherStatus || [],
 });
 

@@ -45,17 +45,12 @@ class SuppliersContainer extends React.Component {
     const id = getQueryVariable('id');
     dispatch(SuppliersActions.getAllProviders(this.props.getToken)).then(() => {
       if (id != null) {
-        dispatch(
-          SuppliersActions.selectActiveSupplier(
-            Number(id),
-            this.props.getToken,
-          ),
-        );
+        dispatch(SuppliersActions.selectActiveSupplier(Number(id), this.props.getToken));
       }
     });
   }
 
-  selectSupplier = (value) => {
+  selectSupplier = value => {
     const { dispatch, getToken } = this.props;
     if (value > 0) {
       dispatch(SuppliersActions.selectActiveSupplier(value, getToken));
@@ -187,7 +182,7 @@ class SuppliersContainer extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   suppliers: state.SuppliersReducer.data,
   activeProviderId: state.SuppliersReducer.activeId,
   displayAllSuppliers: state.SuppliersReducer.all_suppliers_selected,

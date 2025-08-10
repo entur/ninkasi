@@ -83,9 +83,7 @@ class ResponsibilitiesView extends React.Component {
 
   getDeleteConfirmationTitle() {
     const { activeResponsibilitySet } = this.state;
-    let responsbilitySet = activeResponsibilitySet
-      ? activeResponsibilitySet.name
-      : 'N/A';
+    const responsbilitySet = activeResponsibilitySet ? activeResponsibilitySet.name : 'N/A';
     return `Delete responsiblity set ${responsbilitySet}`;
   }
 
@@ -107,38 +105,28 @@ class ResponsibilitiesView extends React.Component {
 
   componentDidMount() {
     const { getToken } = this.props;
-    this.props.dispatch(
-      OrganizationRegisterActions.getResponbilitySets(getToken),
-    );
+    this.props.dispatch(OrganizationRegisterActions.getResponbilitySets(getToken));
     this.props.dispatch(OrganizationRegisterActions.getCodeSpaces(getToken));
     this.props.dispatch(OrganizationRegisterActions.getRoles(getToken));
     this.props.dispatch(OrganizationRegisterActions.getOrganizations(getToken));
     this.props.dispatch(OrganizationRegisterActions.getEntityTypes(getToken));
 
     if (!this.props.administrativeZones.length) {
-      this.props.dispatch(
-        OrganizationRegisterActions.getAdministrativeZones(getToken),
-      );
+      this.props.dispatch(OrganizationRegisterActions.getAdministrativeZones(getToken));
     }
   }
 
   handleCreateResponsibilitySet(responsibilitySet) {
     const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.createResponsibilitySet(
-        responsibilitySet,
-        getToken,
-      ),
+      OrganizationRegisterActions.createResponsibilitySet(responsibilitySet, getToken)
     );
   }
 
   handleUpdateResponsibilitySet(responsibilitySet) {
     const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.updateResponsibilitySet(
-        responsibilitySet,
-        getToken,
-      ),
+      OrganizationRegisterActions.updateResponsibilitySet(responsibilitySet, getToken)
     );
   }
 
@@ -146,22 +134,13 @@ class ResponsibilitiesView extends React.Component {
     this.handleCloseDeleteConfirmation();
     const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.deleteResponsibilitySet(
-        responsibility.id,
-        getToken,
-      ),
+      OrganizationRegisterActions.deleteResponsibilitySet(responsibility.id, getToken)
     );
   }
 
   render() {
-    const {
-      responsibilities,
-      codeSpaces,
-      roles,
-      organizations,
-      administrativeZones,
-      entityTypes,
-    } = this.props;
+    const { responsibilities, codeSpaces, roles, organizations, administrativeZones, entityTypes } =
+      this.props;
     const {
       isCreatingResponsibilitySet,
       isEditingResponsibilitySet,
@@ -175,48 +154,32 @@ class ResponsibilitiesView extends React.Component {
     return (
       <div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Fab
-            mini={true}
-            style={{ marginRight: 10 }}
-            onClick={this.openModalWindow.bind(this)}
-          >
+          <Fab mini={true} style={{ marginRight: 10 }} onClick={this.openModalWindow.bind(this)}>
             <Add />
           </Fab>
         </div>
         <div className="responsibility-row">
           <div className="responsibility-header">
             <div className="col-1-6">
-              <span
-                className="sortable"
-                onClick={() => this.handleSortOrder('name')}
-              >
+              <span className="sortable" onClick={() => this.handleSortOrder('name')}>
                 name
               </span>
             </div>
             <div className="col-1-6">
-              <span
-                className="sortable"
-                onClick={() => this.handleSortOrder('id')}
-              >
+              <span className="sortable" onClick={() => this.handleSortOrder('id')}>
                 id
               </span>
             </div>
             <div className="col-1-7">
-              <span
-                className="sortable"
-                onClick={() => this.handleSortOrder('privateCode')}
-              >
+              <span className="sortable" onClick={() => this.handleSortOrder('privateCode')}>
                 private code
               </span>
             </div>
             <div className="col-1-6">Roles assignments</div>
           </div>
-          {sortedResponsibilities.map((responsibility) => {
+          {sortedResponsibilities.map(responsibility => {
             return (
-              <div
-                key={'responsibility-' + responsibility.id}
-                className="resp-row-item"
-              >
+              <div key={'responsibility-' + responsibility.id} className="resp-row-item">
                 <div className="col-1-6">{responsibility.name}</div>
                 <div className="col-1-6">{responsibility.id}</div>
                 <div className="col-1-7">{responsibility.privateCode}</div>
@@ -237,9 +200,7 @@ class ResponsibilitiesView extends React.Component {
                       verticalAlign: 'middle',
                       cursor: 'pointer',
                     }}
-                    onClick={() =>
-                      this.handleOpenDeleteConfirmationDialog(responsibility)
-                    }
+                    onClick={() => this.handleOpenDeleteConfirmationDialog(responsibility)}
                   />
                   <Edit
                     color="rgba(25, 118, 210, 0.59)"
@@ -261,10 +222,8 @@ class ResponsibilitiesView extends React.Component {
             <ModalCreateResponsibilitySet
               modalOpen={isCreatingResponsibilitySet}
               codeSpaces={codeSpaces}
-              handleOnClose={() =>
-                this.setState({ isCreatingResponsibilitySet: false })
-              }
-              takenPrivateCodes={responsibilities.map((r) => r.privateCode)}
+              handleOnClose={() => this.setState({ isCreatingResponsibilitySet: false })}
+              takenPrivateCodes={responsibilities.map(r => r.privateCode)}
               roles={roles}
               organizations={organizations}
               handleSubmit={this.handleCreateResponsibilitySet.bind(this)}
@@ -277,10 +236,8 @@ class ResponsibilitiesView extends React.Component {
               modalOpen={isEditingResponsibilitySet}
               responsibilitySet={activeResponsibilitySet}
               codeSpaces={codeSpaces}
-              handleOnClose={() =>
-                this.setState({ isEditingResponsibilitySet: false })
-              }
-              takenPrivateCodes={responsibilities.map((r) => r.privateCode)}
+              handleOnClose={() => this.setState({ isEditingResponsibilitySet: false })}
+              takenPrivateCodes={responsibilities.map(r => r.privateCode)}
               roles={roles}
               organizations={organizations}
               handleSubmit={this.handleUpdateResponsibilitySet.bind(this)}
@@ -306,7 +263,7 @@ class ResponsibilitiesView extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   responsibilities: state.OrganizationReducer.responsibilities,
   codeSpaces: state.OrganizationReducer.codeSpaces,
   roles: state.OrganizationReducer.roles,

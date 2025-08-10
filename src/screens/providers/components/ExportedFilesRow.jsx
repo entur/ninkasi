@@ -76,9 +76,7 @@ class ExportedFilesRow extends Component {
 
     return (
       <div style={style}>
-        <div style={{ flex: 2.5 }}>
-          {isAggregatedSet ? norwayDisplayName : providerName}
-        </div>
+        <div style={{ flex: 2.5 }}>{isAggregatedSet ? norwayDisplayName : providerName}</div>
         <div style={{ flex: 1 }}>{data.referential || referential}</div>
         <div
           style={{
@@ -90,15 +88,9 @@ class ExportedFilesRow extends Component {
         </div>
         <div style={{ flex: 1 }}>
           {netexFileSize && (
-            <a
-              style={{ display: 'flex', alignItems: 'center' }}
-              href={netexUrl}
-              download={true}
-            >
+            <a style={{ display: 'flex', alignItems: 'center' }} href={netexUrl} download={true}>
               <FileDownload color={'#2196F3'} />
-              <span style={{ marginLeft: 2 }}>{`[${getSizeFromBytes(
-                netexFileSize,
-              )}]`}</span>
+              <span style={{ marginLeft: 2 }}>{`[${getSizeFromBytes(netexFileSize)}]`}</span>
             </a>
           )}
         </div>
@@ -112,15 +104,9 @@ class ExportedFilesRow extends Component {
         </div>
         <div style={{ flex: 1 }}>
           {gtfsFileSize && (
-            <a
-              style={{ display: 'flex', alignItems: 'center' }}
-              href={gtfsUrl}
-              download={true}
-            >
+            <a style={{ display: 'flex', alignItems: 'center' }} href={gtfsUrl} download={true}>
               <FileDownload color={'#2196F3'} />
-              <span style={{ marginLeft: 2 }}>{`[${getSizeFromBytes(
-                gtfsFileSize,
-              )}]`}</span>
+              <span style={{ marginLeft: 2 }}>{`[${getSizeFromBytes(gtfsFileSize)}]`}</span>
             </a>
           )}
         </div>

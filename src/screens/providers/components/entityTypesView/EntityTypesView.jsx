@@ -88,29 +88,23 @@ class EntityTypesView extends React.Component {
 
   handleCreateEntity(entityType) {
     const { getToken } = this.props;
-    this.props.dispatch(
-      OrganizationRegisterActions.createEntityType(entityType, getToken),
-    );
+    this.props.dispatch(OrganizationRegisterActions.createEntityType(entityType, getToken));
   }
 
   handleUpdateEntity(entityType) {
     const { getToken } = this.props;
-    this.props.dispatch(
-      OrganizationRegisterActions.updateEntityType(entityType, getToken),
-    );
+    this.props.dispatch(OrganizationRegisterActions.updateEntityType(entityType, getToken));
   }
 
   handleDeleteEntityType(entityType) {
     this.handleCloseDeleteConfirmation();
     const { getToken } = this.props;
-    this.props.dispatch(
-      OrganizationRegisterActions.deleteEntityType(entityType.id, getToken),
-    );
+    this.props.dispatch(OrganizationRegisterActions.deleteEntityType(entityType.id, getToken));
   }
 
   getDeleteConfirmationTitle() {
     const { activeEntityType } = this.state;
-    let entityType = activeEntityType ? activeEntityType.name : 'N/A';
+    const entityType = activeEntityType ? activeEntityType.name : 'N/A';
     return `Delete entity type ${entityType}`;
   }
 
@@ -149,26 +143,17 @@ class EntityTypesView extends React.Component {
         <div className="et-row">
           <div className="et-header">
             <div className="col-1-5">
-              <span
-                className="sortable"
-                onClick={() => this.handleSortOrder('name')}
-              >
+              <span className="sortable" onClick={() => this.handleSortOrder('name')}>
                 name
               </span>
             </div>
             <div className="col-1-5">
-              <span
-                className="sortable"
-                onClick={() => this.handleSortOrder('privateCode')}
-              >
+              <span className="sortable" onClick={() => this.handleSortOrder('privateCode')}>
                 private code
               </span>
             </div>
             <div className="col-1-5">
-              <span
-                className="sortable"
-                onClick={() => this.handleSortOrder('codeSpace')}
-              >
+              <span className="sortable" onClick={() => this.handleSortOrder('codeSpace')}>
                 code space
               </span>
             </div>
@@ -176,7 +161,7 @@ class EntityTypesView extends React.Component {
               <span>Classifications</span>
             </div>
           </div>
-          {sortedEntityTypes.map((et) => {
+          {sortedEntityTypes.map(et => {
             return (
               <div key={'et-' + et.id} className="et-row-item">
                 <div className="col-1-5">{et.name}</div>
@@ -227,10 +212,8 @@ class EntityTypesView extends React.Component {
             <ModalCreateEntityType
               isModalOpen={this.state.isCreateModalOpen}
               codeSpaces={this.props.codeSpaces}
-              handleCloseModal={() =>
-                this.setState({ isCreateModalOpen: false })
-              }
-              takenPrivateCodes={entityTypes.map((et) => et.privateCode)}
+              handleCloseModal={() => this.setState({ isCreateModalOpen: false })}
+              takenPrivateCodes={entityTypes.map(et => et.privateCode)}
               handleSubmit={this.handleCreateEntity.bind(this)}
             />
           ) : null}
@@ -261,7 +244,7 @@ class EntityTypesView extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   entityTypes: state.OrganizationReducer.entityTypes,
   status: state.OrganizationReducer.entityTypeStatus,
   codeSpaces: state.OrganizationReducer.codeSpaces,

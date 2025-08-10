@@ -15,12 +15,7 @@
  */
 
 import React from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { FormControl, Select, MenuItem } from '@mui/material';
@@ -53,7 +48,7 @@ class ModalCreateEntityType extends React.Component {
     this.props.handleCloseModal();
   }
 
-  getClassificationTitle = (classification) => {
+  getClassificationTitle = classification => {
     return `name=${classification.name}, privateCode=${classification.privateCode}`;
   };
 
@@ -91,18 +86,14 @@ class ModalCreateEntityType extends React.Component {
   }
 
   render() {
-    const { isModalOpen, handleSubmit, takenPrivateCodes, codeSpaces } =
-      this.props;
+    const { isModalOpen, handleSubmit, takenPrivateCodes, codeSpaces } = this.props;
 
-    const { entityType, isCreatingNewClassification, tempClassification } =
-      this.state;
+    const { entityType, isCreatingNewClassification, tempClassification } = this.state;
 
-    const invalidPrivateCode =
-      takenPrivateCodes.indexOf(entityType.privateCode) > -1;
+    const invalidPrivateCode = takenPrivateCodes.indexOf(entityType.privateCode) > -1;
     const isClassificationPrivateCodeTaken =
-      entityType.classifications
-        .map((c) => c.privateCode)
-        .indexOf(tempClassification.privateCode) > -1;
+      entityType.classifications.map(c => c.privateCode).indexOf(tempClassification.privateCode) >
+      -1;
     const isSavable =
       !invalidPrivateCode &&
       entityType.name.length &&
@@ -113,22 +104,13 @@ class ModalCreateEntityType extends React.Component {
       <Button variant="text" onClick={this.handleOnClose.bind(this)}>
         Close
       </Button>,
-      <Button
-        variant="text"
-        disabled={!isSavable}
-        onClick={() => handleSubmit(entityType)}
-      >
+      <Button variant="text" disabled={!isSavable} onClick={() => handleSubmit(entityType)}>
         Create
       </Button>,
     ];
 
     return (
-      <Dialog
-        open={isModalOpen}
-        onClose={this.handleOnClose.bind(this)}
-        maxWidth="md"
-        fullWidth
-      >
+      <Dialog open={isModalOpen} onClose={this.handleOnClose.bind(this)} maxWidth="md" fullWidth>
         <DialogTitle>Create a new entity type</DialogTitle>
         <DialogContent>
           <div>
@@ -143,7 +125,7 @@ class ModalCreateEntityType extends React.Component {
                 placeholder="Name"
                 label="Name"
                 value={entityType.name}
-                onChange={(e) =>
+                onChange={e =>
                   this.setState({
                     entityType: { ...entityType, name: e.target.value },
                   })
@@ -154,11 +136,9 @@ class ModalCreateEntityType extends React.Component {
                 placeholder="private code"
                 label="Private code"
                 error={invalidPrivateCode}
-                helperText={
-                  invalidPrivateCode ? 'Private code already exists' : ''
-                }
+                helperText={invalidPrivateCode ? 'Private code already exists' : ''}
                 value={entityType.privateCode}
-                onChange={(e) =>
+                onChange={e =>
                   this.setState({
                     entityType: { ...entityType, privateCode: e.target.value },
                   })
@@ -168,47 +148,38 @@ class ModalCreateEntityType extends React.Component {
               <FormControl fullWidth>
                 <Select
                   value={entityType.codeSpace}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.setState({
                       entityType: { ...entityType, codeSpace: e.target.value },
                     })
                   }
                   displayEmpty
                 >
-                  {codeSpaces.map((codeSpace) => (
+                  {codeSpaces.map(codeSpace => (
                     <MenuItem key={codeSpace.id} value={codeSpace.id}>
                       {codeSpace.xmlns}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
-              <div style={{ width: '100%', fontSize: 12 }}>
-                Entity classifications
-              </div>
+              <div style={{ width: '100%', fontSize: 12 }}>Entity classifications</div>
               <select
                 multiple="multiple"
                 style={{ width: '100%', fontSize: 12 }}
                 ref={this.classificationsRef}
               >
                 {entityType.classifications.map((et, index) => (
-                  <option key={'ec-' + index}>
-                    {this.getClassificationTitle(et)}{' '}
-                  </option>
+                  <option key={'ec-' + index}>{this.getClassificationTitle(et)} </option>
                 ))}
               </select>
               <div style={{ textAlign: 'left', width: '100%' }}>
                 <IconButton
-                  onClick={() =>
-                    this.setState({ isCreatingNewClassification: true })
-                  }
+                  onClick={() => this.setState({ isCreatingNewClassification: true })}
                   size="large"
                 >
                   <Add style={{ color: '#228B22' }} />
                 </IconButton>
-                <IconButton
-                  onClick={this.handleRemoveClassification.bind(this)}
-                  size="large"
-                >
+                <IconButton onClick={this.handleRemoveClassification.bind(this)} size="large">
                   <Remove style={{ color: '#cc0000' }} />
                 </IconButton>
               </div>
@@ -227,7 +198,7 @@ class ModalCreateEntityType extends React.Component {
                     placeholder="Name"
                     label="Name"
                     value={tempClassification.name}
-                    onChange={(e) =>
+                    onChange={e =>
                       this.setState({
                         tempClassification: {
                           ...tempClassification,
@@ -242,11 +213,9 @@ class ModalCreateEntityType extends React.Component {
                     label="Private code"
                     error={isClassificationPrivateCodeTaken}
                     helperText={
-                      isClassificationPrivateCodeTaken
-                        ? 'Private code is already taken'
-                        : ''
+                      isClassificationPrivateCodeTaken ? 'Private code is already taken' : ''
                     }
-                    onChange={(e) =>
+                    onChange={e =>
                       this.setState({
                         tempClassification: {
                           ...tempClassification,

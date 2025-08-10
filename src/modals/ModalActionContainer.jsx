@@ -21,7 +21,7 @@ import SuppliersActions from 'actions/SuppliersActions';
 import Button from '@mui/material/Button';
 
 class ModalActionContainer extends React.Component {
-  handleFilterChange = (event) => {
+  handleFilterChange = event => {
     const { dispatch } = this.props;
     dispatch(SuppliersActions.logEventFilter(event.target.value));
   };
@@ -70,14 +70,12 @@ class ModalActionContainer extends React.Component {
           placeholder="Filter"
         />
         <select style={selectStyle} multiple>
-          {filteredLoggedEvents.map((event) => {
+          {filteredLoggedEvents.map(event => {
             if (event.files && event.files.length) {
-              let options = [];
+              const options = [];
               options.push(<option key={event.id}>{event.title}</option>);
-              options.push(
-                <option key={event.id + '-files'}>{'Files imported:'}</option>,
-              );
-              let fileOptions = event.files.map((file, index) => (
+              options.push(<option key={event.id + '-files'}>{'Files imported:'}</option>);
+              const fileOptions = event.files.map((file, index) => (
                 <option key={event.id + '-files' + index}>{file}</option>
               ));
               options.push(fileOptions);

@@ -54,9 +54,7 @@ class UserView extends React.Component {
     const { getToken } = this.props;
     this.props.dispatch(OrganizationRegisterActions.getUsers(getToken));
     this.props.dispatch(OrganizationRegisterActions.getOrganizations(getToken));
-    this.props.dispatch(
-      OrganizationRegisterActions.getResponbilitySets(getToken),
-    );
+    this.props.dispatch(OrganizationRegisterActions.getResponbilitySets(getToken));
   }
 
   handleCreateUser(user) {
@@ -72,19 +70,13 @@ class UserView extends React.Component {
   handleDeleteUser(user) {
     this.handleCloseDeleteConfirmation();
     const { getToken } = this.props;
-    this.props.dispatch(
-      OrganizationRegisterActions.deleteUser(user.id, getToken),
-    );
+    this.props.dispatch(OrganizationRegisterActions.deleteUser(user.id, getToken));
   }
 
   handleResetPassword(user) {
     const { getToken } = this.props;
     this.props.dispatch(
-      OrganizationRegisterActions.resetPassword(
-        user.id,
-        user.username,
-        getToken,
-      ),
+      OrganizationRegisterActions.resetPassword(user.id, user.username, getToken)
     );
     this.handleCloseResetConfirmation();
   }
@@ -119,13 +111,13 @@ class UserView extends React.Component {
 
   getDeleteConfirmationTitle() {
     const { activeUser } = this.state;
-    let username = activeUser ? activeUser.username : 'N/A';
+    const username = activeUser ? activeUser.username : 'N/A';
     return `Delete user ${username}`;
   }
 
   getResetPasswordConfirmationTitle() {
     const { activeUser } = this.state;
-    let username = activeUser ? activeUser.username : 'N/A';
+    const username = activeUser ? activeUser.username : 'N/A';
     return `Reset password for ${username}`;
   }
 
@@ -174,8 +166,7 @@ class UserView extends React.Component {
   }
 
   render() {
-    const { users, organizations, responsibilities, passwordDialogState } =
-      this.props;
+    const { users, organizations, responsibilities, passwordDialogState } = this.props;
     const {
       isCreateModalOpen,
       isEditModalOpen,
@@ -199,7 +190,7 @@ class UserView extends React.Component {
         >
           <OrganizationFilter
             organizations={organizations}
-            handleOnChange={(id) => {
+            handleOnChange={id => {
               this.setState({ organisationFilterId: id });
             }}
             organisationFilterId={organisationFilterId}
@@ -215,49 +206,34 @@ class UserView extends React.Component {
         <div className="user-row">
           <div className="user-header">
             <div className="col-1-9">
-              <span
-                className="sortable"
-                onClick={() => this.handleSortOrder('username')}
-              >
+              <span className="sortable" onClick={() => this.handleSortOrder('username')}>
                 username
               </span>
             </div>
             <div className="col-1-9">
-              <span
-                className="sortable"
-                onClick={() => this.handleSortOrder('firstName')}
-              >
+              <span className="sortable" onClick={() => this.handleSortOrder('firstName')}>
                 firstname
               </span>
             </div>
             <div className="col-1-9">
-              <span
-                className="sortable"
-                onClick={() => this.handleSortOrder('lastName')}
-              >
+              <span className="sortable" onClick={() => this.handleSortOrder('lastName')}>
                 lastname
               </span>
             </div>
             <div className="col-1-8">
-              <span
-                className="sortable"
-                onClick={() => this.handleSortOrder('email')}
-              >
+              <span className="sortable" onClick={() => this.handleSortOrder('email')}>
                 e-mail
               </span>
             </div>
             <div className="col-1-9">
-              <span
-                className="sortable"
-                onClick={() => this.handleSortOrder('organisation')}
-              >
+              <span className="sortable" onClick={() => this.handleSortOrder('organisation')}>
                 organisation
               </span>
             </div>
             <div className="col-1-7">Responsiblity set</div>
             <div className="col-1-9">Notifications</div>
           </div>
-          {sortedUsers.filter(this.filterUserByOrg.bind(this)).map((user) => {
+          {sortedUsers.filter(this.filterUserByOrg.bind(this)).map(user => {
             return (
               <div
                 key={'user-' + user.id}
@@ -286,10 +262,7 @@ class UserView extends React.Component {
                 </div>
                 <div className="col-1-11">
                   {user.notifications.map((notification, i) => (
-                    <NotificationStatus
-                      key={'notification-' + i}
-                      notification={notification}
-                    />
+                    <NotificationStatus key={'notification-' + i} notification={notification} />
                   ))}
                 </div>
                 <div className="col-icon">
@@ -337,9 +310,7 @@ class UserView extends React.Component {
                       verticalAlign: 'middle',
                       cursor: 'pointer',
                     }}
-                    onClick={() =>
-                      this.handleOpenDeleteConfirmationDialog(user)
-                    }
+                    onClick={() => this.handleOpenDeleteConfirmationDialog(user)}
                   />
                 </div>
               </div>
@@ -348,11 +319,9 @@ class UserView extends React.Component {
           {isCreateModalOpen && (
             <ModalCreateUser
               isModalOpen={isCreateModalOpen}
-              handleCloseModal={() =>
-                this.setState({ isCreateModalOpen: false })
-              }
-              takenUsernames={users.map((user) => user.username)}
-              takenEmails={users.map((user) => user.contactDetails.email)}
+              handleCloseModal={() => this.setState({ isCreateModalOpen: false })}
+              takenUsernames={users.map(user => user.username)}
+              takenEmails={users.map(user => user.contactDetails.email)}
               organizations={organizations}
               responsibilities={responsibilities}
               handleSubmit={this.handleCreateUser.bind(this)}
@@ -362,7 +331,7 @@ class UserView extends React.Component {
             <ModalEditUser
               isModalOpen={isEditModalOpen}
               handleCloseModal={() => this.setState({ isEditModalOpen: false })}
-              takenUsernames={users.map((user) => user.username)}
+              takenUsernames={users.map(user => user.username)}
               organizations={organizations}
               user={this.state.activeUser}
               responsibilities={responsibilities}
@@ -371,9 +340,7 @@ class UserView extends React.Component {
           )}
           {isNotificationsOpen && (
             <ModalEditNotifications
-              handleCloseModal={() =>
-                this.setState({ isNotificationsOpen: false })
-              }
+              handleCloseModal={() => this.setState({ isNotificationsOpen: false })}
               isModalOpen={isNotificationsOpen}
               user={this.state.activeUser}
               getToken={this.props.getToken}
@@ -410,7 +377,7 @@ class UserView extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   users: state.OrganizationReducer.users,
   organizations: state.OrganizationReducer.organizations,
   responsibilities: state.OrganizationReducer.responsibilities,

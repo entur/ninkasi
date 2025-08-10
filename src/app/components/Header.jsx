@@ -17,13 +17,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppBar, Toolbar, IconButton, Menu, MenuItem } from '@mui/material';
-import {
-  MoreVert,
-  AccountCircle,
-  Help,
-  History,
-  Menu as MenuIcon,
-} from '@mui/icons-material';
+import { MoreVert, AccountCircle, Help, History, Menu as MenuIcon } from '@mui/icons-material';
 import AppActions from 'actions/AppActions';
 import SuppliersActions from 'actions/SuppliersActions';
 import { getProvidersEnv, getTheme } from 'config/themes';
@@ -48,7 +42,7 @@ class Header extends React.Component {
     this.props.dispatch(SuppliersActions.openHistoryModal());
   }
 
-  handleMenuOpen = (event) => {
+  handleMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
@@ -92,10 +86,7 @@ class Header extends React.Component {
                 justifyContent: 'space-between',
               }}
             >
-              <Logo
-                providersEnv={providersEnv}
-                pathname={this.props.pathname}
-              />
+              <Logo providersEnv={providersEnv} pathname={this.props.pathname} />
             </div>
             <IconButton edge="end" onClick={this.handleMenuOpen} size="large">
               <MoreVert sx={{ color: 'white !important' }} />

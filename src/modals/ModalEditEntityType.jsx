@@ -15,12 +15,7 @@
  */
 
 import React from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { FormControl, Select, MenuItem } from '@mui/material';
@@ -59,7 +54,7 @@ class ModalEditEntityType extends React.Component {
     this.props.handleCloseModal();
   }
 
-  getClassificationTitle = (classification) => {
+  getClassificationTitle = classification => {
     return `name=${classification.name}, privateCode=${classification.privateCode}`;
   };
 
@@ -99,42 +94,25 @@ class ModalEditEntityType extends React.Component {
   render() {
     const { isModalOpen, handleSubmit, codeSpaces } = this.props;
 
-    const { entityType, isCreatingNewClassification, tempClassification } =
-      this.state;
+    const { entityType, isCreatingNewClassification, tempClassification } = this.state;
 
     const isClassificationPrivateCodeTaken =
-      entityType.classifications
-        .map((c) => c.privateCode)
-        .indexOf(tempClassification.privateCode) > -1;
+      entityType.classifications.map(c => c.privateCode).indexOf(tempClassification.privateCode) >
+      -1;
     const isSavable =
-      entityType.name.length &&
-      entityType.codeSpace.length &&
-      entityType.privateCode.length;
+      entityType.name.length && entityType.codeSpace.length && entityType.privateCode.length;
 
     const actions = [
-      <Button
-        variant="text"
-        disabled={!isSavable}
-        onClick={this.handleOnClose.bind(this)}
-      >
+      <Button variant="text" disabled={!isSavable} onClick={this.handleOnClose.bind(this)}>
         Close
       </Button>,
-      <Button
-        variant="text"
-        disabled={!isSavable}
-        onClick={() => handleSubmit(entityType)}
-      >
+      <Button variant="text" disabled={!isSavable} onClick={() => handleSubmit(entityType)}>
         Update
       </Button>,
     ];
 
     return (
-      <Dialog
-        open={isModalOpen}
-        onClose={() => this.handleOnClose()}
-        maxWidth="md"
-        fullWidth
-      >
+      <Dialog open={isModalOpen} onClose={() => this.handleOnClose()} maxWidth="md" fullWidth>
         <DialogTitle>Editing entity type</DialogTitle>
         <DialogContent>
           <div>
@@ -149,7 +127,7 @@ class ModalEditEntityType extends React.Component {
                 placeholder="Name"
                 label="Name"
                 value={entityType.name}
-                onChange={(e) =>
+                onChange={e =>
                   this.setState({
                     entityType: { ...entityType, name: e.target.value },
                   })
@@ -161,7 +139,7 @@ class ModalEditEntityType extends React.Component {
                 label="Private code"
                 disabled={true}
                 value={entityType.privateCode}
-                onChange={(e) =>
+                onChange={e =>
                   this.setState({
                     entityType: { ...entityType, privateCode: e.target.value },
                   })
@@ -172,47 +150,38 @@ class ModalEditEntityType extends React.Component {
                 <Select
                   disabled={true}
                   value={entityType.codeSpace}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.setState({
                       entityType: { ...entityType, codeSpace: e.target.value },
                     })
                   }
                   displayEmpty
                 >
-                  {codeSpaces.map((codeSpace) => (
+                  {codeSpaces.map(codeSpace => (
                     <MenuItem key={codeSpace.id} value={codeSpace.id}>
                       {codeSpace.xmlns}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
-              <div style={{ width: '100%', fontSize: 12 }}>
-                Entity classifications
-              </div>
+              <div style={{ width: '100%', fontSize: 12 }}>Entity classifications</div>
               <select
                 multiple="multiple"
                 style={{ width: '100%', fontSize: 12 }}
                 ref={this.classificationsRef}
               >
                 {entityType.classifications.map((et, index) => (
-                  <option key={'ec-' + index}>
-                    {this.getClassificationTitle(et)}{' '}
-                  </option>
+                  <option key={'ec-' + index}>{this.getClassificationTitle(et)} </option>
                 ))}
               </select>
               <div style={{ textAlign: 'left', width: '100%' }}>
                 <IconButton
-                  onClick={() =>
-                    this.setState({ isCreatingNewClassification: true })
-                  }
+                  onClick={() => this.setState({ isCreatingNewClassification: true })}
                   size="large"
                 >
                   <Add style={{ color: '#228B22' }} />
                 </IconButton>
-                <IconButton
-                  onClick={this.handleRemoveClassification.bind(this)}
-                  size="large"
-                >
+                <IconButton onClick={this.handleRemoveClassification.bind(this)} size="large">
                   <Remove style={{ color: '#cc0000' }} />
                 </IconButton>
               </div>
@@ -231,7 +200,7 @@ class ModalEditEntityType extends React.Component {
                     placeholder="Name"
                     label="Name"
                     value={tempClassification.name}
-                    onChange={(e) =>
+                    onChange={e =>
                       this.setState({
                         tempClassification: {
                           ...tempClassification,
@@ -246,11 +215,9 @@ class ModalEditEntityType extends React.Component {
                     label="Private code"
                     error={isClassificationPrivateCodeTaken}
                     helperText={
-                      isClassificationPrivateCodeTaken
-                        ? 'Private code is already taken'
-                        : ''
+                      isClassificationPrivateCodeTaken ? 'Private code is already taken' : ''
                     }
-                    onChange={(e) =>
+                    onChange={e =>
                       this.setState({
                         tempClassification: {
                           ...tempClassification,

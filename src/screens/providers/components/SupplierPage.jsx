@@ -65,7 +65,7 @@ class SupplierPage extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   provider: state.UtilsReducer.supplierForm,
   id: state.SuppliersReducer.activeId,
   isModalOpen: state.UtilsReducer.editProviderModal,

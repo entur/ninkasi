@@ -28,7 +28,7 @@ class AdvancedFileList extends React.Component {
 
     try {
       // feature detection
-      // eslint-disable-next-line
+
       const isFileSaverSupport = !!new Blob();
 
       const URL = `${window.config.timetableAdminBaseUrl}${this.props.activeProviderId}/files/${filename}`;
@@ -48,13 +48,8 @@ class AdvancedFileList extends React.Component {
   }
 
   handleSelectAll(e) {
-    const {
-      files,
-      handleKeyDown,
-      handleKeyUp,
-      isSource,
-      handleSelectAllShowingIndices,
-    } = this.props;
+    const { files, handleKeyDown, handleKeyUp, isSource, handleSelectAllShowingIndices } =
+      this.props;
 
     if (e.keyCode === 40) {
       handleKeyDown(isSource, e);
@@ -76,11 +71,8 @@ class AdvancedFileList extends React.Component {
     const controlled = e.ctrlKey || e.metaKey;
 
     if (e.shiftKey && selectedIndices.size) {
-      const previousMax = Math.max.apply(
-        Math,
-        Array.from(selectedIndices.values()),
-      );
-      let indicesToAdd = [];
+      const previousMax = Math.max(...Array.from(selectedIndices.values()));
+      const indicesToAdd = [];
 
       if (previousMax > index) {
         for (let i = index; i <= previousMax; i++) {
@@ -93,9 +85,7 @@ class AdvancedFileList extends React.Component {
       }
       updateIndices(new Set(indicesToAdd));
     } else {
-      const indices = controlled
-        ? selectedIndices.add(index)
-        : new Set([index]);
+      const indices = controlled ? selectedIndices.add(index) : new Set([index]);
       updateIndices(indices);
     }
   }
@@ -141,7 +131,7 @@ class AdvancedFileList extends React.Component {
           height: '60vh',
           minWidth: '42vw',
         }}
-        onKeyDown={(e) => this.handleSelectAll(e)}
+        onKeyDown={e => this.handleSelectAll(e)}
       >
         <div
           style={{
@@ -152,35 +142,14 @@ class AdvancedFileList extends React.Component {
             background: '#F5F4F4',
           }}
         >
-          <div
-            style={headerStyle}
-            onClick={() => isSource && this.props.handleSortByName()}
-          >
-            <span
-              style={{ borderBottom: isSource ? '1px dotted black' : 'none' }}
-            >
-              Filename
-            </span>
+          <div style={headerStyle} onClick={() => isSource && this.props.handleSortByName()}>
+            <span style={{ borderBottom: isSource ? '1px dotted black' : 'none' }}>Filename</span>
           </div>
-          <div
-            style={headerStyle}
-            onClick={() => isSource && this.props.handleSortBySize()}
-          >
-            <span
-              style={{ borderBottom: isSource ? '1px dotted black' : 'none' }}
-            >
-              Size
-            </span>
+          <div style={headerStyle} onClick={() => isSource && this.props.handleSortBySize()}>
+            <span style={{ borderBottom: isSource ? '1px dotted black' : 'none' }}>Size</span>
           </div>
-          <div
-            style={headerStyle}
-            onClick={() => isSource && this.props.handleSortByExt()}
-          >
-            <span
-              style={{ borderBottom: isSource ? '1px dotted black' : 'none' }}
-            >
-              Ext
-            </span>
+          <div style={headerStyle} onClick={() => isSource && this.props.handleSortByExt()}>
+            <span style={{ borderBottom: isSource ? '1px dotted black' : 'none' }}>Ext</span>
           </div>
           <div
             style={{ ...headerStyle, width: '75%' }}
@@ -212,8 +181,8 @@ class AdvancedFileList extends React.Component {
                 lineHeight: 3,
                 overflowY: 'auto',
               }}
-              onClick={(e) => this.handleMenuItemOnClick(e, index)}
-              onDoubleClick={(e) => {
+              onClick={e => this.handleMenuItemOnClick(e, index)}
+              onDoubleClick={e => {
                 e.preventDefault();
               }}
             >
@@ -239,7 +208,7 @@ class AdvancedFileList extends React.Component {
                       fill: '#2196F3',
                       verticalAlign: 'middle',
                     }}
-                    onClick={(e) => this.handleDownloadFile(e, file.name)}
+                    onClick={e => this.handleDownloadFile(e, file.name)}
                   />
                 </div>
               ) : null}

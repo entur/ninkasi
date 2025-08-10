@@ -22,8 +22,7 @@ export const ExportStatus = Object.freeze({
   ERROR: 'ERROR',
 });
 
-const isOfficialNorwegianGTFS = (name = '') =>
-  name.indexOf('rb_norway-aggregated-gtfs.zip') > -1;
+const isOfficialNorwegianGTFS = (name = '') => name.indexOf('rb_norway-aggregated-gtfs.zip') > -1;
 
 export const addExportedFileMetadata = (
   providerId,
@@ -32,7 +31,7 @@ export const addExportedFileMetadata = (
   file,
   norwayNetex,
   norwayGTFS,
-  providerData,
+  providerData
 ) => {
   if (providerId === null) {
     if (format === 'NETEX') {
@@ -45,8 +44,7 @@ export const addExportedFileMetadata = (
 
   if (providerData[providerId]) {
     if (providerData[providerId][format]) {
-      providerData[providerId][format] =
-        providerData[providerId][format].concat(file);
+      providerData[providerId][format] = providerData[providerId][format].concat(file);
     } else {
       providerData[providerId][format] = [file];
     }
@@ -58,14 +56,10 @@ export const addExportedFileMetadata = (
   }
 };
 
-export const addExportedNorwayMetadata = (
-  norwayNetex,
-  norwayGTFS,
-  providerData,
-) => {
+export const addExportedNorwayMetadata = (norwayNetex, norwayGTFS, providerData) => {
   const GTFS = norwayGTFS
     .sort((a, b) => b.updated - a.updated)
-    .filter((file) => isOfficialNorwegianGTFS(file.name));
+    .filter(file => isOfficialNorwegianGTFS(file.name));
   const NETEX = norwayNetex.sort((a, b) => b.updated - a.updated);
   providerData['ALL'] = {
     NETEX,
@@ -74,7 +68,7 @@ export const addExportedNorwayMetadata = (
   };
 };
 
-export const formatProviderData = (providerData) => {
+export const formatProviderData = providerData => {
   const data = Object.assign({}, providerData);
   const comparator = (a, b) => {
     const statusA = a.status.status;
@@ -91,13 +85,11 @@ export const formatProviderData = (providerData) => {
   };
 
   return Object.keys(data)
-    .map(
-      (providerId) => (data[providerId] = formatProviderRow(data[providerId])),
-    )
+    .map(providerId => (data[providerId] = formatProviderRow(data[providerId])))
     .sort(comparator);
 };
 
-const formatProviderRow = (providerRow) => {
+const formatProviderRow = providerRow => {
   const { NETEX, GTFS } = providerRow;
 
   const netexDate = getFirstFromArray(NETEX, 'updated');
@@ -107,9 +99,7 @@ const formatProviderRow = (providerRow) => {
   const gtfsUrl = getFirstFromArray(GTFS, 'url');
   const netexUrl = getFirstFromArray(NETEX, 'url');
   const diff =
-    netexDate && gtfsDate
-      ? moment.duration(moment(netexDate).diff(moment(gtfsDate)))
-      : null;
+    netexDate && gtfsDate ? moment.duration(moment(netexDate).diff(moment(gtfsDate))) : null;
   const diffHumanized = diff ? diff.humanize() : null;
   const status = getProviderRowStatus(netexDate, gtfsDate);
 
@@ -153,16 +143,12 @@ const getFirstFromArray = (arr, field) => {
   return Array.isArray(arr) && arr[0] && arr[0][field] ? arr[0][field] : null;
 };
 
-const isWithinLast24Hours = (date) => {
+const isWithinLast24Hours = date => {
   const now = Date.now();
   const momentDiff = moment.duration(moment(date).diff(moment(now)));
   if (momentDiff && momentDiff._data) {
     const { years, months, days } = momentDiff._data;
-    if (
-      Math.abs(years) === 0 &&
-      Math.abs(months) === 0 &&
-      Math.abs(days) === 0
-    ) {
+    if (Math.abs(years) === 0 && Math.abs(months) === 0 && Math.abs(days) === 0) {
       return true;
     }
   }
