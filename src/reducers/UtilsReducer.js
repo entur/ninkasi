@@ -16,17 +16,11 @@
 
 import * as types from 'actions/actionTypes';
 
-import moment from 'moment';
-
 const intialState = {
   shouldUpdateProvider: false,
   editProviderModal: false,
   outboundFilelist: [],
   expandedEvents: [],
-  isModalOpen: false,
-  loggedEvents: [],
-  loggedEventsFilter: '',
-  filteredLoggedEvents: [],
   isConfigLoaded: false,
   activeTab: 'migrateData',
   eventListSortOrder: {
@@ -44,20 +38,6 @@ const intialState = {
   supplierForm: {
     chouetteInfo: {},
   },
-};
-
-const filterHelper = (loggedEvents, loggedEventsFilter) => {
-  return loggedEvents.filter(item => {
-    return item.title.toLowerCase().indexOf(loggedEventsFilter.toLowerCase()) > -1;
-  });
-};
-
-const eventHelper = (event, loggedEvents) => {
-  event.id = loggedEvents.length + 1;
-  const nowDate = moment().locale('nb').format('Do MMMM HH:mm:ss');
-  event.date = nowDate;
-  event.title = `${nowDate}: ${event.title}`;
-  return event;
 };
 
 const UtilsReducer = (state = intialState, action) => {
@@ -94,15 +74,6 @@ const UtilsReducer = (state = intialState, action) => {
         expandedEvents: toggleExpandedEvents(action.payLoad, state.expandedEvents),
       });
 
-    case types.OPENED_HISTORY_MODAL:
-      return Object.assign({}, state, {
-        isModalOpen: true,
-        filteredLoggedEvents: state.loggedEvents,
-      });
-
-    case types.DISMISS_MODAL_DIALOG:
-      return Object.assign({}, state, { isModalOpen: false });
-
     case types.DISMISS_EDIT_PROVIDER_DIALOG:
       return Object.assign({}, state, { editProviderModal: false });
 
@@ -121,19 +92,6 @@ const UtilsReducer = (state = intialState, action) => {
     case types.OPENED_POI_FILTER_DIALOG:
       return Object.assign({}, state, {
         shouldUpdatePoiFilter: true,
-      });
-
-    case types.LOG_EVENT: {
-      const event = eventHelper(action.payLoad, state.loggedEvents);
-      return Object.assign({}, state, {
-        loggedEvents: state.loggedEvents.concat(event),
-      });
-    }
-
-    case types.LOG_EVENT_FILTER:
-      return Object.assign({}, state, {
-        logEventFilter: action.payLoad,
-        filteredLoggedEvents: filterHelper(state.loggedEvents, action.payLoad),
       });
 
     case types.SUCCESS_FETCH_PROVIDER:

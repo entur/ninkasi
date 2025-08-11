@@ -35,11 +35,6 @@ SuppliersActions.cleanStopPlacesInChouette = getToken => async (dispatch, getSta
       dispatch(
         SuppliersActions.addNotification('Deleted Stop Place Register in Chouette', 'success')
       );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Deleted Stop Place Register in Chouette',
-        })
-      );
     })
     .catch(err => {
       SuppliersActions.addNotification('Failed to delete Stop Place Register in Chouette', 'error');
@@ -50,7 +45,6 @@ SuppliersActions.deleteAllJobs = getToken => async (dispatch, getState) => {
   const url = `${window.config.eventsBaseUrl}timetable/`;
   return axios.delete(url, await getApiConfig(getToken)).then(response => {
     dispatch(SuppliersActions.addNotification('Deleted event history', 'success'));
-    dispatch(SuppliersActions.logEvent({ title: 'Deleted event history' }));
   });
 };
 
@@ -59,11 +53,6 @@ SuppliersActions.deleteJobsForProvider = (id, getToken) => async (dispatch, getS
   return axios.delete(url, await getApiConfig(getToken)).then(response => {
     dispatch(
       SuppliersActions.addNotification('Deleted event history for provider ' + id, 'success')
-    );
-    dispatch(
-      SuppliersActions.logEvent({
-        title: 'Deleted event history for provider ' + id,
-      })
     );
   });
 };
@@ -103,15 +92,9 @@ SuppliersActions.executePeliasTask = (tasks, getToken) => async (dispatch, getSt
     .post(url, null, await getApiConfig(getToken))
     .then(response => {
       dispatch(SuppliersActions.addNotification('Pelias task execution', 'success'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Pelias tasks executed successfully',
-        })
-      );
     })
     .catch(err => {
       dispatch(SuppliersActions.addNotification('Unable to execute pelias tasks', 'error'));
-      dispatch(SuppliersActions.logEvent({ title: 'Running pelias tasks failed' }));
       console.log('err', err);
     });
 };
@@ -139,11 +122,6 @@ SuppliersActions.uploadTariffZonesFiles = (files, provider) => async (dispatch, 
     .post(url, data, config)
     .then(function (response) {
       dispatch(SuppliersActions.addNotification('Uploaded tariff zone file(s)', 'success'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Uploaded tariff zone file(s): ' + files.join(','),
-        })
-      );
       dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
     })
     .catch(function (response) {
@@ -269,12 +247,10 @@ SuppliersActions.createProvider = (data, getToken) => async (dispatch, getState)
       });
 
       dispatch(SuppliersActions.addNotification('Provider created', 'success'));
-      dispatch(SuppliersActions.logEvent({ title: 'New provider created' }));
     })
     .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_CREATE_PROVIDER));
       dispatch(SuppliersActions.addNotification('Unable to create provider', 'error'));
-      dispatch(SuppliersActions.logEvent({ title: 'Creating new provider failed' }));
       dispatch(SuppliersActions.getAllProviders(getToken));
     });
 };
@@ -319,20 +295,10 @@ SuppliersActions.updateProvider = (data, getToken) => async (dispatch, getState)
       dispatch(sendData(response.data, types.SUCCESS_UPDATE_PROVIDER));
       dispatch(SuppliersActions.addNotification('Updated provider successfully', 'success'));
       dispatch(SuppliersActions.getAllProviders(getToken));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Updated provider ${provider.id} successfully`,
-        })
-      );
     })
     .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_UPDATE_PROVIDER));
       dispatch(SuppliersActions.addNotification('Unable to update provider', 'error'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Updating provider ${provider.id} failed`,
-        })
-      );
     });
 };
 
@@ -376,7 +342,6 @@ SuppliersActions.deleteProvider = (providerId, getToken) => async (dispatch, get
       dispatch(sendData(response.data, types.SUCCESS_DELETE_PROVIDER));
 
       dispatch(SuppliersActions.addNotification('Provider deleted', 'success'));
-      dispatch(SuppliersActions.logEvent({ title: 'Provider deleted' }));
 
       dispatch(SuppliersActions.getAllProviders(getToken)).then(() => {
         window.history.pushState(
@@ -428,11 +393,6 @@ SuppliersActions.cancelChouetteJobForProvider =
         dispatch(
           SuppliersActions.addNotification(`Cancelled chouettejob with id ${chouetteId}`, 'success')
         );
-        dispatch(
-          SuppliersActions.logEvent({
-            title: `Chouette job with ${chouetteId} successfully cancelled for provider ${providerId}`,
-          })
-        );
       })
       .catch(function (response) {
         dispatch(sendData(response.data, types.ERROR_DELETE_PROVIDERS_CHOUETTE_JOB));
@@ -441,11 +401,6 @@ SuppliersActions.cancelChouetteJobForProvider =
             `Unable to cancel chouettejob with id ${chouetteId}`,
             'error'
           )
-        );
-        dispatch(
-          SuppliersActions.logEvent({
-            title: `Unable to cancel chouette job with id ${chouetteId} for provider ${providerId}`,
-          })
         );
       });
   };
@@ -461,11 +416,6 @@ SuppliersActions.cancelAllChouetteJobsforAllProviders = getToken => async (dispa
       dispatch(
         SuppliersActions.addNotification(`Cancelled all chouette jobs for all providers`, 'success')
       );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `All chouette jobs for all providers successfully cancelled `,
-        })
-      );
     })
     .catch(function (response) {
       dispatch(
@@ -473,11 +423,6 @@ SuppliersActions.cancelAllChouetteJobsforAllProviders = getToken => async (dispa
           `Failed deleting all chouttejobs for all providers`,
           'error'
         )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Unable to cancel all chouette jobs for all providers`,
-        })
       );
     });
 };
@@ -502,11 +447,6 @@ SuppliersActions.cancelAllChouetteJobsforProvider =
             'success'
           )
         );
-        dispatch(
-          SuppliersActions.logEvent({
-            title: `All chouette jobs for provider ${providerId} successfully  cancelled `,
-          })
-        );
       })
       .catch(function (response) {
         dispatch(sendData(response.data, types.ERROR_DELETE_ALL_PROVIDERS_CHOUETTE_JOB));
@@ -515,11 +455,6 @@ SuppliersActions.cancelAllChouetteJobsforProvider =
             `Failed deleting all chouttejobs for provider ${providerId}`,
             'error'
           )
-        );
-        dispatch(
-          SuppliersActions.logEvent({
-            title: `Unable to cancel chouette jobs for provider ${providerId}`,
-          })
         );
       });
   };
@@ -635,20 +570,10 @@ SuppliersActions.exportData = id => async (dispatch, getState) => {
     .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_EXPORT_DATA));
       dispatch(SuppliersActions.addNotification('Export started', 'success'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Exported data for provider ${id}`,
-        })
-      );
     })
     .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_EXPORT_DATA));
       dispatch(SuppliersActions.addNotification('Export failed', 'error'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Export failed for provider ${id}`,
-        })
-      );
     });
 };
 
@@ -724,20 +649,10 @@ SuppliersActions.transferData = id => async (dispatch, getState) => {
     .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_TRANSFER_DATA));
       dispatch(SuppliersActions.addNotification('Transfer started', 'success'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Transfered data for provider ${id}`,
-        })
-      );
     })
     .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_TRANSFER_DATA));
       dispatch(SuppliersActions.addNotification('Transfer failed', 'error'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Transfer failed for provider ${id}`,
-        })
-      );
     });
 };
 
@@ -788,21 +703,10 @@ SuppliersActions.importData =
       .then(function (response) {
         dispatch(sendData(response.data, types.SUCCESS_IMPORT_DATA));
         dispatch(SuppliersActions.addNotification('Import started', 'success'));
-        dispatch(
-          SuppliersActions.logEvent({
-            title: `Imported data for provider ${id}`,
-            files: selectedFiles,
-          })
-        );
       })
       .catch(function (response) {
         dispatch(sendData(response.data, types.ERROR_IMPORT_DATA));
         dispatch(SuppliersActions.addNotification('Import failed', 'error'));
-        dispatch(
-          SuppliersActions.logEvent({
-            title: `Import failed for provider ${id}`,
-          })
-        );
       });
   };
 
@@ -819,20 +723,10 @@ SuppliersActions.cleanDataspace = id => async (dispatch, getState) => {
     .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_DELETE_DATA));
       dispatch(SuppliersActions.addNotification('Cleaning of dataspace started', 'success'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Cleaned data space for provider ${id}`,
-        })
-      );
     })
     .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_DELETE_DATA));
       dispatch(SuppliersActions.addNotification('Cleaning of dataspace failed', 'error'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Cleaning data space failed for provider ${id}`,
-        })
-      );
     });
 };
 
@@ -852,11 +746,6 @@ SuppliersActions.cleanAllDataspaces = filter => async (dispatch, getState) => {
           'success'
         )
       );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Cleaned all dataspaces with filter ${filter}`,
-        })
-      );
     })
     .catch(function (response) {
       dispatch(
@@ -864,11 +753,6 @@ SuppliersActions.cleanAllDataspaces = filter => async (dispatch, getState) => {
           'Cleaning of all dataspaces failed with filter ' + filter,
           'error'
         )
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Cleaning all dataspaces failed for filter ${filter}`,
-        })
       );
     });
 };
@@ -886,20 +770,10 @@ SuppliersActions.validateProvider = id => async (dispatch, getState) => {
     .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_VALIDATE_PROVIDER));
       dispatch(SuppliersActions.addNotification('Validation started', 'success'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Validated, imported and exported data for provider ${id} successfully`,
-        })
-      );
     })
     .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_VALIDATE_PROVIDER));
       dispatch(SuppliersActions.addNotification('Validation failed', 'error'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: `Validating, importing and exporting data for provider ${id} failed`,
-        })
-      );
     });
 };
 
@@ -916,13 +790,11 @@ SuppliersActions.buildGraph = () => async (dispatch, getState) => {
     .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_GRAPH));
       dispatch(SuppliersActions.addNotification('Graph build started', 'success'));
-      dispatch(SuppliersActions.logEvent({ title: 'Graph build started' }));
     })
     .catch(function (response) {
       console.log('ERROR BUILDING GRAPH', response);
       dispatch(sendData(response.data, types.ERROR_BUILD_GRAPH));
       dispatch(SuppliersActions.addNotification('Graph build failed', 'error'));
-      dispatch(SuppliersActions.logEvent({ title: 'Graph build failed' }));
     });
 };
 
@@ -939,13 +811,11 @@ SuppliersActions.buildBaseGraph = () => async (dispatch, getState) => {
     .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_BASE_GRAPH));
       dispatch(SuppliersActions.addNotification('Base graph build started', 'success'));
-      dispatch(SuppliersActions.logEvent({ title: 'Base graph build started' }));
     })
     .catch(function (response) {
       console.log('ERROR BUILDING BASE GRAPH', response);
       dispatch(sendData(response.data, types.ERROR_BUILD_BASE_GRAPH));
       dispatch(SuppliersActions.addNotification('Base graph build failed', 'error'));
-      dispatch(SuppliersActions.logEvent({ title: 'Base graph build failed' }));
     });
 };
 
@@ -962,21 +832,11 @@ SuppliersActions.buildCandidateGraphOTP = () => async (dispatch, getState) => {
     .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_CANDIDATE_GRAPH_OTP));
       dispatch(SuppliersActions.addNotification('Candidate graph build (OTP) started', 'success'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Candidate graph build (OTP) started',
-        })
-      );
     })
     .catch(function (response) {
       console.log('ERROR BUILDING CANDIDATE GRAPH (OTP)', response);
       dispatch(sendData(response.data, types.ERROR_BUILD_CANDIDATE_GRAPH_OTP));
       dispatch(SuppliersActions.addNotification('Candidate graph build (OTP) failed', 'error'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Candidate graph build (OTP) failed',
-        })
-      );
     });
 };
 
@@ -995,22 +855,12 @@ SuppliersActions.buildCandidateBaseGraphOTP = () => async (dispatch, getState) =
       dispatch(
         SuppliersActions.addNotification('Candidate base graph build (OTP) started', 'success')
       );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Candidate base graph build (OTP) started',
-        })
-      );
     })
     .catch(function (response) {
       console.log('ERROR BUILDING CANDIDATE BASE GRAPH (OTP)', response);
       dispatch(sendData(response.data, types.ERROR_BUILD_CANDIDATE_BASE_GRAPH_OTP));
       dispatch(
         SuppliersActions.addNotification('Candidate base graph build (OTP) failed', 'error')
-      );
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Candidate base graph build (OTP) failed',
-        })
       );
     });
 };
@@ -1027,62 +877,10 @@ SuppliersActions.fetchOSM = () => async (dispatch, getState) => {
     .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_FETCH_OSM));
       dispatch(SuppliersActions.addNotification('OSM update started', 'success'));
-      dispatch(SuppliersActions.logEvent({ title: 'OSM update started' }));
     })
     .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_FETCH_OSM));
       dispatch(SuppliersActions.addNotification('OSM update failed', 'error'));
-      dispatch(SuppliersActions.logEvent({ title: 'OSM update failed' }));
-    });
-};
-
-SuppliersActions.uploadGoogleProduction = () => async (dispatch, getState) => {
-  const url = window.config.timetableAdminBaseUrl + 'export/google/publish';
-  dispatch(requestUploadGoogleProduction());
-  return axios({
-    url: url,
-    timeout: 20000,
-    method: 'post',
-    ...(await getApiConfig(getToken)),
-  })
-    .then(function (response) {
-      dispatch(sendData(response.data, types.SUCCESS_UPLOAD_GOOGLE_PRODUCTION));
-      dispatch(SuppliersActions.addNotification('Google upload started (production)', 'success'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Google upload started (production)',
-        })
-      );
-    })
-    .catch(function (response) {
-      dispatch(sendData(response.data, types.ERROR_UPLOAD_GOOGLE_PRODUCTION));
-      dispatch(SuppliersActions.addNotification('Google upload failed (production)', 'error'));
-      dispatch(
-        SuppliersActions.logEvent({
-          title: 'Google upload failed (production)',
-        })
-      );
-    });
-};
-
-SuppliersActions.uploadGoogleQA = () => async (dispatch, getState) => {
-  const url = window.config.timetableAdminBaseUrl + 'export/google-qa/publish';
-  dispatch(requestUploadGoogleQA());
-  return axios({
-    url: url,
-    timeout: 20000,
-    method: 'post',
-    ...(await getApiConfig(getToken)),
-  })
-    .then(function (response) {
-      dispatch(sendData(response.data, types.SUCCESS_UPLOAD_GOOGLE_QA));
-      dispatch(SuppliersActions.addNotification('Google upload started (QA)', 'success'));
-      dispatch(SuppliersActions.logEvent({ title: 'Google upload started (QA)' }));
-    })
-    .catch(function (response) {
-      dispatch(sendData(response.data, types.ERROR_UPLOAD_GOOGLE_QA));
-      dispatch(SuppliersActions.addNotification('Google upload failed (QA)', 'error'));
-      dispatch(SuppliersActions.logEvent({ title: 'Google upload failed (QA)' }));
     });
 };
 
@@ -1097,12 +895,10 @@ SuppliersActions.updateMapbox = () => async (dispatch, getState) => {
   })
     .then(function (response) {
       dispatch(SuppliersActions.addNotification('Mapbox update started', 'success'));
-      dispatch(SuppliersActions.logEvent({ title: 'Mapbox update started' }));
     })
     .catch(function (response) {
       const errorMessage = 'Mapbox update failed';
       dispatch(SuppliersActions.addNotification(errorMessage, 'error'));
-      dispatch(SuppliersActions.logEvent({ title: errorMessage }));
     });
 };
 
@@ -1156,14 +952,6 @@ function requestBuildBaseGraph() {
 
 function requestFetchOSM() {
   return { type: types.REQUEST_FETCH_OSM };
-}
-
-function requestUploadGoogleProduction() {
-  return { type: types.REQUEST_UPLOAD_GOOGLE_PRODUCTION };
-}
-
-function requestUploadGoogleQA() {
-  return { type: types.REQUEST_UPLOAD_GOOGLE_QA };
 }
 
 function requestCleanDataspace() {
@@ -1231,13 +1019,6 @@ SuppliersActions.restoreFilesToOutbound = () => {
   };
 };
 
-SuppliersActions.logEventFilter = filter => {
-  return {
-    type: types.LOG_EVENT_FILTER,
-    payLoad: filter,
-  };
-};
-
 SuppliersActions.updateOutboundFilelist = files => {
   return {
     type: types.UPDATE_FILES_TO_OUTBOUND,
@@ -1274,18 +1055,6 @@ SuppliersActions.toggleExpandableEventsContent = id => {
   };
 };
 
-SuppliersActions.openHistoryModal = () => {
-  return {
-    type: types.OPENED_HISTORY_MODAL,
-  };
-};
-
-SuppliersActions.dismissModalDialog = () => {
-  return {
-    type: types.DISMISS_MODAL_DIALOG,
-  };
-};
-
 SuppliersActions.openEditModalDialog = () => {
   return {
     type: types.OPENED_EDIT_PROVIDER_DIALOG,
@@ -1313,13 +1082,6 @@ SuppliersActions.openNewProviderDialog = () => {
 SuppliersActions.dismissEditProviderDialog = () => {
   return {
     type: types.DISMISS_EDIT_PROVIDER_DIALOG,
-  };
-};
-
-SuppliersActions.logEvent = event => {
-  return {
-    type: types.LOG_EVENT,
-    payLoad: event,
   };
 };
 
@@ -1368,11 +1130,9 @@ SuppliersActions.cleanFileFilter = () => async (dispatch, getState) => {
   })
     .then(function (response) {
       dispatch(SuppliersActions.addNotification('File filter cleaned', 'success'));
-      dispatch(SuppliersActions.logEvent({ title: 'File filter cleaned' }));
     })
     .catch(function (response) {
       dispatch(SuppliersActions.addNotification('Cleaning file filter failed', 'error'));
-      dispatch(SuppliersActions.logEvent({ title: 'Cleaning file filter failed' }));
     });
 };
 
