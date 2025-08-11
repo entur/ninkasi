@@ -31,8 +31,8 @@ class SupplierTabWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTabForProvider: getQueryVariable('tab') || 'migrateData',
-      activeTabForAllProvider: getQueryVariable('tab') || 'chouetteJobs',
+      activeTabForProvider: getQueryVariable('tab') || 'events',
+      activeTabForAllProvider: getQueryVariable('tab') || 'events',
       currentTabIndex: 0,
     };
   }
@@ -63,6 +63,13 @@ class SupplierTabWrapper extends React.Component {
     } else if (queryId === 'exportedFiles') {
       if (queryId) {
         this.onTabChangeForProvider(0, 'migrateData', null, null);
+      }
+    } else {
+      // Default case - no tab parameter provided, use events tab
+      if (queryId) {
+        dispatch(SuppliersActions.getProviderStatus(queryId, this.props.getToken));
+      } else {
+        dispatch(SuppliersActions.getAllProviderStatus(this.props.getToken));
       }
     }
   }
@@ -180,7 +187,7 @@ class SupplierTabWrapper extends React.Component {
           return 0;
         }
       default:
-        return 0;
+        return displayAllSuppliers ? 1 : 1;
     }
   }
 
