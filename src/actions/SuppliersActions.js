@@ -1324,7 +1324,7 @@ SuppliersActions.logEvent = event => {
 };
 
 SuppliersActions.getExportedFiles = getToken => async (dispatch, getState) => {
-  dispatch(sendData(types.REQUESTED_EXPORTED_FILES, null));
+  dispatch(sendData(null, types.REQUESTED_EXPORTED_FILES));
   const url = window.config.timetableAdminBaseUrl + 'export/files';
   return axios({
     url: url,
