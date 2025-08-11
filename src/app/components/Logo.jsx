@@ -4,7 +4,8 @@ const pageNameFromPathName = pathname => {
   switch (pathname) {
     case '/':
     case '/timetable-admin':
-      return 'Timetable Admin';
+    case '/timetable-pipeline':
+      return 'Timetable Pipeline';
     case '/geocoder-pipeline':
       return 'Geocoder Pipeline';
     case '/permissions':

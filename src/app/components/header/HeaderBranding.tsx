@@ -11,7 +11,7 @@ export default function HeaderBranding() {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Link
-        to="/timetable-admin"
+        to="/timetable-pipeline"
         style={{
           display: 'flex',
           alignItems: 'center',
