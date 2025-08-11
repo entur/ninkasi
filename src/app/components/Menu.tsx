@@ -32,7 +32,7 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
 }));
 
 const menuItems = [
-  { text: 'Timetable Admin', path: '/timetable-admin' },
+  { text: 'Timetable Pipeline', path: '/timetable-pipeline' },
   { text: 'Geocoder Pipeline', path: '/geocoder-pipeline' },
   { text: 'Permissions', path: '/permissions' },
 ];

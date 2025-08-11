@@ -29,6 +29,7 @@ const Router = ({ dispatch }) => {
     <Switch>
       <Route exact path="/" component={Providers} />
       <Route exact path="/timetable-admin" component={Providers} />
+      <Route exact path="/timetable-pipeline" component={Providers} />
       <Route exact path="/geocoder-pipeline" component={Geocoder} />
       <Route exact path="/permissions" component={Organization} />
       <Route path="/netex-validation-reports">
