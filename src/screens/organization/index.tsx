@@ -23,7 +23,6 @@ import OrganizationView from '../providers/components/organizationView/Organizat
 import RoleView from '../providers/components/roleView/RoleView';
 import ResponsibilitiesView from '../providers/components/responsibilitiesView/ResponsibilitiesView';
 import EntityTypesView from '../providers/components/entityTypesView/EntityTypesView';
-import ModalViewContainer from '../../modals/ModalActionContainer';
 
 interface OrganizationProps {
   isOrganisationAdmin: boolean;
@@ -89,7 +88,6 @@ class Organization extends React.Component<OrganizationProps, OrganizationState>
             {activeTab === 4 ? <EntityTypesView /> : null}
           </div>
         </div>
-        <ModalViewContainer />
       </div>
     );
   }
