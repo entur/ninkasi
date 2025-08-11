@@ -1,9 +1,7 @@
 import React from 'react';
 import { Box, IconButton, Menu, MenuItem, Badge } from '@mui/material';
-import { MoreVert, AccountCircle, Help, History, Menu as MenuIcon } from '@mui/icons-material';
+import { MoreVert, AccountCircle, Help, Menu as MenuIcon } from '@mui/icons-material';
 import { useAuth } from '../../../auth';
-import { useDispatch } from 'react-redux';
-import SuppliersActions from '../../../actions/SuppliersActions';
 
 interface HeaderActionsProps {
   isMobile: boolean;
@@ -13,7 +11,6 @@ interface HeaderActionsProps {
 export default function HeaderActions({ isMobile, onMenuIconClick }: HeaderActionsProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const auth = useAuth();
-  const dispatch = useDispatch();
   const open = Boolean(anchorEl);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -26,11 +23,6 @@ export default function HeaderActions({ isMobile, onMenuIconClick }: HeaderActio
 
   const handleLogout = () => {
     auth.signoutRedirect();
-  };
-
-  const handleShowHistory = () => {
-    dispatch(SuppliersActions.openHistoryModal());
-    handleMenuClose();
   };
 
   const username = auth.user?.profile?.name || auth.user?.profile?.email || 'User';
@@ -72,10 +64,6 @@ export default function HeaderActions({ isMobile, onMenuIconClick }: HeaderActio
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={handleShowHistory} style={{ fontSize: 12 }}>
-          <History style={{ marginRight: 8, color: '#41c0c4' }} />
-          History
-        </MenuItem>
         <MenuItem
           component="a"
           href="https://enturas.atlassian.net/wiki/spaces/ROR/pages/682623320/Brukerveiledning+-+Ninkasi"

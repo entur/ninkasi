@@ -36,7 +36,6 @@ class AdministrativeActions extends React.Component {
       confirmTitle: '',
       confirmInfo: '',
       cleanPopoverOpen: false,
-      googlePopoverOpen: false,
       graphPopoverOpen: false,
     };
 
@@ -101,30 +100,6 @@ class AdministrativeActions extends React.Component {
       confirmAction: () => {
         const { dispatch } = this.props;
         dispatch(SuppliersActions.fetchOSM());
-      },
-    });
-  }
-
-  handleUploadGoogleProduction() {
-    this.setState({
-      confirmDialogOpen: true,
-      confirmTitle: 'Upload GTFS data to Google (production)',
-      confirmInfo: 'Are you sure you want to upload latest GTFS export to Google (production)?',
-      confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.uploadGoogleProduction());
-      },
-    });
-  }
-
-  handleUploadGoogleQA() {
-    this.setState({
-      confirmDialogOpen: true,
-      confirmTitle: 'Upload GTFS data to Google (QA)',
-      confirmInfo: 'Are you sure you want to upload latest GTFS export to Google (QA)?',
-      confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.uploadGoogleQA());
       },
     });
   }
@@ -211,15 +186,6 @@ class AdministrativeActions extends React.Component {
 
     this.setState({
       graphPopoverOpen: true,
-      anchorEl: event.currentTarget,
-    });
-  }
-
-  handleGoogleOpen(event) {
-    event.preventDefault();
-
-    this.setState({
-      googlePopoverOpen: true,
       anchorEl: event.currentTarget,
     });
   }
@@ -320,45 +286,6 @@ class AdministrativeActions extends React.Component {
           >
             Fetch OSM
           </Button>
-          <Button variant="text" onClick={this.handleGoogleOpen.bind(this)}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <div
-                style={{
-                  fontSize: 12,
-                  color: '#fff',
-                  paddingLeft: 8,
-                  paddingRight: 8,
-                  paddingTop: 2,
-                  textTransform: 'uppercase',
-                }}
-              >
-                Google
-              </div>
-              <ArrowDropDown sx={{ color: 'white' }} />
-            </div>
-          </Button>
-          <Popover
-            open={this.state.googlePopoverOpen}
-            anchorEl={this.state.anchorEl}
-            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-            transformOrigin={{ horizontal: 'left', vertical: 'top' }}
-            onClose={() => this.setState({ googlePopoverOpen: false })}
-          >
-            <MenuItem
-              style={{ fontSize: '1.1em' }}
-              onClick={() => this.handleUploadGoogleProduction()}
-              title={toolTips.uploadGoogleProduction}
-            >
-              Upload GTFS (production)
-            </MenuItem>
-            <MenuItem
-              style={{ fontSize: '1em' }}
-              onClick={() => this.handleUploadGoogleQA()}
-              title={toolTips.uploadGoogleQA}
-            >
-              Upload GTFS (QA)
-            </MenuItem>
-          </Popover>
         </div>
         <div
           style={{
