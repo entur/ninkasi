@@ -298,6 +298,7 @@ class SupplierTabWrapper extends React.Component {
               {currentTabIndex === 0 && <ChouetteAllJobs />}
               {currentTabIndex === 1 && window.config.zagmukMicroFrontendUrl && (
                 <MicroFrontend
+                  key="zagmuk-all-providers"
                   id="ror-zagmuk"
                   host={window.config.zagmukMicroFrontendUrl}
                   staticPath=""
@@ -359,6 +360,7 @@ class SupplierTabWrapper extends React.Component {
               {currentTabIndex === 0 && <DataMigrationDetails />}
               {currentTabIndex === 1 && window.config.zagmukMicroFrontendUrl && (
                 <MicroFrontend
+                  key={`zagmuk-provider-${provider.id}`}
                   id="ror-zagmuk"
                   host={window.config.zagmukMicroFrontendUrl}
                   staticPath=""
