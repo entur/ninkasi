@@ -15,6 +15,7 @@
   "zagmukMicroFrontendUrl": "https://timetable-admin.entur.org",
   "ninsarBaseUrl": "/line-statistics/",
   "ninsarMicroFrontendUrl": "https://line-statistics.entur.org",
+  "enturPartnerUrl": "https://entur-partner.entur.org",
   "auth0Domain": "partner.entur.org",
   "auth0ClientId": "e9ZtbVeXzmndg1znoyS5hK78ng3CvYsi",
   "auth0Audience": "https://ror.api.entur.io",

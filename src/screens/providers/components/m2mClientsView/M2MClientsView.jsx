@@ -19,7 +19,6 @@ import withAuth from 'utils/withAuth';
 import './m2mClientsView.scss';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import { connect } from 'react-redux';
-import { getProvidersEnv } from 'config/themes';
 
 class M2MClientsView extends React.Component {
   constructor(props) {
@@ -77,9 +76,7 @@ class M2MClientsView extends React.Component {
   }
 
   getEnturPartnerUrl(issuer, clientId) {
-    const env = getProvidersEnv(window.config.providersBaseUrl).toLowerCase();
-    const baseUrl =
-      env === 'prod' ? 'https://entur-partner.entur.org' : 'https://entur-partner.dev.entur.org';
+    const baseUrl = window.config.enturPartnerUrl;
     const issuerPath = issuer.toLowerCase() === 'internal' ? 'internal' : 'partner';
     return `${baseUrl}/permission-admin/clients/view/${issuerPath}/${clientId}`;
   }
