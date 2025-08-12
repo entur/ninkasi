@@ -189,6 +189,19 @@ OrganizationRegisterActions.getUsers = getToken => async (dispatch, getState) =>
     });
 };
 
+OrganizationRegisterActions.getM2MClients = getToken => async (dispatch, getState) => {
+  const url = `${window.config.organisationsBaseUrl}m2m_clients?full=true`;
+  return axios
+    .get(url, await getApiConfig(getToken))
+    .then(response => {
+      dispatch(sendData(sortBy(response.data, 'name'), types.RECEIVED_M2M_CLIENTS));
+    })
+    .catch(error => {
+      console.log('Error receiving M2M clients', error);
+      dispatch(sendData(error, types.ERROR_M2M_CLIENTS));
+    });
+};
+
 OrganizationRegisterActions.deleteUser = (userId, getToken) => async (dispatch, getState) => {
   const url = `${window.config.organisationsBaseUrl}users/${userId}`;
   return axios

@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import withAuth from '../../utils/withAuth';
 import SideBarTabs from '../providers/components/SideBarTabs';
 import UserView from '../providers/components/userView/UserView';
+import M2MClientsView from '../providers/components/m2mClientsView/M2MClientsView';
 import OrganizationView from '../providers/components/organizationView/OrganizationView';
 import RoleView from '../providers/components/roleView/RoleView';
 import ResponsibilitiesView from '../providers/components/responsibilitiesView/ResponsibilitiesView';
@@ -82,10 +83,11 @@ class Organization extends React.Component<OrganizationProps, OrganizationState>
             }}
           >
             {activeTab === 0 ? <UserView /> : null}
-            {activeTab === 1 ? <RoleView /> : null}
+            {activeTab === 1 ? <M2MClientsView /> : null}
             {activeTab === 2 ? <OrganizationView /> : null}
-            {activeTab === 3 ? <ResponsibilitiesView /> : null}
-            {activeTab === 4 ? <EntityTypesView /> : null}
+            {activeTab === 3 ? <RoleView /> : null}
+            {activeTab === 4 ? <ResponsibilitiesView /> : null}
+            {activeTab === 5 ? <EntityTypesView /> : null}
           </div>
         </div>
       </div>

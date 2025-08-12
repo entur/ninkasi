@@ -31,6 +31,7 @@ const initialState = {
   organizations: [],
   codeSpaces: [],
   users: [],
+  m2mClients: [],
   responsibilities: [],
   entityTypes: [],
   userNotifications: [],
@@ -259,6 +260,9 @@ const OrganizationReducer = (state = initialState, action) => {
 
     case types.RECEIVED_USERS:
       return Object.assign({}, state, { users: action.payLoad });
+
+    case types.RECEIVED_M2M_CLIENTS:
+      return Object.assign({}, state, { m2mClients: action.payLoad });
 
     case types.RECEIVED_RESPONSIBILITES:
       return Object.assign({}, state, { responsibilities: action.payLoad });

@@ -39,24 +39,29 @@ class SideBarTabs extends React.Component {
           onClick={() => this.setActiveTab(0)}
         />
         <SideBarTabsElement
+          label="M2M Clients"
+          active={activeTab === 1}
+          onClick={() => this.setActiveTab(1)}
+        />
+        <SideBarTabsElement
           label="Organizations"
           active={activeTab === 2}
           onClick={() => this.setActiveTab(2)}
         />
         <SideBarTabsElement
           label="Roles"
-          active={activeTab === 1}
-          onClick={() => this.setActiveTab(1)}
-        />
-        <SideBarTabsElement
-          label="Responsibility sets"
           active={activeTab === 3}
           onClick={() => this.setActiveTab(3)}
         />
         <SideBarTabsElement
-          label="Entity types"
+          label="Responsibility sets"
           active={activeTab === 4}
           onClick={() => this.setActiveTab(4)}
+        />
+        <SideBarTabsElement
+          label="Entity types"
+          active={activeTab === 5}
+          onClick={() => this.setActiveTab(5)}
         />
       </div>
     );

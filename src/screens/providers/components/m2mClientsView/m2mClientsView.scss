@@ -1,0 +1,113 @@
+/*!
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
+ * the European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at:
+ *
+ *   https://joinup.ec.europa.eu/software/page/eupl
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and
+ * limitations under the Licence.
+ *
+ */
+
+.m2m-clients-row {
+  div {
+    margin: 2px;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+  }
+
+  .col-m2m-name {
+    width: 20%;
+    max-width: 20%;
+    min-width: 20%;
+    display: inline-block;
+    word-break: break-all;
+  }
+
+  .col-m2m-client-id {
+    width: 22%;
+    max-width: 22%;
+    min-width: 22%;
+    display: inline-block;
+    word-break: break-all;
+    font-family: monospace;
+    font-size: 0.85em;
+  }
+
+  .col-m2m-org-id {
+    width: 10%;
+    max-width: 10%;
+    min-width: 10%;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .col-m2m-issuer {
+    width: 10%;
+    max-width: 10%;
+    min-width: 10%;
+    display: inline-block;
+  }
+
+  .col-m2m-responsibility-sets {
+    width: 35%;
+    max-width: 35%;
+    min-width: 35%;
+    display: inline-block;
+  }
+
+  .m2m-clients-header {
+    font-weight: 600;
+    text-transform: uppercase;
+    background: rgba(238, 238, 238, 0.28);
+    margin-bottom: 5px;
+
+    .sortable {
+      cursor: pointer;
+      user-select: none;
+      &:hover {
+        color: #1976d2;
+      }
+    }
+  }
+
+  .m2m-client-link {
+    color: #1976d2;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .responsibility-list {
+    margin: 0;
+    padding-left: 20px;
+    list-style-type: disc;
+
+    li {
+      margin: 2px 0;
+      font-size: 0.95em;
+    }
+  }
+
+  .no-responsibilities {
+    color: #999;
+    font-style: italic;
+  }
+
+  .m2m-clients-empty {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+  }
+}
+
+.m2m-clients-row-item:nth-child(2n) {
+  background: hsla(0, 0%, 50%, 0.07);
+}
