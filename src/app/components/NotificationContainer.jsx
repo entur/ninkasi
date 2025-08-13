@@ -14,54 +14,97 @@
  *
  */
 
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import SuppliersActions from 'actions/SuppliersActions';
-import NotificationSystem from '@ybochatay/react-notification-system';
+import { Snackbar, Alert, Slide } from '@mui/material';
 
-class NotificationContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.notificationSystemRef = React.createRef();
-  }
+const NotificationContainer = ({ notification }) => {
+  const [queue, setQueue] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [currentNotification, setCurrentNotification] = useState(null);
+  const processedRef = useRef(new Set());
 
-  componentDidMount() {
-    this.notificationSystem = this.notificationSystemRef.current;
-  }
+  useEffect(() => {
+    if (notification && notification.message) {
+      // Create a unique key for this notification
+      const notificationKey = `${notification.message}-${notification.level}-${Date.now()}`;
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.notification !== this.props.notification) {
-      const { message, level } = this.props.notification;
-      if (this.notificationSystem && message) {
-        this.notificationSystem.addNotification({
-          message,
-          level,
-        });
+      // Check if we've already processed this exact notification
+      if (!processedRef.current.has(notificationKey)) {
+        processedRef.current.add(notificationKey);
+
+        // Add to queue
+        setQueue(prevQueue => [...prevQueue, { ...notification, key: notificationKey }]);
+
+        // Clean up old processed notifications (keep only last 50)
+        if (processedRef.current.size > 50) {
+          const entries = Array.from(processedRef.current);
+          processedRef.current = new Set(entries.slice(-50));
+        }
       }
     }
-  }
+  }, [notification]);
 
-  render() {
-    return <NotificationSystem ref={this.notificationSystemRef} />;
-  }
-}
+  useEffect(() => {
+    if (queue.length > 0 && !currentNotification) {
+      // Set current notification from queue
+      setCurrentNotification(queue[0]);
+      setQueue(prevQueue => prevQueue.slice(1));
+      setOpen(true);
+    }
+  }, [queue, currentNotification]);
 
-function mapStateToProps(state) {
-  return {
-    notification: state.UtilsReducer.notification,
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
   };
-}
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(
-      {
-        addNotification: SuppliersActions.addNotification,
-      },
-      dispatch
-    ),
+  const handleExited = () => {
+    setCurrentNotification(null);
   };
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotificationContainer);
+  // Map the old notification levels to MUI severity
+  const getSeverity = level => {
+    switch (level) {
+      case 'error':
+        return 'error';
+      case 'success':
+        return 'success';
+      case 'warning':
+        return 'warning';
+      case 'info':
+      default:
+        return 'info';
+    }
+  };
+
+  return (
+    <Snackbar
+      open={open}
+      autoHideDuration={4000}
+      onClose={handleClose}
+      TransitionComponent={Slide}
+      TransitionProps={{ onExited: handleExited }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    >
+      {currentNotification ? (
+        <Alert
+          onClose={handleClose}
+          severity={getSeverity(currentNotification.level)}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {currentNotification.message}
+        </Alert>
+      ) : undefined}
+    </Snackbar>
+  );
+};
+
+const mapStateToProps = state => ({
+  notification: state.UtilsReducer.notification,
+});
+
+export default connect(mapStateToProps)(NotificationContainer);
