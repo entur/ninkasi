@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import PropTypes from 'prop-types';
 
 class NotificationTypeSelect extends React.Component {
@@ -28,13 +28,15 @@ class NotificationTypeSelect extends React.Component {
     const { handleChangeNotificationType, notification, notificationTypes } = this.props;
 
     return (
-      <FormControl style={{ flex: 1 }}>
+      <FormControl style={{ flex: 1 }} margin="normal">
+        <InputLabel id="notification-type-label">Notification type</InputLabel>
         <Select
+          labelId="notification-type-label"
+          label="Notification type"
           value={notification.notificationType}
           onChange={e => {
             handleChangeNotificationType(e.target.value);
           }}
-          displayEmpty
         >
           {notificationTypes.map(type => (
             <MenuItem key={'notification-type-' + type} value={type}>

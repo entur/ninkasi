@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import PropTypes from 'prop-types';
 
 class OrganisationSelect extends React.Component {
@@ -29,13 +29,15 @@ class OrganisationSelect extends React.Component {
     const { organizations, notification, handleChangeOrganization } = this.props;
 
     return (
-      <FormControl style={{ marginLeft: 10, flex: 1 }}>
+      <FormControl style={{ marginLeft: 16, flex: 1 }} margin="normal">
+        <InputLabel id="notification-org-label">Organization</InputLabel>
         <Select
+          labelId="notification-org-label"
+          label="Organization"
           value={notification.eventFilter.organisationRef}
           onChange={e => {
             handleChangeOrganization(e.target.value);
           }}
-          displayEmpty
         >
           {organizations.map(org => (
             <MenuItem key={org.id} value={org.id}>

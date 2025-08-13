@@ -109,11 +109,12 @@ class RoleView extends React.Component {
     this.props.dispatch(OrganizationRegisterActions.deleteRole(role.id, getToken));
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     const { isCreateModalOpen, isEditModalOpen } = this.state;
     if (
-      nextProps.status &&
-      nextProps.status.error === null &&
+      this.props.status &&
+      this.props.status !== prevProps.status &&
+      this.props.status.error === null &&
       (isCreateModalOpen || isEditModalOpen)
     ) {
       this.setState({

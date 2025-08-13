@@ -59,7 +59,6 @@ class NotificationEntityClassRef extends React.Component {
           flexDirection: 'column',
           flex: 2,
           border: '1px solid #eee',
-          marginTop: 10,
           padding: 5,
         }}
       >

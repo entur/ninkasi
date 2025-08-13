@@ -45,8 +45,12 @@ class ResponsibilitiesView extends React.Component {
     this.state = initialState;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.status && nextProps.status.error === null) {
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.status &&
+      this.props.status !== prevProps.status &&
+      this.props.status.error === null
+    ) {
       this.setState({
         isCreatingResponsibilitySet: false,
         isEditingResponsibilitySet: false,

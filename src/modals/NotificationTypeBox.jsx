@@ -54,20 +54,7 @@ class NotificationTypeBox extends React.Component {
             ) : (
               <NotificationsOff style={{ color: '#777' }} />
             )}
-            <div style={{ fontWeight: 600, fontSize: 14 }}>
-              {notification.notificationType}
-              {notification.isNew && (
-                <span
-                  style={{
-                    color: 'orange',
-                    fontSize: 8,
-                    verticalAlign: 'super',
-                  }}
-                >
-                  New
-                </span>
-              )}
-            </div>
+            <div style={{ fontWeight: 600, fontSize: 14 }}>{notification.notificationType}</div>
           </div>
           <IconButton size="large">
             {expanded ? (

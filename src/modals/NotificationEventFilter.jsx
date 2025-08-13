@@ -18,7 +18,7 @@ import React from 'react';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { connect } from 'react-redux';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import EventFilterStatesPopover from './EventFilterStatesPopover';
 import EventFilterActionsPopover from './EventFilterActionsPopover';
 import OrganisationSelect from './OrganisationSelect';
@@ -96,7 +96,7 @@ class NotificationEventFilter extends React.Component {
 
     return (
       <div style={{ display: 'block', padding: 10 }}>
-        <div style={{ display: 'flex', marginTop: -10 }}>
+        <div style={{ display: 'flex', marginTop: 10 }}>
           <NotificationTypeSelect
             notification={notification}
             notificationTypes={notificationTypes}
@@ -108,12 +108,14 @@ class NotificationEventFilter extends React.Component {
             handleChangeOrganization={this.handleChangeOrganization.bind(this)}
           />
         </div>
-        <div style={{ display: 'flex', marginTop: -10 }}>
-          <FormControl style={{ flex: 1 }}>
+        <div style={{ display: 'flex', marginTop: 10 }}>
+          <FormControl style={{ flex: 1 }} margin="normal">
+            <InputLabel id="event-filter-type-label">Event filter type</InputLabel>
             <Select
+              labelId="event-filter-type-label"
+              label="Event filter type"
               onChange={e => this.handleChangeEventFilterType(e, null, e.target.value)}
               value={notification.eventFilter.type}
-              displayEmpty
             >
               {eventFilterTypes.map((eft, i) => (
                 <MenuItem key={'filter-' + i} value={eft}>
@@ -122,12 +124,14 @@ class NotificationEventFilter extends React.Component {
               ))}
             </Select>
           </FormControl>
-          <FormControl style={{ marginLeft: 10, flex: 1 }}>
+          <FormControl style={{ marginLeft: 16, flex: 1 }} margin="normal">
+            <InputLabel id="job-domain-label">Job domain</InputLabel>
             <Select
+              labelId="job-domain-label"
+              label="Job domain"
               onChange={e => this.handleChangeJobDomain(e, null, e.target.value)}
               disabled={!enableJobSpecific}
               value={notification.eventFilter.jobDomain}
-              displayEmpty
             >
               {jobDomains.map((domain, i) => (
                 <MenuItem key={'domain-' + i} value={domain}>
@@ -137,12 +141,13 @@ class NotificationEventFilter extends React.Component {
             </Select>
           </FormControl>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginTop: 16 }}>
           <div
             style={{
               display: enableJobSpecific ? 'none' : 'flex',
               flexDirection: 'column',
               flex: 2,
+              gap: '16px',
             }}
           >
             <NotificationAdminZoneRefs
@@ -182,7 +187,7 @@ class NotificationEventFilter extends React.Component {
             </div>
           </div>
         </div>
-        <div style={{ display: 'flex', marginTop: 10, alignItems: 'center' }}>
+        <div style={{ display: 'flex', marginTop: 16, alignItems: 'center' }}>
           <FormControlLabel
             control={
               <Checkbox

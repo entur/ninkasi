@@ -74,6 +74,8 @@ class NotificationAddZoneRef extends React.Component {
                 label="Add administrative zone"
                 placeholder="Administrative zone"
                 variant="outlined"
+                margin="normal"
+                size="small"
               />
             )}
           />
