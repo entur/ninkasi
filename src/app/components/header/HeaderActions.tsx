@@ -114,7 +114,7 @@ export default function HeaderActions({ isMobile, onMenuIconClick }: HeaderActio
           }}
           sx={{ fontSize: '1em' }}
         >
-          Log out
+          Log out {preferredName}
         </MenuItem>
       </Menu>
 
