@@ -21,7 +21,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Remove, Add } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import NewRoleAssignment from './NewRoleAssignment';
 import { getEntityClassificationRefString } from 'utils/';
 
@@ -173,7 +173,7 @@ class ModalCreateResponsibilitySet extends React.Component {
               placeholder="Name"
               value={responsibilitySet.name}
               fullWidth={true}
-              style={{ marginTop: -25 }}
+              margin="normal"
               onChange={e => {
                 this.setState({
                   responsibilitySet: {
@@ -183,8 +183,11 @@ class ModalCreateResponsibilitySet extends React.Component {
                 });
               }}
             />
-            <FormControl fullWidth style={{ marginTop: -10 }}>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="codespace-select-label">Codespace</InputLabel>
               <Select
+                labelId="codespace-select-label"
+                label="Codespace"
                 value={responsibilitySet.codeSpace}
                 onChange={e => {
                   this.setState({
@@ -194,7 +197,6 @@ class ModalCreateResponsibilitySet extends React.Component {
                     },
                   });
                 }}
-                displayEmpty
               >
                 {codeSpaces.map(codeSpace => (
                   <MenuItem key={codeSpace.id} value={codeSpace.id}>
@@ -210,6 +212,7 @@ class ModalCreateResponsibilitySet extends React.Component {
               error={!isLegalPrivateCode}
               helperText={!isLegalPrivateCode ? 'This private code is already taken!' : ''}
               fullWidth={true}
+              margin="normal"
               onChange={e => {
                 this.setState({
                   responsibilitySet: {
@@ -218,10 +221,9 @@ class ModalCreateResponsibilitySet extends React.Component {
                   },
                 });
               }}
-              style={{ marginBottom: 10, marginTop: -20 }}
             />
             <div style={{ width: '100%' }}>
-              <div style={{ fontSize: 10 }}>Responsibility roles *</div>
+              <div style={{ fontSize: 10 }}>Role assignments *</div>
               <div style={{ width: '100%', overflowX: 'auto' }}>
                 <select
                   multiple="multiple"

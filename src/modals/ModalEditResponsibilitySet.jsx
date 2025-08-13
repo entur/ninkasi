@@ -21,7 +21,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Remove, Add } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import NewRole from './NewRoleAssignment';
 import { getEntityClassificationRefString } from 'utils/';
 
@@ -176,6 +176,7 @@ class ModalEditResponsibilitySet extends React.Component {
               placeholder="Name"
               value={responsibilitySet.name}
               fullWidth={true}
+              margin="normal"
               onChange={e => {
                 this.setState({
                   responsibilitySet: {
@@ -184,10 +185,12 @@ class ModalEditResponsibilitySet extends React.Component {
                   },
                 });
               }}
-              style={{ marginTop: -25 }}
             />
-            <FormControl fullWidth style={{ marginTop: -15 }}>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="edit-codespace-label">Codespace</InputLabel>
               <Select
+                labelId="edit-codespace-label"
+                label="Codespace"
                 disabled={true}
                 value={responsibilitySet.codeSpace}
                 onChange={e => {
@@ -198,7 +201,6 @@ class ModalEditResponsibilitySet extends React.Component {
                     },
                   });
                 }}
-                displayEmpty
               >
                 {codeSpaces.map(codeSpace => (
                   <MenuItem key={codeSpace.id} value={codeSpace.id}>
@@ -215,6 +217,7 @@ class ModalEditResponsibilitySet extends React.Component {
               error={!isLegalPrivateCode}
               helperText={!isLegalPrivateCode ? 'This private code is already taken!' : ''}
               fullWidth={true}
+              margin="normal"
               onChange={e => {
                 this.setState({
                   responsibilitySet: {
@@ -223,10 +226,9 @@ class ModalEditResponsibilitySet extends React.Component {
                   },
                 });
               }}
-              style={{ marginBottom: 10, marginTop: -15 }}
             />
             <div style={{ minWidth: '100%', fontSize: 10, marginTop: -10 }}>
-              <div style={{ width: '100%', fontSize: 10 }}>Responsibility roles *</div>
+              <div style={{ width: '100%', fontSize: 10 }}>Role assignments *</div>
               <div style={{ width: '100%', overflowX: 'auto' }}>
                 <select
                   multiple="multiple"
