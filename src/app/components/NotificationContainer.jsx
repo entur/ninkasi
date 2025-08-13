@@ -18,7 +18,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SuppliersActions from 'actions/SuppliersActions';
-import NotificationSystem from 'react-notification-system';
+import NotificationSystem from '@ybochatay/react-notification-system';
 
 class NotificationContainer extends Component {
   constructor(props) {
@@ -30,12 +30,16 @@ class NotificationContainer extends Component {
     this.notificationSystem = this.notificationSystemRef.current;
   }
 
-  componentWillReceiveProps(newProps) {
-    const { message, level } = newProps.notification;
-    this.notificationSystem.addNotification({
-      message,
-      level,
-    });
+  componentDidUpdate(prevProps) {
+    if (prevProps.notification !== this.props.notification) {
+      const { message, level } = this.props.notification;
+      if (this.notificationSystem && message) {
+        this.notificationSystem.addNotification({
+          message,
+          level,
+        });
+      }
+    }
   }
 
   render() {
