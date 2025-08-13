@@ -43,12 +43,13 @@ class ModalCreateRole extends React.Component {
     const { role } = this.state;
 
     const invalidPrivateCode = takenPrivateCodes.indexOf(role.privateCode) > -1;
+    const isSavable = !invalidPrivateCode && role.name.length > 0 && role.privateCode.length > 0;
 
     const actions = [
-      <Button variant="text" disabled={invalidPrivateCode} onClick={this.handleOnClose.bind(this)}>
+      <Button variant="text" onClick={this.handleOnClose.bind(this)}>
         Close
       </Button>,
-      <Button variant="text" disabled={invalidPrivateCode} onClick={() => handleSubmit(role)}>
+      <Button variant="text" disabled={!isSavable} onClick={() => handleSubmit(role)}>
         Create
       </Button>,
     ];
@@ -74,9 +75,11 @@ class ModalCreateRole extends React.Component {
                 })
               }
               fullWidth={true}
+              margin="normal"
+              required
             />
             <TextField
-              placeholder="private code"
+              placeholder="Private code"
               label="Private code"
               error={invalidPrivateCode}
               helperText={invalidPrivateCode ? 'Private code already exists' : ''}
@@ -87,6 +90,8 @@ class ModalCreateRole extends React.Component {
                 })
               }
               fullWidth={true}
+              margin="normal"
+              required
             />
           </div>
         </DialogContent>

@@ -23,27 +23,31 @@ class ModalEditRole extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      role: null,
-      originalRoleName: '',
+      role: props.role || null,
+      originalRoleName: props.role ? props.role.name : '',
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      role: nextProps.role,
-      originalRoleName: nextProps.role.name,
-    });
+  componentDidUpdate(prevProps) {
+    if (this.props.role && this.props.role !== prevProps.role) {
+      this.setState({
+        role: this.props.role,
+        originalRoleName: this.props.role.name,
+      });
+    }
   }
 
   render() {
     const { isModalOpen, handleSubmit } = this.props;
     const { role, originalRoleName } = this.state;
 
+    const isSavable = role && role.name && role.name.length > 0;
+
     const actions = [
       <Button variant="text" onClick={this.props.handleCloseModal}>
         Close
       </Button>,
-      <Button variant="text" onClick={() => handleSubmit(role)}>
+      <Button variant="text" disabled={!isSavable} onClick={() => handleSubmit(role)}>
         Update
       </Button>,
     ];
@@ -79,14 +83,16 @@ class ModalEditRole extends React.Component {
                 })
               }
               fullWidth={true}
-              style={{ marginTop: -20 }}
+              margin="normal"
+              required
             />
             <TextField
               disabled={true}
-              defaultValue={role.privateCode}
-              placeholder="private code"
+              value={role.privateCode}
+              placeholder="Private code"
               label="Private code"
               fullWidth={true}
+              margin="normal"
             />
           </div>
         </DialogContent>
