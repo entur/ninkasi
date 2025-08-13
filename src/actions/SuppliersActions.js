@@ -99,37 +99,6 @@ SuppliersActions.executePeliasTask = (tasks, getToken) => async (dispatch, getSt
     });
 };
 
-SuppliersActions.uploadTariffZonesFiles = (files, provider) => async (dispatch, getState) => {
-  dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
-
-  const url = `${window.config.tariffZonesUrl}${provider.chouetteInfo.xmlns}/files`;
-
-  const data = new FormData();
-
-  files.forEach(file => {
-    data.append('files', file);
-  });
-
-  const config = {
-    onUploadProgress: function (progressEvent) {
-      const percentCompleted = (progressEvent.loaded / progressEvent.total) * 100;
-      dispatch(sendData(percentCompleted, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
-    },
-    ...(await getApiConfig(getToken)),
-  };
-
-  return axios
-    .post(url, data, config)
-    .then(function (response) {
-      dispatch(SuppliersActions.addNotification('Uploaded tariff zone file(s)', 'success'));
-      dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
-    })
-    .catch(function (response) {
-      dispatch(SuppliersActions.addNotification('Unable to upload tariff zone file(s)', 'error'));
-      dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
-    });
-};
-
 SuppliersActions.getAllProviderStatus = getToken => async (dispatch, getState) => {
   dispatch(sendData(null, types.REQUESTED_ALL_SUPPLIERS_STATUS));
   const state = getState();
@@ -557,7 +526,7 @@ SuppliersActions.getChouetteJobStatus = getToken => async (dispatch, getState) =
     });
 };
 
-SuppliersActions.exportData = id => async (dispatch, getState) => {
+SuppliersActions.exportData = (id, getToken) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/export`;
 
   dispatch(requestExport());
@@ -636,7 +605,7 @@ SuppliersActions.getOTPGraphVersions = getToken => async (dispatch, getState) =>
     });
 };
 
-SuppliersActions.transferData = id => async (dispatch, getState) => {
+SuppliersActions.transferData = (id, getToken) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/transfer`;
 
   dispatch(requestTransfer());
@@ -710,7 +679,7 @@ SuppliersActions.importData =
       });
   };
 
-SuppliersActions.cleanDataspace = id => async (dispatch, getState) => {
+SuppliersActions.cleanDataspace = (id, getToken) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/clean`;
 
   dispatch(requestCleanDataspace());
@@ -730,7 +699,7 @@ SuppliersActions.cleanDataspace = id => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.cleanAllDataspaces = filter => async (dispatch, getState) => {
+SuppliersActions.cleanAllDataspaces = (filter, getToken) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `clean/${filter}`;
 
   return axios({
@@ -757,7 +726,7 @@ SuppliersActions.cleanAllDataspaces = filter => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.validateProvider = id => async (dispatch, getState) => {
+SuppliersActions.validateProvider = (id, getToken) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/validate`;
 
   dispatch(requestCleanDataspace());
@@ -777,7 +746,7 @@ SuppliersActions.validateProvider = id => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.buildGraph = () => async (dispatch, getState) => {
+SuppliersActions.buildGraph = getToken => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + 'routing_graph/build';
 
   dispatch(requestBuildGraph());
@@ -798,7 +767,7 @@ SuppliersActions.buildGraph = () => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.buildBaseGraph = () => async (dispatch, getState) => {
+SuppliersActions.buildBaseGraph = getToken => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + 'routing_graph/build_base';
 
   dispatch(requestBuildBaseGraph());
@@ -819,7 +788,7 @@ SuppliersActions.buildBaseGraph = () => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.buildCandidateGraphOTP = () => async (dispatch, getState) => {
+SuppliersActions.buildCandidateGraphOTP = getToken => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + 'routing_graph/build_candidate/otp2_netex';
 
   dispatch(requestBuildGraph());
@@ -840,7 +809,7 @@ SuppliersActions.buildCandidateGraphOTP = () => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.buildCandidateBaseGraphOTP = () => async (dispatch, getState) => {
+SuppliersActions.buildCandidateBaseGraphOTP = getToken => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + 'routing_graph/build_candidate/otp2_base';
 
   dispatch(requestBuildBaseGraph());
@@ -865,7 +834,7 @@ SuppliersActions.buildCandidateBaseGraphOTP = () => async (dispatch, getState) =
     });
 };
 
-SuppliersActions.fetchOSM = () => async (dispatch, getState) => {
+SuppliersActions.fetchOSM = getToken => async (dispatch, getState) => {
   const url = window.config.mapAdminBaseUrl + 'download';
   dispatch(requestFetchOSM());
   return axios({
@@ -881,24 +850,6 @@ SuppliersActions.fetchOSM = () => async (dispatch, getState) => {
     .catch(function (response) {
       dispatch(sendData(response.data, types.ERROR_FETCH_OSM));
       dispatch(SuppliersActions.addNotification('OSM update failed', 'error'));
-    });
-};
-
-SuppliersActions.updateMapbox = () => async (dispatch, getState) => {
-  const url = window.config.mapboxAdminBaseUrl + 'update';
-
-  return axios({
-    url: url,
-    timeout: 20000,
-    method: 'post',
-    ...(await getApiConfig(getToken)),
-  })
-    .then(function (response) {
-      dispatch(SuppliersActions.addNotification('Mapbox update started', 'success'));
-    })
-    .catch(function (response) {
-      const errorMessage = 'Mapbox update failed';
-      dispatch(SuppliersActions.addNotification(errorMessage, 'error'));
     });
 };
 
@@ -1067,12 +1018,6 @@ SuppliersActions.openEditProviderDialog = getToken => async (dispatch, getState)
   dispatch(SuppliersActions.openEditModalDialog());
 };
 
-SuppliersActions.openPoiFilterDialog = () => {
-  return {
-    type: types.OPENED_POI_FILTER_DIALOG,
-  };
-};
-
 SuppliersActions.openNewProviderDialog = () => {
   return {
     type: types.OPENED_NEW_PROVIDER_DIALOG,
@@ -1121,7 +1066,7 @@ SuppliersActions.getExportedFiles = getToken => async (dispatch, getState) => {
   });
 };
 
-SuppliersActions.cleanFileFilter = () => async (dispatch, getState) => {
+SuppliersActions.cleanFileFilter = getToken => async (dispatch, getState) => {
   return axios({
     url: window.config.timetableAdminBaseUrl + 'idempotentfilter/clean',
     timeout: 20000,

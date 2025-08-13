@@ -433,11 +433,13 @@ class DataMigrationDetails extends React.Component {
   };
 
   handleExportData = () => {
-    this.props.dispatch(SuppliersActions.exportData(this.props.activeId));
+    const { getToken } = this.props;
+    this.props.dispatch(SuppliersActions.exportData(this.props.activeId, getToken));
   };
 
   handleTransferData = () => {
-    this.props.dispatch(SuppliersActions.transferData(this.props.activeId));
+    const { getToken } = this.props;
+    this.props.dispatch(SuppliersActions.transferData(this.props.activeId, getToken));
   };
 
   handleCleanDataspace = () => {
@@ -445,8 +447,8 @@ class DataMigrationDetails extends React.Component {
       'Are you sure you want to clean up the dataspace current provider?'
     );
     if (response === true) {
-      const { dispatch } = this.props;
-      dispatch(SuppliersActions.cleanDataspace(this.props.activeId));
+      const { dispatch, getToken } = this.props;
+      dispatch(SuppliersActions.cleanDataspace(this.props.activeId, getToken));
     }
   };
 
@@ -462,7 +464,8 @@ class DataMigrationDetails extends React.Component {
   };
 
   handleValidateProvider = () => {
-    this.props.dispatch(SuppliersActions.validateProvider(this.props.activeId));
+    const { getToken } = this.props;
+    this.props.dispatch(SuppliersActions.validateProvider(this.props.activeId, getToken));
   };
 
   moveDown = () => {
