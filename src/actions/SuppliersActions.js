@@ -99,38 +99,6 @@ SuppliersActions.executePeliasTask = (tasks, getToken) => async (dispatch, getSt
     });
 };
 
-SuppliersActions.uploadTariffZonesFiles =
-  (files, provider, getToken) => async (dispatch, getState) => {
-    dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
-
-    const url = `${window.config.tariffZonesUrl}${provider.chouetteInfo.xmlns}/files`;
-
-    const data = new FormData();
-
-    files.forEach(file => {
-      data.append('files', file);
-    });
-
-    const config = {
-      onUploadProgress: function (progressEvent) {
-        const percentCompleted = (progressEvent.loaded / progressEvent.total) * 100;
-        dispatch(sendData(percentCompleted, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
-      },
-      ...(await getApiConfig(getToken)),
-    };
-
-    return axios
-      .post(url, data, config)
-      .then(function (response) {
-        dispatch(SuppliersActions.addNotification('Uploaded tariff zone file(s)', 'success'));
-        dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
-      })
-      .catch(function (response) {
-        dispatch(SuppliersActions.addNotification('Unable to upload tariff zone file(s)', 'error'));
-        dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
-      });
-  };
-
 SuppliersActions.getAllProviderStatus = getToken => async (dispatch, getState) => {
   dispatch(sendData(null, types.REQUESTED_ALL_SUPPLIERS_STATUS));
   const state = getState();
@@ -885,24 +853,6 @@ SuppliersActions.fetchOSM = getToken => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.updateMapbox = getToken => async (dispatch, getState) => {
-  const url = window.config.mapboxAdminBaseUrl + 'update';
-
-  return axios({
-    url: url,
-    timeout: 20000,
-    method: 'post',
-    ...(await getApiConfig(getToken)),
-  })
-    .then(function (response) {
-      dispatch(SuppliersActions.addNotification('Mapbox update started', 'success'));
-    })
-    .catch(function (response) {
-      const errorMessage = 'Mapbox update failed';
-      dispatch(SuppliersActions.addNotification(errorMessage, 'error'));
-    });
-};
-
 SuppliersActions.sortListByColumn = (listName, columnName) => dispatch => {
   switch (listName) {
     case 'events':
@@ -1066,12 +1016,6 @@ SuppliersActions.openEditProviderDialog = getToken => async (dispatch, getState)
   const state = getState();
   dispatch(SuppliersActions.fetchProvider(state.SuppliersReducer.activeId, getToken));
   dispatch(SuppliersActions.openEditModalDialog());
-};
-
-SuppliersActions.openPoiFilterDialog = () => {
-  return {
-    type: types.OPENED_POI_FILTER_DIALOG,
-  };
 };
 
 SuppliersActions.openNewProviderDialog = () => {
