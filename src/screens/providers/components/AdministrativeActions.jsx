@@ -148,8 +148,8 @@ class AdministrativeActions extends React.Component {
       confirmTitle: 'Clean File Filter',
       confirmInfo: 'Are you sure you want to clean file filter?',
       confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.cleanFileFilter());
+        const { dispatch, getToken } = this.props;
+        dispatch(SuppliersActions.cleanFileFilter(getToken));
       },
       cleanPopoverOpen: false,
     });

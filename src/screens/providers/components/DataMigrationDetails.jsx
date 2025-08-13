@@ -433,11 +433,13 @@ class DataMigrationDetails extends React.Component {
   };
 
   handleExportData = () => {
-    this.props.dispatch(SuppliersActions.exportData(this.props.activeId));
+    const { getToken } = this.props;
+    this.props.dispatch(SuppliersActions.exportData(this.props.activeId, getToken));
   };
 
   handleTransferData = () => {
-    this.props.dispatch(SuppliersActions.transferData(this.props.activeId));
+    const { getToken } = this.props;
+    this.props.dispatch(SuppliersActions.transferData(this.props.activeId, getToken));
   };
 
   handleCleanDataspace = () => {

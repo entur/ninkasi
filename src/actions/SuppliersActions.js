@@ -99,36 +99,37 @@ SuppliersActions.executePeliasTask = (tasks, getToken) => async (dispatch, getSt
     });
 };
 
-SuppliersActions.uploadTariffZonesFiles = (files, provider) => async (dispatch, getState) => {
-  dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
+SuppliersActions.uploadTariffZonesFiles =
+  (files, provider, getToken) => async (dispatch, getState) => {
+    dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
 
-  const url = `${window.config.tariffZonesUrl}${provider.chouetteInfo.xmlns}/files`;
+    const url = `${window.config.tariffZonesUrl}${provider.chouetteInfo.xmlns}/files`;
 
-  const data = new FormData();
+    const data = new FormData();
 
-  files.forEach(file => {
-    data.append('files', file);
-  });
-
-  const config = {
-    onUploadProgress: function (progressEvent) {
-      const percentCompleted = (progressEvent.loaded / progressEvent.total) * 100;
-      dispatch(sendData(percentCompleted, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
-    },
-    ...(await getApiConfig(getToken)),
-  };
-
-  return axios
-    .post(url, data, config)
-    .then(function (response) {
-      dispatch(SuppliersActions.addNotification('Uploaded tariff zone file(s)', 'success'));
-      dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
-    })
-    .catch(function (response) {
-      dispatch(SuppliersActions.addNotification('Unable to upload tariff zone file(s)', 'error'));
-      dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
+    files.forEach(file => {
+      data.append('files', file);
     });
-};
+
+    const config = {
+      onUploadProgress: function (progressEvent) {
+        const percentCompleted = (progressEvent.loaded / progressEvent.total) * 100;
+        dispatch(sendData(percentCompleted, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
+      },
+      ...(await getApiConfig(getToken)),
+    };
+
+    return axios
+      .post(url, data, config)
+      .then(function (response) {
+        dispatch(SuppliersActions.addNotification('Uploaded tariff zone file(s)', 'success'));
+        dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
+      })
+      .catch(function (response) {
+        dispatch(SuppliersActions.addNotification('Unable to upload tariff zone file(s)', 'error'));
+        dispatch(sendData(0, types.UPDATED_TARIFF_ZONE_FILE_UPLOAD_PROGRESS));
+      });
+  };
 
 SuppliersActions.getAllProviderStatus = getToken => async (dispatch, getState) => {
   dispatch(sendData(null, types.REQUESTED_ALL_SUPPLIERS_STATUS));
@@ -1121,7 +1122,7 @@ SuppliersActions.getExportedFiles = getToken => async (dispatch, getState) => {
   });
 };
 
-SuppliersActions.cleanFileFilter = () => async (dispatch, getState) => {
+SuppliersActions.cleanFileFilter = getToken => async (dispatch, getState) => {
   return axios({
     url: window.config.timetableAdminBaseUrl + 'idempotentfilter/clean',
     timeout: 20000,
