@@ -18,7 +18,7 @@ import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import { Remove, Add } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 
@@ -147,7 +147,10 @@ class ModalEditEntityType extends React.Component {
                 fullWidth={true}
               />
               <FormControl fullWidth>
+                <InputLabel id="codespace-label-edit">Codespace</InputLabel>
                 <Select
+                  labelId="codespace-label-edit"
+                  label="Codespace"
                   disabled={true}
                   value={entityType.codeSpace}
                   onChange={e =>
@@ -155,7 +158,6 @@ class ModalEditEntityType extends React.Component {
                       entityType: { ...entityType, codeSpace: e.target.value },
                     })
                   }
-                  displayEmpty
                 >
                   {codeSpaces.map(codeSpace => (
                     <MenuItem key={codeSpace.id} value={codeSpace.id}>

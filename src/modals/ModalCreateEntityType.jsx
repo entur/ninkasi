@@ -18,7 +18,7 @@ import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import { Remove, Add } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 
@@ -146,14 +146,16 @@ class ModalCreateEntityType extends React.Component {
                 fullWidth={true}
               />
               <FormControl fullWidth>
+                <InputLabel id="codespace-label">Codespace</InputLabel>
                 <Select
+                  labelId="codespace-label"
+                  label="Codespace"
                   value={entityType.codeSpace}
                   onChange={e =>
                     this.setState({
                       entityType: { ...entityType, codeSpace: e.target.value },
                     })
                   }
-                  displayEmpty
                 >
                   {codeSpaces.map(codeSpace => (
                     <MenuItem key={codeSpace.id} value={codeSpace.id}>
