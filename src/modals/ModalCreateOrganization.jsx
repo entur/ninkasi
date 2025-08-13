@@ -18,7 +18,7 @@ import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 
 const initialState = {
   organization: {
@@ -56,15 +56,18 @@ class ModalCreateOrganization extends React.Component {
     const isOrganizationPrivateCodeTaken =
       takenOrganizationPrivateCodes.indexOf(organization.privateCode) > -1;
 
+    const isSavable =
+      !isOrganizationNameTaken &&
+      !isOrganizationPrivateCodeTaken &&
+      organization.name.length > 0 &&
+      organization.privateCode.length > 0 &&
+      organization.codeSpace.length > 0;
+
     const actions = [
       <Button variant="text" onClick={handleCloseModal}>
         Cancel
       </Button>,
-      <Button
-        variant="text"
-        disabled={isOrganizationNameTaken || isOrganizationPrivateCodeTaken}
-        onClick={() => handleSubmit(organization)}
-      >
+      <Button variant="text" disabled={!isSavable} onClick={() => handleSubmit(organization)}>
         Create
       </Button>,
     ];
@@ -92,6 +95,8 @@ class ModalCreateOrganization extends React.Component {
                 })
               }
               fullWidth={true}
+              margin="normal"
+              required
             />
             <TextField
               placeholder="Private code"
@@ -110,9 +115,14 @@ class ModalCreateOrganization extends React.Component {
                 })
               }
               fullWidth={true}
+              margin="normal"
+              required
             />
-            <FormControl fullWidth>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="org-type-label">Organization type</InputLabel>
               <Select
+                labelId="org-type-label"
+                label="Organization type"
                 value={organization.organisationType}
                 onChange={e =>
                   this.setState({
@@ -122,13 +132,15 @@ class ModalCreateOrganization extends React.Component {
                     },
                   })
                 }
-                displayEmpty
               >
                 <MenuItem value="AUTHORITY">AUTHORITY</MenuItem>
               </Select>
             </FormControl>
-            <FormControl fullWidth>
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel id="org-codespace-label">Codespace</InputLabel>
               <Select
+                labelId="org-codespace-label"
+                label="Codespace"
                 value={organization.codeSpace}
                 onChange={e =>
                   this.setState({
@@ -138,7 +150,6 @@ class ModalCreateOrganization extends React.Component {
                     },
                   })
                 }
-                displayEmpty
               >
                 {codeSpaces.map(codeSpace => (
                   <MenuItem key={codeSpace.id} value={codeSpace.id}>
