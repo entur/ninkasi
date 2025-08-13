@@ -18,7 +18,7 @@ import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Select, MenuItem } from '@mui/material';
+import { Select, MenuItem, InputLabel } from '@mui/material';
 import ResponsiblitySetList from './ResponsiblitySetList';
 import UserRespSetPopover from './UserRespSetPopover';
 import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
@@ -221,6 +221,8 @@ class ModalCreateUser extends React.Component {
               }
               onChange={e => this.handleChangeUsername(e, e.target.value)}
               fullWidth={true}
+              margin="normal"
+              required
             />
             <TextField
               placeholder="First name"
@@ -238,6 +240,8 @@ class ModalCreateUser extends React.Component {
                 })
               }
               fullWidth={true}
+              margin="normal"
+              required
             />
             <TextField
               placeholder="Last name"
@@ -255,6 +259,8 @@ class ModalCreateUser extends React.Component {
                 })
               }
               fullWidth={true}
+              margin="normal"
+              required
             />
             <TextField
               placeholder="E-mail"
@@ -270,6 +276,8 @@ class ModalCreateUser extends React.Component {
               value={user.contactDetails.email}
               onChange={e => this.handleChangeEmail(e, e.target.value)}
               fullWidth={true}
+              margin="normal"
+              required
             />
             <TextField
               placeholder="Phonenumber"
@@ -287,16 +295,19 @@ class ModalCreateUser extends React.Component {
                 })
               }
               fullWidth={true}
+              margin="normal"
             />
-            <FormControl fullWidth>
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel id="create-user-org-label">Organization</InputLabel>
               <Select
+                labelId="create-user-org-label"
+                label="Organization"
                 value={user.organisationRef}
                 onChange={e =>
                   this.setState({
                     user: { ...user, organisationRef: e.target.value },
                   })
                 }
-                displayEmpty
               >
                 {organizations.map(org => (
                   <MenuItem key={org.id} value={org.id}>

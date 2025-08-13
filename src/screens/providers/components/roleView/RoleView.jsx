@@ -109,11 +109,12 @@ class RoleView extends React.Component {
     this.props.dispatch(OrganizationRegisterActions.deleteRole(role.id, getToken));
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     const { isCreateModalOpen, isEditModalOpen } = this.state;
     if (
-      nextProps.status &&
-      nextProps.status.error === null &&
+      this.props.status &&
+      this.props.status !== prevProps.status &&
+      this.props.status.error === null &&
       (isCreateModalOpen || isEditModalOpen)
     ) {
       this.setState({
@@ -133,8 +134,12 @@ class RoleView extends React.Component {
     return (
       <div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Fab mini={true} style={{ float: 'right', marginRight: 10 }}>
-            <Add onClick={() => this.setState({ isCreateModalOpen: true })} />
+          <Fab
+            size="small"
+            style={{ float: 'right', marginRight: 10 }}
+            onClick={() => this.setState({ isCreateModalOpen: true })}
+          >
+            <Add />
           </Fab>
         </div>
         <div className="role-row">

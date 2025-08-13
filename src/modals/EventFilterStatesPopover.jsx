@@ -17,7 +17,7 @@
 import React from 'react';
 import { Menu, MenuItem } from '@mui/material';
 import Button from '@mui/material/Button';
-import { Checkbox } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -80,17 +80,19 @@ class EventFilterStatesPopover extends React.Component {
             const checked = states.indexOf(state) > -1;
 
             return (
-              <Menu key={'action-' + i} menuItemStyle={{ fontSize: 12, minHeight: 18 }}>
-                <MenuItem>
-                  <Checkbox
-                    label={state}
-                    checked={checked}
-                    onCheck={(e, isChecked) => {
-                      this.handleCheckState(state, isChecked);
-                    }}
-                  />
-                </MenuItem>
-              </Menu>
+              <MenuItem key={'state-' + i} style={{ fontSize: 12, minHeight: 18 }}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checked}
+                      onChange={(e, isChecked) => {
+                        this.handleCheckState(state, isChecked);
+                      }}
+                    />
+                  }
+                  label={state}
+                />
+              </MenuItem>
             );
           })}
         </Menu>

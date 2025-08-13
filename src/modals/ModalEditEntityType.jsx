@@ -18,7 +18,7 @@ import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import { Remove, Add } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 
@@ -40,13 +40,29 @@ class ModalEditEntityType extends React.Component {
   constructor(props) {
     super(props);
     this.classificationsRef = React.createRef();
-    this.state = initialState;
+    // Ensure classifications is always an array
+    const entityType = props.entityType
+      ? {
+          ...props.entityType,
+          classifications: props.entityType.classifications || [],
+        }
+      : initialState.entityType;
+
+    this.state = {
+      ...initialState,
+      entityType: entityType,
+    };
   }
 
-  componentDidMount() {
-    this.setState({
-      entityType: this.props.entityType,
-    });
+  componentDidUpdate(prevProps) {
+    if (this.props.entityType && this.props.entityType !== prevProps.entityType) {
+      this.setState({
+        entityType: {
+          ...this.props.entityType,
+          classifications: this.props.entityType.classifications || [],
+        },
+      });
+    }
   }
 
   handleOnClose() {
@@ -97,8 +113,9 @@ class ModalEditEntityType extends React.Component {
     const { entityType, isCreatingNewClassification, tempClassification } = this.state;
 
     const isClassificationPrivateCodeTaken =
-      entityType.classifications.map(c => c.privateCode).indexOf(tempClassification.privateCode) >
-      -1;
+      (entityType.classifications || [])
+        .map(c => c.privateCode)
+        .indexOf(tempClassification.privateCode) > -1;
     const isSavable =
       entityType.name.length && entityType.codeSpace.length && entityType.privateCode.length;
 
@@ -147,7 +164,10 @@ class ModalEditEntityType extends React.Component {
                 fullWidth={true}
               />
               <FormControl fullWidth>
+                <InputLabel id="codespace-label-edit">Codespace</InputLabel>
                 <Select
+                  labelId="codespace-label-edit"
+                  label="Codespace"
                   disabled={true}
                   value={entityType.codeSpace}
                   onChange={e =>
@@ -155,7 +175,6 @@ class ModalEditEntityType extends React.Component {
                       entityType: { ...entityType, codeSpace: e.target.value },
                     })
                   }
-                  displayEmpty
                 >
                   {codeSpaces.map(codeSpace => (
                     <MenuItem key={codeSpace.id} value={codeSpace.id}>
@@ -167,11 +186,12 @@ class ModalEditEntityType extends React.Component {
               <div style={{ width: '100%', fontSize: 12 }}>Entity classifications</div>
               <select
                 multiple="multiple"
-                style={{ width: '100%', fontSize: 12 }}
+                style={{ width: '100%', fontSize: 12, minHeight: '60px' }}
                 ref={this.classificationsRef}
+                size={Math.max(3, (entityType.classifications || []).length)}
               >
-                {entityType.classifications.map((et, index) => (
-                  <option key={'ec-' + index}>{this.getClassificationTitle(et)} </option>
+                {(entityType.classifications || []).map((et, index) => (
+                  <option key={'ec-' + index}>{this.getClassificationTitle(et)}</option>
                 ))}
               </select>
               <div style={{ textAlign: 'left', width: '100%' }}>

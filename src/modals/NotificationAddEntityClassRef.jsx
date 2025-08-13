@@ -16,7 +16,7 @@
 
 import React from 'react';
 import withAuth from 'utils/withAuth';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import Button from '@mui/material/Button';
 import { connect } from 'react-redux';
 import OrganizationRegisterActions from 'actions/OrganizationRegisterActions';
@@ -68,11 +68,13 @@ class NotificationAddEntityClassRef extends React.Component {
           justifyContent: 'space-around',
         }}
       >
-        <FormControl fullWidth>
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="entity-type-label">Entity type</InputLabel>
           <Select
+            labelId="entity-type-label"
+            label="Entity type"
             value={entityType}
             onChange={e => this.getEntityClassificationsForType(e.target.value)}
-            displayEmpty
           >
             {entityTypes.map(entity => (
               <MenuItem key={entity.id} value={entity.id}>
@@ -81,13 +83,15 @@ class NotificationAddEntityClassRef extends React.Component {
             ))}
           </Select>
         </FormControl>
-        <FormControl fullWidth style={{ marginLeft: 5 }}>
+        <FormControl fullWidth style={{ marginLeft: 16 }} margin="normal">
+          <InputLabel id="entity-classification-label">Entity classification</InputLabel>
           <Select
+            labelId="entity-classification-label"
+            label="Entity classification"
             value={this.state.entityClasRefSelected}
             onChange={e => {
               this.setState({ entityClasRefSelected: e.target.value });
             }}
-            displayEmpty
           >
             {entityClassificationRefs.map(type => (
               <MenuItem key={type.id} value={type.id}>

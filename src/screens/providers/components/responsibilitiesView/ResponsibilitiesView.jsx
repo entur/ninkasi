@@ -45,8 +45,12 @@ class ResponsibilitiesView extends React.Component {
     this.state = initialState;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.status && nextProps.status.error === null) {
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.status &&
+      this.props.status !== prevProps.status &&
+      this.props.status.error === null
+    ) {
       this.setState({
         isCreatingResponsibilitySet: false,
         isEditingResponsibilitySet: false,
@@ -154,7 +158,7 @@ class ResponsibilitiesView extends React.Component {
     return (
       <div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Fab mini={true} style={{ marginRight: 10 }} onClick={this.openModalWindow.bind(this)}>
+          <Fab size="small" style={{ marginRight: 10 }} onClick={this.openModalWindow.bind(this)}>
             <Add />
           </Fab>
         </div>

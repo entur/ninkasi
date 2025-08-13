@@ -154,7 +154,7 @@ class EntityTypesView extends React.Component {
             </div>
             <div className="col-1-5">
               <span className="sortable" onClick={() => this.handleSortOrder('codeSpace')}>
-                code space
+                codespace
               </span>
             </div>
             <div className="col-1-5">

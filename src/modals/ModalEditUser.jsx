@@ -18,7 +18,15 @@ import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { FormControl, Select, MenuItem, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import {
+  FormControl,
+  Select,
+  MenuItem,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  InputLabel,
+} from '@mui/material';
 import ResponsiblitySetList from './ResponsiblitySetList';
 import UserRespSetPopover from './UserRespSetPopover';
 
@@ -232,6 +240,7 @@ class ModalEditUser extends React.Component {
               }
               onChange={this.handleChangeUsername.bind(this)}
               fullWidth={true}
+              margin="normal"
             />
             <TextField
               placeholder="First name"
@@ -249,6 +258,8 @@ class ModalEditUser extends React.Component {
                 })
               }
               fullWidth={true}
+              margin="normal"
+              required
             />
             <TextField
               placeholder="Last name"
@@ -266,6 +277,8 @@ class ModalEditUser extends React.Component {
                 })
               }
               fullWidth={true}
+              margin="normal"
+              required
             />
             <TextField
               placeholder="E-mail"
@@ -277,6 +290,8 @@ class ModalEditUser extends React.Component {
               value={user.contactDetails?.email || ''}
               onChange={this.handleChangeEmail.bind(this)}
               fullWidth={true}
+              margin="normal"
+              required
             />
             <TextField
               placeholder="Phonenumber"
@@ -294,16 +309,19 @@ class ModalEditUser extends React.Component {
                 })
               }
               fullWidth={true}
+              margin="normal"
             />
-            <FormControl fullWidth>
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel id="edit-user-org-label">Organization</InputLabel>
               <Select
+                labelId="edit-user-org-label"
+                label="Organization"
                 value={user.organisationRef}
                 onChange={e =>
                   this.setState({
                     user: { ...user, organisationRef: e.target.value },
                   })
                 }
-                displayEmpty
               >
                 {organizations.map(org => (
                   <MenuItem key={org.id} value={org.id}>

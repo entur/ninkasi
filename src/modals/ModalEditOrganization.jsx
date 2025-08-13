@@ -18,7 +18,7 @@ import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 
 const initialState = {
   organization: {
@@ -33,14 +33,19 @@ const initialState = {
 class ModalEditOrganization extends React.Component {
   constructor(props) {
     super(props);
-    this.state = initialState;
+    this.state = {
+      organization: props.organization || initialState.organization,
+      originalName: props.organization ? props.organization.name : '',
+    };
   }
 
-  componentWillMount() {
-    this.setState({
-      organization: this.props.organization,
-      originalName: this.props.organization.name,
-    });
+  componentDidUpdate(prevProps) {
+    if (this.props.organization && this.props.organization !== prevProps.organization) {
+      this.setState({
+        organization: this.props.organization,
+        originalName: this.props.organization.name,
+      });
+    }
   }
 
   render() {
@@ -63,15 +68,17 @@ class ModalEditOrganization extends React.Component {
       takenOrganizationPrivateCodes.indexOf(organization.privateCode) > -1 &&
       this.props.organization.privateCode !== organization.privateCode;
 
+    const isSavable =
+      !isOrganizationNameTaken &&
+      !isOrganizationPrivateCodeTaken &&
+      organization.name &&
+      organization.name.length > 0;
+
     const actions = [
       <Button variant="text" onClick={() => handleCloseModal()}>
         Cancel
       </Button>,
-      <Button
-        variant="text"
-        disabled={isOrganizationNameTaken || isOrganizationPrivateCodeTaken}
-        onClick={() => handleSubmit(organization)}
-      >
+      <Button variant="text" disabled={!isSavable} onClick={() => handleSubmit(organization)}>
         Update
       </Button>,
     ];
@@ -99,6 +106,8 @@ class ModalEditOrganization extends React.Component {
                 })
               }
               fullWidth={true}
+              margin="normal"
+              required
             />
             <TextField
               placeholder="Private code"
@@ -110,9 +119,13 @@ class ModalEditOrganization extends React.Component {
               value={organization.privateCode}
               disabled={true}
               fullWidth={true}
+              margin="normal"
             />
-            <FormControl fullWidth>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="edit-org-type-label">Organization type</InputLabel>
               <Select
+                labelId="edit-org-type-label"
+                label="Organization type"
                 value={organization.organisationType}
                 onChange={e =>
                   this.setState({
@@ -122,13 +135,18 @@ class ModalEditOrganization extends React.Component {
                     },
                   })
                 }
-                displayEmpty
               >
                 <MenuItem value="AUTHORITY">AUTHORITY</MenuItem>
               </Select>
             </FormControl>
-            <FormControl fullWidth>
-              <Select value={organization.codeSpace} disabled={true} displayEmpty>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="edit-org-codespace-label">Codespace</InputLabel>
+              <Select
+                labelId="edit-org-codespace-label"
+                label="Codespace"
+                value={organization.codeSpace}
+                disabled={true}
+              >
                 {codeSpaces.map(codeSpace => (
                   <MenuItem key={codeSpace.id} value={codeSpace.id}>
                     {codeSpace.xmlns}

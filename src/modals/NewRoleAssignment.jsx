@@ -16,7 +16,7 @@
 
 import React from 'react';
 import Button from '@mui/material/Button';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, InputLabel, FormControlLabel } from '@mui/material';
 import { Checkbox } from '@mui/material';
 import AdminZoneSearchWrapper from './AdminZoneSearchWrapper';
 import OrganizationRegisterActions, { sortBy } from 'actions/OrganizationRegisterActions';
@@ -97,11 +97,13 @@ class NewRoleAssignment extends React.Component {
         >
           New role assignment
         </div>
-        <FormControl fullWidth style={{ marginTop: -15 }}>
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="role-type-label">Role type</InputLabel>
           <Select
+            labelId="role-type-label"
+            label="Role type"
             value={newRole.typeOfResponsibilityRoleRef}
             onChange={e => entityTypeChange(e, null, e.target.value)}
-            displayEmpty
           >
             {roles.map(role => (
               <MenuItem key={role.id} value={role.id}>
@@ -110,11 +112,13 @@ class NewRoleAssignment extends React.Component {
             ))}
           </Select>
         </FormControl>
-        <FormControl fullWidth style={{ marginTop: -15 }}>
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="organization-label">Organization</InputLabel>
           <Select
+            labelId="organization-label"
+            label="Organization"
             value={newRole.responsibleOrganisationRef}
             onChange={e => organisationChange(e, null, e.target.value)}
-            displayEmpty
           >
             {organizations.map(org => (
               <MenuItem key={org.id} value={org.id}>
@@ -151,30 +155,31 @@ class NewRoleAssignment extends React.Component {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            marginTop: '16px',
+            gap: '8px',
           }}
         >
-          <Checkbox
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={negate}
+                onChange={e => {
+                  this.setState({
+                    negate: e.target.checked,
+                  });
+                }}
+              />
+            }
             label="Negate"
-            style={{
-              flex: 0.8,
-              width: 'auto',
-              marginTop: 30,
-              marginRight: 5,
-              marginLeft: 5,
-            }}
-            labelStyle={{ fontSize: 12 }}
-            checked={negate}
-            onCheck={(e, v) => {
-              this.setState({
-                negate: v,
-              });
-            }}
+            style={{ flex: 0.8 }}
           />
-          <FormControl style={{ flex: 2.5, marginLeft: 5, marginRight: 5 }}>
+          <FormControl style={{ flex: 2.5 }}>
+            <InputLabel id="entity-type-label">Entity type</InputLabel>
             <Select
+              labelId="entity-type-label"
+              label="Entity type"
               value={tempEntityClassification}
               onChange={e => this.getEntityClassificationsForType(e.target.value)}
-              displayEmpty
             >
               {entityTypes.map(entity => (
                 <MenuItem key={entity.id} value={entity.id}>
@@ -184,11 +189,13 @@ class NewRoleAssignment extends React.Component {
             </Select>
           </FormControl>
           <FormControl style={{ flex: 2.5 }}>
+            <InputLabel id="entity-classification-label">Classification</InputLabel>
             <Select
+              labelId="entity-classification-label"
+              label="Classification"
               value={tempEntityType}
               onChange={e => this.setState({ tempEntityType: e.target.value })}
               disabled={!this.state.tempEntityClassification}
-              displayEmpty
             >
               {tempEntityTypes.map(type => (
                 <MenuItem key={type.id} value={type.id}>
@@ -216,7 +223,7 @@ class NewRoleAssignment extends React.Component {
           style={{ display: 'block' }}
           onClick={handleAddRole}
         >
-          Add role
+          Add role assignment
         </Button>
       </div>
     );
