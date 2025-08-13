@@ -50,8 +50,8 @@ class DataMigrationDetails extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.importIsLoading && !nextProps.importIsLoading && !nextProps.importError) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.importIsLoading && !this.props.importIsLoading && !this.props.importError) {
       this.setState({
         outboundFiles: [],
         selectedIndicesOutbound: new Set(),
