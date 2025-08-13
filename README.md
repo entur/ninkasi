@@ -53,9 +53,3 @@ ENDPOINTBASE=/admin/ninkasi/ \
 ### Authentication
 
 We're using OIDC, not connected to any specific provider
-
-
-
-
-
-
