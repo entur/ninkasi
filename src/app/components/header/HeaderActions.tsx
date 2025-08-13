@@ -54,15 +54,14 @@ export default function HeaderActions({ isMobile, onMenuIconClick }: HeaderActio
           className="avatar"
           sx={{
             bgcolor: theme.palette.common.white,
-            color: theme.palette.secondary.main,
-            fontWeight: 'bold',
+            color: theme.palette.primary.main,
             width: '24px',
             height: '24px',
           }}
         >
           <Typography
             sx={{
-              fontSize: '12px',
+              fontSize: '13px',
               fontWeight: 'bold',
             }}
           >
