@@ -1,7 +1,9 @@
-import React from 'react';
-import { Box, IconButton, Menu, MenuItem, Badge } from '@mui/material';
-import { MoreVert, AccountCircle, Help, Menu as MenuIcon } from '@mui/icons-material';
+import React, { useMemo } from 'react';
+import { Box, IconButton, Menu, MenuItem, Avatar, useTheme } from '@mui/material';
+import { AccountCircle, Help, Menu as MenuIcon } from '@mui/icons-material';
 import { useAuth } from '../../../auth';
+import Typography from '@mui/material/Typography';
+import { useSelector } from 'react-redux';
 
 interface HeaderActionsProps {
   isMobile: boolean;
@@ -12,6 +14,20 @@ export default function HeaderActions({ isMobile, onMenuIconClick }: HeaderActio
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const auth = useAuth();
   const open = Boolean(anchorEl);
+  const theme = useTheme();
+
+  const { preferredName } = useSelector((state: any) => state.UserContextReducer);
+
+  const initials = useMemo(() => {
+    if (typeof preferredName === 'string') {
+      const parts = preferredName.trim().split(' ');
+      if (parts.length >= 2) {
+        return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+      }
+      return preferredName.slice(0, 2).toUpperCase();
+    }
+    return '';
+  }, [preferredName]);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -25,8 +41,6 @@ export default function HeaderActions({ isMobile, onMenuIconClick }: HeaderActio
     auth.signoutRedirect();
   };
 
-  const username = auth.user?.profile?.name || auth.user?.profile?.email || 'User';
-
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto', gap: 0.5 }}>
       {/* User Account Button */}
@@ -36,9 +50,24 @@ export default function HeaderActions({ isMobile, onMenuIconClick }: HeaderActio
         aria-label="user account"
         sx={{ color: 'white' }}
       >
-        <Badge color="success" overlap="circular" variant="dot">
-          <AccountCircle />
-        </Badge>
+        <Avatar
+          className="avatar"
+          sx={{
+            bgcolor: theme.palette.common.white,
+            color: theme.palette.primary.main,
+            width: '24px',
+            height: '24px',
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: '13px',
+              fontWeight: 'bold',
+            }}
+          >
+            {initials}
+          </Typography>
+        </Avatar>
       </IconButton>
 
       {/* Menu Button */}
@@ -82,7 +111,7 @@ export default function HeaderActions({ isMobile, onMenuIconClick }: HeaderActio
           style={{ fontSize: 12 }}
         >
           <AccountCircle style={{ marginRight: 8, color: '#41c0c4' }} />
-          Log out {username}
+          Log out {preferredName}
         </MenuItem>
       </Menu>
     </Box>
