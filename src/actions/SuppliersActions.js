@@ -557,7 +557,7 @@ SuppliersActions.getChouetteJobStatus = getToken => async (dispatch, getState) =
     });
 };
 
-SuppliersActions.exportData = id => async (dispatch, getState) => {
+SuppliersActions.exportData = (id, getToken) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/export`;
 
   dispatch(requestExport());
@@ -636,7 +636,7 @@ SuppliersActions.getOTPGraphVersions = getToken => async (dispatch, getState) =>
     });
 };
 
-SuppliersActions.transferData = id => async (dispatch, getState) => {
+SuppliersActions.transferData = (id, getToken) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/transfer`;
 
   dispatch(requestTransfer());
@@ -710,7 +710,7 @@ SuppliersActions.importData =
       });
   };
 
-SuppliersActions.cleanDataspace = id => async (dispatch, getState) => {
+SuppliersActions.cleanDataspace = (id, getToken) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/clean`;
 
   dispatch(requestCleanDataspace());
@@ -730,7 +730,7 @@ SuppliersActions.cleanDataspace = id => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.cleanAllDataspaces = filter => async (dispatch, getState) => {
+SuppliersActions.cleanAllDataspaces = (filter, getToken) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `clean/${filter}`;
 
   return axios({
@@ -757,7 +757,7 @@ SuppliersActions.cleanAllDataspaces = filter => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.validateProvider = id => async (dispatch, getState) => {
+SuppliersActions.validateProvider = (id, getToken) => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + `${id}/validate`;
 
   dispatch(requestCleanDataspace());
@@ -777,7 +777,7 @@ SuppliersActions.validateProvider = id => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.buildGraph = () => async (dispatch, getState) => {
+SuppliersActions.buildGraph = getToken => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + 'routing_graph/build';
 
   dispatch(requestBuildGraph());
@@ -798,7 +798,7 @@ SuppliersActions.buildGraph = () => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.buildBaseGraph = () => async (dispatch, getState) => {
+SuppliersActions.buildBaseGraph = getToken => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + 'routing_graph/build_base';
 
   dispatch(requestBuildBaseGraph());
@@ -819,7 +819,7 @@ SuppliersActions.buildBaseGraph = () => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.buildCandidateGraphOTP = () => async (dispatch, getState) => {
+SuppliersActions.buildCandidateGraphOTP = getToken => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + 'routing_graph/build_candidate/otp2_netex';
 
   dispatch(requestBuildGraph());
@@ -840,7 +840,7 @@ SuppliersActions.buildCandidateGraphOTP = () => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.buildCandidateBaseGraphOTP = () => async (dispatch, getState) => {
+SuppliersActions.buildCandidateBaseGraphOTP = getToken => async (dispatch, getState) => {
   const url = window.config.timetableAdminBaseUrl + 'routing_graph/build_candidate/otp2_base';
 
   dispatch(requestBuildBaseGraph());
@@ -865,7 +865,7 @@ SuppliersActions.buildCandidateBaseGraphOTP = () => async (dispatch, getState) =
     });
 };
 
-SuppliersActions.fetchOSM = () => async (dispatch, getState) => {
+SuppliersActions.fetchOSM = getToken => async (dispatch, getState) => {
   const url = window.config.mapAdminBaseUrl + 'download';
   dispatch(requestFetchOSM());
   return axios({
@@ -884,7 +884,7 @@ SuppliersActions.fetchOSM = () => async (dispatch, getState) => {
     });
 };
 
-SuppliersActions.updateMapbox = () => async (dispatch, getState) => {
+SuppliersActions.updateMapbox = getToken => async (dispatch, getState) => {
   const url = window.config.mapboxAdminBaseUrl + 'update';
 
   return axios({

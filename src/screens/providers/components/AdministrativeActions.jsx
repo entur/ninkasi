@@ -50,8 +50,8 @@ class AdministrativeActions extends React.Component {
       confirmTitle: 'Build graph',
       confirmInfo: 'Are you sure you want to build graph?',
       confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.buildGraph());
+        const { dispatch, getToken } = this.props;
+        dispatch(SuppliersActions.buildGraph(getToken));
       },
     });
   }
@@ -62,8 +62,8 @@ class AdministrativeActions extends React.Component {
       confirmTitle: 'Build base graph',
       confirmInfo: 'Are you sure you want to build base graph?',
       confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.buildBaseGraph());
+        const { dispatch, getToken } = this.props;
+        dispatch(SuppliersActions.buildBaseGraph(getToken));
       },
     });
   }
@@ -74,8 +74,8 @@ class AdministrativeActions extends React.Component {
       confirmTitle: 'Build candidate graph (OTP)',
       confirmInfo: 'Are you sure you want to build candidate graph (OTP)?',
       confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.buildCandidateGraphOTP());
+        const { dispatch, getToken } = this.props;
+        dispatch(SuppliersActions.buildCandidateGraphOTP(getToken));
       },
     });
   }
@@ -86,8 +86,8 @@ class AdministrativeActions extends React.Component {
       confirmTitle: 'Build candidate base graph (OTP)',
       confirmInfo: 'Are you sure you want to build candidate base graph (OTP)?',
       confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.buildCandidateBaseGraphOTP());
+        const { dispatch, getToken } = this.props;
+        dispatch(SuppliersActions.buildCandidateBaseGraphOTP(getToken));
       },
     });
   }
@@ -98,8 +98,8 @@ class AdministrativeActions extends React.Component {
       confirmTitle: 'Fetch Open Street Map Data',
       confirmInfo: 'Are you sure you want to fetch Open Street Map data?',
       confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.fetchOSM());
+        const { dispatch, getToken } = this.props;
+        dispatch(SuppliersActions.fetchOSM(getToken));
       },
     });
   }
@@ -135,8 +135,8 @@ class AdministrativeActions extends React.Component {
       confirmTitle: 'Clean Data Spaces',
       confirmInfo: `Are you sure you want to clean all dataspaces for all providers${filterText}?`,
       confirmAction: () => {
-        const { dispatch } = this.props;
-        dispatch(SuppliersActions.cleanAllDataspaces(filter));
+        const { dispatch, getToken } = this.props;
+        dispatch(SuppliersActions.cleanAllDataspaces(filter, getToken));
       },
       cleanPopoverOpen: false,
     });
