@@ -100,6 +100,7 @@ export default function HeaderActions({ isMobile, onMenuIconClick }: HeaderActio
       </IconButton>
 
       <Menu
+        disableScrollLock
         anchorEl={anchorElUser}
         open={Boolean(anchorElUser)}
         onClose={handleUserMenuClose}
@@ -119,6 +120,7 @@ export default function HeaderActions({ isMobile, onMenuIconClick }: HeaderActio
       </Menu>
 
       <Menu
+        disableScrollLock
         anchorEl={anchorElDocs}
         open={Boolean(anchorElDocs)}
         onClose={handleDocsMenuClose}
