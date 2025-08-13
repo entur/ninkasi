@@ -138,8 +138,12 @@ class OrganizationView extends React.Component {
     return (
       <div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Fab mini={true} style={{ float: 'right', marginRight: 10, cursor: 'pointer' }}>
-            <Add onClick={() => this.openModalWindow()} />
+          <Fab
+            size="small"
+            style={{ float: 'right', marginRight: 10, cursor: 'pointer' }}
+            onClick={() => this.openModalWindow()}
+          >
+            <Add />
           </Fab>
         </div>
         <div className="organization-row">

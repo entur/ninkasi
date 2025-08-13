@@ -133,8 +133,12 @@ class RoleView extends React.Component {
     return (
       <div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Fab mini={true} style={{ float: 'right', marginRight: 10 }}>
-            <Add onClick={() => this.setState({ isCreateModalOpen: true })} />
+          <Fab
+            size="small"
+            style={{ float: 'right', marginRight: 10 }}
+            onClick={() => this.setState({ isCreateModalOpen: true })}
+          >
+            <Add />
           </Fab>
         </div>
         <div className="role-row">

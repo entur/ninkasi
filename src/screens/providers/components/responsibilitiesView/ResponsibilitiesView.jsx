@@ -154,7 +154,7 @@ class ResponsibilitiesView extends React.Component {
     return (
       <div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Fab mini={true} style={{ marginRight: 10 }} onClick={this.openModalWindow.bind(this)}>
+          <Fab size="small" style={{ marginRight: 10 }} onClick={this.openModalWindow.bind(this)}>
             <Add />
           </Fab>
         </div>
