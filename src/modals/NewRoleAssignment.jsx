@@ -37,6 +37,22 @@ class NewRoleAssignment extends React.Component {
     };
   }
 
+  componentDidMount() {
+    // If editing and there's a responsibleAreaRef, set the chip
+    const { newRole, administrativeZones, isEditing } = this.props;
+    if (isEditing && newRole.responsibleAreaRef && administrativeZones) {
+      const zone = administrativeZones.find(z => z.id === newRole.responsibleAreaRef);
+      if (zone) {
+        this.setState({
+          resultChip: {
+            value: zone.id,
+            name: zone.name,
+          },
+        });
+      }
+    }
+  }
+
   getEntityClassificationsForType(entityType) {
     OrganizationRegisterActions.getEntityByClassification(entityType, this.props.getToken).then(
       response => {
@@ -73,16 +89,21 @@ class NewRoleAssignment extends React.Component {
   handleDeleteResultChip() {
     this.setState({
       resultChip: null,
-      newRole: {
-        ...this.state.newRole,
-        responsibleAreaRef: null,
-      },
     });
+    this.props.addNewAdminZoneRef(null);
   }
 
   render() {
-    const { newRole, roles, organizations, entityTypes, handleAddRole, administrativeZones } =
-      this.props;
+    const {
+      newRole,
+      roles,
+      organizations,
+      entityTypes,
+      handleAddRole,
+      handleCancel,
+      administrativeZones,
+      isEditing,
+    } = this.props;
     const { entityTypeChange, organisationChange, addNewRoleAssignment } = this.props;
     const { tempEntityType, tempEntityTypes, tempEntityClassification, negate } = this.state;
 
@@ -95,7 +116,7 @@ class NewRoleAssignment extends React.Component {
             fontWeight: 600,
           }}
         >
-          New role assignment
+          {isEditing ? 'Edit role assignment' : 'New role assignment'}
         </div>
         <FormControl fullWidth margin="normal">
           <InputLabel id="role-type-label">Role type</InputLabel>
@@ -213,18 +234,24 @@ class NewRoleAssignment extends React.Component {
             Add
           </Button>
         </div>
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={
-            !newRole.typeOfResponsibilityRoleRef.length ||
-            !newRole.responsibleOrganisationRef.length
-          }
-          style={{ display: 'block' }}
-          onClick={handleAddRole}
-        >
-          Add role assignment
-        </Button>
+        <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={
+              !newRole.typeOfResponsibilityRoleRef.length ||
+              !newRole.responsibleOrganisationRef.length
+            }
+            onClick={handleAddRole}
+          >
+            {isEditing ? 'Update role assignment' : 'Add role assignment'}
+          </Button>
+          {isEditing && (
+            <Button variant="outlined" onClick={handleCancel}>
+              Cancel
+            </Button>
+          )}
+        </div>
       </div>
     );
   }

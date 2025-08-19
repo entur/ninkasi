@@ -19,7 +19,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 import withAuth from 'utils/withAuth';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Remove, Add } from '@mui/icons-material';
+import { Remove, Add, Edit } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import NewRole from './NewRoleAssignment';
@@ -31,6 +31,8 @@ class ModalEditResponsibilitySet extends React.Component {
     this.rolesRef = React.createRef();
     this.state = {
       isCreatingNewRole: false,
+      isEditingRole: false,
+      editingRoleIndex: -1,
       responsibilitySet: {
         ...props.responsibilitySet,
       },
@@ -67,7 +69,18 @@ class ModalEditResponsibilitySet extends React.Component {
   }
 
   handleAddRole() {
-    const { newRole } = this.state;
+    const { newRole, isEditingRole, editingRoleIndex } = this.state;
+    let updatedRoles;
+
+    if (isEditingRole && editingRoleIndex > -1) {
+      // Update existing role
+      updatedRoles = [...this.state.responsibilitySet.roles];
+      updatedRoles[editingRoleIndex] = newRole;
+    } else {
+      // Add new role
+      updatedRoles = [...this.state.responsibilitySet.roles, newRole];
+    }
+
     this.setState({
       ...this.state,
       resultChip: null,
@@ -82,9 +95,25 @@ class ModalEditResponsibilitySet extends React.Component {
       tempEntityTypes: [],
       responsibilitySet: {
         ...this.state.responsibilitySet,
-        roles: [...this.state.responsibilitySet.roles, newRole],
+        roles: updatedRoles,
       },
       isCreatingNewRole: false,
+      isEditingRole: false,
+      editingRoleIndex: -1,
+    });
+  }
+
+  handleCancelEdit() {
+    this.setState({
+      isCreatingNewRole: false,
+      isEditingRole: false,
+      editingRoleIndex: -1,
+      newRole: {
+        typeOfResponsibilityRoleRef: '',
+        responsibleOrganisationRef: '',
+        entityClassificationAssignments: [],
+        responsibleAreaRef: null,
+      },
     });
   }
 
@@ -100,6 +129,25 @@ class ModalEditResponsibilitySet extends React.Component {
             ...this.state.responsibilitySet.roles.slice(0, index),
             ...this.state.responsibilitySet.roles.slice(index + 1),
           ],
+        },
+      });
+    }
+  }
+
+  handleEditRole() {
+    const roles = this.rolesRef.current;
+    const index = roles.options.selectedIndex;
+
+    if (index > -1) {
+      const roleToEdit = this.state.responsibilitySet.roles[index];
+      this.setState({
+        isEditingRole: true,
+        isCreatingNewRole: true,
+        editingRoleIndex: index,
+        newRole: {
+          ...roleToEdit,
+          responsibleAreaRef: roleToEdit.responsibleAreaRef || null,
+          entityClassificationAssignments: roleToEdit.entityClassificationAssignments || [],
         },
       });
     }
@@ -139,7 +187,7 @@ class ModalEditResponsibilitySet extends React.Component {
       entityTypes,
       getToken,
     } = this.props;
-    const { isCreatingNewRole, responsibilitySet, newRole } = this.state;
+    const { isCreatingNewRole, isEditingRole, responsibilitySet, newRole } = this.state;
 
     const isLegalPrivateCode =
       responsibilitySet.privateCode === this.props.responsibilitySet.privateCode ||
@@ -246,8 +294,20 @@ class ModalEditResponsibilitySet extends React.Component {
                 </select>
               </div>
               <div>
-                <IconButton onClick={() => this.setState({ isCreatingNewRole: true })} size="large">
+                <IconButton
+                  onClick={() =>
+                    this.setState({
+                      isCreatingNewRole: true,
+                      isEditingRole: false,
+                      editingRoleIndex: -1,
+                    })
+                  }
+                  size="large"
+                >
                   <Add style={{ color: '#228B22' }} />
+                </IconButton>
+                <IconButton onClick={this.handleEditRole.bind(this)} size="large">
+                  <Edit style={{ color: '#1976d2' }} />
                 </IconButton>
                 <IconButton onClick={this.handleRemoveRole.bind(this)} size="large">
                   <Remove style={{ color: '#cc0000' }} />
@@ -261,8 +321,10 @@ class ModalEditResponsibilitySet extends React.Component {
                   entityTypes={entityTypes}
                   organizations={organizations}
                   handleAddRole={this.handleAddRole.bind(this)}
+                  handleCancel={this.handleCancelEdit.bind(this)}
                   administrativeZones={this.props.administrativeZones}
                   handleRemoveEntity={this.handleRemoveEntity.bind(this)}
+                  isEditing={isEditingRole}
                   addNewAdminZoneRef={responsibleAreaRef => {
                     this.setState({
                       newRole: {
