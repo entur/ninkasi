@@ -21,7 +21,7 @@
     "@entur/micro-frontend": "0.5.0",
     "@mui/icons-material": "7.3.4",
     "@mui/material": "7.3.4",
-    "@mui/x-date-pickers": "8.14.0",
+    "@mui/x-date-pickers": "8.14.1",
     "axios": "1.12.2",
     "chai": "5.3.3",
     "clipboard-js": "0.3.6",
