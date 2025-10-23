@@ -61,17 +61,20 @@ ninkasi/
 ## Key Architecture Patterns
 
 ### State Management
+
 - Uses Redux with thunk middleware for async actions
 - Reducers organized by domain (App, Organization, Suppliers, User, Marduk, UserContext, Utils)
 - Redux DevTools integration for debugging
 
 ### Authentication
+
 - OIDC authentication via Auth0 (dev/staging) and auth2.entur.org (production)
 - Protected routes require admin role (`isRouteDataAdmin` in UserContextReducer)
 - Token management handled by react-oidc-context
 - Automatic signin redirect for unauthenticated users
 
 ### Configuration
+
 - Environment-based config loaded from `src/config/environments/`
 - Backend API endpoints configurable via environment variables:
   - `PROVIDERS_BASE_URL`
@@ -83,6 +86,7 @@ ninkasi/
   - `ENDPOINTBASE` (optional namespace override)
 
 ### Component Structure
+
 - Migrating from JSX to TSX (mixed codebase)
 - Material-UI components with custom theming
 - Functional components with hooks
@@ -119,6 +123,7 @@ npm run preview
 ## Working with the Codebase
 
 ### Adding New Features
+
 1. Create action creators in `src/actions/`
 2. Add reducers in `src/reducers/`
 3. Build UI components in `src/screens/` or `src/app/components/`
@@ -126,17 +131,20 @@ npm run preview
 5. Update routes in `src/app/Router.jsx` if needed
 
 ### Making API Calls
+
 - Use existing action creators as templates
 - API config utilities in `src/actions/getApiConfig.js`
 - Token retrieval pattern: `getToken` callback passed to actions
 - Axios for HTTP requests
 
 ### Styling
+
 - Global styles in `src/sass/`
 - Component-level styles using Emotion or MUI's `sx` prop
 - Follow existing Material-UI theming
 
 ### Testing
+
 - Test files colocated in `tests/` directory
 - Use Vitest and React Testing Library
 - Run tests before committing
@@ -144,18 +152,21 @@ npm run preview
 ## Important Conventions
 
 ### Code Style
+
 - Use ESLint and Prettier (enforced via Husky pre-commit hooks)
 - TypeScript preferred for new files
 - Functional components with hooks
 - Minimal comments (code should be self-documenting)
 
 ### File Organization
+
 - Actions and reducers named after their domain
 - Components organized by feature/screen
 - Shared components in `app/components/`
 - Keep files focused on single responsibility
 
 ### State Updates
+
 - Always use Redux actions for state changes
 - Avoid local state for data that needs to be shared
 - Use React Context for configuration and auth
@@ -186,6 +197,7 @@ npm run preview
 ## External Integrations
 
 The app integrates with multiple Entur backend services:
+
 - **Organizations API:** Manage organizations and users
 - **Providers API:** Manage data providers
 - **Timetable Admin:** Timetable data management
