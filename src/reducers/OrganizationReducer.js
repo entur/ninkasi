@@ -49,6 +49,7 @@ const initialState = {
     error: false,
     isNewUser: false,
   },
+  m2mClientStatus: { error: null },
 };
 
 const removeByIndex = (list, index) => [...list.slice(0, index), ...list.slice(index + 1)];
@@ -263,6 +264,21 @@ const OrganizationReducer = (state = initialState, action) => {
 
     case types.RECEIVED_M2M_CLIENTS:
       return Object.assign({}, state, { m2mClients: action.payLoad });
+
+    case types.CREATED_M2M_CLIENT:
+    case types.UPDATED_M2M_CLIENT:
+      return Object.assign({}, state, {
+        m2mClientStatus: {
+          error: null,
+        },
+      });
+
+    case types.FAILED_M2M_CLIENT_OPERATION:
+      return Object.assign({}, state, {
+        m2mClientStatus: {
+          error: action.payLoad,
+        },
+      });
 
     case types.RECEIVED_RESPONSIBILITES:
       return Object.assign({}, state, { responsibilities: action.payLoad });

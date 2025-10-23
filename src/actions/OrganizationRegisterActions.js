@@ -202,6 +202,58 @@ OrganizationRegisterActions.getM2MClients = getToken => async (dispatch, getStat
     });
 };
 
+OrganizationRegisterActions.createM2MClient = (client, getToken) => async (dispatch, getState) => {
+  const url = `${window.config.organisationsBaseUrl}m2m_clients`;
+  const trimmedData = JSON.parse(JSON.stringify(client).replace(/"\s+|\s+"/g, '"'));
+
+  return axios
+    .post(url, trimmedData, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(SuppliersActions.addNotification('Created M2M client successfully', 'success'));
+      dispatch(sendData(null, types.CREATED_M2M_CLIENT));
+      dispatch(OrganizationRegisterActions.getM2MClients(getToken));
+    })
+    .catch(error => {
+      dispatch(sendData(types.FAILED_M2M_CLIENT_OPERATION, error));
+      dispatch(SuppliersActions.addNotification('Error creating M2M client', 'error'));
+      console.log('Error creating M2M client', error);
+    });
+};
+
+OrganizationRegisterActions.updateM2MClient = (client, getToken) => async (dispatch, getState) => {
+  const url = `${window.config.organisationsBaseUrl}m2m_clients/${client.privateCode}`;
+  const trimmedData = JSON.parse(JSON.stringify(client).replace(/"\s+|\s+"/g, '"'));
+
+  return axios
+    .put(url, trimmedData, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(SuppliersActions.addNotification('Updated M2M client successfully', 'success'));
+      dispatch(sendData(null, types.UPDATED_M2M_CLIENT));
+      dispatch(OrganizationRegisterActions.getM2MClients(getToken));
+    })
+    .catch(error => {
+      dispatch(sendData(types.FAILED_M2M_CLIENT_OPERATION, error));
+      dispatch(SuppliersActions.addNotification('Error updating M2M client', 'error'));
+      console.log('Error updating M2M client', error);
+    });
+};
+
+OrganizationRegisterActions.deleteM2MClient =
+  (clientId, getToken) => async (dispatch, getState) => {
+    const url = `${window.config.organisationsBaseUrl}m2m_clients/${clientId}`;
+
+    return axios
+      .delete(url, await getApiConfig(getToken))
+      .then(() => {
+        dispatch(SuppliersActions.addNotification('Deleted M2M client successfully', 'success'));
+        dispatch(OrganizationRegisterActions.getM2MClients(getToken));
+      })
+      .catch(error => {
+        dispatch(SuppliersActions.addNotification('Error deleting M2M client', 'error'));
+        console.log('Error deleting M2M client', error);
+      });
+  };
+
 OrganizationRegisterActions.deleteUser = (userId, getToken) => async (dispatch, getState) => {
   const url = `${window.config.organisationsBaseUrl}users/${userId}`;
   return axios
