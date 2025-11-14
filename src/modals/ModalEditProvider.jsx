@@ -19,7 +19,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 import withAuth from 'utils/withAuth';
 import TextField from '@mui/material/TextField';
 import { Checkbox, FormControlLabel } from '@mui/material';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import Button from '@mui/material/Button';
 import { connect } from 'react-redux';
 import SuppliersActions from 'actions/SuppliersActions';
@@ -289,6 +289,7 @@ class ModalEditProvider extends Component {
           </div>
           <div style={rowStyle}>
             <FormControl style={{ flex: 1 }}>
+              <InputLabel>Level-2 provider</InputLabel>
               <Select
                 value={this.state.form._migrateDataToProvider}
                 onChange={e => this.handleChange('_migrateDataToProvider', e.target.value)}
