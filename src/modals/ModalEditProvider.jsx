@@ -289,8 +289,10 @@ class ModalEditProvider extends Component {
           </div>
           <div style={rowStyle}>
             <FormControl style={{ flex: 1 }}>
-              <InputLabel>Level-2 provider</InputLabel>
+              <InputLabel id="level2-provider-label">Level-2 provider</InputLabel>
               <Select
+                labelId="level2-provider-label"
+                label="Level-2 provider"
                 value={this.state.form._migrateDataToProvider}
                 onChange={e => this.handleChange('_migrateDataToProvider', e.target.value)}
                 displayEmpty
