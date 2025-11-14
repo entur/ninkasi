@@ -317,6 +317,10 @@ class SupplierTabWrapper extends React.Component {
                     hideIgnoredExportNetexBlocks: true,
                     hideAntuValidationSteps: false,
                     hideFlexDataImport: false,
+                    providers: suppliers.reduce((acc, provider) => {
+                      acc[provider.id] = provider.name;
+                      return acc;
+                    }, {}),
                     navigate: url => {
                       window.history.pushState(null, null, url);
                       window.location.reload();
@@ -374,6 +378,7 @@ class SupplierTabWrapper extends React.Component {
                   name="Events"
                   payload={{
                     providerId: `${provider.id}`,
+                    providerName: provider.name,
                     getToken,
                     locale: 'en',
                     env: window.config.appEnv,
