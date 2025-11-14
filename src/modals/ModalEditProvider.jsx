@@ -293,12 +293,11 @@ class ModalEditProvider extends Component {
               <Select
                 labelId="level2-provider-label"
                 label="Level-2 provider"
-                value={this.state.form._migrateDataToProvider}
+                value={this.state.form._migrateDataToProvider || ''}
                 onChange={e => this.handleChange('_migrateDataToProvider', e.target.value)}
-                displayEmpty
               >
-                <MenuItem value={null} style={{ fontStyle: 'italic' }}>
-                  None
+                <MenuItem value="">
+                  <em>None</em>
                 </MenuItem>
                 {providers
                   .filter(provider => !provider.chouetteInfo.migrateDataToProvider)
