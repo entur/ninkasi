@@ -414,9 +414,7 @@ class ModalEditProvider extends Component {
               />
               {this.toolTip(
                 this.state.form._referential.indexOf('rb_') !== 0
-                  ? 'Allow Chouette to create new stop places in its database. ' +
-                      'Since stop places should be already present in the Chouette database (imported from NSR) the default setting is "off". ' +
-                      'Used only when testing non-Norwegian datasets'
+                  ? 'Enable the nightly validation for this provider'
                   : 'Enable nightly automatic triggering of "validation Level 2" steps. ' +
                       'This option does not affect the execution of the "validation Level 2" step triggered by a file delivery.'
               )}
