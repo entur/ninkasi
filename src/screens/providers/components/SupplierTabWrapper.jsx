@@ -266,6 +266,7 @@ class SupplierTabWrapper extends React.Component {
       fileListIsLoading,
       getToken,
       canEditOrganisation,
+      suppliersIsLoading,
     } = this.props;
 
     if (fileListIsLoading) {
@@ -303,31 +304,39 @@ class SupplierTabWrapper extends React.Component {
             </Tabs>
             <Box sx={{ p: 3 }}>
               {currentTabIndex === 0 && <ChouetteAllJobs />}
-              {currentTabIndex === 1 && window.config.zagmukMicroFrontendUrl && (
-                <MicroFrontend
-                  key="zagmuk-all-providers"
-                  id="ror-zagmuk"
-                  host={window.config.zagmukMicroFrontendUrl}
-                  staticPath=""
-                  name="Events"
-                  payload={{
-                    getToken,
-                    locale: 'en',
-                    env: window.config.appEnv,
-                    hideIgnoredExportNetexBlocks: true,
-                    hideAntuValidationSteps: false,
-                    hideFlexDataImport: false,
-                    navigate: url => {
-                      window.history.pushState(null, null, url);
-                      window.location.reload();
-                    },
-                  }}
-                  FetchStatus={props => (
-                    <MicroFrontendFetchStatus {...props} label="Error loading events" />
-                  )}
-                  handleError={error => console.log(error)}
-                />
-              )}
+              {currentTabIndex === 1 &&
+                window.config.zagmukMicroFrontendUrl &&
+                (suppliersIsLoading || suppliers.length === 0 ? (
+                  <CircularProgress size={24} sx={{ color: '#39a1f4', margin: '40px' }} />
+                ) : (
+                  <MicroFrontend
+                    key="zagmuk-all-providers"
+                    id="ror-zagmuk"
+                    host={window.config.zagmukMicroFrontendUrl}
+                    staticPath=""
+                    name="Events"
+                    payload={{
+                      getToken,
+                      locale: 'en',
+                      env: window.config.appEnv,
+                      hideIgnoredExportNetexBlocks: true,
+                      hideAntuValidationSteps: false,
+                      hideFlexDataImport: false,
+                      providers: suppliers.reduce((acc, provider) => {
+                        acc[provider.id] = provider.name;
+                        return acc;
+                      }, {}),
+                      navigate: url => {
+                        window.history.pushState(null, null, url);
+                        window.location.reload();
+                      },
+                    }}
+                    FetchStatus={props => (
+                      <MicroFrontendFetchStatus {...props} label="Error loading events" />
+                    )}
+                    handleError={error => console.log(error)}
+                  />
+                ))}
               {currentTabIndex === 2 && window.config.ninsarMicroFrontendUrl && (
                 <MicroFrontend
                   id="ror-ninsar"
@@ -374,6 +383,7 @@ class SupplierTabWrapper extends React.Component {
                   name="Events"
                   payload={{
                     providerId: `${provider.id}`,
+                    providerName: provider.name,
                     getToken,
                     locale: 'en',
                     env: window.config.appEnv,
@@ -428,6 +438,7 @@ const mapStateToProps = state => ({
   providerEvents: state.SuppliersReducer.statusList,
   allProvidersEvents: state.SuppliersReducer.statusListAllProviders,
   canEditOrganisation: state.UserContextReducer.isOrganisationAdmin,
+  suppliersIsLoading: state.SuppliersReducer.isLoading,
 });
 
 export default connect(mapStateToProps)(withAuth(SupplierTabWrapper));
