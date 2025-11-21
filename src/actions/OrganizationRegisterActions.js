@@ -364,17 +364,6 @@ OrganizationRegisterActions.createUser = (user, getToken) => async (dispatch, ge
     .then(() => {
       dispatch(SuppliersActions.addNotification('Created user successfully', 'success'));
       dispatch(sendData(null, types.CREATED_USER));
-      dispatch(
-        sendData(
-          {
-            userId: 'N/A',
-            error: false,
-            username: user.username,
-            isNewUser: true,
-          },
-          types.OPENED_NEW_PASSWORD_DIALOG
-        )
-      );
       dispatch(OrganizationRegisterActions.getUsers(getToken));
     })
     .catch(error => {
@@ -445,43 +434,6 @@ OrganizationRegisterActions.getEntityTypes = getToken => async (dispatch, getSta
     .catch(error => {
       console.log('Error receiving entity_types', error);
     });
-};
-
-OrganizationRegisterActions.resetPassword =
-  (userId, username, getToken) => async (dispatch, getState) => {
-    const url = `${window.config.organisationsBaseUrl}users/${userId.trim()}/resetPassword`;
-    return axios
-      .post(url, null, await getApiConfig(getToken))
-      .then(response => {
-        dispatch(
-          sendData(
-            {
-              userId,
-              error: false,
-              username: username,
-              isNewUser: false,
-              password: response.data,
-            },
-            types.OPENED_NEW_PASSWORD_DIALOG
-          )
-        );
-      })
-      .catch(err => {
-        dispatch(SuppliersActions.addNotification('Unable to reset password for user', 'error'));
-      });
-  };
-
-OrganizationRegisterActions.closePasswordDialog = () => dispatch => {
-  dispatch(
-    sendData(
-      {
-        userId: null,
-        error: false,
-        password: null,
-      },
-      types.CLOSED_NEW_PASSWORD_DIALOG
-    )
-  );
 };
 
 OrganizationRegisterActions.addNewUserNotification = () => dispatch => {

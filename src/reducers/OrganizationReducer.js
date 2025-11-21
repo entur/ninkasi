@@ -42,13 +42,6 @@ const initialState = {
   administrativeZones: [],
   notificationTypes: [],
   userNotificationsLoading: false,
-  passwordDialog: {
-    open: false,
-    password: null,
-    userId: null,
-    error: false,
-    isNewUser: false,
-  },
   m2mClientStatus: { error: null },
 };
 
@@ -64,29 +57,6 @@ const OrganizationReducer = (state = initialState, action) => {
         roleStatus: {
           error: null,
           code: 'ROLE_CREATED',
-        },
-      });
-
-    case types.OPENED_NEW_PASSWORD_DIALOG:
-      return Object.assign({}, state, {
-        passwordDialog: {
-          open: true,
-          userId: action.payLoad.userId,
-          username: action.payLoad.username,
-          isNewUser: action.payLoad.isNewUser,
-          error: action.payLoad.error,
-        },
-      });
-
-    case types.CLOSED_NEW_PASSWORD_DIALOG:
-      return Object.assign({}, state, {
-        passwordDialog: {
-          open: false,
-          password: null,
-          userId: null,
-          error: false,
-          username: null,
-          isNewUser: false,
         },
       });
 
