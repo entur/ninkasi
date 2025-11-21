@@ -27,8 +27,6 @@ import ModalEditNotifications from 'modals/ModalEditNotifications';
 import { connect } from 'react-redux';
 import { sortUsersby } from 'utils';
 import ModalConfirmation from 'modals/ModalConfirmation';
-import ForgotPassword from 'static/icons/ForgotPassword';
-import ModalNewPassword from 'modals/ModalNewPassword';
 import NotificationStatus from '../NotificationStatus';
 import OrganizationFilter from '../OrganizationFilter';
 
@@ -41,7 +39,6 @@ class UserView extends React.Component {
       isEditModalOpen: false,
       isNotificationsOpen: false,
       isDeleteConfirmationOpen: false,
-      isResetConfirmationOpen: false,
       activeUser: null,
       sortOrder: {
         column: 'username',
@@ -73,25 +70,10 @@ class UserView extends React.Component {
     this.props.dispatch(OrganizationRegisterActions.deleteUser(user.id, getToken));
   }
 
-  handleResetPassword(user) {
-    const { getToken } = this.props;
-    this.props.dispatch(
-      OrganizationRegisterActions.resetPassword(user.id, user.username, getToken)
-    );
-    this.handleCloseResetConfirmation();
-  }
-
   handleCloseDeleteConfirmation() {
     this.setState({
       activeuser: null,
       isDeleteConfirmationOpen: false,
-    });
-  }
-
-  handleCloseResetConfirmation() {
-    this.setState({
-      activeuser: null,
-      isResetConfirmationOpen: false,
     });
   }
 
@@ -102,23 +84,10 @@ class UserView extends React.Component {
     });
   }
 
-  handleOpenResetConfirmationDialog(activeUser) {
-    this.setState({
-      activeUser,
-      isResetConfirmationOpen: true,
-    });
-  }
-
   getDeleteConfirmationTitle() {
     const { activeUser } = this.state;
     const username = activeUser ? activeUser.username : 'N/A';
     return `Delete user ${username}`;
-  }
-
-  getResetPasswordConfirmationTitle() {
-    const { activeUser } = this.state;
-    const username = activeUser ? activeUser.username : 'N/A';
-    return `Reset password for ${username}`;
   }
 
   filterUserByOrg(user) {
@@ -166,7 +135,7 @@ class UserView extends React.Component {
   }
 
   render() {
-    const { users, organizations, responsibilities, passwordDialogState } = this.props;
+    const { users, organizations, responsibilities } = this.props;
     const {
       isCreateModalOpen,
       isEditModalOpen,
@@ -177,7 +146,6 @@ class UserView extends React.Component {
 
     const sortedUsers = sortUsersby(users, sortOrder);
     const confirmDeleteTitle = this.getDeleteConfirmationTitle();
-    const confirmResetTitle = this.getResetPasswordConfirmationTitle();
 
     return (
       <div>
@@ -289,18 +257,6 @@ class UserView extends React.Component {
                     }}
                     onClick={() => this.openModal(user, 'isNotificationsOpen')}
                   />
-                  <ForgotPassword
-                    style={{
-                      height: 20,
-                      width: 20,
-                      marginRight: 4,
-                      verticalAlign: 'middle',
-                      cursor: 'pointer',
-                      marginTop: 4,
-                      color: 'orange',
-                    }}
-                    onClick={() => this.handleOpenResetConfirmationDialog(user)}
-                  />
                   <Delete
                     color="#fa7b81"
                     style={{
@@ -358,19 +314,6 @@ class UserView extends React.Component {
               this.handleCloseDeleteConfirmation();
             }}
           />
-          <ModalConfirmation
-            open={this.state.isResetConfirmationOpen}
-            title={confirmResetTitle}
-            body="You are about to reset password for current user. Are you sure?"
-            actionBtnTitle="Reset"
-            handleSubmit={() => {
-              this.handleResetPassword(this.state.activeUser);
-            }}
-            handleClose={() => {
-              this.handleCloseResetConfirmation();
-            }}
-          />
-          <ModalNewPassword passwordDialogState={passwordDialogState} />
         </div>
       </div>
     );
@@ -382,7 +325,6 @@ const mapStateToProps = state => ({
   organizations: state.OrganizationReducer.organizations,
   responsibilities: state.OrganizationReducer.responsibilities,
   status: state.OrganizationReducer.userStatus,
-  passwordDialogState: state.OrganizationReducer.passwordDialog,
 });
 
 export default connect(mapStateToProps)(withAuth(UserView));
