@@ -19,7 +19,7 @@
   "enturPartnerUrl": "https://entur-partner.dev.entur.org",
   "auth0Domain": "partner.dev.entur.org",
   "auth0ClientId": "2uEG0SOm0OvzYqvVw3VCyCTNtZYCVxRt",
-  "auth0Audience": "https://ror.api.dev.entur.io",
+  "auth0Audience": "https://api.dev.entur.io",
   "auth0ClaimsNamespace": "https://ror.entur.io/role_assignments",
   "defaultAuthMethod": "auth0"
 }
