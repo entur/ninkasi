@@ -49,6 +49,7 @@ const getEmptyForm = () => ({
   _enableAutoImport: false,
   _enableAutoValidation: false,
   _enableBlocksExport: false,
+  _enableExperimentalImport: false,
 });
 
 const validate = values => {
@@ -92,6 +93,7 @@ class ModalEditProvider extends Component {
         enableAutoImport,
         enableAutoValidation,
         enableBlocksExport,
+        enableExperimentalImport,
       } = provider.chouetteInfo;
       const form = {
         _providerId: provider.id,
@@ -109,6 +111,7 @@ class ModalEditProvider extends Component {
         _enableAutoImport: enableAutoImport,
         _enableAutoValidation: enableAutoValidation,
         _enableBlocksExport: enableBlocksExport,
+        _enableExperimentalImport: enableExperimentalImport,
       };
       this.setState({ form, errors: {} });
     } else {
@@ -393,6 +396,28 @@ class ModalEditProvider extends Component {
                   {this.toolTip(
                     'Deprecated. Generates a dated NeTEx export to be processed by Namtar'
                   )}
+                </div>
+              </div>
+              <div style={{ ...rowStyle, marginTop: 10 }}>
+                <div style={{ ...formElement }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={this.state.form._enableExperimentalImport}
+                        onChange={e =>
+                          this.handleChange('_enableExperimentalImport', e.target.checked)
+                        }
+                      />
+                    }
+                    label="Enable experimental import"
+                    style={{
+                      flex: 1,
+                      maxWidth: 360,
+                      whiteSpace: 'nowrap',
+                      fontSize: '0.9em',
+                    }}
+                  />
+                  {this.toolTip('Enable the experimental import pipeline for this provider')}
                 </div>
               </div>
             </>

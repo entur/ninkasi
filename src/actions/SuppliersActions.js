@@ -241,6 +241,7 @@ const getProviderPayload = data => {
       enableAutoImport: trimmedData._enableAutoImport,
       enableAutoValidation: trimmedData._enableAutoValidation,
       enableBlocksExport: trimmedData._enableBlocksExport,
+      enableExperimentalImport: trimmedData._enableExperimentalImport,
     },
   };
 
