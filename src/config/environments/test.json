@@ -18,7 +18,7 @@
   "enturPartnerUrl": "https://entur-partner.staging.entur.org",
   "auth0Domain": "partner.staging.entur.org",
   "auth0ClientId": "ElRuIcRPcuWz8XlGY5fkZM6VyADmxJ8T",
-  "auth0Audience": "https://ror.api.staging.entur.io",
+  "auth0Audience": "https://api.staging.entur.io",
   "auth0ClaimsNamespace": "https://ror.entur.io/role_assignments",
   "defaultAuthMethod": "auth0"
 }
