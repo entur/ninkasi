@@ -323,7 +323,7 @@ class SupplierTabWrapper extends React.Component {
                       hideAntuValidationSteps: false,
                       hideFlexDataImport: false,
                       providers: suppliers.reduce((acc, provider) => {
-                        acc[provider.id] = provider.name;
+                        acc[provider.id] = provider;
                         return acc;
                       }, {}),
                       navigate: url => {
@@ -384,6 +384,10 @@ class SupplierTabWrapper extends React.Component {
                   payload={{
                     providerId: `${provider.id}`,
                     providerName: provider.name,
+                    providers: suppliers.reduce((acc, provider) => {
+                      acc[provider.id] = provider;
+                      return acc;
+                    }, {}),
                     getToken,
                     locale: 'en',
                     env: window.config.appEnv,
