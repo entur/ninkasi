@@ -68,7 +68,7 @@ ninkasi/
 
 ### Authentication
 
-- OIDC authentication via Auth0 (dev/staging) and auth2.entur.org (production)
+- OIDC authentication via Auth0
 - Protected routes require admin role (`isRouteDataAdmin` in UserContextReducer)
 - Token management handled by react-oidc-context
 - Automatic signin redirect for unauthenticated users
