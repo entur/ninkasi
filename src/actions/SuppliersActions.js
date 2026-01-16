@@ -759,12 +759,12 @@ SuppliersActions.buildGraph = getToken => async (dispatch, getState) => {
   })
     .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_GRAPH));
-      dispatch(SuppliersActions.addNotification('Graph build started', 'success'));
+      dispatch(SuppliersActions.addNotification('Transit Graph build started', 'success'));
     })
     .catch(function (response) {
       console.log('ERROR BUILDING GRAPH', response);
       dispatch(sendData(response.data, types.ERROR_BUILD_GRAPH));
-      dispatch(SuppliersActions.addNotification('Graph build failed', 'error'));
+      dispatch(SuppliersActions.addNotification('Transit Graph build failed', 'error'));
     });
 };
 
@@ -780,12 +780,12 @@ SuppliersActions.buildBaseGraph = getToken => async (dispatch, getState) => {
   })
     .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_BASE_GRAPH));
-      dispatch(SuppliersActions.addNotification('Base graph build started', 'success'));
+      dispatch(SuppliersActions.addNotification('Street Graph build started', 'success'));
     })
     .catch(function (response) {
       console.log('ERROR BUILDING BASE GRAPH', response);
       dispatch(sendData(response.data, types.ERROR_BUILD_BASE_GRAPH));
-      dispatch(SuppliersActions.addNotification('Base graph build failed', 'error'));
+      dispatch(SuppliersActions.addNotification('Street Graph build failed', 'error'));
     });
 };
 
@@ -801,12 +801,14 @@ SuppliersActions.buildCandidateGraphOTP = getToken => async (dispatch, getState)
   })
     .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_CANDIDATE_GRAPH_OTP));
-      dispatch(SuppliersActions.addNotification('Candidate graph build (OTP) started', 'success'));
+      dispatch(
+        SuppliersActions.addNotification('Candidate Transit Graph build started', 'success')
+      );
     })
     .catch(function (response) {
       console.log('ERROR BUILDING CANDIDATE GRAPH (OTP)', response);
       dispatch(sendData(response.data, types.ERROR_BUILD_CANDIDATE_GRAPH_OTP));
-      dispatch(SuppliersActions.addNotification('Candidate graph build (OTP) failed', 'error'));
+      dispatch(SuppliersActions.addNotification('Candidate Transit Graph build failed', 'error'));
     });
 };
 
@@ -822,16 +824,12 @@ SuppliersActions.buildCandidateBaseGraphOTP = getToken => async (dispatch, getSt
   })
     .then(function (response) {
       dispatch(sendData(response.data, types.SUCCESS_BUILD_CANDIDATE_BASE_GRAPH_OTP));
-      dispatch(
-        SuppliersActions.addNotification('Candidate base graph build (OTP) started', 'success')
-      );
+      dispatch(SuppliersActions.addNotification('Candidate Street Graph build started', 'success'));
     })
     .catch(function (response) {
       console.log('ERROR BUILDING CANDIDATE BASE GRAPH (OTP)', response);
       dispatch(sendData(response.data, types.ERROR_BUILD_CANDIDATE_BASE_GRAPH_OTP));
-      dispatch(
-        SuppliersActions.addNotification('Candidate base graph build (OTP) failed', 'error')
-      );
+      dispatch(SuppliersActions.addNotification('Candidate Street Graph build failed', 'error'));
     });
 };
 

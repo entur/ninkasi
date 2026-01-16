@@ -113,8 +113,8 @@ class GraphStatus extends React.Component {
     return (
       <div style={containerStyle}>
         <div style={wrapperStyle}>
-          <h4 style={{ fontWeight: 'bold', margin: '0' }}>Graph status</h4>
-          <h4 style={{ fontWeight: 'bold', margin: '0' }}>Base graph status</h4>
+          <h4 style={{ fontWeight: 'bold', margin: '0' }}>Transit Graph status</h4>
+          <h4 style={{ fontWeight: 'bold', margin: '0' }}>Street Graph status</h4>
         </div>
         <div style={wrapperStyle}>
           {graphStatus.otp2 && (

@@ -47,8 +47,8 @@ class AdministrativeActions extends React.Component {
   handleBuildGraph() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: 'Build graph',
-      confirmInfo: 'Are you sure you want to build graph?',
+      confirmTitle: 'Build Transit Graph',
+      confirmInfo: 'Are you sure you want to build Transit Graph?',
       confirmAction: () => {
         const { dispatch, getToken } = this.props;
         dispatch(SuppliersActions.buildGraph(getToken));
@@ -59,8 +59,8 @@ class AdministrativeActions extends React.Component {
   handleBuildBaseGraph() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: 'Build base graph',
-      confirmInfo: 'Are you sure you want to build base graph?',
+      confirmTitle: 'Build Street Graph',
+      confirmInfo: 'Are you sure you want to build Street Graph?',
       confirmAction: () => {
         const { dispatch, getToken } = this.props;
         dispatch(SuppliersActions.buildBaseGraph(getToken));
@@ -71,8 +71,8 @@ class AdministrativeActions extends React.Component {
   handleBuildCandidateGraphOTP() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: 'Build candidate graph (OTP)',
-      confirmInfo: 'Are you sure you want to build candidate graph (OTP)?',
+      confirmTitle: 'Build candidate Transit Graph',
+      confirmInfo: 'Are you sure you want to build candidate Transit Graph?',
       confirmAction: () => {
         const { dispatch, getToken } = this.props;
         dispatch(SuppliersActions.buildCandidateGraphOTP(getToken));
@@ -83,8 +83,8 @@ class AdministrativeActions extends React.Component {
   handleBuildCandidateBaseGraphOTP() {
     this.setState({
       confirmDialogOpen: true,
-      confirmTitle: 'Build candidate base graph (OTP)',
-      confirmInfo: 'Are you sure you want to build candidate base graph (OTP)?',
+      confirmTitle: 'Build candidate Street Graph',
+      confirmInfo: 'Are you sure you want to build candidate Street Graph?',
       confirmAction: () => {
         const { dispatch, getToken } = this.props;
         dispatch(SuppliersActions.buildCandidateBaseGraphOTP(getToken));
@@ -211,11 +211,10 @@ class AdministrativeActions extends React.Component {
     };
 
     const toolTips = {
-      buildGraph: 'Build graph for all providers',
-      buildBaseGraph: 'Build new base graph with OSM and elevation data',
-      buildCandidateGraph: 'Build candidate graph for all providers (OTP)',
-      buildCandidateBaseGraphOTP:
-        'Build new candidate base graph with OSM and elevation data (OTP)',
+      buildGraph: 'Build Transit Graph for all providers',
+      buildBaseGraph: 'Build new Street Graph with OSM and elevation data',
+      buildCandidateGraph: 'Build candidate Transit Graph for all providers',
+      buildCandidateBaseGraphOTP: 'Build new candidate Street Graph with OSM and elevation data',
       fetchOSM: 'Fetch Open Street Map data',
       cleanFileFilter: 'Clean file filter',
       canceAllJobs: 'Cancel all current chouette jobs',
@@ -254,28 +253,28 @@ class AdministrativeActions extends React.Component {
               onClick={() => this.handleBuildGraph()}
               title={toolTips.buildGraph}
             >
-              Build graph
+              Build Transit Graph
             </MenuItem>
             <MenuItem
               style={{ fontSize: '1em' }}
               onClick={() => this.handleBuildBaseGraph()}
               title={toolTips.buildBaseGraph}
             >
-              Build base graph
+              Build Street Graph
             </MenuItem>
             <MenuItem
               style={{ fontSize: '1em' }}
               onClick={() => this.handleBuildCandidateGraphOTP()}
               title={toolTips.buildCandidateGraphOTP}
             >
-              Build Candidate Graph OTP
+              Build Candidate Transit Graph
             </MenuItem>
             <MenuItem
               style={{ fontSize: '1em' }}
               onClick={() => this.handleBuildCandidateBaseGraphOTP()}
               title={toolTips.buildCandidateBaseGraphOTP}
             >
-              Build Candidate Base Graph OTP
+              Build Candidate Street Graph
             </MenuItem>
           </Popover>
           <Button

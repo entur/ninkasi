@@ -130,7 +130,7 @@ class LatestOTPGraphVersions extends React.Component {
                       marginTop: 0,
                     }}
                   >
-                    Latest street graphs
+                    Latest Street Graphs
                   </h3>
                   <>
                     {streetGraphs.map(streetGraph => (
@@ -152,7 +152,7 @@ class LatestOTPGraphVersions extends React.Component {
                       marginTop: 0,
                     }}
                   >
-                    Latest transit graphs
+                    Latest Transit Graphs
                   </h3>
                   <>
                     {transitGraphs.map(transitGraph => (
