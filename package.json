@@ -27,7 +27,7 @@
     "clipboard-js": "0.3.6",
     "file-saver": "2.0.5",
     "history": "4.10.1",
-    "lodash": "4.17.21",
+    "lodash": "4.17.23",
     "moment": "2.30.1",
     "oidc-client-ts": "3.4.1",
     "prop-types": "15.8.1",
