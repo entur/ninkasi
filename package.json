@@ -23,7 +23,7 @@
     "@mui/material": "7.3.8",
     "@mui/x-date-pickers": "8.27.2",
     "axios": "1.13.6",
-    "chai": "5.3.3",
+    "chai": "6.2.2",
     "clipboard-js": "0.3.6",
     "file-saver": "2.0.5",
     "history": "4.10.1",
