@@ -440,6 +440,7 @@ SuppliersActions.setActiveActionAllFilter = (value, getToken) => dispatch => {
 };
 
 SuppliersActions.getChouetteJobsForAllSuppliers = getToken => async (dispatch, getState) => {
+  if (window.config?.defaultAuthMethod === 'local') return;
   const state = getState();
   const { chouetteJobAllFilter, actionAllFilter } = state.MardukReducer;
 
@@ -487,6 +488,7 @@ SuppliersActions.getChouetteJobsForAllSuppliers = getToken => async (dispatch, g
 };
 
 SuppliersActions.getChouetteJobStatus = getToken => async (dispatch, getState) => {
+  if (window.config?.defaultAuthMethod === 'local') return;
   const state = getState();
 
   const { chouetteJobFilter, actionFilter } = state.MardukReducer;

@@ -5,7 +5,7 @@ import Providers from 'screens/providers';
 import Geocoder from 'screens/geocoder';
 import Organization from 'screens/organization';
 import { MicroFrontend } from '@entur/micro-frontend';
-import { useAuth } from 'react-oidc-context';
+import { useAuth } from '../auth';
 import { connect } from 'react-redux';
 import SuppliersActions from 'actions/SuppliersActions';
 import { MicroFrontendFetchStatus } from './components/MicroFrontendFetchStatus';

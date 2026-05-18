@@ -13,7 +13,7 @@ import { IconButton } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
-import { useAuth } from 'react-oidc-context';
+import { useAuth } from '../../../auth';
 import getApiConfig from 'actions/getApiConfig';
 import './OSMPOIFilter.scss';
 

@@ -315,7 +315,8 @@ class ModalEditProvider extends Component {
             </FormControl>
           </div>
 
-          {this.state.form._referential.indexOf('rb_') !== 0 && (
+          {(window.config?.defaultAuthMethod === 'local' ||
+            this.state.form._referential.indexOf('rb_') !== 0) && (
             <>
               <div style={{ ...rowStyle, marginTop: 10 }}>
                 <TransportModesPopover

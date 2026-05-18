@@ -22,7 +22,7 @@ import App from 'app';
 import configureStore, { history } from 'store/store';
 import './sass/main.scss';
 import cfgreader from 'config/readConfig';
-import { AuthProvider, useAuth } from 'react-oidc-context';
+import { AuthProvider, useAuth } from './auth';
 import { startRouteChangeEmitter } from '@entur/micro-frontend';
 
 startRouteChangeEmitter();

@@ -5,6 +5,10 @@ import { useConfig } from '../contexts/ConfigContext';
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const config = useConfig();
 
+  if (config.defaultAuthMethod === 'local') {
+    return <>{children}</>;
+  }
+
   const oidcConfig = {
     authority: `https://${config.auth0Domain}`,
     client_id: config.auth0ClientId!,
