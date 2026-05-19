@@ -15,7 +15,7 @@
  */
 
 import React, { useCallback } from 'react';
-import { useAuth } from 'react-oidc-context';
+import { useAuth } from '../auth';
 
 const withAuth = Component => {
   const AuthWrapper = props => {

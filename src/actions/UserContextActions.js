@@ -6,6 +6,16 @@ import SuppliersActions from './SuppliersActions';
 const UserContextActions = {};
 
 UserContextActions.fetchUserContext = getToken => async (dispatch, getState) => {
+  if (window.config?.defaultAuthMethod === 'local') {
+    dispatch(
+      SuppliersActions.receiveUserContext({
+        preferredName: 'Local Dev',
+        isRouteDataAdmin: true,
+        isOrganisationAdmin: true,
+      })
+    );
+    return;
+  }
   const url = window.config.providersBaseUrl + 'usercontext';
   return axios
     .get(url, await getApiConfig(getToken))

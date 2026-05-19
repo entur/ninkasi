@@ -1,0 +1,21 @@
+{
+  "appEnv": "local",
+  "providersBaseUrl": "http://localhost:21089/services/providers/",
+  "organisationsBaseUrl": "http://localhost:21088/services/organisations/",
+  "eventsBaseUrl": "http://localhost:21004/services/events/",
+  "timetableAdminBaseUrl": "http://localhost:21080/services/timetable_admin/",
+  "mapAdminBaseUrl": "http://localhost:21080/services/map_admin/",
+  "mapboxAdminBaseUrl": "http://localhost:21080/services/mapbox_admin/",
+  "geocoderAdminBaseUrl": "http://localhost:21080/services/geocoder_admin/",
+  "poiFilterBaseUrl": "http://localhost:21080/services/poi-filter",
+  "tariffZonesUrl": "http://localhost:21080/services/tariffzones-import/",
+  "endpointBase": "/",
+  "chouetteBaseUrl": "http://localhost:21080/",
+  "udugBaseUrl": "/netex-validation-reports/",
+  "udugMicroFrontendUrl": "",
+  "ninsarBaseUrl": "/line-statistics/",
+  "ninsarMicroFrontendUrl": "",
+  "zagmukMicroFrontendUrl": "http://localhost:21001",
+  "enturPartnerUrl": "",
+  "defaultAuthMethod": "local"
+}
