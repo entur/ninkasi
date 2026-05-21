@@ -12,6 +12,7 @@ export interface Config {
   mapboxAdminBaseUrl?: string;
   enableGoogleTasks?: boolean;
   defaultAuthMethod?: string;
+  mockOauth2TokenUrl?: string;
   netexPrefix?: string;
   uttuBaseUrl?: string;
   organisationRegisterBaseUrl?: string;

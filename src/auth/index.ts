@@ -2,11 +2,28 @@ export { AuthProvider } from './AuthProvider';
 
 import { useAuth as useOidcAuth } from 'react-oidc-context';
 
+let localDevAccessToken: string | undefined;
+
+export const fetchAndCacheLocalDevToken = async (tokenUrl: string): Promise<void> => {
+  const response = await fetch(tokenUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: 'grant_type=client_credentials&client_id=ninkasi&client_secret=notUsed',
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to fetch local dev token: ${response.status} ${response.statusText}`);
+  }
+  const data = await response.json();
+  localDevAccessToken = data.access_token;
+};
+
 const localAuth = {
   isAuthenticated: true,
   isLoading: false,
   user: {
-    access_token: 'local-dev-token',
+    get access_token() {
+      return localDevAccessToken;
+    },
     token_type: 'Bearer',
     profile: {
       sub: 'local-dev',
