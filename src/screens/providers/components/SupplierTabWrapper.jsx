@@ -24,8 +24,8 @@ import DataMigrationDetails from './DataMigrationDetails';
 import { Tabs, Tab, Box, CircularProgress } from '@mui/material';
 import { getQueryVariable } from 'utils';
 import ExportedFilesView from './ExportedFilesView';
-import { MicroFrontend } from '@entur/micro-frontend';
-import { MicroFrontendFetchStatus } from '../../../app/components/MicroFrontendFetchStatus';
+import { EventsView } from './events';
+import LineStatisticsView from './lineStatistics/LineStatisticsView';
 
 class SupplierTabWrapper extends React.Component {
   constructor(props) {
@@ -251,23 +251,9 @@ class SupplierTabWrapper extends React.Component {
     }
   }
 
-  notifyLineStatisticsLoadingFailure() {
-    const { dispatch } = this.props;
-    dispatch(
-      SuppliersActions.addNotification('Error loading micro frontend for line statistics', 'error')
-    );
-  }
-
   render() {
-    const {
-      displayAllSuppliers,
-      activeId,
-      suppliers,
-      fileListIsLoading,
-      getToken,
-      canEditOrganisation,
-      suppliersIsLoading,
-    } = this.props;
+    const { displayAllSuppliers, activeId, suppliers, fileListIsLoading, suppliersIsLoading } =
+      this.props;
 
     if (fileListIsLoading) {
       return (
@@ -305,53 +291,17 @@ class SupplierTabWrapper extends React.Component {
             <Box sx={{ p: 3 }}>
               {currentTabIndex === 0 && <ChouetteAllJobs />}
               {currentTabIndex === 1 &&
-                window.config.zagmukMicroFrontendUrl &&
                 (suppliersIsLoading || suppliers.length === 0 ? (
                   <CircularProgress size={24} sx={{ color: '#39a1f4', margin: '40px' }} />
                 ) : (
-                  <MicroFrontend
-                    key="zagmuk-all-providers"
-                    id="ror-zagmuk"
-                    host={window.config.zagmukMicroFrontendUrl}
-                    staticPath=""
-                    name="Events"
-                    payload={{
-                      getToken,
-                      locale: 'en',
-                      env: window.config.appEnv,
-                      hideIgnoredExportNetexBlocks: true,
-                      hideAntuValidationSteps: false,
-                      hideFlexDataImport: false,
-                      providers: suppliers.reduce((acc, provider) => {
-                        acc[provider.id] = provider;
-                        return acc;
-                      }, {}),
-                      navigate: url => {
-                        window.history.pushState(null, null, url);
-                        window.location.reload();
-                      },
-                    }}
-                    FetchStatus={props => (
-                      <MicroFrontendFetchStatus {...props} label="Error loading events" />
-                    )}
-                    handleError={error => console.log(error)}
+                  <EventsView
+                    providers={suppliers.reduce((acc, p) => {
+                      acc[p.id] = p;
+                      return acc;
+                    }, {})}
                   />
                 ))}
-              {currentTabIndex === 2 && window.config.ninsarMicroFrontendUrl && (
-                <MicroFrontend
-                  id="ror-ninsar"
-                  host={window.config.ninsarMicroFrontendUrl}
-                  staticPath=""
-                  name="Line statistics"
-                  payload={{
-                    getToken,
-                  }}
-                  FetchStatus={props => (
-                    <MicroFrontendFetchStatus {...props} label="Error loading line statistics" />
-                  )}
-                  handleError={this.notifyLineStatisticsLoadingFailure.bind(this)}
-                />
-              )}
+              {currentTabIndex === 2 && <LineStatisticsView />}
               {currentTabIndex === 3 && <ExportedFilesView />}
             </Box>
           </Box>
@@ -374,54 +324,19 @@ class SupplierTabWrapper extends React.Component {
             </Tabs>
             <Box sx={{ p: 3 }}>
               {currentTabIndex === 0 && <DataMigrationDetails />}
-              {currentTabIndex === 1 && window.config.zagmukMicroFrontendUrl && (
-                <MicroFrontend
-                  key={`zagmuk-provider-${provider.id}`}
-                  id="ror-zagmuk"
-                  host={window.config.zagmukMicroFrontendUrl}
-                  staticPath=""
-                  name="Events"
-                  payload={{
-                    providerId: `${provider.id}`,
-                    providerName: provider.name,
-                    providers: suppliers.reduce((acc, provider) => {
-                      acc[provider.id] = provider;
-                      return acc;
-                    }, {}),
-                    getToken,
-                    locale: 'en',
-                    env: window.config.appEnv,
-                    hideIgnoredExportNetexBlocks: true,
-                    hideAntuValidationSteps: false,
-                    hideFlexDataImport: false,
-                    navigate: url => {
-                      window.history.pushState(null, null, url);
-                      window.location.reload();
-                    },
-                  }}
-                  FetchStatus={props => (
-                    <MicroFrontendFetchStatus {...props} label="Error loading events" />
-                  )}
-                  handleError={error => console.log(error)}
+              {currentTabIndex === 1 && (
+                <EventsView
+                  key={`events-${provider.id}`}
+                  providerId={`${provider.id}`}
+                  provider={provider}
+                  providers={suppliers.reduce((acc, p) => {
+                    acc[p.id] = p;
+                    return acc;
+                  }, {})}
                 />
               )}
               {currentTabIndex === 2 && <ChouetteJobDetails getToken={this.props.getToken} />}
-              {currentTabIndex === 3 && window.config.ninsarMicroFrontendUrl && (
-                <MicroFrontend
-                  id="ror-ninsar"
-                  host={window.config.ninsarMicroFrontendUrl}
-                  staticPath=""
-                  name="Line statistics"
-                  payload={{
-                    providerId: `${provider.id}`,
-                    getToken,
-                  }}
-                  FetchStatus={props => (
-                    <MicroFrontendFetchStatus {...props} label="Error loading line statistics" />
-                  )}
-                  handleError={this.notifyLineStatisticsLoadingFailure.bind(this)}
-                />
-              )}
+              {currentTabIndex === 3 && <LineStatisticsView providerId={`${provider.id}`} />}
             </Box>
           </Box>
         );

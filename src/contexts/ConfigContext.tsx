@@ -1,22 +1,39 @@
 import React, { useContext } from 'react';
 
 export interface Config {
+  appEnv?: string;
   auth0Domain?: string;
   auth0ClientId?: string;
   auth0Audience?: string;
   auth0ClaimsNamespace?: string;
-  timetableAdminBaseUrl?: string;
-  mapAdminBaseUrl?: string;
-  stopPlaceBaseUrl?: string;
-  mapboxAdminBaseUrl?: string;
-  enableGoogleTasks?: boolean;
   defaultAuthMethod?: string;
   mockOauth2TokenUrl?: string;
-  netexPrefix?: string;
+
+  providersBaseUrl?: string;
+  organisationsBaseUrl?: string;
+  eventsBaseUrl?: string;
+  timetableAdminBaseUrl?: string;
+  mapAdminBaseUrl?: string;
+  mapboxAdminBaseUrl?: string;
+  stopPlaceBaseUrl?: string;
   uttuBaseUrl?: string;
   organisationRegisterBaseUrl?: string;
   noonReportBaseUrl?: string;
-  providersBaseUrl?: string;
+
+  endpointBase?: string;
+  netexPrefix?: string;
+  enableGoogleTasks?: boolean;
+
+  chouetteBaseUrl?: string;
+  udugBaseUrl?: string;
+  ninsarBaseUrl?: string;
+  enturPartnerUrl?: string;
+
+  // Inlined-MF API URLs
+  timetableValidationApiUrl?: string;
+  timetableEventsApiUrl?: string;
+  timetableAdminApiUrl?: string;
+  kililiApiUrl?: string;
 }
 
 export const ConfigContext = React.createContext<Config>({});

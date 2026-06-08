@@ -1,61 +1,18 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router';
 
 import Providers from 'screens/providers';
 import Organization from 'screens/organization';
-import { MicroFrontend } from '@entur/micro-frontend';
-import { useAuth } from '../auth';
-import { connect } from 'react-redux';
-import SuppliersActions from 'actions/SuppliersActions';
-import { MicroFrontendFetchStatus } from './components/MicroFrontendFetchStatus';
+import ValidationReport from 'screens/netexValidationReports/ValidationReport';
 
-const notifyNetexValidationReportLoadingFailure = dispatch => () => {
-  dispatch(
-    SuppliersActions.addNotification(
-      'Error loading micro frontend for NeTEx validation reports',
-      'error'
-    )
-  );
-};
+const Router = () => (
+  <Switch>
+    <Route exact path="/" component={Providers} />
+    <Route exact path="/timetable-admin" component={Providers} />
+    <Route exact path="/timetable-pipeline" component={Providers} />
+    <Route exact path="/permissions" component={Organization} />
+    <Route path="/netex-validation-reports/report/:codespace/:id" component={ValidationReport} />
+  </Switch>
+);
 
-const Router = ({ dispatch }) => {
-  const auth = useAuth();
-  const getToken = useCallback(async () => {
-    return auth.user?.access_token;
-  }, [auth]);
-  return (
-    <Switch>
-      <Route exact path="/" component={Providers} />
-      <Route exact path="/timetable-admin" component={Providers} />
-      <Route exact path="/timetable-pipeline" component={Providers} />
-      <Route exact path="/permissions" component={Organization} />
-      <Route path="/netex-validation-reports">
-        {window.config.udugMicroFrontendUrl && (
-          <div style={{ backgroundColor: '#fff' }}>
-            <MicroFrontend
-              id="ror-udug"
-              host={window.config.udugMicroFrontendUrl}
-              path="/netex-validation-reports"
-              staticPath=""
-              name="NeTEx validation reports"
-              payload={{
-                getToken,
-                locale: 'en',
-                env: window.config.appEnv,
-              }}
-              FetchStatus={props => (
-                <MicroFrontendFetchStatus
-                  {...props}
-                  label="Error loading NeTEx validation reports"
-                />
-              )}
-              handleError={notifyNetexValidationReportLoadingFailure(dispatch)}
-            />
-          </div>
-        )}
-      </Route>
-    </Switch>
-  );
-};
-
-export default connect()(Router);
+export default Router;
