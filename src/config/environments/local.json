@@ -6,8 +6,6 @@
   "timetableAdminBaseUrl": "http://localhost:21080/services/timetable_admin/",
   "mapAdminBaseUrl": "http://localhost:21080/services/map_admin/",
   "mapboxAdminBaseUrl": "http://localhost:21080/services/mapbox_admin/",
-  "geocoderAdminBaseUrl": "http://localhost:21080/services/geocoder_admin/",
-  "poiFilterBaseUrl": "http://localhost:21080/services/poi-filter",
   "tariffZonesUrl": "http://localhost:21080/services/tariffzones-import/",
   "endpointBase": "/",
   "chouetteBaseUrl": "http://localhost:21080/",

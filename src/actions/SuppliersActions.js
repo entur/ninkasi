@@ -82,23 +82,6 @@ SuppliersActions.getProviderStatus = (id, getToken) => async (dispatch, getState
     });
 };
 
-SuppliersActions.executePeliasTask = (tasks, getToken) => async (dispatch, getState) => {
-  const queryParams = Object.keys(tasks)
-    .filter(entry => tasks[entry])
-    .join('&task=');
-  const url = window.config.geocoderAdminBaseUrl + `build_pipeline?task=${queryParams}`;
-
-  return axios
-    .post(url, null, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(SuppliersActions.addNotification('Pelias task execution', 'success'));
-    })
-    .catch(err => {
-      dispatch(SuppliersActions.addNotification('Unable to execute pelias tasks', 'error'));
-      console.log('err', err);
-    });
-};
-
 SuppliersActions.getAllProviderStatus = getToken => async (dispatch, getState) => {
   dispatch(sendData(null, types.REQUESTED_ALL_SUPPLIERS_STATUS));
   const state = getState();
@@ -558,7 +541,6 @@ SuppliersActions.getGraphStatus = getToken => async (dispatch, getState) => {
       const status = {
         graphStatus: {},
         baseGraphStatus: {},
-        otherStatus: [],
       };
       response.data.forEach(type => {
         if (type.jobType === 'OTP2_BUILD_GRAPH') {
@@ -571,12 +553,6 @@ SuppliersActions.getGraphStatus = getToken => async (dispatch, getState) => {
             status: type.currentState,
             started: type.currentStateDate,
           };
-        } else if (type.jobDomain === 'GEOCODER') {
-          status.otherStatus.push({
-            type: type.jobType,
-            status: type.currentState,
-            started: type.currentStateDate,
-          });
         }
       });
 

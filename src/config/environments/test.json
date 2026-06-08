@@ -6,8 +6,6 @@
   "timetableAdminBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/timetable/",
   "mapAdminBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/map/",
   "mapboxAdminBaseUrl": "https://api.staging.entur.io/mapbox-admin/v1/",
-  "geocoderAdminBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/geocoder/",
-  "poiFilterBaseUrl": "https://api.staging.entur.io/timetable-admin/v2/poi-filter",
   "endpointBase": "/",
   "chouetteBaseUrl": "https://rutedb.staging.entur.org/",
   "udugBaseUrl": "/netex-validation-reports/",

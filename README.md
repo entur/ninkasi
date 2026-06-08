@@ -23,7 +23,7 @@ npm start
 
 ## Configuration
 
-We use convict.js for config. Set environment variables `PROVIDERS_BASE_URL`, `ORGANISATIONS_BASE_URL`, `TIMETABLE_ADMIN_BASE_URL`, `MAP_ADMIN_BASE_URL`, `GEOCODER_ADMIN_BASE_URL`
+We use convict.js for config. Set environment variables `PROVIDERS_BASE_URL`, `ORGANISATIONS_BASE_URL`, `TIMETABLE_ADMIN_BASE_URL`, `MAP_ADMIN_BASE_URL`
 and `EVENTS_BASE_URL` in order to override default configuration of these
 endpoints, e.g.
 
@@ -33,7 +33,6 @@ ORGANISATIONS_BASE_URL=http://localhost:16001/services/organisations/ \
   EVENTS_BASE_URL=http://localhost:10001/services/events/ \
   TIMETABLE_ADMIN_BASE_URL=http://localhost:11002/services/timetable_admin/ \
   MAP_ADMIN_BASE_URL=http://localhost:11002/services/map_admin/ \
-  GEOCODER_ADMIN_BASE_URL=http://localhost:11002/services/geocodr_admin/ \
   npm start dev
 ```
 
@@ -46,7 +45,6 @@ ENDPOINTBASE=/admin/ninkasi/ \
   EVENTS_BASE_URL=http://localhost:10001/services/events/ \
   TIMETABLE_ADMIN_BASE_URL=http://localhost:11002/services/timetable_admin/ \
   MAP_ADMIN_BASE_URL=http://localhost:11002/services/map_admin/ \
-  GEOCODER_ADMIN_BASE_URL=http://localhost:11002/services/geocodr_admin/ \
   npm start dev
 ```
 

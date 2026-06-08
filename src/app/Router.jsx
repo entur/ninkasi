@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { Route, Switch } from 'react-router';
 
 import Providers from 'screens/providers';
-import Geocoder from 'screens/geocoder';
 import Organization from 'screens/organization';
 import { MicroFrontend } from '@entur/micro-frontend';
 import { useAuth } from '../auth';
@@ -29,7 +28,6 @@ const Router = ({ dispatch }) => {
       <Route exact path="/" component={Providers} />
       <Route exact path="/timetable-admin" component={Providers} />
       <Route exact path="/timetable-pipeline" component={Providers} />
-      <Route exact path="/geocoder-pipeline" component={Geocoder} />
       <Route exact path="/permissions" component={Organization} />
       <Route path="/netex-validation-reports">
         {window.config.udugMicroFrontendUrl && (
