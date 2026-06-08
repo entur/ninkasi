@@ -8,7 +8,6 @@ export interface Config {
   timetableAdminBaseUrl?: string;
   mapAdminBaseUrl?: string;
   stopPlaceBaseUrl?: string;
-  geocoderBaseUrl?: string;
   mapboxAdminBaseUrl?: string;
   enableGoogleTasks?: boolean;
   defaultAuthMethod?: string;

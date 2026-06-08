@@ -40,7 +40,6 @@ ninkasi/
 │   │   └── components/    # Shared components
 │   ├── screens/           # Feature screens
 │   │   ├── common/
-│   │   ├── geocoder/
 │   │   ├── organization/
 │   │   └── providers/
 │   ├── modals/            # Modal dialogs
@@ -81,7 +80,6 @@ ninkasi/
   - `ORGANISATIONS_BASE_URL`
   - `TIMETABLE_ADMIN_BASE_URL`
   - `MAP_ADMIN_BASE_URL`
-  - `GEOCODER_ADMIN_BASE_URL`
   - `EVENTS_BASE_URL`
   - `ENDPOINTBASE` (optional namespace override)
 
@@ -202,7 +200,6 @@ The app integrates with multiple Entur backend services:
 - **Providers API:** Manage data providers
 - **Timetable Admin:** Timetable data management
 - **Map Admin:** Geographic data management
-- **Geocoder Admin:** Geocoding services
 - **Events API:** Event tracking and monitoring
 - **Marduk:** Data pipeline service (inferred from MardukReducer)
 

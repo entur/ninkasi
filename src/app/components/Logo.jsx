@@ -6,8 +6,6 @@ const pageNameFromPathName = pathname => {
     case '/timetable-admin':
     case '/timetable-pipeline':
       return 'Timetable Pipeline';
-    case '/geocoder-pipeline':
-      return 'Geocoder Pipeline';
     case '/permissions':
       return 'Permissions';
     default:

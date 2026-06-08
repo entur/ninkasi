@@ -163,17 +163,6 @@ describe('Organization reducer utils', () => {
         'BUILD_GRAPH',
         'EXPORT_NETEX',
       ],
-      GEOCODER: [
-        '*',
-        'ADDRESS_DOWNLOAD',
-        'ADMINISTRATIVE_UNITS_DOWNLOAD',
-        'PLACE_NAMES_DOWNLOAD',
-        'TIAMAT_POI_UPDATE',
-        'TIAMAT_ADMINISTRATIVE_UNITS_UPDATE',
-        'TIAMAT_NEIGHBOURING_COUNTRIES_UPDATE',
-        'TIAMAT_EXPORT',
-        'PELIAS_UPDATE',
-      ],
       GRAPH: ['*', 'BUILD_GRAPH'],
     };
 
