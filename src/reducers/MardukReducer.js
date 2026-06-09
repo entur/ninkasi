@@ -241,13 +241,9 @@ export const fetchFilenames = createAsyncThunk(
 export const getChouetteJobStatus = createAsyncThunk(
   'marduk/getChouetteJobStatus',
   async (getToken, { getState, dispatch, rejectWithValue }) => {
-    if (window.config?.defaultAuthMethod === 'local') return null;
-
     const state = getState();
     const { chouetteJobFilter, actionFilter } = state.MardukReducer;
     const { activeId } = state.SuppliersReducer;
-
-    if (activeId < 0) return null;
 
     let queryString = '';
     for (const [key, value] of Object.entries(chouetteJobFilter)) {
@@ -273,14 +269,22 @@ export const getChouetteJobStatus = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response?.data ?? null);
     }
+  },
+  {
+    // Don't run (and don't dispatch pending/fulfilled/rejected) when there's
+    // no active provider or we're in local-dev auth-bypass mode.  Old code
+    // returned without dispatching SUCCESS; the createAsyncThunk equivalent
+    // is `condition`.
+    condition: (_getToken, { getState }) => {
+      if (window.config?.defaultAuthMethod === 'local') return false;
+      return getState().SuppliersReducer.activeId >= 0;
+    },
   }
 );
 
 export const getChouetteJobsForAllSuppliers = createAsyncThunk(
   'marduk/getChouetteJobsForAllSuppliers',
   async (getToken, { getState, dispatch, rejectWithValue }) => {
-    if (window.config?.defaultAuthMethod === 'local') return null;
-
     const state = getState();
     const { chouetteJobAllFilter, actionAllFilter } = state.MardukReducer;
 
@@ -319,6 +323,10 @@ export const getChouetteJobsForAllSuppliers = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err?.response?.data ?? null);
     }
+  },
+  {
+    // Skip in local-dev auth-bypass mode; old code returned without dispatch.
+    condition: () => window.config?.defaultAuthMethod !== 'local',
   }
 );
 
@@ -493,8 +501,10 @@ const mardukSlice = createSlice({
         state.filenames = { isLoading: false, data: action.payload, error: false };
       })
       .addCase(fetchFilenames.rejected, (state, action) => {
-        // NOTE: typo `filesnames` preserved from original behavior.
-        state.filesnames = { isLoading: false, error: action.payload };
+        // (Original had a `filesnames` typo here that left
+        // `state.filenames.isLoading` permanently true on error, freezing the
+        // migrate-data tab in a loading state.)
+        state.filenames = { isLoading: false, error: action.payload };
       })
       // chouette job status (single provider)
       .addCase(getChouetteJobStatus.fulfilled, (state, action) => {
