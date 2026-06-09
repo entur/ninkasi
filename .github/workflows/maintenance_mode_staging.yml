@@ -5,12 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: 'staging'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.3.1
       - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.3.0
       - name: Copy maintenance mode file
         run: mkdir build && cp public/maintenance.html build/index.html
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - uses: FirebaseExtended/action-hosting-deploy@v0.10.0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_NINKASI_TST }}'
