@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import {
   ThemeProvider,
   StyledEngineProvider,
@@ -6,9 +6,10 @@ import {
   adaptV4Theme,
   CssBaseline,
 } from '@mui/material';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { connect } from 'react-redux';
 import { useAuth } from '../auth';
-import { useConfig } from '../contexts/ConfigContext';
+import { queryClient } from './queryClient';
 import Header from './components/header/Header';
 import NoAccess from './components/NoAccess';
 import Router from './Router';
@@ -25,7 +26,6 @@ interface AppProps {
 
 const App: React.FC<AppProps> = ({ dispatch, isConfigLoaded, isAdmin }) => {
   const auth = useAuth();
-  const config = useConfig();
 
   const getToken = useCallback(async () => {
     return auth.user?.access_token;
@@ -78,21 +78,23 @@ const App: React.FC<AppProps> = ({ dispatch, isConfigLoaded, isAdmin }) => {
     return (
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <NotificationContainer />
-          <Header />
-          <div className="app" style={{ marginTop: '64px' }}>
-            {isAdmin ? (
-              <Router />
-            ) : (
-              <NoAccess
-                username={auth.user?.profile?.name || auth.user?.profile?.email || 'User'}
-                handleLogout={() => {
-                  auth.signoutRedirect();
-                }}
-              />
-            )}
-          </div>
+          <QueryClientProvider client={queryClient}>
+            <CssBaseline />
+            <NotificationContainer />
+            <Header />
+            <div className="app" style={{ marginTop: '64px' }}>
+              {isAdmin ? (
+                <Router />
+              ) : (
+                <NoAccess
+                  username={auth.user?.profile?.name || auth.user?.profile?.email || 'User'}
+                  handleLogout={() => {
+                    auth.signoutRedirect();
+                  }}
+                />
+              )}
+            </div>
+          </QueryClientProvider>
         </ThemeProvider>
       </StyledEngineProvider>
     );
