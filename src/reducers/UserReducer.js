@@ -15,19 +15,18 @@
  */
 
 import { createSlice } from '@reduxjs/toolkit';
-import { UPDATE_AUTH } from 'actions/actionTypes';
 
 const initialState = {};
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
-  extraReducers: builder => {
-    builder.addCase(UPDATE_AUTH, (state, action) => {
-      state.auth = action.payLoad;
-    });
+  reducers: {
+    updateAuth(state, action) {
+      state.auth = action.payload;
+    },
   },
 });
 
+export const { updateAuth } = userSlice.actions;
 export default userSlice.reducer;

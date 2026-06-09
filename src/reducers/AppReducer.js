@@ -15,7 +15,6 @@
  */
 
 import { createSlice } from '@reduxjs/toolkit';
-import * as types from 'actions/actionTypes';
 
 const initialState = {
   isMenuOpen: false,
@@ -24,12 +23,12 @@ const initialState = {
 const appSlice = createSlice({
   name: 'app',
   initialState,
-  reducers: {},
-  extraReducers: builder => {
-    builder.addCase(types.TOGGLE_MENU, state => {
+  reducers: {
+    toggleMenu(state) {
       state.isMenuOpen = !state.isMenuOpen;
-    });
+    },
   },
 });
 
+export const { toggleMenu } = appSlice.actions;
 export default appSlice.reducer;

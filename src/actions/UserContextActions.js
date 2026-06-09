@@ -1,37 +1,21 @@
-import axios from 'axios';
-import getApiConfig from './getApiConfig';
-import * as types from './actionTypes';
-import SuppliersActions from './SuppliersActions';
+/*
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
+ * the European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at:
+ *
+ *   https://joinup.ec.europa.eu/software/page/eupl
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and
+ * limitations under the Licence.
+ *
+ */
 
-const UserContextActions = {};
+import { fetchUserContext, receiveUserContext } from 'reducers/UserContextReducer';
 
-UserContextActions.fetchUserContext = getToken => async (dispatch, getState) => {
-  if (window.config?.defaultAuthMethod === 'local') {
-    dispatch(
-      SuppliersActions.receiveUserContext({
-        preferredName: 'Local Dev',
-        isRouteDataAdmin: true,
-        isOrganisationAdmin: true,
-      })
-    );
-    return;
-  }
-  const url = window.config.providersBaseUrl + 'usercontext';
-  return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(SuppliersActions.receiveUserContext(response.data));
-    })
-    .catch(err => {
-      SuppliersActions.addNotification('Failed to fetch user context', 'error');
-    });
-};
-
-SuppliersActions.receiveUserContext = data => {
-  return {
-    type: types.RECEIVED_USER_CONTEXT,
-    payLoad: data,
-  };
-};
+const UserContextActions = { fetchUserContext, receiveUserContext };
 
 export default UserContextActions;

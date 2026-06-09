@@ -176,9 +176,9 @@ class EntityTypesView extends React.Component {
                     }}
                   >
                     {et.classifications
-                      ? et.classifications
+                      ? [...et.classifications]
                           .sort((a, b) => a.name.localeCompare(b.name))
-                          .map((ec, i) => <li key={ec.id}>{ec.name} </li>)
+                          .map(ec => <li key={ec.id}>{ec.name} </li>)
                       : null}
                   </ul>
                 </div>

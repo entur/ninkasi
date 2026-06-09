@@ -15,7 +15,6 @@
  */
 
 import { createSlice } from '@reduxjs/toolkit';
-import * as types from 'actions/actionTypes';
 
 const initialState = {
   shouldUpdateProvider: false,
@@ -41,82 +40,102 @@ const initialState = {
   },
 };
 
-const toggleSortOrder = (current, payLoad) => {
-  if (current.property === payLoad) {
-    return current.sortOrder >= 1 ? 0 : 1;
-  }
-  return 0;
-};
+const toggleSortOrder = (current, property) =>
+  current.property === property ? (current.sortOrder >= 1 ? 0 : 1) : 0;
+
+// fetchProvider lives in SuppliersReducer; referencing it here would create
+// a runtime-only cyclic import, so listen to the fulfilled action by its
+// auto-generated type string. This restores the pre-PR-B' behavior where
+// SUCCESS_FETCH_PROVIDER populated `supplierForm` — without it the migrate-
+// data tab can't see the active provider's chouetteInfo.
+const FETCH_PROVIDER_FULFILLED = 'suppliers/fetchProvider/fulfilled';
 
 const utilsSlice = createSlice({
   name: 'utils',
   initialState,
-  reducers: {},
   extraReducers: builder => {
-    builder
-      .addCase(types.ADD_NOTIFICATION, (state, action) => {
-        state.notification = {
-          message: action.message,
-          level: action.level,
-        };
-      })
-      .addCase(types.APPEND_FILES_TO_OUTBOUND, (state, action) => {
-        const incoming = action.payLoad.filter(x => !state.outboundFilelist.includes(x));
-        state.outboundFilelist.push(...incoming);
-      })
-      .addCase(types.REMOVE_FILES_FROM_OUTBOUND, (state, action) => {
-        state.outboundFilelist = state.outboundFilelist.filter(x => !action.payLoad.includes(x));
-      })
-      .addCase(types.RESET_OUTBOUND_FILES, state => {
-        state.outboundFilelist = [];
-      })
-      .addCase(types.UPDATE_FILES_TO_OUTBOUND, (state, action) => {
-        state.outboundFilelist = action.payLoad;
-      })
-      .addCase(types.TOGGLE_EXPANDABLE_FOR_EVENT_WRAPPER, (state, action) => {
-        const idx = state.expandedEvents.indexOf(action.payLoad);
-        if (idx === -1) {
-          state.expandedEvents.push(action.payLoad);
-        } else {
-          state.expandedEvents.splice(idx, 1);
-        }
-      })
-      .addCase(types.DISMISS_EDIT_PROVIDER_DIALOG, state => {
-        state.editProviderModal = false;
-      })
-      .addCase(types.OPENED_EDIT_PROVIDER_DIALOG, state => {
-        state.shouldUpdateProvider = true;
-        state.editProviderModal = true;
-      })
-      .addCase(types.OPENED_NEW_PROVIDER_DIALOG, state => {
-        state.shouldUpdateProvider = false;
-        state.editProviderModal = true;
-      })
-      .addCase(types.SUCCESS_FETCH_PROVIDER, (state, action) => {
-        state.supplierForm = action.payLoad;
-      })
-      .addCase(types.SORT_EVENTLIST_BY_COLUMN, (state, action) => {
-        state.eventListSortOrder = {
-          property: action.payLoad,
-          sortOrder: toggleSortOrder(state.eventListSortOrder, action.payLoad),
-        };
-      })
-      .addCase(types.SORT_CHOUETTE_ALL_BY_COLUMN, (state, action) => {
-        state.chouetteListAllSortOrder = {
-          property: action.payLoad,
-          sortOrder: toggleSortOrder(state.chouetteListAllSortOrder, action.payLoad),
-        };
-      })
-      .addCase(types.SORT_CHOUETTE_BY_COLUMN, (state, action) => {
-        state.chouetteListSortOrder = {
-          property: action.payLoad,
-          sortOrder: toggleSortOrder(state.chouetteListSortOrder, action.payLoad),
-        };
-      })
-      .addCase(types.CONFIG_LOADED, state => {
-        state.isConfigLoaded = true;
-      });
+    builder.addCase(FETCH_PROVIDER_FULFILLED, (state, action) => {
+      state.supplierForm = action.payload;
+    });
+  },
+  reducers: {
+    addNotification(state, action) {
+      state.notification = action.payload;
+    },
+    appendFilesToOutbound(state, action) {
+      const incoming = action.payload.filter(x => !state.outboundFilelist.includes(x));
+      state.outboundFilelist.push(...incoming);
+    },
+    removeFilesFromOutbound(state, action) {
+      state.outboundFilelist = state.outboundFilelist.filter(x => !action.payload.includes(x));
+    },
+    resetOutboundFiles(state) {
+      state.outboundFilelist = [];
+    },
+    updateFilesToOutbound(state, action) {
+      state.outboundFilelist = action.payload;
+    },
+    toggleExpandableForEventWrapper(state, action) {
+      const idx = state.expandedEvents.indexOf(action.payload);
+      if (idx === -1) {
+        state.expandedEvents.push(action.payload);
+      } else {
+        state.expandedEvents.splice(idx, 1);
+      }
+    },
+    dismissEditProviderDialog(state) {
+      state.editProviderModal = false;
+    },
+    openedEditProviderDialog(state) {
+      state.shouldUpdateProvider = true;
+      state.editProviderModal = true;
+    },
+    openedNewProviderDialog(state) {
+      state.shouldUpdateProvider = false;
+      state.editProviderModal = true;
+    },
+    setSupplierForm(state, action) {
+      state.supplierForm = action.payload;
+    },
+    sortEventListByColumn(state, action) {
+      state.eventListSortOrder = {
+        property: action.payload,
+        sortOrder: toggleSortOrder(state.eventListSortOrder, action.payload),
+      };
+    },
+    sortChouetteAllByColumn(state, action) {
+      state.chouetteListAllSortOrder = {
+        property: action.payload,
+        sortOrder: toggleSortOrder(state.chouetteListAllSortOrder, action.payload),
+      };
+    },
+    sortChouetteByColumn(state, action) {
+      state.chouetteListSortOrder = {
+        property: action.payload,
+        sortOrder: toggleSortOrder(state.chouetteListSortOrder, action.payload),
+      };
+    },
+    notifyConfigIsLoaded(state) {
+      state.isConfigLoaded = true;
+    },
   },
 });
+
+export const {
+  addNotification,
+  appendFilesToOutbound,
+  removeFilesFromOutbound,
+  resetOutboundFiles,
+  updateFilesToOutbound,
+  toggleExpandableForEventWrapper,
+  dismissEditProviderDialog,
+  openedEditProviderDialog,
+  openedNewProviderDialog,
+  setSupplierForm,
+  sortEventListByColumn,
+  sortChouetteAllByColumn,
+  sortChouetteByColumn,
+  notifyConfigIsLoaded,
+} = utilsSlice.actions;
 
 export default utilsSlice.reducer;
