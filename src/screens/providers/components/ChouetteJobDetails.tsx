@@ -125,7 +125,7 @@ const ChouetteJobDetails = () => {
         <Box sx={{ mb: 2 }}>
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={1}>
-              <Typography variant="subtitle2" fontWeight="bold">
+              <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
                 Status
               </Typography>
             </Grid>
@@ -224,7 +224,7 @@ const ChouetteJobDetails = () => {
         <Box sx={{ mb: 2 }}>
           <Grid container spacing={2} alignItems="baseline">
             <Grid item xs={1}>
-              <Typography variant="subtitle2" fontWeight="bold">
+              <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
                 Action
               </Typography>
             </Grid>

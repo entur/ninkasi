@@ -27,7 +27,7 @@ import {
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import { Tooltip, styled } from '@mui/material';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpOutlinedIcon from '@mui/icons-material/HelpOutlined';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
 import * as SuppliersReducer from 'reducers/SuppliersReducer';
@@ -224,7 +224,7 @@ const ModalEditProvider = ({
   const toolTip = (title: string) => (
     <LightTooltip arrow placement="right" title={title}>
       <span className="question-icon">
-        <HelpOutlineIcon style={{ paddingTop: '5px' }} />
+        <HelpOutlinedIcon style={{ paddingTop: '5px' }} />
       </span>
     </LightTooltip>
   );

@@ -48,7 +48,7 @@ const UserRespSetPopover = ({
       open={open}
       anchorEl={anchorEl}
       onClose={handleClose}
-      PaperProps={{ style: { maxHeight: '500px' } }}
+      slotProps={{ paper: { style: { maxHeight: '500px' } } }}
     >
       {sorted.map(r => (
         <MenuItem

@@ -95,8 +95,8 @@ const NotificationContainer = () => {
       open={open}
       autoHideDuration={4000}
       onClose={handleClose}
-      TransitionComponent={Slide}
-      TransitionProps={{ onExited: handleExited }}
+      slots={{ transition: Slide }}
+      slotProps={{ transition: { onExited: handleExited } }}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
       {currentNotification ? (

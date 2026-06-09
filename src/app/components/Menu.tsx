@@ -54,10 +54,12 @@ export default function Menu({ open, onClose }: MenuProps) {
       open={open}
       onClose={onClose}
       ModalProps={{ keepMounted: true }}
-      PaperProps={{
-        sx: {
-          width: isMobile ? '100%' : DESKTOP_WIDTH,
-          ...themeColors,
+      slotProps={{
+        paper: {
+          sx: {
+            width: isMobile ? '100%' : DESKTOP_WIDTH,
+            ...themeColors,
+          },
         },
       }}
     >
@@ -88,7 +90,7 @@ export default function Menu({ open, onClose }: MenuProps) {
               onClick={onClose}
               selected={location.pathname === path}
             >
-              <ListItemText primary={text} primaryTypographyProps={{ style: { color: 'white' } }} />
+              <ListItemText primary={text} slotProps={{ primary: { style: { color: 'white' } } }} />
             </ListItemButton>
           </ListItem>
         ))}

@@ -28,7 +28,7 @@ const FilterButtonTray = ({
           {label}
         </Typography>
       </Box>
-      <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+      <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
         {buttonConfig.fields.map(field => {
           const selected = field.id === activeButtonId;
           return (
