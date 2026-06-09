@@ -34,13 +34,13 @@ const EventExpandableContent = ({ events, correlationId }: Props) => {
       <p>Events for {correlationId}</p>
       <Grid container spacing={2}>
         <Grid item md={4}>
-          <Typography fontWeight="bold">Action</Typography>
+          <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>
         </Grid>
         <Grid item md={4}>
-          <Typography fontWeight="bold">Date</Typography>
+          <Typography sx={{ fontWeight: 'bold' }}>Date</Typography>
         </Grid>
         <Grid item md={4}>
-          <Typography fontWeight="bold">State</Typography>
+          <Typography sx={{ fontWeight: 'bold' }}>State</Typography>
         </Grid>
       </Grid>
       <Divider sx={{ my: 1 }} />

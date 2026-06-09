@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Box, IconButton, Menu, MenuItem, Avatar, useTheme, Typography } from '@mui/material';
-import { HelpOutline, Menu as MenuIcon, OpenInNew } from '@mui/icons-material';
+import { HelpOutlined, Menu as MenuIcon, OpenInNew } from '@mui/icons-material';
 import { useAuth } from '../../../auth';
 import { useSelector } from 'react-redux';
 
@@ -87,7 +87,7 @@ export default function HeaderActions({ isMobile, onMenuIconClick }: HeaderActio
       </IconButton>
 
       <IconButton onClick={handleDocsMenuOpen} aria-label="documentation" sx={iconButtonStyles}>
-        <HelpOutline />
+        <HelpOutlined />
       </IconButton>
 
       <IconButton

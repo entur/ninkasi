@@ -32,7 +32,7 @@ export const SortingChips = ({ sorting, setSorting }: Props) => {
   return (
     <Box sx={{ mb: '20px' }}>
       <FormLabel sx={{ display: 'block', mb: 1 }}>{titleText(locale).sortLines}</FormLabel>
-      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+      <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
         {chipOption(
           1,
           current,
