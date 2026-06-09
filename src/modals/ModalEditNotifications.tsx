@@ -145,7 +145,12 @@ const ModalEditNotifications = ({
             <Box sx={messageSx}>No notification configuration found for this user</Box>
           )}
         </div>
-        <Fab size="small" sx={{ margin: '10px' }} onClick={handleAddNewUserNotification}>
+        <Fab
+          size="small"
+          aria-label="Add notification"
+          sx={{ margin: '10px' }}
+          onClick={handleAddNewUserNotification}
+        >
           <Add />
         </Fab>
       </DialogContent>

@@ -169,7 +169,12 @@ const ResponsibilitiesView = () => {
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Fab size="small" sx={{ marginRight: '10px' }} onClick={openModalWindow}>
+        <Fab
+          size="small"
+          aria-label="Create responsibility set"
+          sx={{ marginRight: '10px' }}
+          onClick={openModalWindow}
+        >
           <Add />
         </Fab>
       </Box>

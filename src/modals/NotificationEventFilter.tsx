@@ -222,7 +222,11 @@ const NotificationEventFilter = ({ notification, index }: NotificationEventFilte
           label="Enabled"
           sx={{ width: 'auto' }}
         />
-        <IconButton onClick={deleteUserNotificationHandler} size="large">
+        <IconButton
+          aria-label="Delete notification"
+          onClick={deleteUserNotificationHandler}
+          size="large"
+        >
           <Delete />
         </IconButton>
         <span>Delete</span>

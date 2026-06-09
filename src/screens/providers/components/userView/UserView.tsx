@@ -151,7 +151,12 @@ const UserView = () => {
           }}
           organisationFilterId={organisationFilterId}
         />
-        <Fab size="small" sx={{ marginRight: '10px' }} onClick={openCreateModal}>
+        <Fab
+          size="small"
+          aria-label="Create user"
+          sx={{ marginRight: '10px' }}
+          onClick={openCreateModal}
+        >
           <Add />
         </Fab>
       </Box>

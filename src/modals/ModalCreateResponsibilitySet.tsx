@@ -218,10 +218,18 @@ const ModalCreateResponsibilitySet = ({
               </Box>
             </Box>
             <Box>
-              <IconButton onClick={() => setIsCreatingNewRole(true)} size="large">
+              <IconButton
+                aria-label="Add role assignment"
+                onClick={() => setIsCreatingNewRole(true)}
+                size="large"
+              >
                 <Add sx={{ color: '#228B22' }} />
               </IconButton>
-              <IconButton onClick={handleRemoveRole} size="large">
+              <IconButton
+                aria-label="Remove role assignment"
+                onClick={handleRemoveRole}
+                size="large"
+              >
                 <Remove sx={{ color: '#cc0000' }} />
               </IconButton>
             </Box>

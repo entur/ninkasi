@@ -87,7 +87,11 @@ const NotificationAdminZoneRefs = ({
             handleDelete={handleRemoveAdminRefRole}
           />
         </Box>
-        <IconButton onClick={handleRemoveAdminRefRole} size="large">
+        <IconButton
+          aria-label="Remove administrative zone"
+          onClick={handleRemoveAdminRefRole}
+          size="large"
+        >
           <Remove sx={{ color: '#cc0000' }} />
         </IconButton>
       </Box>

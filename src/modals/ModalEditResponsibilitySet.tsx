@@ -267,6 +267,7 @@ const ModalEditResponsibilitySet = ({
             </Box>
             <Box>
               <IconButton
+                aria-label="Add role assignment"
                 onClick={() => {
                   setIsCreatingNewRole(true);
                   setIsEditingRole(false);
@@ -276,10 +277,14 @@ const ModalEditResponsibilitySet = ({
               >
                 <Add sx={{ color: '#228B22' }} />
               </IconButton>
-              <IconButton onClick={handleEditRole} size="large">
+              <IconButton aria-label="Edit role assignment" onClick={handleEditRole} size="large">
                 <Edit sx={{ color: '#1976d2' }} />
               </IconButton>
-              <IconButton onClick={handleRemoveRole} size="large">
+              <IconButton
+                aria-label="Remove role assignment"
+                onClick={handleRemoveRole}
+                size="large"
+              >
                 <Remove sx={{ color: '#cc0000' }} />
               </IconButton>
             </Box>

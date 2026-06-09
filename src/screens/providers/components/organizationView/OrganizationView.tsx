@@ -134,6 +134,7 @@ const OrganizationView = () => {
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Fab
           size="small"
+          aria-label="Create organization"
           sx={{ float: 'right', marginRight: '10px', cursor: 'pointer' }}
           onClick={() => setIsCreateModalOpen(true)}
         >

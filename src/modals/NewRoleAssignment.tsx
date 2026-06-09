@@ -176,7 +176,11 @@ const NewRoleAssignment = ({
             </option>
           ))}
         </Box>
-        <IconButton onClick={handleRemoveEntityLocal} size="large">
+        <IconButton
+          aria-label="Remove entity classification"
+          onClick={handleRemoveEntityLocal}
+          size="large"
+        >
           <Remove sx={{ color: '#cc0000' }} />
         </IconButton>
       </Box>

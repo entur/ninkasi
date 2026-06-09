@@ -124,6 +124,7 @@ const EntityTypesView = () => {
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Fab
           size="small"
+          aria-label="Create entity type"
           sx={{ float: 'right', marginRight: '10px' }}
           onClick={() => setIsCreateModalOpen(true)}
         >

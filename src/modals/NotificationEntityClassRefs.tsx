@@ -81,7 +81,11 @@ const NotificationEntityClassRefs = ({
             <option key={'entity-' + idx}>{ref} </option>
           ))}
         </Box>
-        <IconButton onClick={handleRemoveEntityClass} size="large">
+        <IconButton
+          aria-label="Remove entity classification"
+          onClick={handleRemoveEntityClass}
+          size="large"
+        >
           <Remove sx={{ color: '#cc0000' }} />
         </IconButton>
       </Box>

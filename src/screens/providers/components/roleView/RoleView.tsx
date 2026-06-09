@@ -106,6 +106,7 @@ const RoleView = () => {
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Fab
           size="small"
+          aria-label="Create role"
           sx={{ float: 'right', marginRight: '10px' }}
           onClick={() => setIsCreateModalOpen(true)}
         >

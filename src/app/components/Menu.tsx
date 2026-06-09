@@ -75,7 +75,7 @@ export default function Menu({ open, onClose }: MenuProps) {
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Logo providersEnv={providersEnv} pathname={null} />
         </Box>
-        <IconButton onClick={onClose} sx={{ color: 'white' }}>
+        <IconButton aria-label="Close menu" onClick={onClose} sx={{ color: 'white' }}>
           <ChevronRightIcon />
         </IconButton>
       </Toolbar>

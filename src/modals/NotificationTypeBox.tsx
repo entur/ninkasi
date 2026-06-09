@@ -63,7 +63,10 @@ const NotificationTypeBox = ({
           )}
           <Box sx={{ fontWeight: 600, fontSize: 14 }}>{notification.notificationType}</Box>
         </Box>
-        <IconButton size="large">
+        <IconButton
+          aria-label={expanded ? 'Collapse notification' : 'Expand notification'}
+          size="large"
+        >
           {expanded ? (
             <ExpandLess
               onClick={() => {

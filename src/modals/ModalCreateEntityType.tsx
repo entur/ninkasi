@@ -185,10 +185,18 @@ const ModalCreateEntityType = ({
               ))}
             </Box>
             <Box sx={{ textAlign: 'left', width: '100%' }}>
-              <IconButton onClick={() => setIsCreatingNewClassification(true)} size="large">
+              <IconButton
+                aria-label="Add classification"
+                onClick={() => setIsCreatingNewClassification(true)}
+                size="large"
+              >
                 <Add sx={{ color: '#228B22' }} />
               </IconButton>
-              <IconButton onClick={handleRemoveClassification} size="large">
+              <IconButton
+                aria-label="Remove classification"
+                onClick={handleRemoveClassification}
+                size="large"
+              >
                 <Remove sx={{ color: '#cc0000' }} />
               </IconButton>
             </Box>

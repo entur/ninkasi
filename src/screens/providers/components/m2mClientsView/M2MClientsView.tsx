@@ -254,7 +254,12 @@ const M2MClientsView = () => {
           marginBottom: '10px',
         }}
       >
-        <Fab size="small" sx={{ marginRight: '10px' }} onClick={openCreateModal}>
+        <Fab
+          size="small"
+          aria-label="Create M2M client"
+          sx={{ marginRight: '10px' }}
+          onClick={openCreateModal}
+        >
           <Add />
         </Fab>
       </Box>

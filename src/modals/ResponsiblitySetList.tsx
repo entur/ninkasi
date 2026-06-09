@@ -73,6 +73,7 @@ const ResponsiblitySetList = ({
       </Box>
       <Box sx={{ textAlign: 'left', width: '100%' }}>
         <IconButton
+          aria-label="Add responsibility set"
           onClick={e => {
             handleAdd(e);
           }}
@@ -80,7 +81,11 @@ const ResponsiblitySetList = ({
         >
           <Add sx={{ color: '#228B22' }} />
         </IconButton>
-        <IconButton onClick={handleRemoveResponsibilitySet} size="large">
+        <IconButton
+          aria-label="Remove responsibility set"
+          onClick={handleRemoveResponsibilitySet}
+          size="large"
+        >
           <Remove sx={{ color: '#cc0000' }} />
         </IconButton>
       </Box>
