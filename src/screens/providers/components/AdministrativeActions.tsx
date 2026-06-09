@@ -206,22 +206,15 @@ const AdministrativeActions = () => {
   return (
     <Box sx={innerContainerStyle}>
       <Box>
-        <Button variant="text" onClick={handleGraphOpen}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box
-              sx={{
-                fontSize: 12,
-                color: '#fff',
-                paddingLeft: '8px',
-                paddingRight: '8px',
-                paddingTop: '2px',
-                textTransform: 'uppercase',
-              }}
-            >
-              Graph
-            </Box>
-            <ArrowDropDown sx={{ color: 'white' }} />
-          </Box>
+        <Button
+          variant="text"
+          size="small"
+          endIcon={<ArrowDropDown />}
+          onClick={handleGraphOpen}
+          sx={{ color: '#fff', fontSize: 12, textTransform: 'uppercase' }}
+          aria-haspopup="menu"
+        >
+          Graph
         </Button>
         <Popover
           open={graphPopoverOpen}
@@ -261,9 +254,10 @@ const AdministrativeActions = () => {
         </Popover>
         <Button
           variant="text"
+          size="small"
           title={toolTips.fetchOSM}
-          sx={{ fontSize: 12, color: '#fff' }}
           onClick={handleFetchOSM}
+          sx={{ color: '#fff', fontSize: 12, textTransform: 'uppercase' }}
         >
           Fetch OSM
         </Button>
@@ -276,51 +270,26 @@ const AdministrativeActions = () => {
         }}
       />
       <Box>
-        <Button variant="text" onClick={handleCleanOpen}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Warning
-              sx={{
-                color: 'white',
-                height: '1.1em',
-                width: '1.1em',
-                paddingLeft: '10px',
-              }}
-            />
-            <Box
-              sx={{
-                fontSize: 12,
-                color: '#fff',
-                paddingLeft: '8px',
-                paddingRight: '8px',
-                paddingTop: '2px',
-                textTransform: 'uppercase',
-              }}
-            >
-              Clean
-            </Box>
-            <ArrowDropDown sx={{ color: 'white' }} />
-          </Box>
+        <Button
+          variant="text"
+          size="small"
+          startIcon={<Warning />}
+          endIcon={<ArrowDropDown />}
+          onClick={handleCleanOpen}
+          sx={{ color: '#fff', fontSize: 12, textTransform: 'uppercase' }}
+          aria-haspopup="menu"
+        >
+          Clean
         </Button>
-        <Button variant="text" title={toolTips.canceAllJobs} onClick={handleCancelAllJobs}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Warning
-              sx={{
-                color: 'white',
-                height: '1.1em',
-                width: '1.1em',
-                paddingLeft: '10px',
-              }}
-            />
-            <Box
-              sx={{
-                fontSize: 12,
-                color: '#fff',
-                marginLeft: '0.5rem',
-              }}
-            >
-              Cancel all jobs
-            </Box>
-          </Box>
+        <Button
+          variant="text"
+          size="small"
+          startIcon={<Warning />}
+          title={toolTips.canceAllJobs}
+          onClick={handleCancelAllJobs}
+          sx={{ color: '#fff', fontSize: 12, textTransform: 'uppercase' }}
+        >
+          Cancel all jobs
         </Button>
       </Box>
       <Popover

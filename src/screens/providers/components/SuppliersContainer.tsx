@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
 import cfgreader from 'config/readConfig';
-import { Box } from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import { Add, Edit, DeleteForever } from '@mui/icons-material';
 import { getQueryVariable } from '@/utils';
 import ConfirmDialog from 'modals/ConfirmDialog';
@@ -121,60 +121,29 @@ const SuppliersContainer = () => {
           selectedSupplierId={activeProviderId}
         />
         {canEditOrganisation && (
-          <Box
-            sx={{
-              display: 'inline-block',
-              marginTop: '25px',
-              marginLeft: '15px',
-            }}
-          >
-            <Box
-              title={toolTips.editProvider}
-              sx={{
-                display: 'inline-block',
-                cursor: 'pointer',
-                marginRight: '10px',
-              }}
-              onClick={handleEditProvider}
-            >
-              {!displayAllSuppliers && (
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Edit sx={{ width: '1.1em', height: '1.1em' }} />
-                  <Box component="span" sx={{ marginLeft: '2px' }}>
-                    Edit
-                  </Box>
-                </Box>
-              )}
-            </Box>
-            <Box
-              title={toolTips.createNewProvider}
-              sx={{
-                display: 'inline-block',
-                cursor: 'pointer',
-                marginRight: '10px',
-              }}
-              onClick={handleNewProvider}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Add sx={{ width: '1.2em', height: '1.2em' }} />
-                <Box component="span" sx={{ marginLeft: '2px' }}>
-                  New
-                </Box>
-              </Box>
-            </Box>
-
-            <Box
-              title={toolTips.deleteProvider}
-              sx={{ display: 'inline-block', cursor: 'pointer' }}
-              onClick={() => handleOpenConfirmDeleteProviderDialog()}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <DeleteForever sx={{ width: '1.2em', height: '1.2em' }} />
-                <Box component="span" sx={{ marginLeft: '2px' }}>
-                  Delete
-                </Box>
-              </Box>
-            </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 3, ml: 2, gap: 1 }}>
+            {!displayAllSuppliers && (
+              <Tooltip title={toolTips.editProvider}>
+                <Button size="small" startIcon={<Edit />} onClick={handleEditProvider}>
+                  Edit
+                </Button>
+              </Tooltip>
+            )}
+            <Tooltip title={toolTips.createNewProvider}>
+              <Button size="small" startIcon={<Add />} onClick={handleNewProvider}>
+                New
+              </Button>
+            </Tooltip>
+            <Tooltip title={toolTips.deleteProvider}>
+              <Button
+                size="small"
+                color="error"
+                startIcon={<DeleteForever />}
+                onClick={() => handleOpenConfirmDeleteProviderDialog()}
+              >
+                Delete
+              </Button>
+            </Tooltip>
           </Box>
         )}
       </Box>
