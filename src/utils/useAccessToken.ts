@@ -1,9 +1,13 @@
 import { useCallback } from 'react';
-import { useAuth } from 'react-oidc-context';
+import { useAuth } from '@/auth';
 
 /**
- * Hook form of the access-token getter. Mirrors the shape of `withAuth`'s
- * `getToken` prop so it can be used directly inside hooks and effects.
+ * Hook that returns a `getToken()` callback resolving to the current access
+ * token (or '' if unauthenticated), for use inside hooks and effects.
+ *
+ * Imports `useAuth` from `@/auth` — not `react-oidc-context` directly — so
+ * `auth.user` is also populated in local auth-bypass mode, where there is no
+ * OIDC provider. See `src/auth/index.ts`.
  */
 export const useAccessToken = () => {
   const auth = useAuth();
