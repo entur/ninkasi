@@ -21,7 +21,7 @@ import cfgreader from 'config/readConfig';
 import {
   Container,
   Paper,
-  Grid as MuiGrid,
+  Grid,
   Button,
   FormControl,
   FormControlLabel,
@@ -37,7 +37,6 @@ import {
   TableCell,
   CircularProgress,
 } from '@mui/material';
-const Grid = MuiGrid as any;
 import ChouetteLink from './ChouetteLink';
 import EmptyState from '@/app/components/EmptyState';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -124,13 +123,13 @@ const ChouetteJobDetails = () => {
     <Container maxWidth={false}>
       <Paper sx={{ p: 2, mb: 2 }}>
         <Box sx={{ mb: 2 }}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={1}>
+          <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+            <Grid size={{ xs: 1 }}>
               <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
                 Status
               </Typography>
             </Grid>
-            <Grid item xs={2}>
+            <Grid size={{ xs: 2 }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -145,7 +144,7 @@ const ChouetteJobDetails = () => {
                 label="Scheduled"
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid size={{ xs: 2 }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -160,7 +159,7 @@ const ChouetteJobDetails = () => {
                 label="Rescheduled"
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid size={{ xs: 2 }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -175,7 +174,7 @@ const ChouetteJobDetails = () => {
                 label="Started"
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid size={{ xs: 2 }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -190,7 +189,7 @@ const ChouetteJobDetails = () => {
                 label="Completed"
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid size={{ xs: 2 }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -205,7 +204,7 @@ const ChouetteJobDetails = () => {
                 label="Canceled"
               />
             </Grid>
-            <Grid item xs={1}>
+            <Grid size={{ xs: 1 }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -223,13 +222,13 @@ const ChouetteJobDetails = () => {
           </Grid>
         </Box>
         <Box sx={{ mb: 2 }}>
-          <Grid container spacing={2} alignItems="baseline">
-            <Grid item xs={1}>
+          <Grid container spacing={2} sx={{ alignItems: 'baseline' }}>
+            <Grid size={{ xs: 1 }}>
               <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
                 Action
               </Typography>
             </Grid>
-            <Grid item xs={8}>
+            <Grid size={{ xs: 8 }}>
               <FormControl>
                 <RadioGroup
                   row
@@ -248,7 +247,7 @@ const ChouetteJobDetails = () => {
                 </RadioGroup>
               </FormControl>
             </Grid>
-            <Grid item xs={3}>
+            <Grid size={{ xs: 3 }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="From ..."

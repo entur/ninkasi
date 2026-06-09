@@ -14,8 +14,7 @@
  *
  */
 
-import { Box, Grid as MuiGrid, Typography, Divider } from '@mui/material';
-const Grid = MuiGrid as any;
+import { Box, Grid, Typography, Divider } from '@mui/material';
 
 interface EventItem {
   action: string;
@@ -41,13 +40,13 @@ const EventExpandableContent = ({ events, correlationId }: Props) => {
     >
       <Typography component="p">Events for {correlationId}</Typography>
       <Grid container spacing={2}>
-        <Grid item md={4}>
+        <Grid size={{ md: 4 }}>
           <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>
         </Grid>
-        <Grid item md={4}>
+        <Grid size={{ md: 4 }}>
           <Typography sx={{ fontWeight: 'bold' }}>Date</Typography>
         </Grid>
-        <Grid item md={4}>
+        <Grid size={{ md: 4 }}>
           <Typography sx={{ fontWeight: 'bold' }}>State</Typography>
         </Grid>
       </Grid>
@@ -60,13 +59,13 @@ const EventExpandableContent = ({ events, correlationId }: Props) => {
               event.state === 'TIMEOUT' || event.state === 'ERROR' || event.state === 'FAILED';
             return (
               <Grid container spacing={2} key={'action-' + index}>
-                <Grid item md={4} key={'event-action-' + index}>
+                <Grid size={{ md: 4 }} key={'event-action-' + index}>
                   <Typography>{event.action}</Typography>
                 </Grid>
-                <Grid item md={4} key={'event-date-' + index}>
+                <Grid size={{ md: 4 }} key={'event-date-' + index}>
                   <Typography>{event.date}</Typography>
                 </Grid>
-                <Grid item md={4} key={'event-state-' + index}>
+                <Grid size={{ md: 4 }} key={'event-state-' + index}>
                   <Typography sx={{ color: isError ? 'error.main' : 'success.main' }}>
                     {event.state}
                   </Typography>
