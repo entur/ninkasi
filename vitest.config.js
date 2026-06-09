@@ -8,6 +8,9 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/setupTests.js'],
+    // Ignore tsc's emitted copies under dist/ and the Vite output under
+    // build/ so we never double-collect specs after a build.
+    exclude: ['**/node_modules/**', 'dist/**', 'build/**'],
   },
   resolve: {
     alias: {
