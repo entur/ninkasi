@@ -15,9 +15,8 @@
  */
 
 import { useEffect, useState } from 'react';
-import './m2mClientsView.scss';
 import { Edit, Delete, Add } from '@mui/icons-material';
-import { Fab } from '@mui/material';
+import { Box, Fab } from '@mui/material';
 import ModalCreateM2MClient from 'modals/ModalCreateM2MClient';
 import ModalEditM2MClient from 'modals/ModalEditM2MClient';
 import ModalConfirmation from 'modals/ModalConfirmation';
@@ -58,6 +57,113 @@ const getEnturPartnerUrl = (issuer: string, clientId: string) => {
   const baseUrl = (window as any).config.enturPartnerUrl;
   const issuerPath = issuer.toLowerCase() === 'internal' ? 'internal' : 'partner';
   return `${baseUrl}/permission-admin/clients/view/${issuerPath}/${clientId}`;
+};
+
+const colBaseSx = {
+  display: 'inline-block',
+  margin: '2px',
+  marginBottom: '5px',
+  fontSize: '0.9em',
+};
+
+const colNameSx = {
+  ...colBaseSx,
+  width: '18%',
+  maxWidth: '18%',
+  minWidth: '18%',
+  wordBreak: 'break-all',
+};
+
+const colClientIdSx = {
+  ...colBaseSx,
+  width: '20%',
+  maxWidth: '20%',
+  minWidth: '20%',
+  wordBreak: 'break-all',
+  fontFamily: 'monospace',
+  fontSize: '0.85em',
+};
+
+const colOrgIdSx = {
+  ...colBaseSx,
+  width: '9%',
+  maxWidth: '9%',
+  minWidth: '9%',
+  textAlign: 'center',
+};
+
+const colIssuerSx = {
+  ...colBaseSx,
+  width: '9%',
+  maxWidth: '9%',
+  minWidth: '9%',
+};
+
+const colResponsibilitySetsSx = {
+  ...colBaseSx,
+  width: '32%',
+  maxWidth: '32%',
+  minWidth: '32%',
+};
+
+const colActionsSx = {
+  ...colBaseSx,
+  width: '10%',
+  maxWidth: '10%',
+  minWidth: '10%',
+  textAlign: 'center',
+};
+
+const sortableSx = {
+  borderBottom: '1px dotted',
+  cursor: 'pointer',
+  userSelect: 'none',
+  '&:hover': {
+    color: '#1976d2',
+  },
+};
+
+const headerSx = {
+  fontWeight: 600,
+  textTransform: 'uppercase',
+  bgcolor: 'rgba(238, 238, 238, 0.28)',
+  mb: '5px',
+};
+
+const rowItemSx = {
+  '&:nth-of-type(even)': {
+    bgcolor: 'hsla(0, 0%, 50%, 0.07)',
+  },
+};
+
+const clientLinkSx = {
+  color: '#1976d2',
+  textDecoration: 'none',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
+};
+
+const responsibilityListSx = {
+  margin: 0,
+  paddingLeft: '20px',
+  listStyleType: 'disc',
+  '& li': {
+    margin: '2px 0',
+    fontSize: '0.95em',
+  },
+};
+
+const noResponsibilitiesSx = {
+  color: '#999',
+  fontStyle: 'italic',
+};
+
+const emptySx = {
+  padding: '20px',
+  textAlign: 'center',
+  color: '#666',
+  fontStyle: 'italic',
 };
 
 const M2MClientsView = () => {
@@ -152,64 +258,75 @@ const M2MClientsView = () => {
           <Add />
         </Fab>
       </div>
-      <div className="m2m-clients-row">
-        <div className="m2m-clients-header">
-          <div className="col-m2m-name">
-            <span className="sortable" onClick={() => handleSortOrder('name')}>
+      <Box>
+        <Box sx={headerSx}>
+          <Box sx={colNameSx}>
+            <Box component="span" onClick={() => handleSortOrder('name')} sx={sortableSx}>
               Name
-            </span>
-          </div>
-          <div className="col-m2m-client-id">
-            <span className="sortable" onClick={() => handleSortOrder('privateCode')}>
+            </Box>
+          </Box>
+          <Box sx={colClientIdSx}>
+            <Box component="span" onClick={() => handleSortOrder('privateCode')} sx={sortableSx}>
               Client Id
-            </span>
-          </div>
-          <div className="col-m2m-org-id">
-            <span className="sortable" onClick={() => handleSortOrder('enturOrganisationId')}>
+            </Box>
+          </Box>
+          <Box sx={colOrgIdSx}>
+            <Box
+              component="span"
+              onClick={() => handleSortOrder('enturOrganisationId')}
+              sx={sortableSx}
+            >
               Entur Org Id
-            </span>
-          </div>
-          <div className="col-m2m-issuer">
-            <span className="sortable" onClick={() => handleSortOrder('issuer')}>
+            </Box>
+          </Box>
+          <Box sx={colIssuerSx}>
+            <Box component="span" onClick={() => handleSortOrder('issuer')} sx={sortableSx}>
               Issuer
-            </span>
-          </div>
-          <div className="col-m2m-responsibility-sets">
-            <span className="sortable" onClick={() => handleSortOrder('responsibilitySets')}>
+            </Box>
+          </Box>
+          <Box sx={colResponsibilitySetsSx}>
+            <Box
+              component="span"
+              onClick={() => handleSortOrder('responsibilitySets')}
+              sx={sortableSx}
+            >
               Responsibility Sets
-            </span>
-          </div>
-          <div className="col-m2m-actions">Actions</div>
-        </div>
+            </Box>
+          </Box>
+          <Box sx={colActionsSx}>Actions</Box>
+        </Box>
         {sortedClients.map((client: any) => {
           const enturPartnerUrl = getEnturPartnerUrl(client.issuer, client.privateCode);
           return (
-            <div key={'m2m-client-' + client.privateCode} className="m2m-clients-row-item">
-              <div className="col-m2m-name">
-                <a
+            <Box key={'m2m-client-' + client.privateCode} sx={rowItemSx}>
+              <Box sx={colNameSx}>
+                <Box
+                  component="a"
                   href={enturPartnerUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="m2m-client-link"
+                  sx={clientLinkSx}
                 >
                   {client.name}
-                </a>
-              </div>
-              <div className="col-m2m-client-id">{client.privateCode}</div>
-              <div className="col-m2m-org-id">{client.enturOrganisationId}</div>
-              <div className="col-m2m-issuer">{client.issuer}</div>
-              <div className="col-m2m-responsibility-sets">
+                </Box>
+              </Box>
+              <Box sx={colClientIdSx}>{client.privateCode}</Box>
+              <Box sx={colOrgIdSx}>{client.enturOrganisationId}</Box>
+              <Box sx={colIssuerSx}>{client.issuer}</Box>
+              <Box sx={colResponsibilitySetsSx}>
                 {client.responsibilitySets && client.responsibilitySets.length > 0 ? (
-                  <ul className="responsibility-list">
+                  <Box component="ul" sx={responsibilityListSx}>
                     {client.responsibilitySets.map((resp: any, i: number) => (
                       <li key={`${client.privateCode}-resp-${i}`}>{resp.name}</li>
                     ))}
-                  </ul>
+                  </Box>
                 ) : (
-                  <span className="no-responsibilities">None</span>
+                  <Box component="span" sx={noResponsibilitiesSx}>
+                    None
+                  </Box>
                 )}
-              </div>
-              <div className="col-m2m-actions">
+              </Box>
+              <Box sx={colActionsSx}>
                 <Edit
                   style={{
                     height: 20,
@@ -232,14 +349,14 @@ const M2MClientsView = () => {
                   }}
                   onClick={() => handleOpenDeleteConfirmationDialog(client)}
                 />
-              </div>
-            </div>
+              </Box>
+            </Box>
           );
         })}
         {(!m2mClients || m2mClients.length === 0) && (
-          <div className="m2m-clients-empty">No machine-to-machine clients found</div>
+          <Box sx={emptySx}>No machine-to-machine clients found</Box>
         )}
-      </div>
+      </Box>
       {isCreateModalOpen && (
         <ModalCreateM2MClient
           isModalOpen={isCreateModalOpen}

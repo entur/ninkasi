@@ -15,9 +15,8 @@
  */
 
 import { useEffect, useState } from 'react';
-import './responsibilityView.scss';
 import { Edit, Delete, Add } from '@mui/icons-material';
-import { Fab } from '@mui/material';
+import { Box, Fab } from '@mui/material';
 import ResponsbilityRoleAssignments from 'modals/ResponsbilityRoleAssignments';
 import ModalCreateResponsibilitySet from 'modals/ModalCreateResponsibilitySet';
 import ModalEditResponsibilitySet from 'modals/ModalEditResponsibilitySet';
@@ -39,6 +38,42 @@ interface SortOrder {
   column: string;
   asc: boolean;
 }
+
+const columnBaseSx = {
+  display: 'inline-block',
+  m: '2px',
+  mb: '5px',
+  fontSize: '0.9em',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+};
+
+const col16Sx = {
+  ...columnBaseSx,
+  width: '14%',
+  maxWidth: '14%',
+  minWidth: '14%',
+};
+
+const col17Sx = {
+  ...columnBaseSx,
+  width: '10%',
+  maxWidth: '10%',
+  minWidth: '10%',
+};
+
+const col13Sx = {
+  ...columnBaseSx,
+  width: '53%',
+  maxWidth: '53%',
+  minWidth: '53%',
+};
+
+const sortableSx = {
+  borderBottom: '1px dotted',
+  cursor: 'pointer',
+};
 
 const ResponsibilitiesView = () => {
   const dispatch = useAppDispatch();
@@ -132,45 +167,66 @@ const ResponsibilitiesView = () => {
   const confirmDeleteTitle = getDeleteConfirmationTitle();
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+    <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Fab size="small" style={{ marginRight: 10 }} onClick={openModalWindow}>
           <Add />
         </Fab>
-      </div>
-      <div className="responsibility-row">
-        <div className="responsibility-header">
-          <div className="col-1-6">
-            <span className="sortable" onClick={() => handleSortOrder('name')}>
+      </Box>
+      <Box>
+        <Box
+          sx={{
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            bgcolor: 'rgba(238, 238, 238, 0.28)',
+            mb: '5px',
+          }}
+        >
+          <Box sx={col16Sx}>
+            <Box component="span" onClick={() => handleSortOrder('name')} sx={sortableSx}>
               name
-            </span>
-          </div>
-          <div className="col-1-6">
-            <span className="sortable" onClick={() => handleSortOrder('id')}>
+            </Box>
+          </Box>
+          <Box sx={col16Sx}>
+            <Box component="span" onClick={() => handleSortOrder('id')} sx={sortableSx}>
               id
-            </span>
-          </div>
-          <div className="col-1-7">
-            <span className="sortable" onClick={() => handleSortOrder('privateCode')}>
+            </Box>
+          </Box>
+          <Box sx={col17Sx}>
+            <Box component="span" onClick={() => handleSortOrder('privateCode')} sx={sortableSx}>
               private code
-            </span>
-          </div>
-          <div className="col-1-6">Roles assignments</div>
-        </div>
+            </Box>
+          </Box>
+          <Box sx={col16Sx}>Roles assignments</Box>
+        </Box>
         {sortedResponsibilities.map((responsibility: any) => {
           return (
-            <div key={'responsibility-' + responsibility.id} className="resp-row-item">
-              <div className="col-1-6">{responsibility.name}</div>
-              <div className="col-1-6">{responsibility.id}</div>
-              <div className="col-1-7">{responsibility.privateCode}</div>
-              <div className="col-1-3">
+            <Box
+              key={'responsibility-' + responsibility.id}
+              sx={{
+                display: 'flex',
+                '&:nth-of-type(even)': { bgcolor: 'hsla(0, 0%, 50%, 0.07)' },
+              }}
+            >
+              <Box sx={col16Sx}>{responsibility.name}</Box>
+              <Box sx={col16Sx}>{responsibility.id}</Box>
+              <Box sx={col17Sx}>{responsibility.privateCode}</Box>
+              <Box sx={col13Sx}>
                 <ResponsbilityRoleAssignments
                   roleAssignments={responsibility.roles}
                   organizations={organizations}
                   adminZones={administrativeZones}
                 />
-              </div>
-              <div className="col-icon" style={{ cursor: 'pointer' }}>
+              </Box>
+              <Box
+                sx={{
+                  float: 'right',
+                  mr: '10px',
+                  width: 'auto',
+                  display: 'inline-block',
+                  cursor: 'pointer',
+                }}
+              >
                 <Delete
                   style={{
                     height: 20,
@@ -194,8 +250,8 @@ const ResponsibilitiesView = () => {
                     handleOpenEditResp(responsibility);
                   }}
                 />
-              </div>
-            </div>
+              </Box>
+            </Box>
           );
         })}
         {isCreatingResponsibilitySet ? (
@@ -237,8 +293,8 @@ const ResponsibilitiesView = () => {
             handleCloseDeleteConfirmation();
           }}
         />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

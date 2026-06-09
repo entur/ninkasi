@@ -15,9 +15,8 @@
  */
 
 import { useEffect, useState } from 'react';
-import './entityTypesView.scss';
 import { Edit, Add, Delete } from '@mui/icons-material';
-import { Fab } from '@mui/material';
+import { Box, Fab } from '@mui/material';
 import ModalCreateEntityType from 'modals/ModalCreateEntityType';
 import ModalEditEntiyType from 'modals/ModalEditEntityType';
 import ModalConfirmation from 'modals/ModalConfirmation';
@@ -31,6 +30,21 @@ interface SortOrder {
   column: string;
   asc: boolean;
 }
+
+const columnSx = {
+  display: 'inline-block',
+  width: '22%',
+  maxWidth: '22%',
+  minWidth: '22%',
+  m: '2px',
+  mb: '5px',
+  fontSize: '0.9em',
+};
+
+const sortableSx = {
+  borderBottom: '1px dotted',
+  cursor: 'pointer',
+};
 
 const EntityTypesView = () => {
   const dispatch = useAppDispatch();
@@ -106,8 +120,8 @@ const EntityTypesView = () => {
   const confirmDeleteTitle = getDeleteConfirmationTitle();
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+    <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Fab
           size="small"
           style={{ float: 'right', marginRight: 10 }}
@@ -115,35 +129,45 @@ const EntityTypesView = () => {
         >
           <Add />
         </Fab>
-      </div>
-      <div className="et-row">
-        <div className="et-header">
-          <div className="col-1-5">
-            <span className="sortable" onClick={() => handleSortOrder('name')}>
+      </Box>
+      <Box>
+        <Box
+          sx={{
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            bgcolor: 'rgba(238, 238, 238, 0.28)',
+            mb: '5px',
+          }}
+        >
+          <Box sx={columnSx}>
+            <Box component="span" onClick={() => handleSortOrder('name')} sx={sortableSx}>
               name
-            </span>
-          </div>
-          <div className="col-1-5">
-            <span className="sortable" onClick={() => handleSortOrder('privateCode')}>
+            </Box>
+          </Box>
+          <Box sx={columnSx}>
+            <Box component="span" onClick={() => handleSortOrder('privateCode')} sx={sortableSx}>
               private code
-            </span>
-          </div>
-          <div className="col-1-5">
-            <span className="sortable" onClick={() => handleSortOrder('codeSpace')}>
+            </Box>
+          </Box>
+          <Box sx={columnSx}>
+            <Box component="span" onClick={() => handleSortOrder('codeSpace')} sx={sortableSx}>
               codespace
-            </span>
-          </div>
-          <div className="col-1-5">
+            </Box>
+          </Box>
+          <Box sx={columnSx}>
             <span>Classifications</span>
-          </div>
-        </div>
+          </Box>
+        </Box>
         {sortedEntityTypes.map((et: any) => {
           return (
-            <div key={'et-' + et.id} className="et-row-item">
-              <div className="col-1-5">{et.name}</div>
-              <div className="col-1-5">{et.privateCode}</div>
-              <div className="col-1-5">{et.codeSpace}</div>
-              <div className="col-1-5">
+            <Box
+              key={'et-' + et.id}
+              sx={{ '&:nth-of-type(even)': { bgcolor: 'hsla(0, 0%, 50%, 0.07)' } }}
+            >
+              <Box sx={columnSx}>{et.name}</Box>
+              <Box sx={columnSx}>{et.privateCode}</Box>
+              <Box sx={columnSx}>{et.codeSpace}</Box>
+              <Box sx={columnSx}>
                 <ul
                   style={{
                     display: 'flex',
@@ -157,8 +181,16 @@ const EntityTypesView = () => {
                         .map((ec: any) => <li key={ec.id}>{ec.name} </li>)
                     : null}
                 </ul>
-              </div>
-              <div className="col-icon" style={{ cursor: 'pointer' }}>
+              </Box>
+              <Box
+                sx={{
+                  float: 'right',
+                  mr: '10px',
+                  width: 'auto',
+                  display: 'inline-block',
+                  cursor: 'pointer',
+                }}
+              >
                 <Delete
                   style={{
                     height: 20,
@@ -180,8 +212,8 @@ const EntityTypesView = () => {
                   }}
                   onClick={() => handleEditEntityType(et)}
                 />
-              </div>
-            </div>
+              </Box>
+            </Box>
           );
         })}
         {isCreateModalOpen ? (
@@ -214,8 +246,8 @@ const EntityTypesView = () => {
             handleCloseDeleteConfirmation();
           }}
         />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

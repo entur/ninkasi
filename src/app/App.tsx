@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { notifyConfigIsLoaded } from '@/reducers/UtilsReducer';
 import { fetchUserContext } from '@/reducers/UserContextReducer';
 import theme from '@/theme/theme';
+import AppGlobalStyles from '@/theme/globalStyles';
 import Header from './components/header/Header';
 import NoAccess from './components/NoAccess';
 import Router from './Router';
@@ -44,6 +45,7 @@ const App = () => {
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          <AppGlobalStyles />
           <NotificationContainer />
           <Header />
           <Toolbar />

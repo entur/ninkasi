@@ -15,9 +15,8 @@
  */
 
 import { useEffect, useState } from 'react';
-import './userView.scss';
 import { Edit, Delete, Notifications, Add } from '@mui/icons-material';
-import { Fab } from '@mui/material';
+import { Box, Fab } from '@mui/material';
 import ModalCreateUser from 'modals/ModalCreateUser';
 import ModalEditUser from 'modals/ModalEditUser';
 import ModalEditNotifications from 'modals/ModalEditNotifications';
@@ -156,49 +155,241 @@ const UserView = () => {
           <Add />
         </Fab>
       </div>
-      <div className="user-row">
-        <div className="user-header">
-          <div className="col-1-9">
-            <span className="sortable" onClick={() => handleSortOrder('username')}>
+      <Box>
+        <Box
+          sx={{
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            bgcolor: 'rgba(238, 238, 238, 0.28)',
+            mb: '5px',
+            m: '2px',
+            fontSize: '0.9em',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'inline-block',
+              width: '12%',
+              maxWidth: '12%',
+              minWidth: '12%',
+              wordBreak: 'break-all',
+              m: '2px',
+              mb: '5px',
+              fontSize: '0.9em',
+            }}
+          >
+            <Box
+              component="span"
+              onClick={() => handleSortOrder('username')}
+              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
+            >
               username
-            </span>
-          </div>
-          <div className="col-1-9">
-            <span className="sortable" onClick={() => handleSortOrder('firstName')}>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: 'inline-block',
+              width: '12%',
+              maxWidth: '12%',
+              minWidth: '12%',
+              wordBreak: 'break-all',
+              m: '2px',
+              mb: '5px',
+              fontSize: '0.9em',
+            }}
+          >
+            <Box
+              component="span"
+              onClick={() => handleSortOrder('firstName')}
+              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
+            >
               firstname
-            </span>
-          </div>
-          <div className="col-1-9">
-            <span className="sortable" onClick={() => handleSortOrder('lastName')}>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: 'inline-block',
+              width: '12%',
+              maxWidth: '12%',
+              minWidth: '12%',
+              wordBreak: 'break-all',
+              m: '2px',
+              mb: '5px',
+              fontSize: '0.9em',
+            }}
+          >
+            <Box
+              component="span"
+              onClick={() => handleSortOrder('lastName')}
+              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
+            >
               lastname
-            </span>
-          </div>
-          <div className="col-1-8">
-            <span className="sortable" onClick={() => handleSortOrder('email')}>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: 'inline-block',
+              width: '15%',
+              maxWidth: '15%',
+              minWidth: '15%',
+              wordBreak: 'break-all',
+              m: '2px',
+              mb: '5px',
+              fontSize: '0.9em',
+            }}
+          >
+            <Box
+              component="span"
+              onClick={() => handleSortOrder('email')}
+              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
+            >
               e-mail
-            </span>
-          </div>
-          <div className="col-1-9">
-            <span className="sortable" onClick={() => handleSortOrder('organisation')}>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: 'inline-block',
+              width: '12%',
+              maxWidth: '12%',
+              minWidth: '12%',
+              wordBreak: 'break-all',
+              m: '2px',
+              mb: '5px',
+              fontSize: '0.9em',
+            }}
+          >
+            <Box
+              component="span"
+              onClick={() => handleSortOrder('organisation')}
+              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
+            >
               organisation
-            </span>
-          </div>
-          <div className="col-1-7">Responsiblity set</div>
-          <div className="col-1-9">Notifications</div>
-        </div>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: 'inline-block',
+              width: '17%',
+              maxWidth: '17%',
+              minWidth: '17%',
+              wordBreak: 'break-all',
+              m: '2px',
+              mb: '5px',
+              fontSize: '0.9em',
+            }}
+          >
+            Responsiblity set
+          </Box>
+          <Box
+            sx={{
+              display: 'inline-block',
+              width: '12%',
+              maxWidth: '12%',
+              minWidth: '12%',
+              wordBreak: 'break-all',
+              m: '2px',
+              mb: '5px',
+              fontSize: '0.9em',
+            }}
+          >
+            Notifications
+          </Box>
+        </Box>
         {sortedUsers.filter(filterUserByOrg).map((user: any) => {
           return (
-            <div
+            <Box
               key={'user-' + user.id}
-              className="user-row-item"
-              style={{ display: 'flex', alignItems: 'center' }}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                m: '2px',
+                mb: '5px',
+                fontSize: '0.9em',
+                '&:nth-of-type(even)': { bgcolor: 'hsla(0, 0%, 50%, 0.07)' },
+              }}
             >
-              <div className="col-1-9">{user.username}</div>
-              <div className="col-1-9">{user.contactDetails.firstName}</div>
-              <div className="col-1-9">{user.contactDetails.lastName}</div>
-              <div className="col-1-8">{user.contactDetails.email}</div>
-              <div className="col-1-9">{user.organisation.name}</div>
-              <div className="col-1-7">
+              <Box
+                sx={{
+                  display: 'inline-block',
+                  width: '12%',
+                  maxWidth: '12%',
+                  minWidth: '12%',
+                  wordBreak: 'break-all',
+                  m: '2px',
+                  mb: '5px',
+                  fontSize: '0.9em',
+                }}
+              >
+                {user.username}
+              </Box>
+              <Box
+                sx={{
+                  display: 'inline-block',
+                  width: '12%',
+                  maxWidth: '12%',
+                  minWidth: '12%',
+                  wordBreak: 'break-all',
+                  m: '2px',
+                  mb: '5px',
+                  fontSize: '0.9em',
+                }}
+              >
+                {user.contactDetails.firstName}
+              </Box>
+              <Box
+                sx={{
+                  display: 'inline-block',
+                  width: '12%',
+                  maxWidth: '12%',
+                  minWidth: '12%',
+                  wordBreak: 'break-all',
+                  m: '2px',
+                  mb: '5px',
+                  fontSize: '0.9em',
+                }}
+              >
+                {user.contactDetails.lastName}
+              </Box>
+              <Box
+                sx={{
+                  display: 'inline-block',
+                  width: '15%',
+                  maxWidth: '15%',
+                  minWidth: '15%',
+                  wordBreak: 'break-all',
+                  m: '2px',
+                  mb: '5px',
+                  fontSize: '0.9em',
+                }}
+              >
+                {user.contactDetails.email}
+              </Box>
+              <Box
+                sx={{
+                  display: 'inline-block',
+                  width: '12%',
+                  maxWidth: '12%',
+                  minWidth: '12%',
+                  wordBreak: 'break-all',
+                  m: '2px',
+                  mb: '5px',
+                  fontSize: '0.9em',
+                }}
+              >
+                {user.organisation.name}
+              </Box>
+              <Box
+                sx={{
+                  display: 'inline-block',
+                  width: '17%',
+                  maxWidth: '17%',
+                  minWidth: '17%',
+                  wordBreak: 'break-all',
+                  m: '2px',
+                  mb: '5px',
+                  fontSize: '0.9em',
+                }}
+              >
                 <ul
                   style={{
                     display: 'flex',
@@ -212,13 +403,35 @@ const UserView = () => {
                       ))
                     : null}
                 </ul>
-              </div>
-              <div className="col-1-11">
+              </Box>
+              <Box
+                sx={{
+                  display: 'inline-block',
+                  width: '9%',
+                  maxWidth: '9%',
+                  minWidth: '9%',
+                  wordBreak: 'break-all',
+                  m: '2px',
+                  mb: '5px',
+                  fontSize: '0.9em',
+                }}
+              >
                 {user.notifications.map((notification: any, i: number) => (
                   <NotificationStatus key={'notification-' + i} notification={notification} />
                 ))}
-              </div>
-              <div className="col-icon">
+              </Box>
+              <Box
+                sx={{
+                  float: 'right',
+                  mr: '10px',
+                  width: 'auto',
+                  display: 'inline-block',
+                  cursor: 'pointer',
+                  m: '2px',
+                  mb: '5px',
+                  fontSize: '0.9em',
+                }}
+              >
                 <Edit
                   style={{
                     height: 20,
@@ -253,8 +466,8 @@ const UserView = () => {
                   }}
                   onClick={() => handleOpenDeleteConfirmationDialog(user)}
                 />
-              </div>
-            </div>
+              </Box>
+            </Box>
           );
         })}
         {isCreateModalOpen && (
@@ -299,7 +512,7 @@ const UserView = () => {
             handleCloseDeleteConfirmation();
           }}
         />
-      </div>
+      </Box>
     </div>
   );
 };

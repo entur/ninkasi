@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
 import cfgreader from 'config/readConfig';
+import { Box } from '@mui/material';
 import { Add, Edit, DeleteForever } from '@mui/icons-material';
 import { getQueryVariable } from '@/utils';
 import ConfirmDialog from 'modals/ConfirmDialog';
@@ -112,8 +113,8 @@ const SuppliersContainer = () => {
   };
 
   return (
-    <div className="suppliers-container">
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+    <Box>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <SelectSupplier
           suppliers={supplierItems}
           selectSupplier={selectSupplier}
@@ -170,7 +171,7 @@ const SuppliersContainer = () => {
             </div>
           </div>
         )}
-      </div>
+      </Box>
       <ConfirmDialog
         open={confirmDialogOpen}
         handleSubmit={confirmAction}
@@ -181,7 +182,7 @@ const SuppliersContainer = () => {
           setConfirmAction(null);
         }}
       />
-    </div>
+    </Box>
   );
 };
 

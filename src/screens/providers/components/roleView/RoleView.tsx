@@ -15,9 +15,8 @@
  */
 
 import { useEffect, useState } from 'react';
-import './roleView.scss';
 import { Edit, Delete, Add } from '@mui/icons-material';
-import { Fab } from '@mui/material';
+import { Box, Fab } from '@mui/material';
 import ModalEditRole from 'modals/ModalEditRole';
 import ModalCreateRole from 'modals/ModalCreateRole';
 import ModalConfirmation from 'modals/ModalConfirmation';
@@ -113,25 +112,99 @@ const RoleView = () => {
           <Add />
         </Fab>
       </div>
-      <div className="role-row">
-        <div className="role-header">
-          <div className="col-1-3">
-            <span className="sortable" onClick={() => handleSortOrder('name')}>
+      <Box>
+        <Box
+          sx={{
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            bgcolor: 'rgba(238, 238, 238, 0.28)',
+            mb: '5px',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'inline-block',
+              width: '45%',
+              maxWidth: '45%',
+              minWidth: '45%',
+              m: '2px',
+              mb: '5px',
+              fontSize: '0.9em',
+            }}
+          >
+            <Box
+              component="span"
+              onClick={() => handleSortOrder('name')}
+              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
+            >
               name
-            </span>
-          </div>
-          <div className="col-1-3">
-            <span className="sortable" onClick={() => handleSortOrder('privateCode')}>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: 'inline-block',
+              width: '45%',
+              maxWidth: '45%',
+              minWidth: '45%',
+              m: '2px',
+              mb: '5px',
+              fontSize: '0.9em',
+            }}
+          >
+            <Box
+              component="span"
+              onClick={() => handleSortOrder('privateCode')}
+              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
+            >
               private code
-            </span>
-          </div>
-        </div>
+            </Box>
+          </Box>
+        </Box>
         {sortedRoles.map((role: any) => {
           return (
-            <div key={'role-' + role.id} className="role-row-item">
-              <div className="col-1-3">{role.name}</div>
-              <div className="col-1-3">{role.privateCode}</div>
-              <div className="col-icon" style={{ cursor: 'pointer' }}>
+            <Box
+              key={'role-' + role.id}
+              sx={{
+                '&:nth-of-type(even)': {
+                  bgcolor: 'hsla(0, 0%, 50%, 0.07)',
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'inline-block',
+                  width: '45%',
+                  maxWidth: '45%',
+                  minWidth: '45%',
+                  m: '2px',
+                  mb: '5px',
+                  fontSize: '0.9em',
+                }}
+              >
+                {role.name}
+              </Box>
+              <Box
+                sx={{
+                  display: 'inline-block',
+                  width: '45%',
+                  maxWidth: '45%',
+                  minWidth: '45%',
+                  m: '2px',
+                  mb: '5px',
+                  fontSize: '0.9em',
+                }}
+              >
+                {role.privateCode}
+              </Box>
+              <Box
+                sx={{
+                  float: 'right',
+                  mr: '10px',
+                  width: 'auto',
+                  display: 'inline-block',
+                  cursor: 'pointer',
+                }}
+              >
                 <Delete
                   style={{
                     height: 20,
@@ -153,8 +226,8 @@ const RoleView = () => {
                     color: 'rgba(25, 118, 210, 0.59)',
                   }}
                 />
-              </div>
-            </div>
+              </Box>
+            </Box>
           );
         })}
         {isCreateModalOpen ? (
@@ -185,7 +258,7 @@ const RoleView = () => {
             handleCloseDeleteConfirmation();
           }}
         />
-      </div>
+      </Box>
     </div>
   );
 };

@@ -349,8 +349,7 @@ const ChouetteJobDetails = () => {
             </TableHead>
             <TableBody>
               {page.map((job: any, index: number) => {
-                const statusClass =
-                  job.status === 'ABORTED' || job.status === 'CANCELED' ? 'error' : 'success';
+                const isError = job.status === 'ABORTED' || job.status === 'CANCELED';
 
                 return (
                   <TableRow key={'ch-job-' + index}>
@@ -364,7 +363,9 @@ const ChouetteJobDetails = () => {
                     <TableCell sx={{ py: 1, px: 1 }}>{formatDate(job.started)}</TableCell>
                     <TableCell sx={{ py: 1, px: 1 }}>{formatDate(job.updated)}</TableCell>
                     <TableCell sx={{ py: 1, px: 1 }}>
-                      <span className={statusClass}>{getJobStatus(job.status)}</span>
+                      <Box component="span" sx={{ color: isError ? 'error.main' : 'success.main' }}>
+                        {getJobStatus(job.status)}
+                      </Box>
                     </TableCell>
                     <TableCell sx={{ py: 1, px: 1 }}>
                       {job.status === 'STARTED' ||

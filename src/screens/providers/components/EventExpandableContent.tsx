@@ -14,7 +14,7 @@
  *
  */
 
-import { Grid as MuiGrid, Typography, Divider } from '@mui/material';
+import { Box, Grid as MuiGrid, Typography, Divider } from '@mui/material';
 const Grid = MuiGrid as any;
 
 interface EventItem {
@@ -30,8 +30,16 @@ interface Props {
 
 const EventExpandableContent = ({ events, correlationId }: Props) => {
   return (
-    <div className="visible-wrapper">
-      <p>Events for {correlationId}</p>
+    <Box
+      sx={{
+        bgcolor: 'grey.100',
+        p: 1.25,
+        border: '1px solid',
+        borderColor: 'grey.400',
+        m: 1.25,
+      }}
+    >
+      <Typography component="p">Events for {correlationId}</Typography>
       <Grid container spacing={2}>
         <Grid item md={4}>
           <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>
@@ -46,12 +54,10 @@ const EventExpandableContent = ({ events, correlationId }: Props) => {
       <Divider sx={{ my: 1 }} />
 
       {events && events.length ? (
-        <div>
+        <Box>
           {events.map((event, index) => {
-            const stateClass =
-              event.state === 'TIMEOUT' || event.state === 'ERROR' || event.state === 'FAILED'
-                ? 'error'
-                : 'success';
+            const isError =
+              event.state === 'TIMEOUT' || event.state === 'ERROR' || event.state === 'FAILED';
             return (
               <Grid container spacing={2} key={'action-' + index}>
                 <Grid item md={4} key={'event-action-' + index}>
@@ -61,18 +67,18 @@ const EventExpandableContent = ({ events, correlationId }: Props) => {
                   <Typography>{event.date}</Typography>
                 </Grid>
                 <Grid item md={4} key={'event-state-' + index}>
-                  <Typography>
-                    <span className={stateClass}>{event.state}</span>
+                  <Typography sx={{ color: isError ? 'error.main' : 'success.main' }}>
+                    {event.state}
                   </Typography>
                 </Grid>
               </Grid>
             );
           })}
-        </div>
+        </Box>
       ) : (
-        <div>No events found</div>
+        <Typography>No events found</Typography>
       )}
-    </div>
+    </Box>
   );
 };
 

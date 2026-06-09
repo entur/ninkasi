@@ -15,7 +15,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import {
   Checkbox,
@@ -223,9 +223,9 @@ const ModalEditProvider = ({
 
   const toolTip = (title: string) => (
     <LightTooltip arrow placement="right" title={title}>
-      <span className="question-icon">
-        <HelpOutlinedIcon style={{ paddingTop: '5px' }} />
-      </span>
+      <Box component="span" sx={{ display: 'inline-flex', pt: '5px' }}>
+        <HelpOutlinedIcon />
+      </Box>
     </LightTooltip>
   );
 

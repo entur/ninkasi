@@ -15,9 +15,8 @@
  */
 
 import { useEffect, useState } from 'react';
-import './organizationView.scss';
 import { Edit, Add, Delete } from '@mui/icons-material';
-import { Fab } from '@mui/material';
+import { Box, Fab } from '@mui/material';
 import ModalCreateOrganization from 'modals/ModalCreateOrganization';
 import ModalEditOrganization from 'modals/ModalEditOrganization';
 import ModalConfirmation from 'modals/ModalConfirmation';
@@ -31,6 +30,32 @@ interface SortOrder {
   column: string;
   asc: boolean;
 }
+
+const colSx = {
+  display: 'inline-block',
+  width: '18%',
+  maxWidth: '18%',
+  minWidth: '18%',
+  m: '2px',
+  mb: '5px',
+  fontSize: '0.9em',
+};
+
+const colIconSx = {
+  float: 'right',
+  mr: '10px',
+  width: 'auto',
+  display: 'inline-block',
+  cursor: 'pointer',
+  m: '2px',
+  mb: '5px',
+  fontSize: '0.9em',
+};
+
+const sortableSx = {
+  borderBottom: '1px dotted',
+  cursor: 'pointer',
+};
 
 const OrganizationView = () => {
   const dispatch = useAppDispatch();
@@ -115,43 +140,57 @@ const OrganizationView = () => {
           <Add />
         </Fab>
       </div>
-      <div className="organization-row">
-        <div className="organization-header">
-          <div className="col-1-6">
-            <span className="sortable" onClick={() => handleSortOrder('name')}>
+      <Box>
+        <Box
+          sx={{
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            bgcolor: 'rgba(238, 238, 238, 0.28)',
+            mb: '5px',
+          }}
+        >
+          <Box sx={colSx}>
+            <Box component="span" onClick={() => handleSortOrder('name')} sx={sortableSx}>
               name
-            </span>
-          </div>
-          <div className="col-1-6">
-            <span className="sortable" onClick={() => handleSortOrder('id')}>
+            </Box>
+          </Box>
+          <Box sx={colSx}>
+            <Box component="span" onClick={() => handleSortOrder('id')} sx={sortableSx}>
               id
-            </span>
-          </div>
-          <div className="col-1-6">
-            <span className="sortable" onClick={() => handleSortOrder('organisationType')}>
+            </Box>
+          </Box>
+          <Box sx={colSx}>
+            <Box
+              component="span"
+              onClick={() => handleSortOrder('organisationType')}
+              sx={sortableSx}
+            >
               organisation type
-            </span>
-          </div>
-          <div className="col-1-6">
-            <span className="sortable" onClick={() => handleSortOrder('privateCode')}>
+            </Box>
+          </Box>
+          <Box sx={colSx}>
+            <Box component="span" onClick={() => handleSortOrder('privateCode')} sx={sortableSx}>
               private code
-            </span>
-          </div>
-          <div className="col-1-6">
-            <span className="sortable" onClick={() => handleSortOrder('codeSpace')}>
+            </Box>
+          </Box>
+          <Box sx={colSx}>
+            <Box component="span" onClick={() => handleSortOrder('codeSpace')} sx={sortableSx}>
               code space
-            </span>
-          </div>
-        </div>
+            </Box>
+          </Box>
+        </Box>
         {sortedOrganizations.map((organization: any) => {
           return (
-            <div key={'organization-' + organization.id} className="organization-row-item">
-              <div className="col-1-6">{organization.name}</div>
-              <div className="col-1-6">{organization.id}</div>
-              <div className="col-1-6">{organization.organisationType}</div>
-              <div className="col-1-6">{organization.privateCode}</div>
-              <div className="col-1-6">{organization.codeSpace}</div>
-              <div className="col-icon" style={{ cursor: 'pointer' }}>
+            <Box
+              key={'organization-' + organization.id}
+              sx={{ '&:nth-of-type(even)': { bgcolor: 'hsla(0, 0%, 50%, 0.07)' } }}
+            >
+              <Box sx={colSx}>{organization.name}</Box>
+              <Box sx={colSx}>{organization.id}</Box>
+              <Box sx={colSx}>{organization.organisationType}</Box>
+              <Box sx={colSx}>{organization.privateCode}</Box>
+              <Box sx={colSx}>{organization.codeSpace}</Box>
+              <Box sx={colIconSx}>
                 <Delete
                   style={{
                     height: 20,
@@ -172,8 +211,8 @@ const OrganizationView = () => {
                     color: 'rgba(25, 118, 210, 0.59)',
                   }}
                 />
-              </div>
-            </div>
+              </Box>
+            </Box>
           );
         })}
         {isCreateModalOpen ? (
@@ -210,7 +249,7 @@ const OrganizationView = () => {
             handleCloseDeleteConfirmation();
           }}
         />
-      </div>
+      </Box>
     </div>
   );
 };

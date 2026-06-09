@@ -115,6 +115,38 @@ const theme = createTheme({
         variant: 'outlined',
         size: 'small',
       },
+      styleOverrides: {
+        root: {
+          marginBottom: 16,
+          '& + .MuiTextField-root': {
+            marginTop: 8,
+          },
+        },
+      },
+    },
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          marginBottom: 16,
+          '& + .MuiFormControl-root': {
+            marginTop: 8,
+          },
+        },
+      },
+    },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        root: {
+          marginBottom: 8,
+          '&:last-child': {
+            marginBottom: 0,
+          },
+        },
+        label: {
+          fontSize: '0.9em',
+          marginLeft: 8,
+        },
+      },
     },
     MuiTableCell: {
       styleOverrides: {

@@ -2,7 +2,6 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import './sass/main.scss';
 import App from './app/App';
 import makeStore from './store/store';
 import { fetchConfig } from './config/fetchConfig';

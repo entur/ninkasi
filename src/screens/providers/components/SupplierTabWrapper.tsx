@@ -285,11 +285,9 @@ const SupplierTabWrapper = () => {
 
   if (fileListIsLoading) {
     return (
-      <div className="supplier-details disabled">
-        <div className="supplier-header">
-          <CircularProgress size={16} sx={{ color: '#39a1f4', margin: '40px' }} />
-        </div>
-      </div>
+      <Box sx={{ pt: 3.75, pb: 2.5 }}>
+        <CircularProgress size={16} sx={{ color: 'primary.main', m: 5 }} />
+      </Box>
     );
   }
 
@@ -372,7 +370,22 @@ const SupplierTabWrapper = () => {
     );
   }
 
-  return <div className="supplier-info">{tabsToRender}</div>;
+  return (
+    <Box
+      sx={{
+        bgcolor: 'background.paper',
+        mx: 2.5,
+        mb: 2.5,
+        px: 1.25,
+        pb: 1.25,
+        border: '1px solid',
+        borderColor: 'divider',
+        flexGrow: 1,
+      }}
+    >
+      {tabsToRender}
+    </Box>
+  );
 };
 
 export default SupplierTabWrapper;

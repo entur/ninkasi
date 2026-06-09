@@ -16,6 +16,7 @@
 
 import type { KeyboardEvent, MouseEvent } from 'react';
 import { format } from 'date-fns';
+import { Box } from '@mui/material';
 import { FileDownload } from '@mui/icons-material';
 import { getSizeFromBytes } from '@/utils';
 import { saveAs } from 'file-saver';
@@ -153,10 +154,18 @@ const AdvancedFileList = ({
   };
 
   return (
-    <div
-      className="multiselect unselectable"
+    <Box
       tabIndex={isSource ? 1 : 2}
-      style={{
+      sx={{
+        mb: 2.5,
+        resize: 'vertical',
+        minHeight: 400,
+        fontSize: '0.9em',
+        overflow: 'auto',
+        whiteSpace: 'nowrap',
+        userSelect: 'none',
+        WebkitAppearance: 'listbox',
+        boxSizing: 'border-box',
         border: '1px solid black',
         lineHeight: '1.2',
         tableLayout: 'fixed',
@@ -242,7 +251,7 @@ const AdvancedFileList = ({
           </div>
         );
       })}
-    </div>
+    </Box>
   );
 };
 
