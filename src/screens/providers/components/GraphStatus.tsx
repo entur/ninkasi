@@ -18,7 +18,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
 import cfgreader from 'config/readConfig';
-import moment from 'moment';
+import { format, formatDistanceToNow } from 'date-fns';
 import * as SuppliersReducer from 'reducers/SuppliersReducer';
 const { fetchGraphStatus } = SuppliersReducer as any;
 
@@ -73,10 +73,10 @@ const GraphStatusDetails = ({ status, started }: GraphStatusDetailsProps) => (
           {status}
         </span>
         <span
-          title={moment(started).format('DD-MM-YYYY HH:mm:ss')}
+          title={format(new Date(started), 'dd-MM-yyyy HH:mm:ss')}
           style={{ fontSize: '0.8em', paddingLeft: 5, whiteSpace: 'nowrap' }}
         >
-          {moment(started).fromNow()}
+          {formatDistanceToNow(new Date(started), { addSuffix: true })}
         </span>
       </>
     )}

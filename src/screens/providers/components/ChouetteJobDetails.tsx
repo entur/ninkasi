@@ -41,9 +41,9 @@ const Grid = MuiGrid as any;
 import ChouetteLink from './ChouetteLink';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { getPaginationMap } from '@/models';
-import moment from 'moment';
+import { format } from 'date-fns';
 import * as MardukReducer from 'reducers/MardukReducer';
 const {
   cancelChouetteJobForProvider,
@@ -108,7 +108,7 @@ const ChouetteJobDetails = () => {
 
   const formatDate = (date?: string) => {
     if (!date) return '';
-    return moment(date).format('YYYY-MM-DD HH:mm:ss');
+    return format(new Date(date), 'yyyy-MM-dd HH:mm:ss');
   };
 
   const paginationMap = getPaginationMap(
@@ -248,7 +248,7 @@ const ChouetteJobDetails = () => {
               </FormControl>
             </Grid>
             <Grid item xs={3}>
-              <LocalizationProvider dateAdapter={AdapterMoment}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="From ..."
                   value={filterFromDate}

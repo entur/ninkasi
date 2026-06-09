@@ -14,7 +14,7 @@
  *
  */
 
-import moment from 'moment';
+import { format } from 'date-fns';
 import { getSizeFromBytes } from '@/utils';
 import StatusLabel from './StatusLabel';
 import { FileDownload } from '@mui/icons-material';
@@ -94,7 +94,7 @@ const ExportedFilesRow = ({ data, index, referential, providerName }: Props) => 
             : 'initial',
         }}
       >
-        {netexDate ? moment(netexDate).format('LLLL') : 'NO EXPORT'}
+        {netexDate ? format(new Date(netexDate), 'PPPPp') : 'NO EXPORT'}
       </div>
       <div style={{ flex: 1 }}>
         {netexFileSize && (
@@ -112,7 +112,7 @@ const ExportedFilesRow = ({ data, index, referential, providerName }: Props) => 
             : 'initial',
         }}
       >
-        {gtfsDate ? moment(gtfsDate).format('LLLL') : 'NO EXPORT'}
+        {gtfsDate ? format(new Date(gtfsDate), 'PPPPp') : 'NO EXPORT'}
       </div>
       <div style={{ flex: 1 }}>
         {gtfsFileSize && (

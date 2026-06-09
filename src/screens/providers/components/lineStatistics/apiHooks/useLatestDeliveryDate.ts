@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { useAccessToken } from '@/utils/useAccessToken';
 import { useConfig } from '@/contexts/ConfigContext';
 import type { FetchError, LatestDeliveryDateResponse } from './lineStatistics.response.types';
@@ -24,7 +24,7 @@ export const useLatestDeliveryDate = (providerId: string | undefined) => {
         const latestDeliveryDateResponse: LatestDeliveryDateResponse = await response.json();
         setLatestDeliveryDate(
           latestDeliveryDateResponse.date
-            ? moment(latestDeliveryDateResponse.date).format('YYYY-MM-DD')
+            ? format(new Date(latestDeliveryDateResponse.date), 'yyyy-MM-dd')
             : 'N/A'
         );
         setLatestDeliveryDateError(undefined);
