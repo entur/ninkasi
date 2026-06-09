@@ -17,6 +17,7 @@
 import { useEffect, useState } from 'react';
 import { Edit, Delete, Add } from '@mui/icons-material';
 import { Box, Fab } from '@mui/material';
+import EmptyState from '@/app/components/EmptyState';
 import ModalCreateM2MClient from 'modals/ModalCreateM2MClient';
 import ModalEditM2MClient from 'modals/ModalEditM2MClient';
 import ModalConfirmation from 'modals/ModalConfirmation';
@@ -156,13 +157,6 @@ const responsibilityListSx = {
 
 const noResponsibilitiesSx = {
   color: '#999',
-  fontStyle: 'italic',
-};
-
-const emptySx = {
-  padding: '20px',
-  textAlign: 'center',
-  color: '#666',
   fontStyle: 'italic',
 };
 
@@ -359,7 +353,7 @@ const M2MClientsView = () => {
           );
         })}
         {(!m2mClients || m2mClients.length === 0) && (
-          <Box sx={emptySx}>No machine-to-machine clients found</Box>
+          <EmptyState message="No machine-to-machine clients found" />
         )}
       </Box>
       {isCreateModalOpen && (

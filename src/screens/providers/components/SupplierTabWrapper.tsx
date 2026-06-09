@@ -20,7 +20,8 @@ import { useAccessToken } from '@/utils/useAccessToken';
 import ChouetteJobDetails from './ChouetteJobDetails';
 import ChouetteAllJobs from './ChouetteAllJobs';
 import DataMigrationDetails from './DataMigrationDetails';
-import { Tabs, Tab, Box, CircularProgress } from '@mui/material';
+import { Tabs, Tab, Box } from '@mui/material';
+import LoadingState from '@/app/components/LoadingState';
 import { getQueryVariable } from '@/utils';
 import ExportedFilesView from './ExportedFilesView';
 import { EventsView } from './events';
@@ -284,11 +285,7 @@ const SupplierTabWrapper = () => {
   }, [currentTabIndex, getTabIndexFromParams]);
 
   if (fileListIsLoading) {
-    return (
-      <Box sx={{ pt: 3.75, pb: 2.5 }}>
-        <CircularProgress size={16} sx={{ color: 'primary.main', m: 5 }} />
-      </Box>
-    );
+    return <LoadingState />;
   }
 
   const provider =
@@ -319,7 +316,7 @@ const SupplierTabWrapper = () => {
           {currentTabIndex === 0 && <ChouetteAllJobs />}
           {currentTabIndex === 1 &&
             (suppliersIsLoading || suppliers.length === 0 ? (
-              <CircularProgress size={24} sx={{ color: '#39a1f4', margin: '40px' }} />
+              <LoadingState label="Loading providers…" />
             ) : (
               <EventsView
                 providers={suppliers.reduce((acc: Record<string, any>, p: any) => {

@@ -39,6 +39,7 @@ import {
 } from '@mui/material';
 const Grid = MuiGrid as any;
 import ChouetteLink from './ChouetteLink';
+import EmptyState from '@/app/components/EmptyState';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -388,9 +389,7 @@ const ChouetteJobDetails = () => {
             </TableBody>
           </Table>
         ) : (
-          <Box sx={{ p: 2.5 }}>
-            <Typography>No chouette jobs found for your search criterias.</Typography>
-          </Box>
+          <EmptyState message="No chouette jobs found for your search criterias." />
         )}
       </Paper>
     </Container>
