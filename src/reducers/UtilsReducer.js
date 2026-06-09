@@ -43,9 +43,21 @@ const initialState = {
 const toggleSortOrder = (current, property) =>
   current.property === property ? (current.sortOrder >= 1 ? 0 : 1) : 0;
 
+// fetchProvider lives in SuppliersReducer; referencing it here would create
+// a runtime-only cyclic import, so listen to the fulfilled action by its
+// auto-generated type string. This restores the pre-PR-B' behavior where
+// SUCCESS_FETCH_PROVIDER populated `supplierForm` — without it the migrate-
+// data tab can't see the active provider's chouetteInfo.
+const FETCH_PROVIDER_FULFILLED = 'suppliers/fetchProvider/fulfilled';
+
 const utilsSlice = createSlice({
   name: 'utils',
   initialState,
+  extraReducers: builder => {
+    builder.addCase(FETCH_PROVIDER_FULFILLED, (state, action) => {
+      state.supplierForm = action.payload;
+    });
+  },
   reducers: {
     addNotification(state, action) {
       state.notification = action.payload;
