@@ -21,7 +21,6 @@ import SuppliersReducer from './SuppliersReducer';
 import MardukReducer from './MardukReducer';
 import UtilsReducer from './UtilsReducer';
 import OrganizationReducer from './OrganizationReducer';
-import UserReducer from './UserReducer';
 import UserContextReducer from './UserContextReducer';
 
 const rootReducer = combineReducers({
@@ -30,7 +29,6 @@ const rootReducer = combineReducers({
   MardukReducer,
   UtilsReducer,
   OrganizationReducer,
-  UserReducer,
   UserContextReducer,
 });
 

@@ -4,7 +4,6 @@ import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useAuth } from '../auth';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { updateAuth } from '@/reducers/UserReducer';
 import { notifyConfigIsLoaded } from '@/reducers/UtilsReducer';
 import { fetchUserContext } from '@/reducers/UserContextReducer';
 import theme from '@/theme/theme';
@@ -22,10 +21,6 @@ const App = () => {
   const getToken = useCallback(async () => {
     return auth.user?.access_token ?? '';
   }, [auth]);
-
-  useEffect(() => {
-    dispatch(updateAuth(auth));
-  }, [auth, dispatch]);
 
   useEffect(() => {
     if (auth.isAuthenticated) {
