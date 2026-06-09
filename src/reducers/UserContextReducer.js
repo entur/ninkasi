@@ -17,7 +17,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import getApiConfig from 'actions/getApiConfig';
-import SuppliersActions from 'actions/SuppliersActions';
+import { addNotification } from 'reducers/UtilsReducer';
 
 const initialState = {
   preferredName: '',
@@ -43,7 +43,7 @@ export const fetchUserContext = createAsyncThunk(
       const response = await axios.get(url, await getApiConfig(getToken));
       return response.data;
     } catch (err) {
-      dispatch(SuppliersActions.addNotification('Failed to fetch user context', 'error'));
+      dispatch(addNotification({ message: 'Failed to fetch user context', level: 'error' }));
       return rejectWithValue(err);
     }
   }
