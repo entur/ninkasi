@@ -6,7 +6,7 @@ import type { FetchError, LatestDeliveryDateResponse } from './lineStatistics.re
 
 export const useLatestDeliveryDate = (providerId: string | undefined) => {
   const { getToken } = useAccessToken();
-  const { timetableEventsApiUrl } = useConfig();
+  const { eventsBaseUrl } = useConfig();
 
   const [latestDeliveryDate, setLatestDeliveryDate] = useState<string | undefined>();
   const [latestDeliveryDateError, setLatestDeliveryDateError] = useState<FetchError | undefined>();
@@ -14,7 +14,7 @@ export const useLatestDeliveryDate = (providerId: string | undefined) => {
   useEffect(() => {
     const fetchLatestDeliveryDate = async () => {
       const accessToken = await getToken();
-      const response = await fetch(`${timetableEventsApiUrl}/latest_upload/${providerId}`, {
+      const response = await fetch(`${eventsBaseUrl}latest_upload/${providerId}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Et-Client-Name': 'entur-ninkasi',
@@ -36,7 +36,7 @@ export const useLatestDeliveryDate = (providerId: string | undefined) => {
       }
     };
     fetchLatestDeliveryDate();
-  }, [getToken, providerId, timetableEventsApiUrl]);
+  }, [getToken, providerId, eventsBaseUrl]);
 
   return { latestDeliveryDate, latestDeliveryDateError };
 };
