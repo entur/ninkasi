@@ -18,7 +18,7 @@ import { useState } from 'react';
 import type { MouseEvent } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import moment from 'moment';
+import { format, formatDistanceToNow } from 'date-fns';
 import { UnfoldLess, UnfoldMore } from '@mui/icons-material';
 import { Popover } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -69,8 +69,8 @@ const GraphVersionDetails = ({
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px' }}>
         <span>{serializationId}</span>
-        <span title={moment(creationDate).fromNow()}>
-          {moment(creationDate).format('DD-MM-YYYY HH:mm:ss')}
+        <span title={formatDistanceToNow(new Date(creationDate), { addSuffix: true })}>
+          {format(new Date(creationDate), 'dd-MM-yyyy HH:mm:ss')}
         </span>
         <span>{Math.round((size / 1024 / 1024 / 1024 + Number.EPSILON) * 100) / 100} GB</span>
       </div>

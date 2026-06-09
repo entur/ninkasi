@@ -19,14 +19,6 @@ import axios from 'axios';
 import getApiConfig from 'actions/getApiConfig';
 import { addNotification } from 'reducers/UtilsReducer';
 
-// NOTE: SuppliersReducer and MardukReducer have a runtime-only cyclic
-// dependency.  We can't statically import the `selectedAllSuppliers` action
-// creator here because at the moment this slice is constructed, the
-// SuppliersReducer module hasn't finished evaluating yet and the binding
-// would be `undefined`.  We instead reference the auto-generated action
-// `type` string directly in the cross-slice `addCase` below.
-const SUPPLIERS_SELECTED_ALL_TYPE = 'suppliers/selectedAllSuppliers';
-
 const addFileExtensions = (files = []) =>
   files.map(file => {
     if (file.name) {
@@ -238,9 +230,18 @@ export const fetchFilenames = createAsyncThunk(
   }
 );
 
+// Module-level AbortControllers — one per polling stream. Each new request
+// aborts the previous in-flight one of the same kind. Stored outside Redux so
+// the store stays fully serializable.
+let providerJobController = null;
+let allJobsController = null;
+
 export const getChouetteJobStatus = createAsyncThunk(
   'marduk/getChouetteJobStatus',
-  async (getToken, { getState, dispatch, rejectWithValue }) => {
+  async (getToken, { getState, rejectWithValue }) => {
+    providerJobController?.abort();
+    providerJobController = new AbortController();
+
     const state = getState();
     const { chouetteJobFilter, actionFilter } = state.MardukReducer;
     const { activeId } = state.SuppliersReducer;
@@ -257,13 +258,11 @@ export const getChouetteJobStatus = createAsyncThunk(
     }
 
     const url = window.config.timetableAdminBaseUrl + `${activeId}/jobs?${queryString}`;
-    const CancelToken = axios.CancelToken;
 
     try {
-      const response = await axios.get(url, await getApiConfig(getToken), {
-        cancelToken: new CancelToken(function executor(cancel) {
-          dispatch(chouetteJobRequestStarted(cancel));
-        }),
+      const response = await axios.get(url, {
+        ...(await getApiConfig(getToken)),
+        signal: providerJobController.signal,
       });
       return response.data.reverse();
     } catch (err) {
@@ -272,7 +271,7 @@ export const getChouetteJobStatus = createAsyncThunk(
   },
   {
     // Don't run (and don't dispatch pending/fulfilled/rejected) when there's
-    // no active provider or we're in local-dev auth-bypass mode.  Old code
+    // no active provider or we're in local-dev auth-bypass mode. Old code
     // returned without dispatching SUCCESS; the createAsyncThunk equivalent
     // is `condition`.
     condition: (_getToken, { getState }) => {
@@ -284,7 +283,10 @@ export const getChouetteJobStatus = createAsyncThunk(
 
 export const getChouetteJobsForAllSuppliers = createAsyncThunk(
   'marduk/getChouetteJobsForAllSuppliers',
-  async (getToken, { getState, dispatch, rejectWithValue }) => {
+  async (getToken, { getState, rejectWithValue }) => {
+    allJobsController?.abort();
+    allJobsController = new AbortController();
+
     const state = getState();
     const { chouetteJobAllFilter, actionAllFilter } = state.MardukReducer;
 
@@ -297,14 +299,11 @@ export const getChouetteJobsForAllSuppliers = createAsyncThunk(
     }
 
     const url = window.config.timetableAdminBaseUrl + `jobs?${queryString}`;
-    const CancelToken = axios.CancelToken;
 
     try {
       const response = await axios.get(url, {
-        cancelToken: new CancelToken(function executor(cancel) {
-          dispatch(chouetteAllJobRequestStarted(cancel));
-        }),
         ...(await getApiConfig(getToken)),
+        signal: allJobsController.signal,
       });
       const jobs = response.data.reverse();
       const allJobs = [];
@@ -431,20 +430,6 @@ const mardukSlice = createSlice({
     setActiveActionAllFilterValue(state, action) {
       state.actionAllFilter = action.payload;
     },
-    chouetteJobRequestStarted(state, action) {
-      if (state.chouette_cancel_token) {
-        state.chouette_cancel_token('Operation canceled by new request.');
-      }
-      state.requesting_chouette_job = true;
-      state.chouette_cancel_token = action.payload;
-    },
-    chouetteAllJobRequestStarted(state, action) {
-      if (state.chouette_cancel_all_token) {
-        state.chouette_cancel_all_token('Operation canceled by new request');
-      }
-      state.requesting_chouette_all_job = true;
-      state.chouette_cancel_all_token = action.payload;
-    },
   },
   extraReducers: builder => {
     builder
@@ -507,19 +492,26 @@ const mardukSlice = createSlice({
         state.filenames = { isLoading: false, error: action.payload };
       })
       // chouette job status (single provider)
+      .addCase(getChouetteJobStatus.pending, state => {
+        state.requesting_chouette_job = true;
+      })
       .addCase(getChouetteJobStatus.fulfilled, (state, action) => {
         state.requesting_chouette_job = false;
         state.chouetteJobStatus = action.payload;
       })
+      .addCase(getChouetteJobStatus.rejected, state => {
+        state.requesting_chouette_job = false;
+      })
       // chouette job status (all providers)
+      .addCase(getChouetteJobsForAllSuppliers.pending, state => {
+        state.requesting_chouette_all_job = true;
+      })
       .addCase(getChouetteJobsForAllSuppliers.fulfilled, (state, action) => {
         state.requesting_chouette_all_job = false;
         state.chouetteAllJobStatus = action.payload;
       })
-      // cross-slice listener: clear cancel tokens when SELECTED_ALL_SUPPLIERS fires
-      .addCase(SUPPLIERS_SELECTED_ALL_TYPE, state => {
-        state.chouette_cancel_all_token = null;
-        state.chouette_cancel_token = null;
+      .addCase(getChouetteJobsForAllSuppliers.rejected, state => {
+        state.requesting_chouette_all_job = false;
       });
   },
 });
@@ -529,8 +521,6 @@ export const {
   toggleChouetteInfoCheckboxAllFilter,
   setActiveActionFilterValue,
   setActiveActionAllFilterValue,
-  chouetteJobRequestStarted,
-  chouetteAllJobRequestStarted,
 } = mardukSlice.actions;
 
 // Re-export resetOutboundFiles from UtilsReducer under the name the legacy

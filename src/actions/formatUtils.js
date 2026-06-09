@@ -14,7 +14,7 @@
  *
  */
 
-import moment from 'moment';
+import { formatDistanceStrict } from 'date-fns';
 
 export const ExportStatus = Object.freeze({
   OK: 'OK',
@@ -99,8 +99,9 @@ const formatProviderRow = providerRow => {
   const gtfsUrl = getFirstFromArray(GTFS, 'url');
   const netexUrl = getFirstFromArray(NETEX, 'url');
   const diff =
-    netexDate && gtfsDate ? moment.duration(moment(netexDate).diff(moment(gtfsDate))) : null;
-  const diffHumanized = diff ? diff.humanize() : null;
+    netexDate && gtfsDate ? new Date(netexDate).getTime() - new Date(gtfsDate).getTime() : null;
+  const diffHumanized =
+    netexDate && gtfsDate ? formatDistanceStrict(new Date(netexDate), new Date(gtfsDate)) : null;
   const status = getProviderRowStatus(netexDate, gtfsDate);
 
   return {
@@ -143,14 +144,11 @@ const getFirstFromArray = (arr, field) => {
   return Array.isArray(arr) && arr[0] && arr[0][field] ? arr[0][field] : null;
 };
 
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
 const isWithinLast24Hours = date => {
-  const now = Date.now();
-  const momentDiff = moment.duration(moment(date).diff(moment(now)));
-  if (momentDiff && momentDiff._data) {
-    const { years, months, days } = momentDiff._data;
-    if (Math.abs(years) === 0 && Math.abs(months) === 0 && Math.abs(days) === 0) {
-      return true;
-    }
-  }
-  return false;
+  if (!date) return false;
+  // moment's _data calendar breakdown reported zero years/months/days when
+  // the absolute duration was strictly less than 24 hours; preserve that.
+  return Math.abs(new Date(date).getTime() - Date.now()) < ONE_DAY_MS;
 };

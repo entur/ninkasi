@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import moment from 'moment/moment';
-import type { Moment } from 'moment/moment';
+import { addDays, format, parse } from 'date-fns';
 import { useAccessToken } from '@/utils/useAccessToken';
 import { useConfig } from '@/contexts/ConfigContext';
 import { graphqlFetch } from '@/utils/graphqlFetch';
@@ -68,19 +67,19 @@ interface LineStatisticsForProviderQueryResponse {
 }
 
 const mapLines = (lineStatisticsResponse: LineStatisticsForProviderResponse) => {
-  const startDateLine: Moment = moment(lineStatisticsResponse.startDate, 'YYYY-MM-DD');
-  const endDateLine: Moment = moment(startDateLine).add(lineStatisticsResponse.days, 'days');
+  const startDateLine: Date = parse(lineStatisticsResponse.startDate, 'yyyy-MM-dd', new Date());
+  const endDateLine: Date = addDays(startDateLine, lineStatisticsResponse.days);
   const lines = lineStatisticsResponse.publicLines
     .map(publicLine => {
-      let publicLineValidPeriod: Moment | undefined = undefined;
+      let publicLineValidPeriod: Date | undefined = undefined;
 
       const effectivePeriodsFormatted: PeriodValidity[] = (
         [publicLine.effectivePeriod] as Array<EffectivePeriodResponse | null>
       )
         .filter((v): v is EffectivePeriodResponse => v !== null)
         .map(effectivePeriod => {
-          const effectivePeriodFrom: Moment = moment(effectivePeriod.from, 'YYYY-MM-DD');
-          const effectivePeriodTo: Moment = moment(effectivePeriod.to, 'YYYY-MM-DD');
+          const effectivePeriodFrom: Date = parse(effectivePeriod.from, 'yyyy-MM-dd', new Date());
+          const effectivePeriodTo: Date = parse(effectivePeriod.to, 'yyyy-MM-dd', new Date());
 
           const timelineStartPosition: number = findTimeLineStartPositionForEffectivePeriod(
             effectivePeriodFrom,
@@ -179,9 +178,9 @@ export const useLineStatisticsForProvider = (
 
         const transformedData: LineStatistics = {
           providerName: data.lineStatisticsForProvider.providerName,
-          startDate: startDateLine.format('YYYY-MM-DD'),
-          endDate: endDateLine.format('YYYY-MM-DD'),
-          requiredValidityDate: moment(startDateLine).add(120, 'days').format('YYYY-MM-DD'),
+          startDate: format(startDateLine, 'yyyy-MM-dd'),
+          endDate: format(endDateLine, 'yyyy-MM-dd'),
+          requiredValidityDate: format(addDays(startDateLine, 120), 'yyyy-MM-dd'),
           linesMap,
           validityCategories,
         };

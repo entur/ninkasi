@@ -16,7 +16,7 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import moment from 'moment';
+import { format, formatDistanceToNow } from 'date-fns';
 import getApiConfig from 'actions/getApiConfig';
 import { getQueryVariable } from 'utils';
 import {
@@ -54,16 +54,27 @@ export const addFileExtensions = (files = []) => {
   });
 };
 
+const pad2 = n => String(n).padStart(2, '0');
+
+// Format a millisecond delta as HH:mm:ss (matches moment(diff).utc().format('HH:mm:ss')
+// for sub-day durations; for >= 24h the original would wrap at 24h too).
+const formatElapsed = ms => {
+  const totalSeconds = Math.floor(Math.abs(ms) / 1000);
+  const hours = Math.floor(totalSeconds / 3600) % 24;
+  const minutes = Math.floor(totalSeconds / 60) % 60;
+  const seconds = totalSeconds % 60;
+  return `${pad2(hours)}:${pad2(minutes)}:${pad2(seconds)}`;
+};
+
 export const formatProviderStatusDate = (list, provider) => {
   try {
     return list.map(listItem => {
-      listItem.duration = moment(moment(listItem.lastEvent).diff(moment(listItem.firstEvent)))
-        .locale('nb')
-        .utc()
-        .format('HH:mm:ss');
-      listItem.firstEvent = moment(listItem.firstEvent).locale('nb').format('YYYY-MM-DD HH:mm:ss');
-      listItem.lastEvent = moment(listItem.lastEvent).locale('nb').format('YYYY-MM-DD HH:mm:ss');
-      listItem.started = moment(listItem.firstEvent).locale('en').fromNow();
+      const firstEventDate = new Date(listItem.firstEvent);
+      const lastEventDate = new Date(listItem.lastEvent);
+      listItem.duration = formatElapsed(lastEventDate.getTime() - firstEventDate.getTime());
+      listItem.firstEvent = format(firstEventDate, 'yyyy-MM-dd HH:mm:ss');
+      listItem.lastEvent = format(lastEventDate, 'yyyy-MM-dd HH:mm:ss');
+      listItem.started = formatDistanceToNow(firstEventDate, { addSuffix: true });
 
       if (provider) {
         listItem.provider = provider;
@@ -71,7 +82,7 @@ export const formatProviderStatusDate = (list, provider) => {
 
       if (listItem.events) {
         listItem.events.forEach(function (event) {
-          event.date = moment(event.date).locale('nb').format('YYYY-MM-DD HH:mm:ss');
+          event.date = format(new Date(event.date), 'yyyy-MM-dd HH:mm:ss');
         });
       }
       return listItem;

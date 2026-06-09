@@ -15,7 +15,7 @@
  */
 
 import type { KeyboardEvent, MouseEvent } from 'react';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { FileDownload } from '@mui/icons-material';
 import { getSizeFromBytes } from '@/utils';
 import { saveAs } from 'file-saver';
@@ -218,9 +218,7 @@ const AdvancedFileList = ({
             <div style={columnStyle}>{file.name}</div>
             <div style={columnStyle}>{getSizeFromBytes(file.fileSize)}</div>
             <div style={columnStyle}> {file.ext}</div>
-            <div style={columnStyle}>
-              {moment(file.updated).format('YYYY-MM-DD HH:mm:ss').toString()}
-            </div>
+            <div style={columnStyle}>{format(new Date(file.updated), 'yyyy-MM-dd HH:mm:ss')}</div>
             {downloadButton ? (
               <div
                 style={{

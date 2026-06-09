@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
-import moment from 'moment/moment';
-import type { Moment } from 'moment/moment';
+import { addDays, parse } from 'date-fns';
 import { useAccessToken } from '@/utils/useAccessToken';
 import { useConfig } from '@/contexts/ConfigContext';
 import { graphqlFetch } from '@/utils/graphqlFetch';
@@ -92,17 +91,17 @@ interface LineStatisticsQueryResponse {
 const mapPublicLineValidity = (
   lineStatisticsResponse: LineStatisticsForProviderResponse
 ): PublicLineValidity => {
-  const startDateLine: Moment = moment(lineStatisticsResponse.startDate, 'YYYY-MM-DD');
-  const endDateLine: Moment = moment(startDateLine).add(lineStatisticsResponse.days, 'days');
+  const startDateLine: Date = parse(lineStatisticsResponse.startDate, 'yyyy-MM-dd', new Date());
+  const endDateLine: Date = addDays(startDateLine, lineStatisticsResponse.days);
 
   const publicLine = lineStatisticsResponse.publicLines[0];
 
-  let publicLineValidPeriod: Moment | undefined = undefined;
+  let publicLineValidPeriod: Date | undefined = undefined;
 
   const effectivePeriodsFormatted: PeriodValidity[] = [publicLine.effectivePeriod].map(
     effectivePeriod => {
-      const effectivePeriodFrom: Moment = moment(effectivePeriod.from, 'YYYY-MM-DD');
-      const effectivePeriodTo: Moment = moment(effectivePeriod.to, 'YYYY-MM-DD');
+      const effectivePeriodFrom: Date = parse(effectivePeriod.from, 'yyyy-MM-dd', new Date());
+      const effectivePeriodTo: Date = parse(effectivePeriod.to, 'yyyy-MM-dd', new Date());
 
       const timelineStartPosition: number = findTimeLineStartPositionForEffectivePeriod(
         effectivePeriodFrom,
