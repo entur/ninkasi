@@ -137,12 +137,12 @@ const ModalCreateResponsibilitySet = ({
   const isSavable = isInternallySavable && isLegalPrivateCode;
 
   const actions = [
-    <Button key="close" variant="text" onClick={handleOnClose}>
+    <Button key="close" variant="outlined" onClick={handleOnClose}>
       Close
     </Button>,
     <Button
       key="create"
-      variant="text"
+      variant="contained"
       disabled={!isSavable}
       onClick={() => handleSubmit(responsibilitySet)}
     >

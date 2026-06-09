@@ -75,12 +75,12 @@ const ModalCreateOrganization = ({
     organization.codeSpace.length > 0;
 
   const actions = [
-    <Button key="cancel" variant="text" onClick={handleCloseModal}>
+    <Button key="cancel" variant="outlined" onClick={handleCloseModal}>
       Cancel
     </Button>,
     <Button
       key="create"
-      variant="text"
+      variant="contained"
       disabled={!isSavable}
       onClick={() => handleSubmit(organization)}
     >

@@ -246,14 +246,14 @@ const ModalEditProvider = ({
   const actions = [
     <Button
       key="cancel"
-      variant="text"
+      variant="outlined"
       onClick={() => {
         handleClose();
       }}
     >
       Cancel
     </Button>,
-    <Button key="update" variant="text" color="primary" onClick={submit}>
+    <Button key="update" variant="contained" color="primary" onClick={submit}>
       Update
     </Button>,
   ];

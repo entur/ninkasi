@@ -53,10 +53,15 @@ const ModalEditRole = ({
   const isSavable = role.name && role.name.length > 0;
 
   const actions = [
-    <Button key="close" variant="text" onClick={handleCloseModal}>
+    <Button key="close" variant="outlined" onClick={handleCloseModal}>
       Close
     </Button>,
-    <Button key="update" variant="text" disabled={!isSavable} onClick={() => handleSubmit(role)}>
+    <Button
+      key="update"
+      variant="contained"
+      disabled={!isSavable}
+      onClick={() => handleSubmit(role)}
+    >
       Update
     </Button>,
   ];

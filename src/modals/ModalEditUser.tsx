@@ -164,12 +164,12 @@ const ModalEditUser = ({
   const disableUpdate = !usernameValid || !emailValid;
 
   const actions = [
-    <Button key="cancel" variant="text" onClick={handleOnClose}>
+    <Button key="cancel" variant="outlined" onClick={handleOnClose}>
       Cancel
     </Button>,
     <Button
       key="update"
-      variant="text"
+      variant="contained"
       disabled={disableUpdate}
       color="primary"
       onClick={() => handleSubmit(user)}

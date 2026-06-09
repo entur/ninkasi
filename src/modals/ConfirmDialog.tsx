@@ -32,10 +32,10 @@ const ConfirmDialog = ({ open, handleClose, handleSubmit, title, info }: Confirm
   };
 
   const actions = [
-    <Button key="close" variant="text" onClick={() => handleClose()}>
+    <Button key="close" variant="outlined" onClick={() => handleClose()}>
       Close
     </Button>,
-    <Button key="confirm" variant="text" onClick={onConfirm}>
+    <Button key="confirm" variant="contained" onClick={onConfirm}>
       Confirm
     </Button>,
   ];

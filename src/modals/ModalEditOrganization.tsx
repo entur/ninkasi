@@ -83,12 +83,12 @@ const ModalEditOrganization = ({
     organization.name.length > 0;
 
   const actions = [
-    <Button key="cancel" variant="text" onClick={handleCloseModal}>
+    <Button key="cancel" variant="outlined" onClick={handleCloseModal}>
       Cancel
     </Button>,
     <Button
       key="update"
-      variant="text"
+      variant="contained"
       disabled={!isSavable}
       onClick={() => handleSubmit(organization)}
     >

@@ -130,12 +130,12 @@ const ModalEditEntityType = ({
     entityType.privateCode.length > 0;
 
   const actions = [
-    <Button key="close" variant="text" disabled={!isSavable} onClick={handleOnClose}>
+    <Button key="close" variant="outlined" disabled={!isSavable} onClick={handleOnClose}>
       Close
     </Button>,
     <Button
       key="update"
-      variant="text"
+      variant="contained"
       disabled={!isSavable}
       onClick={() => handleSubmit(entityType)}
     >

@@ -133,10 +133,16 @@ const ModalEditM2MClient = ({
   const disableUpdate = !isClientRequiredFieldsProvided() || !orgIdValid;
 
   const actions = [
-    <Button key="cancel" variant="text" onClick={handleOnClose}>
+    <Button key="cancel" variant="outlined" onClick={handleOnClose}>
       Cancel
     </Button>,
-    <Button key="update" variant="text" disabled={disableUpdate} color="primary" onClick={onSubmit}>
+    <Button
+      key="update"
+      variant="contained"
+      disabled={disableUpdate}
+      color="primary"
+      onClick={onSubmit}
+    >
       Update
     </Button>,
   ];

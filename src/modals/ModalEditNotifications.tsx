@@ -104,12 +104,12 @@ const ModalEditNotifications = ({
   const updateDisabled = shouldUpdateBtnBeDisabled();
 
   const actions = [
-    <Button key="cancel" variant="text" sx={{ marginLeft: '10px' }} onClick={handleCloseModal}>
+    <Button key="cancel" variant="outlined" sx={{ marginLeft: '10px' }} onClick={handleCloseModal}>
       Cancel
     </Button>,
     <Button
       key="update"
-      variant="text"
+      variant="contained"
       disabled={updateDisabled}
       sx={{ marginLeft: '10px' }}
       onClick={handleUpdate}

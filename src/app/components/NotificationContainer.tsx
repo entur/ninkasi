@@ -14,101 +14,46 @@
  *
  */
 
-import { useState, useEffect, useRef } from 'react';
-import { Snackbar, Alert, Slide } from '@mui/material';
-import { useAppSelector } from 'store/hooks';
+import { Snackbar, Alert } from '@mui/material';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { clearNotification } from '@/reducers/UtilsReducer';
+
+type Severity = 'error' | 'success' | 'warning' | 'info';
 
 interface NotificationItem {
   message: string;
-  level?: string;
-  key?: string;
+  level?: Severity;
 }
 
 const NotificationContainer = () => {
+  const dispatch = useAppDispatch();
   const notification = useAppSelector(
     (state: any) => state.UtilsReducer.notification as NotificationItem | null | undefined
   );
 
-  const [queue, setQueue] = useState<NotificationItem[]>([]);
-  const [open, setOpen] = useState(false);
-  const [currentNotification, setCurrentNotification] = useState<NotificationItem | null>(null);
-  const processedRef = useRef<Set<string>>(new Set());
-
-  useEffect(() => {
-    if (notification && notification.message) {
-      // Create a unique key for this notification
-      const notificationKey = `${notification.message}-${notification.level}-${Date.now()}`;
-
-      // Check if we've already processed this exact notification
-      if (!processedRef.current.has(notificationKey)) {
-        processedRef.current.add(notificationKey);
-
-        // Add to queue
-        setQueue(prevQueue => [...prevQueue, { ...notification, key: notificationKey }]);
-
-        // Clean up old processed notifications (keep only last 50)
-        if (processedRef.current.size > 50) {
-          const entries = Array.from(processedRef.current);
-          processedRef.current = new Set(entries.slice(-50));
-        }
-      }
-    }
-  }, [notification]);
-
-  useEffect(() => {
-    if (queue.length > 0 && !currentNotification) {
-      // Set current notification from queue
-      setCurrentNotification(queue[0]);
-      setQueue(prevQueue => prevQueue.slice(1));
-      setOpen(true);
-    }
-  }, [queue, currentNotification]);
+  if (!notification?.message) return null;
 
   const handleClose = (_event?: unknown, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-
-  const handleExited = () => {
-    setCurrentNotification(null);
-  };
-
-  // Map the old notification levels to MUI severity
-  const getSeverity = (level: string | undefined) => {
-    switch (level) {
-      case 'error':
-        return 'error';
-      case 'success':
-        return 'success';
-      case 'warning':
-        return 'warning';
-      case 'info':
-      default:
-        return 'info';
-    }
+    if (reason === 'clickaway') return;
+    dispatch(clearNotification());
   };
 
   return (
     <Snackbar
-      open={open}
+      key={notification.message}
+      open
       autoHideDuration={4000}
       onClose={handleClose}
-      slots={{ transition: Slide }}
-      slotProps={{ transition: { onExited: handleExited } }}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
-      {currentNotification ? (
-        <Alert
-          onClose={handleClose}
-          severity={getSeverity(currentNotification.level)}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {currentNotification.message}
-        </Alert>
-      ) : undefined}
+      <Alert
+        onClose={handleClose}
+        severity={notification.level ?? 'info'}
+        variant="filled"
+        sx={{ minWidth: 300 }}
+      >
+        {notification.message}
+      </Alert>
     </Snackbar>
   );
 };

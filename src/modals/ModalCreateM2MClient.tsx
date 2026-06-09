@@ -124,10 +124,16 @@ const ModalCreateM2MClient = ({
     invalidPrivateCode || !isClientRequiredFieldsProvided() || !privateCodeValid || !orgIdValid;
 
   const actions = [
-    <Button key="cancel" variant="text" onClick={handleOnClose}>
+    <Button key="cancel" variant="outlined" onClick={handleOnClose}>
       Cancel
     </Button>,
-    <Button key="create" variant="text" disabled={disableCreate} color="primary" onClick={onSubmit}>
+    <Button
+      key="create"
+      variant="contained"
+      disabled={disableCreate}
+      color="primary"
+      onClick={onSubmit}
+    >
       Create
     </Button>,
   ];

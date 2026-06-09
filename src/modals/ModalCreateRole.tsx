@@ -50,10 +50,15 @@ const ModalCreateRole = ({
   const isSavable = !invalidPrivateCode && role.name.length > 0 && role.privateCode.length > 0;
 
   const actions = [
-    <Button key="close" variant="text" onClick={handleOnClose}>
+    <Button key="close" variant="outlined" onClick={handleOnClose}>
       Close
     </Button>,
-    <Button key="create" variant="text" disabled={!isSavable} onClick={() => handleSubmit(role)}>
+    <Button
+      key="create"
+      variant="contained"
+      disabled={!isSavable}
+      onClick={() => handleSubmit(role)}
+    >
       Create
     </Button>,
   ];

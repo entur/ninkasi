@@ -175,12 +175,12 @@ const ModalCreateUser = ({
     emailIsTaken;
 
   const actions = [
-    <Button key="cancel" variant="text" onClick={handleOnClose}>
+    <Button key="cancel" variant="outlined" onClick={handleOnClose}>
       Cancel
     </Button>,
     <Button
       key="create"
-      variant="text"
+      variant="contained"
       disabled={disableCreate}
       color="primary"
       onClick={() => handleSubmit(user)}
