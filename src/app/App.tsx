@@ -6,10 +6,8 @@ import {
   adaptV4Theme,
   CssBaseline,
 } from '@mui/material';
-import { QueryClientProvider } from '@tanstack/react-query';
 import { connect } from 'react-redux';
 import { useAuth } from '../auth';
-import { queryClient } from './queryClient';
 import Header from './components/header/Header';
 import NoAccess from './components/NoAccess';
 import Router from './Router';
@@ -78,23 +76,21 @@ const App: React.FC<AppProps> = ({ dispatch, isConfigLoaded, isAdmin }) => {
     return (
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
-          <QueryClientProvider client={queryClient}>
-            <CssBaseline />
-            <NotificationContainer />
-            <Header />
-            <div className="app" style={{ marginTop: '64px' }}>
-              {isAdmin ? (
-                <Router />
-              ) : (
-                <NoAccess
-                  username={auth.user?.profile?.name || auth.user?.profile?.email || 'User'}
-                  handleLogout={() => {
-                    auth.signoutRedirect();
-                  }}
-                />
-              )}
-            </div>
-          </QueryClientProvider>
+          <CssBaseline />
+          <NotificationContainer />
+          <Header />
+          <div className="app" style={{ marginTop: '64px' }}>
+            {isAdmin ? (
+              <Router />
+            ) : (
+              <NoAccess
+                username={auth.user?.profile?.name || auth.user?.profile?.email || 'User'}
+                handleLogout={() => {
+                  auth.signoutRedirect();
+                }}
+              />
+            )}
+          </div>
         </ThemeProvider>
       </StyledEngineProvider>
     );

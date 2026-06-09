@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Box, Stack } from '@mui/material';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ConnectedEventDetails } from './components/ConnectedEventDetails';
 import { UploadAndValidation } from './components/UploadAndValidation';
 import type { Provider, ProviderMap } from './types/provider';
@@ -18,12 +18,12 @@ interface Props {
 }
 
 export const EventsView = ({ providerId, provider, providers }: Props) => {
-  const history = useHistory();
+  const routerNavigate = useNavigate();
   const navigate = useCallback(
     (url: string) => {
-      history.push(url);
+      routerNavigate(url);
     },
-    [history]
+    [routerNavigate]
   );
 
   // Feature-flag defaults, hard-coded to match ninkasi's existing usage.

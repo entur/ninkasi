@@ -14,14 +14,9 @@ import { ReportHeading } from './components/ReportHeading';
 import { ReportLoadingIndicator } from './components/ReportLoadingIndicator';
 import { ReportTable } from './components/ReportTable';
 
-type ReportParams = {
-  codespace: string;
-  id: string;
-};
-
 const ValidationReport = () => {
-  const { codespace, id } = useParams<ReportParams>();
-  const { report, error } = useReport(codespace, id);
+  const { codespace, id } = useParams();
+  const { report, error } = useReport(codespace ?? '', id ?? '');
 
   const groupedEntries = useMemo(() => {
     return groupReportEntries(report?.validationReportEntries || [], 'name', 'fileName');

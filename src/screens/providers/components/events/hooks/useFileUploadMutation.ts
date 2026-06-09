@@ -1,6 +1,5 @@
-import { useMutation } from '@tanstack/react-query';
+import { useCallback, useState } from 'react';
 import axios from 'axios';
-import { useState } from 'react';
 import { useAccessToken } from '@/utils/useAccessToken';
 import { useConfig } from '@/contexts/ConfigContext';
 
@@ -29,12 +28,15 @@ export const useFileUploadMutation = ({
     FileUploadState.NOT_STARTED
   );
   const [progress, setProgress] = useState(0);
+  const [isPending, setIsPending] = useState(false);
 
-  const mutation = useMutation({
-    mutationFn: async (files: File[]) => {
+  const mutate = useCallback(
+    async (files: File[]) => {
       setFileUploadState(FileUploadState.STARTED);
-      const accessToken = await getToken();
+      setIsPending(true);
+      setProgress(0);
 
+      const accessToken = await getToken();
       const data = new FormData();
       files.forEach(file => {
         data.append('files', file);
@@ -56,9 +58,12 @@ export const useFileUploadMutation = ({
       } catch (e) {
         setFileUploadState(FileUploadState.FAILED);
         throw e;
+      } finally {
+        setIsPending(false);
       }
     },
-  });
+    [flexUrl, getToken, isFlexDataset, url]
+  );
 
-  return { mutation, progress, fileUploadState };
+  return { mutation: { mutate, isPending }, progress, fileUploadState };
 };
