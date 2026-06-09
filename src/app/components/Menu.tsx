@@ -53,8 +53,8 @@ export default function Menu({ open, onClose }: MenuProps) {
       anchor="right"
       open={open}
       onClose={onClose}
-      ModalProps={{ keepMounted: true }}
       slotProps={{
+        root: { keepMounted: true },
         paper: {
           sx: {
             width: isMobile ? '100%' : DESKTOP_WIDTH,
