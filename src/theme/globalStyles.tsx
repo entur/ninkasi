@@ -14,8 +14,8 @@ const AppGlobalStyles = () => (
         boxSizing: 'border-box',
       },
       ".MuiDialogContent-root > div[style*='display: flex']": {
-        marginBottom: 16,
-        gap: 16,
+        marginBottom: '16px',
+        gap: '16px',
         '&:last-child': {
           marginBottom: 0,
         },

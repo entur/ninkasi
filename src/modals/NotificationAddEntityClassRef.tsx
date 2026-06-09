@@ -15,7 +15,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
+import { Box, FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
@@ -56,8 +56,8 @@ const NotificationAddEntityClassRef = ({ index }: NotificationAddEntityClassRefP
   };
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-around',
@@ -78,7 +78,7 @@ const NotificationAddEntityClassRef = ({ index }: NotificationAddEntityClassRefP
           ))}
         </Select>
       </FormControl>
-      <FormControl fullWidth style={{ marginLeft: 16 }} margin="normal">
+      <FormControl fullWidth sx={{ marginLeft: '16px' }} margin="normal">
         <InputLabel id="entity-classification-label">Entity classification</InputLabel>
         <Select
           labelId="entity-classification-label"
@@ -98,7 +98,7 @@ const NotificationAddEntityClassRef = ({ index }: NotificationAddEntityClassRefP
       <Button variant="text" onClick={handleAdd} disabled={!entityClasRefSelected}>
         Add
       </Button>
-    </div>
+    </Box>
   );
 };
 

@@ -124,7 +124,7 @@ const EntityTypesView = () => {
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Fab
           size="small"
-          style={{ float: 'right', marginRight: 10 }}
+          sx={{ float: 'right', marginRight: '10px' }}
           onClick={() => setIsCreateModalOpen(true)}
         >
           <Add />
@@ -168,8 +168,9 @@ const EntityTypesView = () => {
               <Box sx={columnSx}>{et.privateCode}</Box>
               <Box sx={columnSx}>{et.codeSpace}</Box>
               <Box sx={columnSx}>
-                <ul
-                  style={{
+                <Box
+                  component="ul"
+                  sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     listStyleType: 'circle',
@@ -180,7 +181,7 @@ const EntityTypesView = () => {
                         .sort((a: any, b: any) => a.name.localeCompare(b.name))
                         .map((ec: any) => <li key={ec.id}>{ec.name} </li>)
                     : null}
-                </ul>
+                </Box>
               </Box>
               <Box
                 sx={{
@@ -192,10 +193,10 @@ const EntityTypesView = () => {
                 }}
               >
                 <Delete
-                  style={{
+                  sx={{
                     height: 20,
                     width: 20,
-                    marginRight: 10,
+                    marginRight: '10px',
                     verticalAlign: 'middle',
                     cursor: 'pointer',
                     color: '#fa7b81',
@@ -203,7 +204,7 @@ const EntityTypesView = () => {
                   onClick={() => handleOpenDeleteConfirmationDialog(et)}
                 />
                 <Edit
-                  style={{
+                  sx={{
                     height: 20,
                     width: 20,
                     verticalAlign: 'middle',

@@ -19,7 +19,7 @@ import type { MouseEvent } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
 import cfgreader from 'config/readConfig';
-import { MenuItem, Popover } from '@mui/material';
+import { Box, MenuItem, Popover } from '@mui/material';
 import { Warning, ArrowDropDown, KeyboardArrowRight } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { getIconColor, getProvidersEnv, getTheme } from 'config/themes';
@@ -185,7 +185,7 @@ const AdministrativeActions = () => {
   // Reference for parity; unused at runtime
   void getIconColor(providersEnv);
 
-  const innerContainerStyle: React.CSSProperties = {
+  const innerContainerStyle = {
     display: 'flex',
     justifyContent: 'center',
     borderTop: '1px solid rgba(158, 158, 158, 0.15)',
@@ -204,24 +204,24 @@ const AdministrativeActions = () => {
   };
 
   return (
-    <div style={innerContainerStyle}>
-      <div>
+    <Box sx={innerContainerStyle}>
+      <Box>
         <Button variant="text" onClick={handleGraphOpen}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div
-              style={{
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box
+              sx={{
                 fontSize: 12,
                 color: '#fff',
-                paddingLeft: 8,
-                paddingRight: 8,
-                paddingTop: 2,
+                paddingLeft: '8px',
+                paddingRight: '8px',
+                paddingTop: '2px',
                 textTransform: 'uppercase',
               }}
             >
               Graph
-            </div>
+            </Box>
             <ArrowDropDown sx={{ color: 'white' }} />
-          </div>
+          </Box>
         </Button>
         <Popover
           open={graphPopoverOpen}
@@ -231,28 +231,28 @@ const AdministrativeActions = () => {
           onClose={() => setGraphPopoverOpen(false)}
         >
           <MenuItem
-            style={{ fontSize: '1.1em' }}
+            sx={{ fontSize: '1.1em' }}
             onClick={handleBuildGraph}
             title={toolTips.buildGraph}
           >
             Build Transit Graph
           </MenuItem>
           <MenuItem
-            style={{ fontSize: '1em' }}
+            sx={{ fontSize: '1em' }}
             onClick={handleBuildBaseGraph}
             title={toolTips.buildBaseGraph}
           >
             Build Street Graph
           </MenuItem>
           <MenuItem
-            style={{ fontSize: '1em' }}
+            sx={{ fontSize: '1em' }}
             onClick={handleBuildCandidateGraphOTP}
             title={toolTips.buildCandidateGraphOTP}
           >
             Build Candidate Transit Graph
           </MenuItem>
           <MenuItem
-            style={{ fontSize: '1em' }}
+            sx={{ fontSize: '1em' }}
             onClick={handleBuildCandidateBaseGraphOTP}
             title={toolTips.buildCandidateBaseGraphOTP}
           >
@@ -262,22 +262,22 @@ const AdministrativeActions = () => {
         <Button
           variant="text"
           title={toolTips.fetchOSM}
-          style={{ fontSize: 12, color: '#fff' }}
+          sx={{ fontSize: 12, color: '#fff' }}
           onClick={handleFetchOSM}
         >
           Fetch OSM
         </Button>
-      </div>
-      <div
-        style={{
+      </Box>
+      <Box
+        sx={{
           borderLeft: '1px solid #4c4c4c',
           height: 15,
           margin: '10px 0',
         }}
       />
-      <div>
+      <Box>
         <Button variant="text" onClick={handleCleanOpen}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Warning
               sx={{
                 color: 'white',
@@ -286,23 +286,23 @@ const AdministrativeActions = () => {
                 paddingLeft: '10px',
               }}
             />
-            <div
-              style={{
+            <Box
+              sx={{
                 fontSize: 12,
                 color: '#fff',
-                paddingLeft: 8,
-                paddingRight: 8,
-                paddingTop: 2,
+                paddingLeft: '8px',
+                paddingRight: '8px',
+                paddingTop: '2px',
                 textTransform: 'uppercase',
               }}
             >
               Clean
-            </div>
+            </Box>
             <ArrowDropDown sx={{ color: 'white' }} />
-          </div>
+          </Box>
         </Button>
         <Button variant="text" title={toolTips.canceAllJobs} onClick={handleCancelAllJobs}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Warning
               sx={{
                 color: 'white',
@@ -311,18 +311,18 @@ const AdministrativeActions = () => {
                 paddingLeft: '10px',
               }}
             />
-            <div
-              style={{
+            <Box
+              sx={{
                 fontSize: 12,
                 color: '#fff',
                 marginLeft: '0.5rem',
               }}
             >
               Cancel all jobs
-            </div>
-          </div>
+            </Box>
+          </Box>
         </Button>
-      </div>
+      </Box>
       <Popover
         open={cleanPopoverOpen}
         anchorEl={anchorEl}
@@ -331,21 +331,21 @@ const AdministrativeActions = () => {
         onClose={() => setCleanPopoverOpen(false)}
       >
         <MenuItem
-          style={{ fontSize: '1.1em' }}
+          sx={{ fontSize: '1.1em' }}
           onClick={handleCleanFileFilter}
           title={toolTips.cleanFileFilter}
         >
           Clean file filter
         </MenuItem>
         <MenuItem
-          style={{ fontSize: '1em' }}
+          sx={{ fontSize: '1em' }}
           onClick={handleClearEventHistory}
           title={toolTips.cleanEventHistory}
         >
           Clean event history
         </MenuItem>
         <MenuItem
-          style={{ fontSize: '1em' }}
+          sx={{ fontSize: '1em' }}
           onClick={handleClearStopPlaces}
           title={toolTips.cleanStopPlacesChouette}
         >
@@ -353,20 +353,20 @@ const AdministrativeActions = () => {
         </MenuItem>
         <MenuItem
           id="dropdown-clean-all"
-          style={{ fontSize: '1em' }}
+          sx={{ fontSize: '1em' }}
           onClick={() => handleCleanAllDataSpaces('all')}
         >
-          <KeyboardArrowRight style={{ marginRight: 8 }} />
+          <KeyboardArrowRight sx={{ marginRight: '8px' }} />
           Clean all
         </MenuItem>
         <MenuItem
-          style={{ fontSize: '1em', paddingLeft: '2em' }}
+          sx={{ fontSize: '1em', paddingLeft: '2em' }}
           onClick={() => handleCleanAllDataSpaces('level1')}
         >
           Clean Level 1
         </MenuItem>
         <MenuItem
-          style={{ fontSize: '1em', paddingLeft: '2em' }}
+          sx={{ fontSize: '1em', paddingLeft: '2em' }}
           onClick={() => handleCleanAllDataSpaces('level2')}
         >
           Clean Level 2
@@ -379,7 +379,7 @@ const AdministrativeActions = () => {
         info={confirmInfo}
         handleClose={closeConfirm}
       />
-    </div>
+    </Box>
   );
 };
 

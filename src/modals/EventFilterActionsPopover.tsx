@@ -15,7 +15,7 @@
  */
 
 import { useState } from 'react';
-import { Menu, MenuItem, Checkbox, FormControlLabel } from '@mui/material';
+import { Box, Menu, MenuItem, Checkbox, FormControlLabel } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useAppDispatch } from 'store/hooks';
 import { changeEventFilterActionReducer } from 'reducers/OrganizationReducer';
@@ -62,7 +62,10 @@ const EventFilterActionsPopover = ({
         onClick={handleOpen}
       >
         <span>
-          Actions<span style={{ color: 'red' }}>*</span>
+          Actions
+          <Box component="span" sx={{ color: 'red' }}>
+            *
+          </Box>
         </span>
       </Button>
       <Menu
@@ -78,7 +81,7 @@ const EventFilterActionsPopover = ({
             const checked = allActionsChecked ? true : actions.indexOf(action) > -1;
 
             return (
-              <MenuItem key={'action-' + i} style={{ fontSize: 12, minHeight: 18 }}>
+              <MenuItem key={'action-' + i} sx={{ fontSize: 12, minHeight: 18 }}>
                 <FormControlLabel
                   control={
                     <Checkbox

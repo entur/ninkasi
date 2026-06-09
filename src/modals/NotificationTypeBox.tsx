@@ -15,7 +15,7 @@
  */
 
 import { ExpandMore, ExpandLess, NotificationsActive, NotificationsOff } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import NotificationEventFilter from './NotificationEventFilter';
 
 interface NotificationLike {
@@ -40,14 +40,14 @@ const NotificationTypeBox = ({
   if (notification === null) return null;
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         border: '1px solid #eee',
-        margin: 5,
+        margin: '5px',
       }}
     >
-      <div
-        style={{
+      <Box
+        sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -55,14 +55,14 @@ const NotificationTypeBox = ({
           height: 40,
         }}
       >
-        <div style={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex' }}>
           {notification.enabled ? (
-            <NotificationsActive style={{ color: '#1d9439' }} />
+            <NotificationsActive sx={{ color: '#1d9439' }} />
           ) : (
-            <NotificationsOff style={{ color: '#777' }} />
+            <NotificationsOff sx={{ color: '#777' }} />
           )}
-          <div style={{ fontWeight: 600, fontSize: 14 }}>{notification.notificationType}</div>
-        </div>
+          <Box sx={{ fontWeight: 600, fontSize: 14 }}>{notification.notificationType}</Box>
+        </Box>
         <IconButton size="large">
           {expanded ? (
             <ExpandLess
@@ -78,9 +78,9 @@ const NotificationTypeBox = ({
             />
           )}
         </IconButton>
-      </div>
+      </Box>
       {expanded && <NotificationEventFilter index={index} notification={notification} />}
-    </div>
+    </Box>
   );
 };
 

@@ -14,6 +14,8 @@
  *
  */
 
+import { Box } from '@mui/material';
+
 interface Props {
   label: string;
   active: boolean;
@@ -21,17 +23,17 @@ interface Props {
 }
 
 const SideBarTabsElement = ({ label, active, onClick }: Props) => {
-  const style: React.CSSProperties = {
+  const style = {
     border: '1px solid 1px solid rgb(229, 229, 229)',
     cursor: 'pointer',
-    padding: 10,
+    padding: '10px',
     borderRadius: 5,
     background: 'rgba(128, 128, 128, 0.17)',
-    marginBottom: 10,
+    marginBottom: '10px',
     color: '#454545',
   };
 
-  const activeStyle: React.CSSProperties = {
+  const activeStyle = {
     background: '#39a1f4',
     color: '#fff',
   };
@@ -39,9 +41,9 @@ const SideBarTabsElement = ({ label, active, onClick }: Props) => {
   const appliedStyle = active ? { ...style, ...activeStyle } : style;
 
   return (
-    <div onClick={onClick} style={appliedStyle}>
+    <Box onClick={onClick} sx={appliedStyle}>
       {label}
-    </div>
+    </Box>
   );
 };
 

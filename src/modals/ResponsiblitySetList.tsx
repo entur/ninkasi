@@ -16,7 +16,7 @@
 
 import { useRef } from 'react';
 import { Remove, Add } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 
 interface Responsibility {
   id: string;
@@ -59,27 +59,32 @@ const ResponsiblitySetList = ({
   };
 
   return (
-    <div>
-      <div style={{ fontSize: '0.8em', marginBottom: 2 }}>Responsibility sets</div>
-      <select multiple style={{ width: '100%', fontSize: 12 }} ref={responsibilitySetRef}>
+    <Box>
+      <Box sx={{ fontSize: '0.8em', marginBottom: '2px' }}>Responsibility sets</Box>
+      <Box
+        component="select"
+        multiple
+        sx={{ width: '100%', fontSize: 12 }}
+        ref={responsibilitySetRef}
+      >
         {user.responsibilitySetRefs.map((rs, index) => (
           <option key={'ec-' + index}>{getResponbilityNameById(rs)} </option>
         ))}
-      </select>
-      <div style={{ textAlign: 'left', width: '100%' }}>
+      </Box>
+      <Box sx={{ textAlign: 'left', width: '100%' }}>
         <IconButton
           onClick={e => {
             handleAdd(e);
           }}
           size="large"
         >
-          <Add style={{ color: '#228B22' }} />
+          <Add sx={{ color: '#228B22' }} />
         </IconButton>
         <IconButton onClick={handleRemoveResponsibilitySet} size="large">
-          <Remove style={{ color: '#cc0000' }} />
+          <Remove sx={{ color: '#cc0000' }} />
         </IconButton>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

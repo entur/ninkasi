@@ -15,7 +15,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Remove, Add, Edit } from '@mui/icons-material';
@@ -197,11 +197,11 @@ const ModalEditResponsibilitySet = ({
     <Dialog open={modalOpen} onClose={handleOnClose} maxWidth="lg" fullWidth>
       <DialogTitle>Editing responsibility set</DialogTitle>
       <DialogContent>
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
             flexDirection: 'column',
-            marginTop: 5,
+            marginTop: '5px',
           }}
         >
           <TextField
@@ -249,18 +249,23 @@ const ModalEditResponsibilitySet = ({
               })
             }
           />
-          <div style={{ minWidth: '100%', fontSize: 10, marginTop: -10 }}>
-            <div style={{ width: '100%', fontSize: 10 }}>Role assignments *</div>
-            <div style={{ width: '100%', overflowX: 'auto' }}>
-              <select multiple style={{ fontSize: 10, minWidth: '100%' }} ref={rolesRef}>
+          <Box sx={{ minWidth: '100%', fontSize: 10, marginTop: '-10px' }}>
+            <Box sx={{ width: '100%', fontSize: 10 }}>Role assignments *</Box>
+            <Box sx={{ width: '100%', overflowX: 'auto' }}>
+              <Box
+                component="select"
+                multiple
+                sx={{ fontSize: 10, minWidth: '100%' }}
+                ref={rolesRef}
+              >
                 {responsibilitySet.roles.map((role, i) => (
-                  <option style={{ overflowX: 'auto' }} key={'role-' + i}>
+                  <Box component="option" sx={{ overflowX: 'auto' }} key={'role-' + i}>
                     {getRoleString(role)}
-                  </option>
+                  </Box>
                 ))}
-              </select>
-            </div>
-            <div>
+              </Box>
+            </Box>
+            <Box>
               <IconButton
                 onClick={() => {
                   setIsCreatingNewRole(true);
@@ -269,15 +274,15 @@ const ModalEditResponsibilitySet = ({
                 }}
                 size="large"
               >
-                <Add style={{ color: '#228B22' }} />
+                <Add sx={{ color: '#228B22' }} />
               </IconButton>
               <IconButton onClick={handleEditRole} size="large">
-                <Edit style={{ color: '#1976d2' }} />
+                <Edit sx={{ color: '#1976d2' }} />
               </IconButton>
               <IconButton onClick={handleRemoveRole} size="large">
-                <Remove style={{ color: '#cc0000' }} />
+                <Remove sx={{ color: '#cc0000' }} />
               </IconButton>
-            </div>
+            </Box>
             {isCreatingNewRole ? (
               <NewRole
                 getToken={getToken}
@@ -310,8 +315,8 @@ const ModalEditResponsibilitySet = ({
                 }
               />
             ) : null}
-          </div>
-        </div>
+          </Box>
+        </Box>
       </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>

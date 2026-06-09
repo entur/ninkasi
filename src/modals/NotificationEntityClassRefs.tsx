@@ -16,7 +16,7 @@
 
 import { useRef } from 'react';
 import NotificationAddEntityClassRef from './NotificationAddEntityClassRef';
-import { IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import { Remove } from '@mui/icons-material';
 import { useAppDispatch } from 'store/hooks';
 import { removedEntityClassRef } from 'reducers/OrganizationReducer';
@@ -55,42 +55,50 @@ const NotificationEntityClassRefs = ({
   };
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: visible ? 'none' : 'flex',
         flexDirection: 'column',
         flex: 2,
         border: '1px solid #eee',
-        padding: 5,
+        padding: '5px',
       }}
     >
-      <div style={{ width: '100%', fontSize: 12, fontWeight: 600 }}>
+      <Box sx={{ width: '100%', fontSize: 12, fontWeight: 600 }}>
         Entity classification
-        <span style={{ color: 'red', fontSize: 10 }}>*</span>
-      </div>
-      <div style={{ display: 'flex' }}>
-        <select multiple ref={entityRefsRef} style={{ width: '100%', fontSize: 12, flex: 2 }}>
+        <Box component="span" sx={{ color: 'red', fontSize: 10 }}>
+          *
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex' }}>
+        <Box
+          component="select"
+          multiple
+          ref={entityRefsRef}
+          sx={{ width: '100%', fontSize: 12, flex: 2 }}
+        >
           {entityClassRefs.map((ref: string, idx: number) => (
             <option key={'entity-' + idx}>{ref} </option>
           ))}
-        </select>
+        </Box>
         <IconButton onClick={handleRemoveEntityClass} size="large">
-          <Remove style={{ color: '#cc0000' }} />
+          <Remove sx={{ color: '#cc0000' }} />
         </IconButton>
-      </div>
+      </Box>
       {entityClassRefs.length === 0 && (
-        <span
-          style={{
+        <Box
+          component="span"
+          sx={{
             fontSize: 12,
             color: 'red',
             textAlign: 'left',
           }}
         >
           Required set of entity classifications can not be empty
-        </span>
+        </Box>
       )}
       <NotificationAddEntityClassRef index={index} />
-    </div>
+    </Box>
   );
 };
 

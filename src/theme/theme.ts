@@ -117,9 +117,9 @@ const theme = createTheme({
       },
       styleOverrides: {
         root: {
-          marginBottom: 16,
+          marginBottom: '16px',
           '& + .MuiTextField-root': {
-            marginTop: 8,
+            marginTop: '8px',
           },
         },
       },
@@ -127,9 +127,9 @@ const theme = createTheme({
     MuiFormControl: {
       styleOverrides: {
         root: {
-          marginBottom: 16,
+          marginBottom: '16px',
           '& + .MuiFormControl-root': {
-            marginTop: 8,
+            marginTop: '8px',
           },
         },
       },
@@ -137,14 +137,14 @@ const theme = createTheme({
     MuiFormControlLabel: {
       styleOverrides: {
         root: {
-          marginBottom: 8,
+          marginBottom: '8px',
           '&:last-child': {
             marginBottom: 0,
           },
         },
         label: {
           fontSize: '0.9em',
-          marginLeft: 8,
+          marginLeft: '8px',
         },
       },
     },

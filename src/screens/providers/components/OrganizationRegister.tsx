@@ -15,6 +15,7 @@
  */
 
 import { useState } from 'react';
+import { Box } from '@mui/material';
 import SideBarTabs from './SideBarTabs';
 import UserView from './userView/UserView';
 import OrganizationView from './organizationView/OrganizationView';
@@ -25,15 +26,15 @@ import EntityTypesView from './entityTypesView/EntityTypesView';
 const OrganizationRegister = () => {
   const [activeTab, setActiveTab] = useState(0);
 
-  const style: React.CSSProperties = {
+  const style = {
     display: 'flex',
   };
 
   return (
-    <div style={style}>
+    <Box sx={style}>
       <SideBarTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div
-        style={{
+      <Box
+        sx={{
           border: '1px solid rgb(229, 229, 229)',
           flex: 2,
           overflow: 'hidden',
@@ -44,8 +45,8 @@ const OrganizationRegister = () => {
         {activeTab === 2 ? <OrganizationView /> : null}
         {activeTab === 3 ? <ResponsibilitiesView /> : null}
         {activeTab === 4 ? <EntityTypesView /> : null}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

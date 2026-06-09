@@ -15,7 +15,7 @@
  */
 
 import { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
@@ -136,8 +136,8 @@ const ModalCreateM2MClient = ({
     <Dialog open={isModalOpen} onClose={handleOnClose} maxWidth="md" fullWidth>
       <DialogTitle>Creating a new M2M Client</DialogTitle>
       <DialogContent>
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
             flexDirection: 'column',
           }}
@@ -207,7 +207,7 @@ const ModalCreateM2MClient = ({
             }}
             handleRemove={removeResponsibilitySet}
           />
-        </div>
+        </Box>
       </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>

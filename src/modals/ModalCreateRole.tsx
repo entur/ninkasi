@@ -15,7 +15,7 @@
  */
 
 import { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
@@ -62,8 +62,8 @@ const ModalCreateRole = ({
     <Dialog open={isModalOpen} onClose={handleOnClose} maxWidth="sm" fullWidth>
       <DialogTitle>Create a new role</DialogTitle>
       <DialogContent>
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -89,7 +89,7 @@ const ModalCreateRole = ({
             margin="normal"
             required
           />
-        </div>
+        </Box>
       </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>

@@ -14,22 +14,34 @@
  *
  */
 
+import { Box } from '@mui/material';
+
 interface Props {
   username?: string;
   handleLogout: () => void;
 }
 
 const NoAccess = ({ username, handleLogout }: Props) => (
-  <div style={{ padding: 10, fontSize: 14 }}>
-    <div>
-      Your user <span style={{ fontStyle: 'italic' }}>{username} </span>
-      has <span style={{ fontWeight: 600 }}> not </span> the necessary authorization to access this
-      application.
-    </div>
-    <div style={{ color: 'blue', marginTop: 10, cursor: 'pointer' }} onClick={() => handleLogout()}>
+  <Box sx={{ padding: '10px', fontSize: 14 }}>
+    <Box>
+      Your user{' '}
+      <Box component="span" sx={{ fontStyle: 'italic' }}>
+        {username}{' '}
+      </Box>
+      has{' '}
+      <Box component="span" sx={{ fontWeight: 600 }}>
+        {' '}
+        not{' '}
+      </Box>{' '}
+      the necessary authorization to access this application.
+    </Box>
+    <Box
+      sx={{ color: 'blue', marginTop: '10px', cursor: 'pointer' }}
+      onClick={() => handleLogout()}
+    >
       Log out
-    </div>
-  </div>
+    </Box>
+  </Box>
 );
 
 export default NoAccess;

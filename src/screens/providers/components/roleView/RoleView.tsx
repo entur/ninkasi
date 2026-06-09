@@ -102,16 +102,16 @@ const RoleView = () => {
   const confirmDeleteTitle = getDeleteConfirmationTitle();
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+    <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Fab
           size="small"
-          style={{ float: 'right', marginRight: 10 }}
+          sx={{ float: 'right', marginRight: '10px' }}
           onClick={() => setIsCreateModalOpen(true)}
         >
           <Add />
         </Fab>
-      </div>
+      </Box>
       <Box>
         <Box
           sx={{
@@ -206,10 +206,10 @@ const RoleView = () => {
                 }}
               >
                 <Delete
-                  style={{
+                  sx={{
                     height: 20,
                     width: 20,
-                    marginRight: 10,
+                    marginRight: '10px',
                     verticalAlign: 'middle',
                     cursor: 'pointer',
                     color: '#fa7b81',
@@ -218,7 +218,7 @@ const RoleView = () => {
                 />
                 <Edit
                   onClick={() => handleEditRole(role)}
-                  style={{
+                  sx={{
                     height: 20,
                     width: 20,
                     verticalAlign: 'middle',
@@ -259,7 +259,7 @@ const RoleView = () => {
           }}
         />
       </Box>
-    </div>
+    </Box>
   );
 };
 

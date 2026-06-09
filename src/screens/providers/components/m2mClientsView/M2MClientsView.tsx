@@ -245,19 +245,19 @@ const M2MClientsView = () => {
   const confirmDeleteTitle = getDeleteConfirmationTitle();
 
   return (
-    <div>
-      <div
-        style={{
+    <Box>
+      <Box
+        sx={{
           display: 'flex',
           justifyContent: 'flex-end',
           alignItems: 'center',
-          marginBottom: 10,
+          marginBottom: '10px',
         }}
       >
-        <Fab size="small" style={{ marginRight: 10 }} onClick={openCreateModal}>
+        <Fab size="small" sx={{ marginRight: '10px' }} onClick={openCreateModal}>
           <Add />
         </Fab>
-      </div>
+      </Box>
       <Box>
         <Box sx={headerSx}>
           <Box sx={colNameSx}>
@@ -328,9 +328,9 @@ const M2MClientsView = () => {
               </Box>
               <Box sx={colActionsSx}>
                 <Edit
-                  style={{
+                  sx={{
                     height: 20,
-                    marginRight: 4,
+                    marginRight: '4px',
                     width: 20,
                     verticalAlign: 'middle',
                     cursor: 'pointer',
@@ -339,10 +339,10 @@ const M2MClientsView = () => {
                   onClick={() => openEditModal(client)}
                 />
                 <Delete
-                  style={{
+                  sx={{
                     height: 20,
                     width: 20,
-                    marginRight: 10,
+                    marginRight: '10px',
                     verticalAlign: 'middle',
                     cursor: 'pointer',
                     color: '#fa7b81',
@@ -387,7 +387,7 @@ const M2MClientsView = () => {
           handleCloseDeleteConfirmation();
         }}
       />
-    </div>
+    </Box>
   );
 };
 

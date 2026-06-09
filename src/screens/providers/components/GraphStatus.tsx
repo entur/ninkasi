@@ -15,6 +15,7 @@
  */
 
 import { useEffect } from 'react';
+import { Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
 import cfgreader from 'config/readConfig';
@@ -35,20 +36,20 @@ const getColorByStatus = (status?: string) => {
   }
 };
 
-const containerStyle: React.CSSProperties = {
+const containerSx = {
   display: 'flex',
   flexDirection: 'row',
   margin: '0 20px',
   lineHeight: '24px',
 };
 
-const wrapperStyle: React.CSSProperties = {
+const wrapperSx = {
   display: 'flex',
   flexDirection: 'column',
   margin: '0 10px',
 };
 
-const statusStyle: React.CSSProperties = {
+const statusSx = {
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'row',
@@ -60,27 +61,29 @@ interface GraphStatusDetailsProps {
 }
 
 const GraphStatusDetails = ({ status, started }: GraphStatusDetailsProps) => (
-  <div style={statusStyle}>
+  <Box sx={statusSx}>
     {status && started && (
       <>
-        <span
-          style={{
+        <Box
+          component="span"
+          sx={{
             fontWeight: 600,
-            marginLeft: 5,
+            marginLeft: '5px',
             color: getColorByStatus(status),
           }}
         >
           {status}
-        </span>
-        <span
+        </Box>
+        <Box
+          component="span"
           title={format(new Date(started), 'dd-MM-yyyy HH:mm:ss')}
-          style={{ fontSize: '0.8em', paddingLeft: 5, whiteSpace: 'nowrap' }}
+          sx={{ fontSize: '0.8em', paddingLeft: '5px', whiteSpace: 'nowrap' }}
         >
           {formatDistanceToNow(new Date(started), { addSuffix: true })}
-        </span>
+        </Box>
       </>
     )}
-  </div>
+  </Box>
 );
 
 const GraphStatus = () => {
@@ -113,12 +116,16 @@ const GraphStatus = () => {
   }
 
   return (
-    <div style={containerStyle}>
-      <div style={wrapperStyle}>
-        <h4 style={{ fontWeight: 'bold', margin: '0' }}>Transit Graph status</h4>
-        <h4 style={{ fontWeight: 'bold', margin: '0' }}>Street Graph status</h4>
-      </div>
-      <div style={wrapperStyle}>
+    <Box sx={containerSx}>
+      <Box sx={wrapperSx}>
+        <Box component="h4" sx={{ fontWeight: 'bold', margin: '0' }}>
+          Transit Graph status
+        </Box>
+        <Box component="h4" sx={{ fontWeight: 'bold', margin: '0' }}>
+          Street Graph status
+        </Box>
+      </Box>
+      <Box sx={wrapperSx}>
         {graphStatus.otp2 && (
           <GraphStatusDetails status={graphStatus.otp2.status} started={graphStatus.otp2.started} />
         )}
@@ -128,8 +135,8 @@ const GraphStatus = () => {
             started={baseGraphStatus.otp2.started}
           />
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

@@ -10,9 +10,10 @@ export default function HeaderBranding() {
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Link
+      <Box
+        component={Link}
         to="/timetable-pipeline"
-        style={{
+        sx={{
           display: 'flex',
           alignItems: 'center',
           textDecoration: 'none',
@@ -20,7 +21,7 @@ export default function HeaderBranding() {
         }}
       >
         <Logo providersEnv={providersEnv} pathname={location.pathname} />
-      </Link>
+      </Box>
     </Box>
   );
 }

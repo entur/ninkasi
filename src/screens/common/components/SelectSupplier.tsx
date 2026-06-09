@@ -1,4 +1,4 @@
-import { FormControl, NativeSelect } from '@mui/material';
+import { Box, FormControl, NativeSelect } from '@mui/material';
 import { memo, useCallback } from 'react';
 
 interface Supplier {
@@ -29,7 +29,7 @@ export const SelectSupplier = memo(
 
     return (
       <>
-        <FormControl variant="outlined" style={{ minWidth: 350 }}>
+        <FormControl variant="outlined" sx={{ minWidth: 350 }}>
           <NativeSelect
             value={currentValue}
             onChange={handleChange}
@@ -52,7 +52,7 @@ export const SelectSupplier = memo(
             ))}
           </NativeSelect>
         </FormControl>
-        {errorText && <div style={{ color: 'red' }}>{errorText}</div>}
+        {errorText && <Box sx={{ color: 'red' }}>{errorText}</Box>}
       </>
     );
   }

@@ -15,7 +15,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
@@ -65,8 +65,8 @@ const ModalEditRole = ({
     <Dialog open={isModalOpen} onClose={handleCloseModal} maxWidth="sm" fullWidth>
       <DialogTitle>{'Editing role ' + originalRoleName}</DialogTitle>
       <DialogContent>
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -94,7 +94,7 @@ const ModalEditRole = ({
             fullWidth
             margin="normal"
           />
-        </div>
+        </Box>
       </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>

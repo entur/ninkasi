@@ -15,7 +15,7 @@
  */
 
 import { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { FormControl, Select, MenuItem, InputLabel } from '@mui/material';
@@ -92,8 +92,8 @@ const ModalCreateOrganization = ({
     <Dialog open={isModalOpen} onClose={handleOnClose} maxWidth="sm" fullWidth>
       <DialogTitle>Create a new organisation</DialogTitle>
       <DialogContent>
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -159,7 +159,7 @@ const ModalCreateOrganization = ({
               ))}
             </Select>
           </FormControl>
-        </div>
+        </Box>
       </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>

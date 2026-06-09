@@ -15,7 +15,7 @@
  */
 
 import { useState } from 'react';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, Box, TextField } from '@mui/material';
 
 interface Zone {
   id: string;
@@ -61,7 +61,7 @@ const NotificationAddZoneRef = ({ dataSource, handleAdd }: NotificationAddZoneRe
 
   return (
     <div>
-      <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 10 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: '10px' }}>
         <Autocomplete
           options={formattedZones}
           getOptionLabel={option => option.text}
@@ -85,7 +85,7 @@ const NotificationAddZoneRef = ({ dataSource, handleAdd }: NotificationAddZoneRe
             />
           )}
         />
-      </div>
+      </Box>
     </div>
   );
 };

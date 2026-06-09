@@ -15,6 +15,7 @@
  */
 
 import { Warning, Error, CheckCircle } from '@mui/icons-material';
+import { Box } from '@mui/material';
 import { ExportStatus } from 'actions/formatUtils';
 
 interface Props {
@@ -28,11 +29,11 @@ const getIcon = (type?: string) => {
   const successColor = 'green';
 
   if (type === ExportStatus.ERROR) {
-    return <Error style={{ height: 20, width: 20 }} color={errorColor as any} />;
+    return <Error sx={{ height: 20, width: 20 }} color={errorColor as any} />;
   } else if (type === ExportStatus.WARNING) {
-    return <Warning style={{ height: 20, width: 20 }} color={warningColor as any} />;
+    return <Warning sx={{ height: 20, width: 20 }} color={warningColor as any} />;
   } else if (type === ExportStatus.OK) {
-    return <CheckCircle style={{ height: 20, width: 20 }} color={successColor as any} />;
+    return <CheckCircle sx={{ height: 20, width: 20 }} color={successColor as any} />;
   } else {
     return null;
   }
@@ -43,10 +44,12 @@ const StatusLabel = ({ type, label }: Props) => {
   const icon = getIcon(type);
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
       {icon}
-      <span style={{ marginLeft: 5 }}>{label}</span>
-    </div>
+      <Box component="span" sx={{ marginLeft: '5px' }}>
+        {label}
+      </Box>
+    </Box>
   );
 };
 

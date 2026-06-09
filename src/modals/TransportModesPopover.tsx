@@ -39,7 +39,7 @@ const TransportModesPopover = ({
 
   return (
     <div>
-      <Button variant="contained" onClick={handleOpen} style={{ marginLeft: 10 }}>
+      <Button variant="contained" onClick={handleOpen} sx={{ marginLeft: '10px' }}>
         <span>Generate service links for transport modes</span>
       </Button>
       <Menu
@@ -52,7 +52,7 @@ const TransportModesPopover = ({
         {allTransportModes.map((transportMode, i) => {
           const checked = transportModes.indexOf(transportMode) > -1;
           return (
-            <MenuItem key={'action-' + i} style={{ fontSize: 12, minHeight: 18 }}>
+            <MenuItem key={'action-' + i} sx={{ fontSize: 12, minHeight: 18 }}>
               <FormControlLabel
                 control={
                   <Checkbox

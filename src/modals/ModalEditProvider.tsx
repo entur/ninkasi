@@ -232,16 +232,16 @@ const ModalEditProvider = ({
   const title = getTitle();
   const editing = isEdit();
 
-  const rowStyle: React.CSSProperties = {
+  const rowSx = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-  };
+  } as const;
 
-  const formElement: React.CSSProperties = {
+  const formElementSx = {
     display: 'flex',
     alignItems: 'center',
-  };
+  } as const;
 
   const actions = [
     <Button
@@ -262,11 +262,11 @@ const ModalEditProvider = ({
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <div style={rowStyle}>
+        <Box sx={rowSx}>
           <TextField
             label="Name"
             value={form._name}
-            style={{ flex: 1 }}
+            sx={{ flex: 1 }}
             onChange={e => handleChange('_name', e.target.value)}
             error={!!errors._name}
             helperText={errors._name || ''}
@@ -275,18 +275,18 @@ const ModalEditProvider = ({
             disabled={editing}
             label="Chouette referential name"
             value={form._referential}
-            style={{ flex: 1, padding: '0 15px' }}
+            sx={{ flex: 1, padding: '0 15px' }}
             onChange={e => handleChange('_referential', e.target.value)}
             error={!!errors._referential}
             helperText={errors._referential || ''}
           />
-        </div>
-        <div style={rowStyle}>
+        </Box>
+        <Box sx={rowSx}>
           <TextField
             disabled={editing}
             label="Organisation"
             value={form._organisation}
-            style={{ flex: 1 }}
+            sx={{ flex: 1 }}
             onChange={e => handleChange('_organisation', e.target.value)}
             error={!!errors._organisation}
             helperText={errors._organisation || ''}
@@ -295,30 +295,30 @@ const ModalEditProvider = ({
             disabled={editing}
             label="User"
             value={form._user}
-            style={{ flex: 1, padding: '0 15px' }}
+            sx={{ flex: 1, padding: '0 15px' }}
             onChange={e => handleChange('_user', e.target.value)}
             error={!!errors._user}
             helperText={errors._user || ''}
           />
-        </div>
-        <div style={rowStyle}>
+        </Box>
+        <Box sx={rowSx}>
           <TextField
             disabled={editing}
             label="xmlns"
             value={form._xmlns}
-            style={{ flex: 1 }}
+            sx={{ flex: 1 }}
             onChange={e => handleChange('_xmlns', e.target.value)}
           />
           <TextField
             disabled={editing}
             label="xmlns URL"
             value={form._xmlnsurl}
-            style={{ flex: 1, padding: '0 15px' }}
+            sx={{ flex: 1, padding: '0 15px' }}
             onChange={e => handleChange('_xmlnsurl', e.target.value)}
           />
-        </div>
-        <div style={rowStyle}>
-          <FormControl style={{ flex: 1 }}>
+        </Box>
+        <Box sx={rowSx}>
+          <FormControl sx={{ flex: 1 }}>
             <InputLabel id="level2-provider-label">Level-2 provider</InputLabel>
             <Select
               labelId="level2-provider-label"
@@ -338,20 +338,20 @@ const ModalEditProvider = ({
                 ))}
             </Select>
           </FormControl>
-        </div>
+        </Box>
 
         {(window.config?.defaultAuthMethod === 'local' ||
           form._referential.indexOf('rb_') !== 0) && (
           <>
-            <div style={{ ...rowStyle, marginTop: 10 }}>
+            <Box sx={{ ...rowSx, marginTop: '10px' }}>
               <TransportModesPopover
                 allTransportModes={allTransportModes}
                 transportModes={form._generateMissingServiceLinksForModes}
                 handleCheckTransportMode={handleCheckTransportMode}
               />
-            </div>
-            <div style={{ ...rowStyle, marginTop: 10 }}>
-              <div style={{ ...formElement }}>
+            </Box>
+            <Box sx={{ ...rowSx, marginTop: '10px' }}>
+              <Box sx={{ ...formElementSx }}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -360,7 +360,7 @@ const ModalEditProvider = ({
                     />
                   }
                   label="Allow create missing stop place"
-                  style={{
+                  sx={{
                     flex: 1,
                     maxWidth: 360,
                     whiteSpace: 'nowrap',
@@ -372,10 +372,10 @@ const ModalEditProvider = ({
                     'Since stop places should be already present in the Chouette database (imported from NSR) the default setting is "off". ' +
                     'Used only when testing non-Norwegian datasets'
                 )}
-              </div>
-            </div>
-            <div style={{ ...rowStyle, marginTop: 10 }}>
-              <div style={{ ...formElement }}>
+              </Box>
+            </Box>
+            <Box sx={{ ...rowSx, marginTop: '10px' }}>
+              <Box sx={{ ...formElementSx }}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -384,7 +384,7 @@ const ModalEditProvider = ({
                     />
                   }
                   label="Enable auto import"
-                  style={{
+                  sx={{
                     flex: 1,
                     maxWidth: 360,
                     whiteSpace: 'nowrap',
@@ -396,10 +396,10 @@ const ModalEditProvider = ({
                     'either through the operator portal or the HTTP endpoint. ' +
                     'If disabled the received file is saved in the file storage but not imported'
                 )}
-              </div>
-            </div>
-            <div style={{ ...rowStyle, marginTop: 10 }}>
-              <div style={{ ...formElement }}>
+              </Box>
+            </Box>
+            <Box sx={{ ...rowSx, marginTop: '10px' }}>
+              <Box sx={{ ...formElementSx }}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -410,7 +410,7 @@ const ModalEditProvider = ({
                     />
                   }
                   label="Generate DatedServiceJourneyIds"
-                  style={{
+                  sx={{
                     flex: 1,
                     maxWidth: 360,
                     whiteSpace: 'nowrap',
@@ -418,10 +418,10 @@ const ModalEditProvider = ({
                   }}
                 />
                 {toolTip('Deprecated. Generates a dated NeTEx export to be processed by Namtar')}
-              </div>
-            </div>
-            <div style={{ ...rowStyle, marginTop: 10 }}>
-              <div style={{ ...formElement }}>
+              </Box>
+            </Box>
+            <Box sx={{ ...rowSx, marginTop: '10px' }}>
+              <Box sx={{ ...formElementSx }}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -430,7 +430,7 @@ const ModalEditProvider = ({
                     />
                   }
                   label="Enable experimental import"
-                  style={{
+                  sx={{
                     flex: 1,
                     maxWidth: 360,
                     whiteSpace: 'nowrap',
@@ -438,12 +438,12 @@ const ModalEditProvider = ({
                   }}
                 />
                 {toolTip('Enable the experimental import pipeline for this provider')}
-              </div>
-            </div>
+              </Box>
+            </Box>
           </>
         )}
-        <div style={{ ...rowStyle, marginTop: 10 }}>
-          <div style={{ ...formElement }}>
+        <Box sx={{ ...rowSx, marginTop: '10px' }}>
+          <Box sx={{ ...formElementSx }}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -452,7 +452,7 @@ const ModalEditProvider = ({
                 />
               }
               label="Enable auto validation"
-              style={{
+              sx={{
                 flex: 1,
                 maxWidth: 360,
                 whiteSpace: 'nowrap',
@@ -465,11 +465,11 @@ const ModalEditProvider = ({
                 : 'Enable nightly automatic triggering of "validation Level 2" steps. ' +
                     'This option does not affect the execution of the "validation Level 2" step triggered by a file delivery.'
             )}
-          </div>
-        </div>
+          </Box>
+        </Box>
         {form._referential.indexOf('rb_') === 0 && (
-          <div style={{ ...rowStyle, marginTop: 10 }}>
-            <div style={{ ...formElement }}>
+          <Box sx={{ ...rowSx, marginTop: '10px' }}>
+            <Box sx={{ ...formElementSx }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -478,7 +478,7 @@ const ModalEditProvider = ({
                   />
                 }
                 label="Enable private export (blocks and restricted publication)"
-                style={{
+                sx={{
                   flex: 1,
                   maxWidth: 360,
                   whiteSpace: 'nowrap',
@@ -491,8 +491,8 @@ const ModalEditProvider = ({
                   '(Blocks, DeadRuns, ServiceJourneys marked with publication=restricted). ' +
                   'This export is accessible only through a private, authorized API.'
               )}
-            </div>
-          </div>
+            </Box>
+          </Box>
         )}
       </DialogContent>
       <DialogActions>{actions}</DialogActions>

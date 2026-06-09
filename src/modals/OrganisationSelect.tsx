@@ -38,7 +38,7 @@ const OrganisationSelect = ({
   notification,
   handleChangeOrganization,
 }: OrganisationSelectProps) => (
-  <FormControl style={{ marginLeft: 16, flex: 1 }} margin="normal">
+  <FormControl sx={{ marginLeft: '16px', flex: 1 }} margin="normal">
     <InputLabel id="notification-org-label">Organization</InputLabel>
     <Select
       labelId="notification-org-label"

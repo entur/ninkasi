@@ -169,7 +169,7 @@ const ResponsibilitiesView = () => {
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Fab size="small" style={{ marginRight: 10 }} onClick={openModalWindow}>
+        <Fab size="small" sx={{ marginRight: '10px' }} onClick={openModalWindow}>
           <Add />
         </Fab>
       </Box>
@@ -228,10 +228,10 @@ const ResponsibilitiesView = () => {
                 }}
               >
                 <Delete
-                  style={{
+                  sx={{
                     height: 20,
                     width: 20,
-                    marginRight: 10,
+                    marginRight: '10px',
                     verticalAlign: 'middle',
                     cursor: 'pointer',
                     color: '#fa7b81',
@@ -239,7 +239,7 @@ const ResponsibilitiesView = () => {
                   onClick={() => handleOpenDeleteConfirmationDialog(responsibility)}
                 />
                 <Edit
-                  style={{
+                  sx={{
                     height: 20,
                     width: 20,
                     verticalAlign: 'middle',

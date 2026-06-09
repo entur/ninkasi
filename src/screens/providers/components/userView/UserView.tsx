@@ -136,9 +136,9 @@ const UserView = () => {
   const confirmDeleteTitle = getDeleteConfirmationTitle();
 
   return (
-    <div>
-      <div
-        style={{
+    <Box>
+      <Box
+        sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -151,10 +151,10 @@ const UserView = () => {
           }}
           organisationFilterId={organisationFilterId}
         />
-        <Fab size="small" style={{ marginRight: 10 }} onClick={openCreateModal}>
+        <Fab size="small" sx={{ marginRight: '10px' }} onClick={openCreateModal}>
           <Add />
         </Fab>
-      </div>
+      </Box>
       <Box>
         <Box
           sx={{
@@ -390,8 +390,9 @@ const UserView = () => {
                   fontSize: '0.9em',
                 }}
               >
-                <ul
-                  style={{
+                <Box
+                  component="ul"
+                  sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     listStyleType: 'circle',
@@ -402,7 +403,7 @@ const UserView = () => {
                         <li key={resp.id}>{resp.name} </li>
                       ))
                     : null}
-                </ul>
+                </Box>
               </Box>
               <Box
                 sx={{
@@ -433,9 +434,9 @@ const UserView = () => {
                 }}
               >
                 <Edit
-                  style={{
+                  sx={{
                     height: 20,
-                    marginRight: 4,
+                    marginRight: '4px',
                     width: 20,
                     verticalAlign: 'middle',
                     cursor: 'pointer',
@@ -444,11 +445,11 @@ const UserView = () => {
                   onClick={() => openEditModal(user)}
                 />
                 <Notifications
-                  style={{
-                    marginLeft: 4,
+                  sx={{
+                    marginLeft: '4px',
                     height: 20,
                     width: 20,
-                    marginRight: 4,
+                    marginRight: '4px',
                     verticalAlign: 'middle',
                     cursor: 'pointer',
                     color: 'rgba(25, 118, 210, 0.59)',
@@ -456,10 +457,10 @@ const UserView = () => {
                   onClick={() => openNotificationsModal(user)}
                 />
                 <Delete
-                  style={{
+                  sx={{
                     height: 20,
                     width: 20,
-                    marginRight: 10,
+                    marginRight: '10px',
                     verticalAlign: 'middle',
                     cursor: 'pointer',
                     color: '#fa7b81',
@@ -513,7 +514,7 @@ const UserView = () => {
           }}
         />
       </Box>
-    </div>
+    </Box>
   );
 };
 

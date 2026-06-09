@@ -15,6 +15,7 @@
  */
 
 import {
+  Box,
   Checkbox,
   FormControlLabel,
   FormControl,
@@ -118,8 +119,8 @@ const NotificationEventFilter = ({ notification, index }: NotificationEventFilte
     !!notification.eventFilter.type && notification.eventFilter.type === 'JOB';
 
   return (
-    <div style={{ display: 'block', padding: 10 }}>
-      <div style={{ display: 'flex', marginTop: 10 }}>
+    <Box sx={{ display: 'block', padding: '10px' }}>
+      <Box sx={{ display: 'flex', marginTop: '10px' }}>
         <NotificationTypeSelect
           notification={notification}
           notificationTypes={notificationTypes}
@@ -130,9 +131,9 @@ const NotificationEventFilter = ({ notification, index }: NotificationEventFilte
           notification={notification}
           handleChangeOrganization={handleChangeOrganization}
         />
-      </div>
-      <div style={{ display: 'flex', marginTop: 10 }}>
-        <FormControl style={{ flex: 1 }} margin="normal">
+      </Box>
+      <Box sx={{ display: 'flex', marginTop: '10px' }}>
+        <FormControl sx={{ flex: 1 }} margin="normal">
           <InputLabel id="event-filter-type-label">Event filter type</InputLabel>
           <Select
             labelId="event-filter-type-label"
@@ -147,7 +148,7 @@ const NotificationEventFilter = ({ notification, index }: NotificationEventFilte
             ))}
           </Select>
         </FormControl>
-        <FormControl style={{ marginLeft: 16, flex: 1 }} margin="normal">
+        <FormControl sx={{ marginLeft: '16px', flex: 1 }} margin="normal">
           <InputLabel id="job-domain-label">Job domain</InputLabel>
           <Select
             labelId="job-domain-label"
@@ -163,10 +164,10 @@ const NotificationEventFilter = ({ notification, index }: NotificationEventFilte
             ))}
           </Select>
         </FormControl>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', marginTop: 16 }}>
-        <div
-          style={{
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '16px' }}>
+        <Box
+          sx={{
             display: enableJobSpecific ? 'none' : 'flex',
             flexDirection: 'column',
             flex: 2,
@@ -183,15 +184,15 @@ const NotificationEventFilter = ({ notification, index }: NotificationEventFilte
             notification={notification}
             visible={enableJobSpecific}
           />
-        </div>
-        <div
-          style={{
+        </Box>
+        <Box
+          sx={{
             display: enableJobSpecific ? 'flex' : 'none',
-            marginTop: 10,
+            marginTop: '10px',
             alignItems: 'center',
           }}
         >
-          <div style={{ display: 'flex' }}>
+          <Box sx={{ display: 'flex' }}>
             <EventFilterActionsPopover
               index={index}
               eventFilter={notification.eventFilter}
@@ -204,11 +205,13 @@ const NotificationEventFilter = ({ notification, index }: NotificationEventFilte
               eventFilter={notification.eventFilter}
               index={index}
             />
-          </div>
-          <div style={{ color: 'red', fontSize: '0.8em', marginLeft: 10 }}>{getErrorMessage()}</div>
-        </div>
-      </div>
-      <div style={{ display: 'flex', marginTop: 16, alignItems: 'center' }}>
+          </Box>
+          <Box sx={{ color: 'red', fontSize: '0.8em', marginLeft: '10px' }}>
+            {getErrorMessage()}
+          </Box>
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', marginTop: '16px', alignItems: 'center' }}>
         <FormControlLabel
           control={
             <Checkbox
@@ -217,14 +220,14 @@ const NotificationEventFilter = ({ notification, index }: NotificationEventFilte
             />
           }
           label="Enabled"
-          style={{ width: 'auto' }}
+          sx={{ width: 'auto' }}
         />
         <IconButton onClick={deleteUserNotificationHandler} size="large">
           <Delete />
         </IconButton>
         <span>Delete</span>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

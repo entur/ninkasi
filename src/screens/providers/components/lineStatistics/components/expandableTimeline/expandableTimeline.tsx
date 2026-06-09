@@ -133,7 +133,6 @@ export const ExpandableTimeline = ({
                 variant="body2"
                 component="div"
                 title={effectivePeriodText(effectivePeriod)}
-                style={getTimelineStyle(index, effectivePeriod)}
                 sx={{
                   overflow: 'hidden',
                   display: 'flex',
@@ -141,6 +140,7 @@ export const ExpandableTimeline = ({
                   justifyContent: 'center',
                   borderRadius: '4px',
                   m: 0,
+                  ...getTimelineStyle(index, effectivePeriod),
                 }}
               >
                 {effectivePeriodText(effectivePeriod)}
@@ -165,9 +165,7 @@ export const ExpandableTimeline = ({
       </Box>
       {numberOfDaysHeader}
       <Collapse in={open} id={id} sx={{ overflow: 'auto' }}>
-        <Box sx={{ py: 2 }} style={contentStyle}>
-          {children}
-        </Box>
+        <Box sx={{ py: 2, ...contentStyle }}>{children}</Box>
       </Collapse>
     </Box>
   );

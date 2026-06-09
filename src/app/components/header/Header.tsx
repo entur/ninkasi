@@ -25,7 +25,7 @@ export default function Header() {
 
   return (
     <>
-      <AppBar position="fixed" style={backgroundStyle}>
+      <AppBar position="fixed" sx={backgroundStyle}>
         <Toolbar
           sx={{
             display: 'flex',

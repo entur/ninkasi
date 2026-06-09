@@ -14,6 +14,7 @@
  *
  */
 
+import { Box } from '@mui/material';
 import {
   getEntityClassificationRefString,
   getOrganizationNameByRef,
@@ -31,14 +32,14 @@ const ResponsbilityRoleAssignments = ({
   organizations,
   adminZones,
 }: ResponsbilityRoleAssignmentsProps) => {
-  const columnStyle: React.CSSProperties = {
+  const columnSx = {
     flexBasis: '100%',
     fontSize: 12,
     alignItems: 'flex-start',
     flex: 1,
   };
 
-  const itemStyle: React.CSSProperties = {
+  const itemSx = {
     alignSelf: 'flex-start',
     flexBasis: '100%',
     fontSize: 12,
@@ -46,26 +47,25 @@ const ResponsbilityRoleAssignments = ({
   };
 
   return (
-    <div>
-      <div>
-        <div style={{ display: 'flex', fontSize: 12, fontWeight: 600 }}>
-          <div style={columnStyle}>Type</div>
-          <div style={columnStyle}>Organisation</div>
-          <div style={columnStyle}>Area</div>
-          <div style={{ ...columnStyle, flex: 2 }}>Entity class</div>
-        </div>
+    <Box>
+      <Box>
+        <Box sx={{ display: 'flex', fontSize: 12, fontWeight: 600 }}>
+          <Box sx={columnSx}>Type</Box>
+          <Box sx={columnSx}>Organisation</Box>
+          <Box sx={columnSx}>Area</Box>
+          <Box sx={{ ...columnSx, flex: 2 }}>Entity class</Box>
+        </Box>
         {roleAssignments.map(role => (
-          <div key={'resp-role-' + role.id} style={{ display: 'flex' }}>
-            <div style={itemStyle}> {role.typeOfResponsibilityRoleRef}</div>
-            <div style={itemStyle}>
+          <Box key={'resp-role-' + role.id} sx={{ display: 'flex' }}>
+            <Box sx={itemSx}> {role.typeOfResponsibilityRoleRef}</Box>
+            <Box sx={itemSx}>
               {getOrganizationNameByRef(organizations, role.responsibleOrganisationRef)}
-            </div>
-            <div style={itemStyle}>
-              {getAdminZoneNameByRef(adminZones, role.responsibleAreaRef)}
-            </div>
-            <div style={{ ...itemStyle, flex: 2 }}>
-              <ul
-                style={{
+            </Box>
+            <Box sx={itemSx}>{getAdminZoneNameByRef(adminZones, role.responsibleAreaRef)}</Box>
+            <Box sx={{ ...itemSx, flex: 2 }}>
+              <Box
+                component="ul"
+                sx={{
                   display: 'flex',
                   flexWrap: 'wrap',
                   flexDirection: 'column',
@@ -81,12 +81,12 @@ const ResponsbilityRoleAssignments = ({
                       )}
                     </li>
                   ))}
-              </ul>
-            </div>
-          </div>
+              </Box>
+            </Box>
+          </Box>
         ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

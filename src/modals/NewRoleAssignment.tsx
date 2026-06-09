@@ -17,6 +17,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import {
+  Box,
   FormControl,
   Select,
   MenuItem,
@@ -115,16 +116,16 @@ const NewRoleAssignment = ({
   };
 
   return (
-    <div style={{ border: '1px dotted', height: '100%' }}>
-      <div
-        style={{
+    <Box sx={{ border: '1px dotted', height: '100%' }}>
+      <Box
+        sx={{
           fontSize: 12,
           textAlign: 'center',
           fontWeight: 600,
         }}
       >
         {isEditing ? 'Edit role assignment' : 'New role assignment'}
-      </div>
+      </Box>
       <FormControl fullWidth margin="normal">
         <InputLabel id="role-type-label">Role type</InputLabel>
         <Select
@@ -161,21 +162,26 @@ const NewRoleAssignment = ({
         chip={resultChip}
         handleDeleteChip={handleDeleteResultChip}
       />
-      <div style={{ width: '100%', fontSize: 12 }}>Entity classification</div>
-      <div style={{ display: 'flex' }}>
-        <select ref={entityClassRefsRef} multiple style={{ width: '100%', fontSize: 12 }}>
+      <Box sx={{ width: '100%', fontSize: 12 }}>Entity classification</Box>
+      <Box sx={{ display: 'flex' }}>
+        <Box
+          component="select"
+          ref={entityClassRefsRef}
+          multiple
+          sx={{ width: '100%', fontSize: 12 }}
+        >
           {newRole.entityClassificationAssignments.map((ref: any, idx: number) => (
             <option key={'entity-' + idx}>
               {getEntityClassificationRefString(ref.entityClassificationRef, ref.allow)}
             </option>
           ))}
-        </select>
+        </Box>
         <IconButton onClick={handleRemoveEntityLocal} size="large">
-          <Remove style={{ color: '#cc0000' }} />
+          <Remove sx={{ color: '#cc0000' }} />
         </IconButton>
-      </div>
-      <div
-        style={{
+      </Box>
+      <Box
+        sx={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -193,9 +199,9 @@ const NewRoleAssignment = ({
             />
           }
           label="Negate"
-          style={{ flex: 0.8 }}
+          sx={{ flex: 0.8 }}
         />
-        <FormControl style={{ flex: 2.5 }}>
+        <FormControl sx={{ flex: 2.5 }}>
           <InputLabel id="entity-type-label">Entity type</InputLabel>
           <Select
             labelId="entity-type-label"
@@ -210,7 +216,7 @@ const NewRoleAssignment = ({
             ))}
           </Select>
         </FormControl>
-        <FormControl style={{ flex: 2.5 }}>
+        <FormControl sx={{ flex: 2.5 }}>
           <InputLabel id="entity-classification-label">Classification</InputLabel>
           <Select
             labelId="entity-classification-label"
@@ -228,14 +234,14 @@ const NewRoleAssignment = ({
         </FormControl>
         <Button
           variant="text"
-          style={{ flex: 1 }}
+          sx={{ flex: 1 }}
           disabled={!tempEntityClassification.length}
           onClick={() => addNewRoleAssignment(tempEntityType, !negate)}
         >
           Add
         </Button>
-      </div>
-      <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+      </Box>
+      <Box sx={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
         <Button
           variant="contained"
           color="primary"
@@ -252,8 +258,8 @@ const NewRoleAssignment = ({
             Cancel
           </Button>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

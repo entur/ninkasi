@@ -121,55 +121,61 @@ const SuppliersContainer = () => {
           selectedSupplierId={activeProviderId}
         />
         {canEditOrganisation && (
-          <div
-            style={{
+          <Box
+            sx={{
               display: 'inline-block',
-              marginTop: 25,
-              marginLeft: 15,
+              marginTop: '25px',
+              marginLeft: '15px',
             }}
           >
-            <div
+            <Box
               title={toolTips.editProvider}
-              style={{
+              sx={{
                 display: 'inline-block',
                 cursor: 'pointer',
-                marginRight: 10,
+                marginRight: '10px',
               }}
               onClick={handleEditProvider}
             >
               {!displayAllSuppliers && (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Edit style={{ width: '1.1em', height: '1.1em' }} />
-                  <span style={{ marginLeft: 2 }}>Edit</span>
-                </div>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Edit sx={{ width: '1.1em', height: '1.1em' }} />
+                  <Box component="span" sx={{ marginLeft: '2px' }}>
+                    Edit
+                  </Box>
+                </Box>
               )}
-            </div>
-            <div
+            </Box>
+            <Box
               title={toolTips.createNewProvider}
-              style={{
+              sx={{
                 display: 'inline-block',
                 cursor: 'pointer',
-                marginRight: 10,
+                marginRight: '10px',
               }}
               onClick={handleNewProvider}
             >
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Add style={{ width: '1.2em', height: '1.2em' }} />
-                <span style={{ marginLeft: 2 }}>New</span>
-              </div>
-            </div>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Add sx={{ width: '1.2em', height: '1.2em' }} />
+                <Box component="span" sx={{ marginLeft: '2px' }}>
+                  New
+                </Box>
+              </Box>
+            </Box>
 
-            <div
+            <Box
               title={toolTips.deleteProvider}
-              style={{ display: 'inline-block', cursor: 'pointer' }}
+              sx={{ display: 'inline-block', cursor: 'pointer' }}
               onClick={() => handleOpenConfirmDeleteProviderDialog()}
             >
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <DeleteForever style={{ width: '1.2em', height: '1.2em' }} />
-                <span style={{ marginLeft: 2 }}>Delete</span>
-              </div>
-            </div>
-          </div>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <DeleteForever sx={{ width: '1.2em', height: '1.2em' }} />
+                <Box component="span" sx={{ marginLeft: '2px' }}>
+                  Delete
+                </Box>
+              </Box>
+            </Box>
+          </Box>
         )}
       </Box>
       <ConfirmDialog

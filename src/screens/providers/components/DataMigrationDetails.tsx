@@ -321,8 +321,8 @@ const DataMigrationDetails = () => {
   };
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+    <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
         {isLevel1Provider ? (
           <>
             <Button
@@ -392,7 +392,7 @@ const DataMigrationDetails = () => {
         >
           Clean
         </Button>
-      </div>
+      </Box>
       {isLevel1Provider ? (
         <TextField
           placeholder="Filter ..."
@@ -400,19 +400,19 @@ const DataMigrationDetails = () => {
           onChange={e => setFilterText(e.target.value)}
         />
       ) : (
-        <div
-          style={{
+        <Box
+          sx={{
             fontWeight: 600,
-            marginTop: 20,
+            marginTop: '20px',
             width: '100%',
             textAlign: 'center',
           }}
         >
           Level 2 provider
-        </div>
+        </Box>
       )}
       {isLevel1Provider ? (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <AdvancedFileList
             selectedIndices={selectedIndicesSource}
             updateIndices={handleUpdateIndicesSource}
@@ -475,9 +475,9 @@ const DataMigrationDetails = () => {
               <ArrowUpwardIcon fontSize="large" />
             </IconButton>
           </Box>
-        </div>
+        </Box>
       ) : null}
-    </div>
+    </Box>
   );
 };
 

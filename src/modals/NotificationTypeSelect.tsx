@@ -31,7 +31,7 @@ const NotificationTypeSelect = ({
   notificationTypes,
   handleChangeNotificationType,
 }: NotificationTypeSelectProps) => (
-  <FormControl style={{ flex: 1 }} margin="normal">
+  <FormControl sx={{ flex: 1 }} margin="normal">
     <InputLabel id="notification-type-label">Notification type</InputLabel>
     <Select
       labelId="notification-type-label"

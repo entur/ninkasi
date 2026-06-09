@@ -14,6 +14,7 @@
  *
  */
 
+import { Box } from '@mui/material';
 import SideBarTabsElement from './SideBarTabsElement';
 
 interface Props {
@@ -22,14 +23,14 @@ interface Props {
 }
 
 const SideBarTabs = ({ activeTab, setActiveTab }: Props) => {
-  const style: React.CSSProperties = {
+  const sx = {
     maxWidth: 120,
     fontSize: '0.9em',
-    marginRight: 10,
+    marginRight: '10px',
   };
 
   return (
-    <div style={style}>
+    <Box sx={sx}>
       <SideBarTabsElement label="Users" active={activeTab === 0} onClick={() => setActiveTab(0)} />
       <SideBarTabsElement
         label="M2M Clients"
@@ -52,7 +53,7 @@ const SideBarTabs = ({ activeTab, setActiveTab }: Props) => {
         active={activeTab === 5}
         onClick={() => setActiveTab(5)}
       />
-    </div>
+    </Box>
   );
 };
 
