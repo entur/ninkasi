@@ -49,8 +49,11 @@ jobs:
     environment: 'dev'
     steps:
       - uses: actions/checkout@v6.0.3
-      - name: Download all workflow run artifacts
+      - name: Download build artifact
         uses: actions/download-artifact@v8.0.1
+        with:
+          name: build
+          path: build
       - name: Copy favicon
         run: cp build/nin-d.ico build/favicon.ico
       - uses: FirebaseExtended/action-hosting-deploy@v0.10.0
@@ -65,8 +68,11 @@ jobs:
     environment: 'staging'
     steps:
       - uses: actions/checkout@v6.0.3
-      - name: Download all workflow run artifacts
+      - name: Download build artifact
         uses: actions/download-artifact@v8.0.1
+        with:
+          name: build
+          path: build
       - name: Copy favicon
         run: cp build/nin-s.ico build/favicon.ico
       - uses: FirebaseExtended/action-hosting-deploy@v0.10.0
@@ -81,8 +87,11 @@ jobs:
     environment: 'prod'
     steps:
       - uses: actions/checkout@v6.0.3
-      - name: Download all workflow run artifacts
+      - name: Download build artifact
         uses: actions/download-artifact@v8.0.1
+        with:
+          name: build
+          path: build
       - name: Copy favicon
         run: cp build/nin-p.ico build/favicon.ico
       - uses: FirebaseExtended/action-hosting-deploy@v0.10.0
