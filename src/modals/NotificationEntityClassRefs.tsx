@@ -86,7 +86,7 @@ const NotificationEntityClassRefs = ({
           onClick={handleRemoveEntityClass}
           size="large"
         >
-          <Remove sx={{ color: '#cc0000' }} />
+          <Remove sx={{ color: 'error.main' }} />
         </IconButton>
       </Box>
       {entityClassRefs.length === 0 && (

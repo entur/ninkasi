@@ -181,7 +181,7 @@ const NewRoleAssignment = ({
           onClick={handleRemoveEntityLocal}
           size="large"
         >
-          <Remove sx={{ color: '#cc0000' }} />
+          <Remove sx={{ color: 'error.main' }} />
         </IconButton>
       </Box>
       <Box

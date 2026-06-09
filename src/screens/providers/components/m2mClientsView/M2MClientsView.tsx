@@ -120,7 +120,7 @@ const sortableSx = {
   cursor: 'pointer',
   userSelect: 'none',
   '&:hover': {
-    color: '#1976d2',
+    color: 'primary.main',
   },
 };
 
@@ -138,7 +138,7 @@ const rowItemSx = {
 };
 
 const clientLinkSx = {
-  color: '#1976d2',
+  color: 'primary.main',
   textDecoration: 'none',
   '&:hover': {
     textDecoration: 'underline',
@@ -156,7 +156,7 @@ const responsibilityListSx = {
 };
 
 const noResponsibilitiesSx = {
-  color: '#999',
+  color: 'text.disabled',
   fontStyle: 'italic',
 };
 
@@ -344,7 +344,7 @@ const M2MClientsView = () => {
                     marginRight: '10px',
                     verticalAlign: 'middle',
                     cursor: 'pointer',
-                    color: '#fa7b81',
+                    color: 'error.light',
                   }}
                   onClick={() => handleOpenDeleteConfirmationDialog(client)}
                 />

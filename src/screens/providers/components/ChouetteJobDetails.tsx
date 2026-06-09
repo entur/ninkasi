@@ -300,7 +300,7 @@ const ChouetteJobDetails = () => {
           )}
           {requestingJobs && (
             <Box sx={{ mx: 2.5, mb: 1.25 }}>
-              <CircularProgress size={23} sx={{ color: '#26A65B' }} />
+              <CircularProgress size={23} sx={{ color: 'success.main' }} />
             </Box>
           )}
         </Box>

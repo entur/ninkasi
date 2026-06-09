@@ -275,17 +275,17 @@ const ModalEditResponsibilitySet = ({
                 }}
                 size="large"
               >
-                <Add sx={{ color: '#228B22' }} />
+                <Add sx={{ color: 'success.main' }} />
               </IconButton>
               <IconButton aria-label="Edit role assignment" onClick={handleEditRole} size="large">
-                <Edit sx={{ color: '#1976d2' }} />
+                <Edit sx={{ color: 'primary.main' }} />
               </IconButton>
               <IconButton
                 aria-label="Remove role assignment"
                 onClick={handleRemoveRole}
                 size="large"
               >
-                <Remove sx={{ color: '#cc0000' }} />
+                <Remove sx={{ color: 'error.main' }} />
               </IconButton>
             </Box>
             {isCreatingNewRole ? (

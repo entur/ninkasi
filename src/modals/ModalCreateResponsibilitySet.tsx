@@ -223,14 +223,14 @@ const ModalCreateResponsibilitySet = ({
                 onClick={() => setIsCreatingNewRole(true)}
                 size="large"
               >
-                <Add sx={{ color: '#228B22' }} />
+                <Add sx={{ color: 'success.main' }} />
               </IconButton>
               <IconButton
                 aria-label="Remove role assignment"
                 onClick={handleRemoveRole}
                 size="large"
               >
-                <Remove sx={{ color: '#cc0000' }} />
+                <Remove sx={{ color: 'error.main' }} />
               </IconButton>
             </Box>
             {isCreatingNewRole ? (

@@ -34,9 +34,9 @@ const NotificationStatus = ({ notification }: Props) => {
   return (
     <Box sx={{ display: 'flex' }}>
       {notification.enabled ? (
-        <CheckCircle sx={{ color: '#008000', height: 15, width: 15 }} />
+        <CheckCircle sx={{ color: 'success.main', height: 15, width: 15 }} />
       ) : (
-        <HighlightOff sx={{ color: '#cc0000', height: 15, width: 15 }} />
+        <HighlightOff sx={{ color: 'error.main', height: 15, width: 15 }} />
       )}
       <Box component="span" sx={{ fontWeight: 600, marginLeft: '4px' }}>
         {enumMap[notification.notificationType]}

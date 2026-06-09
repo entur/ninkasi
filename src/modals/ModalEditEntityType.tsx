@@ -206,14 +206,14 @@ const ModalEditEntityType = ({
                 onClick={() => setIsCreatingNewClassification(true)}
                 size="large"
               >
-                <Add sx={{ color: '#228B22' }} />
+                <Add sx={{ color: 'success.main' }} />
               </IconButton>
               <IconButton
                 aria-label="Remove classification"
                 onClick={handleRemoveClassification}
                 size="large"
               >
-                <Remove sx={{ color: '#cc0000' }} />
+                <Remove sx={{ color: 'error.main' }} />
               </IconButton>
             </Box>
             {isCreatingNewClassification ? (

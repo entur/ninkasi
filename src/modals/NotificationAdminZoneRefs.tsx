@@ -92,7 +92,7 @@ const NotificationAdminZoneRefs = ({
           onClick={handleRemoveAdminRefRole}
           size="large"
         >
-          <Remove sx={{ color: '#cc0000' }} />
+          <Remove sx={{ color: 'error.main' }} />
         </IconButton>
       </Box>
     </Box>

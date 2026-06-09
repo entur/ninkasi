@@ -57,9 +57,9 @@ const NotificationTypeBox = ({
       >
         <Box sx={{ display: 'flex' }}>
           {notification.enabled ? (
-            <NotificationsActive sx={{ color: '#1d9439' }} />
+            <NotificationsActive sx={{ color: 'success.main' }} />
           ) : (
-            <NotificationsOff sx={{ color: '#777' }} />
+            <NotificationsOff sx={{ color: 'text.secondary' }} />
           )}
           <Box sx={{ fontWeight: 600, fontSize: 14 }}>{notification.notificationType}</Box>
         </Box>

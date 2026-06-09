@@ -239,7 +239,7 @@ const ResponsibilitiesView = () => {
                     marginRight: '10px',
                     verticalAlign: 'middle',
                     cursor: 'pointer',
-                    color: '#fa7b81',
+                    color: 'error.light',
                   }}
                   onClick={() => handleOpenDeleteConfirmationDialog(responsibility)}
                 />
