@@ -26,7 +26,6 @@ export interface Config {
 
   chouetteBaseUrl?: string;
   udugBaseUrl?: string;
-  ninsarBaseUrl?: string;
   enturPartnerUrl?: string;
 
   // Inlined-MF API URLs

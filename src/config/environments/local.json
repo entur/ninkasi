@@ -10,10 +10,6 @@
   "endpointBase": "/",
   "chouetteBaseUrl": "http://localhost:21080/",
   "udugBaseUrl": "/netex-validation-reports/",
-  "udugMicroFrontendUrl": "http://localhost:21002",
-  "ninsarBaseUrl": "/line-statistics/",
-  "ninsarMicroFrontendUrl": "",
-  "zagmukMicroFrontendUrl": "http://localhost:21001",
   "enturPartnerUrl": "",
   "defaultAuthMethod": "local",
   "mockOauth2TokenUrl": "http://localhost:21999/default/token"

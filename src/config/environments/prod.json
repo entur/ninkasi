@@ -9,7 +9,6 @@
   "endpointBase": "/",
   "chouetteBaseUrl": "https://rutedb.entur.org/",
   "udugBaseUrl": "/netex-validation-reports/",
-  "ninsarBaseUrl": "/line-statistics/",
   "timetableValidationApiUrl": "https://api.entur.io/timetable-admin/v1/timetable-validation",
   "timetableEventsApiUrl": "https://api.entur.io/timetable-admin/v1/events/timetable",
   "timetableAdminApiUrl": "https://api.entur.io/timetable-admin/v1/timetable",
