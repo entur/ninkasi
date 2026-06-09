@@ -14,47 +14,43 @@
  *
  */
 
-import { Box } from '@mui/material';
-import SideBarTabsElement from './SideBarTabsElement';
+import { Tabs, Tab } from '@mui/material';
 
 interface Props {
   activeTab: number;
   setActiveTab: (value: number) => void;
 }
 
-const SideBarTabs = ({ activeTab, setActiveTab }: Props) => {
-  const sx = {
-    maxWidth: 120,
-    fontSize: '0.9em',
-    marginRight: '10px',
-  };
+const labels = [
+  'Users',
+  'M2M Clients',
+  'Organizations',
+  'Roles',
+  'Responsibility sets',
+  'Entity types',
+];
 
-  return (
-    <Box sx={sx}>
-      <SideBarTabsElement label="Users" active={activeTab === 0} onClick={() => setActiveTab(0)} />
-      <SideBarTabsElement
-        label="M2M Clients"
-        active={activeTab === 1}
-        onClick={() => setActiveTab(1)}
-      />
-      <SideBarTabsElement
-        label="Organizations"
-        active={activeTab === 2}
-        onClick={() => setActiveTab(2)}
-      />
-      <SideBarTabsElement label="Roles" active={activeTab === 3} onClick={() => setActiveTab(3)} />
-      <SideBarTabsElement
-        label="Responsibility sets"
-        active={activeTab === 4}
-        onClick={() => setActiveTab(4)}
-      />
-      <SideBarTabsElement
-        label="Entity types"
-        active={activeTab === 5}
-        onClick={() => setActiveTab(5)}
-      />
-    </Box>
-  );
-};
+const SideBarTabs = ({ activeTab, setActiveTab }: Props) => (
+  <Tabs
+    orientation="vertical"
+    value={activeTab}
+    onChange={(_e, value) => setActiveTab(value)}
+    aria-label="Organization sections"
+    sx={{
+      borderRight: 1,
+      borderColor: 'divider',
+      minWidth: 180,
+      mr: 1.25,
+      '& .MuiTab-root': {
+        alignItems: 'flex-start',
+        textAlign: 'left',
+      },
+    }}
+  >
+    {labels.map(label => (
+      <Tab key={label} label={label} />
+    ))}
+  </Tabs>
+);
 
 export default SideBarTabs;

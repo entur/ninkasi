@@ -15,7 +15,7 @@
  */
 
 import { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useAppSelector } from '@/store/hooks';
 import SideBarTabs from '../providers/components/SideBarTabs';
 import UserView from '../providers/components/userView/UserView';
@@ -42,8 +42,10 @@ const Organization = () => {
   if (!isOrganisationAdmin) {
     return (
       <Box sx={{ padding: '40px 20px', textAlign: 'center' }}>
-        <h2>Access Denied</h2>
-        <p>You do not have permission to access the Organization register.</p>
+        <Typography variant="h2" gutterBottom>
+          Access Denied
+        </Typography>
+        <Typography>You do not have permission to access the Organization register.</Typography>
       </Box>
     );
   }

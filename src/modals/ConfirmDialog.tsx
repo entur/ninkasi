@@ -14,7 +14,13 @@
  *
  */
 
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
 import Button from '@mui/material/Button';
 
 interface ConfirmDialogProps {
@@ -44,7 +50,7 @@ const ConfirmDialog = ({ open, handleClose, handleSubmit, title, info }: Confirm
     <Dialog open={open} maxWidth="sm" fullWidth>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <p>{info}</p>
+        <DialogContentText>{info}</DialogContentText>
       </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>

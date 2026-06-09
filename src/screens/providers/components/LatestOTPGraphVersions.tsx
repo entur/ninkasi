@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
 import { format, formatDistanceToNow } from 'date-fns';
 import { UnfoldLess, UnfoldMore } from '@mui/icons-material';
-import { Box, Popover } from '@mui/material';
+import { Box, Popover, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import * as SuppliersReducer from 'reducers/SuppliersReducer';
 const { fetchOTPGraphVersions } = SuppliersReducer as any;
@@ -58,9 +58,9 @@ const GraphVersionDetails = ({
   size,
 }: GraphVersionDetailsProps) => (
   <Box sx={versionDetailsStyle}>
-    <div>
-      <h5>{name}</h5>
-    </div>
+    <Typography variant="h5" component="h5">
+      {name}
+    </Typography>
     <Box sx={{ display: 'flex' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Box component="span" sx={{ fontWeight: 'bold' }}>
