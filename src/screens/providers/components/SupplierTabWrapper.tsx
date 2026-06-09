@@ -163,6 +163,37 @@ const SupplierTabWrapper = () => {
     }
   }, [displayAllSuppliers, onTabChangeForAllProviders]);
 
+  const onTabChangeForProvider = useCallback(
+    (_event: unknown, newValue: unknown) => {
+      if (typeof newValue === 'object') return;
+      const value = newValue as string;
+
+      const tabIndex = getTabIndexForValue(value, false);
+      setCurrentTabIndex(tabIndex);
+      setActiveTabForProvider(value);
+
+      if (value) {
+        window.history.pushState(
+          window.config.endpointBase,
+          'Title',
+          `?id=${activeId}&tab=${value}`
+        );
+      }
+
+      switch (value) {
+        case 'chouetteJobs':
+          dispatch(getChouetteJobStatus(getToken));
+          break;
+        case 'events':
+          dispatch(fetchProviderStatus({ id: activeId, getToken }));
+          break;
+        default:
+          break;
+      }
+    },
+    [activeId, dispatch, getToken]
+  );
+
   // componentWillMount-equivalent for polling — runs once.
   useEffect(() => {
     let timer: ReturnType<typeof setInterval> | undefined;
@@ -251,30 +282,6 @@ const SupplierTabWrapper = () => {
       setCurrentTabIndex(tabIndexFromParams);
     }
   }, [currentTabIndex, getTabIndexFromParams]);
-
-  const onTabChangeForProvider = (_event: unknown, newValue: unknown) => {
-    if (typeof newValue === 'object') return;
-    const value = newValue as string;
-
-    const tabIndex = getTabIndexForValue(value, false);
-    setCurrentTabIndex(tabIndex);
-    setActiveTabForProvider(value);
-
-    if (value) {
-      window.history.pushState(window.config.endpointBase, 'Title', `?id=${activeId}&tab=${value}`);
-    }
-
-    switch (value) {
-      case 'chouetteJobs':
-        dispatch(getChouetteJobStatus(getToken));
-        break;
-      case 'events':
-        dispatch(fetchProviderStatus({ id: activeId, getToken }));
-        break;
-      default:
-        break;
-    }
-  };
 
   if (fileListIsLoading) {
     return (
