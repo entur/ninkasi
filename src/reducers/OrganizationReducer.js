@@ -14,6 +14,7 @@
  *
  */
 
+import { createSlice } from '@reduxjs/toolkit';
 import * as types from 'actions/actionTypes';
 import {
   changeFilterValue,
@@ -45,300 +46,184 @@ const initialState = {
   m2mClientStatus: { error: null },
 };
 
-const removeByIndex = (list, index) => [...list.slice(0, index), ...list.slice(index + 1)];
+const setStatus = (state, key, code, error = null) => {
+  state[key] = { error, code };
+};
 
-const OrganizationReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case types.RECEIVED_ROLES:
-      return Object.assign({}, state, { roles: action.payLoad });
-
-    case types.CREATED_ROLE:
-      return Object.assign({}, state, {
-        roleStatus: {
-          error: null,
-          code: 'ROLE_CREATED',
-        },
-      });
-
-    case types.FAILED_CREATING_ROLE:
-      return Object.assign({}, state, {
-        roleStatus: {
-          error: action.payLoad,
-          code: 'ROLE_CREATED_FAILED',
-        },
-      });
-
-    case types.RECEIVED_ORGANIZATIONS:
-      return Object.assign({}, state, { organizations: action.payLoad });
-
-    case types.CREATED_ORGANIZATION:
-      return Object.assign({}, state, {
-        organizationStatus: {
-          error: null,
-          code: 'ORGANIZATION_CREATED',
-        },
-      });
-
-    case types.UPDATED_ORGANIZATION:
-      return Object.assign({}, state, {
-        organizationStatus: {
-          error: null,
-          code: 'ORGANIZATION_UPDATED',
-        },
-      });
-
-    case types.FAILED_CREATING_ORGANIZATION:
-      return Object.assign({}, state, {
-        organizationStatus: {
-          error: action.payLoad,
-          code: 'ORGANIZATION_CREATED_FAILED',
-        },
-      });
-
-    case types.CREATED_RESPONSIBILITY_SET:
-      return Object.assign({}, state, {
-        responsibilitySetStatus: {
-          error: null,
-          code: 'RESPONSIBILITY_SET_CREATED',
-        },
-      });
-
-    case types.CREATED_USER:
-      return Object.assign({}, state, {
-        userStatus: {
-          error: null,
-          code: 'USER_CREATED',
-        },
-      });
-
-    case types.UPDATED_USER:
-      return Object.assign({}, state, {
-        userStatus: {
-          error: null,
-          code: 'USER_UPDATED',
-        },
-      });
-
-    case types.CREATED_ENTITY_TYPE:
-      return Object.assign({}, state, {
-        entityTypeStatus: {
-          error: null,
-          code: 'ENTITY_TYPE_CREATED',
-        },
-      });
-
-    case types.FAILED_CREATING_ENTITY_TYPE:
-      return Object.assign({}, state, {
-        entityTypeStatus: {
-          error: action.payLoad,
-          code: 'ENTITY_TYPE_CREATED_FAILED',
-        },
-      });
-
-    case types.UPDATED_RESPONSIBILITY_SET:
-      return Object.assign({}, state, {
-        responsibilitySetStatus: {
-          error: null,
-          code: 'RESPONSIBILITY_SET_UPDATED',
-        },
-      });
-
-    case types.UPDATED_ENTITY_TYPE:
-      return Object.assign({}, state, {
-        entityTypeStatus: {
-          error: null,
-          code: 'ENTITY_TYPE_UPDATED',
-        },
-      });
-
-    case types.CHANGED_EVENT_FILTER_TYPE:
-      return Object.assign({}, state, {
-        userNotifications: changeFilterValue(
+const organizationSlice = createSlice({
+  name: 'organization',
+  initialState,
+  reducers: {},
+  extraReducers: builder => {
+    builder
+      .addCase(types.RECEIVED_ROLES, (state, action) => {
+        state.roles = action.payLoad;
+      })
+      .addCase(types.CREATED_ROLE, state => setStatus(state, 'roleStatus', 'ROLE_CREATED'))
+      .addCase(types.FAILED_CREATING_ROLE, (state, action) =>
+        setStatus(state, 'roleStatus', 'ROLE_CREATED_FAILED', action.payLoad)
+      )
+      .addCase(types.RECEIVED_ORGANIZATIONS, (state, action) => {
+        state.organizations = action.payLoad;
+      })
+      .addCase(types.CREATED_ORGANIZATION, state =>
+        setStatus(state, 'organizationStatus', 'ORGANIZATION_CREATED')
+      )
+      .addCase(types.UPDATED_ORGANIZATION, state =>
+        setStatus(state, 'organizationStatus', 'ORGANIZATION_UPDATED')
+      )
+      .addCase(types.FAILED_CREATING_ORGANIZATION, (state, action) =>
+        setStatus(state, 'organizationStatus', 'ORGANIZATION_CREATED_FAILED', action.payLoad)
+      )
+      .addCase(types.CREATED_RESPONSIBILITY_SET, state =>
+        setStatus(state, 'responsibilitySetStatus', 'RESPONSIBILITY_SET_CREATED')
+      )
+      .addCase(types.UPDATED_RESPONSIBILITY_SET, state =>
+        setStatus(state, 'responsibilitySetStatus', 'RESPONSIBILITY_SET_UPDATED')
+      )
+      .addCase(types.CREATED_USER, state => setStatus(state, 'userStatus', 'USER_CREATED'))
+      .addCase(types.UPDATED_USER, state => setStatus(state, 'userStatus', 'USER_UPDATED'))
+      .addCase(types.CREATED_ENTITY_TYPE, state =>
+        setStatus(state, 'entityTypeStatus', 'ENTITY_TYPE_CREATED')
+      )
+      .addCase(types.FAILED_CREATING_ENTITY_TYPE, (state, action) =>
+        setStatus(state, 'entityTypeStatus', 'ENTITY_TYPE_CREATED_FAILED', action.payLoad)
+      )
+      .addCase(types.UPDATED_ENTITY_TYPE, state =>
+        setStatus(state, 'entityTypeStatus', 'ENTITY_TYPE_UPDATED')
+      )
+      .addCase(types.CHANGED_EVENT_FILTER_TYPE, (state, action) => {
+        state.userNotifications = changeFilterValue(
           state.userNotifications,
           'type',
           action.payLoad.index,
           action.payLoad.value
-        ),
-      });
-
-    case types.CHANGED_EVENT_FILTER_JOB_DOMAIN:
-      return Object.assign({}, state, {
-        userNotifications: changeJobDomainValue(
+        );
+      })
+      .addCase(types.CHANGED_EVENT_FILTER_JOB_DOMAIN, (state, action) => {
+        state.userNotifications = changeJobDomainValue(
           state.userNotifications,
           action.payLoad.index,
           action.payLoad.value
-        ),
-      });
-
-    case types.CHANGE_EVENT_FILTER_ACTION:
-      return Object.assign({}, state, {
-        userNotifications: changeFilterActions(
+        );
+      })
+      .addCase(types.CHANGE_EVENT_FILTER_ACTION, (state, action) => {
+        state.userNotifications = changeFilterActions(
           state.userNotifications,
           action.payLoad.index,
           action.payLoad.action,
           action.payLoad.isChecked
-        ),
-      });
-
-    case types.CHANGED_EVENT_FILTER_ORG_REF:
-      return Object.assign({}, state, {
-        userNotifications: changeFilterValue(
+        );
+      })
+      .addCase(types.CHANGED_EVENT_FILTER_ORG_REF, (state, action) => {
+        state.userNotifications = changeFilterValue(
           state.userNotifications,
           'organisationRef',
           action.payLoad.index,
           action.payLoad.organisationRef
-        ),
-      });
-
-    case types.UPDATED_NOTIFICATION_CONFIGURATION:
-      return Object.assign({}, state, {
-        userNotifications: state.userNotifications.map(un => {
+        );
+      })
+      .addCase(types.UPDATED_NOTIFICATION_CONFIGURATION, state => {
+        state.userNotifications.forEach(un => {
           delete un.isNew;
-          return un;
-        }),
-      });
-
-    case types.CHANGED_NOTIFICATION_TYPE:
-      return Object.assign({}, state, {
-        userNotifications: state.userNotifications.map((un, i) => {
-          if (i === action.payLoad.index) {
-            return {
-              ...un,
-              notificationType: action.payLoad.type,
-            };
-          }
-          return un;
-        }),
-      });
-
-    case types.CHANGE_EVENT_FILTER_STATE:
-      return Object.assign({}, state, {
-        userNotifications: changeFilterStates(
+        });
+      })
+      .addCase(types.CHANGED_NOTIFICATION_TYPE, (state, action) => {
+        const un = state.userNotifications[action.payLoad.index];
+        if (un) {
+          un.notificationType = action.payLoad.type;
+        }
+      })
+      .addCase(types.CHANGE_EVENT_FILTER_STATE, (state, action) => {
+        state.userNotifications = changeFilterStates(
           state.userNotifications,
           action.payLoad.index,
           action.payLoad.state,
           action.payLoad.isChecked
-        ),
-      });
-
-    case types.RECEIVED_ADMINISTRATIVE_ZONES:
-      return Object.assign({}, state, {
-        administrativeZones: action.payLoad,
-      });
-
-    case types.RECEIVED_CODESPACES:
-      return Object.assign({}, state, { codeSpaces: action.payLoad });
-
-    case types.RECEIVED_USERS:
-      return Object.assign({}, state, { users: action.payLoad });
-
-    case types.RECEIVED_M2M_CLIENTS:
-      return Object.assign({}, state, { m2mClients: action.payLoad });
-
-    case types.CREATED_M2M_CLIENT:
-    case types.UPDATED_M2M_CLIENT:
-      return Object.assign({}, state, {
-        m2mClientStatus: {
-          error: null,
-        },
-      });
-
-    case types.FAILED_M2M_CLIENT_OPERATION:
-      return Object.assign({}, state, {
-        m2mClientStatus: {
-          error: action.payLoad,
-        },
-      });
-
-    case types.RECEIVED_RESPONSIBILITES:
-      return Object.assign({}, state, { responsibilities: action.payLoad });
-
-    case types.RECEIVED_ENTITY_TYPES:
-      return Object.assign({}, state, { entityTypes: action.payLoad });
-
-    case types.RECEIVED_USER_NOTIFICATIONS:
-      return Object.assign({}, state, {
-        userNotifications: action.payLoad,
-        userNotificationsLoading: false,
-      });
-
-    case types.RECEIVED_EVENT_FILTER_TYPES:
-      return Object.assign({}, state, {
-        eventFilterTypes: action.payLoad,
-      });
-
-    case types.RECEIVED_JOB_DOMAINS:
-      return Object.assign({}, state, {
-        jobDomains: action.payLoad,
-      });
-
-    case types.RECEIVED_JOB_ACTIONS_FOR_DOMAIN:
-      return Object.assign({}, state, {
-        jobDomainActions: {
-          ...state.jobDomainActions,
-          [action.payLoad.domain]: action.payLoad.data,
-        },
-      });
-
-    case types.RECEIVED_EVENT_FILTER_STATES:
-      return Object.assign({}, state, {
-        eventFilterStates: action.payLoad,
-      });
-
-    case types.RECEIVED_NOTIFICATION_TYPES:
-      return Object.assign({}, state, {
-        notificationTypes: action.payLoad,
-      });
-
-    case types.ADDED_ADMIN_ZONE_REF:
-      return Object.assign({}, state, {
-        userNotifications: addAdminRef(
+        );
+      })
+      .addCase(types.RECEIVED_ADMINISTRATIVE_ZONES, (state, action) => {
+        state.administrativeZones = action.payLoad;
+      })
+      .addCase(types.RECEIVED_CODESPACES, (state, action) => {
+        state.codeSpaces = action.payLoad;
+      })
+      .addCase(types.RECEIVED_USERS, (state, action) => {
+        state.users = action.payLoad;
+      })
+      .addCase(types.RECEIVED_M2M_CLIENTS, (state, action) => {
+        state.m2mClients = action.payLoad;
+      })
+      .addCase(types.CREATED_M2M_CLIENT, state => {
+        state.m2mClientStatus = { error: null };
+      })
+      .addCase(types.UPDATED_M2M_CLIENT, state => {
+        state.m2mClientStatus = { error: null };
+      })
+      .addCase(types.FAILED_M2M_CLIENT_OPERATION, (state, action) => {
+        state.m2mClientStatus = { error: action.payLoad };
+      })
+      .addCase(types.RECEIVED_RESPONSIBILITES, (state, action) => {
+        state.responsibilities = action.payLoad;
+      })
+      .addCase(types.RECEIVED_ENTITY_TYPES, (state, action) => {
+        state.entityTypes = action.payLoad;
+      })
+      .addCase(types.RECEIVED_USER_NOTIFICATIONS, (state, action) => {
+        state.userNotifications = action.payLoad;
+        state.userNotificationsLoading = false;
+      })
+      .addCase(types.RECEIVED_EVENT_FILTER_TYPES, (state, action) => {
+        state.eventFilterTypes = action.payLoad;
+      })
+      .addCase(types.RECEIVED_JOB_DOMAINS, (state, action) => {
+        state.jobDomains = action.payLoad;
+      })
+      .addCase(types.RECEIVED_JOB_ACTIONS_FOR_DOMAIN, (state, action) => {
+        state.jobDomainActions[action.payLoad.domain] = action.payLoad.data;
+      })
+      .addCase(types.RECEIVED_EVENT_FILTER_STATES, (state, action) => {
+        state.eventFilterStates = action.payLoad;
+      })
+      .addCase(types.RECEIVED_NOTIFICATION_TYPES, (state, action) => {
+        state.notificationTypes = action.payLoad;
+      })
+      .addCase(types.ADDED_ADMIN_ZONE_REF, (state, action) => {
+        state.userNotifications = addAdminRef(
           state.userNotifications,
           action.payLoad.index,
           action.payLoad.id
-        ),
-      });
-
-    case types.REMOVED_ADMIN_ZONE_REF:
-      return Object.assign({}, state, {
-        userNotifications: removeAdminRef(
+        );
+      })
+      .addCase(types.REMOVED_ADMIN_ZONE_REF, (state, action) => {
+        state.userNotifications = removeAdminRef(
           state.userNotifications,
           action.payLoad.index,
           action.payLoad.id
-        ),
-      });
-
-    case types.ADDED_ENTITY_CLASS_REF:
-      return Object.assign({}, state, {
-        userNotifications: addEntityClassRef(
+        );
+      })
+      .addCase(types.ADDED_ENTITY_CLASS_REF, (state, action) => {
+        state.userNotifications = addEntityClassRef(
           state.userNotifications,
           action.payLoad.index,
           action.payLoad.entityClassRef
-        ),
-      });
-
-    case types.REMOVED_ENTITY_CLASS_REF:
-      return Object.assign({}, state, {
-        userNotifications: removeEntityClassRef(
+        );
+      })
+      .addCase(types.REMOVED_ENTITY_CLASS_REF, (state, action) => {
+        state.userNotifications = removeEntityClassRef(
           state.userNotifications,
           action.payLoad.index,
           action.payLoad.entityClassRef
-        ),
-      });
-
-    case types.DELETED_USER_NOTIFICATION:
-      return Object.assign({}, state, {
-        userNotifications: removeByIndex(state.userNotifications, action.payLoad),
-      });
-
-    case types.REQUESTED_USER_NOTIFICATION:
-      return Object.assign({}, state, {
-        userNotificationsLoading: true,
-      });
-
-    case types.ADDED_NEW_USER_NOTIFICATION:
-      return Object.assign({}, state, {
-        userNotifications: state.userNotifications.concat({
+        );
+      })
+      .addCase(types.DELETED_USER_NOTIFICATION, (state, action) => {
+        state.userNotifications.splice(action.payLoad, 1);
+      })
+      .addCase(types.REQUESTED_USER_NOTIFICATION, state => {
+        state.userNotificationsLoading = true;
+      })
+      .addCase(types.ADDED_NEW_USER_NOTIFICATION, state => {
+        state.userNotifications.push({
           enabled: false,
           isNew: true,
           notificationType: 'EMAIL',
@@ -348,25 +233,15 @@ const OrganizationReducer = (state = initialState, action) => {
             actions: [],
             states: [],
           },
-        }),
+        });
+      })
+      .addCase(types.ENABLED_USER_NOTIFICATION, (state, action) => {
+        const un = state.userNotifications[action.payLoad.index];
+        if (un) {
+          un.enabled = action.payLoad.enabled;
+        }
       });
+  },
+});
 
-    case types.ENABLED_USER_NOTIFICATION:
-      return Object.assign({}, state, {
-        userNotifications: state.userNotifications.map((un, i) => {
-          if (i === action.payLoad.index) {
-            return {
-              ...un,
-              enabled: action.payLoad.enabled,
-            };
-          }
-          return un;
-        }),
-      });
-
-    default:
-      return state;
-  }
-};
-
-export default OrganizationReducer;
+export default organizationSlice.reducer;

@@ -14,9 +14,10 @@
  *
  */
 
+import { createSlice } from '@reduxjs/toolkit';
 import * as types from 'actions/actionTypes';
 
-const intialState = {
+const initialState = {
   shouldUpdateProvider: false,
   editProviderModal: false,
   outboundFilelist: [],
@@ -40,115 +41,82 @@ const intialState = {
   },
 };
 
-const UtilsReducer = (state = intialState, action) => {
-  switch (action.type) {
-    case types.ADD_NOTIFICATION:
-      return Object.assign({}, state, {
-        notification: {
+const toggleSortOrder = (current, payLoad) => {
+  if (current.property === payLoad) {
+    return current.sortOrder >= 1 ? 0 : 1;
+  }
+  return 0;
+};
+
+const utilsSlice = createSlice({
+  name: 'utils',
+  initialState,
+  reducers: {},
+  extraReducers: builder => {
+    builder
+      .addCase(types.ADD_NOTIFICATION, (state, action) => {
+        state.notification = {
           message: action.message,
           level: action.level,
-        },
-      });
-
-    case types.APPEND_FILES_TO_OUTBOUND:
-      return Object.assign({}, state, {
-        outboundFilelist: [
-          ...state.outboundFilelist,
-          ...action.payLoad.filter(x => state.outboundFilelist.indexOf(x) === -1),
-        ],
-      });
-
-    case types.REMOVE_FILES_FROM_OUTBOUND:
-      return Object.assign({}, state, {
-        outboundFilelist: state.outboundFilelist.filter(x => action.payLoad.indexOf(x) === -1),
-      });
-
-    case types.RESET_OUTBOUND_FILES:
-      return Object.assign({}, state, { outboundFilelist: [] });
-
-    case types.UPDATE_FILES_TO_OUTBOUND:
-      return Object.assign({}, state, { outboundFilelist: action.payLoad });
-
-    case types.TOGGLE_EXPANDABLE_FOR_EVENT_WRAPPER:
-      return Object.assign({}, state, {
-        expandedEvents: toggleExpandedEvents(action.payLoad, state.expandedEvents),
-      });
-
-    case types.DISMISS_EDIT_PROVIDER_DIALOG:
-      return Object.assign({}, state, { editProviderModal: false });
-
-    case types.OPENED_EDIT_PROVIDER_DIALOG:
-      return Object.assign({}, state, {
-        shouldUpdateProvider: true,
-        editProviderModal: true,
-      });
-
-    case types.OPENED_NEW_PROVIDER_DIALOG:
-      return Object.assign({}, state, {
-        shouldUpdateProvider: false,
-        editProviderModal: true,
-      });
-
-    case types.SUCCESS_FETCH_PROVIDER:
-      return Object.assign({}, state, { supplierForm: action.payLoad });
-
-    case types.SORT_EVENTLIST_BY_COLUMN: {
-      let eventsSortOrder = 0;
-
-      if (state.eventListSortOrder.property === action.payLoad) {
-        eventsSortOrder = state.eventListSortOrder.sortOrder === 1 ? 0 : 1;
-      }
-
-      return Object.assign({}, state, {
-        eventListSortOrder: {
+        };
+      })
+      .addCase(types.APPEND_FILES_TO_OUTBOUND, (state, action) => {
+        const incoming = action.payLoad.filter(x => !state.outboundFilelist.includes(x));
+        state.outboundFilelist.push(...incoming);
+      })
+      .addCase(types.REMOVE_FILES_FROM_OUTBOUND, (state, action) => {
+        state.outboundFilelist = state.outboundFilelist.filter(x => !action.payLoad.includes(x));
+      })
+      .addCase(types.RESET_OUTBOUND_FILES, state => {
+        state.outboundFilelist = [];
+      })
+      .addCase(types.UPDATE_FILES_TO_OUTBOUND, (state, action) => {
+        state.outboundFilelist = action.payLoad;
+      })
+      .addCase(types.TOGGLE_EXPANDABLE_FOR_EVENT_WRAPPER, (state, action) => {
+        const idx = state.expandedEvents.indexOf(action.payLoad);
+        if (idx === -1) {
+          state.expandedEvents.push(action.payLoad);
+        } else {
+          state.expandedEvents.splice(idx, 1);
+        }
+      })
+      .addCase(types.DISMISS_EDIT_PROVIDER_DIALOG, state => {
+        state.editProviderModal = false;
+      })
+      .addCase(types.OPENED_EDIT_PROVIDER_DIALOG, state => {
+        state.shouldUpdateProvider = true;
+        state.editProviderModal = true;
+      })
+      .addCase(types.OPENED_NEW_PROVIDER_DIALOG, state => {
+        state.shouldUpdateProvider = false;
+        state.editProviderModal = true;
+      })
+      .addCase(types.SUCCESS_FETCH_PROVIDER, (state, action) => {
+        state.supplierForm = action.payLoad;
+      })
+      .addCase(types.SORT_EVENTLIST_BY_COLUMN, (state, action) => {
+        state.eventListSortOrder = {
           property: action.payLoad,
-          sortOrder: eventsSortOrder,
-        },
-      });
-    }
-
-    case types.SORT_CHOUETTE_ALL_BY_COLUMN: {
-      let chouetteAllSortOrder = 0;
-
-      if (state.chouetteListAllSortOrder.property === action.payLoad) {
-        chouetteAllSortOrder = state.chouetteListAllSortOrder.sortOrder >= 1 ? 0 : 1;
-      }
-
-      return Object.assign({}, state, {
-        chouetteListAllSortOrder: {
+          sortOrder: toggleSortOrder(state.eventListSortOrder, action.payLoad),
+        };
+      })
+      .addCase(types.SORT_CHOUETTE_ALL_BY_COLUMN, (state, action) => {
+        state.chouetteListAllSortOrder = {
           property: action.payLoad,
-          sortOrder: chouetteAllSortOrder,
-        },
-      });
-    }
-
-    case types.SORT_CHOUETTE_BY_COLUMN: {
-      let chouetteSortOrder = 0;
-
-      if (state.chouetteListSortOrder.property === action.payLoad) {
-        chouetteSortOrder = state.chouetteListSortOrder.sortOrder >= 1 ? 0 : 1;
-      }
-
-      return Object.assign({}, state, {
-        chouetteListSortOrder: {
+          sortOrder: toggleSortOrder(state.chouetteListAllSortOrder, action.payLoad),
+        };
+      })
+      .addCase(types.SORT_CHOUETTE_BY_COLUMN, (state, action) => {
+        state.chouetteListSortOrder = {
           property: action.payLoad,
-          sortOrder: chouetteSortOrder,
-        },
+          sortOrder: toggleSortOrder(state.chouetteListSortOrder, action.payLoad),
+        };
+      })
+      .addCase(types.CONFIG_LOADED, state => {
+        state.isConfigLoaded = true;
       });
-    }
+  },
+});
 
-    case types.CONFIG_LOADED:
-      return Object.assign({}, state, { isConfigLoaded: true });
-
-    default:
-      return state;
-  }
-};
-
-const toggleExpandedEvents = (index, expanded) => {
-  if (expanded.indexOf(index) === -1) return expanded.concat(index);
-
-  return expanded.filter(item => item !== index);
-};
-
-export default UtilsReducer;
+export default utilsSlice.reducer;

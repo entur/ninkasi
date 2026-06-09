@@ -14,9 +14,10 @@
  *
  */
 
+import { createSlice } from '@reduxjs/toolkit';
 import * as types from 'actions/actionTypes';
 
-const cleanSlate = {
+const initialState = {
   filenames: {
     isLoading: false,
   },
@@ -46,253 +47,141 @@ const cleanSlate = {
   requesting_chouette_all_job: false,
 };
 
-const MardukReducer = (state = cleanSlate, action) => {
-  switch (action.type) {
-    case types.ERROR_IMPORT_DATA:
-      return Object.assign({}, state, {
-        isLoading: false,
-        import_data: action.payLoad,
-        error: true,
-      });
-
-    case types.SUCCESS_IMPORT_DATA:
-      return Object.assign({}, state, {
-        isLoading: false,
-        import_data: action.payLoad,
-        error: false,
-      });
-
-    case types.REQUEST_IMPORT_DATA:
-      return Object.assign({}, state, { isLoading: true, error: false });
-
-    case types.ERROR_EXPORT_DATA:
-      return Object.assign({}, state, {
-        isLoading: false,
-        export_data: action.payLoad,
-        error: true,
-      });
-
-    case types.SUCCESS_EXPORT_DATA:
-      return Object.assign({}, state, {
-        isLoading: false,
-        export_data: action.payLoad,
-        error: false,
-      });
-
-    case types.REQUEST_EXPORT_DATA:
-      return Object.assign({}, state, { isLoading: true, error: false });
-
-    case types.ERROR_TRANSFER_DATA:
-      return Object.assign({}, state, {
-        isLoading: false,
-        transfer_data: action.payLoad,
-        error: true,
-      });
-
-    case types.SUCCESS_TRANSFER_DATA:
-      return Object.assign({}, state, {
-        isLoading: false,
-        transfer_data: action.payLoad,
-        error: false,
-      });
-
-    case types.REQUEST_TRANSFER_DATA:
-      return Object.assign({}, state, { isLoading: true, error: false });
-
-    case types.ERROR_DELETE_DATA:
-      return Object.assign({}, state, {
-        isLoading: false,
-        delete_data: action.payLoad,
-        error: true,
-      });
-
-    case types.SUCCESS_DELETE_DATA:
-      return Object.assign({}, state, {
-        isLoading: false,
-        delete_data: action.payLoad,
-        error: false,
-      });
-
-    case types.REQUEST_DELETE_DATA:
-      return Object.assign({}, state, { isLoading: true, error: false });
-
-    case types.ERROR_BUILD_GRAPH:
-      return Object.assign({}, state, {
-        isLoading: false,
-        build_graph: action.payLoad,
-        error: true,
-      });
-
-    case types.SUCCESS_BUILD_GRAPH:
-      return Object.assign({}, state, {
-        isLoading: false,
-        build_graph: action.payLoad,
-        error: false,
-      });
-
-    case types.REQUEST_BUILD_GRAPH:
-      return Object.assign({}, state, { isLoading: true, error: false });
-
-    case types.ERROR_BUILD_BASE_GRAPH:
-      return Object.assign({}, state, {
-        isLoading: false,
-        build_base_graph: action.payLoad,
-        error: true,
-      });
-
-    case types.SUCCESS_BUILD_BASE_GRAPH:
-      return Object.assign({}, state, {
-        isLoading: false,
-        build_base_graph: action.payLoad,
-        error: false,
-      });
-
-    case types.REQUEST_BUILD_BASE_GRAPH:
-      return Object.assign({}, state, { isLoading: true, error: false });
-
-    case types.ERROR_BUILD_CANDIDATE_GRAPH_OTP:
-      return Object.assign({}, state, {
-        isLoading: false,
-        build_candidate_graph_otp: action.payLoad,
-        error: true,
-      });
-
-    case types.SUCCESS_BUILD_CANDIDATE_GRAPH_OTP:
-      return Object.assign({}, state, {
-        isLoading: false,
-        build_candidate_graph_otp: action.payLoad,
-        error: false,
-      });
-
-    case types.REQUEST_BUILD_CANDIDATE_GRAPH_OTP:
-      return Object.assign({}, state, { isLoading: true, error: false });
-
-    case types.ERROR_BUILD_CANDIDATE_BASE_GRAPH_OTP:
-      return Object.assign({}, state, {
-        isLoading: false,
-        build_candidate_base_graph_otp: action.payLoad,
-        error: true,
-      });
-
-    case types.SUCCESS_BUILD_CANDIDATE_BASE_GRAPH_OTP:
-      return Object.assign({}, state, {
-        isLoading: false,
-        build_candidate_base_graph_otp: action.payLoad,
-        error: false,
-      });
-
-    case types.REQUEST_BUILD_CANDIDATE_BASE_GRAPH_OTP:
-      return Object.assign({}, state, { isLoading: true, error: false });
-
-    case types.ERROR_FETCH_OSM:
-      return Object.assign({}, state, {
-        isLoading: false,
-        fetch_osm: action.payLoad,
-        error: true,
-      });
-
-    case types.SUCCESS_FETCH_OSM:
-      return Object.assign({}, state, {
-        isLoading: false,
-        fetch_osm: action.payLoad,
-        error: false,
-      });
-
-    case types.REQUEST_FETCH_OSM:
-      return Object.assign({}, state, { isLoading: true, error: false });
-
-    case types.ERROR_VALIDATE_PROVIDER:
-      return Object.assign({}, state, {
-        isLoading: false,
-        validate_provider: action.payLoad,
-        error: true,
-      });
-
-    case types.SUCCESS_VALIDATE_PROVIDER:
-      return Object.assign({}, state, {
-        isLoading: false,
-        validate_provider: action.payLoad,
-        error: false,
-      });
-
-    case types.REQUEST_FILENAMES:
-      return Object.assign({}, state, {
-        filenames: { isLoading: true, error: false },
-      });
-
-    case types.SUCCESS_FILENAMES:
-      return Object.assign({}, state, {
-        filenames: { isLoading: false, data: action.payLoad, error: false },
-      });
-
-    case types.ERROR_FILENAMES:
-      return Object.assign({}, state, {
-        filesnames: { isLoading: false, error: action.payLoad },
-      });
-
-    case types.SUCCESS_CHOUETTE_JOB_STATUS:
-      return Object.assign({}, state, {
-        requesting_chouette_job: false,
-        chouetteJobStatus: action.payLoad,
-      });
-
-    case types.SUCCESS_ALL_CHOUETTE_JOB_STATUS:
-      return Object.assign({}, state, {
-        requesting_chouette_all_job: false,
-        chouetteAllJobStatus: action.payLoad,
-      });
-
-    case types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER: {
-      const chouetteJobFilter = { ...state.chouetteJobFilter };
-      chouetteJobFilter[action.payLoad.option] = action.payLoad.value;
-      return Object.assign({}, state, { chouetteJobFilter: chouetteJobFilter });
-    }
-
-    case types.TOGGLE_CHOUETTE_INFO_CHECKBOX_ALL_FILTER: {
-      const chouetteJobAllFilter = { ...state.chouetteJobAllFilter };
-      chouetteJobAllFilter[action.payLoad.option] = action.payLoad.value;
-      return Object.assign({}, state, {
-        chouetteJobAllFilter: chouetteJobAllFilter,
-      });
-    }
-
-    case types.SET_ACTIVE_ACTION_FILTER:
-      return Object.assign({}, state, { actionFilter: action.payLoad });
-
-    case types.SET_ACTIVE_ACTION_ALL_FILTER:
-      return Object.assign({}, state, { actionAllFilter: action.payLoad });
-
-    case types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER:
-      if (state.chouette_cancel_token) {
-        const cancelToken = state.chouette_cancel_token;
-        cancelToken('Operation canceled by new request.');
-      }
-
-      return Object.assign({}, state, {
-        requesting_chouette_job: true,
-        chouette_cancel_token: action.payLoad,
-      });
-
-    case types.REQUESTED_ALL_CHOUETTE_JOB_STATUS:
-      if (state.chouette_cancel_all_token) {
-        const cancelAllToken = state.chouette_cancel_all_token;
-        cancelAllToken('Operation canceled by new request');
-      }
-
-      return Object.assign({}, state, {
-        requesting_chouette_all_job: true,
-        chouette_cancel_all_token: action.payLoad,
-      });
-
-    case types.SELECTED_ALL_SUPPLIERS:
-      return Object.assign({}, state, {
-        chouette_cancel_all_token: null,
-        chouette_cancel_token: null,
-      });
-
-    default:
-      return state;
-  }
+const setOpData = (state, key, payLoad, errored) => {
+  state.isLoading = false;
+  state[key] = payLoad;
+  state.error = errored;
 };
 
-export default MardukReducer;
+const setRequesting = state => {
+  state.isLoading = true;
+  state.error = false;
+};
+
+const mardukSlice = createSlice({
+  name: 'marduk',
+  initialState,
+  reducers: {},
+  extraReducers: builder => {
+    builder
+      .addCase(types.ERROR_IMPORT_DATA, (state, action) =>
+        setOpData(state, 'import_data', action.payLoad, true)
+      )
+      .addCase(types.SUCCESS_IMPORT_DATA, (state, action) =>
+        setOpData(state, 'import_data', action.payLoad, false)
+      )
+      .addCase(types.REQUEST_IMPORT_DATA, setRequesting)
+      .addCase(types.ERROR_EXPORT_DATA, (state, action) =>
+        setOpData(state, 'export_data', action.payLoad, true)
+      )
+      .addCase(types.SUCCESS_EXPORT_DATA, (state, action) =>
+        setOpData(state, 'export_data', action.payLoad, false)
+      )
+      .addCase(types.REQUEST_EXPORT_DATA, setRequesting)
+      .addCase(types.ERROR_TRANSFER_DATA, (state, action) =>
+        setOpData(state, 'transfer_data', action.payLoad, true)
+      )
+      .addCase(types.SUCCESS_TRANSFER_DATA, (state, action) =>
+        setOpData(state, 'transfer_data', action.payLoad, false)
+      )
+      .addCase(types.REQUEST_TRANSFER_DATA, setRequesting)
+      .addCase(types.ERROR_DELETE_DATA, (state, action) =>
+        setOpData(state, 'delete_data', action.payLoad, true)
+      )
+      .addCase(types.SUCCESS_DELETE_DATA, (state, action) =>
+        setOpData(state, 'delete_data', action.payLoad, false)
+      )
+      .addCase(types.REQUEST_DELETE_DATA, setRequesting)
+      .addCase(types.ERROR_BUILD_GRAPH, (state, action) =>
+        setOpData(state, 'build_graph', action.payLoad, true)
+      )
+      .addCase(types.SUCCESS_BUILD_GRAPH, (state, action) =>
+        setOpData(state, 'build_graph', action.payLoad, false)
+      )
+      .addCase(types.REQUEST_BUILD_GRAPH, setRequesting)
+      .addCase(types.ERROR_BUILD_BASE_GRAPH, (state, action) =>
+        setOpData(state, 'build_base_graph', action.payLoad, true)
+      )
+      .addCase(types.SUCCESS_BUILD_BASE_GRAPH, (state, action) =>
+        setOpData(state, 'build_base_graph', action.payLoad, false)
+      )
+      .addCase(types.REQUEST_BUILD_BASE_GRAPH, setRequesting)
+      .addCase(types.ERROR_BUILD_CANDIDATE_GRAPH_OTP, (state, action) =>
+        setOpData(state, 'build_candidate_graph_otp', action.payLoad, true)
+      )
+      .addCase(types.SUCCESS_BUILD_CANDIDATE_GRAPH_OTP, (state, action) =>
+        setOpData(state, 'build_candidate_graph_otp', action.payLoad, false)
+      )
+      .addCase(types.REQUEST_BUILD_CANDIDATE_GRAPH_OTP, setRequesting)
+      .addCase(types.ERROR_BUILD_CANDIDATE_BASE_GRAPH_OTP, (state, action) =>
+        setOpData(state, 'build_candidate_base_graph_otp', action.payLoad, true)
+      )
+      .addCase(types.SUCCESS_BUILD_CANDIDATE_BASE_GRAPH_OTP, (state, action) =>
+        setOpData(state, 'build_candidate_base_graph_otp', action.payLoad, false)
+      )
+      .addCase(types.REQUEST_BUILD_CANDIDATE_BASE_GRAPH_OTP, setRequesting)
+      .addCase(types.ERROR_FETCH_OSM, (state, action) =>
+        setOpData(state, 'fetch_osm', action.payLoad, true)
+      )
+      .addCase(types.SUCCESS_FETCH_OSM, (state, action) =>
+        setOpData(state, 'fetch_osm', action.payLoad, false)
+      )
+      .addCase(types.REQUEST_FETCH_OSM, setRequesting)
+      .addCase(types.ERROR_VALIDATE_PROVIDER, (state, action) =>
+        setOpData(state, 'validate_provider', action.payLoad, true)
+      )
+      .addCase(types.SUCCESS_VALIDATE_PROVIDER, (state, action) =>
+        setOpData(state, 'validate_provider', action.payLoad, false)
+      )
+      .addCase(types.REQUEST_FILENAMES, state => {
+        state.filenames = { isLoading: true, error: false };
+      })
+      .addCase(types.SUCCESS_FILENAMES, (state, action) => {
+        state.filenames = { isLoading: false, data: action.payLoad, error: false };
+      })
+      .addCase(types.ERROR_FILENAMES, (state, action) => {
+        // NOTE: typo `filesnames` preserved from original behavior.
+        state.filesnames = { isLoading: false, error: action.payLoad };
+      })
+      .addCase(types.SUCCESS_CHOUETTE_JOB_STATUS, (state, action) => {
+        state.requesting_chouette_job = false;
+        state.chouetteJobStatus = action.payLoad;
+      })
+      .addCase(types.SUCCESS_ALL_CHOUETTE_JOB_STATUS, (state, action) => {
+        state.requesting_chouette_all_job = false;
+        state.chouetteAllJobStatus = action.payLoad;
+      })
+      .addCase(types.TOGGLE_CHOUETTE_INFO_CHECKBOX_FILTER, (state, action) => {
+        state.chouetteJobFilter[action.payLoad.option] = action.payLoad.value;
+      })
+      .addCase(types.TOGGLE_CHOUETTE_INFO_CHECKBOX_ALL_FILTER, (state, action) => {
+        state.chouetteJobAllFilter[action.payLoad.option] = action.payLoad.value;
+      })
+      .addCase(types.SET_ACTIVE_ACTION_FILTER, (state, action) => {
+        state.actionFilter = action.payLoad;
+      })
+      .addCase(types.SET_ACTIVE_ACTION_ALL_FILTER, (state, action) => {
+        state.actionAllFilter = action.payLoad;
+      })
+      .addCase(types.REQUESTED_CHOUETTE_JOBS_FOR_PROVIDER, (state, action) => {
+        if (state.chouette_cancel_token) {
+          state.chouette_cancel_token('Operation canceled by new request.');
+        }
+        state.requesting_chouette_job = true;
+        state.chouette_cancel_token = action.payLoad;
+      })
+      .addCase(types.REQUESTED_ALL_CHOUETTE_JOB_STATUS, (state, action) => {
+        if (state.chouette_cancel_all_token) {
+          state.chouette_cancel_all_token('Operation canceled by new request');
+        }
+        state.requesting_chouette_all_job = true;
+        state.chouette_cancel_all_token = action.payLoad;
+      })
+      .addCase(types.SELECTED_ALL_SUPPLIERS, state => {
+        state.chouette_cancel_all_token = null;
+        state.chouette_cancel_token = null;
+      });
+  },
+});
+
+export default mardukSlice.reducer;

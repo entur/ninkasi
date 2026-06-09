@@ -14,16 +14,20 @@
  *
  */
 
+import { createSlice } from '@reduxjs/toolkit';
 import { UPDATE_AUTH } from 'actions/actionTypes';
 
-const UserReducer = (state = {}, action) => {
-  switch (action.type) {
-    case UPDATE_AUTH:
-      return Object.assign({}, state, { auth: action.payLoad });
+const initialState = {};
 
-    default:
-      return state;
-  }
-};
+const userSlice = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {},
+  extraReducers: builder => {
+    builder.addCase(UPDATE_AUTH, (state, action) => {
+      state.auth = action.payLoad;
+    });
+  },
+});
 
-export default UserReducer;
+export default userSlice.reducer;
