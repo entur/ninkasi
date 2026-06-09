@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import {
   ThemeProvider,
   StyledEngineProvider,
@@ -6,43 +6,37 @@ import {
   adaptV4Theme,
   CssBaseline,
 } from '@mui/material';
-import { connect } from 'react-redux';
 import { useAuth } from '../auth';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { updateAuth } from '@/reducers/UserReducer';
+import { notifyConfigIsLoaded } from '@/reducers/UtilsReducer';
+import { fetchUserContext } from '@/reducers/UserContextReducer';
 import Header from './components/header/Header';
 import NoAccess from './components/NoAccess';
 import Router from './Router';
 import NotificationContainer from './components/NotificationContainer';
-import UtilsActions from '../actions/UtilsActions';
-import UserContextActions from '../actions/UserContextActions';
-import UserActions from '../actions/UserActions';
 
-interface AppProps {
-  dispatch: any;
-  isConfigLoaded: boolean;
-  isAdmin: boolean;
-}
-
-const App: React.FC<AppProps> = ({ dispatch, isConfigLoaded, isAdmin }) => {
+const App = () => {
   const auth = useAuth();
+  const dispatch = useAppDispatch();
+  const isConfigLoaded = useAppSelector(state => state.UtilsReducer.isConfigLoaded);
+  const isAdmin = useAppSelector(state => state.UserContextReducer.isRouteDataAdmin);
 
   const getToken = useCallback(async () => {
-    return auth.user?.access_token;
+    return auth.user?.access_token ?? '';
   }, [auth]);
 
-  // Update auth in Redux store
   useEffect(() => {
-    dispatch(UserActions.updateAuth(auth));
+    dispatch(updateAuth(auth));
   }, [auth, dispatch]);
 
-  // Initialize app when authenticated
   useEffect(() => {
     if (auth.isAuthenticated) {
-      dispatch(UtilsActions.notifyConfigIsLoaded());
-      dispatch(UserContextActions.fetchUserContext(getToken));
+      dispatch(notifyConfigIsLoaded());
+      dispatch(fetchUserContext(getToken));
     }
   }, [dispatch, auth.isAuthenticated, getToken]);
 
-  // Handle authentication state
   useEffect(() => {
     if (!auth.isLoading && !auth.isAuthenticated) {
       auth.signinRedirect();
@@ -61,17 +55,10 @@ const App: React.FC<AppProps> = ({ dispatch, isConfigLoaded, isAdmin }) => {
     []
   );
 
-  // Show loading state while auth is loading
-  if (auth.isLoading) {
+  if (auth.isLoading || !auth.isAuthenticated) {
     return null;
   }
 
-  // Show nothing while redirecting to auth
-  if (!auth.isAuthenticated) {
-    return null;
-  }
-
-  // Main app render
   if (isConfigLoaded && auth.isAuthenticated) {
     return (
       <StyledEngineProvider injectFirst>
@@ -99,9 +86,4 @@ const App: React.FC<AppProps> = ({ dispatch, isConfigLoaded, isAdmin }) => {
   return null;
 };
 
-const mapStateToProps = (state: any) => ({
-  isConfigLoaded: state.UtilsReducer.isConfigLoaded,
-  isAdmin: state.UserContextReducer.isRouteDataAdmin,
-});
-
-export default connect(mapStateToProps)(App);
+export default App;

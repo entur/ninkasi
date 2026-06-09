@@ -1,0 +1,136 @@
+/*
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
+ * the European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at:
+ *
+ *   https://joinup.ec.europa.eu/software/page/eupl
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and
+ * limitations under the Licence.
+ *
+ */
+
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { useAccessToken } from '@/utils/useAccessToken';
+import cfgreader from 'config/readConfig';
+import moment from 'moment';
+import * as SuppliersReducer from 'reducers/SuppliersReducer';
+const { fetchGraphStatus } = SuppliersReducer as any;
+
+const getColorByStatus = (status?: string) => {
+  switch (status) {
+    case 'STARTED':
+      return '#08920e';
+    case 'OK':
+      return '#08920e';
+    case 'FAILED':
+      return '#990000';
+    default:
+      return 'grey';
+  }
+};
+
+const containerStyle: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'row',
+  margin: '0 20px',
+  lineHeight: '24px',
+};
+
+const wrapperStyle: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  margin: '0 10px',
+};
+
+const statusStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  flexDirection: 'row',
+};
+
+interface GraphStatusDetailsProps {
+  status?: string;
+  started?: string;
+}
+
+const GraphStatusDetails = ({ status, started }: GraphStatusDetailsProps) => (
+  <div style={statusStyle}>
+    {status && started && (
+      <>
+        <span
+          style={{
+            fontWeight: 600,
+            marginLeft: 5,
+            color: getColorByStatus(status),
+          }}
+        >
+          {status}
+        </span>
+        <span
+          title={moment(started).format('DD-MM-YYYY HH:mm:ss')}
+          style={{ fontSize: '0.8em', paddingLeft: 5, whiteSpace: 'nowrap' }}
+        >
+          {moment(started).fromNow()}
+        </span>
+      </>
+    )}
+  </div>
+);
+
+const GraphStatus = () => {
+  const dispatch = useAppDispatch();
+  const { getToken } = useAccessToken();
+
+  const graphStatus = useAppSelector(state => (state.SuppliersReducer as any).graphStatus);
+  const baseGraphStatus = useAppSelector(state => (state.SuppliersReducer as any).baseGraphStatus);
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setInterval> | undefined;
+    let startTimeout: ReturnType<typeof setTimeout> | undefined;
+    cfgreader.readConfig(function (config: any) {
+      window.config = config;
+      dispatch(fetchGraphStatus(getToken));
+      startTimeout = setTimeout(() => {
+        timer = setInterval(() => {
+          dispatch(fetchGraphStatus(getToken));
+        }, 10000);
+      }, 1000);
+    });
+    return () => {
+      if (startTimeout) clearTimeout(startTimeout);
+      if (timer) clearInterval(timer);
+    };
+  }, [dispatch, getToken]);
+
+  if (!graphStatus || !baseGraphStatus) {
+    return null;
+  }
+
+  return (
+    <div style={containerStyle}>
+      <div style={wrapperStyle}>
+        <h4 style={{ fontWeight: 'bold', margin: '0' }}>Transit Graph status</h4>
+        <h4 style={{ fontWeight: 'bold', margin: '0' }}>Street Graph status</h4>
+      </div>
+      <div style={wrapperStyle}>
+        {graphStatus.otp2 && (
+          <GraphStatusDetails status={graphStatus.otp2.status} started={graphStatus.otp2.started} />
+        )}
+        {baseGraphStatus.otp2 && (
+          <GraphStatusDetails
+            status={baseGraphStatus.otp2.status}
+            started={baseGraphStatus.otp2.started}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default GraphStatus;
