@@ -20,10 +20,14 @@ import rootReducer from 'reducers';
 export default function makeStore() {
   const store = configureStore({
     reducer: rootReducer,
-    // RTK's defaults give us thunk + immutability/serializability checks (dev)
-    // + Redux DevTools integration. The existing `(dispatch, getState) => …`
-    // thunks scattered through `src/actions/` continue to work unchanged;
-    // PR-B will rewrite them as `createAsyncThunk`.
+    // Marduk stores axios cancel-token functions in state (pre-AbortController
+    // pattern); disable the serializability check until a follow-up swaps to
+    // AbortController. RTK's defaults still give us thunk + Redux DevTools
+    // integration; existing `(dispatch, getState) => …` thunks work unchanged.
+    middleware: getDefaultMiddleware =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
   });
 
   if (import.meta.hot) {

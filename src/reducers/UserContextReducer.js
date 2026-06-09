@@ -14,6 +14,7 @@
  *
  */
 
+import { createSlice } from '@reduxjs/toolkit';
 import * as types from 'actions/actionTypes';
 
 const initialState = {
@@ -22,16 +23,15 @@ const initialState = {
   isOrganisationAdmin: false,
 };
 
-const UserContextReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case types.RECEIVED_USER_CONTEXT:
-      return Object.assign({}, state, {
-        ...action.payLoad,
-      });
+const userContextSlice = createSlice({
+  name: 'userContext',
+  initialState,
+  reducers: {},
+  extraReducers: builder => {
+    builder.addCase(types.RECEIVED_USER_CONTEXT, (state, action) => {
+      Object.assign(state, action.payLoad);
+    });
+  },
+});
 
-    default:
-      return state;
-  }
-};
-
-export default UserContextReducer;
+export default userContextSlice.reducer;
