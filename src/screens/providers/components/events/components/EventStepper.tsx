@@ -223,7 +223,7 @@ const EventStepper = ({
       })
       .map((group, index) => {
         const event = formattedGroups[group];
-        let column: React.ReactNode = null;
+        let column: React.ReactNode;
         let columnLength = 1;
 
         if (isCombinedGroup(event)) {
