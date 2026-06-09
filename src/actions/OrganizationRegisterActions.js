@@ -69,7 +69,8 @@ import {
 } from 'reducers/OrganizationReducer';
 
 export const sortBy = (list, key) => {
-  return list.sort((a, b) => a[key].localeCompare(b[key]));
+  // Copy first — input may be a frozen RTK/Immer slice array.
+  return [...list].sort((a, b) => a[key].localeCompare(b[key]));
 };
 
 const trim = data => JSON.parse(JSON.stringify(data).replace(/"\s+|\s+"/g, '"'));
