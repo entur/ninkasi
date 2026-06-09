@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 import { useAccessToken } from '@/utils/useAccessToken';
 import { useConfig } from '@/contexts/ConfigContext';
 import type { TimetableJobEvent } from '../types/event';
@@ -12,25 +13,50 @@ interface UseEventsOptions {
 export const useEvents = ({ providerId }: UseEventsOptions) => {
   const { timetableEventsApiUrl } = useConfig();
   const { getToken } = useAccessToken();
+  const [data, setData] = useState<TimetableJobEvent[] | undefined>();
+  const [error, setError] = useState<Error | undefined>();
+  const [isLoading, setIsLoading] = useState(true);
+  const isMountedRef = useRef(true);
 
-  const { isLoading, isError, data, error } = useQuery<TimetableJobEvent[]>({
-    queryKey: ['events', providerId],
-    queryFn: async () => {
-      const accessToken = await getToken();
-      const response = await fetch(`${timetableEventsApiUrl}/${providerId ? providerId : ''}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Et-Client-Name': 'entur-ninkasi',
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+  useEffect(() => {
+    isMountedRef.current = true;
+    let cancelled = false;
+
+    const fetchEvents = async () => {
+      try {
+        const accessToken = await getToken();
+        const response = await axios.get<TimetableJobEvent[]>(
+          `${timetableEventsApiUrl}/${providerId ?? ''}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Et-Client-Name': 'entur-ninkasi',
+            },
+          }
+        );
+        if (cancelled || !isMountedRef.current) return;
+        const sorted = [...response.data].sort((a, b) => a.firstEvent - b.firstEvent).reverse();
+        setData(sorted);
+        setError(undefined);
+      } catch (e) {
+        if (cancelled || !isMountedRef.current) return;
+        setError(e instanceof Error ? e : new Error(String(e)));
+      } finally {
+        if (!cancelled && isMountedRef.current) {
+          setIsLoading(false);
+        }
       }
-      const events: TimetableJobEvent[] = await response.json();
-      return events.sort((a, b) => a.firstEvent - b.firstEvent).reverse();
-    },
-    refetchInterval: REFRESH_INTERVAL_MS,
-  });
+    };
 
-  return { isLoading, isError, data, error };
+    fetchEvents();
+    const interval = setInterval(fetchEvents, REFRESH_INTERVAL_MS);
+
+    return () => {
+      cancelled = true;
+      isMountedRef.current = false;
+      clearInterval(interval);
+    };
+  }, [providerId, getToken, timetableEventsApiUrl]);
+
+  return { isLoading, isError: !!error, data, error };
 };

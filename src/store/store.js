@@ -14,30 +14,19 @@
  *
  */
 
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import { createLogger } from 'redux-logger';
-import { createBrowserHistory } from 'history';
-import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
+import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from 'reducers';
 
-export const history = createBrowserHistory();
-
-export default function configureStore() {
-  let enchancer = {};
-
-  if (process.env.NODE_ENV === 'development') {
-    const loggerMiddleware = createLogger({ collapsed: true });
-    const composeEnhancers = composeWithDevTools({});
-    enchancer = composeEnhancers(applyMiddleware(thunkMiddleware, loggerMiddleware));
-  } else {
-    enchancer = compose(applyMiddleware(thunkMiddleware));
-  }
-
-  const store = createStore(rootReducer, {}, enchancer);
+export default function makeStore() {
+  const store = configureStore({
+    reducer: rootReducer,
+    // RTK's defaults give us thunk + immutability/serializability checks (dev)
+    // + Redux DevTools integration. The existing `(dispatch, getState) => …`
+    // thunks scattered through `src/actions/` continue to work unchanged;
+    // PR-B will rewrite them as `createAsyncThunk`.
+  });
 
   if (import.meta.hot) {
-    // Enable Vite hot module replacement for reducers
     import.meta.hot.accept('../reducers', async () => {
       const { default: nextRootReducer } = await import('reducers/');
       store.replaceReducer(nextRootReducer);

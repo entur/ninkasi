@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import './sass/main.scss';
 import App from './app/App';
-import configureStore from './store/store';
+import makeStore from './store/store';
 import { fetchConfig } from './config/fetchConfig';
 import { ConfigContext } from './contexts/ConfigContext';
 import { AuthProvider, fetchAndCacheLocalDevToken } from './auth';
@@ -26,7 +26,7 @@ fetchConfig().then(async config => {
     <StrictMode>
       <ConfigContext.Provider value={config}>
         <AuthProvider>
-          <Provider store={configureStore()}>
+          <Provider store={makeStore()}>
             <BrowserRouter>
               <App />
             </BrowserRouter>

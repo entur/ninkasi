@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useCallback, useState } from 'react';
 import axios from 'axios';
 import { useAccessToken } from '@/utils/useAccessToken';
 import { useConfig } from '@/contexts/ConfigContext';
@@ -11,9 +11,11 @@ export const useValidateDatasetMutation = ({ providerId }: UseValidateDatasetMut
   const { timetableAdminApiUrl } = useConfig();
   const { getToken } = useAccessToken();
   const url = `${timetableAdminApiUrl}/${providerId}/validate`;
+  const [isPending, setIsPending] = useState(false);
 
-  const mutation = useMutation({
-    mutationFn: async () => {
+  const mutate = useCallback(async () => {
+    setIsPending(true);
+    try {
       const accessToken = await getToken();
       await axios.post(url, null, {
         headers: {
@@ -21,8 +23,10 @@ export const useValidateDatasetMutation = ({ providerId }: UseValidateDatasetMut
           'Et-Client-Name': 'entur-ninkasi',
         },
       });
-    },
-  });
+    } finally {
+      setIsPending(false);
+    }
+  }, [getToken, url]);
 
-  return { mutation };
+  return { mutation: { mutate, isPending } };
 };
