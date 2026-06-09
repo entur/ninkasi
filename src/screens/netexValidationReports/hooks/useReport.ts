@@ -16,21 +16,30 @@ export const useReport = (codespace: string, id: string) => {
 
   useEffect(() => {
     const fetchReport = async () => {
-      const accessToken = await getToken();
-      const response = await fetch(`${timetableValidationApiUrl}/${codespace}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Et-Client-Name': 'entur-ninkasi',
-        },
-      });
-      if (response.ok) {
-        const fetched = (await response.json()) as ValidationReport;
-        setReport(fetched);
-        setError(undefined);
-      } else {
+      try {
+        const accessToken = await getToken();
+        const response = await fetch(`${timetableValidationApiUrl}/${codespace}/${id}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Et-Client-Name': 'entur-ninkasi',
+          },
+        });
+        if (response.ok) {
+          const fetched = (await response.json()) as ValidationReport;
+          setReport(fetched);
+          setError(undefined);
+        } else {
+          setError({
+            status: response.status,
+            statusText: response.statusText,
+          });
+        }
+      } catch (e) {
+        // Network failure, unreachable backend, or non-JSON body: surface a
+        // clean error instead of an unhandled promise rejection.
         setError({
-          status: response.status,
-          statusText: response.statusText,
+          status: 0,
+          statusText: e instanceof Error ? e.message : String(e),
         });
       }
     };

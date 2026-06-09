@@ -10,6 +10,10 @@
   "endpointBase": "/",
   "chouetteBaseUrl": "http://localhost:21080/",
   "udugBaseUrl": "/netex-validation-reports/",
+  "timetableEventsApiUrl": "http://localhost:21004/services/events/timetable",
+  "timetableAdminApiUrl": "http://localhost:21080/services/timetable_admin",
+  "timetableValidationApiUrl": "http://localhost:21081/services/validation-report",
+  "kililiApiUrl": "http://localhost:21090/graphql",
   "enturPartnerUrl": "",
   "defaultAuthMethod": "local",
   "mockOauth2TokenUrl": "http://localhost:21999/default/token"
