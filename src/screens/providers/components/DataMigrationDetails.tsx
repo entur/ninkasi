@@ -18,7 +18,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import { Button, TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import AdvancedFileList from './AdvancedFileList';
 import { sortFiles } from '@/utils';
 import * as MardukReducer from 'reducers/MardukReducer';
@@ -30,12 +30,11 @@ const {
   validateProvider,
   deleteJobsForProvider,
 } = MardukReducer as any;
-import {
-  FaArrowDown,
-  FaArrowUp,
-  FaArrowLeft as FaRemove,
-  FaArrowRight as FaAdd,
-} from 'react-icons/fa';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import IconButton from '@mui/material/IconButton';
 
 interface SortOrder {
   ext: number;
@@ -430,36 +429,26 @@ const DataMigrationDetails = () => {
             handleSelectAllShowingIndices={handleSelectAllShowingIndices}
           />
           {sortedFiles.length ? (
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                flex: 0.1,
-                cursor: 'pointer',
-              }}
-            >
-              <FaAdd
-                style={{
-                  transform: 'scale(2)',
-                  color: '#2196f3',
-                  marginBottom: 30,
-                  marginLeft: 20,
-                  marginRight: 20,
-                }}
+            <Box sx={{ display: 'flex', flexDirection: 'column', flex: 0.1, mx: 2 }}>
+              <IconButton
+                aria-label="Add selected files to outbound list"
+                color="info"
                 onClick={appendSelectedFiles}
-              />
-              <FaRemove
-                style={{
-                  transform: 'scale(2)',
-                  color: outboundFiles.length ? '#b91c1c' : '#9e9e9e',
-                  marginLeft: 20,
-                  marginRight: 20,
-                }}
+                sx={{ mb: 3 }}
+              >
+                <ArrowForwardIcon fontSize="large" />
+              </IconButton>
+              <IconButton
+                aria-label="Remove selected files from outbound list"
+                color="error"
                 onClick={removeSelectedFiles}
-              />
-            </div>
+                disabled={!outboundFiles.length}
+              >
+                <ArrowBackIcon fontSize="large" />
+              </IconButton>
+            </Box>
           ) : (
-            <div style={{ margin: 20, fontWeight: 600 }}>No files available</div>
+            <Box sx={{ m: 2, fontWeight: 600 }}>No files available</Box>
           )}
           <AdvancedFileList
             selectedIndices={selectedIndicesOutbound}
@@ -470,25 +459,22 @@ const DataMigrationDetails = () => {
             handleSortByDate={handleSortOutboundFiles}
             handleSelectAllShowingIndices={handleSelectAllShowingIndices}
           />
-          <div
-            style={{
+          <Box
+            sx={{
               flex: 0.2,
               display: outboundFiles.length ? 'flex' : 'none',
               alignItems: 'center',
               flexDirection: 'column',
-              cursor: 'pointer',
+              ml: 2,
             }}
           >
-            <FaArrowDown
-              style={{
-                transform: 'scale(2)',
-                marginBottom: 30,
-                marginLeft: 20,
-              }}
-              onClick={moveDown}
-            />
-            <FaArrowUp style={{ transform: 'scale(2)', marginLeft: 20 }} onClick={moveUp} />
-          </div>
+            <IconButton aria-label="Move selected files down" onClick={moveDown} sx={{ mb: 3 }}>
+              <ArrowDownwardIcon fontSize="large" />
+            </IconButton>
+            <IconButton aria-label="Move selected files up" onClick={moveUp}>
+              <ArrowUpwardIcon fontSize="large" />
+            </IconButton>
+          </Box>
         </div>
       ) : null}
     </div>
