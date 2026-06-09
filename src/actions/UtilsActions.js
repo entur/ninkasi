@@ -14,21 +14,8 @@
  *
  */
 
-import * as types from './actionTypes';
+import { notifyConfigIsLoaded } from 'reducers/UtilsReducer';
 
-const UtilsActions = {};
-
-function sendData(payLoad, type) {
-  return {
-    payLoad: payLoad,
-    type: type,
-  };
-}
-
-UtilsActions.notifyConfigIsLoaded = () => {
-  return function (dispatch) {
-    dispatch(sendData(null, types.CONFIG_LOADED));
-  };
-};
+const UtilsActions = { notifyConfigIsLoaded };
 
 export default UtilsActions;

@@ -14,8 +14,10 @@
  *
  */
 
-import { createSlice } from '@reduxjs/toolkit';
-import * as types from 'actions/actionTypes';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import getApiConfig from 'actions/getApiConfig';
+import SuppliersActions from 'actions/SuppliersActions';
 
 const initialState = {
   preferredName: '',
@@ -23,15 +25,44 @@ const initialState = {
   isOrganisationAdmin: false,
 };
 
+export const fetchUserContext = createAsyncThunk(
+  'userContext/fetch',
+  /**
+   * @param {() => Promise<string | undefined>} getToken
+   */
+  async (getToken, { dispatch, rejectWithValue }) => {
+    if (window.config?.defaultAuthMethod === 'local') {
+      return {
+        preferredName: 'Local Dev',
+        isRouteDataAdmin: true,
+        isOrganisationAdmin: true,
+      };
+    }
+    const url = window.config.providersBaseUrl + 'usercontext';
+    try {
+      const response = await axios.get(url, await getApiConfig(getToken));
+      return response.data;
+    } catch (err) {
+      dispatch(SuppliersActions.addNotification('Failed to fetch user context', 'error'));
+      return rejectWithValue(err);
+    }
+  }
+);
+
 const userContextSlice = createSlice({
   name: 'userContext',
   initialState,
-  reducers: {},
+  reducers: {
+    receiveUserContext(state, action) {
+      Object.assign(state, action.payload);
+    },
+  },
   extraReducers: builder => {
-    builder.addCase(types.RECEIVED_USER_CONTEXT, (state, action) => {
-      Object.assign(state, action.payLoad);
+    builder.addCase(fetchUserContext.fulfilled, (state, action) => {
+      Object.assign(state, action.payload);
     });
   },
 });
 
+export const { receiveUserContext } = userContextSlice.actions;
 export default userContextSlice.reducer;

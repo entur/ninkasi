@@ -14,21 +14,8 @@
  *
  */
 
-import { TOGGLE_MENU } from './actionTypes';
+import { toggleMenu } from 'reducers/AppReducer';
 
-const AppActions = {};
-
-function sendData(payLoad, type) {
-  return {
-    payLoad: payLoad,
-    type: type,
-  };
-}
-
-AppActions.toggleMenu = () => {
-  return function (dispatch) {
-    dispatch(sendData(null, TOGGLE_MENU));
-  };
-};
+const AppActions = { toggleMenu };
 
 export default AppActions;

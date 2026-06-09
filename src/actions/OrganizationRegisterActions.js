@@ -15,709 +15,537 @@
  */
 
 import axios from 'axios';
-import * as types from './actionTypes';
-import { formatUserNotifications } from './OrganizationUtils';
-import SuppliersActions from './SuppliersActions';
 import getApiConfig from './getApiConfig';
+import { formatUserNotifications } from './OrganizationUtils';
+import { addNotification } from 'reducers/UtilsReducer';
+import {
+  // slice sync action creators
+  addedEntityClassRef,
+  addedAdminZoneRef,
+  removedAdminZoneRef,
+  removedEntityClassRef,
+  deletedUserNotification,
+  addedNewUserNotification,
+  enabledUserNotification,
+  changedEventFilterType,
+  changedEventFilterJobDomain,
+  changedEventFilterOrgRef,
+  changeEventFilterActionReducer,
+  changeEventFilterStateReducer,
+  changedNotificationType,
+  requestedUserNotification,
+  receivedUserNotifications,
+  updatedNotificationConfiguration,
+  createdRole,
+  failedCreatingRole,
+  createdOrganization,
+  updatedOrganization,
+  failedCreatingOrganization,
+  createdResponsibilitySet,
+  updatedResponsibilitySet,
+  createdUser,
+  updatedUser,
+  failedCreatingUser,
+  createdEntityType,
+  failedCreatingEntityType,
+  updatedEntityType,
+  createdM2MClient,
+  updatedM2MClient,
+  failedM2MClientOperation,
+  // async thunks
+  fetchRoles,
+  fetchOrganizations,
+  fetchCodeSpaces,
+  fetchUsers,
+  fetchM2MClients,
+  fetchResponsibilitySets,
+  fetchEntityTypes,
+  fetchEventFilterTypes,
+  fetchEventFilterStates,
+  fetchNotificationTypes,
+  fetchAdministrativeZones,
+  fetchJobDomains,
+  fetchJobActionsByDomain,
+} from 'reducers/OrganizationReducer';
 
-function sendData(payLoad, type) {
-  return {
-    payLoad: payLoad,
-    type: type,
-  };
-}
-
-const OrganizationRegisterActions = {};
-
-OrganizationRegisterActions.getRoles = getToken => async (dispatch, getState) => {
-  const url = `${window.config.organisationsBaseUrl}roles`;
-  return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(sendData(sortBy(response.data, 'id'), types.RECEIVED_ROLES));
-    })
-    .catch(error => {
-      console.log('Error receiving roles', error);
-    });
+export const sortBy = (list, key) => {
+  return list.sort((a, b) => a[key].localeCompare(b[key]));
 };
 
-OrganizationRegisterActions.addEntityRefToNotification = (index, entityClassRef) => dispatch => {
-  dispatch(
-    sendData(
-      {
-        index,
-        entityClassRef,
-      },
-      types.ADDED_ENTITY_CLASS_REF
-    )
-  );
-};
+const trim = data => JSON.parse(JSON.stringify(data).replace(/"\s+|\s+"/g, '"'));
 
-OrganizationRegisterActions.deleteUserNotification = index => dispatch => {
-  dispatch(sendData(index, types.DELETED_USER_NOTIFICATION));
-};
+/* ------------------------------------------------------------------ */
+/* Plain side-effecting thunks                                        */
+/* ------------------------------------------------------------------ */
 
-OrganizationRegisterActions.removeEntityClassRefNotification =
-  (index, entityClassRef) => async (dispatch, getState) => {
-    dispatch(
-      sendData(
-        {
-          index,
-          entityClassRef,
-        },
-        types.REMOVED_ENTITY_CLASS_REF
-      )
-    );
-  };
-
-OrganizationRegisterActions.createRole = (role, getToken) => async (dispatch, getState) => {
-  const trimmedData = JSON.parse(JSON.stringify(role).replace(/"\s+|\s+"/g, '"'));
+const createRole = (role, getToken) => async dispatch => {
+  const trimmedData = trim(role);
   const url = `${window.config.organisationsBaseUrl}roles`;
   return axios
     .post(url, trimmedData, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(sendData(null, types.CREATED_ROLE));
-      dispatch(OrganizationRegisterActions.getRoles(getToken));
+    .then(() => {
+      dispatch(createdRole());
+      dispatch(fetchRoles(getToken));
     })
     .catch(error => {
-      dispatch(sendData(types.ERROR_CREATE_PROVIDER, error));
-      dispatch(SuppliersActions.addNotification('Error creating role', 'error'));
+      dispatch(failedCreatingRole(error));
+      dispatch(addNotification({ message: 'Error creating role', level: 'error' }));
       console.log('Error creating role', error);
     });
 };
 
-OrganizationRegisterActions.updateRole = (role, getToken) => async (dispatch, getState) => {
-  const trimmedData = JSON.parse(JSON.stringify(role).replace(/"\s+|\s+"/g, '"'));
-  const payLoad = { name: trimmedData.name };
+const updateRole = (role, getToken) => async dispatch => {
+  const trimmedData = trim(role);
+  const payload = { name: trimmedData.name };
 
   const url = `${window.config.organisationsBaseUrl}roles/${trimmedData.id}`;
   return axios
-    .put(url, payLoad, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(OrganizationRegisterActions.getRoles(getToken));
+    .put(url, payload, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(fetchRoles(getToken));
     })
     .catch(error => {
-      dispatch(SuppliersActions.addNotification('Error updating role', 'error'));
+      dispatch(addNotification({ message: 'Error updating role', level: 'error' }));
       console.log('Error updating role', error);
     });
 };
 
-OrganizationRegisterActions.getOrganizations = getToken => async (dispatch, getState) => {
-  const url = `${window.config.organisationsBaseUrl}`;
+const deleteRole = (roleId, getToken) => async dispatch => {
+  const url = `${window.config.organisationsBaseUrl}roles/${roleId}`;
   return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(sendData(sortBy(response.data, 'name'), types.RECEIVED_ORGANIZATIONS));
+    .delete(url, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(addNotification({ message: 'Role deleted', level: 'success' }));
+      dispatch(fetchRoles(getToken));
     })
     .catch(error => {
-      console.log('Error receiving organizations', error);
+      dispatch(addNotification({ message: 'Failed to delete role', level: 'error' }));
+      console.log('Error deleting role with id ' + roleId, error);
     });
 };
 
-OrganizationRegisterActions.createOrganization =
-  (organization, getToken) => async (dispatch, getState) => {
-    const url = `${window.config.organisationsBaseUrl}`;
-    const trimmedData = JSON.parse(JSON.stringify(organization).replace(/"\s+|\s+"/g, '"'));
-    return axios
-      .post(url, trimmedData, await getApiConfig(getToken))
-      .then(response => {
-        dispatch(sendData(null, types.CREATED_ORGANIZATION));
-        dispatch(OrganizationRegisterActions.getOrganizations(getToken));
-      })
-      .catch(error => {
-        dispatch(sendData(types.FAILED_CREATING_ORGANIZATION, error));
-        dispatch(SuppliersActions.addNotification('Error creating organization', 'error'));
-        console.log('Error creating organization', error);
-      });
-  };
+const createOrganization = (organization, getToken) => async dispatch => {
+  const url = `${window.config.organisationsBaseUrl}`;
+  const trimmedData = trim(organization);
+  return axios
+    .post(url, trimmedData, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(createdOrganization());
+      dispatch(fetchOrganizations(getToken));
+    })
+    .catch(error => {
+      dispatch(failedCreatingOrganization(error));
+      dispatch(addNotification({ message: 'Error creating organization', level: 'error' }));
+      console.log('Error creating organization', error);
+    });
+};
 
-OrganizationRegisterActions.updateOrganization =
-  (organization, getToken) => async (dispatch, getState) => {
-    const trimmedData = JSON.parse(JSON.stringify(organization).replace(/"\s+|\s+"/g, '"'));
-    const url = `${window.config.organisationsBaseUrl}${trimmedData.id}`;
-    return axios
-      .put(url, trimmedData, await getApiConfig(getToken))
-      .then(response => {
-        dispatch(sendData(null, types.UPDATED_ORGANIZATION));
-        dispatch(OrganizationRegisterActions.getOrganizations(getToken));
-      })
-      .catch(error => {
-        dispatch(SuppliersActions.addNotification('Error updating organization', 'error'));
-        console.log('Error updating organization', error);
-      });
-  };
-
-OrganizationRegisterActions.updateUser = (user, getToken) => async (dispatch, getState) => {
-  const trimmedData = JSON.parse(JSON.stringify(user).replace(/"\s+|\s+"/g, '"'));
-  const url = `${window.config.organisationsBaseUrl}users/${trimmedData.id}`;
-
+const updateOrganization = (organization, getToken) => async dispatch => {
+  const trimmedData = trim(organization);
+  const url = `${window.config.organisationsBaseUrl}${trimmedData.id}`;
   return axios
     .put(url, trimmedData, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(SuppliersActions.addNotification('Updated user successfully', 'success'));
-      dispatch(sendData(null, types.UPDATED_USER));
-      dispatch(OrganizationRegisterActions.getUsers(getToken));
+    .then(() => {
+      dispatch(updatedOrganization());
+      dispatch(fetchOrganizations(getToken));
     })
     .catch(error => {
-      dispatch(sendData(types.FAILED_CREATING_USER, error));
-      dispatch(SuppliersActions.addNotification('Error updating user', 'error'));
-      console.log('Error updating user', error);
+      dispatch(addNotification({ message: 'Error updating organization', level: 'error' }));
+      console.log('Error updating organization', error);
     });
 };
 
-OrganizationRegisterActions.getCodeSpaces = getToken => async (dispatch, getState) => {
-  const url = `${window.config.organisationsBaseUrl}code_spaces`;
+const deleteOrganization = (organizationId, getToken) => async dispatch => {
+  const url = `${window.config.organisationsBaseUrl}${organizationId}`;
   return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(sendData(response.data, types.RECEIVED_CODESPACES));
+    .delete(url, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(addNotification({ message: 'Deleted organization', level: 'success' }));
+      dispatch(fetchOrganizations(getToken));
     })
     .catch(error => {
-      console.log('Error receiving code spaces', error);
+      dispatch(addNotification({ message: 'Failed to delete organization', level: 'error' }));
+      console.log('Error deleting organization with id ' + organizationId, error);
     });
 };
 
-OrganizationRegisterActions.getUsers = getToken => async (dispatch, getState) => {
-  const url = `${window.config.organisationsBaseUrl}users?full=true`;
-  return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(sendData(sortBy(response.data, 'username'), types.RECEIVED_USERS));
-    })
-    .catch(error => {
-      console.log('Error receiving users', error);
-    });
-};
-
-OrganizationRegisterActions.getM2MClients = getToken => async (dispatch, getState) => {
-  const url = `${window.config.organisationsBaseUrl}m2m_clients?full=true`;
-  return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(sendData(sortBy(response.data, 'name'), types.RECEIVED_M2M_CLIENTS));
-    })
-    .catch(error => {
-      console.log('Error receiving M2M clients', error);
-      dispatch(sendData(error, types.ERROR_M2M_CLIENTS));
-    });
-};
-
-OrganizationRegisterActions.createM2MClient = (client, getToken) => async (dispatch, getState) => {
-  const url = `${window.config.organisationsBaseUrl}m2m_clients`;
-  const trimmedData = JSON.parse(JSON.stringify(client).replace(/"\s+|\s+"/g, '"'));
+const createUser = (user, getToken) => async dispatch => {
+  const url = `${window.config.organisationsBaseUrl}users`;
+  const trimmedData = trim(user);
 
   return axios
     .post(url, trimmedData, await getApiConfig(getToken))
     .then(() => {
-      dispatch(SuppliersActions.addNotification('Created M2M client successfully', 'success'));
-      dispatch(sendData(null, types.CREATED_M2M_CLIENT));
-      dispatch(OrganizationRegisterActions.getM2MClients(getToken));
+      dispatch(addNotification({ message: 'Created user successfully', level: 'success' }));
+      dispatch(createdUser());
+      dispatch(fetchUsers(getToken));
     })
     .catch(error => {
-      dispatch(sendData(types.FAILED_M2M_CLIENT_OPERATION, error));
-      dispatch(SuppliersActions.addNotification('Error creating M2M client', 'error'));
-      console.log('Error creating M2M client', error);
+      dispatch(failedCreatingUser(error));
+      dispatch(addNotification({ message: 'Error creating user', level: 'error' }));
+      console.log('Error creating user', error);
     });
 };
 
-OrganizationRegisterActions.updateM2MClient = (client, getToken) => async (dispatch, getState) => {
-  const url = `${window.config.organisationsBaseUrl}m2m_clients/${client.privateCode}`;
-  const trimmedData = JSON.parse(JSON.stringify(client).replace(/"\s+|\s+"/g, '"'));
+const updateUser = (user, getToken) => async dispatch => {
+  const trimmedData = trim(user);
+  const url = `${window.config.organisationsBaseUrl}users/${trimmedData.id}`;
 
   return axios
     .put(url, trimmedData, await getApiConfig(getToken))
     .then(() => {
-      dispatch(SuppliersActions.addNotification('Updated M2M client successfully', 'success'));
-      dispatch(sendData(null, types.UPDATED_M2M_CLIENT));
-      dispatch(OrganizationRegisterActions.getM2MClients(getToken));
+      dispatch(addNotification({ message: 'Updated user successfully', level: 'success' }));
+      dispatch(updatedUser());
+      dispatch(fetchUsers(getToken));
     })
     .catch(error => {
-      dispatch(sendData(types.FAILED_M2M_CLIENT_OPERATION, error));
-      dispatch(SuppliersActions.addNotification('Error updating M2M client', 'error'));
-      console.log('Error updating M2M client', error);
+      dispatch(failedCreatingUser(error));
+      dispatch(addNotification({ message: 'Error updating user', level: 'error' }));
+      console.log('Error updating user', error);
     });
 };
 
-OrganizationRegisterActions.deleteM2MClient =
-  (clientId, getToken) => async (dispatch, getState) => {
-    const url = `${window.config.organisationsBaseUrl}m2m_clients/${clientId}`;
-
-    return axios
-      .delete(url, await getApiConfig(getToken))
-      .then(() => {
-        dispatch(SuppliersActions.addNotification('Deleted M2M client successfully', 'success'));
-        dispatch(OrganizationRegisterActions.getM2MClients(getToken));
-      })
-      .catch(error => {
-        dispatch(SuppliersActions.addNotification('Error deleting M2M client', 'error'));
-        console.log('Error deleting M2M client', error);
-      });
-  };
-
-OrganizationRegisterActions.deleteUser = (userId, getToken) => async (dispatch, getState) => {
+const deleteUser = (userId, getToken) => async dispatch => {
   const url = `${window.config.organisationsBaseUrl}users/${userId}`;
   return axios
     .delete(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(OrganizationRegisterActions.getUsers(getToken));
+    .then(() => {
+      dispatch(fetchUsers(getToken));
     })
     .catch(error => {
       console.log('Error deleting user with id ' + userId, error);
     });
 };
 
-OrganizationRegisterActions.deleteOrganization =
-  (organizationId, getToken) => async (dispatch, getState) => {
-    const url = `${window.config.organisationsBaseUrl}${organizationId}`;
-    return axios
-      .delete(url, await getApiConfig(getToken))
-      .then(response => {
-        dispatch(SuppliersActions.addNotification('Deleted organization', 'success'));
-        dispatch(OrganizationRegisterActions.getOrganizations(getToken));
-      })
-      .catch(error => {
-        dispatch(SuppliersActions.addNotification('Failed to delete organization', 'error'));
-        console.log('Error deleting organization with id ' + organizationId, error);
-      });
-  };
-
-OrganizationRegisterActions.deleteEntityType =
-  (entityTypeId, getToken) => async (dispatch, getState) => {
-    const url = `${window.config.organisationsBaseUrl}entity_types/${entityTypeId}`;
-    return axios
-      .delete(url, await getApiConfig(getToken))
-      .then(response => {
-        dispatch(SuppliersActions.addNotification('Deleted entity type', 'success'));
-        dispatch(OrganizationRegisterActions.getEntityTypes(getToken));
-      })
-      .catch(error => {
-        dispatch(SuppliersActions.addNotification('Unable to delete entity type', 'error'));
-        console.log('Error deleting entity_type with id ' + entityTypeId, error);
-      });
-  };
-
-OrganizationRegisterActions.deleteResponsibilitySet =
-  (responsibilitySetId, getToken) => async (dispatch, getState) => {
-    const url = `${window.config.organisationsBaseUrl}responsibility_sets/${responsibilitySetId}`;
-    return axios
-      .delete(url, await getApiConfig(getToken))
-      .then(response => {
-        dispatch(SuppliersActions.addNotification('Responsibility set deleted', 'success'));
-        dispatch(OrganizationRegisterActions.getResponbilitySets(getToken));
-      })
-      .catch(error => {
-        dispatch(SuppliersActions.addNotification('Failed to delete responsibility set', 'error'));
-        console.log('Error deleting responsibility_set with id ' + responsibilitySetId, error);
-      });
-  };
-
-OrganizationRegisterActions.deleteRole = (roleId, getToken) => async (dispatch, getState) => {
-  const url = `${window.config.organisationsBaseUrl}roles/${roleId}`;
-  return axios
-    .delete(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(SuppliersActions.addNotification('Role deleted', 'success'));
-      dispatch(OrganizationRegisterActions.getRoles(getToken));
-    })
-    .catch(error => {
-      dispatch(SuppliersActions.addNotification('Failed to delete role', 'error'));
-      console.log('Error deleting role with id ' + roleId, error);
-    });
-};
-
-OrganizationRegisterActions.getResponbilitySets = getToken => async (dispatch, getState) => {
-  const url = `${window.config.organisationsBaseUrl}responsibility_sets`;
-  return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(sendData(sortBy(response.data, 'name'), types.RECEIVED_RESPONSIBILITES));
-    })
-    .catch(error => {
-      dispatch(SuppliersActions.addNotification('Error getting responsibility sets', 'error'));
-      console.log('Error getting responsibility sets: ' + error.message);
-    });
-};
-
-OrganizationRegisterActions.createResponsibilitySet =
-  (responsibilitySet, getToken) => async (dispatch, getState) => {
-    const url = `${window.config.organisationsBaseUrl}responsibility_sets`;
-    const trimmedData = JSON.parse(JSON.stringify(responsibilitySet).replace(/"\s+|\s+"/g, '"'));
-
-    return axios
-      .post(url, trimmedData, await getApiConfig(getToken))
-      .then(response => {
-        dispatch(sendData(null, types.CREATED_RESPONSIBILITY_SET));
-        dispatch(OrganizationRegisterActions.getResponbilitySets(getToken));
-      })
-      .catch(error => {
-        dispatch(SuppliersActions.addNotification('Error creating responsibility set', 'error'));
-        console.log('Error creating responsibility set: ' + error.message);
-      });
-  };
-
-OrganizationRegisterActions.createUser = (user, getToken) => async (dispatch, getState) => {
-  const url = `${window.config.organisationsBaseUrl}users`;
-  const trimmedData = JSON.parse(JSON.stringify(user).replace(/"\s+|\s+"/g, '"'));
+const createM2MClient = (client, getToken) => async dispatch => {
+  const url = `${window.config.organisationsBaseUrl}m2m_clients`;
+  const trimmedData = trim(client);
 
   return axios
     .post(url, trimmedData, await getApiConfig(getToken))
     .then(() => {
-      dispatch(SuppliersActions.addNotification('Created user successfully', 'success'));
-      dispatch(sendData(null, types.CREATED_USER));
-      dispatch(OrganizationRegisterActions.getUsers(getToken));
+      dispatch(addNotification({ message: 'Created M2M client successfully', level: 'success' }));
+      dispatch(createdM2MClient());
+      dispatch(fetchM2MClients(getToken));
     })
     .catch(error => {
-      dispatch(sendData(types.FAILED_CREATING_USER, error));
-      dispatch(SuppliersActions.addNotification('Error creating user', 'error'));
-      console.log('Error creating user', error);
+      dispatch(failedM2MClientOperation(error));
+      dispatch(addNotification({ message: 'Error creating M2M client', level: 'error' }));
+      console.log('Error creating M2M client', error);
     });
 };
 
-OrganizationRegisterActions.createEntityType =
-  (entityType, getToken) => async (dispatch, getState) => {
-    const url = `${window.config.organisationsBaseUrl}entity_types`;
-    const trimmedData = JSON.parse(JSON.stringify(entityType).replace(/"\s+|\s+"/g, '"'));
+const updateM2MClient = (client, getToken) => async dispatch => {
+  const url = `${window.config.organisationsBaseUrl}m2m_clients/${client.privateCode}`;
+  const trimmedData = trim(client);
 
-    return axios
-      .post(url, trimmedData, await getApiConfig(getToken))
-      .then(response => {
-        dispatch(sendData(null, types.CREATED_ENTITY_TYPE));
-        dispatch(OrganizationRegisterActions.getEntityTypes(getToken));
-      })
-      .catch(error => {
-        dispatch(sendData(types.FAILED_CREATING_ENTITY_TYPE, error));
-        dispatch(SuppliersActions.addNotification('Error creating entity type', 'error'));
-        console.log('Error creating entity type', error);
-      });
-  };
+  return axios
+    .put(url, trimmedData, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(addNotification({ message: 'Updated M2M client successfully', level: 'success' }));
+      dispatch(updatedM2MClient());
+      dispatch(fetchM2MClients(getToken));
+    })
+    .catch(error => {
+      dispatch(failedM2MClientOperation(error));
+      dispatch(addNotification({ message: 'Error updating M2M client', level: 'error' }));
+      console.log('Error updating M2M client', error);
+    });
+};
 
-OrganizationRegisterActions.updateEntityType =
-  (entityType, getToken) => async (dispatch, getState) => {
-    const trimmedData = JSON.parse(JSON.stringify(entityType).replace(/"\s+|\s+"/g, '"'));
-    const url = `${window.config.organisationsBaseUrl}entity_types/${trimmedData.id}`;
-    return axios
-      .put(url, trimmedData, await getApiConfig(getToken))
-      .then(response => {
-        dispatch(sendData(null, types.UPDATED_ENTITY_TYPE));
-        dispatch(OrganizationRegisterActions.getEntityTypes(getToken));
-      })
-      .catch(error => {
-        dispatch(SuppliersActions.addNotification('Error updating entity type', 'error'));
-        console.log('Error updating entity type', error);
-      });
-  };
+const deleteM2MClient = (clientId, getToken) => async dispatch => {
+  const url = `${window.config.organisationsBaseUrl}m2m_clients/${clientId}`;
 
-OrganizationRegisterActions.updateResponsibilitySet =
-  (responsibilitySet, getToken) => async (dispatch, getState) => {
-    const trimmedData = JSON.parse(JSON.stringify(responsibilitySet).replace(/"\s+|\s+"/g, '"'));
+  return axios
+    .delete(url, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(addNotification({ message: 'Deleted M2M client successfully', level: 'success' }));
+      dispatch(fetchM2MClients(getToken));
+    })
+    .catch(error => {
+      dispatch(addNotification({ message: 'Error deleting M2M client', level: 'error' }));
+      console.log('Error deleting M2M client', error);
+    });
+};
 
-    const url = `${window.config.organisationsBaseUrl}responsibility_sets/${trimmedData.id}`;
-    return axios
-      .put(url, trimmedData, await getApiConfig(getToken))
-      .then(response => {
-        dispatch(sendData(null, types.UPDATED_RESPONSIBILITY_SET));
-        dispatch(OrganizationRegisterActions.getResponbilitySets(getToken));
-      })
-      .catch(error => {
-        dispatch(SuppliersActions.addNotification('Error updating responsibility set', 'error'));
-        console.log('Error updating responsibility set: ' + error.message);
-      });
-  };
-
-OrganizationRegisterActions.getEntityTypes = getToken => async (dispatch, getState) => {
+const createEntityType = (entityType, getToken) => async dispatch => {
   const url = `${window.config.organisationsBaseUrl}entity_types`;
+  const trimmedData = trim(entityType);
+
+  return axios
+    .post(url, trimmedData, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(createdEntityType());
+      dispatch(fetchEntityTypes(getToken));
+    })
+    .catch(error => {
+      dispatch(failedCreatingEntityType(error));
+      dispatch(addNotification({ message: 'Error creating entity type', level: 'error' }));
+      console.log('Error creating entity type', error);
+    });
+};
+
+const updateEntityType = (entityType, getToken) => async dispatch => {
+  const trimmedData = trim(entityType);
+  const url = `${window.config.organisationsBaseUrl}entity_types/${trimmedData.id}`;
+  return axios
+    .put(url, trimmedData, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(updatedEntityType());
+      dispatch(fetchEntityTypes(getToken));
+    })
+    .catch(error => {
+      dispatch(addNotification({ message: 'Error updating entity type', level: 'error' }));
+      console.log('Error updating entity type', error);
+    });
+};
+
+const deleteEntityType = (entityTypeId, getToken) => async dispatch => {
+  const url = `${window.config.organisationsBaseUrl}entity_types/${entityTypeId}`;
+  return axios
+    .delete(url, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(addNotification({ message: 'Deleted entity type', level: 'success' }));
+      dispatch(fetchEntityTypes(getToken));
+    })
+    .catch(error => {
+      dispatch(addNotification({ message: 'Unable to delete entity type', level: 'error' }));
+      console.log('Error deleting entity_type with id ' + entityTypeId, error);
+    });
+};
+
+const createResponsibilitySet = (responsibilitySet, getToken) => async dispatch => {
+  const url = `${window.config.organisationsBaseUrl}responsibility_sets`;
+  const trimmedData = trim(responsibilitySet);
+
+  return axios
+    .post(url, trimmedData, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(createdResponsibilitySet());
+      dispatch(fetchResponsibilitySets(getToken));
+    })
+    .catch(error => {
+      dispatch(addNotification({ message: 'Error creating responsibility set', level: 'error' }));
+      console.log('Error creating responsibility set: ' + error.message);
+    });
+};
+
+const updateResponsibilitySet = (responsibilitySet, getToken) => async dispatch => {
+  const trimmedData = trim(responsibilitySet);
+  const url = `${window.config.organisationsBaseUrl}responsibility_sets/${trimmedData.id}`;
+  return axios
+    .put(url, trimmedData, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(updatedResponsibilitySet());
+      dispatch(fetchResponsibilitySets(getToken));
+    })
+    .catch(error => {
+      dispatch(addNotification({ message: 'Error updating responsibility set', level: 'error' }));
+      console.log('Error updating responsibility set: ' + error.message);
+    });
+};
+
+const deleteResponsibilitySet = (responsibilitySetId, getToken) => async dispatch => {
+  const url = `${window.config.organisationsBaseUrl}responsibility_sets/${responsibilitySetId}`;
+  return axios
+    .delete(url, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(addNotification({ message: 'Responsibility set deleted', level: 'success' }));
+      dispatch(fetchResponsibilitySets(getToken));
+    })
+    .catch(error => {
+      dispatch(addNotification({ message: 'Failed to delete responsibility set', level: 'error' }));
+      console.log('Error deleting responsibility_set with id ' + responsibilitySetId, error);
+    });
+};
+
+/* ------------------------------------------------------------------ */
+/* getUserNotifications — conditional warm-up + fetch                 */
+/* ------------------------------------------------------------------ */
+
+const getUserNotifications = (username, getToken) => async (dispatch, getState) => {
+  const url = `${window.config.organisationsBaseUrl}users/${username}/notification_configurations`;
+
+  dispatch(requestedUserNotification());
+
+  const state = getState();
+  const {
+    eventFilterTypes,
+    jobDomains,
+    eventFilterStates,
+    organizations,
+    administrativeZones,
+    notificationTypes,
+    entityTypes,
+  } = state.OrganizationReducer;
+
+  if (!eventFilterTypes.length) {
+    dispatch(fetchEventFilterTypes(getToken));
+  }
+
+  if (!jobDomains.length) {
+    dispatch(fetchJobDomains(getToken));
+  }
+
+  if (!eventFilterStates.length) {
+    dispatch(fetchEventFilterStates(getToken));
+  }
+
+  if (!organizations.length) {
+    dispatch(fetchOrganizations(getToken));
+  }
+
+  if (!administrativeZones.length) {
+    dispatch(fetchAdministrativeZones(getToken));
+  }
+
+  if (!notificationTypes.length) {
+    dispatch(fetchNotificationTypes(getToken));
+  }
+
+  if (!entityTypes.length) {
+    dispatch(fetchEntityTypes(getToken));
+  }
+
   return axios
     .get(url, await getApiConfig(getToken))
     .then(response => {
-      dispatch(sendData(sortBy(response.data, 'name'), types.RECEIVED_ENTITY_TYPES));
+      dispatch(receivedUserNotifications(response.data));
     })
     .catch(error => {
-      console.log('Error receiving entity_types', error);
+      console.log('Error receiving user notifications', error);
     });
 };
 
-OrganizationRegisterActions.addNewUserNotification = () => dispatch => {
-  dispatch(sendData(null, types.ADDED_NEW_USER_NOTIFICATION));
+const updateUserNotification = (username, getToken) => async (dispatch, getState) => {
+  const state = getState();
+  const jobDomainActions = state.OrganizationReducer.jobDomainActions;
+  const notificationConfiguration = formatUserNotifications(
+    state.OrganizationReducer.userNotifications,
+    jobDomainActions
+  );
+
+  const url = `${
+    window.config.organisationsBaseUrl
+  }users/${username.trim()}/notification_configurations`;
+  return axios
+    .put(url, notificationConfiguration, await getApiConfig(getToken))
+    .then(() => {
+      dispatch(updatedNotificationConfiguration());
+      dispatch(
+        addNotification({ message: 'Notification configuration updated', level: 'success' })
+      );
+    })
+    .catch(() => {
+      dispatch(
+        addNotification({
+          message: 'Unable to save notification configuration',
+          level: 'error',
+        })
+      );
+    });
 };
 
-OrganizationRegisterActions.getEntityByClassification = async (entityType, getToken) => {
+/* ------------------------------------------------------------------ */
+/* Plain helper (returns Promise directly, not dispatched)            */
+/* ------------------------------------------------------------------ */
+
+const getEntityByClassification = async (entityType, getToken) => {
   const url = `${window.config.organisationsBaseUrl}entity_types/${entityType}/entity_classifications`;
   return axios.get(url, await getApiConfig(getToken));
 };
 
-OrganizationRegisterActions.getUserNotifications =
-  (username, getToken) => async (dispatch, getState) => {
-    const url = `${window.config.organisationsBaseUrl}users/${username}/notification_configurations`;
+/* ------------------------------------------------------------------ */
+/* Sync action wrappers — keep argument signatures back-compat        */
+/* ------------------------------------------------------------------ */
 
-    dispatch(sendData(null, types.REQUESTED_USER_NOTIFICATION));
+const addEntityRefToNotification = (index, entityClassRef) =>
+  addedEntityClassRef({ index, entityClassRef });
 
-    const state = getState();
-    const {
-      eventFilterTypes,
-      jobDomains,
-      eventFilterStates,
-      organizations,
-      administrativeZones,
-      notificationTypes,
-      entityTypes,
-    } = state.OrganizationReducer;
+const removeEntityClassRefNotification = (index, entityClassRef) =>
+  removedEntityClassRef({ index, entityClassRef });
 
-    if (!eventFilterTypes.length) {
-      dispatch(OrganizationRegisterActions.getEventFilterTypes(getToken));
-    }
+const addAdminZoneRefToNotification = (index, id) => addedAdminZoneRef({ index, id });
 
-    if (!jobDomains.length) {
-      dispatch(OrganizationRegisterActions.getJobDomains(getToken));
-    }
+const removeAdminZoneRefToNotification = (index, id) => removedAdminZoneRef({ index, id });
 
-    if (!eventFilterStates.length) {
-      dispatch(OrganizationRegisterActions.getEventFilterStates(getToken));
-    }
+const deleteUserNotificationAction = index => deletedUserNotification(index);
 
-    if (!organizations.length) {
-      dispatch(OrganizationRegisterActions.getOrganizations(getToken));
-    }
+const addNewUserNotification = () => addedNewUserNotification();
 
-    if (!administrativeZones.length) {
-      dispatch(OrganizationRegisterActions.getAdministrativeZones(getToken));
-    }
+const setEnabledNotification = (index, enabled) => enabledUserNotification({ index, enabled });
 
-    if (!notificationTypes.length) {
-      dispatch(OrganizationRegisterActions.getNotificationTypes(getToken));
-    }
+const changeEventFilterType = (index, value) => changedEventFilterType({ index, value });
 
-    if (!entityTypes.length) {
-      dispatch(OrganizationRegisterActions.getEntityTypes(getToken));
-    }
+const changeEventFilterJobDomain = (index, value) => changedEventFilterJobDomain({ index, value });
 
-    return axios
-      .get(url, await getApiConfig(getToken))
-      .then(response => {
-        dispatch(sendData(response.data, types.RECEIVED_USER_NOTIFICATIONS));
-      })
-      .catch(error => {
-        console.log('Error receiving user notifications', error);
-      });
-  };
+const changeEventFilterOrganizationRef = (index, organisationRef) =>
+  changedEventFilterOrgRef({ index, organisationRef });
 
-OrganizationRegisterActions.setEnabledNotification =
-  (index, enabled, getToken) => async (dispatch, getState) => {
-    dispatch(sendData({ index, enabled }, types.ENABLED_USER_NOTIFICATION));
-  };
+const changeEventFilterAction = (index, action, isChecked) =>
+  changeEventFilterActionReducer({ index, action, isChecked });
 
-OrganizationRegisterActions.getEventFilterTypes = getToken => async (dispatch, getState) => {
-  const url = `${window.config.eventsBaseUrl}notifications/event_filter_types`;
-  return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(sendData(response.data, types.RECEIVED_EVENT_FILTER_TYPES));
-    })
-    .catch(error => {
-      console.log('Error receiving event filter types', error);
-    });
-};
+const changeEventFilterState = (index, state, isChecked) =>
+  changeEventFilterStateReducer({ index, state, isChecked });
 
-OrganizationRegisterActions.getJobDomains = getToken => async (dispatch, getState) => {
-  const url = `${window.config.eventsBaseUrl}notifications/job_domains`;
-  return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(sendData(response.data, types.RECEIVED_JOB_DOMAINS));
-      response.data.forEach(domain => {
-        dispatch(OrganizationRegisterActions.getJobActionsByDomain(domain, getToken));
-      });
-    })
-    .catch(error => {
-      console.log('Error receiving job domains', error);
-    });
-};
+const changeNotificationType = (index, type) => changedNotificationType({ index, type });
 
-OrganizationRegisterActions.changeEventFilterType = (index, value) => dispatch => {
-  dispatch(
-    sendData(
-      {
-        index,
-        value,
-      },
-      types.CHANGED_EVENT_FILTER_TYPE
-    )
-  );
-};
+/* ------------------------------------------------------------------ */
+/* Namespace re-export                                                */
+/* ------------------------------------------------------------------ */
 
-OrganizationRegisterActions.changeEventFilterJobDomain = (index, value) => dispatch => {
-  dispatch(
-    sendData(
-      {
-        index,
-        value,
-      },
-      types.CHANGED_EVENT_FILTER_JOB_DOMAIN
-    )
-  );
-};
-
-OrganizationRegisterActions.changeEventFilterOrganizationRef =
-  (index, organisationRef) => async dispatch => {
-    dispatch(
-      sendData(
-        {
-          index,
-          organisationRef,
-        },
-        types.CHANGED_EVENT_FILTER_ORG_REF
-      )
-    );
-  };
-
-OrganizationRegisterActions.getJobActionsByDomain =
-  (domain, getToken) => async (dispatch, getState) => {
-    const url = `${window.config.eventsBaseUrl}notifications/job_actions/${domain}`;
-    return axios
-      .get(url, await getApiConfig(getToken))
-      .then(response => {
-        dispatch(
-          sendData(
-            {
-              data: response.data,
-              domain,
-            },
-            types.RECEIVED_JOB_ACTIONS_FOR_DOMAIN
-          )
-        );
-      })
-      .catch(error => {
-        console.log(`Error receiving actions for domain ${domain}`, error);
-      });
-  };
-
-OrganizationRegisterActions.changeEventFilterAction =
-  (index, action, isChecked) => async dispatch => {
-    dispatch(
-      sendData(
-        {
-          index,
-          action,
-          isChecked,
-        },
-        types.CHANGE_EVENT_FILTER_ACTION
-      )
-    );
-  };
-
-OrganizationRegisterActions.changeEventFilterState =
-  (index, state, isChecked) => async dispatch => {
-    dispatch(
-      sendData(
-        {
-          index,
-          state,
-          isChecked,
-        },
-        types.CHANGE_EVENT_FILTER_STATE
-      )
-    );
-  };
-
-OrganizationRegisterActions.getEventFilterStates = getToken => async (dispatch, getState) => {
-  const url = `${window.config.eventsBaseUrl}notifications/job_states`;
-  return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(sendData(response.data, types.RECEIVED_EVENT_FILTER_STATES));
-    })
-    .catch(error => {
-      console.log('Error receiving event filter states', error);
-    });
-};
-
-OrganizationRegisterActions.changeNotificationType =
-  (index, type, getToken) => async (dispatch, getState) => {
-    dispatch(
-      sendData(
-        {
-          index,
-          type,
-        },
-        types.CHANGED_NOTIFICATION_TYPE
-      )
-    );
-  };
-
-OrganizationRegisterActions.getNotificationTypes = getToken => async (dispatch, getState) => {
-  const url = `${window.config.eventsBaseUrl}notifications/notification_types`;
-  return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(sendData(response.data, types.RECEIVED_NOTIFICATION_TYPES));
-    })
-    .catch(error => {
-      console.log('Error receiving notification types', error);
-    });
-};
-
-OrganizationRegisterActions.getAdministrativeZones = getToken => async (dispatch, getState) => {
-  const url = `${window.config.organisationsBaseUrl}administrative_zones`;
-  return axios
-    .get(url, await getApiConfig(getToken))
-    .then(response => {
-      dispatch(sendData(response.data, types.RECEIVED_ADMINISTRATIVE_ZONES));
-    })
-    .catch(error => {
-      console.log('Error receiving administrative zones', error);
-    });
-};
-
-OrganizationRegisterActions.addAdminZoneRefToNotification = (index, id) => async dispatch => {
-  dispatch(
-    sendData(
-      {
-        index,
-        id,
-      },
-      types.ADDED_ADMIN_ZONE_REF
-    )
-  );
-};
-
-OrganizationRegisterActions.removeAdminZoneRefToNotification = (index, id) => dispatch => {
-  dispatch(
-    sendData(
-      {
-        index,
-        id,
-      },
-      types.REMOVED_ADMIN_ZONE_REF
-    )
-  );
-};
-
-OrganizationRegisterActions.updateUserNotification =
-  (username, getToken) => async (dispatch, getState) => {
-    const state = getState();
-    const jobDomainActions = state.OrganizationReducer.jobDomainActions;
-    const notificationConfiguration = formatUserNotifications(
-      state.OrganizationReducer.userNotifications,
-      jobDomainActions
-    );
-
-    const url = `${
-      window.config.organisationsBaseUrl
-    }users/${username.trim()}/notification_configurations`;
-    return axios
-      .put(url, notificationConfiguration, await getApiConfig(getToken))
-      .then(response => {
-        dispatch(sendData(null, types.UPDATED_NOTIFICATION_CONFIGURATION));
-        dispatch(SuppliersActions.addNotification('Notification configuration updated', 'success'));
-      })
-      .catch(error => {
-        dispatch(
-          SuppliersActions.addNotification('Unable to save notification configuration', 'error')
-        );
-      });
-  };
-
-export const sortBy = (list, key) => {
-  return list.sort((a, b) => a[key].localeCompare(b[key]));
+const OrganizationRegisterActions = {
+  // async data thunks (back-compat aliases keep get* naming)
+  getRoles: fetchRoles,
+  getOrganizations: fetchOrganizations,
+  getCodeSpaces: fetchCodeSpaces,
+  getUsers: fetchUsers,
+  getM2MClients: fetchM2MClients,
+  getResponbilitySets: fetchResponsibilitySets,
+  getEntityTypes: fetchEntityTypes,
+  getEventFilterTypes: fetchEventFilterTypes,
+  getEventFilterStates: fetchEventFilterStates,
+  getNotificationTypes: fetchNotificationTypes,
+  getAdministrativeZones: fetchAdministrativeZones,
+  getJobDomains: fetchJobDomains,
+  getJobActionsByDomain: (domain, getToken) => fetchJobActionsByDomain({ domain, getToken }),
+  // side-effecting thunks
+  createRole,
+  updateRole,
+  deleteRole,
+  createOrganization,
+  updateOrganization,
+  deleteOrganization,
+  createUser,
+  updateUser,
+  deleteUser,
+  createM2MClient,
+  updateM2MClient,
+  deleteM2MClient,
+  createEntityType,
+  updateEntityType,
+  deleteEntityType,
+  createResponsibilitySet,
+  updateResponsibilitySet,
+  deleteResponsibilitySet,
+  getUserNotifications,
+  updateUserNotification,
+  // sync action creators
+  addEntityRefToNotification,
+  removeEntityClassRefNotification,
+  addAdminZoneRefToNotification,
+  removeAdminZoneRefToNotification,
+  deleteUserNotification: deleteUserNotificationAction,
+  addNewUserNotification,
+  setEnabledNotification,
+  changeEventFilterType,
+  changeEventFilterJobDomain,
+  changeEventFilterOrganizationRef,
+  changeEventFilterAction,
+  changeEventFilterState,
+  changeNotificationType,
+  // plain helper
+  getEntityByClassification,
 };
 
 export default OrganizationRegisterActions;
