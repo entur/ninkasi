@@ -62,7 +62,6 @@ the JSON and the deploy workflow.
 
 Each config carries:
 
-- `appEnv` — `local | dev | test | prod`
 - `envLabel` / `envLabelColor` — drives the chip next to the wordmark.
   Omitted for prod so the chip disappears.
 - API base URLs for each upstream service (timetable-admin, providers,

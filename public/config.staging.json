@@ -1,5 +1,4 @@
 {
-  "appEnv": "test",
   "envLabel": "staging",
   "envLabelColor": "#e9b10c",
   "providersBaseUrl": "https://api.staging.entur.io/timetable-admin/v1/providers/",

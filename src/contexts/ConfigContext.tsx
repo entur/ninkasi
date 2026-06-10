@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 
 export interface Config {
-  appEnv?: string;
-
   /**
    * Optional environment chip next to the wordmark (e.g. "dev", "staging").
    * Absent → no chip rendered. Prod typically omits this so the badge hides.
