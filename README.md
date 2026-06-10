@@ -1,13 +1,9 @@
 # Ninkasi
 
-Internal admin GUI for managing Entur's NeTEx data pipeline and inspecting data
-status. Used by Entur staff to register and configure data providers, run
+Internal admin GUI for managing the transit data pipeline and inspecting pipeline
+status. Used by staff to register and configure data providers, run
 pipeline operations (import / validate / transfer / export), and look at
 delivery and processing history.
-
-Production: <https://ninkasi.entur.org>
-Staging: <https://ninkasi.staging.entur.org>
-Dev: <https://ninkasi.dev.entur.org>
 
 ## Stack
 
@@ -20,9 +16,6 @@ Dev: <https://ninkasi.dev.entur.org>
 - Vitest + Testing Library
 - date-fns, axios
 - Deployed to Firebase Hosting via GitHub Actions
-
-The three former micro-frontends (NeTEx validation reports, events/upload,
-line-statistics) are now inlined under `src/screens/providers/components/`.
 
 ## Run locally
 
@@ -116,7 +109,7 @@ src/
 ## Authentication
 
 OIDC via [react-oidc-context](https://github.com/authts/react-oidc-context),
-configured against Entur's Auth0 tenants per env. Access is gated on the
+configured against a compatible OIDC provider. Access is gated on the
 `isRouteDataAdmin` role assignment (see `UserContextReducer`); users without
 the role see a `NoAccess` screen.
 
