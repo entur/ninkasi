@@ -15,7 +15,7 @@
  */
 
 import { useRef, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { FormControl, Select, MenuItem, InputLabel, IconButton } from '@mui/material';
@@ -115,12 +115,12 @@ const ModalCreateEntityType = ({
     entityType.privateCode.length > 0;
 
   const actions = [
-    <Button key="close" variant="text" onClick={handleOnClose}>
+    <Button key="close" variant="outlined" onClick={handleOnClose}>
       Close
     </Button>,
     <Button
       key="create"
-      variant="text"
+      variant="contained"
       disabled={!isSavable}
       onClick={() => handleSubmit(entityType)}
     >
@@ -132,9 +132,9 @@ const ModalCreateEntityType = ({
     <Dialog open={isModalOpen} onClose={handleOnClose} maxWidth="md" fullWidth>
       <DialogTitle>Create a new entity type</DialogTitle>
       <DialogContent>
-        <div>
-          <div
-            style={{
+        <Box>
+          <Box
+            sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -173,31 +173,44 @@ const ModalCreateEntityType = ({
                 ))}
               </Select>
             </FormControl>
-            <div style={{ width: '100%', fontSize: 12 }}>Entity classifications</div>
-            <select multiple style={{ width: '100%', fontSize: 12 }} ref={classificationsRef}>
+            <Box sx={{ width: '100%', fontSize: 12 }}>Entity classifications</Box>
+            <Box
+              component="select"
+              multiple
+              sx={{ width: '100%', fontSize: 12 }}
+              ref={classificationsRef}
+            >
               {entityType.classifications.map((et, index) => (
                 <option key={'ec-' + index}>{getClassificationTitle(et)} </option>
               ))}
-            </select>
-            <div style={{ textAlign: 'left', width: '100%' }}>
-              <IconButton onClick={() => setIsCreatingNewClassification(true)} size="large">
-                <Add style={{ color: '#228B22' }} />
+            </Box>
+            <Box sx={{ textAlign: 'left', width: '100%' }}>
+              <IconButton
+                aria-label="Add classification"
+                onClick={() => setIsCreatingNewClassification(true)}
+                size="large"
+              >
+                <Add sx={{ color: 'success.main' }} />
               </IconButton>
-              <IconButton onClick={handleRemoveClassification} size="large">
-                <Remove style={{ color: '#cc0000' }} />
+              <IconButton
+                aria-label="Remove classification"
+                onClick={handleRemoveClassification}
+                size="large"
+              >
+                <Remove sx={{ color: 'error.main' }} />
               </IconButton>
-            </div>
+            </Box>
             {isCreatingNewClassification ? (
-              <div style={{ border: '1px dotted', width: '100%' }}>
-                <div
-                  style={{
+              <Box sx={{ border: '1px dotted', width: '100%' }}>
+                <Box
+                  sx={{
                     fontSize: 12,
                     textAlign: 'center',
                     fontWeight: 600,
                   }}
                 >
                   New classification
-                </div>
+                </Box>
                 <TextField
                   placeholder="Name"
                   label="Name"
@@ -225,7 +238,7 @@ const ModalCreateEntityType = ({
                 />
                 <Button
                   variant="text"
-                  style={{ width: '100%' }}
+                  sx={{ width: '100%' }}
                   disabled={
                     isClassificationPrivateCodeTaken ||
                     !tempClassification.name.length ||
@@ -235,10 +248,10 @@ const ModalCreateEntityType = ({
                 >
                   Add
                 </Button>
-              </div>
+              </Box>
             ) : null}
-          </div>
-        </div>
+          </Box>
+        </Box>
       </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>

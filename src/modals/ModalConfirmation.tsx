@@ -35,10 +35,10 @@ const ModalConfirmation = ({
   actionBtnTitle,
 }: ModalConfirmationProps) => {
   const actions = [
-    <Button key="cancel" variant="text" color="primary" onClick={handleClose}>
+    <Button key="cancel" variant="outlined" onClick={handleClose}>
       Cancel
     </Button>,
-    <Button key="submit" variant="text" color="primary" onClick={handleSubmit}>
+    <Button key="submit" variant="contained" color="primary" onClick={handleSubmit}>
       {actionBtnTitle}
     </Button>,
   ];

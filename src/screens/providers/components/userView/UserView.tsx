@@ -15,9 +15,20 @@
  */
 
 import { useEffect, useState } from 'react';
-import './userView.scss';
 import { Edit, Delete, Notifications, Add } from '@mui/icons-material';
-import { Fab } from '@mui/material';
+import {
+  Box,
+  Fab,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+} from '@mui/material';
 import ModalCreateUser from 'modals/ModalCreateUser';
 import ModalEditUser from 'modals/ModalEditUser';
 import ModalEditNotifications from 'modals/ModalEditNotifications';
@@ -111,12 +122,12 @@ const UserView = () => {
      picks a real organisation. Migration intentionally keeps the prior logic. */
 
   const handleSortOrder = (column: string) => {
-    let asc = true;
-    if (sortOrder.column === column) {
-      asc = !sortOrder.asc;
-    }
+    const asc = sortOrder.column === column ? !sortOrder.asc : true;
     setSortOrder({ column, asc });
   };
+
+  const sortDirection = (column: string): 'asc' | 'desc' | false =>
+    sortOrder.column === column ? (sortOrder.asc ? 'asc' : 'desc') : false;
 
   const openCreateModal = () => {
     setActiveUser(null);
@@ -137,12 +148,13 @@ const UserView = () => {
   const confirmDeleteTitle = getDeleteConfirmationTitle();
 
   return (
-    <div>
-      <div
-        style={{
+    <Box>
+      <Box
+        sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          mb: 1,
         }}
       >
         <OrganizationFilter
@@ -152,155 +164,165 @@ const UserView = () => {
           }}
           organisationFilterId={organisationFilterId}
         />
-        <Fab size="small" style={{ marginRight: 10 }} onClick={openCreateModal}>
+        <Fab
+          size="small"
+          aria-label="Create user"
+          sx={{ marginRight: '10px' }}
+          onClick={openCreateModal}
+        >
           <Add />
         </Fab>
-      </div>
-      <div className="user-row">
-        <div className="user-header">
-          <div className="col-1-9">
-            <span className="sortable" onClick={() => handleSortOrder('username')}>
-              username
-            </span>
-          </div>
-          <div className="col-1-9">
-            <span className="sortable" onClick={() => handleSortOrder('firstName')}>
-              firstname
-            </span>
-          </div>
-          <div className="col-1-9">
-            <span className="sortable" onClick={() => handleSortOrder('lastName')}>
-              lastname
-            </span>
-          </div>
-          <div className="col-1-8">
-            <span className="sortable" onClick={() => handleSortOrder('email')}>
-              e-mail
-            </span>
-          </div>
-          <div className="col-1-9">
-            <span className="sortable" onClick={() => handleSortOrder('organisation')}>
-              organisation
-            </span>
-          </div>
-          <div className="col-1-7">Responsiblity set</div>
-          <div className="col-1-9">Notifications</div>
-        </div>
-        {sortedUsers.filter(filterUserByOrg).map((user: any) => {
-          return (
-            <div
-              key={'user-' + user.id}
-              className="user-row-item"
-              style={{ display: 'flex', alignItems: 'center' }}
-            >
-              <div className="col-1-9">{user.username}</div>
-              <div className="col-1-9">{user.contactDetails.firstName}</div>
-              <div className="col-1-9">{user.contactDetails.lastName}</div>
-              <div className="col-1-8">{user.contactDetails.email}</div>
-              <div className="col-1-9">{user.organisation.name}</div>
-              <div className="col-1-7">
-                <ul
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    listStyleType: 'circle',
-                  }}
+      </Box>
+      <TableContainer component={Paper} variant="outlined">
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell sortDirection={sortDirection('username')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'username'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('username')}
                 >
-                  {user.responsibilitySets
-                    ? user.responsibilitySets.map((resp: any) => (
-                        <li key={resp.id}>{resp.name} </li>
-                      ))
-                    : null}
-                </ul>
-              </div>
-              <div className="col-1-11">
-                {user.notifications.map((notification: any, i: number) => (
-                  <NotificationStatus key={'notification-' + i} notification={notification} />
-                ))}
-              </div>
-              <div className="col-icon">
-                <Edit
-                  style={{
-                    height: 20,
-                    marginRight: 4,
-                    width: 20,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'rgba(25, 118, 210, 0.59)',
-                  }}
-                  onClick={() => openEditModal(user)}
-                />
-                <Notifications
-                  style={{
-                    marginLeft: 4,
-                    height: 20,
-                    width: 20,
-                    marginRight: 4,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'rgba(25, 118, 210, 0.59)',
-                  }}
-                  onClick={() => openNotificationsModal(user)}
-                />
-                <Delete
-                  style={{
-                    height: 20,
-                    width: 20,
-                    marginRight: 10,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: '#fa7b81',
-                  }}
-                  onClick={() => handleOpenDeleteConfirmationDialog(user)}
-                />
-              </div>
-            </div>
-          );
-        })}
-        {isCreateModalOpen && (
-          <ModalCreateUser
-            isModalOpen={isCreateModalOpen}
-            handleCloseModal={() => setIsCreateModalOpen(false)}
-            takenUsernames={users.map((user: any) => user.username)}
-            takenEmails={users.map((user: any) => user.contactDetails.email)}
-            organizations={organizations}
-            responsibilities={responsibilities}
-            handleSubmit={handleCreateUser}
-          />
-        )}
-        {isEditModalOpen && (
-          <ModalEditUser
-            isModalOpen={isEditModalOpen}
-            handleCloseModal={() => setIsEditModalOpen(false)}
-            takenUsernames={users.map((user: any) => user.username)}
-            organizations={organizations}
-            user={activeUser}
-            responsibilities={responsibilities}
-            handleSubmit={handleUpdateUser}
-          />
-        )}
-        {isNotificationsOpen && (
-          <ModalEditNotifications
-            handleCloseModal={() => setIsNotificationsOpen(false)}
-            isModalOpen={isNotificationsOpen}
-            user={activeUser}
-            getToken={getToken}
-          />
-        )}
-        <ModalConfirmation
-          open={isDeleteConfirmationOpen}
-          title={confirmDeleteTitle}
-          actionBtnTitle="Delete"
-          body="You are about to delete current user. Are you sure?"
-          handleSubmit={() => {
-            handleDeleteUser(activeUser);
-          }}
-          handleClose={() => {
-            handleCloseDeleteConfirmation();
-          }}
+                  Username
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('firstName')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'firstName'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('firstName')}
+                >
+                  First name
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('lastName')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'lastName'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('lastName')}
+                >
+                  Last name
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('email')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'email'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('email')}
+                >
+                  E-mail
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('organisation')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'organisation'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('organisation')}
+                >
+                  Organisation
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>Responsibility set</TableCell>
+              <TableCell>Notifications</TableCell>
+              <TableCell align="right" />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {sortedUsers.filter(filterUserByOrg).map((user: any) => (
+              <TableRow key={'user-' + user.id} hover>
+                <TableCell>{user.username}</TableCell>
+                <TableCell>{user.contactDetails.firstName}</TableCell>
+                <TableCell>{user.contactDetails.lastName}</TableCell>
+                <TableCell>{user.contactDetails.email}</TableCell>
+                <TableCell>{user.organisation.name}</TableCell>
+                <TableCell>
+                  {user.responsibilitySets && user.responsibilitySets.length ? (
+                    <Box component="ul" sx={{ m: 0, pl: 2.5, listStyleType: 'circle' }}>
+                      {user.responsibilitySets.map((resp: any) => (
+                        <li key={resp.id}>{resp.name}</li>
+                      ))}
+                    </Box>
+                  ) : null}
+                </TableCell>
+                <TableCell>
+                  {user.notifications.map((notification: any, i: number) => (
+                    <NotificationStatus key={'notification-' + i} notification={notification} />
+                  ))}
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    size="small"
+                    color="error"
+                    aria-label="Delete user"
+                    onClick={() => handleOpenDeleteConfirmationDialog(user)}
+                  >
+                    <Delete fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    aria-label="Edit notifications"
+                    onClick={() => openNotificationsModal(user)}
+                  >
+                    <Notifications fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    aria-label="Edit user"
+                    onClick={() => openEditModal(user)}
+                  >
+                    <Edit fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {isCreateModalOpen && (
+        <ModalCreateUser
+          isModalOpen={isCreateModalOpen}
+          handleCloseModal={() => setIsCreateModalOpen(false)}
+          takenUsernames={users.map((user: any) => user.username)}
+          takenEmails={users.map((user: any) => user.contactDetails.email)}
+          organizations={organizations}
+          responsibilities={responsibilities}
+          handleSubmit={handleCreateUser}
         />
-      </div>
-    </div>
+      )}
+      {isEditModalOpen && (
+        <ModalEditUser
+          isModalOpen={isEditModalOpen}
+          handleCloseModal={() => setIsEditModalOpen(false)}
+          takenUsernames={users.map((user: any) => user.username)}
+          organizations={organizations}
+          user={activeUser}
+          responsibilities={responsibilities}
+          handleSubmit={handleUpdateUser}
+        />
+      )}
+      {isNotificationsOpen && (
+        <ModalEditNotifications
+          handleCloseModal={() => setIsNotificationsOpen(false)}
+          isModalOpen={isNotificationsOpen}
+          user={activeUser}
+          getToken={getToken}
+        />
+      )}
+      <ModalConfirmation
+        open={isDeleteConfirmationOpen}
+        title={confirmDeleteTitle}
+        actionBtnTitle="Delete"
+        body="You are about to delete current user. Are you sure?"
+        handleSubmit={() => {
+          handleDeleteUser(activeUser);
+        }}
+        handleClose={() => {
+          handleCloseDeleteConfirmation();
+        }}
+      />
+    </Box>
   );
 };
 

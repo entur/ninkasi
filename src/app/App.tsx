@@ -1,16 +1,13 @@
-import { useCallback, useEffect, useMemo } from 'react';
-import {
-  ThemeProvider,
-  StyledEngineProvider,
-  createTheme,
-  adaptV4Theme,
-  CssBaseline,
-} from '@mui/material';
+import { useCallback, useEffect } from 'react';
+import { Box, Toolbar } from '@mui/material';
+import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import { useAuth } from '../auth';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { updateAuth } from '@/reducers/UserReducer';
 import { notifyConfigIsLoaded } from '@/reducers/UtilsReducer';
 import { fetchUserContext } from '@/reducers/UserContextReducer';
+import theme from '@/theme/theme';
+import AppGlobalStyles from '@/theme/globalStyles';
 import Header from './components/header/Header';
 import NoAccess from './components/NoAccess';
 import Router from './Router';
@@ -27,10 +24,6 @@ const App = () => {
   }, [auth]);
 
   useEffect(() => {
-    dispatch(updateAuth(auth));
-  }, [auth, dispatch]);
-
-  useEffect(() => {
     if (auth.isAuthenticated) {
       dispatch(notifyConfigIsLoaded());
       dispatch(fetchUserContext(getToken));
@@ -43,18 +36,6 @@ const App = () => {
     }
   }, [auth]);
 
-  const theme = useMemo(
-    () =>
-      createTheme(
-        adaptV4Theme({
-          palette: {
-            mode: 'light',
-          },
-        })
-      ),
-    []
-  );
-
   if (auth.isLoading || !auth.isAuthenticated) {
     return null;
   }
@@ -64,9 +45,11 @@ const App = () => {
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          <AppGlobalStyles />
           <NotificationContainer />
           <Header />
-          <div className="app" style={{ marginTop: '64px' }}>
+          <Toolbar />
+          <Box component="main">
             {isAdmin ? (
               <Router />
             ) : (
@@ -77,7 +60,7 @@ const App = () => {
                 }}
               />
             )}
-          </div>
+          </Box>
         </ThemeProvider>
       </StyledEngineProvider>
     );

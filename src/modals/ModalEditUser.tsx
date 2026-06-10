@@ -15,7 +15,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {
@@ -164,12 +164,12 @@ const ModalEditUser = ({
   const disableUpdate = !usernameValid || !emailValid;
 
   const actions = [
-    <Button key="cancel" variant="text" onClick={handleOnClose}>
+    <Button key="cancel" variant="outlined" onClick={handleOnClose}>
       Cancel
     </Button>,
     <Button
       key="update"
-      variant="text"
+      variant="contained"
       disabled={disableUpdate}
       color="primary"
       onClick={() => handleSubmit(user)}
@@ -182,13 +182,13 @@ const ModalEditUser = ({
     <Dialog open={isModalOpen} onClose={handleOnClose} maxWidth="md" fullWidth>
       <DialogTitle>{'Editing user ' + originalUsername}</DialogTitle>
       <DialogContent>
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
             flexDirection: 'column',
           }}
         >
-          <div onClick={e => e.stopPropagation()}>
+          <Box onClick={e => e.stopPropagation()}>
             <FormControl>
               <RadioGroup
                 defaultValue="notification_account"
@@ -210,7 +210,7 @@ const ModalEditUser = ({
                 />
               </RadioGroup>
             </FormControl>
-          </div>
+          </Box>
           <TextField
             disabled
             placeholder="Username"
@@ -319,7 +319,7 @@ const ModalEditUser = ({
             }}
             handleRemove={removeResponsibilitySet}
           />
-        </div>
+        </Box>
       </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>

@@ -15,9 +15,21 @@
  */
 
 import { useEffect, useState } from 'react';
-import './m2mClientsView.scss';
 import { Edit, Delete, Add } from '@mui/icons-material';
-import { Fab } from '@mui/material';
+import {
+  Box,
+  Fab,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+} from '@mui/material';
+import EmptyState from '@/app/components/EmptyState';
 import ModalCreateM2MClient from 'modals/ModalCreateM2MClient';
 import ModalEditM2MClient from 'modals/ModalEditM2MClient';
 import ModalConfirmation from 'modals/ModalConfirmation';
@@ -58,6 +70,19 @@ const getEnturPartnerUrl = (issuer: string, clientId: string) => {
   const baseUrl = (window as any).config.enturPartnerUrl;
   const issuerPath = issuer.toLowerCase() === 'internal' ? 'internal' : 'partner';
   return `${baseUrl}/permission-admin/clients/view/${issuerPath}/${clientId}`;
+};
+
+const clientLinkSx = {
+  color: 'primary.main',
+  textDecoration: 'none',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
+};
+
+const noResponsibilitiesSx = {
+  color: 'text.disabled',
+  fontStyle: 'italic',
 };
 
 const M2MClientsView = () => {
@@ -128,118 +153,147 @@ const M2MClientsView = () => {
   };
 
   const handleSortOrder = (column: string) => {
-    let asc = true;
-    if (sortOrder.column === column) {
-      asc = !sortOrder.asc;
-    }
+    const asc = sortOrder.column === column ? !sortOrder.asc : true;
     setSortOrder({ column, asc });
   };
+
+  const sortDirection = (column: string): 'asc' | 'desc' | false =>
+    sortOrder.column === column ? (sortOrder.asc ? 'asc' : 'desc') : false;
 
   const sortedClients = sortClients(m2mClients || [], sortOrder);
   const confirmDeleteTitle = getDeleteConfirmationTitle();
 
   return (
-    <div>
-      <div
-        style={{
+    <Box>
+      <Box
+        sx={{
           display: 'flex',
           justifyContent: 'flex-end',
           alignItems: 'center',
-          marginBottom: 10,
+          marginBottom: '10px',
         }}
       >
-        <Fab size="small" style={{ marginRight: 10 }} onClick={openCreateModal}>
+        <Fab
+          size="small"
+          aria-label="Create M2M client"
+          sx={{ marginRight: '10px' }}
+          onClick={openCreateModal}
+        >
           <Add />
         </Fab>
-      </div>
-      <div className="m2m-clients-row">
-        <div className="m2m-clients-header">
-          <div className="col-m2m-name">
-            <span className="sortable" onClick={() => handleSortOrder('name')}>
-              Name
-            </span>
-          </div>
-          <div className="col-m2m-client-id">
-            <span className="sortable" onClick={() => handleSortOrder('privateCode')}>
-              Client Id
-            </span>
-          </div>
-          <div className="col-m2m-org-id">
-            <span className="sortable" onClick={() => handleSortOrder('enturOrganisationId')}>
-              Entur Org Id
-            </span>
-          </div>
-          <div className="col-m2m-issuer">
-            <span className="sortable" onClick={() => handleSortOrder('issuer')}>
-              Issuer
-            </span>
-          </div>
-          <div className="col-m2m-responsibility-sets">
-            <span className="sortable" onClick={() => handleSortOrder('responsibilitySets')}>
-              Responsibility Sets
-            </span>
-          </div>
-          <div className="col-m2m-actions">Actions</div>
-        </div>
-        {sortedClients.map((client: any) => {
-          const enturPartnerUrl = getEnturPartnerUrl(client.issuer, client.privateCode);
-          return (
-            <div key={'m2m-client-' + client.privateCode} className="m2m-clients-row-item">
-              <div className="col-m2m-name">
-                <a
-                  href={enturPartnerUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="m2m-client-link"
-                >
-                  {client.name}
-                </a>
-              </div>
-              <div className="col-m2m-client-id">{client.privateCode}</div>
-              <div className="col-m2m-org-id">{client.enturOrganisationId}</div>
-              <div className="col-m2m-issuer">{client.issuer}</div>
-              <div className="col-m2m-responsibility-sets">
-                {client.responsibilitySets && client.responsibilitySets.length > 0 ? (
-                  <ul className="responsibility-list">
-                    {client.responsibilitySets.map((resp: any, i: number) => (
-                      <li key={`${client.privateCode}-resp-${i}`}>{resp.name}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <span className="no-responsibilities">None</span>
-                )}
-              </div>
-              <div className="col-m2m-actions">
-                <Edit
-                  style={{
-                    height: 20,
-                    marginRight: 4,
-                    width: 20,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'rgba(25, 118, 210, 0.59)',
-                  }}
-                  onClick={() => openEditModal(client)}
-                />
-                <Delete
-                  style={{
-                    height: 20,
-                    width: 20,
-                    marginRight: 10,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: '#fa7b81',
-                  }}
-                  onClick={() => handleOpenDeleteConfirmationDialog(client)}
-                />
-              </div>
-            </div>
-          );
-        })}
-        {(!m2mClients || m2mClients.length === 0) && (
-          <div className="m2m-clients-empty">No machine-to-machine clients found</div>
-        )}
-      </div>
+      </Box>
+      {m2mClients && m2mClients.length ? (
+        <TableContainer component={Paper} variant="outlined">
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell sortDirection={sortDirection('name')}>
+                  <TableSortLabel
+                    active={sortOrder.column === 'name'}
+                    direction={sortOrder.asc ? 'asc' : 'desc'}
+                    onClick={() => handleSortOrder('name')}
+                  >
+                    Name
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell sortDirection={sortDirection('privateCode')}>
+                  <TableSortLabel
+                    active={sortOrder.column === 'privateCode'}
+                    direction={sortOrder.asc ? 'asc' : 'desc'}
+                    onClick={() => handleSortOrder('privateCode')}
+                  >
+                    Client Id
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell sortDirection={sortDirection('enturOrganisationId')}>
+                  <TableSortLabel
+                    active={sortOrder.column === 'enturOrganisationId'}
+                    direction={sortOrder.asc ? 'asc' : 'desc'}
+                    onClick={() => handleSortOrder('enturOrganisationId')}
+                  >
+                    Entur Org Id
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell sortDirection={sortDirection('issuer')}>
+                  <TableSortLabel
+                    active={sortOrder.column === 'issuer'}
+                    direction={sortOrder.asc ? 'asc' : 'desc'}
+                    onClick={() => handleSortOrder('issuer')}
+                  >
+                    Issuer
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell sortDirection={sortDirection('responsibilitySets')}>
+                  <TableSortLabel
+                    active={sortOrder.column === 'responsibilitySets'}
+                    direction={sortOrder.asc ? 'asc' : 'desc'}
+                    onClick={() => handleSortOrder('responsibilitySets')}
+                  >
+                    Responsibility Sets
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell align="right" />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {sortedClients.map((client: any) => {
+                const enturPartnerUrl = getEnturPartnerUrl(client.issuer, client.privateCode);
+                return (
+                  <TableRow hover key={'m2m-client-' + client.privateCode}>
+                    <TableCell>
+                      <Box
+                        component="a"
+                        href={enturPartnerUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={clientLinkSx}
+                      >
+                        {client.name}
+                      </Box>
+                    </TableCell>
+                    <TableCell sx={{ fontFamily: 'monospace' }}>{client.privateCode}</TableCell>
+                    <TableCell>{client.enturOrganisationId}</TableCell>
+                    <TableCell>{client.issuer}</TableCell>
+                    <TableCell>
+                      {client.responsibilitySets && client.responsibilitySets.length > 0 ? (
+                        <Box component="ul" sx={{ m: 0, pl: 2.5, listStyleType: 'disc' }}>
+                          {client.responsibilitySets.map((resp: any, i: number) => (
+                            <li key={`${client.privateCode}-resp-${i}`}>{resp.name}</li>
+                          ))}
+                        </Box>
+                      ) : (
+                        <Box component="span" sx={noResponsibilitiesSx}>
+                          None
+                        </Box>
+                      )}
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        size="small"
+                        color="error"
+                        aria-label="Delete M2M client"
+                        onClick={() => handleOpenDeleteConfirmationDialog(client)}
+                      >
+                        <Delete fontSize="small" />
+                      </IconButton>
+                      <IconButton
+                        size="small"
+                        color="primary"
+                        aria-label="Edit M2M client"
+                        onClick={() => openEditModal(client)}
+                      >
+                        <Edit fontSize="small" />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <EmptyState message="No machine-to-machine clients found" />
+      )}
       {isCreateModalOpen && (
         <ModalCreateM2MClient
           isModalOpen={isCreateModalOpen}
@@ -270,7 +324,7 @@ const M2MClientsView = () => {
           handleCloseDeleteConfirmation();
         }}
       />
-    </div>
+    </Box>
   );
 };
 

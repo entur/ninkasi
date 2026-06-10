@@ -15,7 +15,7 @@
  */
 
 import { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
@@ -50,10 +50,15 @@ const ModalCreateRole = ({
   const isSavable = !invalidPrivateCode && role.name.length > 0 && role.privateCode.length > 0;
 
   const actions = [
-    <Button key="close" variant="text" onClick={handleOnClose}>
+    <Button key="close" variant="outlined" onClick={handleOnClose}>
       Close
     </Button>,
-    <Button key="create" variant="text" disabled={!isSavable} onClick={() => handleSubmit(role)}>
+    <Button
+      key="create"
+      variant="contained"
+      disabled={!isSavable}
+      onClick={() => handleSubmit(role)}
+    >
       Create
     </Button>,
   ];
@@ -62,8 +67,8 @@ const ModalCreateRole = ({
     <Dialog open={isModalOpen} onClose={handleOnClose} maxWidth="sm" fullWidth>
       <DialogTitle>Create a new role</DialogTitle>
       <DialogContent>
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -89,7 +94,7 @@ const ModalCreateRole = ({
             margin="normal"
             required
           />
-        </div>
+        </Box>
       </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>

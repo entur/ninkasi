@@ -62,6 +62,9 @@ const utilsSlice = createSlice({
     addNotification(state, action) {
       state.notification = action.payload;
     },
+    clearNotification(state) {
+      state.notification = null;
+    },
     appendFilesToOutbound(state, action) {
       const incoming = action.payload.filter(x => !state.outboundFilelist.includes(x));
       state.outboundFilelist.push(...incoming);
@@ -123,6 +126,7 @@ const utilsSlice = createSlice({
 
 export const {
   addNotification,
+  clearNotification,
   appendFilesToOutbound,
   removeFilesFromOutbound,
   resetOutboundFiles,

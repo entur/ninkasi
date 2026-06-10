@@ -17,7 +17,7 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import cfgreader from 'config/readConfig';
+import { Box, Button, Tooltip } from '@mui/material';
 import { Add, Edit, DeleteForever } from '@mui/icons-material';
 import { getQueryVariable } from '@/utils';
 import ConfirmDialog from 'modals/ConfirmDialog';
@@ -48,12 +48,6 @@ const SuppliersContainer = () => {
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
   const [confirmTitle, setConfirmTitle] = useState('');
   const [confirmInfo, setConfirmInfo] = useState('');
-
-  useEffect(() => {
-    cfgreader.readConfig(function (config: any) {
-      window.config = config;
-    });
-  }, []);
 
   useEffect(() => {
     const id = getQueryVariable('id');
@@ -112,65 +106,40 @@ const SuppliersContainer = () => {
   };
 
   return (
-    <div className="suppliers-container">
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+    <Box>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <SelectSupplier
           suppliers={supplierItems}
           selectSupplier={selectSupplier}
           selectedSupplierId={activeProviderId}
         />
         {canEditOrganisation && (
-          <div
-            style={{
-              display: 'inline-block',
-              marginTop: 25,
-              marginLeft: 15,
-            }}
-          >
-            <div
-              title={toolTips.editProvider}
-              style={{
-                display: 'inline-block',
-                cursor: 'pointer',
-                marginRight: 10,
-              }}
-              onClick={handleEditProvider}
-            >
-              {!displayAllSuppliers && (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Edit style={{ width: '1.1em', height: '1.1em' }} />
-                  <span style={{ marginLeft: 2 }}>Edit</span>
-                </div>
-              )}
-            </div>
-            <div
-              title={toolTips.createNewProvider}
-              style={{
-                display: 'inline-block',
-                cursor: 'pointer',
-                marginRight: 10,
-              }}
-              onClick={handleNewProvider}
-            >
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Add style={{ width: '1.2em', height: '1.2em' }} />
-                <span style={{ marginLeft: 2 }}>New</span>
-              </div>
-            </div>
-
-            <div
-              title={toolTips.deleteProvider}
-              style={{ display: 'inline-block', cursor: 'pointer' }}
-              onClick={() => handleOpenConfirmDeleteProviderDialog()}
-            >
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <DeleteForever style={{ width: '1.2em', height: '1.2em' }} />
-                <span style={{ marginLeft: 2 }}>Delete</span>
-              </div>
-            </div>
-          </div>
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 3, ml: 2, gap: 1 }}>
+            {!displayAllSuppliers && (
+              <Tooltip title={toolTips.editProvider}>
+                <Button size="small" startIcon={<Edit />} onClick={handleEditProvider}>
+                  Edit
+                </Button>
+              </Tooltip>
+            )}
+            <Tooltip title={toolTips.createNewProvider}>
+              <Button size="small" startIcon={<Add />} onClick={handleNewProvider}>
+                New
+              </Button>
+            </Tooltip>
+            <Tooltip title={toolTips.deleteProvider}>
+              <Button
+                size="small"
+                color="error"
+                startIcon={<DeleteForever />}
+                onClick={() => handleOpenConfirmDeleteProviderDialog()}
+              >
+                Delete
+              </Button>
+            </Tooltip>
+          </Box>
         )}
-      </div>
+      </Box>
       <ConfirmDialog
         open={confirmDialogOpen}
         handleSubmit={confirmAction}
@@ -181,7 +150,7 @@ const SuppliersContainer = () => {
           setConfirmAction(null);
         }}
       />
-    </div>
+    </Box>
   );
 };
 

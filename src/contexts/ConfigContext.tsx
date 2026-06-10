@@ -2,6 +2,18 @@ import React, { useContext } from 'react';
 
 export interface Config {
   appEnv?: string;
+
+  /**
+   * Optional environment chip next to the wordmark (e.g. "dev", "staging").
+   * Absent → no chip rendered. Prod typically omits this so the badge hides.
+   */
+  envLabel?: string;
+  /**
+   * Background color for the env chip (any CSS color).
+   * Per-env conventions: green for dev, orange for staging, hide in prod.
+   */
+  envLabelColor?: string;
+
   auth0Domain?: string;
   auth0ClientId?: string;
   auth0Audience?: string;

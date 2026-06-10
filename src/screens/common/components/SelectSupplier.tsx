@@ -1,5 +1,5 @@
-import { FormControl, NativeSelect } from '@mui/material';
 import { memo, useCallback } from 'react';
+import { Autocomplete, Box, TextField } from '@mui/material';
 
 interface Supplier {
   id: number;
@@ -15,45 +15,40 @@ interface Props {
 
 export const SelectSupplier = memo(
   ({ suppliers, selectSupplier, selectedSupplierId, errorText }: Props) => {
-    // Ensure we have a valid value that matches one of the option values.
-    const validSupplierIds = suppliers.map(s => s.id);
-    const currentValue = validSupplierIds.includes(selectedSupplierId) ? selectedSupplierId : -1;
+    const selected = suppliers.find(s => s.id === selectedSupplierId) ?? null;
 
     const handleChange = useCallback(
-      (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = parseInt(event.target.value, 10);
-        selectSupplier(value);
+      (_event: unknown, value: Supplier | null) => {
+        selectSupplier(value ? value.id : -1);
       },
       [selectSupplier]
     );
 
     return (
-      <>
-        <FormControl variant="outlined" style={{ minWidth: 350 }}>
-          <NativeSelect
-            value={currentValue}
-            onChange={handleChange}
-            sx={{
-              bgcolor: 'background.paper',
-              borderRadius: 1,
-              '& .MuiNativeSelect-select': {
-                padding: '10px 14px',
-                '&:focus': {
-                  borderRadius: 1,
-                  backgroundColor: 'background.paper',
-                },
-              },
-            }}
-          >
-            {suppliers.map(supplier => (
-              <option key={supplier.id} value={supplier.id}>
-                {supplier.name}
-              </option>
-            ))}
-          </NativeSelect>
-        </FormControl>
-        {errorText && <div style={{ color: 'red' }}>{errorText}</div>}
-      </>
+      <Box sx={{ minWidth: 350 }}>
+        <Autocomplete
+          size="small"
+          options={suppliers}
+          value={selected}
+          onChange={handleChange}
+          getOptionLabel={option => option.name}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+          disableClearable={selected?.id === -1}
+          renderInput={params => (
+            <TextField
+              {...params}
+              placeholder="Select provider"
+              error={Boolean(errorText)}
+              helperText={errorText}
+              sx={{
+                m: 0,
+                bgcolor: 'background.paper',
+                borderRadius: 1,
+              }}
+            />
+          )}
+        />
+      </Box>
     );
   }
 );

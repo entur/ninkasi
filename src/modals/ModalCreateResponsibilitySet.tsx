@@ -15,7 +15,7 @@
  */
 
 import { useRef, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Remove, Add } from '@mui/icons-material';
@@ -137,12 +137,12 @@ const ModalCreateResponsibilitySet = ({
   const isSavable = isInternallySavable && isLegalPrivateCode;
 
   const actions = [
-    <Button key="close" variant="text" onClick={handleOnClose}>
+    <Button key="close" variant="outlined" onClick={handleOnClose}>
       Close
     </Button>,
     <Button
       key="create"
-      variant="text"
+      variant="contained"
       disabled={!isSavable}
       onClick={() => handleSubmit(responsibilitySet)}
     >
@@ -154,11 +154,11 @@ const ModalCreateResponsibilitySet = ({
     <Dialog open={modalOpen} onClose={handleOnClose} maxWidth="lg" fullWidth>
       <DialogTitle>Creating a new responsibility set</DialogTitle>
       <DialogContent>
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
             flexDirection: 'column',
-            marginTop: 5,
+            marginTop: '5px',
           }}
         >
           <TextField
@@ -201,25 +201,38 @@ const ModalCreateResponsibilitySet = ({
               setResponsibilitySet({ ...responsibilitySet, privateCode: e.target.value })
             }
           />
-          <div style={{ width: '100%' }}>
-            <div style={{ fontSize: 10 }}>Role assignments *</div>
-            <div style={{ width: '100%', overflowX: 'auto' }}>
-              <select multiple style={{ fontSize: 10, minWidth: '100%' }} ref={rolesRef}>
+          <Box sx={{ width: '100%' }}>
+            <Box sx={{ fontSize: 10 }}>Role assignments *</Box>
+            <Box sx={{ width: '100%', overflowX: 'auto' }}>
+              <Box
+                component="select"
+                multiple
+                sx={{ fontSize: 10, minWidth: '100%' }}
+                ref={rolesRef}
+              >
                 {responsibilitySet.roles.map((role, i) => (
-                  <option style={{ overflowX: 'auto' }} key={'role-' + i}>
+                  <Box component="option" sx={{ overflowX: 'auto' }} key={'role-' + i}>
                     {getRoleString(role)}
-                  </option>
+                  </Box>
                 ))}
-              </select>
-            </div>
-            <div>
-              <IconButton onClick={() => setIsCreatingNewRole(true)} size="large">
-                <Add style={{ color: '#228B22' }} />
+              </Box>
+            </Box>
+            <Box>
+              <IconButton
+                aria-label="Add role assignment"
+                onClick={() => setIsCreatingNewRole(true)}
+                size="large"
+              >
+                <Add sx={{ color: 'success.main' }} />
               </IconButton>
-              <IconButton onClick={handleRemoveRole} size="large">
-                <Remove style={{ color: '#cc0000' }} />
+              <IconButton
+                aria-label="Remove role assignment"
+                onClick={handleRemoveRole}
+                size="large"
+              >
+                <Remove sx={{ color: 'error.main' }} />
               </IconButton>
-            </div>
+            </Box>
             {isCreatingNewRole ? (
               <NewRoleAssignment
                 getToken={getToken}
@@ -250,8 +263,8 @@ const ModalCreateResponsibilitySet = ({
                 }
               />
             ) : null}
-          </div>
-        </div>
+          </Box>
+        </Box>
       </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>

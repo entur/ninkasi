@@ -15,7 +15,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
@@ -53,10 +53,15 @@ const ModalEditRole = ({
   const isSavable = role.name && role.name.length > 0;
 
   const actions = [
-    <Button key="close" variant="text" onClick={handleCloseModal}>
+    <Button key="close" variant="outlined" onClick={handleCloseModal}>
       Close
     </Button>,
-    <Button key="update" variant="text" disabled={!isSavable} onClick={() => handleSubmit(role)}>
+    <Button
+      key="update"
+      variant="contained"
+      disabled={!isSavable}
+      onClick={() => handleSubmit(role)}
+    >
       Update
     </Button>,
   ];
@@ -65,8 +70,8 @@ const ModalEditRole = ({
     <Dialog open={isModalOpen} onClose={handleCloseModal} maxWidth="sm" fullWidth>
       <DialogTitle>{'Editing role ' + originalRoleName}</DialogTitle>
       <DialogContent>
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -94,7 +99,7 @@ const ModalEditRole = ({
             fullWidth
             margin="normal"
           />
-        </div>
+        </Box>
       </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>

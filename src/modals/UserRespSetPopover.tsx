@@ -48,11 +48,11 @@ const UserRespSetPopover = ({
       open={open}
       anchorEl={anchorEl}
       onClose={handleClose}
-      slotProps={{ paper: { style: { maxHeight: '500px' } } }}
+      slotProps={{ paper: { sx: { maxHeight: '500px' } } }}
     >
       {sorted.map(r => (
         <MenuItem
-          style={{ fontSize: '0.9em' }}
+          sx={{ fontSize: '0.9em' }}
           key={r.id}
           disabled={addedRespSets.indexOf(r.id) > -1}
           onClick={() => {

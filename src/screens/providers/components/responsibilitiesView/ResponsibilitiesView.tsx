@@ -15,9 +15,20 @@
  */
 
 import { useEffect, useState } from 'react';
-import './responsibilityView.scss';
 import { Edit, Delete, Add } from '@mui/icons-material';
-import { Fab } from '@mui/material';
+import {
+  Box,
+  Fab,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+} from '@mui/material';
 import ResponsbilityRoleAssignments from 'modals/ResponsbilityRoleAssignments';
 import ModalCreateResponsibilitySet from 'modals/ModalCreateResponsibilitySet';
 import ModalEditResponsibilitySet from 'modals/ModalEditResponsibilitySet';
@@ -108,12 +119,12 @@ const ResponsibilitiesView = () => {
   };
 
   const handleSortOrder = (column: string) => {
-    let asc = true;
-    if (sortOrder.column === column) {
-      asc = !sortOrder.asc;
-    }
+    const asc = sortOrder.column === column ? !sortOrder.asc : true;
     setSortOrder({ column, asc });
   };
+
+  const sortDirection = (column: string): 'asc' | 'desc' | false =>
+    sortOrder.column === column ? (sortOrder.asc ? 'asc' : 'desc') : false;
 
   const handleCreateResponsibilitySet = (responsibilitySet: any) => {
     dispatch(OrganizationRegisterActions.createResponsibilitySet(responsibilitySet, getToken));
@@ -132,113 +143,124 @@ const ResponsibilitiesView = () => {
   const confirmDeleteTitle = getDeleteConfirmationTitle();
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Fab size="small" style={{ marginRight: 10 }} onClick={openModalWindow}>
+    <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
+        <Fab
+          size="small"
+          aria-label="Create responsibility set"
+          sx={{ mr: '10px' }}
+          onClick={openModalWindow}
+        >
           <Add />
         </Fab>
-      </div>
-      <div className="responsibility-row">
-        <div className="responsibility-header">
-          <div className="col-1-6">
-            <span className="sortable" onClick={() => handleSortOrder('name')}>
-              name
-            </span>
-          </div>
-          <div className="col-1-6">
-            <span className="sortable" onClick={() => handleSortOrder('id')}>
-              id
-            </span>
-          </div>
-          <div className="col-1-7">
-            <span className="sortable" onClick={() => handleSortOrder('privateCode')}>
-              private code
-            </span>
-          </div>
-          <div className="col-1-6">Roles assignments</div>
-        </div>
-        {sortedResponsibilities.map((responsibility: any) => {
-          return (
-            <div key={'responsibility-' + responsibility.id} className="resp-row-item">
-              <div className="col-1-6">{responsibility.name}</div>
-              <div className="col-1-6">{responsibility.id}</div>
-              <div className="col-1-7">{responsibility.privateCode}</div>
-              <div className="col-1-3">
-                <ResponsbilityRoleAssignments
-                  roleAssignments={responsibility.roles}
-                  organizations={organizations}
-                  adminZones={administrativeZones}
-                />
-              </div>
-              <div className="col-icon" style={{ cursor: 'pointer' }}>
-                <Delete
-                  style={{
-                    height: 20,
-                    width: 20,
-                    marginRight: 10,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: '#fa7b81',
-                  }}
-                  onClick={() => handleOpenDeleteConfirmationDialog(responsibility)}
-                />
-                <Edit
-                  style={{
-                    height: 20,
-                    width: 20,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'rgba(25, 118, 210, 0.59)',
-                  }}
-                  onClick={() => {
-                    handleOpenEditResp(responsibility);
-                  }}
-                />
-              </div>
-            </div>
-          );
-        })}
-        {isCreatingResponsibilitySet ? (
-          <ModalCreateResponsibilitySet
-            modalOpen={isCreatingResponsibilitySet}
-            codeSpaces={codeSpaces}
-            handleOnClose={() => setIsCreatingResponsibilitySet(false)}
-            takenPrivateCodes={responsibilities.map((r: any) => r.privateCode)}
-            roles={roles}
-            organizations={organizations}
-            handleSubmit={handleCreateResponsibilitySet}
-            entityTypes={entityTypes}
-            administrativeZones={administrativeZones}
-          />
-        ) : null}
-        {isEditingResponsibilitySet ? (
-          <ModalEditResponsibilitySet
-            modalOpen={isEditingResponsibilitySet}
-            responsibilitySet={activeResponsibilitySet}
-            codeSpaces={codeSpaces}
-            handleOnClose={() => setIsEditingResponsibilitySet(false)}
-            takenPrivateCodes={responsibilities.map((r: any) => r.privateCode)}
-            roles={roles}
-            organizations={organizations}
-            handleSubmit={handleUpdateResponsibilitySet}
-            entityTypes={entityTypes}
-            administrativeZones={administrativeZones}
-          />
-        ) : null}
-        <ModalConfirmation
-          open={isDeleteConfirmationOpen}
-          title={confirmDeleteTitle}
-          actionBtnTitle="Delete"
-          body="You are about to delete current responsibility set. Are you sure?"
-          handleSubmit={() => {
-            handleDeleteResponsibility(activeResponsibilitySet);
-          }}
-          handleClose={() => {
-            handleCloseDeleteConfirmation();
-          }}
+      </Box>
+      <TableContainer component={Paper} variant="outlined">
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell sortDirection={sortDirection('name')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'name'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('name')}
+                >
+                  Name
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('id')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'id'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('id')}
+                >
+                  Id
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('privateCode')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'privateCode'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('privateCode')}
+                >
+                  Private code
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>Roles assignments</TableCell>
+              <TableCell align="right" />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {sortedResponsibilities.map((responsibility: any) => (
+              <TableRow key={'responsibility-' + responsibility.id} hover>
+                <TableCell>{responsibility.name}</TableCell>
+                <TableCell>{responsibility.id}</TableCell>
+                <TableCell>{responsibility.privateCode}</TableCell>
+                <TableCell>
+                  <ResponsbilityRoleAssignments
+                    roleAssignments={responsibility.roles}
+                    organizations={organizations}
+                    adminZones={administrativeZones}
+                  />
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    size="small"
+                    color="error"
+                    aria-label="Delete responsibility set"
+                    onClick={() => handleOpenDeleteConfirmationDialog(responsibility)}
+                  >
+                    <Delete fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    aria-label="Edit responsibility set"
+                    onClick={() => handleOpenEditResp(responsibility)}
+                  >
+                    <Edit fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {isCreatingResponsibilitySet ? (
+        <ModalCreateResponsibilitySet
+          modalOpen={isCreatingResponsibilitySet}
+          codeSpaces={codeSpaces}
+          handleOnClose={() => setIsCreatingResponsibilitySet(false)}
+          takenPrivateCodes={responsibilities.map((r: any) => r.privateCode)}
+          roles={roles}
+          organizations={organizations}
+          handleSubmit={handleCreateResponsibilitySet}
+          entityTypes={entityTypes}
+          administrativeZones={administrativeZones}
         />
-      </div>
-    </div>
+      ) : null}
+      {isEditingResponsibilitySet ? (
+        <ModalEditResponsibilitySet
+          modalOpen={isEditingResponsibilitySet}
+          responsibilitySet={activeResponsibilitySet}
+          codeSpaces={codeSpaces}
+          handleOnClose={() => setIsEditingResponsibilitySet(false)}
+          takenPrivateCodes={responsibilities.map((r: any) => r.privateCode)}
+          roles={roles}
+          organizations={organizations}
+          handleSubmit={handleUpdateResponsibilitySet}
+          entityTypes={entityTypes}
+          administrativeZones={administrativeZones}
+        />
+      ) : null}
+      <ModalConfirmation
+        open={isDeleteConfirmationOpen}
+        title={confirmDeleteTitle}
+        actionBtnTitle="Delete"
+        body="You are about to delete current responsibility set. Are you sure?"
+        handleSubmit={() => handleDeleteResponsibility(activeResponsibilitySet)}
+        handleClose={handleCloseDeleteConfirmation}
+      />
+    </Box>
   );
 };
 

@@ -15,7 +15,7 @@
  */
 
 import { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {
@@ -175,12 +175,12 @@ const ModalCreateUser = ({
     emailIsTaken;
 
   const actions = [
-    <Button key="cancel" variant="text" onClick={handleOnClose}>
+    <Button key="cancel" variant="outlined" onClick={handleOnClose}>
       Cancel
     </Button>,
     <Button
       key="create"
-      variant="text"
+      variant="contained"
       disabled={disableCreate}
       color="primary"
       onClick={() => handleSubmit(user)}
@@ -193,13 +193,13 @@ const ModalCreateUser = ({
     <Dialog open={isModalOpen} onClose={handleOnClose} maxWidth="md" fullWidth>
       <DialogTitle>Creating a new user</DialogTitle>
       <DialogContent>
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
             flexDirection: 'column',
           }}
         >
-          <div onClick={e => e.stopPropagation()}>
+          <Box onClick={e => e.stopPropagation()}>
             <FormControl>
               <RadioGroup
                 defaultValue="personal_account"
@@ -221,7 +221,7 @@ const ModalCreateUser = ({
                 />
               </RadioGroup>
             </FormControl>
-          </div>
+          </Box>
           <TextField
             placeholder="Username"
             label="Username"
@@ -327,7 +327,7 @@ const ModalCreateUser = ({
             }}
             handleRemove={removeResponsibilitySet}
           />
-        </div>
+        </Box>
       </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>

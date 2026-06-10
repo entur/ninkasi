@@ -16,6 +16,7 @@
 
 import type { KeyboardEvent, MouseEvent } from 'react';
 import { format } from 'date-fns';
+import { Box } from '@mui/material';
 import { FileDownload } from '@mui/icons-material';
 import { getSizeFromBytes } from '@/utils';
 import { saveAs } from 'file-saver';
@@ -125,26 +126,26 @@ const AdvancedFileList = ({
     }
   };
 
-  const headerStyle: React.CSSProperties = {
-    marginRight: 5,
-    paddingTop: 10,
-    paddingBottom: 10,
+  const headerStyle = {
+    marginRight: '5px',
+    paddingTop: '10px',
+    paddingBottom: '10px',
     display: 'table-cell',
     cursor: 'pointer',
     borderBottom: '1px solid grey',
     borderRight: '1px solid grey',
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: '10px',
+    paddingRight: '10px',
     maxWidth: '30%',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     overflowX: 'hidden',
   };
 
-  const columnStyle: React.CSSProperties = {
+  const columnStyle = {
     verticalAlign: 'middle',
     display: 'table-cell',
-    paddingRight: 10,
+    paddingRight: '10px',
     textIndent: 5,
     maxWidth: '30%',
     textOverflow: 'ellipsis',
@@ -153,10 +154,18 @@ const AdvancedFileList = ({
   };
 
   return (
-    <div
-      className="multiselect unselectable"
+    <Box
       tabIndex={isSource ? 1 : 2}
-      style={{
+      sx={{
+        mb: 2.5,
+        resize: 'vertical',
+        minHeight: 400,
+        fontSize: '0.9em',
+        overflow: 'auto',
+        whiteSpace: 'nowrap',
+        userSelect: 'none',
+        WebkitAppearance: 'listbox',
+        boxSizing: 'border-box',
         border: '1px solid black',
         lineHeight: '1.2',
         tableLayout: 'fixed',
@@ -165,8 +174,8 @@ const AdvancedFileList = ({
       }}
       onKeyDown={handleSelectAll}
     >
-      <div
-        style={{
+      <Box
+        sx={{
           display: files.length ? 'table-header-group' : 'none',
           minWidth: '100%',
           color: '#191919',
@@ -174,33 +183,41 @@ const AdvancedFileList = ({
           background: '#F5F4F4',
         }}
       >
-        <div style={headerStyle} onClick={() => isSource && handleSortByName?.()}>
-          <span style={{ borderBottom: isSource ? '1px dotted black' : 'none' }}>Filename</span>
-        </div>
-        <div style={headerStyle} onClick={() => isSource && handleSortBySize?.()}>
-          <span style={{ borderBottom: isSource ? '1px dotted black' : 'none' }}>Size</span>
-        </div>
-        <div style={headerStyle} onClick={() => isSource && handleSortByExt?.()}>
-          <span style={{ borderBottom: isSource ? '1px dotted black' : 'none' }}>Ext</span>
-        </div>
-        <div style={{ ...headerStyle, width: '75%' }} onClick={() => handleSortByDate()}>
-          <span style={{ borderBottom: '1px dotted black' }}>Updated</span>
-        </div>
-        <div style={{ ...headerStyle, width: '99%' }}>
+        <Box sx={headerStyle} onClick={() => isSource && handleSortByName?.()}>
+          <Box component="span" sx={{ borderBottom: isSource ? '1px dotted black' : 'none' }}>
+            Filename
+          </Box>
+        </Box>
+        <Box sx={headerStyle} onClick={() => isSource && handleSortBySize?.()}>
+          <Box component="span" sx={{ borderBottom: isSource ? '1px dotted black' : 'none' }}>
+            Size
+          </Box>
+        </Box>
+        <Box sx={headerStyle} onClick={() => isSource && handleSortByExt?.()}>
+          <Box component="span" sx={{ borderBottom: isSource ? '1px dotted black' : 'none' }}>
+            Ext
+          </Box>
+        </Box>
+        <Box sx={{ ...headerStyle, width: '75%' }} onClick={() => handleSortByDate()}>
+          <Box component="span" sx={{ borderBottom: '1px dotted black' }}>
+            Updated
+          </Box>
+        </Box>
+        <Box sx={{ ...headerStyle, width: '99%' }}>
           <span />
-        </div>
-      </div>
+        </Box>
+      </Box>
       {files.map((file, index) => {
         const selected = selectedIndices.has(index);
 
         return (
-          <div
+          <Box
             key={'afl-item' + index}
-            style={{
+            sx={{
               fontSize: '0.9em',
               border: '1px solid #d8d8d8',
-              marginLeft: 10,
-              marginRight: 10,
+              marginLeft: '10px',
+              marginRight: '10px',
               display: 'table-row',
               cursor: 'pointer',
               background: selected ? '#4682b4' : '#fff',
@@ -215,34 +232,34 @@ const AdvancedFileList = ({
               e.preventDefault();
             }}
           >
-            <div style={columnStyle}>{file.name}</div>
-            <div style={columnStyle}>{getSizeFromBytes(file.fileSize)}</div>
-            <div style={columnStyle}> {file.ext}</div>
-            <div style={columnStyle}>{format(new Date(file.updated), 'yyyy-MM-dd HH:mm:ss')}</div>
+            <Box sx={columnStyle}>{file.name}</Box>
+            <Box sx={columnStyle}>{getSizeFromBytes(file.fileSize)}</Box>
+            <Box sx={columnStyle}> {file.ext}</Box>
+            <Box sx={columnStyle}>{format(new Date(file.updated), 'yyyy-MM-dd HH:mm:ss')}</Box>
             {downloadButton ? (
-              <div
-                style={{
+              <Box
+                sx={{
                   verticalAlign: 'middle',
                   display: 'table-cell',
                   width: 50,
-                  paddingLeft: 10,
+                  paddingLeft: '10px',
                   background: '#fff',
                 }}
               >
                 <FileDownload
-                  style={{
-                    marginTop: 1,
+                  sx={{
+                    marginTop: '1px',
                     fill: '#2196F3',
                     verticalAlign: 'middle',
                   }}
                   onClick={e => handleDownloadFile(e, file.name)}
                 />
-              </div>
+              </Box>
             ) : null}
-          </div>
+          </Box>
         );
       })}
-    </div>
+    </Box>
   );
 };
 

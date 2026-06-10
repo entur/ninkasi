@@ -15,6 +15,7 @@
  */
 
 import { format } from 'date-fns';
+import { Box } from '@mui/material';
 import { getSizeFromBytes } from '@/utils';
 import StatusLabel from './StatusLabel';
 import { FileDownload } from '@mui/icons-material';
@@ -70,8 +71,8 @@ const ExportedFilesRow = ({ data, index, referential, providerName }: Props) => 
   const norwayDisplayName = 'Norway';
   const isAggregatedSet = referential === norwayDisplayName;
 
-  const style: React.CSSProperties = {
-    padding: 2,
+  const style = {
+    padding: '2px',
     border: '1px solid #eee',
     display: 'flex',
     alignItems: 'center',
@@ -83,48 +84,60 @@ const ExportedFilesRow = ({ data, index, referential, providerName }: Props) => 
   };
 
   return (
-    <div style={style}>
-      <div style={{ flex: 2.5 }}>{isAggregatedSet ? norwayDisplayName : providerName}</div>
-      <div style={{ flex: 1 }}>{data.referential || referential}</div>
-      <div
-        style={{
+    <Box sx={style}>
+      <Box sx={{ flex: 2.5 }}>{isAggregatedSet ? norwayDisplayName : providerName}</Box>
+      <Box sx={{ flex: 1 }}>{data.referential || referential}</Box>
+      <Box
+        sx={{
           flex: 3,
-          fontStyle: !netexDate
-            ? (missingStyle.fontStyle as React.CSSProperties['fontStyle'])
-            : 'initial',
+          fontStyle: !netexDate ? missingStyle.fontStyle : 'initial',
         }}
       >
         {netexDate ? format(new Date(netexDate), 'PPPPp') : 'NO EXPORT'}
-      </div>
-      <div style={{ flex: 1 }}>
+      </Box>
+      <Box sx={{ flex: 1 }}>
         {netexFileSize && (
-          <a style={{ display: 'flex', alignItems: 'center' }} href={netexUrl} download={true}>
+          <Box
+            component="a"
+            sx={{ display: 'flex', alignItems: 'center' }}
+            href={netexUrl}
+            download={true}
+          >
             <FileDownload color={'#2196F3' as any} />
-            <span style={{ marginLeft: 2 }}>{`[${getSizeFromBytes(netexFileSize)}]`}</span>
-          </a>
+            <Box
+              component="span"
+              sx={{ marginLeft: '2px' }}
+            >{`[${getSizeFromBytes(netexFileSize)}]`}</Box>
+          </Box>
         )}
-      </div>
-      <div
-        style={{
+      </Box>
+      <Box
+        sx={{
           flex: 3,
-          fontStyle: !gtfsDate
-            ? (missingStyle.fontStyle as React.CSSProperties['fontStyle'])
-            : 'initial',
+          fontStyle: !gtfsDate ? missingStyle.fontStyle : 'initial',
         }}
       >
         {gtfsDate ? format(new Date(gtfsDate), 'PPPPp') : 'NO EXPORT'}
-      </div>
-      <div style={{ flex: 1 }}>
+      </Box>
+      <Box sx={{ flex: 1 }}>
         {gtfsFileSize && (
-          <a style={{ display: 'flex', alignItems: 'center' }} href={gtfsUrl} download={true}>
+          <Box
+            component="a"
+            sx={{ display: 'flex', alignItems: 'center' }}
+            href={gtfsUrl}
+            download={true}
+          >
             <FileDownload color={'#2196F3' as any} />
-            <span style={{ marginLeft: 2 }}>{`[${getSizeFromBytes(gtfsFileSize)}]`}</span>
-          </a>
+            <Box
+              component="span"
+              sx={{ marginLeft: '2px' }}
+            >{`[${getSizeFromBytes(gtfsFileSize)}]`}</Box>
+          </Box>
         )}
-      </div>
-      <div style={{ flex: 1 }}>{diffHumanized}</div>
-      <div style={{ flex: 4 }}>{label}</div>
-    </div>
+      </Box>
+      <Box sx={{ flex: 1 }}>{diffHumanized}</Box>
+      <Box sx={{ flex: 4 }}>{label}</Box>
+    </Box>
   );
 };
 

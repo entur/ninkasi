@@ -15,7 +15,7 @@
  */
 
 import { useState } from 'react';
-import { Menu, MenuItem, Checkbox, FormControlLabel } from '@mui/material';
+import { Box, Menu, MenuItem, Checkbox, FormControlLabel } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useAppDispatch } from 'store/hooks';
 import { changeEventFilterStateReducer } from 'reducers/OrganizationReducer';
@@ -58,10 +58,13 @@ const EventFilterStatesPopover = ({
         variant="contained"
         disabled={!enabled}
         onClick={handleOpen}
-        style={{ marginLeft: 10 }}
+        sx={{ marginLeft: '10px' }}
       >
         <span>
-          States<span style={{ color: 'red' }}>*</span>
+          States
+          <Box component="span" sx={{ color: 'red' }}>
+            *
+          </Box>
         </span>
       </Button>
       <Menu
@@ -75,7 +78,7 @@ const EventFilterStatesPopover = ({
           const checked = states.indexOf(state) > -1;
 
           return (
-            <MenuItem key={'state-' + i} style={{ fontSize: 12, minHeight: 18 }}>
+            <MenuItem key={'state-' + i} sx={{ fontSize: 12, minHeight: 18 }}>
               <FormControlLabel
                 control={
                   <Checkbox

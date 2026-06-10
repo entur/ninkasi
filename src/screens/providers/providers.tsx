@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import SuppliersContainer from './components/SuppliersContainer';
 import SupplierTabWrapper from './components/SupplierTabWrapper';
 import SupplierPage from './components/SupplierPage';
@@ -8,13 +9,13 @@ import { useAppSelector } from '@/store/hooks';
 const Providers = () => {
   const isAdmin = useAppSelector(state => state.UserContextReducer.isRouteDataAdmin);
   return (
-    <div style={{ display: 'flex' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+    <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
         {isAdmin && <AdministrativeActions />}
-        <div style={{ display: 'flex' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-            <div
-              style={{
+        <Box sx={{ display: 'flex' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+            <Box
+              sx={{
                 display: 'flex',
                 flexDirection: 'row',
                 margin: '0 20px',
@@ -23,13 +24,13 @@ const Providers = () => {
             >
               <SuppliersContainer />
               <ShowOTPGraphStatus />
-            </div>
+            </Box>
             <SupplierTabWrapper />
             <SupplierPage />
-          </div>
-        </div>
-      </div>
-    </div>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

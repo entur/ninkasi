@@ -20,7 +20,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import { Fab } from '@mui/material';
+import { Box, Fab } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
@@ -93,25 +93,25 @@ const ModalEditNotifications = ({
     });
   };
 
-  const messageStyle: React.CSSProperties = {
+  const messageSx = {
     fontSize: 13,
     width: '100%',
-    paddingBottom: 10,
-    marginLeft: 10,
+    paddingBottom: '10px',
+    marginLeft: '10px',
     fontStyle: 'italic',
   };
 
   const updateDisabled = shouldUpdateBtnBeDisabled();
 
   const actions = [
-    <Button key="cancel" variant="text" style={{ marginLeft: 10 }} onClick={handleCloseModal}>
+    <Button key="cancel" variant="outlined" sx={{ marginLeft: '10px' }} onClick={handleCloseModal}>
       Cancel
     </Button>,
     <Button
       key="update"
-      variant="text"
+      variant="contained"
       disabled={updateDisabled}
-      style={{ marginLeft: 10 }}
+      sx={{ marginLeft: '10px' }}
       onClick={handleUpdate}
     >
       Update
@@ -140,12 +140,17 @@ const ModalEditNotifications = ({
                 expanded={indexExpanded === i}
               />
             ))}
-          {isLoading && <div style={messageStyle}>Loading ...</div>}
+          {isLoading && <Box sx={messageSx}>Loading ...</Box>}
           {!isLoading && !userNotifications.length && (
-            <div style={messageStyle}>No notification configuration found for this user</div>
+            <Box sx={messageSx}>No notification configuration found for this user</Box>
           )}
         </div>
-        <Fab size="small" style={{ margin: 10 }} onClick={handleAddNewUserNotification}>
+        <Fab
+          size="small"
+          aria-label="Add notification"
+          sx={{ margin: '10px' }}
+          onClick={handleAddNewUserNotification}
+        >
           <Add />
         </Fab>
       </DialogContent>

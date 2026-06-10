@@ -122,7 +122,9 @@ export const FileUploadDialog = ({
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setModalOpen(false)}>Close</Button>
+        <Button variant="outlined" onClick={() => setModalOpen(false)}>
+          Close
+        </Button>
         <Button
           variant="contained"
           disabled={!acceptedFiles.length}

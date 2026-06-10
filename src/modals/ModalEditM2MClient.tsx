@@ -15,7 +15,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
@@ -133,10 +133,16 @@ const ModalEditM2MClient = ({
   const disableUpdate = !isClientRequiredFieldsProvided() || !orgIdValid;
 
   const actions = [
-    <Button key="cancel" variant="text" onClick={handleOnClose}>
+    <Button key="cancel" variant="outlined" onClick={handleOnClose}>
       Cancel
     </Button>,
-    <Button key="update" variant="text" disabled={disableUpdate} color="primary" onClick={onSubmit}>
+    <Button
+      key="update"
+      variant="contained"
+      disabled={disableUpdate}
+      color="primary"
+      onClick={onSubmit}
+    >
       Update
     </Button>,
   ];
@@ -145,8 +151,8 @@ const ModalEditM2MClient = ({
     <Dialog open={isModalOpen} onClose={handleOnClose} maxWidth="md" fullWidth>
       <DialogTitle>Updating M2M Client {client.name}</DialogTitle>
       <DialogContent>
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
             flexDirection: 'column',
           }}
@@ -209,7 +215,7 @@ const ModalEditM2MClient = ({
             }}
             handleRemove={removeResponsibilitySet}
           />
-        </div>
+        </Box>
       </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>

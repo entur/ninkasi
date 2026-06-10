@@ -14,9 +14,11 @@
  *
  */
 
+import { Box } from '@mui/material';
+
 const ExportedFilesHeader = () => {
-  const style: React.CSSProperties = {
-    padding: 2,
+  const style = {
+    padding: '2px',
     border: '1px solid #eee',
     display: 'flex',
     alignItems: 'center',
@@ -26,16 +28,16 @@ const ExportedFilesHeader = () => {
   };
 
   return (
-    <div style={style}>
-      <div style={{ flex: 2.5 }}>Name</div>
-      <div style={{ flex: 1 }}>Referential</div>
-      <div style={{ flex: 3 }}>Netex exported</div>
-      <div style={{ flex: 1 }}>Netex file</div>
-      <div style={{ flex: 3 }}>GTFS exported</div>
-      <div style={{ flex: 1 }}>GTFS file</div>
-      <div style={{ flex: 1 }}>Difference</div>
-      <div style={{ flex: 4 }}>Status</div>
-    </div>
+    <Box sx={style}>
+      <Box sx={{ flex: 2.5 }}>Name</Box>
+      <Box sx={{ flex: 1 }}>Referential</Box>
+      <Box sx={{ flex: 3 }}>Netex exported</Box>
+      <Box sx={{ flex: 1 }}>Netex file</Box>
+      <Box sx={{ flex: 3 }}>GTFS exported</Box>
+      <Box sx={{ flex: 1 }}>GTFS file</Box>
+      <Box sx={{ flex: 1 }}>Difference</Box>
+      <Box sx={{ flex: 4 }}>Status</Box>
+    </Box>
   );
 };
 

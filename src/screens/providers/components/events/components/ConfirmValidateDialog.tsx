@@ -30,7 +30,9 @@ export const ConfirmValidateDialog = ({ providerId, open, handleClose }: Props) 
         <Typography>Are you sure you want to validate your dataset now?</Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button variant="outlined" onClick={handleClose}>
+          Cancel
+        </Button>
         <Button variant="contained" onClick={onConfirm}>
           Validate
         </Button>

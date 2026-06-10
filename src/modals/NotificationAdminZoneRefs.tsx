@@ -16,7 +16,7 @@
 
 import { useRef } from 'react';
 import NotificationAddZoneRef from './NotificationAddZoneRef';
-import { IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import { Remove } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { addedAdminZoneRef, removedAdminZoneRef } from 'reducers/OrganizationReducer';
@@ -62,36 +62,40 @@ const NotificationAdminZoneRefs = ({
   };
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: visible ? 'none' : 'flex',
         flexDirection: 'column',
         flex: 2,
         border: '1px solid #eee',
-        padding: 5,
+        padding: '5px',
       }}
     >
-      <div style={{ width: '100%', fontSize: 12, fontWeight: 600 }}>Administrative zones</div>
-      <div style={{ display: 'flex' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', flex: 2 }}>
-          <select multiple ref={adminRefsRef} style={{ width: '100%', fontSize: 12 }}>
+      <Box sx={{ width: '100%', fontSize: 12, fontWeight: 600 }}>Administrative zones</Box>
+      <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', flex: 2 }}>
+          <Box component="select" multiple ref={adminRefsRef} sx={{ width: '100%', fontSize: 12 }}>
             {administrativeZoneRefs.map((ref: string, idx: number) => (
               <option key={'entity-' + idx}>
                 {ref} - {administrativeZones.find((az: any) => az.id === ref)?.name}{' '}
               </option>
             ))}
-          </select>
+          </Box>
           <NotificationAddZoneRef
             handleAdd={handleAddAdminRefRole}
             dataSource={administrativeZones}
             handleDelete={handleRemoveAdminRefRole}
           />
-        </div>
-        <IconButton onClick={handleRemoveAdminRefRole} size="large">
-          <Remove style={{ color: '#cc0000' }} />
+        </Box>
+        <IconButton
+          aria-label="Remove administrative zone"
+          onClick={handleRemoveAdminRefRole}
+          size="large"
+        >
+          <Remove sx={{ color: 'error.main' }} />
         </IconButton>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

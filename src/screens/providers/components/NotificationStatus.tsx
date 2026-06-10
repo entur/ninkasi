@@ -15,6 +15,7 @@
  */
 
 import { HighlightOff, CheckCircle } from '@mui/icons-material';
+import { Box } from '@mui/material';
 
 interface Props {
   notification: {
@@ -31,16 +32,16 @@ const NotificationStatus = ({ notification }: Props) => {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex' }}>
       {notification.enabled ? (
-        <CheckCircle style={{ color: '#008000', height: 15, width: 15 }} />
+        <CheckCircle sx={{ color: 'success.main', height: 15, width: 15 }} />
       ) : (
-        <HighlightOff style={{ color: '#cc0000', height: 15, width: 15 }} />
+        <HighlightOff sx={{ color: 'error.main', height: 15, width: 15 }} />
       )}
-      <span style={{ fontWeight: 600, marginLeft: 4 }}>
+      <Box component="span" sx={{ fontWeight: 600, marginLeft: '4px' }}>
         {enumMap[notification.notificationType]}
-      </span>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

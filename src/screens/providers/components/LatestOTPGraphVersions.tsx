@@ -20,23 +20,23 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
 import { format, formatDistanceToNow } from 'date-fns';
 import { UnfoldLess, UnfoldMore } from '@mui/icons-material';
-import { Popover } from '@mui/material';
+import { Box, Popover, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import * as SuppliersReducer from 'reducers/SuppliersReducer';
 const { fetchOTPGraphVersions } = SuppliersReducer as any;
 
-const containerStyle: React.CSSProperties = {
+const containerStyle = {
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
   backgroundColor: 'rgb(229, 229, 229)',
 };
 
-const wrapperStyle: React.CSSProperties = {
+const wrapperStyle = {
   padding: '20px',
 };
 
-const versionDetailsStyle: React.CSSProperties = {
+const versionDetailsStyle = {
   display: 'flex',
   flexDirection: 'column',
   whiteSpace: 'nowrap',
@@ -57,25 +57,31 @@ const GraphVersionDetails = ({
   creationDate,
   size,
 }: GraphVersionDetailsProps) => (
-  <div style={versionDetailsStyle}>
-    <div>
-      <h5>{name}</h5>
-    </div>
-    <div style={{ display: 'flex' }}>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <span style={{ fontWeight: 'bold' }}>Serialization id: </span>
-        <span style={{ fontWeight: 'bold' }}>Created: </span>
-        <span style={{ fontWeight: 'bold' }}>Size: </span>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px' }}>
+  <Box sx={versionDetailsStyle}>
+    <Typography variant="h5" component="h5">
+      {name}
+    </Typography>
+    <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box component="span" sx={{ fontWeight: 'bold' }}>
+          Serialization id:{' '}
+        </Box>
+        <Box component="span" sx={{ fontWeight: 'bold' }}>
+          Created:{' '}
+        </Box>
+        <Box component="span" sx={{ fontWeight: 'bold' }}>
+          Size:{' '}
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: '10px' }}>
         <span>{serializationId}</span>
         <span title={formatDistanceToNow(new Date(creationDate), { addSuffix: true })}>
           {format(new Date(creationDate), 'dd-MM-yyyy HH:mm:ss')}
         </span>
         <span>{Math.round((size / 1024 / 1024 / 1024 + Number.EPSILON) * 100) / 100} GB</span>
-      </div>
-    </div>
-  </div>
+      </Box>
+    </Box>
+  </Box>
 );
 
 const LatestOTPGraphVersions = () => {
@@ -120,21 +126,22 @@ const LatestOTPGraphVersions = () => {
         transformOrigin={{ horizontal: 'left', vertical: 'top' }}
         onClose={() => setShowGraphVersions(false)}
       >
-        <div style={containerStyle}>
+        <Box sx={containerStyle}>
           {!streetGraphs || !transitGraphs ? (
-            <div style={wrapperStyle}>Loading ...</div>
+            <Box sx={wrapperStyle}>Loading ...</Box>
           ) : (
             <>
-              <div style={wrapperStyle}>
-                <h3
-                  style={{
+              <Box sx={wrapperStyle}>
+                <Box
+                  component="h3"
+                  sx={{
                     fontWeight: 'bold',
                     marginBottom: 0,
                     marginTop: 0,
                   }}
                 >
                   Latest Street Graphs
-                </h3>
+                </Box>
                 <>
                   {streetGraphs.map((streetGraph: any) => (
                     <GraphVersionDetails
@@ -146,17 +153,18 @@ const LatestOTPGraphVersions = () => {
                     />
                   ))}
                 </>
-              </div>
-              <div style={wrapperStyle}>
-                <h3
-                  style={{
+              </Box>
+              <Box sx={wrapperStyle}>
+                <Box
+                  component="h3"
+                  sx={{
                     fontWeight: 'bold',
                     marginBottom: 0,
                     marginTop: 0,
                   }}
                 >
                   Latest Transit Graphs
-                </h3>
+                </Box>
                 <>
                   {transitGraphs.map((transitGraph: any) => (
                     <GraphVersionDetails
@@ -168,10 +176,10 @@ const LatestOTPGraphVersions = () => {
                     />
                   ))}
                 </>
-              </div>
+              </Box>
             </>
           )}
-        </div>
+        </Box>
       </Popover>
     </>
   );

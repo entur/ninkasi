@@ -15,6 +15,7 @@
  */
 
 import { useState } from 'react';
+import { Box, Typography } from '@mui/material';
 import { useAppSelector } from '@/store/hooks';
 import SideBarTabs from '../providers/components/SideBarTabs';
 import UserView from '../providers/components/userView/UserView';
@@ -24,12 +25,12 @@ import RoleView from '../providers/components/roleView/RoleView';
 import ResponsibilitiesView from '../providers/components/responsibilitiesView/ResponsibilitiesView';
 import EntityTypesView from '../providers/components/entityTypesView/EntityTypesView';
 
-const containerStyle: React.CSSProperties = {
+const containerSx = {
   padding: '20px',
   paddingTop: '20px',
 };
 
-const contentStyle: React.CSSProperties = {
+const contentSx = {
   display: 'flex',
   minHeight: 'calc(100vh - 104px)', // header height + padding
 };
@@ -40,19 +41,21 @@ const Organization = () => {
 
   if (!isOrganisationAdmin) {
     return (
-      <div style={{ padding: '40px 20px', textAlign: 'center' }}>
-        <h2>Access Denied</h2>
-        <p>You do not have permission to access the Organization register.</p>
-      </div>
+      <Box sx={{ padding: '40px 20px', textAlign: 'center' }}>
+        <Typography variant="h2" gutterBottom>
+          Access Denied
+        </Typography>
+        <Typography>You do not have permission to access the Organization register.</Typography>
+      </Box>
     );
   }
 
   return (
-    <div style={containerStyle}>
-      <div style={contentStyle}>
+    <Box sx={containerSx}>
+      <Box sx={contentSx}>
         <SideBarTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-        <div
-          style={{
+        <Box
+          sx={{
             border: '1px solid rgb(229, 229, 229)',
             flex: 2,
             overflow: 'hidden',
@@ -64,9 +67,9 @@ const Organization = () => {
           {activeTab === 3 ? <RoleView /> : null}
           {activeTab === 4 ? <ResponsibilitiesView /> : null}
           {activeTab === 5 ? <EntityTypesView /> : null}
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

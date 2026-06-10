@@ -14,14 +14,13 @@
  *
  */
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import cfgreader from 'config/readConfig';
 import {
   Container,
   Paper,
-  Grid as MuiGrid,
+  Grid,
   Button,
   FormControl,
   FormControlLabel,
@@ -37,8 +36,8 @@ import {
   TableCell,
   CircularProgress,
 } from '@mui/material';
-const Grid = MuiGrid as any;
 import ChouetteLink from './ChouetteLink';
+import EmptyState from '@/app/components/EmptyState';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -66,12 +65,6 @@ const ChouetteJobDetails = () => {
 
   const [activeChouettePageIndex, setActiveChouettePageIndex] = useState(0);
   const [filterFromDate, setFilterFromDate] = useState<any>(null);
-
-  useEffect(() => {
-    cfgreader.readConfig(function (config: any) {
-      window.config = config;
-    });
-  }, []);
 
   const getJobStatus = (status: string) => {
     if (status === 'TERMINATED') return 'COMPLETED';
@@ -123,13 +116,13 @@ const ChouetteJobDetails = () => {
     <Container maxWidth={false}>
       <Paper sx={{ p: 2, mb: 2 }}>
         <Box sx={{ mb: 2 }}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={1}>
+          <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+            <Grid size={{ xs: 1 }}>
               <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
                 Status
               </Typography>
             </Grid>
-            <Grid item xs={2}>
+            <Grid size={{ xs: 2 }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -144,7 +137,7 @@ const ChouetteJobDetails = () => {
                 label="Scheduled"
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid size={{ xs: 2 }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -159,7 +152,7 @@ const ChouetteJobDetails = () => {
                 label="Rescheduled"
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid size={{ xs: 2 }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -174,7 +167,7 @@ const ChouetteJobDetails = () => {
                 label="Started"
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid size={{ xs: 2 }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -189,7 +182,7 @@ const ChouetteJobDetails = () => {
                 label="Completed"
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid size={{ xs: 2 }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -204,7 +197,7 @@ const ChouetteJobDetails = () => {
                 label="Canceled"
               />
             </Grid>
-            <Grid item xs={1}>
+            <Grid size={{ xs: 1 }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -222,13 +215,13 @@ const ChouetteJobDetails = () => {
           </Grid>
         </Box>
         <Box sx={{ mb: 2 }}>
-          <Grid container spacing={2} alignItems="baseline">
-            <Grid item xs={1}>
+          <Grid container spacing={2} sx={{ alignItems: 'baseline' }}>
+            <Grid size={{ xs: 1 }}>
               <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
                 Action
               </Typography>
             </Grid>
-            <Grid item xs={8}>
+            <Grid size={{ xs: 8 }}>
               <FormControl>
                 <RadioGroup
                   row
@@ -247,7 +240,7 @@ const ChouetteJobDetails = () => {
                 </RadioGroup>
               </FormControl>
             </Grid>
-            <Grid item xs={3}>
+            <Grid size={{ xs: 3 }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="From ..."
@@ -300,7 +293,7 @@ const ChouetteJobDetails = () => {
           )}
           {requestingJobs && (
             <Box sx={{ mx: 2.5, mb: 1.25 }}>
-              <CircularProgress size={23} sx={{ color: '#26A65B' }} />
+              <CircularProgress size={23} sx={{ color: 'success.main' }} />
             </Box>
           )}
         </Box>
@@ -349,8 +342,7 @@ const ChouetteJobDetails = () => {
             </TableHead>
             <TableBody>
               {page.map((job: any, index: number) => {
-                const statusClass =
-                  job.status === 'ABORTED' || job.status === 'CANCELED' ? 'error' : 'success';
+                const isError = job.status === 'ABORTED' || job.status === 'CANCELED';
 
                 return (
                   <TableRow key={'ch-job-' + index}>
@@ -364,7 +356,9 @@ const ChouetteJobDetails = () => {
                     <TableCell sx={{ py: 1, px: 1 }}>{formatDate(job.started)}</TableCell>
                     <TableCell sx={{ py: 1, px: 1 }}>{formatDate(job.updated)}</TableCell>
                     <TableCell sx={{ py: 1, px: 1 }}>
-                      <span className={statusClass}>{getJobStatus(job.status)}</span>
+                      <Box component="span" sx={{ color: isError ? 'error.main' : 'success.main' }}>
+                        {getJobStatus(job.status)}
+                      </Box>
                     </TableCell>
                     <TableCell sx={{ py: 1, px: 1 }}>
                       {job.status === 'STARTED' ||
@@ -387,9 +381,7 @@ const ChouetteJobDetails = () => {
             </TableBody>
           </Table>
         ) : (
-          <Box sx={{ p: 2.5 }}>
-            <Typography>No chouette jobs found for your search criterias.</Typography>
-          </Box>
+          <EmptyState message="No chouette jobs found for your search criterias." />
         )}
       </Paper>
     </Container>

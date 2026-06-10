@@ -14,6 +14,8 @@
  *
  */
 
+import { Box } from '@mui/material';
+
 interface OrganizationOption {
   id: number | string;
   name: string;
@@ -40,8 +42,9 @@ const OrganizationFilter = ({
   ];
 
   return (
-    <select
-      style={{ marginLeft: 5 }}
+    <Box
+      component="select"
+      sx={{ marginLeft: '5px' }}
       value={organisationFilterId}
       onChange={e => handleOnChange(e.target.value)}
     >
@@ -50,7 +53,7 @@ const OrganizationFilter = ({
           {org.name}
         </option>
       ))}
-    </select>
+    </Box>
   );
 };
 

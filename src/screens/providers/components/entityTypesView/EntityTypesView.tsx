@@ -15,9 +15,20 @@
  */
 
 import { useEffect, useState } from 'react';
-import './entityTypesView.scss';
 import { Edit, Add, Delete } from '@mui/icons-material';
-import { Fab } from '@mui/material';
+import {
+  Box,
+  Fab,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+} from '@mui/material';
 import ModalCreateEntityType from 'modals/ModalCreateEntityType';
 import ModalEditEntiyType from 'modals/ModalEditEntityType';
 import ModalConfirmation from 'modals/ModalConfirmation';
@@ -77,12 +88,12 @@ const EntityTypesView = () => {
   };
 
   const handleSortOrder = (column: string) => {
-    let asc = true;
-    if (sortOrder.column === column) {
-      asc = !sortOrder.asc;
-    }
+    const asc = sortOrder.column === column ? !sortOrder.asc : true;
     setSortOrder({ column, asc });
   };
+
+  const sortDirection = (column: string): 'asc' | 'desc' | false =>
+    sortOrder.column === column ? (sortOrder.asc ? 'asc' : 'desc') : false;
 
   const handleCreateEntity = (entityType: any) => {
     dispatch(OrganizationRegisterActions.createEntityType(entityType, getToken));
@@ -97,125 +108,122 @@ const EntityTypesView = () => {
     dispatch(OrganizationRegisterActions.deleteEntityType(entityType.id, getToken));
   };
 
-  const getDeleteConfirmationTitle = () => {
-    const entityType = activeEntityType ? activeEntityType.name : 'N/A';
-    return `Delete entity type ${entityType}`;
-  };
-
   const sortedEntityTypes = sortByColumns(entityTypes, sortOrder);
-  const confirmDeleteTitle = getDeleteConfirmationTitle();
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+    <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
         <Fab
           size="small"
-          style={{ float: 'right', marginRight: 10 }}
+          aria-label="Create entity type"
+          sx={{ mr: '10px' }}
           onClick={() => setIsCreateModalOpen(true)}
         >
           <Add />
         </Fab>
-      </div>
-      <div className="et-row">
-        <div className="et-header">
-          <div className="col-1-5">
-            <span className="sortable" onClick={() => handleSortOrder('name')}>
-              name
-            </span>
-          </div>
-          <div className="col-1-5">
-            <span className="sortable" onClick={() => handleSortOrder('privateCode')}>
-              private code
-            </span>
-          </div>
-          <div className="col-1-5">
-            <span className="sortable" onClick={() => handleSortOrder('codeSpace')}>
-              codespace
-            </span>
-          </div>
-          <div className="col-1-5">
-            <span>Classifications</span>
-          </div>
-        </div>
-        {sortedEntityTypes.map((et: any) => {
-          return (
-            <div key={'et-' + et.id} className="et-row-item">
-              <div className="col-1-5">{et.name}</div>
-              <div className="col-1-5">{et.privateCode}</div>
-              <div className="col-1-5">{et.codeSpace}</div>
-              <div className="col-1-5">
-                <ul
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    listStyleType: 'circle',
-                  }}
+      </Box>
+      <TableContainer component={Paper} variant="outlined">
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell sortDirection={sortDirection('name')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'name'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('name')}
                 >
-                  {et.classifications
-                    ? [...et.classifications]
+                  Name
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('privateCode')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'privateCode'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('privateCode')}
+                >
+                  Private code
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('codeSpace')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'codeSpace'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('codeSpace')}
+                >
+                  Codespace
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>Classifications</TableCell>
+              <TableCell align="right" />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {sortedEntityTypes.map((et: any) => (
+              <TableRow key={'et-' + et.id} hover>
+                <TableCell>{et.name}</TableCell>
+                <TableCell>{et.privateCode}</TableCell>
+                <TableCell>{et.codeSpace}</TableCell>
+                <TableCell>
+                  {et.classifications && et.classifications.length ? (
+                    <Box component="ul" sx={{ m: 0, pl: 2.5, listStyleType: 'disc' }}>
+                      {[...et.classifications]
                         .sort((a: any, b: any) => a.name.localeCompare(b.name))
-                        .map((ec: any) => <li key={ec.id}>{ec.name} </li>)
-                    : null}
-                </ul>
-              </div>
-              <div className="col-icon" style={{ cursor: 'pointer' }}>
-                <Delete
-                  style={{
-                    height: 20,
-                    width: 20,
-                    marginRight: 10,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: '#fa7b81',
-                  }}
-                  onClick={() => handleOpenDeleteConfirmationDialog(et)}
-                />
-                <Edit
-                  style={{
-                    height: 20,
-                    width: 20,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'rgba(25, 118, 210, 0.59)',
-                  }}
-                  onClick={() => handleEditEntityType(et)}
-                />
-              </div>
-            </div>
-          );
-        })}
-        {isCreateModalOpen ? (
-          <ModalCreateEntityType
-            isModalOpen={isCreateModalOpen}
-            codeSpaces={codeSpaces}
-            handleCloseModal={() => setIsCreateModalOpen(false)}
-            takenPrivateCodes={entityTypes.map((et: any) => et.privateCode)}
-            handleSubmit={handleCreateEntity}
-          />
-        ) : null}
-        {isEditModalOpen ? (
-          <ModalEditEntiyType
-            isModalOpen={isEditModalOpen}
-            entityType={activeEntityType}
-            handleCloseModal={() => setIsEditModalOpen(false)}
-            codeSpaces={codeSpaces}
-            handleSubmit={handleUpdateEntity}
-          />
-        ) : null}
-        <ModalConfirmation
-          open={isDeleteConfirmationOpen}
-          title={confirmDeleteTitle}
-          actionBtnTitle="Delete"
-          body="You are about to delete current entity type. Are you sure?"
-          handleSubmit={() => {
-            handleDeleteEntityType(activeEntityType);
-          }}
-          handleClose={() => {
-            handleCloseDeleteConfirmation();
-          }}
+                        .map((ec: any) => (
+                          <li key={ec.id}>{ec.name}</li>
+                        ))}
+                    </Box>
+                  ) : null}
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    size="small"
+                    color="error"
+                    aria-label="Delete entity type"
+                    onClick={() => handleOpenDeleteConfirmationDialog(et)}
+                  >
+                    <Delete fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    aria-label="Edit entity type"
+                    onClick={() => handleEditEntityType(et)}
+                  >
+                    <Edit fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {isCreateModalOpen ? (
+        <ModalCreateEntityType
+          isModalOpen={isCreateModalOpen}
+          codeSpaces={codeSpaces}
+          handleCloseModal={() => setIsCreateModalOpen(false)}
+          takenPrivateCodes={entityTypes.map((et: any) => et.privateCode)}
+          handleSubmit={handleCreateEntity}
         />
-      </div>
-    </div>
+      ) : null}
+      {isEditModalOpen ? (
+        <ModalEditEntiyType
+          isModalOpen={isEditModalOpen}
+          entityType={activeEntityType}
+          handleCloseModal={() => setIsEditModalOpen(false)}
+          codeSpaces={codeSpaces}
+          handleSubmit={handleUpdateEntity}
+        />
+      ) : null}
+      <ModalConfirmation
+        open={isDeleteConfirmationOpen}
+        title={`Delete entity type ${activeEntityType ? activeEntityType.name : 'N/A'}`}
+        actionBtnTitle="Delete"
+        body="You are about to delete current entity type. Are you sure?"
+        handleSubmit={() => handleDeleteEntityType(activeEntityType)}
+        handleClose={handleCloseDeleteConfirmation}
+      />
+    </Box>
   );
 };
 

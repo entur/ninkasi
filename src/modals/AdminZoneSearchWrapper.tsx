@@ -15,7 +15,7 @@
  */
 
 import { useState } from 'react';
-import { Autocomplete, TextField, Chip } from '@mui/material';
+import { Autocomplete, Box, TextField, Chip } from '@mui/material';
 
 interface AdminZone {
   id: string;
@@ -66,9 +66,9 @@ const AdminZoneSearchWrapper = ({
   };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Autocomplete
-        style={{ marginTop: -5, flex: 2 }}
+        sx={{ marginTop: '-5px', flex: 2 }}
         options={formattedZones}
         getOptionLabel={option => option.text}
         inputValue={inputValue}
@@ -85,18 +85,18 @@ const AdminZoneSearchWrapper = ({
           <TextField {...params} placeholder="Restrict to administrative zone" variant="outlined" />
         )}
       />
-      <div style={{ flex: 1, width: '100%', textAlign: 'center' }}>
+      <Box sx={{ flex: 1, width: '100%', textAlign: 'center' }}>
         {chip ? (
           <Chip
             label={chip.name}
-            style={{ marginTop: -12, marginLeft: 20 }}
+            sx={{ marginTop: '-12px', marginLeft: '20px' }}
             onDelete={handleDeleteChip}
           />
         ) : (
-          <div style={{ fontSize: 12, fontStyle: 'italic' }}>No restrictions ...</div>
+          <Box sx={{ fontSize: 12, fontStyle: 'italic' }}>No restrictions ...</Box>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
