@@ -1,5 +1,4 @@
 {
-  "appEnv": "prod",
   "providersBaseUrl": "https://api.entur.io/timetable-admin/v1/providers/",
   "organisationsBaseUrl": "https://api.entur.io/timetable-admin/v1/organisations/",
   "eventsBaseUrl": "https://api.entur.io/timetable-admin/v1/events/",

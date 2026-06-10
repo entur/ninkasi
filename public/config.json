@@ -1,5 +1,4 @@
 {
-  "appEnv": "local",
   "envLabel": "local",
   "envLabelColor": "#067eb2",
   "providersBaseUrl": "http://localhost:21089/services/providers/",

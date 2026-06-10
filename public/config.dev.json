@@ -1,5 +1,4 @@
 {
-  "appEnv": "dev",
   "envLabel": "dev",
   "envLabelColor": "#1a8e60",
   "providersBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/providers/",
