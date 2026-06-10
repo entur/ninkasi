@@ -16,7 +16,19 @@
 
 import { useEffect, useState } from 'react';
 import { Edit, Delete, Add } from '@mui/icons-material';
-import { Box, Fab } from '@mui/material';
+import {
+  Box,
+  Fab,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+} from '@mui/material';
 import ModalEditRole from 'modals/ModalEditRole';
 import ModalCreateRole from 'modals/ModalCreateRole';
 import ModalConfirmation from 'modals/ModalConfirmation';
@@ -77,12 +89,12 @@ const RoleView = () => {
   };
 
   const handleSortOrder = (column: string) => {
-    let asc = true;
-    if (sortOrder.column === column) {
-      asc = !sortOrder.asc;
-    }
+    const asc = sortOrder.column === column ? !sortOrder.asc : true;
     setSortOrder({ column, asc });
   };
+
+  const sortDirection = (column: string): 'asc' | 'desc' | false =>
+    sortOrder.column === column ? (sortOrder.asc ? 'asc' : 'desc') : false;
 
   const handleCreateRole = (role: any) => {
     dispatch(OrganizationRegisterActions.createRole(role, getToken));
@@ -103,163 +115,97 @@ const RoleView = () => {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
         <Fab
           size="small"
           aria-label="Create role"
-          sx={{ float: 'right', marginRight: '10px' }}
+          sx={{ mr: '10px' }}
           onClick={() => setIsCreateModalOpen(true)}
         >
           <Add />
         </Fab>
       </Box>
-      <Box>
-        <Box
-          sx={{
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            bgcolor: 'rgba(238, 238, 238, 0.28)',
-            mb: '5px',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'inline-block',
-              width: '45%',
-              maxWidth: '45%',
-              minWidth: '45%',
-              m: '2px',
-              mb: '5px',
-              fontSize: '0.9em',
-            }}
-          >
-            <Box
-              component="span"
-              onClick={() => handleSortOrder('name')}
-              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
-            >
-              name
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: 'inline-block',
-              width: '45%',
-              maxWidth: '45%',
-              minWidth: '45%',
-              m: '2px',
-              mb: '5px',
-              fontSize: '0.9em',
-            }}
-          >
-            <Box
-              component="span"
-              onClick={() => handleSortOrder('privateCode')}
-              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
-            >
-              private code
-            </Box>
-          </Box>
-        </Box>
-        {sortedRoles.map((role: any) => {
-          return (
-            <Box
-              key={'role-' + role.id}
-              sx={{
-                '&:nth-of-type(even)': {
-                  bgcolor: 'hsla(0, 0%, 50%, 0.07)',
-                },
-              }}
-            >
-              <Box
-                sx={{
-                  display: 'inline-block',
-                  width: '45%',
-                  maxWidth: '45%',
-                  minWidth: '45%',
-                  m: '2px',
-                  mb: '5px',
-                  fontSize: '0.9em',
-                }}
-              >
-                {role.name}
-              </Box>
-              <Box
-                sx={{
-                  display: 'inline-block',
-                  width: '45%',
-                  maxWidth: '45%',
-                  minWidth: '45%',
-                  m: '2px',
-                  mb: '5px',
-                  fontSize: '0.9em',
-                }}
-              >
-                {role.privateCode}
-              </Box>
-              <Box
-                sx={{
-                  float: 'right',
-                  mr: '10px',
-                  width: 'auto',
-                  display: 'inline-block',
-                  cursor: 'pointer',
-                }}
-              >
-                <Delete
-                  sx={{
-                    height: 20,
-                    width: 20,
-                    marginRight: '10px',
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'error.light',
-                  }}
-                  onClick={() => handleOpenDeleteConfirmationDialog(role)}
-                />
-                <Edit
-                  onClick={() => handleEditRole(role)}
-                  sx={{
-                    height: 20,
-                    width: 20,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'rgba(25, 118, 210, 0.59)',
-                  }}
-                />
-              </Box>
-            </Box>
-          );
-        })}
-        {isCreateModalOpen ? (
-          <ModalCreateRole
-            isModalOpen={isCreateModalOpen}
-            handleCloseModal={() => setIsCreateModalOpen(false)}
-            takenPrivateCodes={roles.map((role: any) => role.privateCode)}
-            handleSubmit={handleCreateRole}
-          />
-        ) : null}
-        {isEditModalOpen ? (
-          <ModalEditRole
-            isModalOpen={isEditModalOpen}
-            role={activeRole}
-            handleCloseModal={() => setIsEditModalOpen(false)}
-            handleSubmit={handleUpdateRole}
-          />
-        ) : null}
-        <ModalConfirmation
-          open={isDeleteConfirmationOpen}
-          title={confirmDeleteTitle}
-          actionBtnTitle="Delete"
-          body="You are about to delete current user. Are you sure?"
-          handleSubmit={() => {
-            handleDeleteRole(activeRole);
-          }}
-          handleClose={() => {
-            handleCloseDeleteConfirmation();
-          }}
+      <TableContainer component={Paper} variant="outlined">
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell sortDirection={sortDirection('name')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'name'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('name')}
+                >
+                  Name
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('privateCode')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'privateCode'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('privateCode')}
+                >
+                  Private code
+                </TableSortLabel>
+              </TableCell>
+              <TableCell align="right" />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {sortedRoles.map((role: any) => (
+              <TableRow key={'role-' + role.id} hover>
+                <TableCell>{role.name}</TableCell>
+                <TableCell>{role.privateCode}</TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    size="small"
+                    color="error"
+                    aria-label="Delete role"
+                    onClick={() => handleOpenDeleteConfirmationDialog(role)}
+                  >
+                    <Delete fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    aria-label="Edit role"
+                    onClick={() => handleEditRole(role)}
+                  >
+                    <Edit fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {isCreateModalOpen ? (
+        <ModalCreateRole
+          isModalOpen={isCreateModalOpen}
+          handleCloseModal={() => setIsCreateModalOpen(false)}
+          takenPrivateCodes={roles.map((role: any) => role.privateCode)}
+          handleSubmit={handleCreateRole}
         />
-      </Box>
+      ) : null}
+      {isEditModalOpen ? (
+        <ModalEditRole
+          isModalOpen={isEditModalOpen}
+          role={activeRole}
+          handleCloseModal={() => setIsEditModalOpen(false)}
+          handleSubmit={handleUpdateRole}
+        />
+      ) : null}
+      <ModalConfirmation
+        open={isDeleteConfirmationOpen}
+        title={confirmDeleteTitle}
+        actionBtnTitle="Delete"
+        body="You are about to delete current user. Are you sure?"
+        handleSubmit={() => {
+          handleDeleteRole(activeRole);
+        }}
+        handleClose={() => {
+          handleCloseDeleteConfirmation();
+        }}
+      />
     </Box>
   );
 };

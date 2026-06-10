@@ -16,7 +16,19 @@
 
 import { useEffect, useState } from 'react';
 import { Edit, Add, Delete } from '@mui/icons-material';
-import { Box, Fab } from '@mui/material';
+import {
+  Box,
+  Fab,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+} from '@mui/material';
 import ModalCreateEntityType from 'modals/ModalCreateEntityType';
 import ModalEditEntiyType from 'modals/ModalEditEntityType';
 import ModalConfirmation from 'modals/ModalConfirmation';
@@ -30,21 +42,6 @@ interface SortOrder {
   column: string;
   asc: boolean;
 }
-
-const columnSx = {
-  display: 'inline-block',
-  width: '22%',
-  maxWidth: '22%',
-  minWidth: '22%',
-  m: '2px',
-  mb: '5px',
-  fontSize: '0.9em',
-};
-
-const sortableSx = {
-  borderBottom: '1px dotted',
-  cursor: 'pointer',
-};
 
 const EntityTypesView = () => {
   const dispatch = useAppDispatch();
@@ -91,12 +88,12 @@ const EntityTypesView = () => {
   };
 
   const handleSortOrder = (column: string) => {
-    let asc = true;
-    if (sortOrder.column === column) {
-      asc = !sortOrder.asc;
-    }
+    const asc = sortOrder.column === column ? !sortOrder.asc : true;
     setSortOrder({ column, asc });
   };
+
+  const sortDirection = (column: string): 'asc' | 'desc' | false =>
+    sortOrder.column === column ? (sortOrder.asc ? 'asc' : 'desc') : false;
 
   const handleCreateEntity = (entityType: any) => {
     dispatch(OrganizationRegisterActions.createEntityType(entityType, getToken));
@@ -111,144 +108,121 @@ const EntityTypesView = () => {
     dispatch(OrganizationRegisterActions.deleteEntityType(entityType.id, getToken));
   };
 
-  const getDeleteConfirmationTitle = () => {
-    const entityType = activeEntityType ? activeEntityType.name : 'N/A';
-    return `Delete entity type ${entityType}`;
-  };
-
   const sortedEntityTypes = sortByColumns(entityTypes, sortOrder);
-  const confirmDeleteTitle = getDeleteConfirmationTitle();
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
         <Fab
           size="small"
           aria-label="Create entity type"
-          sx={{ float: 'right', marginRight: '10px' }}
+          sx={{ mr: '10px' }}
           onClick={() => setIsCreateModalOpen(true)}
         >
           <Add />
         </Fab>
       </Box>
-      <Box>
-        <Box
-          sx={{
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            bgcolor: 'rgba(238, 238, 238, 0.28)',
-            mb: '5px',
-          }}
-        >
-          <Box sx={columnSx}>
-            <Box component="span" onClick={() => handleSortOrder('name')} sx={sortableSx}>
-              name
-            </Box>
-          </Box>
-          <Box sx={columnSx}>
-            <Box component="span" onClick={() => handleSortOrder('privateCode')} sx={sortableSx}>
-              private code
-            </Box>
-          </Box>
-          <Box sx={columnSx}>
-            <Box component="span" onClick={() => handleSortOrder('codeSpace')} sx={sortableSx}>
-              codespace
-            </Box>
-          </Box>
-          <Box sx={columnSx}>
-            <span>Classifications</span>
-          </Box>
-        </Box>
-        {sortedEntityTypes.map((et: any) => {
-          return (
-            <Box
-              key={'et-' + et.id}
-              sx={{ '&:nth-of-type(even)': { bgcolor: 'hsla(0, 0%, 50%, 0.07)' } }}
-            >
-              <Box sx={columnSx}>{et.name}</Box>
-              <Box sx={columnSx}>{et.privateCode}</Box>
-              <Box sx={columnSx}>{et.codeSpace}</Box>
-              <Box sx={columnSx}>
-                <Box
-                  component="ul"
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    listStyleType: 'circle',
-                  }}
+      <TableContainer component={Paper} variant="outlined">
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell sortDirection={sortDirection('name')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'name'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('name')}
                 >
-                  {et.classifications
-                    ? [...et.classifications]
+                  Name
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('privateCode')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'privateCode'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('privateCode')}
+                >
+                  Private code
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('codeSpace')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'codeSpace'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('codeSpace')}
+                >
+                  Codespace
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>Classifications</TableCell>
+              <TableCell align="right" />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {sortedEntityTypes.map((et: any) => (
+              <TableRow key={'et-' + et.id} hover>
+                <TableCell>{et.name}</TableCell>
+                <TableCell>{et.privateCode}</TableCell>
+                <TableCell>{et.codeSpace}</TableCell>
+                <TableCell>
+                  {et.classifications && et.classifications.length ? (
+                    <Box component="ul" sx={{ m: 0, pl: 2.5, listStyleType: 'disc' }}>
+                      {[...et.classifications]
                         .sort((a: any, b: any) => a.name.localeCompare(b.name))
-                        .map((ec: any) => <li key={ec.id}>{ec.name} </li>)
-                    : null}
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  float: 'right',
-                  mr: '10px',
-                  width: 'auto',
-                  display: 'inline-block',
-                  cursor: 'pointer',
-                }}
-              >
-                <Delete
-                  sx={{
-                    height: 20,
-                    width: 20,
-                    marginRight: '10px',
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'error.light',
-                  }}
-                  onClick={() => handleOpenDeleteConfirmationDialog(et)}
-                />
-                <Edit
-                  sx={{
-                    height: 20,
-                    width: 20,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'rgba(25, 118, 210, 0.59)',
-                  }}
-                  onClick={() => handleEditEntityType(et)}
-                />
-              </Box>
-            </Box>
-          );
-        })}
-        {isCreateModalOpen ? (
-          <ModalCreateEntityType
-            isModalOpen={isCreateModalOpen}
-            codeSpaces={codeSpaces}
-            handleCloseModal={() => setIsCreateModalOpen(false)}
-            takenPrivateCodes={entityTypes.map((et: any) => et.privateCode)}
-            handleSubmit={handleCreateEntity}
-          />
-        ) : null}
-        {isEditModalOpen ? (
-          <ModalEditEntiyType
-            isModalOpen={isEditModalOpen}
-            entityType={activeEntityType}
-            handleCloseModal={() => setIsEditModalOpen(false)}
-            codeSpaces={codeSpaces}
-            handleSubmit={handleUpdateEntity}
-          />
-        ) : null}
-        <ModalConfirmation
-          open={isDeleteConfirmationOpen}
-          title={confirmDeleteTitle}
-          actionBtnTitle="Delete"
-          body="You are about to delete current entity type. Are you sure?"
-          handleSubmit={() => {
-            handleDeleteEntityType(activeEntityType);
-          }}
-          handleClose={() => {
-            handleCloseDeleteConfirmation();
-          }}
+                        .map((ec: any) => (
+                          <li key={ec.id}>{ec.name}</li>
+                        ))}
+                    </Box>
+                  ) : null}
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    size="small"
+                    color="error"
+                    aria-label="Delete entity type"
+                    onClick={() => handleOpenDeleteConfirmationDialog(et)}
+                  >
+                    <Delete fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    aria-label="Edit entity type"
+                    onClick={() => handleEditEntityType(et)}
+                  >
+                    <Edit fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {isCreateModalOpen ? (
+        <ModalCreateEntityType
+          isModalOpen={isCreateModalOpen}
+          codeSpaces={codeSpaces}
+          handleCloseModal={() => setIsCreateModalOpen(false)}
+          takenPrivateCodes={entityTypes.map((et: any) => et.privateCode)}
+          handleSubmit={handleCreateEntity}
         />
-      </Box>
+      ) : null}
+      {isEditModalOpen ? (
+        <ModalEditEntiyType
+          isModalOpen={isEditModalOpen}
+          entityType={activeEntityType}
+          handleCloseModal={() => setIsEditModalOpen(false)}
+          codeSpaces={codeSpaces}
+          handleSubmit={handleUpdateEntity}
+        />
+      ) : null}
+      <ModalConfirmation
+        open={isDeleteConfirmationOpen}
+        title={`Delete entity type ${activeEntityType ? activeEntityType.name : 'N/A'}`}
+        actionBtnTitle="Delete"
+        body="You are about to delete current entity type. Are you sure?"
+        handleSubmit={() => handleDeleteEntityType(activeEntityType)}
+        handleClose={handleCloseDeleteConfirmation}
+      />
     </Box>
   );
 };

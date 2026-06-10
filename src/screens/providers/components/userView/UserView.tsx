@@ -16,7 +16,19 @@
 
 import { useEffect, useState } from 'react';
 import { Edit, Delete, Notifications, Add } from '@mui/icons-material';
-import { Box, Fab } from '@mui/material';
+import {
+  Box,
+  Fab,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+} from '@mui/material';
 import ModalCreateUser from 'modals/ModalCreateUser';
 import ModalEditUser from 'modals/ModalEditUser';
 import ModalEditNotifications from 'modals/ModalEditNotifications';
@@ -110,12 +122,12 @@ const UserView = () => {
      picks a real organisation. Migration intentionally keeps the prior logic. */
 
   const handleSortOrder = (column: string) => {
-    let asc = true;
-    if (sortOrder.column === column) {
-      asc = !sortOrder.asc;
-    }
+    const asc = sortOrder.column === column ? !sortOrder.asc : true;
     setSortOrder({ column, asc });
   };
+
+  const sortDirection = (column: string): 'asc' | 'desc' | false =>
+    sortOrder.column === column ? (sortOrder.asc ? 'asc' : 'desc') : false;
 
   const openCreateModal = () => {
     setActiveUser(null);
@@ -142,6 +154,7 @@ const UserView = () => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          mb: 1,
         }}
       >
         <OrganizationFilter
@@ -160,365 +173,155 @@ const UserView = () => {
           <Add />
         </Fab>
       </Box>
-      <Box>
-        <Box
-          sx={{
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            bgcolor: 'rgba(238, 238, 238, 0.28)',
-            mb: '5px',
-            m: '2px',
-            fontSize: '0.9em',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'inline-block',
-              width: '12%',
-              maxWidth: '12%',
-              minWidth: '12%',
-              wordBreak: 'break-all',
-              m: '2px',
-              mb: '5px',
-              fontSize: '0.9em',
-            }}
-          >
-            <Box
-              component="span"
-              onClick={() => handleSortOrder('username')}
-              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
-            >
-              username
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: 'inline-block',
-              width: '12%',
-              maxWidth: '12%',
-              minWidth: '12%',
-              wordBreak: 'break-all',
-              m: '2px',
-              mb: '5px',
-              fontSize: '0.9em',
-            }}
-          >
-            <Box
-              component="span"
-              onClick={() => handleSortOrder('firstName')}
-              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
-            >
-              firstname
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: 'inline-block',
-              width: '12%',
-              maxWidth: '12%',
-              minWidth: '12%',
-              wordBreak: 'break-all',
-              m: '2px',
-              mb: '5px',
-              fontSize: '0.9em',
-            }}
-          >
-            <Box
-              component="span"
-              onClick={() => handleSortOrder('lastName')}
-              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
-            >
-              lastname
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: 'inline-block',
-              width: '15%',
-              maxWidth: '15%',
-              minWidth: '15%',
-              wordBreak: 'break-all',
-              m: '2px',
-              mb: '5px',
-              fontSize: '0.9em',
-            }}
-          >
-            <Box
-              component="span"
-              onClick={() => handleSortOrder('email')}
-              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
-            >
-              e-mail
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: 'inline-block',
-              width: '12%',
-              maxWidth: '12%',
-              minWidth: '12%',
-              wordBreak: 'break-all',
-              m: '2px',
-              mb: '5px',
-              fontSize: '0.9em',
-            }}
-          >
-            <Box
-              component="span"
-              onClick={() => handleSortOrder('organisation')}
-              sx={{ borderBottom: '1px dotted', cursor: 'pointer' }}
-            >
-              organisation
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: 'inline-block',
-              width: '17%',
-              maxWidth: '17%',
-              minWidth: '17%',
-              wordBreak: 'break-all',
-              m: '2px',
-              mb: '5px',
-              fontSize: '0.9em',
-            }}
-          >
-            Responsiblity set
-          </Box>
-          <Box
-            sx={{
-              display: 'inline-block',
-              width: '12%',
-              maxWidth: '12%',
-              minWidth: '12%',
-              wordBreak: 'break-all',
-              m: '2px',
-              mb: '5px',
-              fontSize: '0.9em',
-            }}
-          >
-            Notifications
-          </Box>
-        </Box>
-        {sortedUsers.filter(filterUserByOrg).map((user: any) => {
-          return (
-            <Box
-              key={'user-' + user.id}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                m: '2px',
-                mb: '5px',
-                fontSize: '0.9em',
-                '&:nth-of-type(even)': { bgcolor: 'hsla(0, 0%, 50%, 0.07)' },
-              }}
-            >
-              <Box
-                sx={{
-                  display: 'inline-block',
-                  width: '12%',
-                  maxWidth: '12%',
-                  minWidth: '12%',
-                  wordBreak: 'break-all',
-                  m: '2px',
-                  mb: '5px',
-                  fontSize: '0.9em',
-                }}
-              >
-                {user.username}
-              </Box>
-              <Box
-                sx={{
-                  display: 'inline-block',
-                  width: '12%',
-                  maxWidth: '12%',
-                  minWidth: '12%',
-                  wordBreak: 'break-all',
-                  m: '2px',
-                  mb: '5px',
-                  fontSize: '0.9em',
-                }}
-              >
-                {user.contactDetails.firstName}
-              </Box>
-              <Box
-                sx={{
-                  display: 'inline-block',
-                  width: '12%',
-                  maxWidth: '12%',
-                  minWidth: '12%',
-                  wordBreak: 'break-all',
-                  m: '2px',
-                  mb: '5px',
-                  fontSize: '0.9em',
-                }}
-              >
-                {user.contactDetails.lastName}
-              </Box>
-              <Box
-                sx={{
-                  display: 'inline-block',
-                  width: '15%',
-                  maxWidth: '15%',
-                  minWidth: '15%',
-                  wordBreak: 'break-all',
-                  m: '2px',
-                  mb: '5px',
-                  fontSize: '0.9em',
-                }}
-              >
-                {user.contactDetails.email}
-              </Box>
-              <Box
-                sx={{
-                  display: 'inline-block',
-                  width: '12%',
-                  maxWidth: '12%',
-                  minWidth: '12%',
-                  wordBreak: 'break-all',
-                  m: '2px',
-                  mb: '5px',
-                  fontSize: '0.9em',
-                }}
-              >
-                {user.organisation.name}
-              </Box>
-              <Box
-                sx={{
-                  display: 'inline-block',
-                  width: '17%',
-                  maxWidth: '17%',
-                  minWidth: '17%',
-                  wordBreak: 'break-all',
-                  m: '2px',
-                  mb: '5px',
-                  fontSize: '0.9em',
-                }}
-              >
-                <Box
-                  component="ul"
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    listStyleType: 'circle',
-                  }}
+      <TableContainer component={Paper} variant="outlined">
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell sortDirection={sortDirection('username')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'username'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('username')}
                 >
-                  {user.responsibilitySets
-                    ? user.responsibilitySets.map((resp: any) => (
-                        <li key={resp.id}>{resp.name} </li>
-                      ))
-                    : null}
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  display: 'inline-block',
-                  width: '9%',
-                  maxWidth: '9%',
-                  minWidth: '9%',
-                  wordBreak: 'break-all',
-                  m: '2px',
-                  mb: '5px',
-                  fontSize: '0.9em',
-                }}
-              >
-                {user.notifications.map((notification: any, i: number) => (
-                  <NotificationStatus key={'notification-' + i} notification={notification} />
-                ))}
-              </Box>
-              <Box
-                sx={{
-                  float: 'right',
-                  mr: '10px',
-                  width: 'auto',
-                  display: 'inline-block',
-                  cursor: 'pointer',
-                  m: '2px',
-                  mb: '5px',
-                  fontSize: '0.9em',
-                }}
-              >
-                <Edit
-                  sx={{
-                    height: 20,
-                    marginRight: '4px',
-                    width: 20,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'rgba(25, 118, 210, 0.59)',
-                  }}
-                  onClick={() => openEditModal(user)}
-                />
-                <Notifications
-                  sx={{
-                    marginLeft: '4px',
-                    height: 20,
-                    width: 20,
-                    marginRight: '4px',
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'rgba(25, 118, 210, 0.59)',
-                  }}
-                  onClick={() => openNotificationsModal(user)}
-                />
-                <Delete
-                  sx={{
-                    height: 20,
-                    width: 20,
-                    marginRight: '10px',
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'error.light',
-                  }}
-                  onClick={() => handleOpenDeleteConfirmationDialog(user)}
-                />
-              </Box>
-            </Box>
-          );
-        })}
-        {isCreateModalOpen && (
-          <ModalCreateUser
-            isModalOpen={isCreateModalOpen}
-            handleCloseModal={() => setIsCreateModalOpen(false)}
-            takenUsernames={users.map((user: any) => user.username)}
-            takenEmails={users.map((user: any) => user.contactDetails.email)}
-            organizations={organizations}
-            responsibilities={responsibilities}
-            handleSubmit={handleCreateUser}
-          />
-        )}
-        {isEditModalOpen && (
-          <ModalEditUser
-            isModalOpen={isEditModalOpen}
-            handleCloseModal={() => setIsEditModalOpen(false)}
-            takenUsernames={users.map((user: any) => user.username)}
-            organizations={organizations}
-            user={activeUser}
-            responsibilities={responsibilities}
-            handleSubmit={handleUpdateUser}
-          />
-        )}
-        {isNotificationsOpen && (
-          <ModalEditNotifications
-            handleCloseModal={() => setIsNotificationsOpen(false)}
-            isModalOpen={isNotificationsOpen}
-            user={activeUser}
-            getToken={getToken}
-          />
-        )}
-        <ModalConfirmation
-          open={isDeleteConfirmationOpen}
-          title={confirmDeleteTitle}
-          actionBtnTitle="Delete"
-          body="You are about to delete current user. Are you sure?"
-          handleSubmit={() => {
-            handleDeleteUser(activeUser);
-          }}
-          handleClose={() => {
-            handleCloseDeleteConfirmation();
-          }}
+                  Username
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('firstName')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'firstName'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('firstName')}
+                >
+                  First name
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('lastName')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'lastName'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('lastName')}
+                >
+                  Last name
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('email')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'email'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('email')}
+                >
+                  E-mail
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('organisation')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'organisation'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('organisation')}
+                >
+                  Organisation
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>Responsibility set</TableCell>
+              <TableCell>Notifications</TableCell>
+              <TableCell align="right" />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {sortedUsers.filter(filterUserByOrg).map((user: any) => (
+              <TableRow key={'user-' + user.id} hover>
+                <TableCell>{user.username}</TableCell>
+                <TableCell>{user.contactDetails.firstName}</TableCell>
+                <TableCell>{user.contactDetails.lastName}</TableCell>
+                <TableCell>{user.contactDetails.email}</TableCell>
+                <TableCell>{user.organisation.name}</TableCell>
+                <TableCell>
+                  {user.responsibilitySets && user.responsibilitySets.length ? (
+                    <Box component="ul" sx={{ m: 0, pl: 2.5, listStyleType: 'circle' }}>
+                      {user.responsibilitySets.map((resp: any) => (
+                        <li key={resp.id}>{resp.name}</li>
+                      ))}
+                    </Box>
+                  ) : null}
+                </TableCell>
+                <TableCell>
+                  {user.notifications.map((notification: any, i: number) => (
+                    <NotificationStatus key={'notification-' + i} notification={notification} />
+                  ))}
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    size="small"
+                    color="error"
+                    aria-label="Delete user"
+                    onClick={() => handleOpenDeleteConfirmationDialog(user)}
+                  >
+                    <Delete fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    aria-label="Edit notifications"
+                    onClick={() => openNotificationsModal(user)}
+                  >
+                    <Notifications fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    aria-label="Edit user"
+                    onClick={() => openEditModal(user)}
+                  >
+                    <Edit fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {isCreateModalOpen && (
+        <ModalCreateUser
+          isModalOpen={isCreateModalOpen}
+          handleCloseModal={() => setIsCreateModalOpen(false)}
+          takenUsernames={users.map((user: any) => user.username)}
+          takenEmails={users.map((user: any) => user.contactDetails.email)}
+          organizations={organizations}
+          responsibilities={responsibilities}
+          handleSubmit={handleCreateUser}
         />
-      </Box>
+      )}
+      {isEditModalOpen && (
+        <ModalEditUser
+          isModalOpen={isEditModalOpen}
+          handleCloseModal={() => setIsEditModalOpen(false)}
+          takenUsernames={users.map((user: any) => user.username)}
+          organizations={organizations}
+          user={activeUser}
+          responsibilities={responsibilities}
+          handleSubmit={handleUpdateUser}
+        />
+      )}
+      {isNotificationsOpen && (
+        <ModalEditNotifications
+          handleCloseModal={() => setIsNotificationsOpen(false)}
+          isModalOpen={isNotificationsOpen}
+          user={activeUser}
+          getToken={getToken}
+        />
+      )}
+      <ModalConfirmation
+        open={isDeleteConfirmationOpen}
+        title={confirmDeleteTitle}
+        actionBtnTitle="Delete"
+        body="You are about to delete current user. Are you sure?"
+        handleSubmit={() => {
+          handleDeleteUser(activeUser);
+        }}
+        handleClose={() => {
+          handleCloseDeleteConfirmation();
+        }}
+      />
     </Box>
   );
 };

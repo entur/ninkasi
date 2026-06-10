@@ -16,7 +16,19 @@
 
 import { useEffect, useState } from 'react';
 import { Edit, Add, Delete } from '@mui/icons-material';
-import { Box, Fab } from '@mui/material';
+import {
+  Box,
+  Fab,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+} from '@mui/material';
 import ModalCreateOrganization from 'modals/ModalCreateOrganization';
 import ModalEditOrganization from 'modals/ModalEditOrganization';
 import ModalConfirmation from 'modals/ModalConfirmation';
@@ -30,32 +42,6 @@ interface SortOrder {
   column: string;
   asc: boolean;
 }
-
-const colSx = {
-  display: 'inline-block',
-  width: '18%',
-  maxWidth: '18%',
-  minWidth: '18%',
-  m: '2px',
-  mb: '5px',
-  fontSize: '0.9em',
-};
-
-const colIconSx = {
-  float: 'right',
-  mr: '10px',
-  width: 'auto',
-  display: 'inline-block',
-  cursor: 'pointer',
-  m: '2px',
-  mb: '5px',
-  fontSize: '0.9em',
-};
-
-const sortableSx = {
-  borderBottom: '1px dotted',
-  cursor: 'pointer',
-};
 
 const OrganizationView = () => {
   const dispatch = useAppDispatch();
@@ -86,12 +72,12 @@ const OrganizationView = () => {
   }, [status]);
 
   const handleSortOrder = (column: string) => {
-    let asc = true;
-    if (sortOrder.column === column) {
-      asc = !sortOrder.asc;
-    }
+    const asc = sortOrder.column === column ? !sortOrder.asc : true;
     setSortOrder({ column, asc });
   };
+
+  const sortDirection = (column: string): 'asc' | 'desc' | false =>
+    sortOrder.column === column ? (sortOrder.asc ? 'asc' : 'desc') : false;
 
   const handleCloseDeleteConfirmation = () => {
     setActiveOrganization(null);
@@ -131,126 +117,133 @@ const OrganizationView = () => {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
         <Fab
           size="small"
           aria-label="Create organization"
-          sx={{ float: 'right', marginRight: '10px', cursor: 'pointer' }}
+          sx={{ mr: '10px' }}
           onClick={() => setIsCreateModalOpen(true)}
         >
           <Add />
         </Fab>
       </Box>
-      <Box>
-        <Box
-          sx={{
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            bgcolor: 'rgba(238, 238, 238, 0.28)',
-            mb: '5px',
-          }}
-        >
-          <Box sx={colSx}>
-            <Box component="span" onClick={() => handleSortOrder('name')} sx={sortableSx}>
-              name
-            </Box>
-          </Box>
-          <Box sx={colSx}>
-            <Box component="span" onClick={() => handleSortOrder('id')} sx={sortableSx}>
-              id
-            </Box>
-          </Box>
-          <Box sx={colSx}>
-            <Box
-              component="span"
-              onClick={() => handleSortOrder('organisationType')}
-              sx={sortableSx}
-            >
-              organisation type
-            </Box>
-          </Box>
-          <Box sx={colSx}>
-            <Box component="span" onClick={() => handleSortOrder('privateCode')} sx={sortableSx}>
-              private code
-            </Box>
-          </Box>
-          <Box sx={colSx}>
-            <Box component="span" onClick={() => handleSortOrder('codeSpace')} sx={sortableSx}>
-              code space
-            </Box>
-          </Box>
-        </Box>
-        {sortedOrganizations.map((organization: any) => {
-          return (
-            <Box
-              key={'organization-' + organization.id}
-              sx={{ '&:nth-of-type(even)': { bgcolor: 'hsla(0, 0%, 50%, 0.07)' } }}
-            >
-              <Box sx={colSx}>{organization.name}</Box>
-              <Box sx={colSx}>{organization.id}</Box>
-              <Box sx={colSx}>{organization.organisationType}</Box>
-              <Box sx={colSx}>{organization.privateCode}</Box>
-              <Box sx={colSx}>{organization.codeSpace}</Box>
-              <Box sx={colIconSx}>
-                <Delete
-                  sx={{
-                    height: 20,
-                    width: 20,
-                    marginRight: '10px',
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'error.light',
-                  }}
-                  onClick={() => handleOpenDeleteConfirmationDialog(organization)}
-                />
-                <Edit
-                  onClick={() => handleEditOrganization(organization)}
-                  sx={{
-                    height: 20,
-                    width: 20,
-                    verticalAlign: 'middle',
-                    color: 'rgba(25, 118, 210, 0.59)',
-                  }}
-                />
-              </Box>
-            </Box>
-          );
-        })}
-        {isCreateModalOpen ? (
-          <ModalCreateOrganization
-            isModalOpen={isCreateModalOpen}
-            handleCloseModal={() => setIsCreateModalOpen(false)}
-            takenOrganizationNames={organizations.map((org: any) => org.name)}
-            takenOrganizationPrivateCodes={organizations.map((org: any) => org.privateCode)}
-            codeSpaces={codeSpaces}
-            handleSubmit={handleCreateOrganization}
-          />
-        ) : null}
-
-        {isEditModalOpen ? (
-          <ModalEditOrganization
-            isModalOpen={isEditModalOpen}
-            handleCloseModal={() => setIsEditModalOpen(false)}
-            takenOrganizationNames={organizations.map((org: any) => org.name)}
-            takenOrganizationPrivateCodes={organizations.map((org: any) => org.privateCode)}
-            organization={activeOrganization}
-            codeSpaces={codeSpaces}
-            handleSubmit={handleUpdateOrganization}
-          />
-        ) : null}
-        <ModalConfirmation
-          open={isDeleteConfirmationOpen}
-          title={confirmDeleteTitle}
-          actionBtnTitle="Delete"
-          body="You are about to delete current organization. Are you sure?"
-          handleSubmit={() => {
-            handleDeleteOrganization(activeOrganization);
-          }}
-          handleClose={() => {
-            handleCloseDeleteConfirmation();
-          }}
+      <TableContainer component={Paper} variant="outlined">
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell sortDirection={sortDirection('name')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'name'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('name')}
+                >
+                  Name
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('id')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'id'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('id')}
+                >
+                  Id
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('organisationType')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'organisationType'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('organisationType')}
+                >
+                  Organisation type
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('privateCode')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'privateCode'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('privateCode')}
+                >
+                  Private code
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('codeSpace')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'codeSpace'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('codeSpace')}
+                >
+                  Code space
+                </TableSortLabel>
+              </TableCell>
+              <TableCell align="right" />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {sortedOrganizations.map((organization: any) => (
+              <TableRow key={'organization-' + organization.id} hover>
+                <TableCell>{organization.name}</TableCell>
+                <TableCell>{organization.id}</TableCell>
+                <TableCell>{organization.organisationType}</TableCell>
+                <TableCell>{organization.privateCode}</TableCell>
+                <TableCell>{organization.codeSpace}</TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    size="small"
+                    color="error"
+                    aria-label="Delete organization"
+                    onClick={() => handleOpenDeleteConfirmationDialog(organization)}
+                  >
+                    <Delete fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    aria-label="Edit organization"
+                    onClick={() => handleEditOrganization(organization)}
+                  >
+                    <Edit fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {isCreateModalOpen ? (
+        <ModalCreateOrganization
+          isModalOpen={isCreateModalOpen}
+          handleCloseModal={() => setIsCreateModalOpen(false)}
+          takenOrganizationNames={organizations.map((org: any) => org.name)}
+          takenOrganizationPrivateCodes={organizations.map((org: any) => org.privateCode)}
+          codeSpaces={codeSpaces}
+          handleSubmit={handleCreateOrganization}
         />
-      </Box>
+      ) : null}
+
+      {isEditModalOpen ? (
+        <ModalEditOrganization
+          isModalOpen={isEditModalOpen}
+          handleCloseModal={() => setIsEditModalOpen(false)}
+          takenOrganizationNames={organizations.map((org: any) => org.name)}
+          takenOrganizationPrivateCodes={organizations.map((org: any) => org.privateCode)}
+          organization={activeOrganization}
+          codeSpaces={codeSpaces}
+          handleSubmit={handleUpdateOrganization}
+        />
+      ) : null}
+      <ModalConfirmation
+        open={isDeleteConfirmationOpen}
+        title={confirmDeleteTitle}
+        actionBtnTitle="Delete"
+        body="You are about to delete current organization. Are you sure?"
+        handleSubmit={() => {
+          handleDeleteOrganization(activeOrganization);
+        }}
+        handleClose={() => {
+          handleCloseDeleteConfirmation();
+        }}
+      />
     </Box>
   );
 };

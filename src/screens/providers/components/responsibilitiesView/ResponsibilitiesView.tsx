@@ -16,7 +16,19 @@
 
 import { useEffect, useState } from 'react';
 import { Edit, Delete, Add } from '@mui/icons-material';
-import { Box, Fab } from '@mui/material';
+import {
+  Box,
+  Fab,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+} from '@mui/material';
 import ResponsbilityRoleAssignments from 'modals/ResponsbilityRoleAssignments';
 import ModalCreateResponsibilitySet from 'modals/ModalCreateResponsibilitySet';
 import ModalEditResponsibilitySet from 'modals/ModalEditResponsibilitySet';
@@ -38,42 +50,6 @@ interface SortOrder {
   column: string;
   asc: boolean;
 }
-
-const columnBaseSx = {
-  display: 'inline-block',
-  m: '2px',
-  mb: '5px',
-  fontSize: '0.9em',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-};
-
-const col16Sx = {
-  ...columnBaseSx,
-  width: '14%',
-  maxWidth: '14%',
-  minWidth: '14%',
-};
-
-const col17Sx = {
-  ...columnBaseSx,
-  width: '10%',
-  maxWidth: '10%',
-  minWidth: '10%',
-};
-
-const col13Sx = {
-  ...columnBaseSx,
-  width: '53%',
-  maxWidth: '53%',
-  minWidth: '53%',
-};
-
-const sortableSx = {
-  borderBottom: '1px dotted',
-  cursor: 'pointer',
-};
 
 const ResponsibilitiesView = () => {
   const dispatch = useAppDispatch();
@@ -143,12 +119,12 @@ const ResponsibilitiesView = () => {
   };
 
   const handleSortOrder = (column: string) => {
-    let asc = true;
-    if (sortOrder.column === column) {
-      asc = !sortOrder.asc;
-    }
+    const asc = sortOrder.column === column ? !sortOrder.asc : true;
     setSortOrder({ column, asc });
   };
+
+  const sortDirection = (column: string): 'asc' | 'desc' | false =>
+    sortOrder.column === column ? (sortOrder.asc ? 'asc' : 'desc') : false;
 
   const handleCreateResponsibilitySet = (responsibilitySet: any) => {
     dispatch(OrganizationRegisterActions.createResponsibilitySet(responsibilitySet, getToken));
@@ -168,137 +144,122 @@ const ResponsibilitiesView = () => {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
         <Fab
           size="small"
           aria-label="Create responsibility set"
-          sx={{ marginRight: '10px' }}
+          sx={{ mr: '10px' }}
           onClick={openModalWindow}
         >
           <Add />
         </Fab>
       </Box>
-      <Box>
-        <Box
-          sx={{
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            bgcolor: 'rgba(238, 238, 238, 0.28)',
-            mb: '5px',
-          }}
-        >
-          <Box sx={col16Sx}>
-            <Box component="span" onClick={() => handleSortOrder('name')} sx={sortableSx}>
-              name
-            </Box>
-          </Box>
-          <Box sx={col16Sx}>
-            <Box component="span" onClick={() => handleSortOrder('id')} sx={sortableSx}>
-              id
-            </Box>
-          </Box>
-          <Box sx={col17Sx}>
-            <Box component="span" onClick={() => handleSortOrder('privateCode')} sx={sortableSx}>
-              private code
-            </Box>
-          </Box>
-          <Box sx={col16Sx}>Roles assignments</Box>
-        </Box>
-        {sortedResponsibilities.map((responsibility: any) => {
-          return (
-            <Box
-              key={'responsibility-' + responsibility.id}
-              sx={{
-                display: 'flex',
-                '&:nth-of-type(even)': { bgcolor: 'hsla(0, 0%, 50%, 0.07)' },
-              }}
-            >
-              <Box sx={col16Sx}>{responsibility.name}</Box>
-              <Box sx={col16Sx}>{responsibility.id}</Box>
-              <Box sx={col17Sx}>{responsibility.privateCode}</Box>
-              <Box sx={col13Sx}>
-                <ResponsbilityRoleAssignments
-                  roleAssignments={responsibility.roles}
-                  organizations={organizations}
-                  adminZones={administrativeZones}
-                />
-              </Box>
-              <Box
-                sx={{
-                  float: 'right',
-                  mr: '10px',
-                  width: 'auto',
-                  display: 'inline-block',
-                  cursor: 'pointer',
-                }}
-              >
-                <Delete
-                  sx={{
-                    height: 20,
-                    width: 20,
-                    marginRight: '10px',
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'error.light',
-                  }}
-                  onClick={() => handleOpenDeleteConfirmationDialog(responsibility)}
-                />
-                <Edit
-                  sx={{
-                    height: 20,
-                    width: 20,
-                    verticalAlign: 'middle',
-                    cursor: 'pointer',
-                    color: 'rgba(25, 118, 210, 0.59)',
-                  }}
-                  onClick={() => {
-                    handleOpenEditResp(responsibility);
-                  }}
-                />
-              </Box>
-            </Box>
-          );
-        })}
-        {isCreatingResponsibilitySet ? (
-          <ModalCreateResponsibilitySet
-            modalOpen={isCreatingResponsibilitySet}
-            codeSpaces={codeSpaces}
-            handleOnClose={() => setIsCreatingResponsibilitySet(false)}
-            takenPrivateCodes={responsibilities.map((r: any) => r.privateCode)}
-            roles={roles}
-            organizations={organizations}
-            handleSubmit={handleCreateResponsibilitySet}
-            entityTypes={entityTypes}
-            administrativeZones={administrativeZones}
-          />
-        ) : null}
-        {isEditingResponsibilitySet ? (
-          <ModalEditResponsibilitySet
-            modalOpen={isEditingResponsibilitySet}
-            responsibilitySet={activeResponsibilitySet}
-            codeSpaces={codeSpaces}
-            handleOnClose={() => setIsEditingResponsibilitySet(false)}
-            takenPrivateCodes={responsibilities.map((r: any) => r.privateCode)}
-            roles={roles}
-            organizations={organizations}
-            handleSubmit={handleUpdateResponsibilitySet}
-            entityTypes={entityTypes}
-            administrativeZones={administrativeZones}
-          />
-        ) : null}
-        <ModalConfirmation
-          open={isDeleteConfirmationOpen}
-          title={confirmDeleteTitle}
-          actionBtnTitle="Delete"
-          body="You are about to delete current responsibility set. Are you sure?"
-          handleSubmit={() => {
-            handleDeleteResponsibility(activeResponsibilitySet);
-          }}
-          handleClose={() => {
-            handleCloseDeleteConfirmation();
-          }}
+      <TableContainer component={Paper} variant="outlined">
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell sortDirection={sortDirection('name')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'name'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('name')}
+                >
+                  Name
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('id')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'id'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('id')}
+                >
+                  Id
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sortDirection={sortDirection('privateCode')}>
+                <TableSortLabel
+                  active={sortOrder.column === 'privateCode'}
+                  direction={sortOrder.asc ? 'asc' : 'desc'}
+                  onClick={() => handleSortOrder('privateCode')}
+                >
+                  Private code
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>Roles assignments</TableCell>
+              <TableCell align="right" />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {sortedResponsibilities.map((responsibility: any) => (
+              <TableRow key={'responsibility-' + responsibility.id} hover>
+                <TableCell>{responsibility.name}</TableCell>
+                <TableCell>{responsibility.id}</TableCell>
+                <TableCell>{responsibility.privateCode}</TableCell>
+                <TableCell>
+                  <ResponsbilityRoleAssignments
+                    roleAssignments={responsibility.roles}
+                    organizations={organizations}
+                    adminZones={administrativeZones}
+                  />
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    size="small"
+                    color="error"
+                    aria-label="Delete responsibility set"
+                    onClick={() => handleOpenDeleteConfirmationDialog(responsibility)}
+                  >
+                    <Delete fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    aria-label="Edit responsibility set"
+                    onClick={() => handleOpenEditResp(responsibility)}
+                  >
+                    <Edit fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {isCreatingResponsibilitySet ? (
+        <ModalCreateResponsibilitySet
+          modalOpen={isCreatingResponsibilitySet}
+          codeSpaces={codeSpaces}
+          handleOnClose={() => setIsCreatingResponsibilitySet(false)}
+          takenPrivateCodes={responsibilities.map((r: any) => r.privateCode)}
+          roles={roles}
+          organizations={organizations}
+          handleSubmit={handleCreateResponsibilitySet}
+          entityTypes={entityTypes}
+          administrativeZones={administrativeZones}
         />
-      </Box>
+      ) : null}
+      {isEditingResponsibilitySet ? (
+        <ModalEditResponsibilitySet
+          modalOpen={isEditingResponsibilitySet}
+          responsibilitySet={activeResponsibilitySet}
+          codeSpaces={codeSpaces}
+          handleOnClose={() => setIsEditingResponsibilitySet(false)}
+          takenPrivateCodes={responsibilities.map((r: any) => r.privateCode)}
+          roles={roles}
+          organizations={organizations}
+          handleSubmit={handleUpdateResponsibilitySet}
+          entityTypes={entityTypes}
+          administrativeZones={administrativeZones}
+        />
+      ) : null}
+      <ModalConfirmation
+        open={isDeleteConfirmationOpen}
+        title={confirmDeleteTitle}
+        actionBtnTitle="Delete"
+        body="You are about to delete current responsibility set. Are you sure?"
+        handleSubmit={() => handleDeleteResponsibility(activeResponsibilitySet)}
+        handleClose={handleCloseDeleteConfirmation}
+      />
     </Box>
   );
 };
