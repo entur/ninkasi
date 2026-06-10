@@ -18,7 +18,7 @@ import { useState } from 'react';
 import type { MouseEvent } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import { Box, MenuItem, Popover } from '@mui/material';
+import { Box, Menu, MenuItem } from '@mui/material';
 import { Warning, ArrowDropDown, KeyboardArrowRight } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import ConfirmDialog from '../../../modals/ConfirmDialog';
@@ -205,7 +205,7 @@ const AdministrativeActions = () => {
         >
           Graph
         </Button>
-        <Popover
+        <Menu
           open={graphPopoverOpen}
           anchorEl={anchorEl}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
@@ -240,7 +240,7 @@ const AdministrativeActions = () => {
           >
             Build Candidate Street Graph
           </MenuItem>
-        </Popover>
+        </Menu>
         <Button
           variant="text"
           size="small"
@@ -281,7 +281,7 @@ const AdministrativeActions = () => {
           Cancel all jobs
         </Button>
       </Box>
-      <Popover
+      <Menu
         open={cleanPopoverOpen}
         anchorEl={anchorEl}
         anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
@@ -329,7 +329,7 @@ const AdministrativeActions = () => {
         >
           Clean Level 2
         </MenuItem>
-      </Popover>
+      </Menu>
       <ConfirmDialog
         open={confirmDialogOpen}
         handleSubmit={confirmAction}
