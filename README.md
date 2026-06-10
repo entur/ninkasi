@@ -139,11 +139,3 @@ Two GitHub Actions workflows in `.github/workflows/`:
 `firebase.json` carves out a no-store cache rule for `/config.json` (above the
 catch-all `*.json` 1-year rule) so runtime config changes propagate
 immediately.
-
-## Related repos
-
-- [enki](https://github.com/entur/enki), [nirgali](https://github.com/entur/nirgali) — modernized sister admin apps, reference for the
-  MUI + RTK patterns used here.
-- [inanna](https://github.com/entur/inanna) — modernization template repo.
-- [netex-explorer](https://github.com/entur/netex-explorer) — reference for
-  the theme + runtime-config / env-badge pattern.
