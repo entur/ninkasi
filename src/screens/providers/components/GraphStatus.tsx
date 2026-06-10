@@ -18,7 +18,6 @@ import { useEffect } from 'react';
 import { Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import cfgreader from 'config/readConfig';
 import { format, formatDistanceToNow } from 'date-fns';
 import * as SuppliersReducer from 'reducers/SuppliersReducer';
 const { fetchGraphStatus } = SuppliersReducer as any;
@@ -95,18 +94,14 @@ const GraphStatus = () => {
 
   useEffect(() => {
     let timer: ReturnType<typeof setInterval> | undefined;
-    let startTimeout: ReturnType<typeof setTimeout> | undefined;
-    cfgreader.readConfig(function (config: any) {
-      window.config = config;
-      dispatch(fetchGraphStatus(getToken));
-      startTimeout = setTimeout(() => {
-        timer = setInterval(() => {
-          dispatch(fetchGraphStatus(getToken));
-        }, 10000);
-      }, 1000);
-    });
+    dispatch(fetchGraphStatus(getToken));
+    const startTimeout = setTimeout(() => {
+      timer = setInterval(() => {
+        dispatch(fetchGraphStatus(getToken));
+      }, 10000);
+    }, 1000);
     return () => {
-      if (startTimeout) clearTimeout(startTimeout);
+      clearTimeout(startTimeout);
       if (timer) clearInterval(timer);
     };
   }, [dispatch, getToken]);

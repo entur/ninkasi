@@ -1,15 +1,15 @@
-import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
-import { getProvidersEnv } from '../../../config/themes';
+import { useConfig } from '@/contexts/ConfigContext';
 import Logo from '../Logo';
+import EnvironmentBadge from './EnvironmentBadge';
 
 export default function HeaderBranding() {
   const location = useLocation();
-  const providersEnv = getProvidersEnv(window.config.providersBaseUrl);
+  const cfg = useConfig();
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
       <Box
         component={Link}
         to="/timetable-pipeline"
@@ -20,8 +20,9 @@ export default function HeaderBranding() {
           color: 'inherit',
         }}
       >
-        <Logo providersEnv={providersEnv} pathname={location.pathname} />
+        <Logo pathname={location.pathname} />
       </Box>
+      {cfg.envLabel && <EnvironmentBadge label={cfg.envLabel} color={cfg.envLabelColor} />}
     </Box>
   );
 }

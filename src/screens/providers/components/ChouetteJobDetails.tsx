@@ -14,10 +14,9 @@
  *
  */
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import cfgreader from 'config/readConfig';
 import {
   Container,
   Paper,
@@ -66,12 +65,6 @@ const ChouetteJobDetails = () => {
 
   const [activeChouettePageIndex, setActiveChouettePageIndex] = useState(0);
   const [filterFromDate, setFilterFromDate] = useState<any>(null);
-
-  useEffect(() => {
-    cfgreader.readConfig(function (config: any) {
-      window.config = config;
-    });
-  }, []);
 
   const getJobStatus = (status: string) => {
     if (status === 'TERMINATED') return 'COMPLETED';

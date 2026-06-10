@@ -35,6 +35,8 @@ jobs:
       - run: npm run build
         env:
           REACT_APP_VERSION: ${{ github.sha }}
+      - name: Inject dev env config
+        run: cp build/config.dev.json build/config.json
       - name: Archive production artifacts
         uses: actions/upload-artifact@v7.0.1
         with:

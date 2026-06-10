@@ -56,6 +56,8 @@ jobs:
           path: build
       - name: Copy favicon
         run: cp build/nin-d.ico build/favicon.ico
+      - name: Inject env config
+        run: cp build/config.dev.json build/config.json
       - uses: FirebaseExtended/action-hosting-deploy@v0.10.0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
@@ -75,6 +77,8 @@ jobs:
           path: build
       - name: Copy favicon
         run: cp build/nin-s.ico build/favicon.ico
+      - name: Inject env config
+        run: cp build/config.staging.json build/config.json
       - uses: FirebaseExtended/action-hosting-deploy@v0.10.0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
@@ -94,6 +98,8 @@ jobs:
           path: build
       - name: Copy favicon
         run: cp build/nin-p.ico build/favicon.ico
+      - name: Inject env config
+        run: cp build/config.prod.json build/config.json
       - uses: FirebaseExtended/action-hosting-deploy@v0.10.0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'

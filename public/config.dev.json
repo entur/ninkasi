@@ -1,5 +1,7 @@
 {
   "appEnv": "dev",
+  "envLabel": "dev",
+  "envLabelColor": "#1a8e60",
   "providersBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/providers/",
   "organisationsBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/organisations/",
   "eventsBaseUrl": "https://api.dev.entur.io/timetable-admin/v1/events/",

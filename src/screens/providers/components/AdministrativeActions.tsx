@@ -14,15 +14,13 @@
  *
  */
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { MouseEvent } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import cfgreader from 'config/readConfig';
 import { Box, MenuItem, Popover } from '@mui/material';
 import { Warning, ArrowDropDown, KeyboardArrowRight } from '@mui/icons-material';
 import Button from '@mui/material/Button';
-import { getIconColor, getProvidersEnv, getTheme } from 'config/themes';
 import ConfirmDialog from '../../../modals/ConfirmDialog';
 import * as MardukReducer from 'reducers/MardukReducer';
 const {
@@ -49,12 +47,6 @@ const AdministrativeActions = () => {
   const [confirmInfo, setConfirmInfo] = useState('');
   const [cleanPopoverOpen, setCleanPopoverOpen] = useState(false);
   const [graphPopoverOpen, setGraphPopoverOpen] = useState(false);
-
-  useEffect(() => {
-    cfgreader.readConfig(function (config: any) {
-      window.config = config;
-    });
-  }, []);
 
   const openConfirm = (title: string, info: string, action: () => void) => {
     setConfirmDialogOpen(true);
@@ -181,15 +173,12 @@ const AdministrativeActions = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  const providersEnv = getProvidersEnv(window.config.providersBaseUrl);
-  // Reference for parity; unused at runtime
-  void getIconColor(providersEnv);
-
   const innerContainerStyle = {
     display: 'flex',
     justifyContent: 'center',
+    bgcolor: 'primary.main',
+    color: 'primary.contrastText',
     borderTop: '1px solid rgba(158, 158, 158, 0.15)',
-    ...getTheme(providersEnv),
   };
 
   const toolTips: Record<string, string> = {

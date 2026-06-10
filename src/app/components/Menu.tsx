@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Drawer,
@@ -15,7 +14,6 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { getProvidersEnv, getTheme } from '../../config/themes';
 import Logo from './Logo';
 
 const DESKTOP_WIDTH = 280;
@@ -23,6 +21,8 @@ const DESKTOP_WIDTH = 280;
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
   '& .MuiDrawer-paper': {
     boxSizing: 'border-box',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
     transition: theme.transitions.create(['width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -44,8 +44,6 @@ export default function Menu({ open, onClose }: MenuProps) {
   const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const providersEnv = getProvidersEnv(window.config.providersBaseUrl);
-  const themeColors = getTheme(providersEnv);
 
   return (
     <StyledDrawer
@@ -55,27 +53,16 @@ export default function Menu({ open, onClose }: MenuProps) {
       onClose={onClose}
       slotProps={{
         root: { keepMounted: true },
-        paper: {
-          sx: {
-            width: isMobile ? '100%' : DESKTOP_WIDTH,
-            ...themeColors,
-          },
-        },
+        paper: { sx: { width: isMobile ? '100%' : DESKTOP_WIDTH } },
       }}
     >
       <Toolbar
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          px: 1,
-          ...themeColors,
-        }}
+        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 1 }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Logo providersEnv={providersEnv} pathname={null} />
+          <Logo pathname={null} />
         </Box>
-        <IconButton aria-label="Close menu" onClick={onClose} sx={{ color: 'white' }}>
+        <IconButton onClick={onClose} aria-label="Close menu" sx={{ color: 'white' }}>
           <ChevronRightIcon />
         </IconButton>
       </Toolbar>

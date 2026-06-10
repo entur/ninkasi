@@ -17,7 +17,6 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import cfgreader from 'config/readConfig';
 import {
   Container,
   Paper,
@@ -71,10 +70,7 @@ const ChouetteAllJobs = () => {
   const [filterFromDate, setFilterFromDate] = useState<any>(null);
 
   useEffect(() => {
-    cfgreader.readConfig(function (config: any) {
-      window.config = config;
-      dispatch(getChouetteJobsForAllSuppliers(getToken));
-    });
+    dispatch(getChouetteJobsForAllSuppliers(getToken));
   }, [dispatch, getToken]);
 
   const handleCancelChouetteJob = (id: number | string, providerId: number) => {

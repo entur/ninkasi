@@ -17,7 +17,6 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import cfgreader from 'config/readConfig';
 import { Box, Button, Tooltip } from '@mui/material';
 import { Add, Edit, DeleteForever } from '@mui/icons-material';
 import { getQueryVariable } from '@/utils';
@@ -49,12 +48,6 @@ const SuppliersContainer = () => {
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
   const [confirmTitle, setConfirmTitle] = useState('');
   const [confirmInfo, setConfirmInfo] = useState('');
-
-  useEffect(() => {
-    cfgreader.readConfig(function (config: any) {
-      window.config = config;
-    });
-  }, []);
 
   useEffect(() => {
     const id = getQueryVariable('id');

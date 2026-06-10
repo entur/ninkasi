@@ -17,7 +17,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import cfgreader from 'config/readConfig';
 import * as SuppliersReducer from 'reducers/SuppliersReducer';
 const { fetchProvider, createProvider, updateProvider } = SuppliersReducer as any;
 import { dismissEditProviderDialog } from 'reducers/UtilsReducer';
@@ -34,12 +33,9 @@ const SupplierPage = () => {
   const providers = useAppSelector(state => state.SuppliersReducer.data);
 
   useEffect(() => {
-    cfgreader.readConfig(function (config: any) {
-      window.config = config;
-      if (id) {
-        dispatch(fetchProvider({ id, getToken }));
-      }
-    });
+    if (id) {
+      dispatch(fetchProvider({ id, getToken }));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
