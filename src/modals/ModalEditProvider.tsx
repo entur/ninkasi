@@ -234,8 +234,8 @@ const ModalEditProvider = ({
 
   const rowSx = {
     display: 'flex',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 2,
   } as const;
 
   const formElementSx = {
@@ -275,7 +275,7 @@ const ModalEditProvider = ({
             disabled={editing}
             label="Chouette referential name"
             value={form._referential}
-            sx={{ flex: 1, padding: '0 15px' }}
+            sx={{ flex: 1 }}
             onChange={e => handleChange('_referential', e.target.value)}
             error={!!errors._referential}
             helperText={errors._referential || ''}
@@ -295,7 +295,7 @@ const ModalEditProvider = ({
             disabled={editing}
             label="User"
             value={form._user}
-            sx={{ flex: 1, padding: '0 15px' }}
+            sx={{ flex: 1 }}
             onChange={e => handleChange('_user', e.target.value)}
             error={!!errors._user}
             helperText={errors._user || ''}
@@ -313,7 +313,7 @@ const ModalEditProvider = ({
             disabled={editing}
             label="xmlns URL"
             value={form._xmlnsurl}
-            sx={{ flex: 1, padding: '0 15px' }}
+            sx={{ flex: 1 }}
             onChange={e => handleChange('_xmlnsurl', e.target.value)}
           />
         </Box>

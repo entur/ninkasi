@@ -1,9 +1,11 @@
 import GlobalStyles from '@mui/material/GlobalStyles';
 
 /**
- * Form-layout overrides ported verbatim from the legacy src/sass/components/forms.scss.
- * These target inline `style="display: flex"` wrappers inside DialogContent.
- * Once those flex-row patterns are replaced with <Stack>, this can be deleted.
+ * Global CSS reset. Previously also carried a brittle
+ * .MuiDialogContent-root > div[style*="display: flex"] gap rule from the
+ * legacy SCSS — removed after dialogs were migrated to sx (the attribute
+ * selector no longer matches anything), with per-row gap moved onto
+ * `rowSx` / Stack directly.
  */
 const AppGlobalStyles = () => (
   <GlobalStyles
@@ -12,17 +14,6 @@ const AppGlobalStyles = () => (
         margin: 0,
         padding: 0,
         boxSizing: 'border-box',
-      },
-      ".MuiDialogContent-root > div[style*='display: flex']": {
-        marginBottom: '16px',
-        gap: '16px',
-        '&:last-child': {
-          marginBottom: 0,
-        },
-        '& > *': {
-          paddingLeft: '0 !important',
-          paddingRight: '0 !important',
-        },
       },
     }}
   />
