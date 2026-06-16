@@ -429,7 +429,7 @@ const ModalEditProvider = ({
                       onChange={e => handleChange('_enableExperimentalImport', e.target.checked)}
                     />
                   }
-                  label="Enable experimental import"
+                  label="Enable new import"
                   sx={{
                     flex: 1,
                     maxWidth: 360,
@@ -437,7 +437,7 @@ const ModalEditProvider = ({
                     fontSize: '0.9em',
                   }}
                 />
-                {toolTip('Enable the experimental import pipeline for this provider')}
+                {toolTip('Enable the new import pipeline for this provider')}
               </Box>
             </Box>
           </>
