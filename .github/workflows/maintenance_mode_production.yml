@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 'prod'
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v8.0.1
       - name: Copy maintenance mode file
