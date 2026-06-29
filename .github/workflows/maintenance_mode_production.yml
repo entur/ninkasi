@@ -1,18 +1,28 @@
 name: Production maintenance mode
 on: workflow_dispatch
 jobs:
-  deploy_prod:
+  prepare:
     runs-on: ubuntu-latest
-    environment: 'prod'
     steps:
       - uses: actions/checkout@v7.0.0
-      - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v8.0.1
       - name: Copy maintenance mode file
         run: mkdir build && cp public/maintenance.html build/index.html
-      - uses: FirebaseExtended/action-hosting-deploy@v0.10.0
+      - name: Archive maintenance artifact
+        uses: actions/upload-artifact@v7.0.1
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_NINKASI_PRD }}'
-          channelId: live
-          projectId: ent-ninkasi-prd
+          name: maintenance-build
+          path: |
+            build
+
+  deploy_prod:
+    needs: [prepare]
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@v1
+    with:
+      gcp_project_id: ent-ninkasi-prd
+      environment: prd
+      build_artifact_name: maintenance-build
+      build_artifact_path: build
