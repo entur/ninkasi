@@ -4,7 +4,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - name: Copy maintenance mode file
         run: mkdir build && cp public/maintenance.html build/index.html
       - name: Archive maintenance artifact
