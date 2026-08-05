@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Tooltip } from '@mui/material';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { formatDistanceToNow, format, formatDuration } from 'date-fns';
@@ -25,6 +25,17 @@ interface EventGroupValue {
   errorOn?: string | null;
   missingBeforeStartStart?: boolean;
 }
+
+const TIME_COLUMN_WIDTH = 100;
+const PROVIDER_COLUMN_WIDTH = 185;
+
+// Truncate rather than wrap: a value that wraps makes one row taller than its
+// neighbours, which is the ragged alignment the fixed column width prevents.
+const truncate = {
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+} as const;
 
 type EventGroups = Record<string, EventGroupValue>;
 type FormattedGroups = Record<string, EventGroupValue | EventGroups>;
@@ -177,25 +188,31 @@ const EventStepper = ({
     }
 
     return (
-      <Box key={'group-' + group + index} sx={{ display: 'flex', flexDirection: 'row' }}>
+      <Box
+        key={'group-' + group + index}
+        sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+      >
         {!isFirst && (
           <Box
             sx={{
               display: 'block',
-              borderColor: 'rgb(189, 189, 189)',
+              borderColor: 'divider',
               ml: '-6px',
               borderTopStyle: 'solid',
               borderTopWidth: 1,
-              width: 30,
+              width: 18,
               borderRadius: 30,
-              m: '8px',
+              m: '6px',
+              flexShrink: 0,
               transform: columnIndex > 0 ? 'translateY(-0.5em) rotate(25deg)' : undefined,
             }}
           />
         )}
-        <Box title={toolTipText} sx={{ opacity: event.missingBeforeStartStart ? 0.2 : 1 }}>
-          <EventStatusIcon state={event.endState} />
-        </Box>
+        <Tooltip title={toolTipText}>
+          <Box sx={{ opacity: event.missingBeforeStartStart ? 0.2 : 1 }}>
+            <EventStatusIcon state={event.endState} />
+          </Box>
+        </Tooltip>
         <Box
           sx={{
             fontSize: '0.9em',
@@ -224,7 +241,6 @@ const EventStepper = ({
       .map((group, index) => {
         const event = formattedGroups[group];
         let column: React.ReactNode;
-        let columnLength = 1;
 
         if (isCombinedGroup(event)) {
           const filteredKeys = Object.keys(event)
@@ -242,7 +258,6 @@ const EventStepper = ({
               return true;
             });
 
-          columnLength = filteredKeys.length;
           column = filteredKeys.map((key, i) => renderEvent(event[key], event, key, i, false, i));
         } else {
           if (
@@ -267,9 +282,12 @@ const EventStepper = ({
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'space-between',
-              minWidth: 100,
-              height: columnLength > 2 ? 40 * columnLength : 45,
+              rowGap: 0.5,
+              // No fixed height: a hard height was what overflowed the row and
+              // produced the old per-row scrollbar. Columns compress to minWidth
+              // and let labels wrap, so a row stays narrow; once even minWidth
+              // doesn't fit, the steps run off to the right rather than stacking.
+              minWidth: 88,
             }}
           >
             {column}
@@ -295,10 +313,15 @@ const EventStepper = ({
       tabIndex={0}
       key={'event' + listItem.chouetteJobId}
       sx={{
-        margin: 'auto',
-        width: '98%',
+        width: '100%',
+        py: 1,
         cursor: 'pointer',
-        outline: 'none',
+        '&:hover': { bgcolor: 'action.hover' },
+        '&:focus': { outline: 'none' },
+        '&:focus-visible': {
+          outline: theme => `2px solid ${theme.palette.primary.main}`,
+          outlineOffset: -2,
+        },
       }}
       onClick={handleToggle}
       onKeyDown={e => {
@@ -308,41 +331,58 @@ const EventStepper = ({
         }
       }}
     >
-      <Box sx={{ display: 'flex', ml: '-15px' }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', mr: '20px' }}>
+      {/* Time, provider and filename are fixed-width columns on one line: each row
+          is its own flex container, so auto-sized columns ragged-edge the list, and
+          stacking the provider under the time cost a whole extra line per row. */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Tooltip title={format(new Date(listItem.firstEvent), 'PPpp', { locale: enGB })}>
           <Box
-            title={format(new Date(listItem.firstEvent), 'PPpp', { locale: enGB })}
             sx={{
               fontSize: '0.9em',
               fontWeight: 600,
-              color: '#e59400',
-              mt: '-8px',
+              color: 'text.secondary',
+              width: TIME_COLUMN_WIDTH,
+              flexShrink: 0,
+              ...truncate,
             }}
           >
             {formatDistanceToNow(new Date(listItem.firstEvent), { locale: enGB })}
           </Box>
-          {showProviderName && providerName && (
-            <Box sx={{ fontSize: '0.9em', fontWeight: 700, mt: '4px' }}>{providerName}</Box>
-          )}
-        </Box>
-        <Box sx={{ fontSize: '0.9em', fontWeight: 600, flex: 2 }}>
+        </Tooltip>
+        {showProviderName && (
+          <Tooltip title={providerName ?? ''}>
+            <Box
+              sx={{
+                fontSize: '0.9em',
+                fontWeight: 700,
+                width: PROVIDER_COLUMN_WIDTH,
+                flexShrink: 0,
+                ...truncate,
+              }}
+            >
+              {providerName}
+            </Box>
+          </Tooltip>
+        )}
+        <Box sx={{ fontSize: '0.9em', fontWeight: 600, flex: 1, overflowWrap: 'anywhere' }}>
           {listItem.fileName || actionTranslations.filename.undefined}
         </Box>
+        <Box component="span" sx={{ display: 'flex', flexShrink: 0 }} aria-hidden="true">
+          {!expanded ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+        </Box>
       </Box>
+      {/* Steps stay on one line and run past the right margin when the pipeline
+          is long, rather than wrapping. */}
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          alignContent: 'center',
           alignItems: 'flex-start',
-          justifyContent: 'center',
-          mt: '10px',
+          justifyContent: 'flex-start',
+          mt: '6px',
         }}
       >
         {bullets}
-        <Box component="span" sx={{ ml: 'auto', mr: '20px', mt: '-25px' }} aria-hidden="true">
-          {!expanded ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
-        </Box>
       </Box>
       {expanded && (
         <Box
@@ -357,7 +397,7 @@ const EventStepper = ({
         >
           {listItem.errorCode && (
             <Box>
-              <Box component="span" sx={{ fontWeight: 600, mr: '10px', color: 'red' }}>
+              <Box component="span" sx={{ fontWeight: 600, mr: '10px', color: 'error.main' }}>
                 {actionTranslations.errorCode[listItem.errorCode]}
               </Box>
             </Box>

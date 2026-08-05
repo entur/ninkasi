@@ -1,4 +1,4 @@
-import { Box, Chip, Stack, Typography } from '@mui/material';
+import { Chip, Stack, Typography } from '@mui/material';
 import actionTranslations from './actionTranslations';
 import type { ButtonConfig } from './buttonConfig';
 
@@ -22,28 +22,25 @@ const FilterButtonTray = ({
   const translations = actionTranslations[translationKey];
 
   return (
-    <Box sx={{ mx: 2, mb: '20px' }}>
-      <Box sx={{ mb: '0.5rem' }}>
-        <Typography variant="body2" component="span">
-          {label}
-        </Typography>
-      </Box>
-      <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
-        {buttonConfig.fields.map(field => {
-          const selected = field.id === activeButtonId;
-          return (
-            <Chip
-              key={field.id}
-              label={translations[field.id] ?? field.id}
-              clickable
-              color={selected ? 'primary' : 'default'}
-              variant={selected ? 'filled' : 'outlined'}
-              onClick={() => onChange(field.id)}
-            />
-          );
-        })}
-      </Stack>
-    </Box>
+    <Stack direction="row" spacing={1} useFlexGap sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
+      <Typography variant="body2" component="span" color="text.secondary">
+        {label}
+      </Typography>
+      {buttonConfig.fields.map(field => {
+        const selected = field.id === activeButtonId;
+        return (
+          <Chip
+            key={field.id}
+            size="small"
+            label={translations[field.id] ?? field.id}
+            clickable
+            color={selected ? 'primary' : 'default'}
+            variant={selected ? 'filled' : 'outlined'}
+            onClick={() => onChange(field.id)}
+          />
+        );
+      })}
+    </Stack>
   );
 };
 

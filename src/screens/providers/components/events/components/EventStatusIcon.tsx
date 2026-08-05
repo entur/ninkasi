@@ -14,23 +14,23 @@ const baseSx: SxProps<Theme> = { width: 22, height: 22 };
 const EventStatusIcon = ({ state }: Props) => {
   switch (state) {
     case 'OK':
-      return <CheckCircleIcon sx={{ ...baseSx, color: 'green' }} />;
+      return <CheckCircleIcon sx={{ ...baseSx, color: 'success.main' }} />;
     case 'PENDING':
-      return <AccessTimeIcon sx={{ ...baseSx, color: 'orange' }} />;
+      return <AccessTimeIcon sx={{ ...baseSx, color: 'warning.dark' }} />;
     case 'STARTED':
-      return <SettingsIcon sx={{ ...baseSx, color: '#2274b5' }} />;
+      return <SettingsIcon sx={{ ...baseSx, color: 'info.main' }} />;
     case 'FAILED':
-      return <ErrorIcon sx={{ ...baseSx, color: 'red' }} />;
+      return <ErrorIcon sx={{ ...baseSx, color: 'error.main' }} />;
     case 'CANCELLED':
-      return <ErrorIcon sx={{ ...baseSx, color: 'orange' }} />;
+      return <ErrorIcon sx={{ ...baseSx, color: 'warning.dark' }} />;
     case 'DUPLICATE':
-      return <ErrorIcon sx={{ ...baseSx, color: 'red' }} />;
+      return <ErrorIcon sx={{ ...baseSx, color: 'error.main' }} />;
     case 'IGNORED':
-      return <AccessTimeIcon sx={{ ...baseSx, color: 'black' }} />;
+      return <AccessTimeIcon sx={{ ...baseSx, color: 'text.primary' }} />;
     case 'TIMEOUT':
-      return <HelpIcon sx={{ ...baseSx, color: 'red' }} />;
+      return <HelpIcon sx={{ ...baseSx, color: 'error.main' }} />;
     default:
-      return <HelpIcon sx={{ ...baseSx, color: 'grey' }} />;
+      return <HelpIcon sx={{ ...baseSx, color: 'text.disabled' }} />;
   }
 };
 
