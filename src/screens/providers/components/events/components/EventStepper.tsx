@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Box, Tooltip } from '@mui/material';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import { Box, Collapse, Tooltip } from '@mui/material';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { formatDistanceToNow, format, formatDuration } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 import * as duration from 'duration-fns';
@@ -311,6 +311,8 @@ const EventStepper = ({
     <Box
       role="button"
       tabIndex={0}
+      aria-expanded={expanded}
+      aria-label={`${listItem.fileName || actionTranslations.filename.undefined}: import details`}
       key={'event' + listItem.chouetteJobId}
       sx={{
         width: '100%',
@@ -368,7 +370,7 @@ const EventStepper = ({
           {listItem.fileName || actionTranslations.filename.undefined}
         </Box>
         <Box component="span" sx={{ display: 'flex', flexShrink: 0 }} aria-hidden="true">
-          {!expanded ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+          {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </Box>
       </Box>
       {/* Steps stay on one line and run past the right margin when the pipeline
@@ -384,7 +386,7 @@ const EventStepper = ({
       >
         {bullets}
       </Box>
-      {expanded && (
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
         <Box
           sx={{
             display: 'flex',
@@ -429,7 +431,7 @@ const EventStepper = ({
             {listItem.username}
           </Box>
         </Box>
-      )}
+      </Collapse>
     </Box>
   );
 };
