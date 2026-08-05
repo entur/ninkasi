@@ -31,11 +31,16 @@ export const EventsView = ({ providerId, provider, providers }: Props) => {
   const hideAntuValidationSteps = false;
   const hideFlexDataImport = false;
 
+  // No horizontal padding here: the tab panel rendering this already applies p: 3.
   return (
-    <Stack direction="column" spacing={2} sx={{ p: 2 }}>
-      <Box>
-        <UploadAndValidation providerId={providerId} hideFlexDataImport={hideFlexDataImport} />
-      </Box>
+    <Stack direction="column" spacing={1.5} sx={{ pt: 1, pb: 2 }}>
+      {/* Only when it renders something: UploadAndValidation is null without a
+          providerId, and an empty wrapper still takes a Stack spacing slot. */}
+      {providerId && (
+        <Box>
+          <UploadAndValidation providerId={providerId} hideFlexDataImport={hideFlexDataImport} />
+        </Box>
+      )}
       <Box>
         <ConnectedEventDetails
           providerId={providerId}

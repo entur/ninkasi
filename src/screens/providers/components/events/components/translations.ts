@@ -6,6 +6,8 @@
 const translations = {
   page: 'Page: ',
   no_status: 'No result with applied filter',
+  no_events_at_all: 'No import events recorded yet',
+  no_events_matching_filter: 'No events match the current filters',
   started: 'Started',
   ended: 'Ended',
   duration: 'Duration: ',

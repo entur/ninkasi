@@ -1,5 +1,16 @@
-import { useMemo, useState } from 'react';
-import { Box, FormControlLabel, Pagination, Stack, Switch, Typography } from '@mui/material';
+import { useEffect, useMemo, useState } from 'react';
+import {
+  Box,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+  Stack,
+  Switch,
+  Typography,
+} from '@mui/material';
 
 import EventStepper from './EventStepper';
 import FilterButtonTray from './FilterButtonTray';
@@ -18,16 +29,17 @@ interface Props {
   provider?: Provider;
 }
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
+const DEFAULT_PAGE_SIZE = 10;
+const PAGE_SIZE_STORAGE_KEY = 'ninkasi.events.pageSize';
 
-const getPaginationMap = (statusList: TimetableJobEvent[] = []): TimetableJobEvent[][] => {
-  const map: TimetableJobEvent[][] = [];
-  if (statusList && statusList.length) {
-    for (let i = 0, j = statusList.length; i < j; i += PAGE_SIZE) {
-      map.push(statusList.slice(i, i + PAGE_SIZE));
-    }
+const readStoredPageSize = (): number => {
+  try {
+    const stored = Number(window.localStorage.getItem(PAGE_SIZE_STORAGE_KEY));
+    return PAGE_SIZE_OPTIONS.includes(stored) ? stored : DEFAULT_PAGE_SIZE;
+  } catch {
+    return DEFAULT_PAGE_SIZE;
   }
-  return map;
 };
 
 const filterDataSource = (
@@ -70,6 +82,7 @@ const EventDetails = ({
   provider,
 }: Props) => {
   const [activePageIndex, setActivePageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(readStoredPageSize);
   const [endStateFilter, setEndStateFilter] = useState('ALL');
   const [dateFilter, setDateFilter] = useState('LAST_WEEK');
   const [onlyNewDeliveryFilter, setOnlyNewDeliveryFilter] = useState(false);
@@ -79,11 +92,36 @@ const EventDetails = ({
     [dataSource, dateFilter, endStateFilter, onlyNewDeliveryFilter]
   );
 
-  const paginationMap = useMemo(() => getPaginationMap(filteredSource), [filteredSource]);
-  const page = paginationMap[activePageIndex - 1];
+  const pageCount = Math.max(1, Math.ceil(filteredSource.length / pageSize));
+
+  // The 5s poll can shrink the list under us; without this the view would fall
+  // through to the "no status" empty state while results still exist.
+  useEffect(() => {
+    setActivePageIndex(current => Math.min(current, pageCount));
+  }, [pageCount]);
+
+  const currentPageIndex = Math.min(activePageIndex, pageCount);
+  const firstItemIndex = (currentPageIndex - 1) * pageSize;
+  const page = filteredSource.slice(firstItemIndex, firstItemIndex + pageSize);
+
+  const handlePageSizeChange = (nextSize: number) => {
+    setPageSize(nextSize);
+    // Keep the first currently visible event in view instead of jumping to page 1.
+    setActivePageIndex(Math.floor(firstItemIndex / nextSize) + 1);
+    try {
+      window.localStorage.setItem(PAGE_SIZE_STORAGE_KEY, String(nextSize));
+    } catch {
+      // Storage unavailable (private mode); page size just won't persist.
+    }
+  };
 
   const filters = (
-    <Stack direction="column">
+    <Stack
+      direction="row"
+      spacing={3}
+      useFlexGap
+      sx={{ alignItems: 'center', flexWrap: 'wrap', mt: 0, mb: 3 }}
+    >
       <FilterButtonTray
         label="Status"
         activeButtonId={endStateFilter}
@@ -108,39 +146,80 @@ const EventDetails = ({
         translationKey="filterButton"
       />
 
-      <Box sx={{ ml: 2 }}>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={onlyNewDeliveryFilter}
-              onChange={e => {
-                setOnlyNewDeliveryFilter(e.target.checked);
-                setActivePageIndex(1);
-              }}
-            />
-          }
-          label={translations.filter_direct_delivery}
-        />
-      </Box>
+      <FormControlLabel
+        sx={{ mb: 0, mr: 0 }}
+        control={
+          <Switch
+            size="small"
+            checked={onlyNewDeliveryFilter}
+            onChange={e => {
+              setOnlyNewDeliveryFilter(e.target.checked);
+              setActivePageIndex(1);
+            }}
+          />
+        }
+        label={translations.filter_direct_delivery}
+      />
     </Stack>
   );
 
-  if (page && page.length && paginationMap) {
+  const pageSizeSelect = (
+    <FormControl size="small" sx={{ mb: 0, minWidth: 120 }}>
+      <InputLabel id="events-page-size-label">Per page</InputLabel>
+      <Select
+        labelId="events-page-size-label"
+        label="Per page"
+        value={pageSize}
+        onChange={event => handlePageSizeChange(Number(event.target.value))}
+      >
+        {PAGE_SIZE_OPTIONS.map(size => (
+          <MenuItem key={size} value={size}>
+            {size}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+
+  const paginationControls = (
+    <Pagination
+      count={pageCount}
+      page={currentPageIndex}
+      onChange={(_, value) => setActivePageIndex(value)}
+      color="primary"
+    />
+  );
+
+  if (page.length) {
     return (
       <Box>
-        <Box sx={{ width: '100%', mb: '2rem' }}>{filters}</Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-          <Pagination
-            count={Math.ceil(filteredSource.length / PAGE_SIZE)}
-            page={activePageIndex}
-            onChange={(_, value) => setActivePageIndex(value)}
-            color="primary"
-          />
+        {filters}
+        {/* 1fr auto 1fr keeps the pager dead centre regardless of how wide the
+            count and the page-size select are. */}
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: '1fr auto 1fr' },
+            alignItems: 'center',
+            rowGap: 1,
+            mb: 2,
+          }}
+        >
+          <Typography variant="body2" color="text.secondary">
+            {`Showing ${firstItemIndex + 1}–${firstItemIndex + page.length} of ${
+              filteredSource.length
+            }`}
+          </Typography>
+          {paginationControls}
+          <Box sx={{ justifySelf: { sm: 'end' } }}>{pageSizeSelect}</Box>
         </Box>
-        <Box>
-          {page.map((listItem, index) => {
+        <Box sx={{ borderTop: '1px solid', borderColor: 'divider', mb: 2 }}>
+          {page.map(listItem => {
             const eventGroup: Record<string, { states: typeof listItem.events; endState: string }> =
               {};
+            // Keyed on identity, not list position: the 5s poll replaces the whole
+            // array, and a position-based key remounts rows and drops expanded state.
+            const rowKey = `${listItem.chouetteJobId}-${listItem.firstEvent}`;
 
             listItem.events.forEach(event => {
               if (!eventGroup[event.action]) {
@@ -152,17 +231,15 @@ const EventDetails = ({
 
             return (
               <Box
-                key={'jobstatus-' + listItem.chouetteJobId + '-' + index}
+                key={`jobstatus-${rowKey}`}
                 sx={{
-                  mb: '20px',
-                  border: '1px solid #eee',
-                  p: '10px',
-                  overflowY: 'auto',
-                  height: '100%',
+                  borderBottom: '1px solid',
+                  borderColor: 'divider',
+                  '&:last-of-type': { borderBottom: 'none' },
                 }}
               >
                 <EventStepper
-                  key={'event-group-' + listItem.chouetteJobId + '-' + index}
+                  key={`event-group-${rowKey}`}
                   groups={eventGroup}
                   listItem={listItem}
                   hideIgnoredExportNetexBlocks={hideIgnoredExportNetexBlocks}
@@ -176,6 +253,9 @@ const EventDetails = ({
             );
           })}
         </Box>
+        {pageCount > 1 && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>{paginationControls}</Box>
+        )}
       </Box>
     );
   }
@@ -187,11 +267,17 @@ const EventDetails = ({
         sx={{
           mb: '20px',
           mt: '20px',
-          border: '1px solid #eee',
+          border: '1px solid',
+          borderColor: 'divider',
+          borderRadius: 1,
           p: '40px',
         }}
       >
-        <Typography sx={{ fontWeight: 600 }}>{translations.no_status}</Typography>
+        <Typography sx={{ fontWeight: 600 }}>
+          {dataSource && dataSource.length
+            ? translations.no_events_matching_filter
+            : translations.no_events_at_all}
+        </Typography>
       </Box>
     </Box>
   );
