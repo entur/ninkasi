@@ -400,7 +400,7 @@ const EventStepper = ({
           {listItem.errorCode && (
             <Box>
               <Box component="span" sx={{ fontWeight: 600, mr: '10px', color: 'error.main' }}>
-                {actionTranslations.errorCode[listItem.errorCode]}
+                {actionTranslations.errorCode[listItem.errorCode] ?? listItem.errorCode}
               </Box>
             </Box>
           )}

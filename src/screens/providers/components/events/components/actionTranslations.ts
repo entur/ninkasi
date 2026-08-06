@@ -80,6 +80,8 @@ const translations: ActionTranslations = {
       'The exported dataset is empty (no active timetable data found)',
     ERROR_VALIDATION_NO_DATA:
       'There is no data to validate. Check the status of the latest data import',
+    ERROR_VALIDATION_INCOMPLETE:
+      'Not all files in the dataset could be validated. Retry the import',
   },
   filterButton: {
     ALL_TIME: 'Unlimited',
