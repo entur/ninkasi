@@ -14,6 +14,8 @@
  *
  */
 
+// biome-ignore-all lint/suspicious/noArrayIndexKey: selection state is keyed by row index
+
 import type { KeyboardEvent, MouseEvent } from 'react';
 import { format } from 'date-fns';
 import { Box } from '@mui/material';

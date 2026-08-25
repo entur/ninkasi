@@ -49,6 +49,7 @@ const SuppliersContainer = () => {
   const [confirmTitle, setConfirmTitle] = useState('');
   const [confirmInfo, setConfirmInfo] = useState('');
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
   useEffect(() => {
     const id = getQueryVariable('id');
     (dispatch(fetchAllProviders(getToken)) as unknown as Promise<unknown>).then(() => {
@@ -56,7 +57,6 @@ const SuppliersContainer = () => {
         dispatch(selectActiveSupplier(Number(id), getToken));
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const selectSupplier = (value: number) => {

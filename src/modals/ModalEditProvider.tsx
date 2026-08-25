@@ -122,9 +122,9 @@ const ModalEditProvider = ({
   const [form, setForm] = useState<ProviderForm>(getEmptyForm());
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
   useEffect(() => {
     dispatch(fetchTransportModes(getToken));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

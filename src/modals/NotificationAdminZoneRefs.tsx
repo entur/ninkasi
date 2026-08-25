@@ -76,7 +76,7 @@ const NotificationAdminZoneRefs = ({
         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 2 }}>
           <Box component="select" multiple ref={adminRefsRef} sx={{ width: '100%', fontSize: 12 }}>
             {administrativeZoneRefs.map((ref: string, idx: number) => (
-              <option key={'entity-' + idx}>
+              <option key={ref}>
                 {ref} - {administrativeZones.find((az: any) => az.id === ref)?.name}{' '}
               </option>
             ))}

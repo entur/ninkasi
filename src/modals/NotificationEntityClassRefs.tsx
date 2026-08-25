@@ -78,7 +78,7 @@ const NotificationEntityClassRefs = ({
           sx={{ width: '100%', fontSize: 12, flex: 2 }}
         >
           {entityClassRefs.map((ref: string, idx: number) => (
-            <option key={'entity-' + idx}>{ref} </option>
+            <option key={ref}>{ref} </option>
           ))}
         </Box>
         <IconButton

@@ -63,13 +63,13 @@ const EntityTypesView = () => {
   }, [dispatch, getToken]);
 
   // Close create/edit modals on successful operation (status.error === null).
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally re-runs only on status
   useEffect(() => {
     if (status && status.error === null && (isCreateModalOpen || isEditModalOpen)) {
       setIsCreateModalOpen(false);
       setIsEditModalOpen(false);
     }
     // Only react to status changes — modal-open flags are read for guard only.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   const handleOpenDeleteConfirmationDialog = (entityType: any) => {

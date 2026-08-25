@@ -14,7 +14,7 @@
  *
  */
 
-import { Warning, Error, CheckCircle } from '@mui/icons-material';
+import { Warning, Error as ErrorIcon, CheckCircle } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import { ExportStatus } from 'actions/formatUtils';
 
@@ -29,7 +29,7 @@ const getIcon = (type?: string) => {
   const successColor = 'green';
 
   if (type === ExportStatus.ERROR) {
-    return <Error sx={{ height: 20, width: 20 }} color={errorColor as any} />;
+    return <ErrorIcon sx={{ height: 20, width: 20 }} color={errorColor as any} />;
   } else if (type === ExportStatus.WARNING) {
     return <Warning sx={{ height: 20, width: 20 }} color={warningColor as any} />;
   } else if (type === ExportStatus.OK) {

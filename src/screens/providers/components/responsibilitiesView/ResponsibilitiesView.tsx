@@ -73,6 +73,7 @@ const ResponsibilitiesView = () => {
   const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
   const [sortOrder, setSortOrder] = useState<SortOrder>({ column: 'name', asc: true });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally re-runs only on dispatch, getToken
   useEffect(() => {
     dispatch(fetchResponsibilitySets(getToken));
     dispatch(fetchCodeSpaces(getToken));
@@ -83,7 +84,6 @@ const ResponsibilitiesView = () => {
     if (!administrativeZones.length) {
       dispatch(fetchAdministrativeZones(getToken));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, getToken]);
 
   // Close create/edit modals on successful operation (status.error === null).

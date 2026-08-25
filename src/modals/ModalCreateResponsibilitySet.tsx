@@ -211,7 +211,7 @@ const ModalCreateResponsibilitySet = ({
                 ref={rolesRef}
               >
                 {responsibilitySet.roles.map((role, i) => (
-                  <Box component="option" sx={{ overflowX: 'auto' }} key={'role-' + i}>
+                  <Box component="option" sx={{ overflowX: 'auto' }} key={getRoleString(role)}>
                     {getRoleString(role)}
                   </Box>
                 ))}

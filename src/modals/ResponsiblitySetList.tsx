@@ -68,7 +68,7 @@ const ResponsiblitySetList = ({
         ref={responsibilitySetRef}
       >
         {user.responsibilitySetRefs.map((rs, index) => (
-          <option key={'ec-' + index}>{getResponbilityNameById(rs)} </option>
+          <option key={rs}>{getResponbilityNameById(rs)} </option>
         ))}
       </Box>
       <Box sx={{ textAlign: 'left', width: '100%' }}>

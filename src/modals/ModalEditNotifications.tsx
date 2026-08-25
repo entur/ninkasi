@@ -14,6 +14,8 @@
  *
  */
 
+// biome-ignore-all lint/suspicious/noArrayIndexKey: the child takes the same index as a prop
+
 import { useEffect, useState } from 'react';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
@@ -52,9 +54,9 @@ const ModalEditNotifications = ({
 
   const [indexExpanded, setIndexExpanded] = useState<number | null>(null);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
   useEffect(() => {
     dispatch(OrganizationRegisterActions.getUserNotifications(user.username, getToken));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleExpandItem = (index: number, value: boolean) => {

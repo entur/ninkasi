@@ -224,6 +224,7 @@ const SupplierTabWrapper = () => {
   }, [dispatch, getToken]);
 
   // componentDidMount equivalent — runs once with initial setup.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
   useEffect(() => {
     const queryTab = getQueryVariable('tab');
     const queryId = getQueryVariable('id');
@@ -257,7 +258,6 @@ const SupplierTabWrapper = () => {
         dispatch(fetchAllProviderStatus(getToken));
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // componentDidUpdate(prevProps) equivalent for activeId change.
@@ -295,7 +295,7 @@ const SupplierTabWrapper = () => {
     return null;
   }
 
-  let tabsToRender;
+  let tabsToRender: React.ReactNode;
 
   if (displayAllSuppliers) {
     const currentValue = getTabValueFromIndex(currentTabIndex, true);

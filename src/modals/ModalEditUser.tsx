@@ -98,6 +98,7 @@ const ModalEditUser = ({
   const [originalUsername, setOriginalUsername] = useState('');
   const emailIsTaken = false;
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
   useEffect(() => {
     setUser({
       ...emptyUser,
@@ -109,7 +110,6 @@ const ModalEditUser = ({
       personalAccount: userProp?.personalAccount || false,
     });
     setOriginalUsername(userProp?.username ?? '');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleOnClose = () => {

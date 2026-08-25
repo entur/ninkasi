@@ -52,7 +52,7 @@ const TransportModesPopover = ({
         {allTransportModes.map((transportMode, i) => {
           const checked = transportModes.indexOf(transportMode) > -1;
           return (
-            <MenuItem key={'action-' + i} sx={{ fontSize: 12, minHeight: 18 }}>
+            <MenuItem key={transportMode} sx={{ fontSize: 12, minHeight: 18 }}>
               <FormControlLabel
                 control={
                   <Checkbox

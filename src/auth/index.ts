@@ -40,6 +40,6 @@ export const useAuth = () => {
   if ((window as any).config?.defaultAuthMethod === 'local') {
     return localAuth;
   }
-  // eslint-disable-next-line react-hooks/rules-of-hooks -- auth method is fixed at app start; hook order stays stable per session
+  // biome-ignore lint/correctness/useHookAtTopLevel: auth method is fixed at app start, so hook order stays stable per session
   return useOidcAuth();
 };

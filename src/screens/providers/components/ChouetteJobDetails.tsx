@@ -14,6 +14,8 @@
  *
  */
 
+// biome-ignore-all lint/suspicious/noArrayIndexKey: pagination buttons are identified by page number
+
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
@@ -345,7 +347,7 @@ const ChouetteJobDetails = () => {
                 const isError = job.status === 'ABORTED' || job.status === 'CANCELED';
 
                 return (
-                  <TableRow key={'ch-job-' + index}>
+                  <TableRow key={job.id}>
                     <TableCell sx={{ py: 1, px: 1 }}>
                       <ChouetteLink id={job.id} action={job.action} referential={job.referential}>
                         {job.id}
@@ -365,7 +367,6 @@ const ChouetteJobDetails = () => {
                       job.status === 'SCHEDULED' ||
                       job.status === 'RESCHEDULED' ? (
                         <Button
-                          key={'btn-delete-' + index}
                           onClick={() => handleCancelChouetteJob(job.id)}
                           size="small"
                           color="error"

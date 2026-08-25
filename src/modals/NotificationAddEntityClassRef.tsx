@@ -42,11 +42,11 @@ const NotificationAddEntityClassRef = ({ index }: NotificationAddEntityClassRefP
     });
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
   useEffect(() => {
     if (entityType) {
       getEntityClassificationsForType(entityType);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleAdd = () => {

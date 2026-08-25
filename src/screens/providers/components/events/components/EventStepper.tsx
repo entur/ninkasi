@@ -303,7 +303,7 @@ const EventStepper = ({
 
         return (
           <Box
-            key={'bullet-' + index}
+            key={group}
             sx={{
               display: 'flex',
               flexDirection: 'column',

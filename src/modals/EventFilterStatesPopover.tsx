@@ -78,7 +78,7 @@ const EventFilterStatesPopover = ({
           const checked = states.indexOf(state) > -1;
 
           return (
-            <MenuItem key={'state-' + i} sx={{ fontSize: 12, minHeight: 18 }}>
+            <MenuItem key={state} sx={{ fontSize: 12, minHeight: 18 }}>
               <FormControlLabel
                 control={
                   <Checkbox

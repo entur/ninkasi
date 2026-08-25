@@ -142,7 +142,7 @@ const NotificationEventFilter = ({ notification, index }: NotificationEventFilte
             value={notification.eventFilter.type ?? ''}
           >
             {eventFilterTypes.map((eft: string, i: number) => (
-              <MenuItem key={'filter-' + i} value={eft}>
+              <MenuItem key={eft} value={eft}>
                 {eft}
               </MenuItem>
             ))}
@@ -158,7 +158,7 @@ const NotificationEventFilter = ({ notification, index }: NotificationEventFilte
             value={notification.eventFilter.jobDomain ?? ''}
           >
             {jobDomains.map((domain: string, i: number) => (
-              <MenuItem key={'domain-' + i} value={domain}>
+              <MenuItem key={domain} value={domain}>
                 {domain}
               </MenuItem>
             ))}

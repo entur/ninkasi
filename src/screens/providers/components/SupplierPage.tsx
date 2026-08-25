@@ -32,11 +32,11 @@ const SupplierPage = () => {
   const shouldUpdate = useAppSelector(state => state.UtilsReducer.shouldUpdateProvider);
   const providers = useAppSelector(state => state.SuppliersReducer.data);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
   useEffect(() => {
     if (id) {
       dispatch(fetchProvider({ id, getToken }));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClose = () => {

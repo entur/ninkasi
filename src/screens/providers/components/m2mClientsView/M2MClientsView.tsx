@@ -106,12 +106,12 @@ const M2MClientsView = () => {
     dispatch(fetchResponsibilitySets(getToken));
   }, [dispatch, getToken]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally re-runs only on status
   useEffect(() => {
     if (status && status.error === null && (isCreateModalOpen || isEditModalOpen)) {
       setIsCreateModalOpen(false);
       setIsEditModalOpen(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   const handleCreateClient = (client: any) => {
@@ -258,7 +258,7 @@ const M2MClientsView = () => {
                       {client.responsibilitySets && client.responsibilitySets.length > 0 ? (
                         <Box component="ul" sx={{ m: 0, pl: 2.5, listStyleType: 'disc' }}>
                           {client.responsibilitySets.map((resp: any, i: number) => (
-                            <li key={`${client.privateCode}-resp-${i}`}>{resp.name}</li>
+                            <li key={`${client.privateCode}-${resp.name}`}>{resp.name}</li>
                           ))}
                         </Box>
                       ) : (

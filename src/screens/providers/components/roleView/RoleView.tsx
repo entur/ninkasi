@@ -60,12 +60,12 @@ const RoleView = () => {
     dispatch(fetchRoles(getToken));
   }, [dispatch, getToken]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally re-runs only on status
   useEffect(() => {
     if (status && status.error === null && (isCreateModalOpen || isEditModalOpen)) {
       setIsCreateModalOpen(false);
       setIsEditModalOpen(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   const handleEditRole = (role: any) => {

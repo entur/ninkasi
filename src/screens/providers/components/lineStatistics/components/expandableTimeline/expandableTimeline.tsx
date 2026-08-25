@@ -1,3 +1,5 @@
+// biome-ignore-all lint/suspicious/noArrayIndexKey: periods are positional within a line
+
 import type React from 'react';
 import type { CSSProperties } from 'react';
 import { Box, Collapse, Typography } from '@mui/material';

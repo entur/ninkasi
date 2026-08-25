@@ -14,6 +14,8 @@
  *
  */
 
+// biome-ignore-all lint/suspicious/noArrayIndexKey: notifications carry no stable id
+
 import { useEffect, useState } from 'react';
 import { Edit, Delete, Notifications, Add } from '@mui/icons-material';
 import {
@@ -76,12 +78,12 @@ const UserView = () => {
   }, [dispatch, getToken]);
 
   // Mirror componentWillReceiveProps: close create/edit modals on success.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally re-runs only on status
   useEffect(() => {
     if (status && status.error === null && (isCreateModalOpen || isEditModalOpen)) {
       setIsCreateModalOpen(false);
       setIsEditModalOpen(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   const handleCreateUser = (user: any) => {

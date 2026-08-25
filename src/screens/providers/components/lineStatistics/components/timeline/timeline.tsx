@@ -1,3 +1,5 @@
+// biome-ignore-all lint/suspicious/noArrayIndexKey: periods are positional within a timetable
+
 import { useId } from 'react';
 import { Box, Typography } from '@mui/material';
 import type { PeriodValidity, Timetable } from '../../lineStatistics.types';

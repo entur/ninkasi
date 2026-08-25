@@ -71,6 +71,7 @@ const ModalEditM2MClient = ({
   const [addRespAnchorEl, setAddRespAnchorEl] = useState<HTMLElement | null>(null);
   const [orgIdValid, setOrgIdValid] = useState(true);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
   useEffect(() => {
     setClient({
       name: clientProp.name || '',
@@ -79,7 +80,6 @@ const ModalEditM2MClient = ({
       issuer: clientProp.issuer || 'Internal',
       responsibilitySetRefs: clientProp.responsibilitySetRefs || [],
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleOnClose = () => {

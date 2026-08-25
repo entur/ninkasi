@@ -71,6 +71,7 @@ const NewRoleAssignment = ({
   const [resultChip, setResultChip] = useState<{ value: string; name: string } | null>(null);
   const [negate, setNegate] = useState(false);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
   useEffect(() => {
     // If editing and there's a responsibleAreaRef, set the chip
     if (isEditing && newRole.responsibleAreaRef && administrativeZones) {
@@ -82,7 +83,6 @@ const NewRoleAssignment = ({
         });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getEntityClassificationsForType = (entityType: string) => {
@@ -171,7 +171,7 @@ const NewRoleAssignment = ({
           sx={{ width: '100%', fontSize: 12 }}
         >
           {newRole.entityClassificationAssignments.map((ref: any, idx: number) => (
-            <option key={'entity-' + idx}>
+            <option key={getEntityClassificationRefString(ref.entityClassificationRef, ref.allow)}>
               {getEntityClassificationRefString(ref.entityClassificationRef, ref.allow)}
             </option>
           ))}

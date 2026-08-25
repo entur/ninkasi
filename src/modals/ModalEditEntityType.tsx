@@ -197,7 +197,7 @@ const ModalEditEntityType = ({
               size={Math.max(3, (entityType.classifications || []).length)}
             >
               {(entityType.classifications || []).map((et, index) => (
-                <option key={'ec-' + index}>{getClassificationTitle(et)}</option>
+                <option key={getClassificationTitle(et)}>{getClassificationTitle(et)}</option>
               ))}
             </Box>
             <Box sx={{ textAlign: 'left', width: '100%' }}>

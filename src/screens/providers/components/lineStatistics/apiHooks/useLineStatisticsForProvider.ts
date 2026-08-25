@@ -123,7 +123,7 @@ const mapLines = (lineStatisticsResponse: LineStatisticsForProviderResponse) => 
         },
       };
     })
-    .reduce((result, obj) => ({ ...result, ...obj }), {});
+    .reduce((result, obj) => Object.assign(result, obj), {});
 
   return {
     startDateLine,

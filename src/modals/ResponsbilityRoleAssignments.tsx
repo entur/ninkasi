@@ -74,7 +74,12 @@ const ResponsbilityRoleAssignments = ({
               >
                 {role.entityClassificationAssignments &&
                   role.entityClassificationAssignments.map((assignment: any, i: number) => (
-                    <li key={i}>
+                    <li
+                      key={getEntityClassificationRefString(
+                        assignment.entityClassificationRef,
+                        assignment.allow
+                      )}
+                    >
                       {getEntityClassificationRefString(
                         assignment.entityClassificationRef,
                         assignment.allow

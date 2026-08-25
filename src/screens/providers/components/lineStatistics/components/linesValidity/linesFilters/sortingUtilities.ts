@@ -11,8 +11,6 @@ export const sortLines = (
 
   if (linesNumbersForSelectedValidityCategory) {
     switch (sorting) {
-      default:
-        return linesNumbersForSelectedValidityCategory;
       case 1:
         return [...linesNumbersForSelectedValidityCategory].sort((a, b) => {
           return a.localeCompare(b, 'nb', {
@@ -39,6 +37,8 @@ export const sortLines = (
           lineNumber => linesNumbersForSelectedValidityCategory.indexOf(lineNumber) !== -1
         );
       }
+      default:
+        return linesNumbersForSelectedValidityCategory;
     }
   }
 };

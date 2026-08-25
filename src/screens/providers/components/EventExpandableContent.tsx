@@ -58,14 +58,14 @@ const EventExpandableContent = ({ events, correlationId }: Props) => {
             const isError =
               event.state === 'TIMEOUT' || event.state === 'ERROR' || event.state === 'FAILED';
             return (
-              <Grid container spacing={2} key={'action-' + index}>
-                <Grid size={{ md: 4 }} key={'event-action-' + index}>
+              <Grid container spacing={2} key={`${event.action}-${event.date}`}>
+                <Grid size={{ md: 4 }}>
                   <Typography>{event.action}</Typography>
                 </Grid>
-                <Grid size={{ md: 4 }} key={'event-date-' + index}>
+                <Grid size={{ md: 4 }}>
                   <Typography>{event.date}</Typography>
                 </Grid>
-                <Grid size={{ md: 4 }} key={'event-state-' + index}>
+                <Grid size={{ md: 4 }}>
                   <Typography sx={{ color: isError ? 'error.main' : 'success.main' }}>
                     {event.state}
                   </Typography>

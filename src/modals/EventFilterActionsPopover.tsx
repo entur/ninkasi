@@ -81,7 +81,7 @@ const EventFilterActionsPopover = ({
             const checked = allActionsChecked ? true : actions.indexOf(action) > -1;
 
             return (
-              <MenuItem key={'action-' + i} sx={{ fontSize: 12, minHeight: 18 }}>
+              <MenuItem key={action} sx={{ fontSize: 12, minHeight: 18 }}>
                 <FormControlLabel
                   control={
                     <Checkbox
