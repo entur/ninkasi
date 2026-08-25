@@ -210,11 +210,17 @@ const ModalCreateResponsibilitySet = ({
                 sx={{ fontSize: 10, minWidth: '100%' }}
                 ref={rolesRef}
               >
-                {responsibilitySet.roles.map((role, i) => (
-                  <Box component="option" sx={{ overflowX: 'auto' }} key={getRoleString(role)}>
-                    {getRoleString(role)}
-                  </Box>
-                ))}
+                {responsibilitySet.roles.map((role, i) => {
+                  // The index is part of the key because the remove and edit handlers map
+                  // options.selectedIndex back into this array: two roles can serialise
+                  // identically, and a duplicate key would shift that mapping.
+                  const optionKey = `${i}-${getRoleString(role)}`;
+                  return (
+                    <Box component="option" sx={{ overflowX: 'auto' }} key={optionKey}>
+                      {getRoleString(role)}
+                    </Box>
+                  );
+                })}
               </Box>
             </Box>
             <Box>

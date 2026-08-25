@@ -73,7 +73,7 @@ const ResponsibilitiesView = () => {
   const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
   const [sortOrder, setSortOrder] = useState<SortOrder>({ column: 'name', asc: true });
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally re-runs only on dispatch, getToken
+  // biome-ignore lint/correctness/useExhaustiveDependencies: administrativeZones.length is a load-once guard; adding it re-dispatches the other five fetches when the zones response lands
   useEffect(() => {
     dispatch(fetchResponsibilitySets(getToken));
     dispatch(fetchCodeSpaces(getToken));

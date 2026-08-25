@@ -347,7 +347,7 @@ const ChouetteJobDetails = () => {
                 const isError = job.status === 'ABORTED' || job.status === 'CANCELED';
 
                 return (
-                  <TableRow key={job.id}>
+                  <TableRow key={`${job.referential}-${job.id}`}>
                     <TableCell sx={{ py: 1, px: 1 }}>
                       <ChouetteLink id={job.id} action={job.action} referential={job.referential}>
                         {job.id}

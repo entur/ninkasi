@@ -71,7 +71,7 @@ const ModalEditM2MClient = ({
   const [addRespAnchorEl, setAddRespAnchorEl] = useState<HTMLElement | null>(null);
   const [orgIdValid, setOrgIdValid] = useState(true);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: seeds the form from clientProp once; the modal is remounted per open, so props are always fresh
   useEffect(() => {
     setClient({
       name: clientProp.name || '',

@@ -63,7 +63,7 @@ const EntityTypesView = () => {
   }, [dispatch, getToken]);
 
   // Close create/edit modals on successful operation (status.error === null).
-  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally re-runs only on status
+  // biome-ignore lint/correctness/useExhaustiveDependencies: isCreateModalOpen and isEditModalOpen are read as guards; adding them would close the modal the moment it opens on an already-successful status
   useEffect(() => {
     if (status && status.error === null && (isCreateModalOpen || isEditModalOpen)) {
       setIsCreateModalOpen(false);

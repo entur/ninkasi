@@ -32,7 +32,7 @@ const SupplierPage = () => {
   const shouldUpdate = useAppSelector(state => state.UtilsReducer.shouldUpdateProvider);
   const providers = useAppSelector(state => state.SuppliersReducer.data);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: fetches the provider for the id present at mount; selection changes dispatch fetchProvider separately
   useEffect(() => {
     if (id) {
       dispatch(fetchProvider({ id, getToken }));

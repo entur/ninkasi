@@ -54,7 +54,7 @@ const ModalEditNotifications = ({
 
   const [indexExpanded, setIndexExpanded] = useState<number | null>(null);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: seeds the form for the current user once; the modal is remounted per open
   useEffect(() => {
     dispatch(OrganizationRegisterActions.getUserNotifications(user.username, getToken));
   }, []);

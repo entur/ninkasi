@@ -49,7 +49,6 @@ const SuppliersContainer = () => {
   const [confirmTitle, setConfirmTitle] = useState('');
   const [confirmInfo, setConfirmInfo] = useState('');
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
   useEffect(() => {
     const id = getQueryVariable('id');
     (dispatch(fetchAllProviders(getToken)) as unknown as Promise<unknown>).then(() => {
@@ -57,7 +56,7 @@ const SuppliersContainer = () => {
         dispatch(selectActiveSupplier(Number(id), getToken));
       }
     });
-  }, []);
+  }, [dispatch, getToken]);
 
   const selectSupplier = (value: number) => {
     if (value > 0) {

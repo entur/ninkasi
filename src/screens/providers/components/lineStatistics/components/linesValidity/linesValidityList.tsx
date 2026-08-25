@@ -24,6 +24,17 @@ import { LinesValidityHeader } from './linesValidityHeader';
 import { useLineStatisticsPublicLineDetails } from '../../apiHooks/useLineStatisticsPublicLineDetails';
 import { LoadingLineStatistics } from '../loadingLineStatistics';
 
+const DayTypesValidity = ({ lines }: { lines: LineStatistics['linesMap'][string]['lines'] }) => (
+  <>
+    {lines.map(l => (
+      <Timeline
+        key={`Timeline${l.timetables.map(t => t.objectId).join('-')}`}
+        timetables={l.timetables}
+      />
+    ))}
+  </>
+);
+
 interface Props {
   providerId: string;
   defaultSelectedValidity: Validity;
@@ -73,17 +84,6 @@ export const LinesValidityList = ({
     }
   }, [mergedLineStatistics, selectedValidity, sorting]);
 
-  const DayTypesValidity = ({ lineNumber }: { lineNumber: string }) => (
-    <>
-      {mergedLineStatistics.linesMap[lineNumber].lines.map(l => (
-        <Timeline
-          key={`Timeline${l.timetables.map(t => t.objectId).join('-')}`}
-          timetables={l.timetables}
-        />
-      ))}
-    </>
-  );
-
   return (
     <>
       <Typography variant="h3">{listTitle}</Typography>
@@ -130,7 +130,10 @@ export const LinesValidityList = ({
                 }
               >
                 <LoadingLineStatistics isLoading={loading} lineStatisticsError={error}>
-                  <DayTypesValidity lineNumber={lineNumber} key={`DayTypesValidity${randomId}`} />
+                  <DayTypesValidity
+                    lines={mergedLineStatistics.linesMap[lineNumber].lines}
+                    key={`DayTypesValidity${randomId}`}
+                  />
                 </LoadingLineStatistics>
               </ExpandableTimeline>
             ))}

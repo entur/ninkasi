@@ -98,7 +98,7 @@ const ModalEditUser = ({
   const [originalUsername, setOriginalUsername] = useState('');
   const emailIsTaken = false;
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: seeds the form from userProp once; the modal is remounted per open, so props are always fresh
   useEffect(() => {
     setUser({
       ...emptyUser,

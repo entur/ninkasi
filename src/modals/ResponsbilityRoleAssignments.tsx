@@ -73,19 +73,15 @@ const ResponsbilityRoleAssignments = ({
                 }}
               >
                 {role.entityClassificationAssignments &&
-                  role.entityClassificationAssignments.map((assignment: any, i: number) => (
-                    <li
-                      key={getEntityClassificationRefString(
-                        assignment.entityClassificationRef,
-                        assignment.allow
-                      )}
-                    >
-                      {getEntityClassificationRefString(
-                        assignment.entityClassificationRef,
-                        assignment.allow
-                      )}
-                    </li>
-                  ))}
+                  role.entityClassificationAssignments.map((assignment: any, i: number) => {
+                    const label = getEntityClassificationRefString(
+                      assignment.entityClassificationRef,
+                      assignment.allow
+                    );
+                    // Indexed because the same assignment can appear twice in one role.
+                    const itemKey = `${i}-${label}`;
+                    return <li key={itemKey}>{label}</li>;
+                  })}
               </Box>
             </Box>
           </Box>

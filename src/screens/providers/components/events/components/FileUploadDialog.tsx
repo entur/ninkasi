@@ -87,7 +87,7 @@ export const FileUploadDialog = ({
             }}
           >
             {acceptedFiles.map((file, index) => (
-              <option key={file.name}>{file.name}</option>
+              <option key={`${file.name}-${file.size}-${file.lastModified}`}>{file.name}</option>
             ))}
           </Box>
         </Box>

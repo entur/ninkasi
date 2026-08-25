@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { buildRowKeys } from 'screens/providers/components/events/components/EventDetails';
+import { buildRowKeys } from 'screens/providers/components/events/components/eventRowKeys';
 
 describe('buildRowKeys', () => {
   it('gives rows without job id or filename distinct keys', () => {

@@ -55,4 +55,5 @@ export const EventsView = ({ providerId, provider, providers }: Props) => {
   );
 };
 
+// biome-ignore lint/style/useComponentExportOnlyModules: EventsView above is a component; biome does not resolve the re-export
 export default EventsView;

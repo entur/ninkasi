@@ -224,7 +224,7 @@ const SupplierTabWrapper = () => {
   }, [dispatch, getToken]);
 
   // componentDidMount equivalent — runs once with initial setup.
-  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: reads the tab and id query params once at mount
   useEffect(() => {
     const queryTab = getQueryVariable('tab');
     const queryId = getQueryVariable('id');

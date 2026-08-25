@@ -42,7 +42,7 @@ const NotificationAddEntityClassRef = ({ index }: NotificationAddEntityClassRefP
     });
   };
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: entityType is omitted deliberately, but see FIXME: the classification list stays empty if entityTypes has not loaded by mount
   useEffect(() => {
     if (entityType) {
       getEntityClassificationsForType(entityType);

@@ -106,7 +106,7 @@ const M2MClientsView = () => {
     dispatch(fetchResponsibilitySets(getToken));
   }, [dispatch, getToken]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally re-runs only on status
+  // biome-ignore lint/correctness/useExhaustiveDependencies: isCreateModalOpen and isEditModalOpen are read as guards; adding them would close the modal the moment it opens on an already-successful status
   useEffect(() => {
     if (status && status.error === null && (isCreateModalOpen || isEditModalOpen)) {
       setIsCreateModalOpen(false);
@@ -258,7 +258,7 @@ const M2MClientsView = () => {
                       {client.responsibilitySets && client.responsibilitySets.length > 0 ? (
                         <Box component="ul" sx={{ m: 0, pl: 2.5, listStyleType: 'disc' }}>
                           {client.responsibilitySets.map((resp: any, i: number) => (
-                            <li key={`${client.privateCode}-${resp.name}`}>{resp.name}</li>
+                            <li key={resp.id}>{resp.name}</li>
                           ))}
                         </Box>
                       ) : (

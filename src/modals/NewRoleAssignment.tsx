@@ -71,7 +71,7 @@ const NewRoleAssignment = ({
   const [resultChip, setResultChip] = useState<{ value: string; name: string } | null>(null);
   const [negate, setNegate] = useState(false);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: administrativeZones is omitted deliberately, but see FIXME: the chip stays empty if the zones have not loaded by mount
   useEffect(() => {
     // If editing and there's a responsibleAreaRef, set the chip
     if (isEditing && newRole.responsibleAreaRef && administrativeZones) {
@@ -170,11 +170,14 @@ const NewRoleAssignment = ({
           multiple
           sx={{ width: '100%', fontSize: 12 }}
         >
-          {newRole.entityClassificationAssignments.map((ref: any, idx: number) => (
-            <option key={getEntityClassificationRefString(ref.entityClassificationRef, ref.allow)}>
-              {getEntityClassificationRefString(ref.entityClassificationRef, ref.allow)}
-            </option>
-          ))}
+          {newRole.entityClassificationAssignments.map((ref: any, idx: number) => {
+            const label = getEntityClassificationRefString(ref.entityClassificationRef, ref.allow);
+            // The index is part of the key because handleRemoveEntity maps
+            // options.selectedIndex back into this array, and two assignments can
+            // serialise identically.
+            const optionKey = `${idx}-${label}`;
+            return <option key={optionKey}>{label}</option>;
+          })}
         </Box>
         <IconButton
           aria-label="Remove entity classification"

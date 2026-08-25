@@ -14,7 +14,7 @@
  *
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -98,10 +98,6 @@ const ModalEditResponsibilitySet = ({
     ...responsibilitySetProp,
   });
   const [newRole, setNewRole] = useState<NewRoleType>(emptyNewRole);
-
-  useEffect(() => {
-    setResponsibilitySet(responsibilitySetProp);
-  }, [responsibilitySetProp]);
 
   const handleAddRole = () => {
     let updatedRoles: any[];
@@ -258,11 +254,17 @@ const ModalEditResponsibilitySet = ({
                 sx={{ fontSize: 10, minWidth: '100%' }}
                 ref={rolesRef}
               >
-                {responsibilitySet.roles.map((role, i) => (
-                  <Box component="option" sx={{ overflowX: 'auto' }} key={getRoleString(role)}>
-                    {getRoleString(role)}
-                  </Box>
-                ))}
+                {responsibilitySet.roles.map((role, i) => {
+                  // The index is part of the key because the remove and edit handlers map
+                  // options.selectedIndex back into this array: two roles can serialise
+                  // identically, and a duplicate key would shift that mapping.
+                  const optionKey = `${i}-${getRoleString(role)}`;
+                  return (
+                    <Box component="option" sx={{ overflowX: 'auto' }} key={optionKey}>
+                      {getRoleString(role)}
+                    </Box>
+                  );
+                })}
               </Box>
             </Box>
             <Box>

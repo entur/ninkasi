@@ -1,6 +1,10 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.5.10/schema.json",
-  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
   "files": {
     "includes": [
       "**",
@@ -41,16 +45,21 @@
         "noUnusedImports": "off",
         "noUnusedVariables": "off",
         "useExhaustiveDependencies": "warn",
-        "useHookAtTopLevel": "warn",
-        "useParseIntRadix": "warn"
+        "useHookAtTopLevel": "error",
+        "useParseIntRadix": "warn",
+        "noNestedComponentDefinitions": "error",
+        "noReactPropAssignments": "error"
       },
-      "performance": { "noAccumulatingSpread": "warn" },
+      "performance": {
+        "noAccumulatingSpread": "warn"
+      },
       "style": {
         "noNonNullAssertion": "off",
         "useExponentiationOperator": "off",
         "useImportType": "off",
         "useNodejsImportProtocol": "off",
-        "useTemplate": "off"
+        "useTemplate": "off",
+        "useComponentExportOnlyModules": "error"
       },
       "suspicious": {
         "noArrayIndexKey": "warn",
@@ -58,6 +67,10 @@
         "noImplicitAnyLet": "warn",
         "noShadowRestrictedNames": "warn",
         "useDefaultSwitchClauseLast": "warn"
+      },
+      "nursery": {
+        "useReactCompiler": "off",
+        "noComponentHookFactories": "error"
       }
     }
   },
@@ -76,6 +89,20 @@
   },
   "assist": {
     "enabled": true,
-    "actions": { "source": { "organizeImports": "off" } }
-  }
+    "actions": {
+      "source": {
+        "organizeImports": "off"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["package.json"],
+      "json": {
+        "formatter": {
+          "expand": "always"
+        }
+      }
+    }
+  ]
 }
