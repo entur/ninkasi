@@ -15,8 +15,8 @@ Ninkasi is a private admin GUI for managing Entur's data pipeline and inspecting
 - **Routing:** React Router v5
 - **Authentication:** OIDC via react-oidc-context
 - **Styling:** Sass/SCSS with Emotion
-- **Testing:** Vitest with React Testing Library
-- **Code Quality:** ESLint, Prettier, Husky, lint-staged
+- **Testing:** Vitest (pure-function specs; React Testing Library is not installed)
+- **Code Quality:** Biome (lint + format), Husky, lint-staged
 - **Deployment:** Firebase Hosting
 
 ## Project Structure
@@ -144,14 +144,14 @@ npm run preview
 ### Testing
 
 - Test files colocated in `tests/` directory
-- Use Vitest and React Testing Library
+- Use Vitest
 - Run tests before committing
 
 ## Important Conventions
 
 ### Code Style
 
-- Use ESLint and Prettier (enforced via Husky pre-commit hooks)
+- Use Biome for linting and formatting (enforced via Husky pre-commit hooks)
 - TypeScript preferred for new files
 - Functional components with hooks
 - Minimal comments (code should be self-documenting)
