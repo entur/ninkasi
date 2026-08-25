@@ -7,8 +7,8 @@ export interface TimetableEvent {
 }
 
 export interface TimetableJobEvent {
-  chouetteJobId: string;
-  providerId: number;
+  chouetteJobId?: string;
+  providerId?: number;
   firstEvent: number;
   lastEvent: number;
   durationMillis: number;

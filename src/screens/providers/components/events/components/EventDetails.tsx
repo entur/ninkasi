@@ -42,6 +42,25 @@ const readStoredPageSize = (): number => {
   }
 };
 
+// Rows are keyed on identity, not list position: the 5s poll replaces the whole
+// array, and a position-based key remounts rows and drops expanded state. Some
+// rows carry no job id and no filename, and two of those can share a millisecond
+// timestamp, so the occurrence counter is what makes the key unique at all.
+export const buildRowKeys = (events: TimetableJobEvent[]): string[] => {
+  const seen = new Map<string, number>();
+  return events.map(event => {
+    const base = [
+      event.chouetteJobId,
+      event.providerId ?? event.provider?.id,
+      event.fileName,
+      event.firstEvent,
+    ].join('-');
+    const occurrence = (seen.get(base) ?? 0) + 1;
+    seen.set(base, occurrence);
+    return `${base}#${occurrence}`;
+  });
+};
+
 const filterDataSource = (
   dataSource: TimetableJobEvent[] | undefined,
   dateFilter: string,
@@ -103,6 +122,7 @@ const EventDetails = ({
   const currentPageIndex = Math.min(activePageIndex, pageCount);
   const firstItemIndex = (currentPageIndex - 1) * pageSize;
   const page = filteredSource.slice(firstItemIndex, firstItemIndex + pageSize);
+  const rowKeys = buildRowKeys(page);
 
   const handlePageSizeChange = (nextSize: number) => {
     setPageSize(nextSize);
@@ -214,12 +234,10 @@ const EventDetails = ({
           <Box sx={{ justifySelf: { sm: 'end' } }}>{pageSizeSelect}</Box>
         </Box>
         <Box sx={{ borderTop: '1px solid', borderColor: 'divider', mb: 2 }}>
-          {page.map(listItem => {
+          {page.map((listItem, rowIndex) => {
             const eventGroup: Record<string, { states: typeof listItem.events; endState: string }> =
               {};
-            // Keyed on identity, not list position: the 5s poll replaces the whole
-            // array, and a position-based key remounts rows and drops expanded state.
-            const rowKey = `${listItem.chouetteJobId}-${listItem.firstEvent}`;
+            const rowKey = rowKeys[rowIndex];
 
             listItem.events.forEach(event => {
               if (!eventGroup[event.action]) {
@@ -239,7 +257,6 @@ const EventDetails = ({
                 }}
               >
                 <EventStepper
-                  key={`event-group-${rowKey}`}
                   groups={eventGroup}
                   listItem={listItem}
                   hideIgnoredExportNetexBlocks={hideIgnoredExportNetexBlocks}

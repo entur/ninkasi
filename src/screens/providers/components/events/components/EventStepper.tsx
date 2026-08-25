@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Collapse, Tooltip } from '@mui/material';
+import { Box, Button, Collapse, Popover, Tooltip } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { formatDistanceToNow, format, formatDuration } from 'date-fns';
@@ -16,6 +16,7 @@ import {
   ANTU_VALIDATION_EVENTS,
   NETEX_BLOCKS_EVENTS,
 } from './pipelineConfig';
+import { useSelectProvider } from '../hooks/useSelectProvider';
 import type { TimetableJobEvent, TimetableEvent } from '../types/event';
 import type { Provider, ProviderMap } from '../types/provider';
 
@@ -35,6 +36,27 @@ const truncate = {
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
+} as const;
+
+const providerNameSx = {
+  fontSize: '0.9em',
+  fontWeight: 700,
+  width: PROVIDER_COLUMN_WIDTH,
+  flexShrink: 0,
+  ...truncate,
+} as const;
+
+const buttonReset = {
+  fontFamily: 'inherit',
+  lineHeight: 'inherit',
+  letterSpacing: 'inherit',
+  p: 0,
+  m: 0,
+  border: 0,
+  bgcolor: 'transparent',
+  color: 'inherit',
+  textAlign: 'left',
+  cursor: 'pointer',
 } as const;
 
 type EventGroups = Record<string, EventGroupValue>;
@@ -144,8 +166,11 @@ const EventStepper = ({
   selectedProvider,
 }: Props) => {
   const [expanded, setExpanded] = useState(false);
+  const [providerAnchor, setProviderAnchor] = useState<HTMLElement | null>(null);
+  const selectProvider = useSelectProvider();
 
-  const provider = selectedProvider || getProviderForImport(providers, listItem);
+  const itemProvider = getProviderForImport(providers, listItem);
+  const provider = selectedProvider || itemProvider;
   const pipelineSteps = getPipelineSteps(provider);
 
   let formattedGroups: FormattedGroups = addUnlistedStates(groups, pipelineSteps);
@@ -298,12 +323,8 @@ const EventStepper = ({
 
   const bullets = renderBullets();
 
-  const showProviderName = providers && !providerId;
-  const itemProviderId = listItem.providerId ?? listItem.provider?.id;
-  const providerName =
-    showProviderName && itemProviderId !== undefined && providers[String(itemProviderId)]
-      ? providers[String(itemProviderId)].name
-      : null;
+  const showProviderName = Boolean(providers) && !providerId;
+  const selectableProvider = showProviderName ? itemProvider : null;
 
   const handleToggle = () => setExpanded(prev => !prev);
 
@@ -313,7 +334,6 @@ const EventStepper = ({
       tabIndex={0}
       aria-expanded={expanded}
       aria-label={`${listItem.fileName || actionTranslations.filename.undefined}: import details`}
-      key={'event' + listItem.chouetteJobId}
       sx={{
         width: '100%',
         py: 1,
@@ -327,6 +347,9 @@ const EventStepper = ({
       }}
       onClick={handleToggle}
       onKeyDown={e => {
+        // Keys from nested controls must keep their own activation: preventDefault
+        // here would cancel the click the browser fires for them.
+        if (e.target !== e.currentTarget) return;
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           handleToggle();
@@ -351,21 +374,51 @@ const EventStepper = ({
             {formatDistanceToNow(new Date(listItem.firstEvent), { locale: enGB })}
           </Box>
         </Tooltip>
-        {showProviderName && (
-          <Tooltip title={providerName ?? ''}>
-            <Box
-              sx={{
-                fontSize: '0.9em',
-                fontWeight: 700,
-                width: PROVIDER_COLUMN_WIDTH,
-                flexShrink: 0,
-                ...truncate,
-              }}
-            >
-              {providerName}
-            </Box>
-          </Tooltip>
-        )}
+        {showProviderName &&
+          (selectableProvider ? (
+            <>
+              <Tooltip title={selectableProvider.name}>
+                <Box
+                  component="button"
+                  type="button"
+                  onClick={event => {
+                    event.stopPropagation();
+                    setProviderAnchor(event.currentTarget);
+                  }}
+                  sx={{
+                    ...buttonReset,
+                    ...providerNameSx,
+                    '&:hover': { textDecoration: 'underline' },
+                  }}
+                >
+                  {selectableProvider.name}
+                </Box>
+              </Tooltip>
+              <Popover
+                open={Boolean(providerAnchor)}
+                anchorEl={providerAnchor}
+                onClose={() => setProviderAnchor(null)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                // Portalled content bubbles up the React tree, so without these the
+                // row underneath would react to clicks and keys inside the popover.
+                onClick={event => event.stopPropagation()}
+                onKeyDown={event => event.stopPropagation()}
+              >
+                <Button
+                  size="small"
+                  onClick={() => {
+                    setProviderAnchor(null);
+                    selectProvider(selectableProvider.id);
+                  }}
+                  sx={{ m: 0.5, textTransform: 'none' }}
+                >
+                  {`Show only ${selectableProvider.name}`}
+                </Button>
+              </Popover>
+            </>
+          ) : (
+            <Box sx={providerNameSx} />
+          ))}
         <Box sx={{ fontSize: '0.9em', fontWeight: 600, flex: 1, overflowWrap: 'anywhere' }}>
           {listItem.fileName || actionTranslations.filename.undefined}
         </Box>
