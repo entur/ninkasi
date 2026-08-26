@@ -6,57 +6,6 @@ Ninkasi is a private admin GUI for managing Entur's data pipeline and inspecting
 
 **Production URL:** https://ninkasi.dev.entur.org/
 
-## Tech Stack
-
-- **Frontend Framework:** React 19 with TypeScript/JSX
-- **Build Tool:** Vite 7
-- **State Management:** Redux with redux-thunk and redux-logger
-- **UI Library:** Material-UI (MUI) v7
-- **Routing:** React Router v5
-- **Authentication:** OIDC via react-oidc-context
-- **Styling:** Sass/SCSS with Emotion
-- **Testing:** Vitest (pure-function specs; React Testing Library is not installed)
-- **Code Quality:** Biome (lint + format), Husky, lint-staged
-- **Deployment:** Firebase Hosting
-
-## Project Structure
-
-```
-ninkasi/
-├── src/
-│   ├── actions/           # Redux actions and API calls
-│   │   ├── AppActions.js
-│   │   ├── OrganizationRegisterActions.js
-│   │   ├── SuppliersActions.js
-│   │   └── UserActions.js
-│   ├── reducers/          # Redux reducers
-│   │   ├── AppReducer.js
-│   │   ├── OrganizationReducer.js
-│   │   ├── SuppliersReducer.js
-│   │   └── UserReducer.js
-│   ├── app/               # Main app components
-│   │   ├── App.tsx        # Root component
-│   │   ├── Router.jsx     # Route definitions
-│   │   └── components/    # Shared components
-│   ├── screens/           # Feature screens
-│   │   ├── common/
-│   │   ├── organization/
-│   │   └── providers/
-│   ├── modals/            # Modal dialogs
-│   ├── auth/              # Authentication setup
-│   ├── config/            # Environment configuration
-│   ├── contexts/          # React contexts
-│   ├── models/            # Data models
-│   ├── sass/              # Global styles
-│   ├── static/            # Static assets
-│   ├── store/             # Redux store setup
-│   ├── types/             # TypeScript definitions
-│   └── utils/             # Utility functions
-├── tests/                 # Test files
-├── public/                # Static files
-└── build/                 # Production build output
-```
-
 ## Key Architecture Patterns
 
 ### State Management
@@ -89,34 +38,6 @@ ninkasi/
 - Material-UI components with custom theming
 - Functional components with hooks
 - Redux connected components using `connect()` HOC
-
-## Development Commands
-
-```bash
-# Install dependencies
-npm install
-
-# Start dev server (port 9000)
-npm run start
-
-# Build for production
-npm run build
-
-# Run tests
-npm run test
-
-# Lint code
-npm run lint
-
-# Format code
-npm run format
-
-# Check formatting
-npm run check
-
-# Preview production build
-npm run preview
-```
 
 ## Working with the Codebase
 
@@ -202,11 +123,6 @@ The app integrates with multiple Entur backend services:
 - **Map Admin:** Geographic data management
 - **Events API:** Event tracking and monitoring
 - **Marduk:** Data pipeline service (inferred from MardukReducer)
-
-## Node.js Requirements
-
-- Node.js v18 or newer required
-- npm for package management
 
 ## Tips for AI Assistants
 
