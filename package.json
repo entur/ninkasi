@@ -7,7 +7,6 @@
     "start": "vite",
     "build": "tsc -b && vite build",
     "test": "vitest",
-    "prod": "BABEL_ENV=production NODE_ENV=production node server.js",
     "lint": "biome lint .",
     "format": "biome check --write .",
     "check": "biome check .",
