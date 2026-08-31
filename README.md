@@ -18,7 +18,7 @@ export), and inspect delivery and processing history.
 
 ```bash
 npm ci
-npm run start          # vite dev server on :9000
+npm run start          # vite dev server on :3000
 ```
 
 Node 24 is required; the workflows in `.github/workflows` pin the exact patch CI uses.
@@ -66,7 +66,7 @@ via `useConfig()` or `window.config`.
 
 | Script            | What it does                                            |
 | ----------------- | ------------------------------------------------------- |
-| `npm run start`   | Vite dev server with HMR on port 9000                   |
+| `npm run start`   | Vite dev server with HMR on port 3000                   |
 | `npm run build`   | Type-check (`tsc -b`) then production build to `build/` |
 | `npm run preview` | Serve the production build locally                      |
 | `npm test`        | Vitest watch                                            |
@@ -133,3 +133,8 @@ Workflows in `.github/workflows/`:
 
 `firebase.json` carves out a no-store cache rule for `/config.json` (above the
 catch-all `*.json` 1-year rule) so runtime config changes propagate immediately.
+
+`firebase.json` also holds the CSP allowlist, as a `Content-Security-Policy-Report-Only`
+header shared by all three environments. Adding an upstream host means adding it
+there too; nothing enforces the policy, so a missing host only shows up as a
+violation report in Sentry.
