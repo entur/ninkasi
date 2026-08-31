@@ -30,6 +30,7 @@ import {
 } from '@mui/material';
 import ResponsiblitySetList from './ResponsiblitySetList';
 import UserRespSetPopover from './UserRespSetPopover';
+import { validateUsername } from 'utils/usernameValidation';
 
 interface ContactDetails {
   email: string;
@@ -79,13 +80,7 @@ const emptyUser: User = {
   personalAccount: true,
 };
 
-const validateBy = (type: 'EMAIL' | 'USERNAME', value: string) => {
-  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const usernameRe = /^[a-zA-Z-. ]*$/;
-  if (type === 'EMAIL') return emailRe.test(value);
-  if (type === 'USERNAME') return usernameRe.test(value);
-  return false;
-};
+const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
 const ModalCreateUser = ({
   isModalOpen,
@@ -99,7 +94,7 @@ const ModalCreateUser = ({
   const [user, setUser] = useState<User>(emptyUser);
   const [isAddingResponsibilitySet, setIsAddingResponsibilitySet] = useState(false);
   const [addRespAnchorEl, setAddRespAnchorEl] = useState<HTMLElement | null>(null);
-  const [usernameValid, setUsernameValid] = useState(false);
+  const [usernameBlurred, setUsernameBlurred] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
   const [emailIsTaken, setEmailIsTaken] = useState(false);
 
@@ -107,21 +102,15 @@ const ModalCreateUser = ({
     setUser(emptyUser);
     setIsAddingResponsibilitySet(false);
     setAddRespAnchorEl(null);
-    setUsernameValid(false);
+    setUsernameBlurred(false);
     setEmailValid(false);
     setEmailIsTaken(false);
     handleCloseModal();
   };
 
-  const handleChangeUsername = (value: string) => {
-    const isValid = validateBy('USERNAME', value);
-    setUser(prev => ({ ...prev, username: value }));
-    setUsernameValid(isValid);
-  };
-
   const handleChangeEmail = (value: string) => {
     const taken = takenEmails.indexOf(value.toLowerCase()) > -1;
-    const isValid = validateBy('EMAIL', value);
+    const isValid = isValidEmail(value);
     setEmailValid(isValid);
     setEmailIsTaken(taken);
     setUser(prev => ({
@@ -166,11 +155,13 @@ const ModalCreateUser = ({
     }
   };
 
-  const invalidPrivateCode = takenUsernames.indexOf(user.username) > -1;
+  const usernameIsTaken = takenUsernames.indexOf(user.username) > -1;
+  const shownUsernameError = validateUsername(user.username, usernameBlurred);
+  const usernameHelperText = usernameIsTaken ? 'Username already taken' : shownUsernameError;
   const disableCreate =
-    invalidPrivateCode ||
+    usernameIsTaken ||
     !isUserRequiredFieldsProvided() ||
-    !usernameValid ||
+    !!validateUsername(user.username, true) ||
     !emailValid ||
     emailIsTaken;
 
@@ -226,13 +217,10 @@ const ModalCreateUser = ({
             placeholder="Username"
             label="Username"
             value={user.username}
-            error={!usernameValid && !!user.username}
-            helperText={
-              !usernameValid && user.username
-                ? 'Username can only include alphanumerics, hyphens and dot'
-                : ''
-            }
-            onChange={e => handleChangeUsername(e.target.value)}
+            error={!!usernameHelperText}
+            helperText={usernameHelperText ?? ''}
+            onChange={e => setUser({ ...user, username: e.target.value })}
+            onBlur={() => setUsernameBlurred(true)}
             fullWidth
             margin="normal"
             required
