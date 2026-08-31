@@ -24,7 +24,7 @@ npm install
 npm run start          # vite dev server on :9000
 ```
 
-Node 24 is required (the GitHub Actions workflow pins `node-version: 24.16.0`).
+Node 24 is required; the workflows in `.github/workflows` pin the exact patch CI uses.
 
 By default the dev server reads `public/config.json`, which points at local
 mock services. To point a local dev server at the dev environment APIs instead:
