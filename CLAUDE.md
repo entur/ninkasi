@@ -93,14 +93,16 @@ Ninkasi is a private admin GUI for managing Entur's data pipeline and inspecting
 ## Common Pitfalls
 
 1. **Mixed JS/TS codebase:** Some files are `.jsx`, others `.tsx`. Maintain consistency within each file.
-2. **Router version:** Using React Router v5 (not v6), so use older API patterns.
+2. **Router version:** React Router v7, so `<Routes>` with `element={...}` rather
+   than v5 `<Switch>`/`component={...}`.
 3. **Authentication:** Always check `auth.isAuthenticated` before rendering protected content.
-4. **Build vs Dev:** Vite dev server runs on port 9000; production builds to `build/` directory.
+4. **Build vs Dev:** Vite dev server runs on port 3000; production builds to `build/` directory.
 5. **Path aliases:** Use configured aliases (`@`, `app`, `config`, etc.) instead of relative imports.
 
 ## Security Considerations
 
-- Content Security Policy configured in `firebase.json`
+- Content Security Policy configured in `firebase.json` — report-only, so it
+  enforces nothing; violations are posted to Sentry
 - OIDC authentication required for all access
 - Admin role check via `isRouteDataAdmin`
 - Security headers (X-Frame-Options, X-Content-Type-Options, etc.)
