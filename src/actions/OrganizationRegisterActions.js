@@ -75,6 +75,12 @@ export const sortBy = (list, key) => {
 
 const trim = data => JSON.parse(JSON.stringify(data).replace(/"\s+|\s+"/g, '"'));
 
+const withServerMessage = (fallback, error) => {
+  const data = error?.response?.data;
+  const detail = typeof data === 'string' ? data.trim().slice(0, 200) : '';
+  return detail ? `${fallback}: ${detail}` : fallback;
+};
+
 /* ------------------------------------------------------------------ */
 /* Plain side-effecting thunks                                        */
 /* ------------------------------------------------------------------ */
@@ -183,7 +189,12 @@ const createUser = (user, getToken) => async dispatch => {
     })
     .catch(error => {
       dispatch(failedCreatingUser(error));
-      dispatch(addNotification({ message: 'Error creating user', level: 'error' }));
+      dispatch(
+        addNotification({
+          message: withServerMessage('Error creating user', error),
+          level: 'error',
+        })
+      );
       console.log('Error creating user', error);
     });
 };
@@ -201,7 +212,12 @@ const updateUser = (user, getToken) => async dispatch => {
     })
     .catch(error => {
       dispatch(failedCreatingUser(error));
-      dispatch(addNotification({ message: 'Error updating user', level: 'error' }));
+      dispatch(
+        addNotification({
+          message: withServerMessage('Error updating user', error),
+          level: 'error',
+        })
+      );
       console.log('Error updating user', error);
     });
 };

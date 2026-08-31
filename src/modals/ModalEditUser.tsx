@@ -61,7 +61,6 @@ interface ModalEditUserProps {
   handleCloseModal: () => void;
   handleSubmit: (user: User) => void;
   user: any;
-  takenUsernames: string[];
   organizations: Organization[];
   responsibilities: Responsibility[];
 }
@@ -74,13 +73,7 @@ const emptyUser: User = {
   personalAccount: false,
 };
 
-const validateBy = (type: 'EMAIL' | 'USERNAME', value: string) => {
-  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const usernameRe = /^[a-zA-Z-. ]*$/;
-  if (type === 'EMAIL') return emailRe.test(value);
-  if (type === 'USERNAME') return usernameRe.test(value);
-  return false;
-};
+const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
 const ModalEditUser = ({
   isModalOpen,
@@ -93,7 +86,6 @@ const ModalEditUser = ({
   const [user, setUser] = useState<User>(emptyUser);
   const [isAddingResponsibilitySet, setIsAddingResponsibilitySet] = useState(false);
   const [addRespAnchorEl, setAddRespAnchorEl] = useState<HTMLElement | null>(null);
-  const [usernameValid, setUsernameValid] = useState(true);
   const [emailValid, setEmailValid] = useState(true);
   const [originalUsername, setOriginalUsername] = useState('');
   const emailIsTaken = false;
@@ -116,20 +108,13 @@ const ModalEditUser = ({
     setUser(emptyUser);
     setIsAddingResponsibilitySet(false);
     setAddRespAnchorEl(null);
-    setUsernameValid(true);
     setEmailValid(true);
     setOriginalUsername('');
     handleCloseModal();
   };
 
-  const handleChangeUsername = (value: string) => {
-    const isValid = validateBy('USERNAME', value);
-    setUser(prev => ({ ...prev, username: value }));
-    setUsernameValid(isValid);
-  };
-
   const handleChangeEmail = (value: string) => {
-    const isValid = validateBy('EMAIL', value);
+    const isValid = isValidEmail(value);
     setEmailValid(isValid);
     setUser(prev => ({
       ...prev,
@@ -161,7 +146,7 @@ const ModalEditUser = ({
     }
   };
 
-  const disableUpdate = !usernameValid || !emailValid;
+  const disableUpdate = !emailValid;
 
   const actions = [
     <Button key="cancel" variant="outlined" onClick={handleOnClose}>
@@ -216,11 +201,6 @@ const ModalEditUser = ({
             placeholder="Username"
             label="Username"
             value={user.username}
-            error={!usernameValid}
-            helperText={
-              !usernameValid ? 'Username can only include alphanumerics, hyphens and dot' : ''
-            }
-            onChange={e => handleChangeUsername(e.target.value)}
             fullWidth
             margin="normal"
           />

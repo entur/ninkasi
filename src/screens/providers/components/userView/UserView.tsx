@@ -297,7 +297,6 @@ const UserView = () => {
         <ModalEditUser
           isModalOpen={isEditModalOpen}
           handleCloseModal={() => setIsEditModalOpen(false)}
-          takenUsernames={users.map((user: any) => user.username)}
           organizations={organizations}
           user={activeUser}
           responsibilities={responsibilities}
