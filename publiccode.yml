@@ -1,0 +1,55 @@
+publiccodeYmlVersion: "0.5.0"
+
+name: Ninkasi
+url: https://github.com/entur/ninkasi
+landingURL: https://github.com/entur/ninkasi
+
+platforms:
+  - web
+
+categories:
+  - it-management
+  - workflow-management
+  - data-collection
+
+developmentStatus: stable
+softwareType: standalone/web
+
+organisation:
+  name: Entur AS
+  uri: https://entur.no
+
+usedBy:
+  - Norway (nationwide), Entur
+
+description:
+  en:
+    localisedName: Ninkasi
+    shortDescription: Admin console for the timetable data pipeline.
+    longDescription: >
+      Ninkasi is the React single-page admin console. Staff register providers and organisations, run import,
+      validation, transfer and export operations, and inspect delivery and processing history. Authentication is
+      OpenID Connect.
+    documentation: https://github.com/entur/ninkasi/blob/master/README.md
+    features:
+      - Registration of data providers and organisations
+      - Triggers import, validation, transfer and export
+      - Delivery history and validation reports
+      - User and role administration
+      - OpenID Connect authentication
+
+legal:
+  license: EUPL-1.2
+  mainCopyrightOwner: Entur AS
+
+maintenance:
+  type: internal
+  contacts:
+    - name: Entur Open Data and Journey Planning
+      email: kollektivdata@entur.org
+      affiliation: Entur AS
+
+localisation:
+  localisationReady: false
+  availableLanguages:
+    - en
