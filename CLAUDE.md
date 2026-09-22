@@ -64,7 +64,7 @@ Ninkasi is a private admin GUI for managing Entur's data pipeline and inspecting
 
 ### Testing
 
-- Test files colocated in `tests/` directory
+- Test files live centrally in `src/tests/`
 - Use Vitest
 - Run tests before committing
 
@@ -130,7 +130,7 @@ The app integrates with multiple Entur backend services:
 
 1. **Read before modifying:** Always check existing patterns in similar files
 2. **Minimal changes:** This is a production system; make surgical changes only
-3. **Test before committing:** Run `npm run lint` and `npm run test`
+3. **Test before committing:** Run `npm run lint` and `npm run test:run` (`npm run test` is watch mode)
 4. **Follow conventions:** Match existing code style and patterns
 5. **TypeScript migration:** Prefer TypeScript for new files, but don't force-migrate existing JS
 6. **Redux patterns:** Follow established action/reducer patterns
