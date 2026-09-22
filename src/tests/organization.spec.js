@@ -24,6 +24,14 @@ import {
 import { formatUserNotifications, removeRedundantActions } from 'actions/OrganizationUtils';
 import { assert } from 'chai';
 
+const deepFreeze = value => {
+  if (value && typeof value === 'object') {
+    Object.values(value).forEach(deepFreeze);
+    Object.freeze(value);
+  }
+  return value;
+};
+
 describe('Organization reducer utils', () => {
   it('should change event filter by key', () => {
     const notification1 = {
@@ -217,33 +225,57 @@ describe('Organization reducer utils', () => {
     assert.deepEqual(allActionsWithAsterisk, ['*']);
   });
 
-  it('should format frozen user notifications without mutating them', () => {
-    const jobDomainActions = { TIMETABLE: ['*', 'IMPORT', 'EXPORT'] };
-    const userNotifications = Object.freeze([
-      Object.freeze({
+  it('should not mutate frozen user notifications', () => {
+    const userNotifications = deepFreeze([
+      {
         isNew: true,
-        notificationType: 'EMAIL_BATCH',
-        eventFilter: Object.freeze({
-          type: 'CRUD',
-          administrativeZoneRefs: Object.freeze(['RB:AdministrativeZone:33']),
-        }),
-      }),
-      Object.freeze({
-        isNew: false,
         notificationType: 'EMAIL',
-        eventFilter: Object.freeze({
-          type: 'JOB',
-          jobDomain: 'TIMETABLE',
-          actions: Object.freeze(['IMPORT', 'EXPORT']),
-          administrativeZoneRefs: Object.freeze([]),
-          entityClassificationRefs: Object.freeze([]),
-        }),
-      }),
+        eventFilter: { type: 'JOB', jobDomain: 'TIMETABLE', actions: ['IMPORT'] },
+      },
     ]);
 
-    const formatted = formatUserNotifications(userNotifications, jobDomainActions);
+    formatUserNotifications(userNotifications, { TIMETABLE: ['*', 'IMPORT', 'EXPORT'] });
+
+    assert.isTrue(userNotifications[0].isNew);
+    assert.deepEqual(userNotifications[0].eventFilter.actions, ['IMPORT']);
+  });
+
+  it('should drop isNew and the refs a JOB filter must not send', () => {
+    const userNotifications = deepFreeze([
+      {
+        isNew: true,
+        notificationType: 'EMAIL',
+        eventFilter: {
+          type: 'JOB',
+          jobDomain: 'TIMETABLE',
+          actions: ['IMPORT', 'EXPORT'],
+          administrativeZoneRefs: [],
+          entityClassificationRefs: [],
+        },
+      },
+    ]);
+
+    const formatted = formatUserNotifications(userNotifications, {
+      TIMETABLE: ['*', 'IMPORT', 'EXPORT'],
+    });
 
     assert.deepEqual(formatted, [
+      {
+        notificationType: 'EMAIL',
+        eventFilter: { type: 'JOB', jobDomain: 'TIMETABLE', actions: ['*'] },
+      },
+    ]);
+  });
+
+  it('should default missing CRUD refs to empty arrays', () => {
+    const userNotifications = deepFreeze([
+      {
+        notificationType: 'EMAIL_BATCH',
+        eventFilter: { type: 'CRUD', administrativeZoneRefs: ['RB:AdministrativeZone:33'] },
+      },
+    ]);
+
+    assert.deepEqual(formatUserNotifications(userNotifications, {}), [
       {
         notificationType: 'EMAIL_BATCH',
         eventFilter: {
@@ -252,11 +284,16 @@ describe('Organization reducer utils', () => {
           entityClassificationRefs: [],
         },
       },
-      {
-        notificationType: 'EMAIL',
-        eventFilter: { type: 'JOB', jobDomain: 'TIMETABLE', actions: ['*'] },
-      },
     ]);
-    assert.isTrue(userNotifications[0].isNew);
+  });
+
+  it('should pass through an event filter of unknown type', () => {
+    const userNotifications = deepFreeze([
+      { notificationType: 'EMAIL', eventFilter: { type: 'OTHER', states: ['OK'] } },
+    ]);
+
+    assert.deepEqual(formatUserNotifications(userNotifications, {}), [
+      { notificationType: 'EMAIL', eventFilter: { type: 'OTHER', states: ['OK'] } },
+    ]);
   });
 });
