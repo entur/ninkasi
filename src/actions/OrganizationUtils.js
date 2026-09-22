@@ -33,9 +33,9 @@ export const removeRedundantActions = (actions, jobDomain, jobDomainActions) => 
 
 const formatEventFilter = (eventFilter, jobDomainActions) => {
   if (eventFilter.type === 'JOB') {
-    const { administrativeZoneRefs, entityClassificationRefs, ...jobEventFilter } = eventFilter;
+    const { administrativeZoneRefs, entityClassificationRefs, ...baseEventFilter } = eventFilter;
     return {
-      ...jobEventFilter,
+      ...baseEventFilter,
       actions: removeRedundantActions(eventFilter.actions, eventFilter.jobDomain, jobDomainActions),
     };
   }
