@@ -21,7 +21,7 @@ import {
   addAdminRef,
   removeAdminRef,
 } from 'reducers/OrganizationReducerUtils';
-import { removeRedundantActions } from 'actions/OrganizationUtils';
+import { formatUserNotifications, removeRedundantActions } from 'actions/OrganizationUtils';
 import { assert } from 'chai';
 
 describe('Organization reducer utils', () => {
@@ -215,5 +215,48 @@ describe('Organization reducer utils', () => {
       jobDomainActions
     );
     assert.deepEqual(allActionsWithAsterisk, ['*']);
+  });
+
+  it('should format frozen user notifications without mutating them', () => {
+    const jobDomainActions = { TIMETABLE: ['*', 'IMPORT', 'EXPORT'] };
+    const userNotifications = Object.freeze([
+      Object.freeze({
+        isNew: true,
+        notificationType: 'EMAIL_BATCH',
+        eventFilter: Object.freeze({
+          type: 'CRUD',
+          administrativeZoneRefs: Object.freeze(['RB:AdministrativeZone:33']),
+        }),
+      }),
+      Object.freeze({
+        isNew: false,
+        notificationType: 'EMAIL',
+        eventFilter: Object.freeze({
+          type: 'JOB',
+          jobDomain: 'TIMETABLE',
+          actions: Object.freeze(['IMPORT', 'EXPORT']),
+          administrativeZoneRefs: Object.freeze([]),
+          entityClassificationRefs: Object.freeze([]),
+        }),
+      }),
+    ]);
+
+    const formatted = formatUserNotifications(userNotifications, jobDomainActions);
+
+    assert.deepEqual(formatted, [
+      {
+        notificationType: 'EMAIL_BATCH',
+        eventFilter: {
+          type: 'CRUD',
+          administrativeZoneRefs: ['RB:AdministrativeZone:33'],
+          entityClassificationRefs: [],
+        },
+      },
+      {
+        notificationType: 'EMAIL',
+        eventFilter: { type: 'JOB', jobDomain: 'TIMETABLE', actions: ['*'] },
+      },
+    ]);
+    assert.isTrue(userNotifications[0].isNew);
   });
 });
