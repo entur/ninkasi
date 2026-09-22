@@ -435,32 +435,27 @@ const getUserNotifications = (username, getToken) => async (dispatch, getState) 
 };
 
 const updateUserNotification = (username, getToken) => async (dispatch, getState) => {
-  const state = getState();
-  const jobDomainActions = state.OrganizationReducer.jobDomainActions;
-  const notificationConfiguration = formatUserNotifications(
-    state.OrganizationReducer.userNotifications,
-    jobDomainActions
-  );
-
   const url = `${
     window.config.organisationsBaseUrl
   }users/${username.trim()}/notification_configurations`;
-  return axios
-    .put(url, notificationConfiguration, await getApiConfig(getToken))
-    .then(() => {
-      dispatch(updatedNotificationConfiguration());
-      dispatch(
-        addNotification({ message: 'Notification configuration updated', level: 'success' })
-      );
-    })
-    .catch(() => {
-      dispatch(
-        addNotification({
-          message: 'Unable to save notification configuration',
-          level: 'error',
-        })
-      );
-    });
+
+  try {
+    const state = getState();
+    const notificationConfiguration = formatUserNotifications(
+      state.OrganizationReducer.userNotifications,
+      state.OrganizationReducer.jobDomainActions
+    );
+    await axios.put(url, notificationConfiguration, await getApiConfig(getToken));
+    dispatch(updatedNotificationConfiguration());
+    dispatch(addNotification({ message: 'Notification configuration updated', level: 'success' }));
+  } catch {
+    dispatch(
+      addNotification({
+        message: 'Unable to save notification configuration',
+        level: 'error',
+      })
+    );
+  }
 };
 
 /* ------------------------------------------------------------------ */
