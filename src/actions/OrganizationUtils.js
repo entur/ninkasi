@@ -31,33 +31,28 @@ export const removeRedundantActions = (actions, jobDomain, jobDomainActions) => 
   return actions;
 };
 
-export const formatUserNotifications = (userNotifications, jobDomainActions) => {
-  return userNotifications.map(userNotification => {
-    if (userNotification.isNew) {
-      delete userNotification.isNew;
-    }
+const formatEventFilter = (eventFilter, jobDomainActions) => {
+  if (eventFilter.type === 'JOB') {
+    const { administrativeZoneRefs, entityClassificationRefs, ...jobEventFilter } = eventFilter;
+    return {
+      ...jobEventFilter,
+      actions: removeRedundantActions(eventFilter.actions, eventFilter.jobDomain, jobDomainActions),
+    };
+  }
 
-    if (userNotification.eventFilter.type === 'JOB') {
-      if (userNotification.eventFilter.administrativeZoneRefs) {
-        delete userNotification.eventFilter.administrativeZoneRefs;
-      }
-      if (userNotification.eventFilter.entityClassificationRefs) {
-        delete userNotification.eventFilter.entityClassificationRefs;
-      }
+  if (eventFilter.type === 'CRUD') {
+    return {
+      ...eventFilter,
+      administrativeZoneRefs: eventFilter.administrativeZoneRefs ?? [],
+      entityClassificationRefs: eventFilter.entityClassificationRefs ?? [],
+    };
+  }
 
-      userNotification.eventFilter.actions = removeRedundantActions(
-        userNotification.eventFilter.actions,
-        userNotification.eventFilter.jobDomain,
-        jobDomainActions
-      );
-    } else if (userNotification.eventFilter.type === 'CRUD') {
-      if (!userNotification.eventFilter.administrativeZoneRefs) {
-        userNotification.eventFilter.administrativeZoneRefs = [];
-      }
-      if (!userNotification.eventFilter.entityClassificationRefs) {
-        userNotification.eventFilter.entityClassificationRefs = [];
-      }
-    }
-    return userNotification;
-  });
+  return eventFilter;
 };
+
+export const formatUserNotifications = (userNotifications, jobDomainActions) =>
+  userNotifications.map(({ isNew, ...userNotification }) => ({
+    ...userNotification,
+    eventFilter: formatEventFilter(userNotification.eventFilter, jobDomainActions),
+  }));
