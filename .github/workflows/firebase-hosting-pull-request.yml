@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: 24.21.0
           cache: npm
@@ -19,7 +19,7 @@ jobs:
       - name: Inject dev env config
         run: cp build/config.dev.json build/config.json
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: build
           path: |
