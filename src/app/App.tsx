@@ -17,7 +17,10 @@ const App = () => {
   const auth = useAuth();
   const dispatch = useAppDispatch();
   const isConfigLoaded = useAppSelector(state => state.UtilsReducer.isConfigLoaded);
-  const isAdmin = useAppSelector(state => state.UserContextReducer.isRouteDataAdmin);
+  const { isRouteDataAdmin, isOrganisationAdmin } = useAppSelector(
+    state => state.UserContextReducer
+  );
+  const hasAccess = isRouteDataAdmin || isOrganisationAdmin;
 
   const getToken = useCallback(async () => {
     return auth.user?.access_token ?? '';
@@ -50,7 +53,7 @@ const App = () => {
           <Header />
           <Toolbar />
           <Box component="main">
-            {isAdmin ? (
+            {hasAccess ? (
               <Router />
             ) : (
               <NoAccess

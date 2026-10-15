@@ -111,8 +111,10 @@ and `/netex-validation-reports/report/:codespace/:id` renders one report.
 
 OIDC via [react-oidc-context](https://github.com/authts/react-oidc-context),
 configured against a compatible OIDC provider. Access is gated on the
-`isRouteDataAdmin` role assignment (see `UserContextReducer`); users without the
-role see a `NoAccess` screen.
+`isRouteDataAdmin` or `isOrganisationAdmin` role assignment (see
+`UserContextReducer`); users with neither see a `NoAccess` screen. Users with
+only `isOrganisationAdmin` can reach `/permissions` only; every other route
+redirects there and the menu hides the pipeline entry.
 
 For local development the config switches `defaultAuthMethod` to `local` and
 fetches a token from a mock OAuth2 server at
