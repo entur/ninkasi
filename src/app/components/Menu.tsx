@@ -14,6 +14,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { useAppSelector } from '@/store/hooks';
 import Logo from './Logo';
 
 const DESKTOP_WIDTH = 280;
@@ -31,9 +32,9 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
 }));
 
 const menuItems = [
-  { text: 'Timetable Pipeline', path: '/timetable-pipeline' },
-  { text: 'Permissions', path: '/permissions' },
-];
+  { text: 'Timetable Pipeline', path: '/timetable-pipeline', requires: 'isRouteDataAdmin' },
+  { text: 'Permissions', path: '/permissions', requires: 'isOrganisationAdmin' },
+] as const;
 
 interface MenuProps {
   open: boolean;
@@ -44,6 +45,8 @@ export default function Menu({ open, onClose }: MenuProps) {
   const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const userContext = useAppSelector(state => state.UserContextReducer);
+  const visibleItems = menuItems.filter(({ requires }) => userContext[requires]);
 
   return (
     <StyledDrawer
@@ -69,7 +72,7 @@ export default function Menu({ open, onClose }: MenuProps) {
       <Divider />
 
       <List disablePadding>
-        {menuItems.map(({ text, path }) => (
+        {visibleItems.map(({ text, path }) => (
           <ListItem key={path} disablePadding>
             <ListItemButton
               component={Link}
