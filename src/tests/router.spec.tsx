@@ -12,6 +12,9 @@ vi.mock('screens/organization', () => ({ default: () => <div>organization-screen
 vi.mock('screens/netexValidationReports/ValidationReport', () => ({
   default: () => <div>report-screen</div>,
 }));
+vi.mock('screens/graphControl/GraphControlPage', () => ({
+  default: () => <div>graph-control-screen</div>,
+}));
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -53,5 +56,13 @@ describe('Router access', () => {
 
   it('still gives route data admins the providers screen', () => {
     expect(renderAt('/', { isRouteDataAdmin: true })).toBe('providers-screen');
+  });
+
+  it('gives route data admins the OTP graph control screen', () => {
+    expect(renderAt('/graph-control', { isRouteDataAdmin: true })).toBe('graph-control-screen');
+  });
+
+  it('keeps org-register-only users out of the OTP graph control screen', () => {
+    expect(renderAt('/graph-control', { isOrganisationAdmin: true })).toBe('organization-screen');
   });
 });

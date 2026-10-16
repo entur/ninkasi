@@ -16,10 +16,11 @@
 
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
-import { useAppDispatch } from 'store/hooks';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import { Box, Menu, MenuItem } from '@mui/material';
-import { Warning, ArrowDropDown, KeyboardArrowRight } from '@mui/icons-material';
+import { Box, Divider, ListItemText, Menu, MenuItem } from '@mui/material';
+import { Warning, ArrowDropDown, KeyboardArrowRight, Pause } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import ConfirmDialog from '../../../modals/ConfirmDialog';
 import * as MardukReducer from 'reducers/MardukReducer';
@@ -36,9 +37,15 @@ const {
   cleanFileFilter,
 } = MardukReducer as any;
 
+const PAUSED_HINT = 'The graph builder is paused: the request is deferred until it is resumed';
+
 const AdministrativeActions = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { getToken } = useAccessToken();
+  const graphBuilderPaused = useAppSelector(
+    state => state.GraphControlReducer.status?.builder?.paused ?? false
+  );
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -186,6 +193,7 @@ const AdministrativeActions = () => {
     buildBaseGraph: 'Build new Street Graph with OSM and elevation data',
     buildCandidateGraph: 'Build candidate Transit Graph for all providers',
     buildCandidateBaseGraphOTP: 'Build new candidate Street Graph with OSM and elevation data',
+    graphControl: 'Roll out or pin a graph, pause or resume the graph builder',
     fetchOSM: 'Fetch Open Street Map data',
     cleanFileFilter: 'Clean file filter',
     canceAllJobs: 'Cancel all current chouette jobs',
@@ -215,16 +223,30 @@ const AdministrativeActions = () => {
           <MenuItem
             sx={{ fontSize: '1.1em' }}
             onClick={handleBuildGraph}
-            title={toolTips.buildGraph}
+            title={graphBuilderPaused ? PAUSED_HINT : toolTips.buildGraph}
           >
-            Build Transit Graph
+            {graphBuilderPaused ? (
+              <ListItemText
+                primary="Build Transit Graph"
+                secondary="Graph builder paused: deferred"
+              />
+            ) : (
+              'Build Transit Graph'
+            )}
           </MenuItem>
           <MenuItem
             sx={{ fontSize: '1em' }}
             onClick={handleBuildBaseGraph}
-            title={toolTips.buildBaseGraph}
+            title={graphBuilderPaused ? PAUSED_HINT : toolTips.buildBaseGraph}
           >
-            Build Street Graph
+            {graphBuilderPaused ? (
+              <ListItemText
+                primary="Build Street Graph"
+                secondary="Graph builder paused: deferred"
+              />
+            ) : (
+              'Build Street Graph'
+            )}
           </MenuItem>
           <MenuItem
             sx={{ fontSize: '1em' }}
@@ -239,6 +261,18 @@ const AdministrativeActions = () => {
             title={toolTips.buildCandidateBaseGraphOTP}
           >
             Build Candidate Street Graph
+          </MenuItem>
+          <Divider />
+          <MenuItem
+            sx={{ fontSize: '1em' }}
+            onClick={() => {
+              setGraphPopoverOpen(false);
+              navigate('/graph-control');
+            }}
+            title={toolTips.graphControl}
+          >
+            {graphBuilderPaused && <Pause fontSize="small" sx={{ marginRight: '8px' }} />}
+            OTP graph control…
           </MenuItem>
         </Menu>
         <Button
