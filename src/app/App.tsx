@@ -12,6 +12,7 @@ import Header from './components/header/Header';
 import NoAccess from './components/NoAccess';
 import Router from './Router';
 import NotificationContainer from './components/NotificationContainer';
+import GraphControlBanner from './components/GraphControlBanner';
 
 const App = () => {
   const auth = useAuth();
@@ -52,6 +53,7 @@ const App = () => {
           <NotificationContainer />
           <Header />
           <Toolbar />
+          {isRouteDataAdmin && <GraphControlBanner />}
           <Box component="main">
             {hasAccess ? (
               <Router />
