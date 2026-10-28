@@ -4,11 +4,11 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Copy maintenance mode file
         run: mkdir build && cp public/maintenance.html build/index.html
       - name: Archive maintenance artifact
-        uses: actions/upload-artifact@v7.0.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: maintenance-build
           path: |
@@ -20,7 +20,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@v1.2.10
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@0e0a7ed58ab5d51d1d88138cbdddb58158eaba9c # v1.2.10
     with:
       gcp_project_id: ent-ninkasi-prd
       environment: prd
