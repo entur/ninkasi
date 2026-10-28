@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Providers from 'screens/providers';
 import Organization from 'screens/organization';
 import ValidationReport from 'screens/netexValidationReports/ValidationReport';
+import GraphControlPage from 'screens/graphControl/GraphControlPage';
 import { useAppSelector } from '@/store/hooks';
 
 const Router = () => {
@@ -23,6 +24,7 @@ const Router = () => {
       <Route path="/timetable-admin" element={<Providers />} />
       <Route path="/timetable-pipeline" element={<Providers />} />
       <Route path="/permissions" element={<Organization />} />
+      <Route path="/graph-control" element={<GraphControlPage />} />
       <Route
         path="/netex-validation-reports/report/:codespace/:id"
         element={<ValidationReport />}
