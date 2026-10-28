@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.10/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.2/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -48,7 +48,8 @@
         "useHookAtTopLevel": "error",
         "useParseIntRadix": "warn",
         "noNestedComponentDefinitions": "error",
-        "noReactPropAssignments": "error"
+        "noReactPropAssignments": "error",
+        "noComponentHookFactories": "error"
       },
       "performance": {
         "noAccumulatingSpread": "warn"
@@ -69,8 +70,7 @@
         "useDefaultSwitchClauseLast": "warn"
       },
       "nursery": {
-        "useReactCompiler": "off",
-        "noComponentHookFactories": "error"
+        "useReactCompiler": "off"
       }
     }
   },
@@ -85,6 +85,16 @@
       "quoteStyle": "single",
       "attributePosition": "auto",
       "bracketSpacing": true
+    }
+  },
+  "yaml": {
+    "formatter": {
+      "enabled": false
+    }
+  },
+  "markdown": {
+    "formatter": {
+      "enabled": false
     }
   },
   "assist": {
