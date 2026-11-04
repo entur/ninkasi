@@ -16,10 +16,11 @@
 
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
-import { useAppDispatch } from 'store/hooks';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import { Box, Menu, MenuItem } from '@mui/material';
-import { Warning, ArrowDropDown, KeyboardArrowRight } from '@mui/icons-material';
+import { Box, Divider, ListItemText, Menu, MenuItem } from '@mui/material';
+import { Warning, ArrowDropDown, KeyboardArrowRight, Pause } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import ConfirmDialog from '../../../modals/ConfirmDialog';
 import * as MardukReducer from 'reducers/MardukReducer';
@@ -36,9 +37,36 @@ const {
   cleanFileFilter,
 } = MardukReducer as any;
 
+const PAUSED_HINT = 'The graph builder is paused: the request is deferred until it is resumed';
+
+interface BuildMenuItemProps {
+  label: string;
+  tooltip: string;
+  paused: boolean;
+  fontSize: string;
+  onClick: () => void;
+}
+
+/**
+ * Menu item of a graph build, which is deferred while the graph builder is paused.
+ */
+const BuildMenuItem = ({ label, tooltip, paused, fontSize, onClick }: BuildMenuItemProps) => (
+  <MenuItem sx={{ fontSize }} onClick={onClick} title={paused ? PAUSED_HINT : tooltip}>
+    <ListItemText
+      primary={label}
+      secondary={paused ? 'Graph builder paused: deferred' : undefined}
+      slotProps={{ primary: { fontSize: 'inherit' } }}
+    />
+  </MenuItem>
+);
+
 const AdministrativeActions = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { getToken } = useAccessToken();
+  const graphBuilderPaused = useAppSelector(
+    state => state.GraphControlReducer.status?.builder?.paused ?? false
+  );
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -186,6 +214,7 @@ const AdministrativeActions = () => {
     buildBaseGraph: 'Build new Street Graph with OSM and elevation data',
     buildCandidateGraph: 'Build candidate Transit Graph for all providers',
     buildCandidateBaseGraphOTP: 'Build new candidate Street Graph with OSM and elevation data',
+    graphControl: 'Roll out or pin a graph, pause or resume the graph builder',
     fetchOSM: 'Fetch Open Street Map data',
     cleanFileFilter: 'Clean file filter',
     canceAllJobs: 'Cancel all current chouette jobs',
@@ -212,20 +241,20 @@ const AdministrativeActions = () => {
           transformOrigin={{ horizontal: 'left', vertical: 'top' }}
           onClose={() => setGraphPopoverOpen(false)}
         >
-          <MenuItem
-            sx={{ fontSize: '1.1em' }}
+          <BuildMenuItem
+            label="Build Transit Graph"
+            tooltip={toolTips.buildGraph}
+            paused={graphBuilderPaused}
+            fontSize="1.1em"
             onClick={handleBuildGraph}
-            title={toolTips.buildGraph}
-          >
-            Build Transit Graph
-          </MenuItem>
-          <MenuItem
-            sx={{ fontSize: '1em' }}
+          />
+          <BuildMenuItem
+            label="Build Street Graph"
+            tooltip={toolTips.buildBaseGraph}
+            paused={graphBuilderPaused}
+            fontSize="1em"
             onClick={handleBuildBaseGraph}
-            title={toolTips.buildBaseGraph}
-          >
-            Build Street Graph
-          </MenuItem>
+          />
           <MenuItem
             sx={{ fontSize: '1em' }}
             onClick={handleBuildCandidateGraphOTP}
@@ -239,6 +268,18 @@ const AdministrativeActions = () => {
             title={toolTips.buildCandidateBaseGraphOTP}
           >
             Build Candidate Street Graph
+          </MenuItem>
+          <Divider />
+          <MenuItem
+            sx={{ fontSize: '1em' }}
+            onClick={() => {
+              setGraphPopoverOpen(false);
+              navigate('/graph-control');
+            }}
+            title={toolTips.graphControl}
+          >
+            {graphBuilderPaused && <Pause fontSize="small" sx={{ marginRight: '8px' }} />}
+            OTP graph control…
           </MenuItem>
         </Menu>
         <Button
