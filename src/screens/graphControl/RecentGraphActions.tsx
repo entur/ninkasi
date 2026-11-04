@@ -16,8 +16,8 @@
 
 import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import { format } from 'date-fns';
-import type { GraphControlAction } from './graphControlUtils';
-import { actionLabel, graphLabel } from './graphControlUtils';
+import type { GraphControlAction } from 'screens/graphControl/graphControlUtils';
+import { actionLabel, graphLabel } from 'screens/graphControl/graphControlUtils';
 
 const RecentGraphActions = ({ actions }: { actions: GraphControlAction[] }) => {
   if (!actions.length) {

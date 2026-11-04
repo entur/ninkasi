@@ -39,6 +39,27 @@ const {
 
 const PAUSED_HINT = 'The graph builder is paused: the request is deferred until it is resumed';
 
+interface BuildMenuItemProps {
+  label: string;
+  tooltip: string;
+  paused: boolean;
+  fontSize: string;
+  onClick: () => void;
+}
+
+/**
+ * Menu item of a graph build, which is deferred while the graph builder is paused.
+ */
+const BuildMenuItem = ({ label, tooltip, paused, fontSize, onClick }: BuildMenuItemProps) => (
+  <MenuItem sx={{ fontSize }} onClick={onClick} title={paused ? PAUSED_HINT : tooltip}>
+    <ListItemText
+      primary={label}
+      secondary={paused ? 'Graph builder paused: deferred' : undefined}
+      slotProps={{ primary: { fontSize: 'inherit' } }}
+    />
+  </MenuItem>
+);
+
 const AdministrativeActions = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -220,34 +241,20 @@ const AdministrativeActions = () => {
           transformOrigin={{ horizontal: 'left', vertical: 'top' }}
           onClose={() => setGraphPopoverOpen(false)}
         >
-          <MenuItem
-            sx={{ fontSize: '1.1em' }}
+          <BuildMenuItem
+            label="Build Transit Graph"
+            tooltip={toolTips.buildGraph}
+            paused={graphBuilderPaused}
+            fontSize="1.1em"
             onClick={handleBuildGraph}
-            title={graphBuilderPaused ? PAUSED_HINT : toolTips.buildGraph}
-          >
-            {graphBuilderPaused ? (
-              <ListItemText
-                primary="Build Transit Graph"
-                secondary="Graph builder paused: deferred"
-              />
-            ) : (
-              'Build Transit Graph'
-            )}
-          </MenuItem>
-          <MenuItem
-            sx={{ fontSize: '1em' }}
+          />
+          <BuildMenuItem
+            label="Build Street Graph"
+            tooltip={toolTips.buildBaseGraph}
+            paused={graphBuilderPaused}
+            fontSize="1em"
             onClick={handleBuildBaseGraph}
-            title={graphBuilderPaused ? PAUSED_HINT : toolTips.buildBaseGraph}
-          >
-            {graphBuilderPaused ? (
-              <ListItemText
-                primary="Build Street Graph"
-                secondary="Graph builder paused: deferred"
-              />
-            ) : (
-              'Build Street Graph'
-            )}
-          </MenuItem>
+          />
           <MenuItem
             sx={{ fontSize: '1em' }}
             onClick={handleBuildCandidateGraphOTP}

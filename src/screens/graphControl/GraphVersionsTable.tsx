@@ -31,9 +31,14 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PushPinIcon from '@mui/icons-material/PushPin';
-import { formatDistanceToNow } from 'date-fns';
-import type { GraphVersion, SerializationVersion } from './graphControlUtils';
-import { formatGraphTimestamp, formatSize, isNewerThanCurrent } from './graphControlUtils';
+import type { GraphVersion, SerializationVersion } from 'screens/graphControl/graphControlUtils';
+import {
+  formatGraphTimestamp,
+  formatSize,
+  isNewerThanCurrent,
+  plural,
+  since,
+} from 'screens/graphControl/graphControlUtils';
 
 interface GraphVersionsTableProps {
   versions: SerializationVersion[];
@@ -131,7 +136,7 @@ const GraphVersionsTable = ({
               <Typography variant="body2" color="text.secondary">
                 {version.graphs.length < version.totalGraphs
                   ? `latest ${version.graphs.length} of ${version.totalGraphs} graphs`
-                  : `${version.totalGraphs} graph${version.totalGraphs === 1 ? '' : 's'}`}
+                  : plural(version.totalGraphs, 'graph')}
               </Typography>
             </Stack>
           </AccordionSummary>
@@ -152,11 +157,7 @@ const GraphVersionsTable = ({
                     <TableCell sx={{ whiteSpace: 'nowrap' }}>
                       {formatGraphTimestamp(graph.timestamp) ?? graph.fileName}
                     </TableCell>
-                    <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                      {graph.creationDate
-                        ? formatDistanceToNow(new Date(graph.creationDate), { addSuffix: true })
-                        : ''}
-                    </TableCell>
+                    <TableCell sx={{ whiteSpace: 'nowrap' }}>{since(graph.creationDate)}</TableCell>
                     <TableCell sx={{ whiteSpace: 'nowrap' }}>{formatSize(graph.size)}</TableCell>
                     <TableCell>
                       <Stack direction="row" spacing={1}>

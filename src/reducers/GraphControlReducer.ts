@@ -35,7 +35,8 @@ export interface GraphControlState {
   versions: SerializationVersion[];
   versionsLoading: boolean;
   versionsError: string | null;
-  pending: Partial<Record<GraphControlOperation, boolean>>;
+  // the operation in progress: the buttons are disabled meanwhile, so at most one runs at a time
+  pending: GraphControlOperation | null;
   // request ids of the latest fetches: responses of earlier requests are ignored, so that a slow
   // poll cannot overwrite the status returned by a later operation
   statusRequestId: string | null;
@@ -48,7 +49,7 @@ const initialState: GraphControlState = {
   versions: [],
   versionsLoading: false,
   versionsError: null,
-  pending: {},
+  pending: null,
   statusRequestId: null,
   versionsRequestId: null,
 };
@@ -120,7 +121,9 @@ const makeControlThunk = <Arg extends { getToken: GetToken }, Result>(
   path: string,
   body: (arg: Arg) => object,
   successMessage: (arg: Arg, result: Result) => string,
-  failureMessage: string
+  failureMessage: string,
+  // whether the operation changes the graph versions (pausing or resuming the builder does not)
+  changesVersions = true
 ) =>
   createAsyncThunk<Result, Arg, { rejectValue: string }>(
     `graphControl/${operation}`,
@@ -137,7 +140,9 @@ const makeControlThunk = <Arg extends { getToken: GetToken }, Result>(
           addNotification({ message: successMessage(arg, response.data), level: 'success' })
         );
         dispatch(fetchGraphControlStatus(arg.getToken));
-        dispatch(fetchGraphVersions(arg.getToken));
+        if (changesVersions) {
+          dispatch(fetchGraphVersions(arg.getToken));
+        }
         return response.data;
       } catch (err) {
         const message = errorMessage(err, failureMessage);
@@ -191,7 +196,8 @@ export const pauseGraphBuilder = makeControlThunk<
   'builder/pause',
   ({ reason }) => ({ reason }),
   () => 'Paused the graph builder',
-  'Failed to pause the graph builder'
+  'Failed to pause the graph builder',
+  false
 );
 
 export const resumeGraphBuilder = makeControlThunk<
@@ -202,16 +208,14 @@ export const resumeGraphBuilder = makeControlThunk<
   'builder/resume',
   ({ reason }) => ({ reason }),
   () => 'Resumed the graph builder',
-  'Failed to resume the graph builder'
+  'Failed to resume the graph builder',
+  false
 );
 
-const operations: Record<GraphControlOperation, any> = {
-  rollout: rolloutGraph,
-  pin: pinGraph,
-  unpin: unpinGraph,
-  pause: pauseGraphBuilder,
-  resume: resumeGraphBuilder,
-};
+const controlThunks = [rolloutGraph, pinGraph, unpinGraph, pauseGraphBuilder, resumeGraphBuilder];
+
+// graphControl/<operation>/<pending|fulfilled|rejected>
+const operationOf = (actionType: string) => actionType.split('/')[1] as GraphControlOperation;
 
 const graphControlSlice = createSlice({
   name: 'graphControl',
@@ -266,18 +270,16 @@ const graphControlSlice = createSlice({
           state.status = action.payload;
           state.statusError = null;
         }
+      )
+      .addMatcher(isAnyOf(...controlThunks.map(thunk => thunk.pending)), (state, action) => {
+        state.pending = operationOf(action.type);
+      })
+      .addMatcher(
+        isAnyOf(...controlThunks.flatMap(thunk => [thunk.fulfilled, thunk.rejected])),
+        state => {
+          state.pending = null;
+        }
       );
-
-    (Object.keys(operations) as GraphControlOperation[]).forEach(operation => {
-      const thunk = operations[operation];
-      builder
-        .addMatcher(thunk.pending.match, state => {
-          state.pending[operation] = true;
-        })
-        .addMatcher(isAnyOf(thunk.fulfilled, thunk.rejected), state => {
-          state.pending[operation] = false;
-        });
-    });
   },
 });
 

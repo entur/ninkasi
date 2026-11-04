@@ -6,8 +6,8 @@ import GraphControlReducer, {
   fetchGraphControlStatus,
   pauseGraphBuilder,
   rolloutGraph,
-} from '../reducers/GraphControlReducer';
-import UtilsReducer from '../reducers/UtilsReducer';
+} from 'reducers/GraphControlReducer';
+import UtilsReducer from 'reducers/UtilsReducer';
 import {
   actionLabel,
   bannerMessages,
@@ -18,11 +18,11 @@ import {
   isReasonValid,
   parseGraphPath,
   rolloutImpact,
-} from '../screens/graphControl/graphControlUtils';
+} from 'screens/graphControl/graphControlUtils';
 import type {
   GraphControlStatus,
   SerializationVersion,
-} from '../screens/graphControl/graphControlUtils';
+} from 'screens/graphControl/graphControlUtils';
 
 vi.mock('axios', () => ({ default: vi.fn() }));
 
@@ -136,7 +136,6 @@ describe('graph control utils', () => {
     const version = productionVersion();
     const pinned = rolloutImpact(version, version.graphs[1], true);
     expect(pinned.restartsProduction).toBe(true);
-    expect(pinned.isCurrent).toBe(false);
     expect(pinned.description.join(' ')).toContain('OTP instances restart');
     expect(pinned.description.join(' ')).toContain('until the graph is unpinned');
 
@@ -239,12 +238,12 @@ describe('GraphControlReducer', () => {
   it('tracks the pending operations and stores the status returned by a pause', () => {
     const arg = { getToken: async () => '', reason: 'investigating' };
     let state = GraphControlReducer(undefined, pauseGraphBuilder.pending('id', arg));
-    expect(state.pending.pause).toBe(true);
+    expect(state.pending).toBe('pause');
     const paused = status({
       builder: { paused: true, deferredTransitBuilds: 0, deferredStreetBuilds: 0 },
     });
     state = GraphControlReducer(state, pauseGraphBuilder.fulfilled(paused, 'id', arg));
-    expect(state.pending.pause).toBe(false);
+    expect(state.pending).toBeNull();
     expect(state.status?.builder.paused).toBe(true);
   });
 
@@ -303,7 +302,7 @@ describe('GraphControlReducer', () => {
           'Rolled out the graph built 2026-10-13 08:00:00 and pinned it: OTP restarts within a minute',
         level: 'success',
       });
-      expect(store.getState().GraphControlReducer.pending.rollout).toBe(false);
+      expect(store.getState().GraphControlReducer.pending).toBeNull();
     });
 
     it('notifies the reason of a failure', async () => {

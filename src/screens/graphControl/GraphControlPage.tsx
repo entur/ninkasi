@@ -21,7 +21,6 @@ import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { formatDistanceToNow } from 'date-fns';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
 import EmergencyConfirmDialog from 'modals/EmergencyConfirmDialog';
@@ -36,12 +35,17 @@ import {
   unpinGraph,
 } from 'reducers/GraphControlReducer';
 import type { GraphControlOperation } from 'reducers/GraphControlReducer';
-import GraphVersionsTable from './GraphVersionsTable';
-import RecentGraphActions from './RecentGraphActions';
-import type { GraphPin, GraphVersion, SerializationVersion } from './graphControlUtils';
-import { graphLabel, rolloutImpact } from './graphControlUtils';
+import GraphVersionsTable from 'screens/graphControl/GraphVersionsTable';
+import RecentGraphActions from 'screens/graphControl/RecentGraphActions';
+import type {
+  GraphPin,
+  GraphVersion,
+  SerializationVersion,
+} from 'screens/graphControl/graphControlUtils';
+import { graphLabel, plural, rolloutImpact, since } from 'screens/graphControl/graphControlUtils';
 
-const REFRESH_INTERVAL = 30000;
+// the status itself is polled by GraphControlBanner, which is mounted on every page
+const VERSIONS_REFRESH_INTERVAL = 30000;
 
 interface Confirmation {
   operation: GraphControlOperation;
@@ -51,9 +55,6 @@ interface Confirmation {
   severity: 'error' | 'warning';
   run: (reason: string) => Promise<unknown>;
 }
-
-const since = (time?: number | null) =>
-  time ? formatDistanceToNow(new Date(time), { addSuffix: true }) : '';
 
 const Field = ({ label, children }: { label: string; children: ReactNode }) => (
   <Stack direction="row" spacing={1} sx={{ alignItems: 'baseline' }}>
@@ -78,18 +79,23 @@ const GraphControlPage = () => {
   );
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
 
-  const refresh = useCallback(() => {
+  const refreshVersions = useCallback(
+    () => dispatch(fetchGraphVersions(getToken)),
+    [dispatch, getToken]
+  );
+
+  const refresh = () => {
     dispatch(fetchGraphControlStatus(getToken));
-    dispatch(fetchGraphVersions(getToken));
-  }, [dispatch, getToken]);
+    refreshVersions();
+  };
 
   useEffect(() => {
-    refresh();
-    const timer = setInterval(refresh, REFRESH_INTERVAL);
+    refreshVersions();
+    const timer = setInterval(refreshVersions, VERSIONS_REFRESH_INTERVAL);
     return () => clearInterval(timer);
-  }, [refresh]);
+  }, [refreshVersions]);
 
-  const anyPending = Object.values(pending).some(Boolean);
+  const anyPending = pending !== null;
   const production = status?.production;
   const builder = status?.builder;
   const productionPin = status?.pins.find(p => p.serializationId === production?.serializationId);
@@ -158,7 +164,7 @@ const GraphControlPage = () => {
       title: 'Resume the graph builder?',
       impact: [
         waiting
-          ? `The ${waiting} deferred build request${waiting === 1 ? ' is' : 's are'} replayed: the graph builder starts a new build.`
+          ? `The ${plural(waiting, 'deferred build request')} ${waiting === 1 ? 'is' : 'are'} replayed: the graph builder starts a new build.`
           : 'No build request was received while the graph builder was paused.',
         productionPin
           ? 'The production graph is pinned: new graphs are not rolled out until it is unpinned.'
@@ -370,7 +376,7 @@ const GraphControlPage = () => {
         impact={confirmation?.impact ?? []}
         confirmLabel={confirmation?.confirmLabel ?? 'Confirm'}
         severity={confirmation?.severity}
-        pending={!!(confirmation && pending[confirmation.operation])}
+        pending={!!confirmation && pending === confirmation.operation}
         onCancel={() => setConfirmation(null)}
         onConfirm={onConfirm}
       />

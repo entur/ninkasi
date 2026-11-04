@@ -14,6 +14,8 @@
  *
  */
 
+import { formatDistanceToNow } from 'date-fns';
+
 export interface GraphBuilderState {
   paused: boolean;
   pausedBy?: string | null;
@@ -159,7 +161,13 @@ export const formatSize = (bytes: number | null | undefined): string => {
   return `${unit === 0 ? value : value.toFixed(1)} ${units[unit]}`;
 };
 
-const plural = (count: number, word: string) => `${count} ${word}${count === 1 ? '' : 's'}`;
+export const plural = (count: number, word: string) => `${count} ${word}${count === 1 ? '' : 's'}`;
+
+/**
+ * Relative time of an epoch millisecond timestamp, for example "3 hours ago".
+ */
+export const since = (time: number | null | undefined): string =>
+  time ? formatDistanceToNow(new Date(time), { addSuffix: true }) : '';
 
 /**
  * Lines of the banner shown on every page while a graph is pinned or the graph builder is paused.
@@ -196,7 +204,6 @@ export const bannerMessages = (status: GraphControlStatus | null | undefined): s
 export interface RolloutImpact {
   restartsProduction: boolean;
   replacesPin: boolean;
-  isCurrent: boolean;
   description: string[];
 }
 
@@ -209,7 +216,6 @@ export const rolloutImpact = (
   pin: boolean
 ): RolloutImpact => {
   const label = graphLabel(graph.graph);
-  const isCurrent = graph.graph === version.currentGraph;
   const replacesPin = !!version.pinnedGraph && version.pinnedGraph !== graph.graph;
   const description: string[] = [];
 
@@ -217,9 +223,6 @@ export const rolloutImpact = (
     description.push(
       `Production OTP (${version.serializationId}) switches to the graph built ${label}. The OTP instances restart within about a minute.`
     );
-    if (isCurrent) {
-      description.push('This graph is already current: the OTP instances are restarted anyway.');
-    }
   } else {
     description.push(
       `The serialization version ${version.serializationId} is not used in production: its current graph becomes the graph built ${label}, and OTP is not restarted.`
@@ -243,7 +246,6 @@ export const rolloutImpact = (
   return {
     restartsProduction: version.production,
     replacesPin,
-    isCurrent,
     description,
   };
 };
