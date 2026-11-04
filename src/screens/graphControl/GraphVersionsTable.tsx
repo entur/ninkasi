@@ -33,7 +33,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import { formatDistanceToNow } from 'date-fns';
 import type { GraphVersion, SerializationVersion } from './graphControlUtils';
-import { formatGraphTimestamp, formatSize } from './graphControlUtils';
+import { formatGraphTimestamp, formatSize, isNewerThanCurrent } from './graphControlUtils';
 
 interface GraphVersionsTableProps {
   versions: SerializationVersion[];
@@ -164,11 +164,9 @@ const GraphVersionsTable = ({
                         {graph.pinned && (
                           <Chip size="small" color="error" icon={<PushPinIcon />} label="pinned" />
                         )}
-                        {!graph.current &&
-                          version.currentGraph &&
-                          graph.graph > version.currentGraph && (
-                            <Chip size="small" variant="outlined" label="not rolled out" />
-                          )}
+                        {isNewerThanCurrent(version, graph) && (
+                          <Chip size="small" variant="outlined" label="not rolled out" />
+                        )}
                       </Stack>
                     </TableCell>
                     <TableCell align="right">

@@ -14,6 +14,7 @@ import {
   formatGraphTimestamp,
   formatSize,
   graphLabel,
+  isNewerThanCurrent,
   isReasonValid,
   parseGraphPath,
   rolloutImpact,
@@ -164,10 +165,40 @@ describe('graph control utils', () => {
     expect(actionLabel('SOMETHING_NEW')).toBe('SOMETHING_NEW');
   });
 
-  it('includes the reason returned by Marduk in error messages', () => {
-    expect(errorMessage({ response: { data: 'Graph not found: x' } }, 'Failed')).toBe(
+  it('flags the builds newer than the current graph as not rolled out', () => {
+    const version = productionVersion();
+    expect(isNewerThanCurrent(version, version.graphs[0])).toBe(false);
+    expect(isNewerThanCurrent(version, version.graphs[1])).toBe(false);
+    const newBuild = {
+      graph: 'netex-otp2/EN-0239/20261015080000000-Graph-otp2-EN-0239.obj',
+      fileName: '20261015080000000-Graph-otp2-EN-0239.obj',
+      timestamp: '20261015080000000',
+      current: false,
+      pinned: false,
+    };
+    expect(isNewerThanCurrent(version, newBuild)).toBe(true);
+    const legacyCurrent = productionVersion({
+      currentGraph: 'netex-otp2/EN-0239/Graph-otp2-EN-0239.obj',
+    });
+    expect(isNewerThanCurrent(legacyCurrent, newBuild)).toBe(true);
+    expect(isNewerThanCurrent(productionVersion({ currentGraph: null }), newBuild)).toBe(false);
+  });
+
+  it('includes the plain text reason returned by Marduk in error messages', () => {
+    const plainText = { headers: { 'content-type': 'text/plain;charset=UTF-8' } };
+    expect(errorMessage({ response: { ...plainText, data: 'Graph not found: x' } }, 'Failed')).toBe(
       'Failed: Graph not found: x'
     );
+    expect(
+      errorMessage({ response: { ...plainText, data: 'x'.repeat(400) } }, 'Failed')
+    ).toHaveLength('Failed: '.length + 301);
+    expect(
+      errorMessage(
+        { response: { headers: { 'content-type': 'text/html' }, data: '<html>502</html>' } },
+        'Failed'
+      )
+    ).toBe('Failed');
+    expect(errorMessage({ response: { data: '<html>502</html>' } }, 'Failed')).toBe('Failed');
     expect(errorMessage(new Error('network'), 'Failed')).toBe('Failed');
   });
 });
@@ -179,10 +210,8 @@ describe('GraphControlReducer', () => {
     const fetched = status({
       builder: { paused: true, deferredTransitBuilds: 1, deferredStreetBuilds: 0 },
     });
-    let state = GraphControlReducer(
-      undefined,
-      fetchGraphControlStatus.fulfilled(fetched, 'id', null)
-    );
+    let state = GraphControlReducer(undefined, fetchGraphControlStatus.pending('id', null));
+    state = GraphControlReducer(state, fetchGraphControlStatus.fulfilled(fetched, 'id', null));
     expect(state.status).toEqual(fetched);
     state = GraphControlReducer(
       state,
@@ -190,6 +219,21 @@ describe('GraphControlReducer', () => {
     );
     expect(state.status).toEqual(fetched);
     expect(state.statusError).toBe('Marduk is down');
+  });
+
+  it('ignores the response of a status fetch started before the latest one', () => {
+    const stale = status();
+    const fresh = status({ production: { serializationId: 'EN-0239', pinned: true } });
+    let state = GraphControlReducer(undefined, fetchGraphControlStatus.pending('stale', null));
+    state = GraphControlReducer(state, fetchGraphControlStatus.pending('fresh', null));
+    state = GraphControlReducer(state, fetchGraphControlStatus.fulfilled(fresh, 'fresh', null));
+    state = GraphControlReducer(state, fetchGraphControlStatus.fulfilled(stale, 'stale', null));
+    expect(state.status).toEqual(fresh);
+    state = GraphControlReducer(
+      state,
+      fetchGraphControlStatus.rejected(null, 'stale', null, 'Marduk is down')
+    );
+    expect(state.statusError).toBeNull();
   });
 
   it('tracks the pending operations and stores the status returned by a pause', () => {
@@ -264,7 +308,11 @@ describe('GraphControlReducer', () => {
 
     it('notifies the reason of a failure', async () => {
       vi.mocked(axios).mockRejectedValue({
-        response: { status: 409, data: 'Another operation is in progress' },
+        response: {
+          status: 409,
+          headers: { 'content-type': 'text/plain;charset=UTF-8' },
+          data: 'Another operation is in progress',
+        },
       });
 
       const store = makeStore();

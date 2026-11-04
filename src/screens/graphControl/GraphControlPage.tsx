@@ -212,7 +212,7 @@ const GraphControlPage = () => {
                   <Chip size="small" color="error" icon={<PushPinIcon />} label="PINNED" />
                 )}
               </Stack>
-              {!status && <Typography color="text.secondary">Loading…</Typography>}
+              {!status && !statusError && <Typography color="text.secondary">Loading…</Typography>}
               {status && !production && (
                 <Typography color="text.secondary">No graph published yet.</Typography>
               )}

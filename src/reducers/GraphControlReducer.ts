@@ -36,6 +36,10 @@ export interface GraphControlState {
   versionsLoading: boolean;
   versionsError: string | null;
   pending: Partial<Record<GraphControlOperation, boolean>>;
+  // request ids of the latest fetches: responses of earlier requests are ignored, so that a slow
+  // poll cannot overwrite the status returned by a later operation
+  statusRequestId: string | null;
+  versionsRequestId: string | null;
 }
 
 const initialState: GraphControlState = {
@@ -45,6 +49,8 @@ const initialState: GraphControlState = {
   versionsLoading: false,
   versionsError: null,
   pending: {},
+  statusRequestId: null,
+  versionsRequestId: null,
 };
 
 const READ_TIMEOUT = 15000;
@@ -55,13 +61,20 @@ const VERSIONS_LIMIT = 30;
 const routingGraphUrl = (path: string) =>
   `${window.config.timetableAdminBaseUrl}routing_graph/${path}`;
 
+const MAX_REASON_LENGTH = 300;
+
 /**
  * Error message including the reason returned by Marduk (plain text), for example a lock conflict.
+ * Other bodies (an HTML error page from the load balancer, for example) are not included.
  */
 export const errorMessage = (err: any, fallback: string): string => {
   const data = err?.response?.data;
-  if (typeof data === 'string' && data.trim()) {
-    return `${fallback}: ${data.trim()}`;
+  const contentType = String(err?.response?.headers?.['content-type'] ?? '');
+  if (typeof data === 'string' && data.trim() && contentType.startsWith('text/plain')) {
+    const reason = data.trim();
+    return `${fallback}: ${
+      reason.length > MAX_REASON_LENGTH ? `${reason.slice(0, MAX_REASON_LENGTH)}…` : reason
+    }`;
   }
   return fallback;
 };
@@ -206,23 +219,39 @@ const graphControlSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
+      .addCase(fetchGraphControlStatus.pending, (state, action) => {
+        state.statusRequestId = action.meta.requestId;
+      })
       .addCase(fetchGraphControlStatus.fulfilled, (state, action) => {
+        if (action.meta.requestId !== state.statusRequestId) {
+          return;
+        }
         state.status = action.payload;
         state.statusError = null;
       })
       // the last known status is kept, so that the banner does not disappear on a transient failure
       .addCase(fetchGraphControlStatus.rejected, (state, action) => {
+        if (action.meta.requestId !== state.statusRequestId) {
+          return;
+        }
         state.statusError = action.payload ?? 'Failed to fetch the OTP graph control status';
       })
-      .addCase(fetchGraphVersions.pending, state => {
+      .addCase(fetchGraphVersions.pending, (state, action) => {
+        state.versionsRequestId = action.meta.requestId;
         state.versionsLoading = true;
       })
       .addCase(fetchGraphVersions.fulfilled, (state, action) => {
+        if (action.meta.requestId !== state.versionsRequestId) {
+          return;
+        }
         state.versions = action.payload;
         state.versionsLoading = false;
         state.versionsError = null;
       })
       .addCase(fetchGraphVersions.rejected, (state, action) => {
+        if (action.meta.requestId !== state.versionsRequestId) {
+          return;
+        }
         state.versionsLoading = false;
         state.versionsError = action.payload ?? 'Failed to fetch the OTP graph versions';
       })

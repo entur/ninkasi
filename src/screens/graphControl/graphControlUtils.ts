@@ -121,6 +121,19 @@ export const parseGraphPath = (
 /**
  * Short human-readable name of a graph: its build time, or its file name.
  */
+/**
+ * Whether a graph was built after the current graph of its serialization version, that is a build
+ * that has not been rolled out (because of a pin, for example). A current graph without a build
+ * timestamp in its name predates the timestamped file names.
+ */
+export const isNewerThanCurrent = (version: SerializationVersion, graph: GraphVersion): boolean => {
+  if (graph.current || !version.currentGraph || !graph.timestamp) {
+    return false;
+  }
+  const currentTimestamp = parseGraphPath(version.currentGraph)?.timestamp;
+  return !currentTimestamp || graph.timestamp > currentTimestamp;
+};
+
 export const graphLabel = (graph: string | null | undefined): string => {
   if (!graph) {
     return 'none';
