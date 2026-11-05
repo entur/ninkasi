@@ -22,6 +22,7 @@ import MardukReducer from './MardukReducer';
 import UtilsReducer from './UtilsReducer';
 import OrganizationReducer from './OrganizationReducer';
 import UserContextReducer from './UserContextReducer';
+import GraphControlReducer from './GraphControlReducer';
 
 const rootReducer = combineReducers({
   app: AppReducer,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   UtilsReducer,
   OrganizationReducer,
   UserContextReducer,
+  GraphControlReducer,
 });
 
 export default rootReducer;
