@@ -20,6 +20,7 @@ import getApiConfig from 'actions/getApiConfig';
 import { addNotification } from 'reducers/UtilsReducer';
 import type {
   GraphControlStatus,
+  GraphPinResult,
   GraphRolloutResult,
   SerializationVersion,
 } from 'screens/graphControl/graphControlUtils';
@@ -164,7 +165,7 @@ export const rolloutGraph = makeControlThunk<
 
 export const pinGraph = makeControlThunk<
   { getToken: GetToken; serializationId: string; reason: string },
-  GraphControlStatus
+  GraphPinResult
 >(
   'pin',
   'pin',
@@ -175,7 +176,7 @@ export const pinGraph = makeControlThunk<
 
 export const unpinGraph = makeControlThunk<
   { getToken: GetToken; serializationId: string; reason: string },
-  GraphControlStatus
+  GraphPinResult
 >(
   'unpin',
   'unpin',
@@ -230,11 +231,6 @@ const graphControlSlice = createSlice({
         }
         state.versionsLoading = false;
         state.versionsError = action.payload ?? 'Failed to fetch the OTP graph versions';
-      })
-      // pin and unpin return the new status
-      .addMatcher(isAnyOf(pinGraph.fulfilled, unpinGraph.fulfilled), (state, action) => {
-        state.status = action.payload;
-        state.statusError = null;
       })
       .addMatcher(isAnyOf(...controlThunks.map(thunk => thunk.pending)), (state, action) => {
         state.pending = operationOf(action.type);

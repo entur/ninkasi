@@ -77,6 +77,15 @@ export interface GraphRolloutResult {
   pinned: boolean;
 }
 
+// the status is not returned: it is fetched again after the operation
+export interface GraphPinResult {
+  serializationId: string;
+  // the graph pinned, or the graph that was pinned
+  graph: string;
+  // whether the serialization version is now pinned
+  pinned: boolean;
+}
+
 export const MIN_REASON_LENGTH = 5;
 export const MAX_REASON_LENGTH = 1000;
 

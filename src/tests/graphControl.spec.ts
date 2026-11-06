@@ -238,26 +238,24 @@ describe('GraphControlReducer', () => {
     expect(state.statusError).toBeNull();
   });
 
-  it('tracks the pending operations and stores the status returned by a pin', () => {
+  it('tracks the pending operations and leaves the status to the refresh after a pin', () => {
     const arg = { getToken: async () => '', serializationId: 'EN-0239', reason: 'bad data' };
-    let state = GraphControlReducer(undefined, pinGraph.pending('id', arg));
+    const fetched = status();
+    let state = GraphControlReducer(undefined, fetchGraphControlStatus.pending('status', null));
+    state = GraphControlReducer(state, fetchGraphControlStatus.fulfilled(fetched, 'status', null));
+    state = GraphControlReducer(state, pinGraph.pending('id', arg));
     expect(state.pending).toBe('pin');
-    const pinned = status({
-      production: { serializationId: 'EN-0239', currentGraph: CURRENT_GRAPH, pinned: true },
-      pins: [
-        {
-          serializationId: 'EN-0239',
-          graph: CURRENT_GRAPH,
-          pinnedBy: 'alice',
-          pinnedAt: 1760515200000,
-          reason: 'bad data',
-          currentGraph: CURRENT_GRAPH,
-        },
-      ],
-    });
-    state = GraphControlReducer(state, pinGraph.fulfilled(pinned, 'id', arg));
+    state = GraphControlReducer(
+      state,
+      pinGraph.fulfilled(
+        { serializationId: 'EN-0239', graph: CURRENT_GRAPH, pinned: true },
+        'id',
+        arg
+      )
+    );
     expect(state.pending).toBeNull();
-    expect(state.status?.production?.pinned).toBe(true);
+    // the status is fetched again by the thunk, the result of the pin is not a status
+    expect(state.status).toEqual(fetched);
   });
 
   describe('rollout', () => {
