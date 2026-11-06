@@ -38,7 +38,12 @@ import type {
   GraphVersion,
   SerializationVersion,
 } from 'screens/graphControl/graphControlUtils';
-import { graphLabel, rolloutImpact, since } from 'screens/graphControl/graphControlUtils';
+import {
+  graphLabel,
+  isProductionUnknown,
+  rolloutImpact,
+  since,
+} from 'screens/graphControl/graphControlUtils';
 
 // the status itself is polled by GraphControlBanner, which is mounted on every page
 const VERSIONS_REFRESH_INTERVAL = 30000;
@@ -96,14 +101,17 @@ const GraphControlPage = () => {
   const productionPin = status?.pins.find(p => p.serializationId === production?.serializationId);
   const otherPins =
     status?.pins.filter(p => p.serializationId !== production?.serializationId) ?? [];
+  const productionUnknown = isProductionUnknown(status);
+  const unreadableFiles = status?.unreadableFiles ?? [];
 
   const confirmRollout = (version: SerializationVersion, graph: GraphVersion, pin: boolean) => {
+    const impact = rolloutImpact(version, graph, pin, productionUnknown);
     setConfirmation({
       operation: 'rollout',
       title: `${pin ? 'Roll out and pin' : 'Roll out'} the graph built ${graphLabel(graph.graph)}?`,
-      impact: rolloutImpact(version, graph, pin).description,
+      impact: impact.description,
       confirmLabel: pin ? 'Roll out & pin' : 'Roll out',
-      severity: version.production ? 'error' : 'warning',
+      severity: impact.restartsProduction ? 'error' : 'warning',
       run: reason => dispatch(rolloutGraph({ getToken, graph: graph.graph, pin, reason })).unwrap(),
     });
   };
@@ -169,6 +177,23 @@ const GraphControlPage = () => {
         </Alert>
       )}
 
+      {unreadableFiles.length > 0 && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          These state files of the graph bucket cannot be parsed and are left out of this page:
+          <Box component="ul" sx={{ my: 0.5 }}>
+            {unreadableFiles.map(file => (
+              <li key={file}>
+                <code>{file}</code>
+              </li>
+            ))}
+          </Box>
+          A serialization version whose pointer file cannot be parsed shows no current graph, and
+          one whose pin file cannot be parsed is not shown as pinned. Repair or delete them in the
+          graph bucket. A pointer file is also replaced by the next production build or by a rollout
+          of its serialization version.
+        </Alert>
+      )}
+
       <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ mb: 3 }}>
         <Card variant="outlined" sx={{ flex: 1 }}>
           <CardContent>
@@ -180,12 +205,26 @@ const GraphControlPage = () => {
                 )}
               </Stack>
               {!status && !statusError && <Typography color="text.secondary">Loading…</Typography>}
-              {status && !production && (
+              {status && !production && !productionUnknown && (
                 <Typography color="text.secondary">No graph published yet.</Typography>
+              )}
+              {productionUnknown && (
+                <Alert severity="error">
+                  The serialization version used in production is unknown: production OTP cannot be
+                  reached and the root pointer file cannot be parsed. Any rollout restarts OTP.
+                </Alert>
               )}
               {production && (
                 <>
                   <Field label="Serialization version">{production.serializationId}</Field>
+                  {production.source === 'ROOT_POINTER' && (
+                    <Alert severity="warning">
+                      Marduk cannot reach production OTP: this is the serialization version of the
+                      latest production build. After an OTP release that changes the serialization
+                      version, it lags behind the version OTP runs until the first build of the new
+                      version.
+                    </Alert>
+                  )}
                   <Field label="Current graph">
                     <span title={production.currentGraph ?? ''}>
                       {graphLabel(production.currentGraph)}
@@ -279,6 +318,7 @@ const GraphControlPage = () => {
         <GraphVersionsTable
           versions={versions}
           disabled={anyPending}
+          productionUnknown={productionUnknown}
           onRollout={confirmRollout}
           onPinCurrent={version => confirmPin(version.serializationId, version.currentGraph)}
         />

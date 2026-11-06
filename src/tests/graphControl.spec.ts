@@ -15,6 +15,7 @@ import {
   formatSize,
   graphLabel,
   isNewerThanCurrent,
+  isProductionUnknown,
   isReasonValid,
   parseGraphPath,
   rolloutImpact,
@@ -30,10 +31,16 @@ const OLD_GRAPH = 'netex-otp2/EN-0239/20261013080000000-Graph-otp2-EN-0239.obj';
 const CURRENT_GRAPH = 'netex-otp2/EN-0239/20261014081200123-Graph-otp2-EN-0239.obj';
 
 const status = (overrides: Partial<GraphControlStatus> = {}): GraphControlStatus => ({
-  production: { serializationId: 'EN-0239', currentGraph: CURRENT_GRAPH, pinned: false },
+  production: {
+    serializationId: 'EN-0239',
+    currentGraph: CURRENT_GRAPH,
+    pinned: false,
+    source: 'OTP',
+  },
   pins: [],
   recentActions: [],
   skippedBuilds: [],
+  unreadableFiles: [],
   ...overrides,
 });
 
@@ -100,7 +107,12 @@ describe('graph control utils', () => {
   it('shows the pinned graphs in the banner, production first', () => {
     const messages = bannerMessages(
       status({
-        production: { serializationId: 'EN-0239', currentGraph: OLD_GRAPH, pinned: true },
+        production: {
+          serializationId: 'EN-0239',
+          currentGraph: OLD_GRAPH,
+          pinned: true,
+          source: 'OTP',
+        },
         pins: [
           {
             serializationId: 'EN-0240',
@@ -150,11 +162,36 @@ describe('graph control utils', () => {
     );
     expect(otherVersion.restartsProduction).toBe(false);
     expect(otherVersion.description[0]).toContain('OTP is not restarted');
+
+    const unknownProduction = rolloutImpact(
+      productionVersion({ serializationId: 'EN-0240', production: false }),
+      version.graphs[1],
+      false,
+      true
+    );
+    expect(unknownProduction.restartsProduction).toBe(true);
+    expect(unknownProduction.description[0]).toContain('OTP instances restart');
+  });
+
+  it('detects that the serialization version used in production is unknown', () => {
+    expect(isProductionUnknown(null)).toBe(false);
+    expect(isProductionUnknown(status())).toBe(false);
+    expect(isProductionUnknown(status({ production: null }))).toBe(false);
+    expect(
+      isProductionUnknown(
+        status({ production: null, unreadableFiles: ['netex-otp2/EN-0239/current-otp2'] })
+      )
+    ).toBe(false);
+    expect(
+      isProductionUnknown(status({ production: null, unreadableFiles: ['current-otp2'] }))
+    ).toBe(true);
+    expect(isProductionUnknown(status({ unreadableFiles: ['current-otp2'] }))).toBe(false);
   });
 
   it('labels the recorded actions', () => {
     expect(actionLabel('ROLLOUT_AND_PIN')).toBe('Roll out & pin');
     expect(actionLabel('BUILD_NOT_PROMOTED')).toBe('Build not promoted');
+    expect(actionLabel('POINTER_REPLACED')).toBe('Broken pointer replaced by build');
     expect(actionLabel('SOMETHING_NEW')).toBe('SOMETHING_NEW');
   });
 
@@ -225,7 +262,9 @@ describe('GraphControlReducer', () => {
 
   it('ignores the response of a status fetch started before the latest one', () => {
     const stale = status();
-    const fresh = status({ production: { serializationId: 'EN-0239', pinned: true } });
+    const fresh = status({
+      production: { serializationId: 'EN-0239', pinned: true, source: 'OTP' },
+    });
     let state = GraphControlReducer(undefined, fetchGraphControlStatus.pending('stale', null));
     state = GraphControlReducer(state, fetchGraphControlStatus.pending('fresh', null));
     state = GraphControlReducer(state, fetchGraphControlStatus.fulfilled(fresh, 'fresh', null));

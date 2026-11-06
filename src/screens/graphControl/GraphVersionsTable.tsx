@@ -43,6 +43,9 @@ import {
 interface GraphVersionsTableProps {
   versions: SerializationVersion[];
   disabled: boolean;
+  // production OTP cannot be reached and the root pointer file cannot be parsed: every rollout
+  // restarts OTP
+  productionUnknown?: boolean;
   onRollout: (version: SerializationVersion, graph: GraphVersion, pin: boolean) => void;
   onPinCurrent: (version: SerializationVersion) => void;
 }
@@ -103,6 +106,7 @@ const GraphRowActions = ({
 const GraphVersionsTable = ({
   versions,
   disabled,
+  productionUnknown = false,
   onRollout,
   onPinCurrent,
 }: GraphVersionsTableProps) => {
@@ -123,6 +127,13 @@ const GraphVersionsTable = ({
               <Typography sx={{ fontWeight: 600 }}>{version.serializationId}</Typography>
               {version.production ? (
                 <Chip size="small" color="primary" label="production" />
+              ) : productionUnknown ? (
+                <Chip
+                  size="small"
+                  color="warning"
+                  variant="outlined"
+                  label="production unknown: a rollout restarts OTP"
+                />
               ) : (
                 <Chip
                   size="small"

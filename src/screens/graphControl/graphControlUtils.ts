@@ -16,10 +16,15 @@
 
 import { formatDistanceToNow } from 'date-fns';
 
+// OTP: reported by production OTP. ROOT_POINTER: production OTP cannot be reached, the
+// serialization version of the latest production build, which lags behind OTP after a release
+export type ProductionSource = 'OTP' | 'ROOT_POINTER';
+
 export interface GraphProduction {
   serializationId: string;
   currentGraph?: string | null;
   pinned: boolean;
+  source: ProductionSource;
 }
 
 export interface GraphPin {
@@ -48,6 +53,8 @@ export interface GraphControlStatus {
   // the latest graphs built but not promoted (pinned version, candidate build of the production
   // version, older than the current graph, failed promotion), most recent first
   skippedBuilds: GraphControlAction[];
+  // the pointer and pin files of the graph bucket that cannot be parsed, left out of this status
+  unreadableFiles: string[];
 }
 
 export interface GraphVersion {
@@ -172,6 +179,17 @@ export const plural = (count: number, word: string) => `${count} ${word}${count 
 export const since = (time: number | null | undefined): string =>
   time ? formatDistanceToNow(new Date(time), { addSuffix: true }) : '';
 
+// the root pointer file is the only state file at the root of the graph bucket
+const isRootPointerFile = (path: string) => !path.includes('/');
+
+/**
+ * Whether the serialization version used in production is unknown: production OTP cannot be
+ * reached and the root pointer file cannot be parsed. Marduk then applies any rollout as a rollout
+ * of production, which rewrites the root pointer file and restarts OTP.
+ */
+export const isProductionUnknown = (status: GraphControlStatus | null | undefined): boolean =>
+  !!status && !status.production && (status.unreadableFiles ?? []).some(isRootPointerFile);
+
 /**
  * Lines of the banner shown on every page while a graph is pinned, the production pin first.
  */
@@ -210,15 +228,21 @@ export interface RolloutImpact {
 export const rolloutImpact = (
   version: SerializationVersion,
   graph: GraphVersion,
-  pin: boolean
+  pin: boolean,
+  productionUnknown = false
 ): RolloutImpact => {
   const label = graphLabel(graph.graph);
   const replacesPin = !!version.pinnedGraph && version.pinnedGraph !== graph.graph;
+  const restartsProduction = version.production || productionUnknown;
   const description: string[] = [];
 
   if (version.production) {
     description.push(
       `Production OTP (${version.serializationId}) switches to the graph built ${label}. The OTP instances restart within about a minute.`
+    );
+  } else if (productionUnknown) {
+    description.push(
+      `The current graph of ${version.serializationId} becomes the graph built ${label}. The serialization version used in production is unknown (production OTP cannot be reached and the root pointer file cannot be parsed): the rollout rewrites the root pointer file and the OTP instances restart within about a minute.`
     );
   } else {
     description.push(
@@ -241,7 +265,7 @@ export const rolloutImpact = (
   }
 
   return {
-    restartsProduction: version.production,
+    restartsProduction,
     replacesPin,
     description,
   };
@@ -253,6 +277,7 @@ const ACTION_LABELS: Record<string, string> = {
   PIN: 'Pin',
   UNPIN: 'Unpin',
   BUILD_NOT_PROMOTED: 'Build not promoted',
+  POINTER_REPLACED: 'Broken pointer replaced by build',
 };
 
 export const actionLabel = (action: string): string => ACTION_LABELS[action] ?? action;
