@@ -131,20 +131,16 @@ const GraphVersionsTable = ({
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
               <Typography sx={{ fontWeight: 600 }}>{version.serializationId}</Typography>
               {version.production ? (
-                <Chip size="small" color="primary" label="production" />
-              ) : productionUnknown ? (
-                <Chip
-                  size="small"
-                  color="warning"
-                  variant="outlined"
-                  label="production unknown: a rollout restarts OTP"
-                />
+                <Chip size="small" color="primary" label="deployed" />
               ) : (
-                <Chip
-                  size="small"
-                  variant="outlined"
-                  label="not used by production: no OTP restart"
-                />
+                productionUnknown && (
+                  <Chip
+                    size="small"
+                    color="warning"
+                    variant="outlined"
+                    label="production unknown: a rollout restarts OTP"
+                  />
+                )
               )}
               {version.pinnedGraph && (
                 <Chip size="small" color="error" icon={<PushPinIcon />} label="pinned" />
