@@ -40,6 +40,9 @@ import {
   since,
 } from 'screens/graphControl/graphControlUtils';
 
+// the production serialization version comes first, then the most recent ones
+const MAX_SERIALIZATION_VERSIONS = 5;
+
 interface GraphVersionsTableProps {
   versions: SerializationVersion[];
   disabled: boolean;
@@ -114,9 +117,11 @@ const GraphVersionsTable = ({
     return <Typography color="text.secondary">No published graph.</Typography>;
   }
 
+  const hiddenVersions = versions.length - MAX_SERIALIZATION_VERSIONS;
+
   return (
     <Box>
-      {versions.map(version => (
+      {versions.slice(0, MAX_SERIALIZATION_VERSIONS).map(version => (
         <Accordion
           key={version.serializationId}
           defaultExpanded={version.production}
@@ -197,6 +202,11 @@ const GraphVersionsTable = ({
           </AccordionDetails>
         </Accordion>
       ))}
+      {hiddenVersions > 0 && (
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          {plural(hiddenVersions, 'older serialization version')} not shown.
+        </Typography>
+      )}
     </Box>
   );
 };
