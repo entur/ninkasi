@@ -199,7 +199,7 @@ const GraphControlPage = () => {
           <CardContent>
             <Stack spacing={1.5}>
               <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                <Typography variant="h6">Production graph</Typography>
+                <Typography variant="h6">Deployed graph</Typography>
                 {production?.pinned && (
                   <Chip size="small" color="error" icon={<PushPinIcon />} label="PINNED" />
                 )}
