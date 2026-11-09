@@ -21,7 +21,7 @@
     "@mui/icons-material": "9.5.0",
     "@mui/material": "9.5.0",
     "@mui/x-date-pickers": "9.16.0",
-    "@reduxjs/toolkit": "2.13.0",
+    "@reduxjs/toolkit": "2.14.0",
     "axios": "1.20.0",
     "chai": "6.3.0",
     "chart.js": "4.6.1",
