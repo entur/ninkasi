@@ -16,9 +16,10 @@
 
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'store/hooks';
 import { useAccessToken } from '@/utils/useAccessToken';
-import { Box, Menu, MenuItem } from '@mui/material';
+import { Box, Divider, Menu, MenuItem } from '@mui/material';
 import { Warning, ArrowDropDown, KeyboardArrowRight } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import ConfirmDialog from '../../../modals/ConfirmDialog';
@@ -38,6 +39,7 @@ const {
 
 const AdministrativeActions = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { getToken } = useAccessToken();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -186,6 +188,7 @@ const AdministrativeActions = () => {
     buildBaseGraph: 'Build new Street Graph with OSM and elevation data',
     buildCandidateGraph: 'Build candidate Transit Graph for all providers',
     buildCandidateBaseGraphOTP: 'Build new candidate Street Graph with OSM and elevation data',
+    graphControl: 'Roll out a previous graph or pin the current one',
     fetchOSM: 'Fetch Open Street Map data',
     cleanFileFilter: 'Clean file filter',
     canceAllJobs: 'Cancel all current chouette jobs',
@@ -239,6 +242,17 @@ const AdministrativeActions = () => {
             title={toolTips.buildCandidateBaseGraphOTP}
           >
             Build Candidate Street Graph
+          </MenuItem>
+          <Divider />
+          <MenuItem
+            sx={{ fontSize: '1em' }}
+            onClick={() => {
+              setGraphPopoverOpen(false);
+              navigate('/graph-control');
+            }}
+            title={toolTips.graphControl}
+          >
+            OTP graph control…
           </MenuItem>
         </Menu>
         <Button

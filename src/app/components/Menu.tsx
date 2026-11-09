@@ -33,6 +33,7 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
 
 const menuItems = [
   { text: 'Timetable Pipeline', path: '/timetable-pipeline', requires: 'isRouteDataAdmin' },
+  { text: 'OTP Graph Control', path: '/graph-control', requires: 'isRouteDataAdmin' },
   { text: 'Permissions', path: '/permissions', requires: 'isOrganisationAdmin' },
 ] as const;
 
