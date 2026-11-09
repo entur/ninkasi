@@ -75,7 +75,7 @@ const PinDetails = ({ pin }: { pin: GraphPin }) => (
 const GraphControlPage = () => {
   const dispatch = useAppDispatch();
   const { getToken } = useAccessToken();
-  const { status, statusError, versions, versionsError, pending } = useAppSelector(
+  const { status, statusError, versions, totalVersions, versionsError, pending } = useAppSelector(
     state => state.GraphControlReducer
   );
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
@@ -317,6 +317,7 @@ const GraphControlPage = () => {
       <Box sx={{ mb: 3 }}>
         <GraphVersionsTable
           versions={versions}
+          totalVersions={totalVersions}
           disabled={anyPending}
           productionUnknown={productionUnknown}
           onRollout={confirmRollout}

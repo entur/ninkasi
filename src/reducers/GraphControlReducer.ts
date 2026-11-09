@@ -34,6 +34,8 @@ export interface GraphControlState {
   status: GraphControlStatus | null;
   statusError: string | null;
   versions: SerializationVersion[];
+  // the number of serialization versions that have published graphs, listed or not
+  totalVersions: number;
   versionsLoading: boolean;
   versionsError: string | null;
   // the operation in progress: the buttons are disabled meanwhile, so at most one runs at a time
@@ -48,6 +50,7 @@ const initialState: GraphControlState = {
   status: null,
   statusError: null,
   versions: [],
+  totalVersions: 0,
   versionsLoading: false,
   versionsError: null,
   pending: null,
@@ -59,6 +62,8 @@ const READ_TIMEOUT = 15000;
 // a rollout copies a graph of a few GB in the graph bucket
 const WRITE_TIMEOUT = 120000;
 const VERSIONS_LIMIT = 30;
+// the production serialization version, then the most recent ones
+const SERIALIZATION_VERSIONS_LIMIT = 5;
 
 const routingGraphUrl = (path: string) =>
   `${window.config.timetableAdminBaseUrl}routing_graph/${path}`;
@@ -100,18 +105,24 @@ export const fetchGraphControlStatus = createAsyncThunk<
 });
 
 export const fetchGraphVersions = createAsyncThunk<
-  SerializationVersion[],
+  { versions: SerializationVersion[]; totalVersions: number },
   GetToken,
   { rejectValue: string }
 >('graphControl/fetchVersions', async (getToken, { rejectWithValue }) => {
   try {
     const response = await axios({
-      url: routingGraphUrl(`versions?limit=${VERSIONS_LIMIT}`),
+      url: routingGraphUrl(
+        `versions?limit=${VERSIONS_LIMIT}&serializationVersions=${SERIALIZATION_VERSIONS_LIMIT}`
+      ),
       method: 'get',
       timeout: READ_TIMEOUT,
       ...(await getApiConfig(getToken)),
     });
-    return response.data?.serializationVersions ?? [];
+    const versions: SerializationVersion[] = response.data?.serializationVersions ?? [];
+    return {
+      versions: versions.slice(0, SERIALIZATION_VERSIONS_LIMIT),
+      totalVersions: response.data?.totalSerializationVersions ?? versions.length,
+    };
   } catch (err) {
     return rejectWithValue(errorMessage(err, 'Failed to fetch the OTP graph versions'));
   }
@@ -221,7 +232,8 @@ const graphControlSlice = createSlice({
         if (action.meta.requestId !== state.versionsRequestId) {
           return;
         }
-        state.versions = action.payload;
+        state.versions = action.payload.versions;
+        state.totalVersions = action.payload.totalVersions;
         state.versionsLoading = false;
         state.versionsError = null;
       })

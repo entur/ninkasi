@@ -40,11 +40,10 @@ import {
   since,
 } from 'screens/graphControl/graphControlUtils';
 
-// the production serialization version comes first, then the most recent ones
-const MAX_SERIALIZATION_VERSIONS = 5;
-
 interface GraphVersionsTableProps {
+  // the production serialization version first, then the most recent ones
   versions: SerializationVersion[];
+  totalVersions: number;
   disabled: boolean;
   // production OTP cannot be reached and the root pointer file cannot be parsed: every rollout
   // restarts OTP
@@ -108,6 +107,7 @@ const GraphRowActions = ({
 
 const GraphVersionsTable = ({
   versions,
+  totalVersions,
   disabled,
   productionUnknown = false,
   onRollout,
@@ -117,11 +117,11 @@ const GraphVersionsTable = ({
     return <Typography color="text.secondary">No published graph.</Typography>;
   }
 
-  const hiddenVersions = versions.length - MAX_SERIALIZATION_VERSIONS;
+  const hiddenVersions = totalVersions - versions.length;
 
   return (
     <Box>
-      {versions.slice(0, MAX_SERIALIZATION_VERSIONS).map(version => (
+      {versions.map(version => (
         <Accordion
           key={version.serializationId}
           defaultExpanded={version.production}

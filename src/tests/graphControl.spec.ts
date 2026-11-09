@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import GraphControlReducer, {
   errorMessage,
   fetchGraphControlStatus,
+  fetchGraphVersions,
   pinGraph,
   rolloutGraph,
 } from 'reducers/GraphControlReducer';
@@ -295,6 +296,36 @@ describe('GraphControlReducer', () => {
     expect(state.pending).toBeNull();
     // the status is fetched again by the thunk, the result of the pin is not a status
     expect(state.status).toEqual(fetched);
+  });
+
+  it('asks for the latest serialization versions and keeps their total', async () => {
+    window.config = {
+      ...(window.config ?? {}),
+      timetableAdminBaseUrl: 'https://marduk.test/services/timetable_admin/',
+      defaultAuthMethod: 'local',
+    } as typeof window.config;
+    const version = (serializationId: string) => ({
+      serializationId,
+      production: serializationId === 'EN-0239',
+      totalGraphs: 0,
+      graphs: [],
+    });
+    vi.mocked(axios).mockReset();
+    vi.mocked(axios).mockResolvedValue({
+      data: {
+        serializationVersions: ['EN-0239', 'EN-0240'].map(version),
+        totalSerializationVersions: 56,
+      },
+    });
+
+    const store = makeStore();
+    await store.dispatch(fetchGraphVersions(async () => ''));
+
+    const { url } = vi.mocked(axios).mock.calls[0][0] as unknown as { url: string };
+    expect(url).toContain('serializationVersions=5');
+    const state = store.getState().GraphControlReducer;
+    expect(state.versions.map(v => v.serializationId)).toEqual(['EN-0239', 'EN-0240']);
+    expect(state.totalVersions).toBe(56);
   });
 
   describe('rollout', () => {
