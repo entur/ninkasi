@@ -13,7 +13,7 @@ let fetchedConfig: Config | undefined = undefined;
 export const fetchConfig = async (): Promise<Config> => {
   if (fetchedConfig) return fetchedConfig;
 
-  const response = await fetch('config.json', { cache: 'no-store' });
+  const response = await fetch('/config.json', { cache: 'no-store' });
   if (!response.ok) {
     throw new Error(`Failed to load config.json: ${response.status} ${response.statusText}`);
   }
